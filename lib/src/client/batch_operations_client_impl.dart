@@ -1,60 +1,83 @@
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
+import 'package:stream_feed_dart/src/core/api/batch_api.dart';
+import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 import 'package:stream_feed_dart/src/models/activity.dart';
-import 'package:stream_feed_dart/src/models/activity_partial_update.dart';
+import 'package:stream_feed_dart/src/models/enriched_activity.dart';
+import 'package:stream_feed_dart/src/models/feed_id.dart';
 import 'package:stream_feed_dart/src/models/follow.dart';
-import 'package:stream_feed_dart/src/models/foreign_id_time.dart';
+import 'package:stream_feed_dart/src/models/foreign_id_time_pair.dart';
 
 import 'feed/feed.dart';
 
 class BatchOperationsClientImpl implements BatchOperationsClient {
-  @override
-  Future<void> activitiesPartialUpdate(Iterable<ActivityPartialUpdate> data) {
-    // TODO: implement activitiesPartialUpdate
-    throw UnimplementedError();
-  }
+  final String secret;
+  final BatchApi batch;
 
-  @override
-  Future<void> activityPartialUpdate(ActivityPartialUpdate data) {
-    // TODO: implement activityPartialUpdate
-    throw UnimplementedError();
-  }
+  const BatchOperationsClientImpl(this.secret, this.batch);
 
   @override
   Future<void> addToMany(Activity activity,
-      {Iterable<Feed> feeds, Iterable<String> feedIds}) {
-    // TODO: implement addToMany
-    throw UnimplementedError();
+      {Iterable<Feed> feeds, Iterable<FeedId> feedIds}) {
+    final token = TokenHelper.buildFeedToken(secret, TokenAction.write);
+    return batch.addToMany(token, activity, feedIds);
   }
 
   @override
-  Future<void> followMany(Iterable<Follow> follows,
-      {int activityCopyLimit = 300}) {
-    // TODO: implement followMany
-    throw UnimplementedError();
+  Future<void> followMany(
+    Iterable<Follow> follows, {
+    int activityCopyLimit = 300,
+  }) {
+    final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
+    return batch.followMany(token, activityCopyLimit, follows);
   }
 
   @override
-  Future<Iterable<Activity>> getActivities(
-      {Iterable<String> ids, Iterable<ForeignIdTime> foreignIdTimes}) {
-    // TODO: implement getActivities
-    throw UnimplementedError();
+  Future<void> unfollowMany(
+    Iterable<Follow> unfollows, {
+    bool keepHistory = true,
+  }) {
+    final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
+    return batch.unfollowMany(
+      token,
+      unfollows.map((e) => UnFollow.fromFollow(e, keepHistory)),
+    );
   }
 
   @override
-  Future<void> updateActivities(Iterable<Activity> activities) {
-    // TODO: implement updateActivities
-    throw UnimplementedError();
+  Future<Iterable<Activity>> getActivitiesById(Iterable<String> ids) {
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
+    return batch.getActivitiesById(token, ids);
+  }
+
+  @override
+  Future<Iterable<EnrichedActivity>> getEnrichedActivitiesById(
+      Iterable<String> ids) {
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
+    return batch.getEnrichedActivitiesById(token, ids);
+  }
+
+  @override
+  Future<Iterable<Activity>> getActivitiesByForeignId(
+      Iterable<ForeignIdTimePair> pairs) {
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
+    return batch.getActivitiesByForeignId(token, pairs);
+  }
+
+  @override
+  Future<Iterable<EnrichedActivity>> getEnrichedActivitiesByForeignId(
+      Iterable<ForeignIdTimePair> pairs) {
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
+    return batch.getEnrichedActivitiesByForeignId(token, pairs);
   }
 
   @override
   Future<void> updateActivity(Activity activity) {
-    // TODO: implement updateActivity
-    throw UnimplementedError();
+    return updateActivities([activity]);
   }
 
   @override
-  Future<void> unfollowMany(Iterable<Follow> unfollows) {
-    // TODO: implement unfollowMany
-    throw UnimplementedError();
+  Future<void> updateActivities(Iterable<Activity> activities) {
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
+    return batch.updateActivities(token, activities);
   }
 }

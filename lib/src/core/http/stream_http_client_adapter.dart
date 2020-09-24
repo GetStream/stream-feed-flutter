@@ -1,16 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'http_client.dart';
 
-import '../core/exceptions.dart';
+import '../../../version.dart';
+import '../exceptions.dart';
+import 'http_client.dart';
 
 typedef LogHandlerFunction = void Function(LogRecord record);
 typedef DecoderFunction<T> = T Function(Map<String, dynamic>);
 typedef TokenProvider = Future<String> Function(String userId);
 
 class StreamHttpClient implements HttpClient {
-  StreamHttpClient(this.apiKey, {
+  StreamHttpClient(
+    this.apiKey, {
     this.tokenProvider,
     this.baseURL = _defaultBaseURL,
     this.logLevel = Level.WARNING,
@@ -70,8 +72,7 @@ class StreamHttpClient implements HttpClient {
   /// It's used by the client to refresh the token once expired or to set the user without a predefined token using [setUserWithProvider].
   final TokenProvider tokenProvider;
 
-  static const _defaultBaseURL =
-      'https://us-east-api.stream-io-api.com/api/v1.0/';
+  static const _defaultBaseURL = 'https://us-east-api.stream-io-api.com';
 
   void _setupLogger() {
     Logger.root.level = logLevel;
@@ -83,9 +84,11 @@ class StreamHttpClient implements HttpClient {
     logger.info('logger setup');
   }
 
-  void _setupDio(Dio httpClient,
-      Duration receiveTimeout,
-      Duration connectTimeout,) {
+  void _setupDio(
+    Dio httpClient,
+    Duration receiveTimeout,
+    Duration connectTimeout,
+  ) {
     logger.info('http client setup');
 
     this.httpClient = httpClient ?? Dio();
@@ -96,17 +99,24 @@ class StreamHttpClient implements HttpClient {
     } else {
       url = baseURL;
     }
-
-    this.httpClient.options.baseUrl = url;
-    this.httpClient.options.receiveTimeout = receiveTimeout.inMilliseconds;
-    this.httpClient.options.connectTimeout = connectTimeout.inMilliseconds;
-    this.httpClient.interceptors.add(LogInterceptor(
-      requestHeader: true,
-      requestBody: true,
-      responseHeader: true,
-      responseBody: true,
-      logPrint: logger.info,
-    ));
+    this.httpClient
+      ..options.baseUrl = url
+      ..options.receiveTimeout = receiveTimeout.inMilliseconds
+      ..options.connectTimeout = connectTimeout.inMilliseconds
+      ..options.queryParameters = {
+        'api_key': apiKey,
+      }
+      ..options.headers = {
+        'stream-auth-type': 'jwt',
+        'x-stream-client': 'stream-feed-dart-client-$PACKAGE_VERSION',
+      }
+      ..interceptors.add(LogInterceptor(
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+        responseBody: true,
+        logPrint: logger.info,
+      ));
   }
 
   LogHandlerFunction _getDefaultLogHandler() {
@@ -117,8 +127,7 @@ class StreamHttpClient implements HttpClient {
     };
     return (LogRecord record) {
       print(
-          '(${record.time}) ${levelEmojiMapper[record.level.name] ??
-              record.level.name} ${record.loggerName} ${record.message}');
+          '(${record.time}) ${levelEmojiMapper[record.level.name] ?? record.level.name} ${record.loggerName} ${record.message}');
       if (record.stackTrace != null) {
         print(record.stackTrace);
       }
@@ -128,7 +137,7 @@ class StreamHttpClient implements HttpClient {
   Exception _parseError(DioError error) {
     if (error.type == DioErrorType.RESPONSE) {
       final apiError =
-      ApiError(error.response?.data, error.response?.statusCode);
+          ApiError(error.response?.data, error.response?.statusCode);
       logger.severe('apiError: ${apiError.toString()}');
       return apiError;
     }
@@ -138,13 +147,16 @@ class StreamHttpClient implements HttpClient {
 
   /// Handy method to make http GET request with error parsing.
   @override
-  Future<Response<String>> get(String path, {
+  Future<Response<String>> get(
+    String path, {
     Map<String, dynamic> queryParameters,
+    Map<String, dynamic> headers,
   }) async {
     try {
       final response = await httpClient.get<String>(
         path,
         queryParameters: queryParameters,
+        options: Options(headers: headers),
       );
       return response;
     } on DioError catch (error) {
@@ -154,11 +166,17 @@ class StreamHttpClient implements HttpClient {
 
   /// Handy method to make http POST request with error parsing.
   @override
-  Future<Response<String>> post(String path, {
+  Future<Response<String>> post(
+    String path, {
     dynamic data,
+    Map<String, dynamic> headers,
   }) async {
     try {
-      final response = await httpClient.post<String>(path, data: data);
+      final response = await httpClient.post<String>(
+        path,
+        data: data,
+        options: Options(headers: headers),
+      );
       return response;
     } on DioError catch (error) {
       throw _parseError(error);
@@ -167,12 +185,17 @@ class StreamHttpClient implements HttpClient {
 
   /// Handy method to make http DELETE request with error parsing.
   @override
-  Future<Response<String>> delete(String path, {
+  Future<Response<String>> delete(
+    String path, {
     Map<String, dynamic> queryParameters,
+    Map<String, dynamic> headers,
   }) async {
     try {
-      final response = await httpClient.delete<String>(path,
-          queryParameters: queryParameters);
+      final response = await httpClient.delete<String>(
+        path,
+        queryParameters: queryParameters,
+        options: Options(headers: headers),
+      );
       return response;
     } on DioError catch (error) {
       throw _parseError(error);
@@ -181,15 +204,18 @@ class StreamHttpClient implements HttpClient {
 
   /// Handy method to make http PATCH request with error parsing.
   @override
-  Future<Response<String>> patch(String path, {
+  Future<Response<String>> patch(
+    String path, {
     Map<String, dynamic> queryParameters,
     dynamic data,
+    Map<String, dynamic> headers,
   }) async {
     try {
       final response = await httpClient.patch<String>(
         path,
         queryParameters: queryParameters,
         data: data,
+        options: Options(headers: headers),
       );
       return response;
     } on DioError catch (error) {
@@ -199,15 +225,18 @@ class StreamHttpClient implements HttpClient {
 
   /// Handy method to make http PUT request with error parsing.
   @override
-  Future<Response<String>> put(String path, {
+  Future<Response<String>> put(
+    String path, {
     Map<String, dynamic> queryParameters,
     dynamic data,
+    Map<String, dynamic> headers,
   }) async {
     try {
       final response = await httpClient.put<String>(
         path,
         queryParameters: queryParameters,
         data: data,
+        options: Options(headers: headers),
       );
       return response;
     } on DioError catch (error) {

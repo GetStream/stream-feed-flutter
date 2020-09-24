@@ -18,6 +18,7 @@ import 'package:stream_feed_dart/src/client/users_client.dart';
 import 'feed/index.dart';
 
 abstract class StreamClient {
+
   BatchOperationsClient get batch;
 
   CollectionsClient get collections;

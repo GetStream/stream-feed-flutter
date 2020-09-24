@@ -1,4 +1,5 @@
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
+import 'package:stream_feed_dart/src/client/batch_operations_client_impl.dart';
 import 'package:stream_feed_dart/src/client/collections_client.dart';
 import 'package:stream_feed_dart/src/client/feed/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/client/feed/flat_feed.dart';
@@ -6,8 +7,14 @@ import 'package:stream_feed_dart/src/client/feed/notification_feed.dart';
 import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/client/stream_client.dart';
 import 'package:stream_feed_dart/src/client/users_client.dart';
+import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 
 class StreamClientImpl implements StreamClient {
+  final String secret;
+  final StreamApi api;
+
+  const StreamClientImpl(this.secret, this.api);
+
   @override
   AggregatedFeed aggregatedFeed(String slug, String userId) {
     // TODO: implement aggregatedFeed
@@ -15,8 +22,8 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  // TODO: implement batch
-  BatchOperationsClient get batch => throw UnimplementedError();
+  BatchOperationsClient get batch =>
+      BatchOperationsClientImpl(secret, api.batch);
 
   @override
   // TODO: implement collections

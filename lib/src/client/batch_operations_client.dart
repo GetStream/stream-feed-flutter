@@ -11,18 +11,18 @@
 
 import 'dart:async';
 
-import 'package:stream_feed_dart/src/models/activity_partial_update.dart';
-import 'package:stream_feed_dart/src/models/foreign_id_time.dart';
-
 import '../models/activity.dart';
+import '../models/enriched_activity.dart';
+import '../models/feed_id.dart';
 import '../models/follow.dart';
+import '../models/foreign_id_time_pair.dart';
 import 'feed/feed.dart';
 
 abstract class BatchOperationsClient {
   Future<void> addToMany(
     Activity activity, {
     Iterable<Feed> feeds,
-    Iterable<String> feedIds,
+    Iterable<FeedId> feedIds,
   });
 
   Future<void> followMany(
@@ -30,18 +30,23 @@ abstract class BatchOperationsClient {
     int activityCopyLimit = 300,
   });
 
-  Future<void> unfollowMany(Iterable<Follow> unfollows);
-
-  Future<Iterable<Activity>> getActivities({
-    Iterable<String> ids,
-    Iterable<ForeignIdTime> foreignIdTimes,
+  Future<void> unfollowMany(
+    Iterable<Follow> unfollows, {
+    bool keepHistory,
   });
+
+  Future<Iterable<Activity>> getActivitiesById(Iterable<String> ids);
+
+  Future<Iterable<EnrichedActivity>> getEnrichedActivitiesById(
+      Iterable<String> ids);
+
+  Future<Iterable<Activity>> getActivitiesByForeignId(
+      Iterable<ForeignIdTimePair> pairs);
+
+  Future<Iterable<EnrichedActivity>> getEnrichedActivitiesByForeignId(
+      Iterable<ForeignIdTimePair> pairs);
 
   Future<void> updateActivity(Activity activity);
 
   Future<void> updateActivities(Iterable<Activity> activities);
-
-  Future<void> activityPartialUpdate(ActivityPartialUpdate data);
-
-  Future<void> activitiesPartialUpdate(Iterable<ActivityPartialUpdate> data);
 }

@@ -5,18 +5,21 @@ abstract class HttpClient {
   Future<Response<String>> get(
     String path, {
     Map<String, dynamic> queryParameters,
+    Map<String, dynamic> headers,
   });
 
   /// Handy method to make http POST request with error parsing.
   Future<Response<String>> post(
     String path, {
     dynamic data,
+    Map<String, dynamic> headers,
   });
 
   /// Handy method to make http DELETE request with error parsing.
   Future<Response<String>> delete(
     String path, {
     Map<String, dynamic> queryParameters,
+    Map<String, dynamic> headers,
   });
 
   /// Handy method to make http PATCH request with error parsing.
@@ -24,6 +27,7 @@ abstract class HttpClient {
     String path, {
     Map<String, dynamic> queryParameters,
     dynamic data,
+    Map<String, dynamic> headers,
   });
 
   /// Handy method to make http PUT request with error parsing.
@@ -31,5 +35,6 @@ abstract class HttpClient {
     String path, {
     Map<String, dynamic> queryParameters,
     dynamic data,
+    Map<String, dynamic> headers,
   });
 }
