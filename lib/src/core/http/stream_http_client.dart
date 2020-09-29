@@ -107,6 +107,7 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.post<T>(
         path,
+        queryParameters: queryParameters,
         data: data,
         options: Options(headers: headers),
       );

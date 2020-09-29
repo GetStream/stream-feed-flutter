@@ -4,6 +4,8 @@ import 'package:stream_feed_dart/src/core/api/batch_api_impl.dart';
 import 'package:stream_feed_dart/src/core/api/reaction_api.dart';
 import 'package:stream_feed_dart/src/core/api/reaction_api_impl.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
+import 'package:stream_feed_dart/src/core/api/users_api.dart';
+import 'package:stream_feed_dart/src/core/api/users_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 
@@ -21,4 +23,7 @@ class StreamApiImpl implements StreamApi {
 
   @override
   ReactionsApi get reaction => ReactionsApiImpl(_client);
+
+  @override
+  UsersApi get users => UsersApiImpl(_client);
 }

@@ -9,6 +9,7 @@ import 'package:stream_feed_dart/src/client/reactions_client_impl.dart';
 import 'package:stream_feed_dart/src/client/stream_client.dart';
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/client/users_client.dart';
+import 'package:stream_feed_dart/src/client/users_client_impl.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api_impl.dart';
 
@@ -25,14 +26,14 @@ class StreamClientImpl implements StreamClient {
   }) : _api = api ?? StreamApiImpl(apiKey, options: options);
 
   @override
-  AggregatedFeed aggregatedFeed(String slug, String userId) {
-    // TODO: implement aggregatedFeed
-    throw UnimplementedError();
-  }
-
-  @override
   BatchOperationsClient get batch =>
       BatchOperationsClientImpl(_secret, _api.batch);
+
+  @override
+  ReactionsClient get reactions => ReactionsClientImpl(_secret, _api.reaction);
+
+  @override
+  UsersClient get users => UsersClientImpl(_secret, _api.users);
 
   @override
   // TODO: implement collections
@@ -45,15 +46,14 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  NotificationFeed notificationFeed(String slug, String userId) {
-    // TODO: implement notificationFeed
+  AggregatedFeed aggregatedFeed(String slug, String userId) {
+    // TODO: implement aggregatedFeed
     throw UnimplementedError();
   }
 
   @override
-  ReactionsClient get reactions => ReactionsClientImpl(_secret, _api.reaction);
-
-  @override
-  // TODO: implement users
-  UsersClient get users => throw UnimplementedError();
+  NotificationFeed notificationFeed(String slug, String userId) {
+    // TODO: implement notificationFeed
+    throw UnimplementedError();
+  }
 }

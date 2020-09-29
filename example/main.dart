@@ -1,5 +1,3 @@
-import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
-import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 
 main() {
@@ -9,15 +7,16 @@ main() {
   );
 
   final batch = client.batch;
-  final activity = Activity(
-    actor: 'User:2',
-    object: 'Place:42',
-    verb: 'pin',
-  );
-  //
   // batch.addToMany(
-  //   activity,
-  //   [FeedId('timeline', '123'), FeedId('timeline', '789')],
+  //   Activity(
+  //     actor: 'User:2',
+  //     object: 'Place:42',
+  //     verb: 'pin',
+  //   ),
+  //   [
+  //     FeedId('timeline', '123'),
+  //     FeedId('timeline', '789'),
+  //   ],
   // );
   // batch.getActivitiesById(['ef696c12-69ab-11e4-8080-80003644b625']);
 
@@ -53,9 +52,22 @@ main() {
   //   'd35fd62e-ac97-4c0d-9a06-30019aaf05ea',
   //   data: {'sahil': 'kumar'},
   // );
-  reactions.paginatedFilter(
-    LookupAttribute.user_id,
-    'bob',
-  );
+  // reactions.paginatedFilter(
+  //   LookupAttribute.user_id,
+  //   'bob',
+  // );
   // reactions.filter(LookupAttribute.user_id, 'bob');
+
+  final users = client.users;
+  // users.add('sahil-kumar', {
+  //   'first_name': 'sahil',
+  //   'last_name': 'kumar',
+  //   'full_name': 'sahil kumar',
+  // });
+  // users.get('sahil-kumar');
+  // users.update('sahil-kumar', {
+  //   'role': 'Flutter Developer',
+  // });
+  // print(users.ref('sahil-kumar'));
+  // users.delete('sahil-kumar');
 }
