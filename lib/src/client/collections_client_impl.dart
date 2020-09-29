@@ -1,4 +1,4 @@
-import 'package:stream_feed_dart/src/models/collection_data.dart';
+import 'package:stream_feed_dart/src/core/models/collection_data.dart';
 
 import 'collections_client.dart';
 

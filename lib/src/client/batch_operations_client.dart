@@ -11,19 +11,14 @@
 
 import 'dart:async';
 
-import '../models/activity.dart';
-import '../models/enriched_activity.dart';
-import '../models/feed_id.dart';
-import '../models/follow.dart';
-import '../models/foreign_id_time_pair.dart';
-import 'feed/feed.dart';
+import '../core/models/activity.dart';
+import '../core/models/enriched_activity.dart';
+import '../core/models/feed_id.dart';
+import '../core/models/follow.dart';
+import '../core/models/foreign_id_time_pair.dart';
 
 abstract class BatchOperationsClient {
-  Future<void> addToMany(
-    Activity activity, {
-    Iterable<Feed> feeds,
-    Iterable<FeedId> feedIds,
-  });
+  Future<void> addToMany(Activity activity, Iterable<FeedId> feedIds);
 
   Future<void> followMany(
     Iterable<Follow> follows, {

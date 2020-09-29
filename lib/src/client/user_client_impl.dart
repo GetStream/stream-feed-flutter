@@ -1,5 +1,5 @@
 import 'package:stream_feed_dart/src/client/users_client.dart';
-import 'package:stream_feed_dart/src/models/user.dart';
+import 'package:stream_feed_dart/src/core/models/user.dart';
 
 class UserClientImpl implements UsersClient {
   @override

@@ -1,15 +1,61 @@
-import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
-import 'package:stream_feed_dart/src/core/api/stream_api_impl.dart';
-import 'package:stream_feed_dart/src/core/http/stream_http_client_adapter.dart';
-import 'package:stream_feed_dart/src/models/activity.dart';
+import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
+import 'package:stream_feed_dart/src/core/models/activity.dart';
+import 'package:stream_feed_dart/stream_feed.dart';
 
 main() {
-  final httpClient = StreamHttpClient('9wbdt7vucby6');
-  final api = StreamApiImpl(httpClient);
-  final client = StreamClientImpl(
-      'bksn37r6k7j5p75mmy6znts47j9f9pc49bmw3jjyd7rshg2enbcnq666d2ryfzs8', api);
+  final client = StreamClient.connect(
+    '9wbdt7vucby6',
+    'bksn37r6k7j5p75mmy6znts47j9f9pc49bmw3jjyd7rshg2enbcnq666d2ryfzs8',
+  );
 
   final batch = client.batch;
-  final activity = Activity();
-  batch.addToMany(activity);
+  final activity = Activity(
+    actor: 'User:2',
+    object: 'Place:42',
+    verb: 'pin',
+  );
+  //
+  // batch.addToMany(
+  //   activity,
+  //   [FeedId('timeline', '123'), FeedId('timeline', '789')],
+  // );
+  // batch.getActivitiesById(['ef696c12-69ab-11e4-8080-80003644b625']);
+
+  final reactions = client.reactions;
+  // reactions.get('');
+  // reactions.update('');
+  // reactions.add(
+  //   'like',
+  //   '65bca63a-7d61-48e8-be9d-c6665a008196',
+  //   'bob',
+  //   data: {
+  //     'extra': 'data',
+  //   },
+  //   targetFeeds: [
+  //     FeedId('timeline', '123'),
+  //     FeedId('timeline', '789'),
+  //   ],
+  // );
+  // reactions.addChild(
+  //   'comment',
+  //   'd35fd62e-ac97-4c0d-9a06-30019aaf05ea',
+  //   'bob',
+  //   data: {
+  //     'extra': 'data',
+  //   },
+  //   targetFeeds: [
+  //     FeedId('timeline', '123'),
+  //     FeedId('timeline', '789'),
+  //   ],
+  // );
+  // reactions.get('d35fd62e-ac97-4c0d-9a06-30019aaf05ea');
+  // reactions.update(
+  //   'd35fd62e-ac97-4c0d-9a06-30019aaf05ea',
+  //   data: {'sahil': 'kumar'},
+  // );
+  reactions.paginatedFilter(
+    LookupAttribute.user_id,
+    'bob',
+  );
+  // reactions.filter(LookupAttribute.user_id, 'bob');
 }

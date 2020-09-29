@@ -1,13 +1,11 @@
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
 import 'package:stream_feed_dart/src/core/api/batch_api.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
-import 'package:stream_feed_dart/src/models/activity.dart';
-import 'package:stream_feed_dart/src/models/enriched_activity.dart';
-import 'package:stream_feed_dart/src/models/feed_id.dart';
-import 'package:stream_feed_dart/src/models/follow.dart';
-import 'package:stream_feed_dart/src/models/foreign_id_time_pair.dart';
-
-import 'feed/feed.dart';
+import 'package:stream_feed_dart/src/core/models/activity.dart';
+import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
+import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/follow.dart';
+import 'package:stream_feed_dart/src/core/models/foreign_id_time_pair.dart';
 
 class BatchOperationsClientImpl implements BatchOperationsClient {
   final String secret;
@@ -16,8 +14,7 @@ class BatchOperationsClientImpl implements BatchOperationsClient {
   const BatchOperationsClientImpl(this.secret, this.batch);
 
   @override
-  Future<void> addToMany(Activity activity,
-      {Iterable<Feed> feeds, Iterable<FeedId> feedIds}) {
+  Future<void> addToMany(Activity activity, Iterable<FeedId> feedIds) {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.write);
     return batch.addToMany(token, activity, feedIds);
   }

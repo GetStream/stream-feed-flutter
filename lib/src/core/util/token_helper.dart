@@ -1,6 +1,6 @@
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/models/feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 enum TokenAction {
   any,
@@ -58,7 +58,7 @@ class TokenHelper {
     TokenAction action, {
     FeedId feed,
   }) {
-    return buildBackendToken(
+    return _buildBackendToken(
         secret, TokenResource.feed, action, feed?.claim ?? '*');
   }
 
@@ -67,15 +67,19 @@ class TokenHelper {
     TokenAction action, {
     FeedId feed,
   }) {
-    return buildBackendToken(
+    return _buildBackendToken(
         secret, TokenResource.follower, action, feed?.claim ?? '*');
   }
 
-  static Token buildActivityToken(String secret, TokenAction action) {
-    return buildBackendToken(secret, TokenResource.activities, action, '*');
+  static Token buildReactionToken(String secret, TokenAction action) {
+    return _buildBackendToken(secret, TokenResource.reactions, action, '*');
   }
 
-  static Token buildFrontendToken(
+  static Token buildActivityToken(String secret, TokenAction action) {
+    return _buildBackendToken(secret, TokenResource.activities, action, '*');
+  }
+
+  static Token _buildFrontendToken(
     String secret,
     String userId, {
     DateTime expiresAt,
@@ -87,7 +91,7 @@ class TokenHelper {
     return Token(issueJwtHS256(claimSet, secret));
   }
 
-  static Token buildBackendToken(
+  static Token _buildBackendToken(
     String secret,
     TokenResource resource,
     TokenAction action,

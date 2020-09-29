@@ -1,6 +1,11 @@
 class Routes {
   static const _basePath = '/api/v1.0/';
   static const _addToManyPath = 'feed/add_to_many/';
+  static const _followManyPath = 'follow_many/';
+  static const _unfollowManyPath = 'unfollow_many/';
+  static const _activitiesPath = 'activities/';
+  static const _enrichActivitiesPath = 'enrich/$_activitiesPath';
+  static const _reactionsPath = 'reaction/';
 
 // private static final String basePath = "/api/v1.0/";
 //   private static final String analyticsPath = "/analytics/v1.0/";
@@ -41,6 +46,9 @@ class Routes {
 //   public static URL buildEnrichedActivitiesURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + enriched(activitiesPath));
 //   }
+
+  static String get enrichedActivitiesUrl => '$_basePath$_enrichActivitiesPath';
+
 //
 //   public static URL buildCollectionsURL(URL baseURL, String path) throws MalformedURLException {
 //     return new URL(baseURL, basePath + collectionsPath + path);
@@ -49,6 +57,9 @@ class Routes {
 //   public static URL buildReactionsURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + reactionsPath);
 //   }
+
+  static String buildReactionsUrl([String path = '']) => '$_basePath$_reactionsPath$path';
+
 //
 //   public static URL buildReactionsURL(URL baseURL, String path) throws MalformedURLException {
 //     return new URL(baseURL, basePath + reactionsPath + path);
@@ -93,16 +104,24 @@ class Routes {
 //   public static URL buildAddToManyURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + addToManyPath);
 //   }
+
   static String get addToManyUrl => '$_basePath$_addToManyPath';
 
 //
 //   public static URL buildFollowManyURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + followManyPath);
 //   }
+
+  static String get followManyUrl => '$_basePath$_followManyPath';
+
 //
 //   public static URL buildUnfollowManyURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + unfollowManyPath);
 //   }
+  static String get unfollowManyUrl => '$_basePath$_unfollowManyPath';
+
+  static String get activitesUrl => '$_basePath$_activitiesPath';
+
 //
 //   private static URL buildSubdomainPath(URL baseURL, String subdomain, String apiPath, String path)
 //       throws MalformedURLException {

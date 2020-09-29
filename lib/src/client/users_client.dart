@@ -1,4 +1,4 @@
-import 'package:stream_feed_dart/src/models/user.dart';
+import 'package:stream_feed_dart/src/core/models/user.dart';
 
 abstract class UsersClient {
 //public async Task<User> Add(string userID, IDictionary<string, object> data = null, bool getOrCreate = false)
