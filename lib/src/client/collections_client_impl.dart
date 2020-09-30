@@ -1,49 +1,75 @@
-import 'package:stream_feed_dart/src/core/models/collection_data.dart';
+import 'package:stream_feed_dart/src/core/api/collections_api.dart';
+import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
+import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 import 'collections_client.dart';
 
 class CollectionsClientImpl implements CollectionsClient {
+  final String secret;
+  final CollectionsApi collections;
+
+  const CollectionsClientImpl(this.secret, this.collections);
+
   @override
-  Future<CollectionData> add(
-      String collection, String itemId, CollectionData data) {
-    // TODO: implement add
-    throw UnimplementedError();
+  Future<CollectionEntry> add(
+    String collection,
+    Map<String, Object> data, {
+    String entryId,
+    String userId,
+  }) {
+    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
+    final entry = CollectionEntry(
+      id: entryId,
+      collection: collection,
+      data: data,
+    );
+    return collections.add(token, userId, entry);
   }
 
   @override
   Future<void> delete(String collection, String entryId) {
-    // TODO: implement delete
-    throw UnimplementedError();
+    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
+    return collections.delete(token, collection, entryId);
   }
 
   @override
   Future<void> deleteMany(String collection, Iterable<String> ids) {
-    // TODO: implement deleteMany
-    throw UnimplementedError();
+    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
+    return collections.deleteMany(token, collection, ids);
   }
 
   @override
-  Future<CollectionData> get(String collection, String itemId) {
-    // TODO: implement get
-    throw UnimplementedError();
+  Future<CollectionEntry> get(String collection, String entryId) {
+    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.read);
+    return collections.get(token, collection, entryId);
   }
 
   @override
-  Future<List<CollectionData>> select(String collection, Iterable<String> ids) {
-    // TODO: implement select
-    throw UnimplementedError();
+  Future<List<CollectionEntry>> select(
+      String collection, Iterable<String> ids) {
+    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.read);
+    return collections.select(token, collection, ids);
   }
 
   @override
-  Future<CollectionData> update(
-      String collection, String entryId, CollectionData data) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<CollectionEntry> update(
+    String collection,
+    String entryId,
+    Map<String, Object> data, {
+    String userId,
+  }) {
+    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
+    final entry = CollectionEntry(
+      id: entryId,
+      collection: collection,
+      data: data,
+    );
+    return collections.update(token, userId, entry);
   }
 
   @override
-  Future<void> upsert(String collection, Iterable<CollectionData> data) {
-    // TODO: implement upsert
-    throw UnimplementedError();
+  Future<void> upsert(String collection, Iterable<CollectionEntry> entries) {
+    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
+    return collections.upsert(token, collection, entries);
   }
 }

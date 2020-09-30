@@ -1,6 +1,7 @@
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
 import 'package:stream_feed_dart/src/client/batch_operations_client_impl.dart';
 import 'package:stream_feed_dart/src/client/collections_client.dart';
+import 'package:stream_feed_dart/src/client/collections_client_impl.dart';
 import 'package:stream_feed_dart/src/client/feed/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/client/feed/flat_feed.dart';
 import 'package:stream_feed_dart/src/client/feed/notification_feed.dart';
@@ -36,8 +37,8 @@ class StreamClientImpl implements StreamClient {
   UsersClient get users => UsersClientImpl(_secret, _api.users);
 
   @override
-  // TODO: implement collections
-  CollectionsClient get collections => throw UnimplementedError();
+  CollectionsClient get collections =>
+      CollectionsClientImpl(_secret, _api.collections);
 
   @override
   FlatFeet flatFeed(String slug, String userId) {

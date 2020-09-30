@@ -7,6 +7,7 @@ class Routes {
   static const _enrichActivitiesPath = 'enrich/$_activitiesPath';
   static const _reactionsPath = 'reaction/';
   static const _usersPath = 'user/';
+  static const _collectionsPath = 'collections/';
 
 // private static final String basePath = "/api/v1.0/";
 //   private static final String analyticsPath = "/analytics/v1.0/";
@@ -54,6 +55,11 @@ class Routes {
 //   public static URL buildCollectionsURL(URL baseURL, String path) throws MalformedURLException {
 //     return new URL(baseURL, basePath + collectionsPath + path);
 //   }
+//     return new URL(baseURL, basePath + collectionsPath);
+
+  static String buildCollectionsUrl([String path = '']) =>
+      '$_basePath$_collectionsPath$path';
+
 //
 //   public static URL buildReactionsURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + reactionsPath);

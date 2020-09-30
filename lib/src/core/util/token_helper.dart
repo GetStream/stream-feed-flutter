@@ -83,6 +83,10 @@ class TokenHelper {
     return _buildBackendToken(secret, TokenResource.users, action, '*');
   }
 
+  static Token buildCollectionsToken(String secret, TokenAction action) {
+    return _buildBackendToken(secret, TokenResource.collections, action, '*');
+  }
+
   static Token _buildFrontendToken(
     String secret,
     String userId, {

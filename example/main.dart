@@ -70,4 +70,28 @@ main() {
   // });
   // print(users.ref('sahil-kumar'));
   // users.delete('sahil-kumar');
+
+  final collections = client.collections;
+  // collections.add(
+  //   'Toothpaste',
+  //   {
+  //     'name': 'Colgate',
+  //     'weight': '200g',
+  //     'color': 'white',
+  //   },
+  //   entryId: 'colgate-200',
+  // );
+  // collections.upsert(
+  //   'Toothpaste',
+  //   [
+  //     CollectionEntry(
+  //       id: 'colgate-300',
+  //       data: {
+  //         'name': 'Colgate',
+  //         'weight': '300g',
+  //         'color': 'white',
+  //       },
+  //     ),
+  //   ],
+  // );
 }

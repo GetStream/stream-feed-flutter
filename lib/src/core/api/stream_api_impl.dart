@@ -1,6 +1,8 @@
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/core/api/batch_api.dart';
 import 'package:stream_feed_dart/src/core/api/batch_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/collections_api.dart';
+import 'package:stream_feed_dart/src/core/api/collections_api_impl.dart';
 import 'package:stream_feed_dart/src/core/api/reaction_api.dart';
 import 'package:stream_feed_dart/src/core/api/reaction_api_impl.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
@@ -26,4 +28,7 @@ class StreamApiImpl implements StreamApi {
 
   @override
   UsersApi get users => UsersApiImpl(_client);
+
+  @override
+  CollectionsApi get collections => CollectionsApiImpl(_client);
 }
