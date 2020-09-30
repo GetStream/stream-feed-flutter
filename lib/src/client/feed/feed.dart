@@ -1,3 +1,1 @@
-class Feed {
-
-}
+class Feed {}

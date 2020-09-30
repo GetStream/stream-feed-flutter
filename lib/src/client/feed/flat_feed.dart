@@ -1,5 +1,3 @@
 import 'feed.dart';
 
-class FlatFeet extends Feed {
-
-}
+class FlatFeet extends Feed {}
