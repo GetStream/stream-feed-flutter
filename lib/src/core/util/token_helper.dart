@@ -87,7 +87,7 @@ class TokenHelper {
     return _buildBackendToken(secret, TokenResource.collections, action, '*');
   }
 
-  static Token _buildFrontendToken(
+  static Token buildFrontendToken(
     String secret,
     String userId, {
     DateTime expiresAt,

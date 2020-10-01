@@ -13,6 +13,8 @@ import 'package:stream_feed_dart/src/client/users_client.dart';
 import 'package:stream_feed_dart/src/client/users_client_impl.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api_impl.dart';
+import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class StreamClientImpl implements StreamClient {
   final String _secret;
@@ -57,4 +59,11 @@ class StreamClientImpl implements StreamClient {
     // TODO: implement notificationFeed
     throw UnimplementedError();
   }
+
+  @override
+  Token frontendToken(
+    String userId, {
+    DateTime expiresAt,
+  }) =>
+      TokenHelper.buildFrontendToken(_secret, userId, expiresAt: expiresAt);
 }

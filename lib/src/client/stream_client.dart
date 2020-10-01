@@ -4,6 +4,7 @@ import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/client/users_client.dart';
+import 'package:stream_feed_dart/src/core/http/token.dart';
 
 import 'feed/index.dart';
 
@@ -28,4 +29,9 @@ abstract class StreamClient {
   AggregatedFeed aggregatedFeed(String slug, String userId);
 
   NotificationFeed notificationFeed(String slug, String userId);
+
+  Token frontendToken(
+    String userId, {
+    DateTime expiresAt,
+  });
 }
