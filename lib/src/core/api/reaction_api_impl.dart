@@ -1,11 +1,10 @@
 import 'package:stream_feed_dart/src/core/api/reaction_api.dart';
-import 'package:stream_feed_dart/src/core/filter.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
+import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/src/core/models/reaction.dart';
-import 'package:stream_feed_dart/src/core/models/reaction_filter.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class ReactionsApiImpl implements ReactionsApi {
@@ -43,13 +42,13 @@ class ReactionsApiImpl implements ReactionsApi {
 
   @override
   Future<List<Reaction>> filter(Token token, LookupAttribute lookupAttr,
-      String lookupValue, ReactionFilter filter, int limit, String kind) async {
+      String lookupValue, Filter filter, int limit, String kind) async {
     final result = await client.get(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
       queryParameters: {
         'limit': limit.toString(),
-        if (filter != null) filter.filter.name: filter.id,
+        if (filter != null) ...filter.params,
         'with_activity_data': lookupAttr == LookupAttribute.activity_id,
       },
     );
@@ -61,7 +60,7 @@ class ReactionsApiImpl implements ReactionsApi {
     Token token,
     LookupAttribute lookupAttr,
     String lookupValue,
-    ReactionFilter filter,
+    Filter filter,
     int limit,
     String kind,
   ) async {
@@ -70,7 +69,7 @@ class ReactionsApiImpl implements ReactionsApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'limit': limit.toString(),
-        if (filter != null) filter.filter.name: filter.id,
+        if (filter != null) ...filter.params,
         'with_activity_data': lookupAttr == LookupAttribute.activity_id,
       },
     );

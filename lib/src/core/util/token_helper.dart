@@ -53,20 +53,22 @@ extension TokenResourceX on TokenResource {
 }
 
 class TokenHelper {
+  const TokenHelper._();
+
   static Token buildFeedToken(
     String secret,
-    TokenAction action, {
+    TokenAction action, [
     FeedId feed,
-  }) {
+  ]) {
     return _buildBackendToken(
         secret, TokenResource.feed, action, feed?.claim ?? '*');
   }
 
   static Token buildFollowToken(
     String secret,
-    TokenAction action, {
+    TokenAction action, [
     FeedId feed,
-  }) {
+  ]) {
     return _buildBackendToken(
         secret, TokenResource.follower, action, feed?.claim ?? '*');
   }
@@ -85,6 +87,20 @@ class TokenHelper {
 
   static Token buildCollectionsToken(String secret, TokenAction action) {
     return _buildBackendToken(secret, TokenResource.collections, action, '*');
+  }
+
+  static Token buildOpenGraphToken(String secret) {
+    return _buildBackendToken(
+        secret, TokenResource.open_graph, TokenAction.read, '*');
+  }
+
+  static Token buildToTargetUpdateToken(
+    String secret,
+    TokenAction action, [
+    FeedId feed,
+  ]) {
+    return _buildBackendToken(
+        secret, TokenResource.feed_targets, action, feed?.claim ?? '*');
   }
 
   static Token buildFrontendToken(

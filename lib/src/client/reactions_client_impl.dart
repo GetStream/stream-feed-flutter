@@ -4,7 +4,7 @@ import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/src/core/models/reaction.dart';
-import 'package:stream_feed_dart/src/core/models/reaction_filter.dart';
+import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class ReactionsClientImpl implements ReactionsClient {
@@ -82,7 +82,7 @@ class ReactionsClientImpl implements ReactionsClient {
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-    ReactionFilter filter,
+        Filter filter,
     int limit = 10,
     String kind = '',
   }) {
@@ -95,7 +95,7 @@ class ReactionsClientImpl implements ReactionsClient {
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-    ReactionFilter filter,
+        Filter filter,
     int limit = 10,
     String kind = '',
   }) {

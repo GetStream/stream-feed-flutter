@@ -2,7 +2,7 @@ import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/src/core/models/reaction.dart';
-import 'package:stream_feed_dart/src/core/models/reaction_filter.dart';
+import 'package:stream_feed_dart/src/core/models/filter.dart';
 
 abstract class ReactionsClient {
   Future<Reaction> add(
@@ -26,7 +26,7 @@ abstract class ReactionsClient {
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-    ReactionFilter filter,
+        Filter filter,
     int limit = 10,
     String kind = '',
   });
@@ -34,7 +34,7 @@ abstract class ReactionsClient {
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-    ReactionFilter filter,
+        Filter filter,
     int limit = 10,
     String kind = '',
   });

@@ -1,13 +1,19 @@
+import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+
 class Routes {
-  static const _basePath = '/api/v1.0/';
-  static const _addToManyPath = 'feed/add_to_many/';
-  static const _followManyPath = 'follow_many/';
-  static const _unfollowManyPath = 'unfollow_many/';
-  static const _activitiesPath = 'activities/';
+  static const _basePath = '/api/v1.0';
+  static const _addToManyPath = 'feed/add_to_many';
+  static const _followManyPath = 'follow_many';
+  static const _unfollowManyPath = 'unfollow_many';
+  static const _activitiesPath = 'activities';
   static const _enrichActivitiesPath = 'enrich/$_activitiesPath';
-  static const _reactionsPath = 'reaction/';
-  static const _usersPath = 'user/';
-  static const _collectionsPath = 'collections/';
+  static const _activityUpdatePath = 'activity';
+  static const _reactionsPath = 'reaction';
+  static const _usersPath = 'user';
+  static const _collectionsPath = 'collections';
+  static const _openGraphPath = 'og';
+  static const _feedPath = 'feed';
+  static const _enrichedFeedPath = 'enrich/$_feedPath';
 
 // private static final String basePath = "/api/v1.0/";
 //   private static final String analyticsPath = "/analytics/v1.0/";
@@ -31,6 +37,13 @@ class Routes {
 //       throws MalformedURLException {
 //     return new URL(baseURL, basePath + feedPath(feed) + path);
 //   }
+
+  static String buildFeedUrl(FeedId feed, [String path = '']) =>
+      '$_basePath/$_feedPath/${feed.slug}/${feed.userId}/$path';
+
+  static String buildEnrichedFeedUrl(FeedId feed, [String path = '']) =>
+      '$_basePath/$_enrichedFeedPath/${feed.slug}/${feed.userId}/$path';
+
 //
 //   public static URL buildEnrichedFeedURL(URL baseURL, FeedID feed, String path)
 //       throws MalformedURLException {
@@ -49,7 +62,8 @@ class Routes {
 //     return new URL(baseURL, basePath + enriched(activitiesPath));
 //   }
 
-  static String get enrichedActivitiesUrl => '$_basePath$_enrichActivitiesPath';
+  static String get enrichedActivitiesUrl =>
+      '$_basePath/$_enrichActivitiesPath';
 
 //
 //   public static URL buildCollectionsURL(URL baseURL, String path) throws MalformedURLException {
@@ -58,7 +72,7 @@ class Routes {
 //     return new URL(baseURL, basePath + collectionsPath);
 
   static String buildCollectionsUrl([String path = '']) =>
-      '$_basePath$_collectionsPath$path';
+      '$_basePath/$_collectionsPath/$path';
 
 //
 //   public static URL buildReactionsURL(URL baseURL) throws MalformedURLException {
@@ -66,7 +80,7 @@ class Routes {
 //   }
 
   static String buildReactionsUrl([String path = '']) =>
-      '$_basePath$_reactionsPath$path';
+      '$_basePath/$_reactionsPath/$path';
 
 //
 //   public static URL buildReactionsURL(URL baseURL, String path) throws MalformedURLException {
@@ -82,7 +96,7 @@ class Routes {
 //   }
 
   static String buildUsersUrl([String path = '']) =>
-      '$_basePath$_usersPath$path';
+      '$_basePath/$_usersPath/$path';
 
 //
 //   public static URL buildBatchCollectionsURL(URL baseURL) throws MalformedURLException {
@@ -92,6 +106,9 @@ class Routes {
 //   public static URL buildOpenGraphURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + openGraphPath);
 //   }
+
+  static String get openGraphURL => '$_basePath/$_openGraphPath';
+
 //
 //   public static URL buildFilesURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + filesPath);
@@ -112,27 +129,30 @@ class Routes {
 //   public static URL buildActivityUpdateURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + activityUpdatePath);
 //   }
+
+  static String get activityUpdateUrl => '$_basePath/$_activityUpdatePath';
+
 //
 //   public static URL buildAddToManyURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + addToManyPath);
 //   }
 
-  static String get addToManyUrl => '$_basePath$_addToManyPath';
+  static String get addToManyUrl => '$_basePath/$_addToManyPath';
 
 //
 //   public static URL buildFollowManyURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + followManyPath);
 //   }
 
-  static String get followManyUrl => '$_basePath$_followManyPath';
+  static String get followManyUrl => '$_basePath/$_followManyPath';
 
 //
 //   public static URL buildUnfollowManyURL(URL baseURL) throws MalformedURLException {
 //     return new URL(baseURL, basePath + unfollowManyPath);
 //   }
-  static String get unfollowManyUrl => '$_basePath$_unfollowManyPath';
+  static String get unfollowManyUrl => '$_basePath/$_unfollowManyPath';
 
-  static String get activitesUrl => '$_basePath$_activitiesPath';
+  static String get activitesUrl => '$_basePath/$_activitiesPath';
 
 //
 //   private static URL buildSubdomainPath(URL baseURL, String subdomain, String apiPath, String path)

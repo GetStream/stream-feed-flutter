@@ -14,6 +14,8 @@ import 'package:stream_feed_dart/src/client/users_client_impl.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class StreamClientImpl implements StreamClient {
@@ -44,20 +46,20 @@ class StreamClientImpl implements StreamClient {
 
   @override
   FlatFeet flatFeed(String slug, String userId) {
-    // TODO: implement flatFeed
-    throw UnimplementedError();
+    final id = FeedId(slug, userId);
+    return FlatFeet(_secret, id, _api.feed);
   }
 
   @override
   AggregatedFeed aggregatedFeed(String slug, String userId) {
-    // TODO: implement aggregatedFeed
-    throw UnimplementedError();
+    final id = FeedId(slug, userId);
+    return AggregatedFeed(_secret, id, _api.feed);
   }
 
   @override
   NotificationFeed notificationFeed(String slug, String userId) {
-    // TODO: implement notificationFeed
-    throw UnimplementedError();
+    final id = FeedId(slug, userId);
+    return NotificationFeed(_secret, id, _api.feed);
   }
 
   @override
@@ -66,4 +68,10 @@ class StreamClientImpl implements StreamClient {
     DateTime expiresAt,
   }) =>
       TokenHelper.buildFrontendToken(_secret, userId, expiresAt: expiresAt);
+
+  @override
+  Future<OpenGraphData> openGraph(String targetUrl) {
+    final token = TokenHelper.buildOpenGraphToken(_secret);
+    return _api.openGraph(token, targetUrl);
+  }
 }
