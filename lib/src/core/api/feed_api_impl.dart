@@ -1,13 +1,10 @@
-import 'package:dio/src/response.dart';
+import 'package:dio/dio.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/activity_update.dart';
-import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
-import 'package:stream_feed_dart/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
-import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/models/follow.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
@@ -54,44 +51,22 @@ class FeedApiImpl implements FeedApi {
   }
 
   @override
-  Future<List<Activity>> getActivities(Token token, FeedId feed, int limit,
-      int offset, Filter filter, String ranking) async {
-    final result = await client.get(
-      Routes.buildFeedUrl(feed),
-      headers: {'Authorization': '$token'},
-      queryParameters: {
-        'limit': limit,
-        'offset': offset,
-        ...filter?.params,
-        if (ranking != null) 'ranking': ranking,
-      },
-    );
-    print(result);
-  }
+  Future<Response> getActivities(
+          Token token, FeedId feed, Map<String, Object> options) =>
+      client.get(
+        Routes.buildFeedUrl(feed),
+        headers: {'Authorization': '$token'},
+        queryParameters: options,
+      );
 
   @override
-  Future<List<EnrichedActivity>> getEnrichedActivities(
-    Token token,
-    FeedId feed,
-    int limit,
-    int offset,
-    Filter filter,
-    EnrichmentFlags flags,
-    String ranking,
-  ) async {
-    final result = await client.get(
-      Routes.buildEnrichedFeedUrl(feed),
-      headers: {'Authorization': '$token'},
-      queryParameters: {
-        'limit': limit,
-        'offset': offset,
-        ...filter.params,
-        ...flags.params,
-        if (ranking != null) 'ranking': ranking
-      },
-    );
-    print(result);
-  }
+  Future<Response> getEnrichedActivities(
+          Token token, FeedId feed, Map<String, Object> options) =>
+      client.get(
+        Routes.buildEnrichedFeedUrl(feed),
+        headers: {'Authorization': '$token'},
+        queryParameters: options,
+      );
 
   @override
   Future<List<Follow>> getFollowed(Token token, FeedId feed, int limit,

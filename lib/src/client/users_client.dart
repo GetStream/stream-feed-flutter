@@ -4,12 +4,12 @@ abstract class UsersClient {
   Future<User> add(
     String id,
     Map<String, Object> data, {
-    bool getOrCreate = false,
+    bool getOrCreate,
   });
 
   Future<User> get(
     String id, {
-    bool withFollowCounts = true,
+    bool withFollowCounts,
   });
 
   Future<User> update(String id, Map<String, Object> data);

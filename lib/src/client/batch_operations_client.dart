@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import '../core/models/activity.dart';
-import '../core/models/enriched_activity.dart';
 import '../core/models/feed_id.dart';
 import '../core/models/follow.dart';
 import '../core/models/foreign_id_time_pair.dart';
@@ -11,7 +10,7 @@ abstract class BatchOperationsClient {
 
   Future<void> followMany(
     Iterable<Follow> follows, {
-    int activityCopyLimit = 300,
+    int activityCopyLimit,
   });
 
   Future<void> unfollowMany(

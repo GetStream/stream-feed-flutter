@@ -2,9 +2,10 @@ import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/core/api/reaction_api.dart';
 import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/src/core/models/reaction.dart';
-import 'package:stream_feed_dart/src/core/models/filter.dart';
+import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class ReactionsClientImpl implements ReactionsClient {
@@ -82,25 +83,25 @@ class ReactionsClientImpl implements ReactionsClient {
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-        Filter filter,
-    int limit = 10,
-    String kind = '',
+    Filter filter,
+    int limit,
+    String kind,
   }) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.read);
-    return reactions.filter(
-        token, lookupAttr, lookupValue, filter, limit, kind);
+    return reactions.filter(token, lookupAttr, lookupValue,
+        filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
 
   @override
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-        Filter filter,
-    int limit = 10,
-    String kind = '',
+    Filter filter,
+    int limit,
+    String kind,
   }) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.read);
-    return reactions.paginatedFilter(
-        token, lookupAttr, lookupValue, filter, limit, kind);
+    return reactions.paginatedFilter(token, lookupAttr, lookupValue,
+        filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
 }

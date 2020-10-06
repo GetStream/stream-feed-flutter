@@ -13,11 +13,11 @@ class UsersClientImpl implements UsersClient {
   Future<User> add(
     String id,
     Map<String, Object> data, {
-    bool getOrCreate = false,
+    bool getOrCreate,
   }) {
     final token = TokenHelper.buildUsersToken(secret, TokenAction.write);
     final user = User(id: id, data: data);
-    return users.add(token, user, getOrCreate);
+    return users.add(token, user, getOrCreate ?? false);
   }
 
   @override
@@ -29,10 +29,10 @@ class UsersClientImpl implements UsersClient {
   @override
   Future<User> get(
     String id, {
-    bool withFollowCounts = true,
+    bool withFollowCounts,
   }) {
     final token = TokenHelper.buildUsersToken(secret, TokenAction.read);
-    return users.get(token, id, withFollowCounts);
+    return users.get(token, id, withFollowCounts ?? true);
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/follow.dart';
+import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class Feed {
@@ -42,35 +43,37 @@ class Feed {
 
   Future<void> follow(
     FlatFeet flatFeet, {
-    int activityCopyLimit = 100,
+    int activityCopyLimit,
   }) {
     // TODO : Check max activityCopyLimit
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.write, feedId);
     final targetToken =
         TokenHelper.buildFeedToken(secret, TokenAction.read, flatFeet.feedId);
-    return feed.follow(
-        token, targetToken, feedId, flatFeet.feedId, activityCopyLimit);
+    return feed.follow(token, targetToken, feedId, flatFeet.feedId,
+        activityCopyLimit ?? Default.activityCopyLimit);
   }
 
   Future<List<Follow>> getFollowers({
-    int limit = 25,
-    int offset = 0,
+    int limit,
+    int offset,
     Iterable<FeedId> feedIds = const [],
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.read, feedId);
-    return feed.getFollowers(token, feedId, limit, offset, feedIds);
+    return feed.getFollowers(token, feedId, limit ?? Default.limit,
+        offset ?? Default.offset, feedIds);
   }
 
   Future<List<Follow>> getFollowed({
-    int limit = 25,
-    int offset = 0,
+    int limit,
+    int offset,
     Iterable<FeedId> feedIds = const [],
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.read, feedId);
-    return feed.getFollowed(token, feedId, limit, offset, feedIds);
+    return feed.getFollowed(token, feedId, limit ?? Default.limit,
+        offset ?? Default.offset, feedIds);
   }
 
   Future<void> unfollow(

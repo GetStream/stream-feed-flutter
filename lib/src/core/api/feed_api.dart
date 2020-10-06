@@ -2,10 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/activity_update.dart';
-import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
-import 'package:stream_feed_dart/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
-import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/models/follow.dart';
 
 abstract class FeedApi {
@@ -20,17 +17,11 @@ abstract class FeedApi {
   Future<Activity> updateActivityByForeignId(
       Token token, ActivityUpdate update);
 
-  Future<List<Activity>> getActivities(Token token, FeedId feed, int limit,
-      int offset, Filter filter, String ranking);
+  Future<Response> getActivities(
+      Token token, FeedId feed, Map<String, Object> options);
 
-  Future<List<EnrichedActivity>> getEnrichedActivities(
-      Token token,
-      FeedId feed,
-      int limit,
-      int offset,
-      Filter filter,
-      EnrichmentFlags flags,
-      String ranking);
+  Future<Response> getEnrichedActivities(
+      Token token, FeedId feed, Map<String, Object> options);
 
   Future<Activity> addActivity(Token token, FeedId feed, Activity activity);
 
