@@ -64,7 +64,7 @@ class CollectionsApiImpl implements CollectionsApi {
       Routes.buildCollectionsUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {
-        'foreign_ids': entryIds.map((id) => '$collection:$id'),
+        'foreign_ids': entryIds.map((id) => '$collection:$id').toList(),
       },
     );
     print(result);

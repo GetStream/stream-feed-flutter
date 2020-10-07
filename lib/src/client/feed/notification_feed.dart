@@ -19,7 +19,7 @@ class NotificationFeed extends AggregatedFeed {
     int offset,
     Filter filter,
     ActivityMarker marker,
-  }) {
+  }) async {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
     final options = {
       'limit': limit ?? Default.limit,
@@ -27,7 +27,12 @@ class NotificationFeed extends AggregatedFeed {
       ...filter?.params ?? Default.filter.params,
       ...marker?.params ?? Default.marker.params,
     };
-    feed.getActivities(token, feedId, options);
+    final result = await feed.getActivities(token, feedId, options);
+    final data = (result.data['results'] as List)
+        .map((e) =>
+            NotificationGroup.fromJson(e, (json) => Activity.fromJson(json)))
+        .toList(growable: false);
+    return data;
   }
 
   @override
@@ -37,7 +42,7 @@ class NotificationFeed extends AggregatedFeed {
     Filter filter,
     ActivityMarker marker,
     EnrichmentFlags flags,
-  }) {
+  }) async {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
     final options = {
       'limit': limit ?? Default.limit,
@@ -46,6 +51,11 @@ class NotificationFeed extends AggregatedFeed {
       ...marker?.params ?? Default.marker.params,
       ...flags?.params ?? Default.enrichmentFlags.params,
     };
-    feed.getEnrichedActivities(token, feedId, options);
+    final result = await feed.getEnrichedActivities(token, feedId, options);
+    final data = (result.data['results'] as List)
+        .map((e) => NotificationGroup.fromJson(
+            e, (json) => EnrichedActivity.fromJson(json)))
+        .toList(growable: false);
+    return data;
   }
 }

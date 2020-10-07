@@ -88,8 +88,8 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.get<T>(
         path,
-        queryParameters: queryParameters.nullProtect,
-        options: Options(headers: headers.nullProtect),
+        queryParameters: queryParameters?.nullProtect,
+        options: Options(headers: headers?.nullProtect),
       );
       return response;
     } on DioError catch (error) {
@@ -108,9 +108,9 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.post<T>(
         path,
-        queryParameters: queryParameters.nullProtect,
+        queryParameters: queryParameters?.nullProtect,
         data: data,
-        options: Options(headers: headers.nullProtect),
+        options: Options(headers: headers?.nullProtect),
       );
       return response;
     } on DioError catch (error) {
@@ -128,8 +128,8 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.delete<T>(
         path,
-        queryParameters: queryParameters.nullProtect,
-        options: Options(headers: headers.nullProtect),
+        queryParameters: queryParameters?.nullProtect,
+        options: Options(headers: headers?.nullProtect),
       );
       return response;
     } on DioError catch (error) {
@@ -148,9 +148,9 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.patch<T>(
         path,
-        queryParameters: queryParameters.nullProtect,
+        queryParameters: queryParameters?.nullProtect,
         data: data,
-        options: Options(headers: headers.nullProtect),
+        options: Options(headers: headers?.nullProtect),
       );
       return response;
     } on DioError catch (error) {
@@ -169,9 +169,9 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.put<T>(
         path,
-        queryParameters: queryParameters.nullProtect,
+        queryParameters: queryParameters?.nullProtect,
         data: data,
-        options: Options(headers: headers.nullProtect),
+        options: Options(headers: headers?.nullProtect),
       );
       return response;
     } on DioError catch (error) {

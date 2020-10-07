@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'activity_update.g.dart';
 
 ///
-@JsonSerializable(createFactory: false)
+@JsonSerializable()
 class ActivityUpdate extends Equatable {
   ///
   @JsonKey(includeIfNull: false)
@@ -15,6 +15,7 @@ class ActivityUpdate extends Equatable {
   final String foreignId;
 
   ///
+  @JsonKey(includeIfNull: false)
   final DateTime time;
 
   ///
@@ -23,7 +24,8 @@ class ActivityUpdate extends Equatable {
   ///
   final List<String> unset;
 
-  const ActivityUpdate._({
+  ///
+  const ActivityUpdate({
     this.id,
     this.foreignId,
     this.time,
@@ -34,13 +36,11 @@ class ActivityUpdate extends Equatable {
   ///
   factory ActivityUpdate.withId(
     String id,
-    DateTime time,
     Map<String, Object> set,
     List<String> unset,
   ) {
-    return ActivityUpdate._(
+    return ActivityUpdate(
       id: id,
-      time: time,
       set: set,
       unset: unset,
     );
@@ -53,13 +53,17 @@ class ActivityUpdate extends Equatable {
     Map<String, Object> set,
     List<String> unset,
   ) {
-    return ActivityUpdate._(
+    return ActivityUpdate(
       foreignId: foreignId,
       time: time,
       set: set,
       unset: unset,
     );
   }
+
+  /// Create a new instance from a json
+  factory ActivityUpdate.fromJson(Map<String, dynamic> json) =>
+      _$ActivityUpdateFromJson(json);
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$ActivityUpdateToJson(this);

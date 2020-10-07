@@ -17,7 +17,7 @@ class FlatFeet extends Feed {
     int offset,
     Filter filter,
     String ranking,
-  }) {
+  }) async {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
     final options = {
       'limit': limit ?? Default.limit,
@@ -26,7 +26,11 @@ class FlatFeet extends Feed {
       ...Default.marker.params,
       if (ranking != null) 'ranking': ranking,
     };
-    feed.getActivities(token, feedId, options);
+    final result = await feed.getActivities(token, feedId, options);
+    final data = (result.data['results'] as List)
+        .map((e) => Activity.fromJson(e))
+        .toList(growable: false);
+    return data;
   }
 
   Future<List<EnrichedActivity>> getEnrichedActivities({
@@ -35,7 +39,7 @@ class FlatFeet extends Feed {
     Filter filter,
     EnrichmentFlags flags,
     String ranking,
-  }) {
+  }) async {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
     final options = {
       'limit': limit ?? Default.limit,
@@ -44,6 +48,10 @@ class FlatFeet extends Feed {
       ...Default.marker.params,
       if (ranking != null) 'ranking': ranking,
     };
-    feed.getEnrichedActivities(token, feedId, options);
+    final result = await feed.getEnrichedActivities(token, feedId, options);
+    final data = (result.data['results'] as List)
+        .map((e) => EnrichedActivity.fromJson(e))
+        .toList(growable: false);
+    return data;
   }
 }

@@ -9,12 +9,18 @@ class FeedId extends Equatable {
   final String userId;
 
   ///
-  const FeedId(this.slug, this.userId);
+  FeedId(this.slug, this.userId)
+      : assert(slug != null, "Feed slug can't be null"),
+        assert(!slug.contains(':'), 'Invalid slug'),
+        assert(userId != null, "Feed userId can't be null"),
+        assert(!userId.contains(':'), 'Invalid userId');
 
   ///
   factory FeedId.id(String id) {
+    assert(id != null, "FeedId can't be null");
+    assert(id.contains(':'), 'Invalid FeedId');
     final parts = id.split(':');
-    if (parts.length != 2) throw 'Invalid feed ID';
+    assert(parts.length == 2, 'Invalid FeedId');
     return FeedId(parts[0], parts[1]);
   }
 

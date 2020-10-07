@@ -1,6 +1,6 @@
 import 'package:stream_feed_dart/stream_feed.dart';
 
-main() {
+main() async {
   final client = StreamClient.connect(
     '9wbdt7vucby6',
     'bksn37r6k7j5p75mmy6znts47j9f9pc49bmw3jjyd7rshg2enbcnq666d2ryfzs8',
@@ -94,4 +94,30 @@ main() {
   //     ),
   //   ],
   // );
+
+  // final token = client.frontendToken('sahil-kumar');
+  // print(token);
+
+  final chris = client.notificationFeed("notification", "chris");
+  // Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
+  // final data = await chris.addActivity(
+  //   Activity(
+  //       actor: 'chris',
+  //       verb: 'add',
+  //       object: 'picture:10',
+  //       foreignId: 'picture:10',
+  //       extraData: {'message': 'Beautiful Bird!'}),
+  // );
+
+  // print(data);
+
+  // // Create a following relationship between Jack's "timeline" feed and Chris' "user" feed:
+  // final jack = client.aggregatedFeed("timeline_aggregated", "jack");
+  // await jack.follow(chris);
+
+  // Read Jack's timeline and Chris' post appears in the feed:
+  // final response = await jack.getActivities();
+  final response = await chris.getEnrichedActivities();
+
+  // client.openGraph('https://github.com/xsahil03x');
 }

@@ -89,7 +89,9 @@ class ReactionsApiImpl implements ReactionsApi {
 
   @override
   Future<void> update(Token token, Reaction updatedReaction) async {
-    final targetFeedIds = updatedReaction.targetFeeds?.map((e) => e.toString());
+    final targetFeedIds = updatedReaction.targetFeeds
+        ?.map((e) => e.toString())
+        ?.toList(growable: false);
     final reactionId = updatedReaction.id;
     final data = updatedReaction.data;
     final result = await client.put(
