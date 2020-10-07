@@ -78,11 +78,11 @@ class Feed {
 
   Future<void> unfollow(
     FlatFeet flatFeet, {
-    bool keepHistory = false,
+    bool keepHistory,
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.delete, feedId);
-    return feed.unfollow(token, feedId, flatFeet.feedId, keepHistory);
+    return feed.unfollow(token, feedId, flatFeet.feedId, keepHistory ?? false);
   }
 
   Future<void> updateActivityToTargets(

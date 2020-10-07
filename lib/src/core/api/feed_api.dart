@@ -31,7 +31,7 @@ abstract class FeedApi {
   Future<Response> removeActivityById(Token token, FeedId feed, String id);
 
   Future<Response> removeActivityByForeignId(
-      Token token, FeedId feed, String foreignID);
+      Token token, FeedId feed, String foreignId);
 
   Future<Response> follow(Token token, Token targetToken, FeedId sourceFeed,
       FeedId targetFeed, int activityCopyLimit);
@@ -49,8 +49,8 @@ abstract class FeedApi {
     Token token,
     FeedId feed,
     Activity activity, {
-    Iterable<FeedId> add = const [],
-    Iterable<FeedId> remove = const [],
-    Iterable<FeedId> replace = const [],
+    Iterable<FeedId> add,
+    Iterable<FeedId> remove,
+    Iterable<FeedId> replace,
   });
 }
