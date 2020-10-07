@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 /// Exception related to api calls
-class ApiError implements Exception {
+class StreamApiException implements Exception {
   /// Raw body of the response
   final String body;
 
@@ -27,7 +27,7 @@ class ApiError implements Exception {
   }
 
   /// Creates a new ApiError instance using the response body and status code
-  ApiError(this.body, this.status) : jsonData = _decode(body) {
+  StreamApiException(this.body, this.status) : jsonData = _decode(body) {
     if (jsonData != null && jsonData.containsKey('code')) {
       _code = jsonData['code'];
     }
@@ -36,7 +36,7 @@ class ApiError implements Exception {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ApiError &&
+      other is StreamApiException &&
           runtimeType == other.runtimeType &&
           body == other.body &&
           jsonData == other.jsonData &&
@@ -49,6 +49,6 @@ class ApiError implements Exception {
 
   @override
   String toString() {
-    return 'ApiError{body: $body, jsonData: $jsonData, status: $status, code: $_code}';
+    return 'StreamApiException{body: $body, jsonData: $jsonData, status: $status, code: $_code}';
   }
 }

@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 
 import '../exceptions.dart';
+import '../util/extension.dart';
 import 'http_client.dart';
 
 class StreamHttpClient implements HttpClient {
@@ -71,7 +72,7 @@ class StreamHttpClient implements HttpClient {
   Exception _parseError(DioError error) {
     if (error.type == DioErrorType.RESPONSE) {
       final apiError =
-          ApiError(error.response?.data, error.response?.statusCode);
+          StreamApiException(error.response?.data, error.response?.statusCode);
       return apiError;
     }
     return error;
@@ -87,8 +88,8 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.get<T>(
         path,
-        queryParameters: queryParameters,
-        options: Options(headers: headers),
+        queryParameters: queryParameters.nullProtect,
+        options: Options(headers: headers.nullProtect),
       );
       return response;
     } on DioError catch (error) {
@@ -107,9 +108,9 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.post<T>(
         path,
-        queryParameters: queryParameters,
+        queryParameters: queryParameters.nullProtect,
         data: data,
-        options: Options(headers: headers),
+        options: Options(headers: headers.nullProtect),
       );
       return response;
     } on DioError catch (error) {
@@ -127,8 +128,8 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.delete<T>(
         path,
-        queryParameters: queryParameters,
-        options: Options(headers: headers),
+        queryParameters: queryParameters.nullProtect,
+        options: Options(headers: headers.nullProtect),
       );
       return response;
     } on DioError catch (error) {
@@ -147,9 +148,9 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.patch<T>(
         path,
-        queryParameters: queryParameters,
+        queryParameters: queryParameters.nullProtect,
         data: data,
-        options: Options(headers: headers),
+        options: Options(headers: headers.nullProtect),
       );
       return response;
     } on DioError catch (error) {
@@ -168,9 +169,9 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.put<T>(
         path,
-        queryParameters: queryParameters,
+        queryParameters: queryParameters.nullProtect,
         data: data,
-        options: Options(headers: headers),
+        options: Options(headers: headers.nullProtect),
       );
       return response;
     } on DioError catch (error) {
@@ -178,6 +179,7 @@ class StreamHttpClient implements HttpClient {
     }
   }
 
+  /// Handy method to post files with error parsing.
   @override
   Future<Response<T>> postFile<T>(
     String path,
