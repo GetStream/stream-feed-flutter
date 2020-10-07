@@ -12,7 +12,7 @@ class Follow extends Equatable {
   const Follow(this.source, this.target);
 
   @override
-  List<Object> get props => throw UnimplementedError();
+  List<Object> get props => [source, target];
 }
 
 ///

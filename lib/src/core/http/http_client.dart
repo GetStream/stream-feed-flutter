@@ -38,4 +38,12 @@ abstract class HttpClient {
     dynamic data,
     Map<String, dynamic> headers,
   });
+
+  /// Handy method to post files with error parsing.
+  Future<Response<T>> postFile<T>(
+    String path,
+    MultipartFile file, {
+    Map<String, dynamic> queryParameters,
+    Map<String, dynamic> headers,
+  });
 }

@@ -177,4 +177,25 @@ class StreamHttpClient implements HttpClient {
       throw _parseError(error);
     }
   }
+
+  @override
+  Future<Response<T>> postFile<T>(
+    String path,
+    MultipartFile file, {
+    Map<String, dynamic> queryParameters,
+    Map<String, dynamic> headers,
+  }) async {
+    try {
+      final formData = FormData.fromMap({'file': file});
+      final response = await post<T>(
+        path,
+        queryParameters: queryParameters,
+        data: formData,
+        headers: headers,
+      );
+      return response;
+    } on DioError catch (error) {
+      throw _parseError(error);
+    }
+  }
 }
