@@ -2,52 +2,70 @@ import 'package:stream_feed_dart/src/core/api/users_api.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/user.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class UsersApiImpl implements UsersApi {
   final HttpClient client;
 
-  const UsersApiImpl(this.client);
+  const UsersApiImpl(this.client)
+      : assert(client != null, "Can't create a UserApi w/o Client");
 
   @override
-  Future<User> add(Token token, User user, [bool getOrCreate = false]) async {
-    final result = await client.post(
+  Future<User> add(
+    Token token,
+    String id,
+    Map<String, Object> data, [
+    bool getOrCreate = false,
+  ]) async {
+    checkNotNull(id, 'Missing user ID');
+    checkNotNull(data, 'Missing user data');
+    checkArgument(id.isNotEmpty, 'Missing user ID');
+    final user = User(id: id, data: data);
+    final result = await client.post<Map>(
       Routes.buildUsersUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {'get_or_create': getOrCreate},
       data: user,
     );
-    print(result);
+    return User.fromJson(result.data);
   }
 
   @override
   Future<User> get(Token token, String id,
       [bool withFollowCounts = true]) async {
+    checkNotNull(id, 'Missing user ID');
+    checkArgument(id.isNotEmpty, 'Missing user ID');
     final result = await client.get(
       Routes.buildUsersUrl('$id/'),
       headers: {'Authorization': '$token'},
       queryParameters: {'with_follow_counts': withFollowCounts},
     );
-    print(result);
+    return User.fromJson(result.data);
   }
 
   @override
-  Future<User> update(Token token, User updatedUser) async {
+  Future<User> update(Token token, String id, Map<String, Object> data) async {
+    checkNotNull(id, 'Missing user ID');
+    checkNotNull(data, 'Missing user data');
+    checkArgument(id.isNotEmpty, 'Missing user ID');
+    final updatedUser = User(id: id, data: data);
     final result = await client.put(
-      Routes.buildUsersUrl('${updatedUser.id}/'),
+      Routes.buildUsersUrl('$id/'),
       headers: {'Authorization': '$token'},
       data: updatedUser,
     );
-    print(result);
+    return User.fromJson(result.data);
   }
 
   @override
-  Future<void> delete(Token token, String id) async {
-    final result = await client.delete(
+  Future<void> delete(Token token, String id) {
+    checkNotNull(id, 'Missing user ID');
+    checkArgument(id.isNotEmpty, 'Missing user ID');
+    return client.delete(
       Routes.buildUsersUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
-    print(result);
   }
 
   @override

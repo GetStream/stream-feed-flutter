@@ -8,7 +8,7 @@ extension MapX on Map {
 
 /// Throws an [ArgumentError] if the given [expression] is `false`.
 void checkArgument(bool expression, [String message]) {
-  if (!expression) {
+  if (!(expression ?? false)) {
     throw ArgumentError(message);
   }
 }

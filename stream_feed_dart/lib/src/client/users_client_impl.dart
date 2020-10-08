@@ -16,8 +16,7 @@ class UsersClientImpl implements UsersClient {
     bool getOrCreate,
   }) {
     final token = TokenHelper.buildUsersToken(secret, TokenAction.write);
-    final user = User(id: id, data: data);
-    return users.add(token, user, getOrCreate ?? false);
+    return users.add(token, id, data, getOrCreate ?? false);
   }
 
   @override
@@ -41,7 +40,6 @@ class UsersClientImpl implements UsersClient {
   @override
   Future<User> update(String id, Map<String, Object> data) {
     final token = TokenHelper.buildUsersToken(secret, TokenAction.write);
-    final user = User(id: id, data: data);
-    return users.update(token, user);
+    return users.update(token, id,data);
   }
 }
