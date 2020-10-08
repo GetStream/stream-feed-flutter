@@ -6,3 +6,4 @@ export 'enrichment_flags.dart';
 export 'feed_id.dart';
 export 'filter.dart';
 export 'foreign_id_time_pair.dart';
+export 'user.dart';

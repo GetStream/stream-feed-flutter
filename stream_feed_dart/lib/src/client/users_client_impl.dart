@@ -40,6 +40,6 @@ class UsersClientImpl implements UsersClient {
   @override
   Future<User> update(String id, Map<String, Object> data) {
     final token = TokenHelper.buildUsersToken(secret, TokenAction.write);
-    return users.update(token, id,data);
+    return users.update(token, id, data);
   }
 }

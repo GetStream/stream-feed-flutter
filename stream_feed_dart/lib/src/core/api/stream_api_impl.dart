@@ -41,7 +41,7 @@ class StreamApiImpl implements StreamApi {
   FeedApi get feed => FeedApiImpl(_client);
 
   @override
-  Future<OpenGraphData> openGraph(Token token, String targetUrl)async {
+  Future<OpenGraphData> openGraph(Token token, String targetUrl) async {
     final result = await _client.get(
       Routes.openGraphURL,
       headers: {'Authorization': '$token'},
