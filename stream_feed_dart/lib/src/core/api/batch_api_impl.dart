@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';

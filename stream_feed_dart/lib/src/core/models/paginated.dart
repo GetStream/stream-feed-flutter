@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed_dart/src/core/models/reaction.dart';
 
-import 'activity.dart';
+import 'enriched_activity.dart';
 
 part 'paginated.g.dart';
 

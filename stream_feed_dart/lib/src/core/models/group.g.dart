@@ -6,7 +6,7 @@ part of 'group.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Group<T> _$GroupFromJson<T extends Activity>(
+Group<T> _$GroupFromJson<T>(
   Map json,
   T Function(Object json) fromJsonT,
 ) {
@@ -24,7 +24,7 @@ Group<T> _$GroupFromJson<T extends Activity>(
   );
 }
 
-NotificationGroup<T> _$NotificationGroupFromJson<T extends Activity>(
+NotificationGroup<T> _$NotificationGroupFromJson<T>(
   Map json,
   T Function(Object json) fromJsonT,
 ) {
@@ -44,7 +44,7 @@ NotificationGroup<T> _$NotificationGroupFromJson<T extends Activity>(
   );
 }
 
-Map<String, dynamic> _$NotificationGroupToJson<T extends Activity>(
+Map<String, dynamic> _$NotificationGroupToJson<T>(
   NotificationGroup<T> instance,
   Object Function(T value) toJsonT,
 ) =>

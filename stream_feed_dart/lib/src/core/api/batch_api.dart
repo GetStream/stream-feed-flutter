@@ -1,5 +1,6 @@
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
+import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/follow.dart';
 import 'package:stream_feed_dart/src/core/models/foreign_id_time_pair.dart';

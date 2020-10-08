@@ -1,5 +1,6 @@
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
+import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
 import 'package:stream_feed_dart/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/filter.dart';

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
+
 import '../core/models/activity.dart';
 import '../core/models/feed_id.dart';
 import '../core/models/follow.dart';

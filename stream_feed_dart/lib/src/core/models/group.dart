@@ -6,7 +6,7 @@ part 'group.g.dart';
 
 ///
 @JsonSerializable(createToJson: false, genericArgumentFactories: true)
-class Group<T extends Activity> extends Equatable {
+class Group<T> extends Equatable {
   ///
   final String id;
 
@@ -55,7 +55,7 @@ class Group<T extends Activity> extends Equatable {
 
 ///
 @JsonSerializable(genericArgumentFactories: true)
-class NotificationGroup<T extends Activity> extends Group<T> {
+class NotificationGroup<T> extends Group<T> {
   ///
   final bool isRead;
 

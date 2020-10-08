@@ -1,6 +1,7 @@
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
 import 'package:stream_feed_dart/src/core/api/batch_api.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
+import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/follow.dart';
 import 'package:stream_feed_dart/src/core/models/foreign_id_time_pair.dart';
