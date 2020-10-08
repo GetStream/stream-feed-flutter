@@ -1,4 +1,5 @@
 export 'activity.dart';
+export 'enriched_activity.dart';
 export 'activity_marker.dart';
 export 'activity_update.dart';
 export 'enrichment_flags.dart';
