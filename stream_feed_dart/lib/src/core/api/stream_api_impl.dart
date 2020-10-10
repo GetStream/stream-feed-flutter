@@ -14,6 +14,7 @@ import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class StreamApiImpl implements StreamApi {
@@ -42,6 +43,8 @@ class StreamApiImpl implements StreamApi {
 
   @override
   Future<OpenGraphData> openGraph(Token token, String targetUrl) async {
+    checkNotNull(targetUrl, "TargetUrl can't be null");
+    checkArgument(targetUrl.isNotEmpty, "TargetUrl can't be empty");
     final result = await _client.get(
       Routes.openGraphURL,
       headers: {'Authorization': '$token'},
