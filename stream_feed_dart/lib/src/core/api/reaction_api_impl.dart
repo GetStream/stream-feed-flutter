@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:stream_feed_dart/src/core/api/reaction_api.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
@@ -5,6 +6,7 @@ import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
 import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/src/core/models/reaction.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class ReactionsApiImpl implements ReactionsApi {
@@ -14,36 +16,65 @@ class ReactionsApiImpl implements ReactionsApi {
 
   @override
   Future<Reaction> add(Token token, Reaction reaction) async {
-    final result = await client.post(
+    checkNotNull(reaction, "Reaction can't be null");
+    checkArgument(reaction.activityId != null || reaction.parent != null,
+        'Reaction has to either have and activity ID or parent');
+    checkArgument(reaction.activityId == null || reaction.parent == null,
+        "Reaction can't have both activity ID and parent");
+    if (reaction.activityId != null) {
+      checkArgument(reaction.activityId.isNotEmpty,
+          "Reaction activity ID can't be empty");
+    }
+    if (reaction.parent != null) {
+      checkArgument(
+          reaction.parent.isNotEmpty, "Reaction parent can't be empty");
+    }
+    checkNotNull(reaction.kind, "Reaction kind can't be null");
+    checkArgument(reaction.kind.isNotEmpty, "Reaction kind can't be empty");
+    final result = await client.post<Map>(
       Routes.buildReactionsUrl(),
       headers: {'Authorization': '$token'},
       data: reaction,
     );
-    print(result);
+    return Reaction.fromJson(result.data);
   }
 
   @override
   Future<Reaction> get(Token token, String id) async {
-    final result = await client.get(
+    checkNotNull(id, "Reaction id can't be null");
+    checkArgument(id.isNotEmpty, "Reaction id can't be empty");
+    final result = await client.get<Map>(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
-    print(result);
+    return Reaction.fromJson(result.data);
   }
 
   @override
-  Future<void> delete(Token token, String id) async {
-    final result = await client.delete(
+  Future<Response> delete(Token token, String id) async {
+    checkNotNull(id, "Reaction id can't be null");
+    checkArgument(id.isNotEmpty, "Reaction id can't be empty");
+    return client.delete(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
-    print(result);
   }
 
   @override
-  Future<List<Reaction>> filter(Token token, LookupAttribute lookupAttr,
-      String lookupValue, Filter filter, int limit, String kind) async {
-    final result = await client.get(
+  Future<List<Reaction>> filter(
+    Token token,
+    LookupAttribute lookupAttr,
+    String lookupValue,
+    Filter filter,
+    int limit,
+    String kind,
+  ) async {
+    checkNotNull(lookupAttr, "Lookup attr can't be null");
+    checkNotNull(lookupValue, "Lookup value can't be null");
+    checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
+    checkNotNull(filter, "Filter can't be null");
+    checkNotNull(kind, "Kind can't be null");
+    final result = await client.get<Map>(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -52,7 +83,10 @@ class ReactionsApiImpl implements ReactionsApi {
         'with_activity_data': lookupAttr == LookupAttribute.activity_id,
       },
     );
-    print(result);
+    final data = (result.data['results'] as List)
+        .map((e) => Reaction.fromJson(e))
+        .toList(growable: false);
+    return data;
   }
 
   @override
@@ -64,6 +98,11 @@ class ReactionsApiImpl implements ReactionsApi {
     int limit,
     String kind,
   ) async {
+    checkNotNull(lookupAttr, "Lookup attr can't be null");
+    checkNotNull(lookupValue, "Lookup value can't be null");
+    checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
+    checkNotNull(filter, "Filter can't be null");
+    checkNotNull(kind, "Kind can't be null");
     final result = await client.get(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
@@ -73,28 +112,32 @@ class ReactionsApiImpl implements ReactionsApi {
         'with_activity_data': lookupAttr == LookupAttribute.activity_id,
       },
     );
-    final data = PaginatedReactions.fromJson(result.data);
-    print(result);
+    return PaginatedReactions.fromJson(result.data);
   }
 
   @override
   Future<PaginatedReactions> nextPaginatedFilter(
       Token token, String next) async {
+    checkNotNull(next, "Next url can't be null");
+    checkArgument(next.isNotEmpty, "Next url can't be empty");
     final result = await client.get(
       next,
       headers: {'Authorization': '$token'},
     );
-    print(result);
+    return PaginatedReactions.fromJson(result.data);
   }
 
   @override
-  Future<void> update(Token token, Reaction updatedReaction) async {
+  Future<Response> update(Token token, Reaction updatedReaction) async {
+    checkNotNull(updatedReaction, "Reaction can't be null");
+    checkNotNull(updatedReaction.id, "Reaction id can't be null");
+    checkArgument(updatedReaction.id.isNotEmpty, "Reaction id can't be empty");
     final targetFeedIds = updatedReaction.targetFeeds
-        ?.map((e) => e.toString())
-        ?.toList(growable: false);
+        .map((e) => e.toString())
+        .toList(growable: false);
     final reactionId = updatedReaction.id;
     final data = updatedReaction.data;
-    final result = await client.put(
+    return client.put(
       Routes.buildReactionsUrl('$reactionId/'),
       headers: {'Authorization': '$token'},
       data: {
@@ -103,6 +146,5 @@ class ReactionsApiImpl implements ReactionsApi {
           'target_feeds': targetFeedIds,
       },
     );
-    print(result);
   }
 }
