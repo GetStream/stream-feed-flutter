@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:stream_feed_dart/src/core/api/collections_api.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class CollectionsApiImpl implements CollectionsApi {
@@ -12,7 +14,12 @@ class CollectionsApiImpl implements CollectionsApi {
   @override
   Future<CollectionEntry> add(
       Token token, String userId, CollectionEntry entry) async {
-    final result = await client.post(
+    checkNotNull(entry, "Collection can't be null");
+    checkNotNull(entry.collection, "Collection name can't be null");
+    checkArgument(
+        entry.collection.isNotEmpty, "Collection name can't be empty");
+    checkNotNull(entry.data, "Collection data can't be null");
+    final result = await client.post<Map>(
       Routes.buildCollectionsUrl('${entry.collection}'),
       headers: {'Authorization': '$token'},
       data: {
@@ -21,22 +28,30 @@ class CollectionsApiImpl implements CollectionsApi {
         if (entry.id != null) 'id': entry.id,
       },
     );
-    print(result);
+    return CollectionEntry.fromJson(result.data);
   }
 
   @override
-  Future<void> delete(Token token, String collection, String entryId) async {
-    final result = await client.delete(
+  Future<Response> delete(
+      Token token, String collection, String entryId) async {
+    checkNotNull(collection, "Collection name can't be null");
+    checkArgument(collection.isNotEmpty, "Collection name can't be empty");
+    checkNotNull(entryId, "Collection id can't be null");
+    checkArgument(entryId.isNotEmpty, "Collection id can't be empty");
+    return client.delete(
       Routes.buildCollectionsUrl('$collection/$entryId/'),
       headers: {'Authorization': '$token'},
     );
-    print(result);
   }
 
   @override
-  Future<void> deleteMany(
+  Future<Response> deleteMany(
       Token token, String collection, Iterable<String> entryIds) async {
-    final result = await client.delete(
+    checkNotNull(collection, "Collection name can't be null");
+    checkArgument(collection.isNotEmpty, "Collection name can't be empty");
+    checkNotNull(entryIds, "Collection ids can't be null");
+    checkArgument(entryIds.isNotEmpty, "Collection ids can't be empty");
+    return client.delete(
       Routes.buildCollectionsUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -44,36 +59,51 @@ class CollectionsApiImpl implements CollectionsApi {
         'ids': entryIds.join(','),
       },
     );
-    print(result);
   }
 
   @override
   Future<CollectionEntry> get(
       Token token, String collection, String entryId) async {
-    final result = await client.get(
+    checkNotNull(collection, "Collection name can't be null");
+    checkArgument(collection.isNotEmpty, "Collection name can't be empty");
+    checkNotNull(entryId, "Collection id can't be null");
+    checkArgument(entryId.isNotEmpty, "Collection id can't be empty");
+    final result = await client.get<Map>(
       Routes.buildCollectionsUrl('$collection/$entryId/'),
       headers: {'Authorization': '$token'},
     );
-    print(result);
+    return CollectionEntry.fromJson(result.data);
   }
 
   @override
   Future<List<CollectionEntry>> select(
       Token token, String collection, Iterable<String> entryIds) async {
-    final result = await client.get(
+    checkNotNull(collection, "Collection name can't be null");
+    checkArgument(collection.isNotEmpty, "Collection name can't be empty");
+    checkNotNull(entryIds, "Collection ids can't be null");
+    checkArgument(entryIds.isNotEmpty, "Collection ids can't be empty");
+    final result = await client.get<Map>(
       Routes.buildCollectionsUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {
-        'foreign_ids': entryIds.map((id) => '$collection:$id').toList(),
+        'foreign_ids': entryIds.map((id) => '$collection:$id').join(','),
       },
     );
-    print(result);
+    final data = (result.data['response']['data'] as List)
+        .map((e) => CollectionEntry.fromJson(e))
+        .toList(growable: false);
+    return data;
   }
 
   @override
   Future<CollectionEntry> update(
       Token token, String userId, CollectionEntry entry) async {
-    final result = await client.put(
+    checkNotNull(entry, "Collection can't be null");
+    checkNotNull(entry.collection, "Collection name can't be null");
+    checkArgument(
+        entry.collection.isNotEmpty, "Collection name can't be empty");
+    checkNotNull(entry.data, "Collection data can't be null");
+    final result = await client.put<Map>(
       Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
       headers: {'Authorization': '$token'},
       data: {
@@ -81,20 +111,23 @@ class CollectionsApiImpl implements CollectionsApi {
         if (userId != null) 'user_id': userId,
       },
     );
-    print(result);
+    return CollectionEntry.fromJson(result.data);
   }
 
   @override
-  Future<void> upsert(
+  Future<Response> upsert(
       Token token, String collection, Iterable<CollectionEntry> entries) async {
-    final result = await client.post(
+    checkNotNull(collection, "Collection name can't be null");
+    checkArgument(collection.isNotEmpty, "Collection name can't be empty");
+    checkNotNull(entries, "Collection data can't be null");
+    checkArgument(entries.isNotEmpty, "Collection data can't be empty");
+    return client.post(
       Routes.buildCollectionsUrl(),
       headers: {'Authorization': '$token'},
       data: {
         'data': {collection: entries}
       },
     );
-    print(result);
   }
 
   @override
