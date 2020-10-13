@@ -5,6 +5,7 @@ import 'package:stream_feed_dart/src/cloud/cloud_reactions_client.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 import 'cloud_reactions_client_impl.dart';
@@ -54,4 +55,8 @@ class StreamCloudClientImpl implements StreamCloudClient {
     final id = FeedId(slug, userId);
     return CloudNotificationFeed(token, id, _api.feed);
   }
+
+  @override
+  Future<OpenGraphData> openGraph(String targetUrl) =>
+      _api.openGraph(token, targetUrl);
 }

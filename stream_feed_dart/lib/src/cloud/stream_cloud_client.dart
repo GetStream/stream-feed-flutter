@@ -1,5 +1,6 @@
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/cloud/cloud_collections_client.dart';
+import 'package:stream_feed_dart/src/core/index.dart';
 
 import 'cloud_reactions_client.dart';
 import 'cloud_users_client.dart';
@@ -25,4 +26,7 @@ abstract class StreamCloudClient {
   CloudAggregatedFeed aggregatedFeed(String slug, String userId);
 
   CloudNotificationFeed notificationFeed(String slug, String userId);
+
+  Future<OpenGraphData> openGraph(String targetUrl);
+
 }

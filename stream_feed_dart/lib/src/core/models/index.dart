@@ -9,3 +9,4 @@ export 'foreign_id_time_pair.dart';
 export 'user.dart';
 export 'follow.dart';
 export 'reaction.dart';
+export 'open_graph_data.dart';
