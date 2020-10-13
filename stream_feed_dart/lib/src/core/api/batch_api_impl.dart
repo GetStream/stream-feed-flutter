@@ -143,7 +143,7 @@ class BatchApiImpl implements BatchApi {
     return client.post(
       Routes.activitesUrl,
       headers: {'Authorization': '$token'},
-      data: activities,
+      data: {'activities': activities},
     );
   }
 }

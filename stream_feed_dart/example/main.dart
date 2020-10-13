@@ -87,7 +87,7 @@ main() async {
 
   // update the popularity value for the activity
   activity = activity.copyWith(
-    extraData: {'popularity:10'},
+    extraData: {'popularity': 10},
   );
 
   await client.batch.updateActivity(activity);
@@ -159,7 +159,7 @@ main() async {
   /* -------------------------------------------------------- */
 
   // Get 5 activities with id less than the given UUID (Faster - Recommended!)
-  response = await userFeed.getActivities(
+  var response = await userFeed.getActivities(
     limit: 5,
     filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0'),
   );
@@ -198,10 +198,10 @@ main() async {
   var followed = await userFeed.getFollowed(limit: 10, offset: 0);
 
   // Retrieve 10 feeds followed by user_feed_1 starting from the 11th
-  followed = await userFeed.getFollowed(limit: 10, offset: 10).join();
+  followed = await userFeed.getFollowed(limit: 10, offset: 10);
 
   // Check if user_feed_1 follows specific feeds
-  followed = await userFeed.getFollowed(limit: 2, offset: 0, feedIds: const [
+  followed = await userFeed.getFollowed(limit: 2, offset: 0, feedIds: [
     FeedId.id('user:42'),
     FeedId.id('user:43'),
   ]);
@@ -361,7 +361,7 @@ main() async {
   /* -------------------------------------------------------- */
 
   // first let's read current user's timeline feed and pick one activity
-  var response = await client.flatFeed('timeline', 'mike').getActivities();
+  response = await client.flatFeed('timeline', 'mike').getActivities();
   activity = response.first;
 
   // then let's add a like reaction to that activity

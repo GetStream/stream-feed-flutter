@@ -71,8 +71,8 @@ class StreamHttpClient implements HttpClient {
 
   Exception _parseError(DioError error) {
     if (error.type == DioErrorType.RESPONSE) {
-      final apiError =
-          StreamApiException(error.response?.data, error.response?.statusCode);
+      final apiError = StreamApiException(
+          error.response?.data?.toString(), error.response?.statusCode);
       return apiError;
     }
     return error;

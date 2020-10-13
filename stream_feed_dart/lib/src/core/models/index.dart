@@ -10,3 +10,4 @@ export 'user.dart';
 export 'follow.dart';
 export 'reaction.dart';
 export 'open_graph_data.dart';
+export 'collection_entry.dart';
