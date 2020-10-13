@@ -15,5 +15,4 @@ abstract class UsersClient {
   Future<User> update(String id, Map<String, Object> data);
 
   Future<void> delete(String id);
-
 }

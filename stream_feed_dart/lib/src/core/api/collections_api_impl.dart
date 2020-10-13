@@ -129,5 +129,4 @@ class CollectionsApiImpl implements CollectionsApi {
       },
     );
   }
-
 }

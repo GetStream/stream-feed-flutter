@@ -28,5 +28,4 @@ abstract class StreamCloudClient {
   CloudNotificationFeed notificationFeed(String slug, String userId);
 
   Future<OpenGraphData> openGraph(String targetUrl);
-
 }

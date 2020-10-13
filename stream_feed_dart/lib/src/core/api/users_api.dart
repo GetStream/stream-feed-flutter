@@ -14,5 +14,4 @@ abstract class UsersApi {
   Future<User> update(Token token, String id, Map<String, Object> data);
 
   Future<void> delete(Token token, String id);
-
 }
