@@ -2,6 +2,7 @@ import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/cloud/cloud_collections_client.dart';
 
 import 'cloud_reactions_client.dart';
+import 'cloud_users_client.dart';
 import 'feed/index.dart';
 import 'stream_cloud_client_impl.dart';
 
@@ -16,6 +17,8 @@ abstract class StreamCloudClient {
   CloudCollectionsClient get collections;
 
   CloudReactionsClient get reactions;
+
+  CloudUsersClient get users;
 
   CloudFlatFeed flatFeed(String slug, String userId);
 

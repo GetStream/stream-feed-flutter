@@ -8,6 +8,8 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 import 'cloud_reactions_client_impl.dart';
+import 'cloud_users_client.dart';
+import 'cloud_users_client_impl.dart';
 import 'feed/index.dart';
 import 'stream_cloud_client.dart';
 
@@ -31,6 +33,9 @@ class StreamCloudClientImpl implements StreamCloudClient {
   @override
   CloudReactionsClient get reactions =>
       CloudReactionsClientImpl(token, _api.reactions);
+
+  @override
+  CloudUsersClient get users => CloudUsersClientImpl(token, _api.users);
 
   @override
   CloudAggregatedFeed aggregatedFeed(String slug, String userId) {

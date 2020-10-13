@@ -1,0 +1,36 @@
+import 'package:stream_feed_dart/src/cloud/cloud_users_client.dart';
+import 'package:stream_feed_dart/src/core/api/users_api.dart';
+import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/models/user.dart';
+
+class CloudUsersClientImpl implements CloudUsersClient {
+  final Token token;
+  final UsersApi users;
+
+  const CloudUsersClientImpl(this.token, this.users);
+
+  @override
+  Future<User> add(
+    String id,
+    Map<String, Object> data, {
+    bool getOrCreate,
+  }) =>
+      users.add(token, id, data, getOrCreate ?? false);
+
+  @override
+  Future<void> delete(String id) => users.delete(token, id);
+
+  @override
+  Future<User> get(
+    String id, {
+    bool withFollowCounts,
+  }) =>
+      users.get(token, id, withFollowCounts ?? true);
+
+  @override
+  String ref(String id) => users.ref(id);
+
+  @override
+  Future<User> update(String id, Map<String, Object> data) =>
+      users.update(token, id, data);
+}
