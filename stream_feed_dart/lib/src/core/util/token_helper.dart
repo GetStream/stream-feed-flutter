@@ -103,6 +103,10 @@ class TokenHelper {
         secret, TokenResource.feed_targets, action, feed?.claim ?? '*');
   }
 
+  static Token buildFilesToken(String secret, TokenAction action) {
+    return _buildBackendToken(secret, TokenResource.files, action, '*');
+  }
+
   static Token buildFrontendToken(
     String secret,
     String userId, {

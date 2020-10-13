@@ -1,5 +1,7 @@
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/cloud/cloud_collections_client.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_file_storage_client.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_image_storage_client.dart';
 import 'package:stream_feed_dart/src/core/index.dart';
 
 import 'cloud_reactions_client.dart';
@@ -20,6 +22,10 @@ abstract class StreamCloudClient {
   CloudReactionsClient get reactions;
 
   CloudUsersClient get users;
+
+  CloudFileStorageClient get files;
+
+  CloudImageStorageClient get images;
 
   CloudFlatFeed flatFeed(String slug, String userId);
 

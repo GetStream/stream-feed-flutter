@@ -1,6 +1,10 @@
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/cloud/cloud_collections_client.dart';
 import 'package:stream_feed_dart/src/cloud/cloud_collections_client_impl.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_file_storage_client.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_file_storage_client_impl.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_image_storage_client.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_image_storage_client_impl.dart';
 import 'package:stream_feed_dart/src/cloud/cloud_reactions_client.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api_impl.dart';
@@ -37,6 +41,14 @@ class StreamCloudClientImpl implements StreamCloudClient {
 
   @override
   CloudUsersClient get users => CloudUsersClientImpl(token, _api.users);
+
+  @override
+  CloudFileStorageClient get files =>
+      CloudFileStorageClientImpl(token, _api.files);
+
+  @override
+  CloudImageStorageClient get images =>
+      CloudImageStorageClientImpl(token, _api.images);
 
   @override
   CloudAggregatedFeed aggregatedFeed(String slug, String userId) {

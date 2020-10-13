@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:stream_feed_dart/stream_feed.dart';
 
 main() async {
@@ -596,6 +598,47 @@ main() async {
     'occupation': 'Software Engineer',
     'gender': 'female',
   });
+
+  /* -------------------------------------------------------- */
+
+  var image = File('...');
+  var multipartFile = await MultipartFile.fromFile(
+    image.path,
+    filename: 'my-photo',
+    contentType: MediaType('image', 'jpeg'),
+  );
+  var imageUrl = await client.images.upload(multipartFile);
+
+  var file = File('...');
+  multipartFile = await MultipartFile.fromFile(
+    file.path,
+    filename: 'my-file',
+  );
+  var imageUrl = await client.files.upload(multipartFile);
+
+  /* -------------------------------------------------------- */
+
+  // deleting an image using the url returned by the APIs
+  await client.images.delete('imageUrl');
+
+  // deleting a file using the url returned by the APIs
+  await client.files.delete('fileUrl');
+
+  /* -------------------------------------------------------- */
+
+  // create a 50x50 thumbnail and crop from center
+  await client.images.getCropped(
+    'imageUrl',
+    Crop(50, 50, <CropType>[
+      CropType.center,
+    ]),
+  );
+
+  // create a 50x50 thumbnail using clipping (keeps aspect ratio)
+  await client.images.getResized(
+    'imageUrl',
+    Resize(50, 50, ResizeType.clip),
+  );
 
   /* -------------------------------------------------------- */
 

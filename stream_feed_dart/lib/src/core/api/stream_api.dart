@@ -1,10 +1,13 @@
-import 'package:stream_feed_dart/src/core/api/batch_api.dart';
-import 'package:stream_feed_dart/src/core/api/collections_api.dart';
-import 'package:stream_feed_dart/src/core/api/feed_api.dart';
-import 'package:stream_feed_dart/src/core/api/reaction_api.dart';
-import 'package:stream_feed_dart/src/core/api/users_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
+
+import 'batch_api.dart';
+import 'collections_api.dart';
+import 'feed_api.dart';
+import 'files_api.dart';
+import 'images_api.dart';
+import 'reactions_api.dart';
+import 'users_api.dart';
 
 abstract class StreamApi {
   BatchApi get batch;
@@ -16,6 +19,10 @@ abstract class StreamApi {
   CollectionsApi get collections;
 
   FeedApi get feed;
+
+  FilesApi get files;
+
+  ImagesApi get images;
 
   Future<OpenGraphData> openGraph(Token token, String targetUrl);
 }

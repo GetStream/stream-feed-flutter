@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/api/reaction_api.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
@@ -8,6 +7,8 @@ import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/src/core/models/reaction.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
+
+import 'reactions_api.dart';
 
 class ReactionsApiImpl implements ReactionsApi {
   final HttpClient client;

@@ -1,5 +1,7 @@
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
 import 'package:stream_feed_dart/src/client/collections_client.dart';
+import 'package:stream_feed_dart/src/client/file_storage_client.dart';
+import 'package:stream_feed_dart/src/client/image_storage_client.dart';
 import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
@@ -24,6 +26,10 @@ abstract class StreamClient {
   ReactionsClient get reactions;
 
   UsersClient get users;
+
+  FileStorageClient get files;
+
+  ImageStorageClient get images;
 
   FlatFeet flatFeed(String slug, String userId);
 

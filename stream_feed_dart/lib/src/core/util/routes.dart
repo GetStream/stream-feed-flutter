@@ -14,6 +14,8 @@ class Routes {
   static const _openGraphPath = 'og';
   static const _feedPath = 'feed';
   static const _enrichedFeedPath = 'enrich/$_feedPath';
+  static const _filesPath = 'files';
+  static const _imagesPath = 'images';
 
   static String buildFeedUrl(FeedId feed, [String path = '']) =>
       '$_basePath/$_feedPath/${feed.slug}/${feed.userId}/$path';
@@ -33,7 +35,11 @@ class Routes {
   static String buildUsersUrl([String path = '']) =>
       '$_basePath/$_usersPath/$path';
 
-  static String get openGraphURL => '$_basePath/$_openGraphPath';
+  static String get filesUrl => '$_basePath/$_filesPath';
+
+  static String get imagesUrl => '$_basePath/$_imagesPath';
+
+  static String get openGraphUrl => '$_basePath/$_openGraphPath';
 
   static String get activityUpdateUrl => '$_basePath/$_activityUpdatePath';
 

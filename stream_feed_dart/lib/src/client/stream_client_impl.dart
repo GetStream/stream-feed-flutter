@@ -5,6 +5,10 @@ import 'package:stream_feed_dart/src/client/collections_client_impl.dart';
 import 'package:stream_feed_dart/src/client/feed/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/client/feed/flat_feed.dart';
 import 'package:stream_feed_dart/src/client/feed/notification_feed.dart';
+import 'package:stream_feed_dart/src/client/file_storage_client.dart';
+import 'package:stream_feed_dart/src/client/file_storage_client_impl.dart';
+import 'package:stream_feed_dart/src/client/image_storage_client.dart';
+import 'package:stream_feed_dart/src/client/image_storage_client_impl.dart';
 import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/client/reactions_client_impl.dart';
 import 'package:stream_feed_dart/src/client/stream_client.dart';
@@ -43,6 +47,12 @@ class StreamClientImpl implements StreamClient {
   @override
   CollectionsClient get collections =>
       CollectionsClientImpl(_secret, _api.collections);
+
+  @override
+  FileStorageClient get files => FileStorageClientImpl(_secret, _api.files);
+
+  @override
+  ImageStorageClient get images => ImageStorageClientImpl(_secret, _api.images);
 
   @override
   FlatFeet flatFeed(String slug, String userId) {

@@ -1,5 +1,5 @@
 import 'package:stream_feed_dart/src/cloud/cloud_reactions_client.dart';
-import 'package:stream_feed_dart/src/core/api/reaction_api.dart';
+import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';

@@ -1,5 +1,5 @@
 import 'package:stream_feed_dart/src/client/reactions_client.dart';
-import 'package:stream_feed_dart/src/core/api/reaction_api.dart';
+import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/filter.dart';
