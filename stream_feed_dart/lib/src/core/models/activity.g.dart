@@ -15,7 +15,7 @@ Activity _$ActivityFromJson(Map json) {
     foreignId: json['foreign_id'] as String,
     target: json['target'] as String,
     time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
-    to: (json['to'] as List)?.map((e) => e as String)?.toList(),
+    to: FeedId.fromIds(json['to'] as List<String>),
     analytics: (json['analytics'] as Map)?.map(
       (k, e) => MapEntry(k as String, e),
     ),
@@ -39,18 +39,18 @@ Map<String, dynamic> _$ActivityToJson(Activity instance) {
     }
   }
 
-  writeNotNull('id', readonly(instance.id));
+  writeNotNull('id', instance.id);
   val['actor'] = instance.actor;
   val['verb'] = instance.verb;
   val['object'] = instance.object;
   writeNotNull('foreign_id', instance.foreignId);
-  writeNotNull('target', readonly(instance.target));
+  writeNotNull('target', instance.target);
   writeNotNull('time', instance.time?.toIso8601String());
-  writeNotNull('origin', readonly(instance.origin));
-  writeNotNull('to', readonly(instance.to));
-  writeNotNull('score', readonly(instance.score));
-  writeNotNull('analytics', readonly(instance.analytics));
-  writeNotNull('extra_context', readonly(instance.extraContext));
+  writeNotNull('origin', instance.origin);
+  writeNotNull('to', FeedId.toIds(instance.to));
+  writeNotNull('score', instance.score);
+  writeNotNull('analytics', instance.analytics);
+  writeNotNull('extra_context', instance.extraContext);
   writeNotNull('extra_data', instance.extraData);
   return val;
 }

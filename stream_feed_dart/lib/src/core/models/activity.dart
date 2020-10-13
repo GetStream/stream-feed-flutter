@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_feed_dart/src/core/util/serializer.dart';
 
-import 'reaction.dart';
+import 'feed_id.dart';
 
 part 'activity.g.dart';
 
@@ -11,7 +11,7 @@ part 'activity.g.dart';
 @JsonSerializable()
 class Activity extends Equatable {
   ///
-  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
+  @JsonKey(includeIfNull: false)
   final String id;
 
   ///
@@ -28,7 +28,7 @@ class Activity extends Equatable {
   final String foreignId;
 
   ///
-  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
+  @JsonKey(includeIfNull: false)
   final String target;
 
   ///
@@ -36,23 +36,27 @@ class Activity extends Equatable {
   final DateTime time;
 
   ///
-  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
+  @JsonKey(includeIfNull: false)
   final String origin;
 
   ///
-  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
-  final List<String> to;
+  @JsonKey(
+    includeIfNull: false,
+    fromJson: FeedId.fromIds,
+    toJson: FeedId.toIds,
+  )
+  final List<FeedId> to;
 
   ///
-  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
+  @JsonKey(includeIfNull: false)
   final double score;
 
   ///
-  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
+  @JsonKey(includeIfNull: false)
   final Map<String, Object> analytics;
 
   ///
-  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
+  @JsonKey(includeIfNull: false)
   final Map<String, Object> extraContext;
 
   /// Map of custom user extraData
@@ -100,6 +104,39 @@ class Activity extends Equatable {
   /// Serialize to json
   Map<String, dynamic> toJson() =>
       Serializer.moveKeysToMapInPlace(_$ActivityToJson(this), topLevelFields);
+
+  ///
+  Activity copyWith({
+    String id,
+    String actor,
+    String verb,
+    String object,
+    String foreignId,
+    String target,
+    DateTime time,
+    String origin,
+    List<FeedId> to,
+    double score,
+    Map<String, Object> analytics,
+    Map<String, Object> extraContext,
+    Map<String, Object> extraData,
+  }) {
+    return Activity(
+      id: id ?? this.id,
+      actor: actor ?? this.actor,
+      verb: verb ?? this.verb,
+      object: object ?? this.object,
+      foreignId: foreignId ?? this.foreignId,
+      target: target ?? this.target,
+      time: time ?? this.time,
+      origin: origin ?? this.origin,
+      to: to ?? this.to,
+      score: score ?? this.score,
+      analytics: analytics ?? this.analytics,
+      extraContext: extraContext ?? this.extraContext,
+      extraData: extraData ?? this.extraData,
+    );
+  }
 
   @override
   List<Object> get props => [
