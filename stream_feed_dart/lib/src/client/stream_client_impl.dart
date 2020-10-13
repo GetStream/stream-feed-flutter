@@ -35,7 +35,7 @@ class StreamClientImpl implements StreamClient {
       BatchOperationsClientImpl(_secret, _api.batch);
 
   @override
-  ReactionsClient get reactions => ReactionsClientImpl(_secret, _api.reaction);
+  ReactionsClient get reactions => ReactionsClientImpl(_secret, _api.reactions);
 
   @override
   UsersClient get users => UsersClientImpl(_secret, _api.users);

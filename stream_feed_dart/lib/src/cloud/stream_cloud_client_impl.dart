@@ -1,11 +1,13 @@
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/cloud/cloud_collections_client.dart';
 import 'package:stream_feed_dart/src/cloud/cloud_collections_client_impl.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_reactions_client.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
+import 'cloud_reactions_client_impl.dart';
 import 'feed/index.dart';
 import 'stream_cloud_client.dart';
 
@@ -23,9 +25,12 @@ class StreamCloudClientImpl implements StreamCloudClient {
   Token get token => Token(_token);
 
   @override
-  CloudCollectionsClient get collections {
-    return CloudCollectionsClientImpl(token, _api.collections);
-  }
+  CloudCollectionsClient get collections =>
+      CloudCollectionsClientImpl(token, _api.collections);
+
+  @override
+  CloudReactionsClient get reactions =>
+      CloudReactionsClientImpl(token, _api.reactions);
 
   @override
   CloudAggregatedFeed aggregatedFeed(String slug, String userId) {

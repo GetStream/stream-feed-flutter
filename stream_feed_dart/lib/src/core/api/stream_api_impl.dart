@@ -30,7 +30,7 @@ class StreamApiImpl implements StreamApi {
   BatchApi get batch => BatchApiImpl(_client);
 
   @override
-  ReactionsApi get reaction => ReactionsApiImpl(_client);
+  ReactionsApi get reactions => ReactionsApiImpl(_client);
 
   @override
   UsersApi get users => UsersApiImpl(_client);

@@ -9,7 +9,7 @@ import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
 abstract class StreamApi {
   BatchApi get batch;
 
-  ReactionsApi get reaction;
+  ReactionsApi get reactions;
 
   UsersApi get users;
 
