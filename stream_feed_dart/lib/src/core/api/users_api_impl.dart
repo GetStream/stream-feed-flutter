@@ -67,7 +67,4 @@ class UsersApiImpl implements UsersApi {
       headers: {'Authorization': '$token'},
     );
   }
-
-  @override
-  String ref(String id) => 'SU:$id';
 }

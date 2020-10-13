@@ -16,5 +16,4 @@ abstract class CloudUsersClient {
 
   Future<void> delete(String id);
 
-  String ref(String id);
 }

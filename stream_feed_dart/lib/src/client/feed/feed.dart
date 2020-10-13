@@ -51,26 +51,26 @@ class Feed {
         activityCopyLimit ?? Default.activityCopyLimit);
   }
 
-  Future<List<Follow>> getFollowers(
-    Iterable<FeedId> feedIds, {
+  Future<List<Follow>> getFollowers({
+    Iterable<FeedId> feedIds,
     int limit,
     int offset,
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.read, feedId);
     return feed.getFollowers(token, feedId, limit ?? Default.limit,
-        offset ?? Default.offset, feedIds);
+        offset ?? Default.offset, feedIds ?? []);
   }
 
-  Future<List<Follow>> getFollowed(
-    Iterable<FeedId> feedIds, {
+  Future<List<Follow>> getFollowed({
+    Iterable<FeedId> feedIds,
     int limit,
     int offset,
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.read, feedId);
     return feed.getFollowed(token, feedId, limit ?? Default.limit,
-        offset ?? Default.offset, feedIds);
+        offset ?? Default.offset, feedIds ?? []);
   }
 
   Future<void> unfollow(

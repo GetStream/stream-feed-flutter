@@ -28,9 +28,6 @@ class CloudUsersClientImpl implements CloudUsersClient {
       users.get(token, id, withFollowCounts ?? true);
 
   @override
-  String ref(String id) => users.ref(id);
-
-  @override
   Future<User> update(String id, Map<String, Object> data) =>
       users.update(token, id, data);
 }

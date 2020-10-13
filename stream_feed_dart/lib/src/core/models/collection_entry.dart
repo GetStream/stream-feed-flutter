@@ -44,6 +44,24 @@ class CollectionEntry extends Equatable {
         updatedAt,
       ];
 
+  CollectionEntry copyWith({
+    String id,
+    String collection,
+    String foreignId,
+    Map<String, Object> data,
+    DateTime createdAt,
+    DateTime updatedAt,
+  }) {
+    return CollectionEntry(
+      id: id ?? this.id,
+      collection: collection ?? this.collection,
+      foreignId: foreignId ?? this.foreignId,
+      data: data ?? this.data,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
   /// Create a new instance from a json
   factory CollectionEntry.fromJson(Map<String, dynamic> json) =>
       _$CollectionEntryFromJson(json);

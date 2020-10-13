@@ -72,8 +72,4 @@ class CollectionsClientImpl implements CollectionsClient {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
     return collections.upsert(token, collection, entries);
   }
-
-  @override
-  String ref(String collection, String entryId) =>
-      collections.ref(collection, entryId);
 }

@@ -24,6 +24,4 @@ abstract class CollectionsClient {
   Future<List<CollectionEntry>> select(String collection, Iterable<String> ids);
 
   Future<void> deleteMany(String collection, Iterable<String> ids);
-
-  String ref(String collection, String entryId);
 }

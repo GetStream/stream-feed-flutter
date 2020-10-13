@@ -22,5 +22,4 @@ abstract class CollectionsApi {
   Future<Response> deleteMany(
       Token token, String collection, Iterable<String> entryIds);
 
-  String ref(String collection, String entryId);
 }

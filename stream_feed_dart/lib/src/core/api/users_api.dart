@@ -15,5 +15,4 @@ abstract class UsersApi {
 
   Future<void> delete(Token token, String id);
 
-  String ref(String id);
 }

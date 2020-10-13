@@ -130,6 +130,4 @@ class CollectionsApiImpl implements CollectionsApi {
     );
   }
 
-  @override
-  String ref(String collection, String entryId) => 'SO:$collection:$entryId';
 }
