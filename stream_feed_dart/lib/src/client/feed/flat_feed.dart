@@ -45,8 +45,8 @@ class FlatFeet extends Feed {
     final options = {
       'limit': limit ?? Default.limit,
       'offset': offset ?? Default.offset,
-      ...flags?.params ?? Default.enrichmentFlags.params,
       ...filter?.params ?? Default.filter.params,
+      ...flags?.params ?? Default.enrichmentFlags.params,
       ...Default.marker.params,
       if (ranking != null) 'ranking': ranking,
     };
