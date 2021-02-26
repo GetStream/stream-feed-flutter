@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:stream_feed_dart/src/core/models/activity.dart';
-import 'package:stream_feed_dart/src/core/models/group.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -11,7 +10,7 @@ import 'utils.dart';
 void main() {
   prepareTest();
 
-//TODOs
+//TODOs: setup model tests for the following models
 // - [ ] Group
 // - [x] Activity
 // - [ ] ActivityUpdate
@@ -29,7 +28,7 @@ void main() {
 // - [ ] Video
 // - [ ] Audio
 // - [ ] Image
-// - [ ] User
+// - [x] User
   test('Activity', () {
     // final result = Activity(
     //     actor: "test",
@@ -48,11 +47,11 @@ void main() {
     };
     expect(r, matcher);
     final activity = Activity.fromJson(matcher);
-    expect(activity.actor,"test");
-    expect(activity.verb,"test");
-    expect(activity.object,"test");
+    expect(activity.actor, "test");
+    expect(activity.verb, "test");
+    expect(activity.object, "test");
     expect(activity.time, DateTime.parse("2001-09-11T00:01:02.000"));
-    expect(activity.to,<FeedId>[FeedId("slug", "id")]);
+    expect(activity.to, <FeedId>[FeedId("slug", "id")]);
     // expect(result, activity);//TODO: there is something wrong with equatable or json_serializable
   });
 
@@ -76,13 +75,16 @@ void main() {
     };
     expect(entryJson, expectedEntryJson);
     final entryFromJson = CollectionEntry.fromJson(expectedEntryJson);
-    expect(entryFromJson.collection,"test" );
-    expect( entryFromJson.createdAt,DateTime.parse("2001-09-11T00:01:02.000"));
-    expect( entryFromJson.updatedAt,DateTime.parse("2001-09-11T00:01:02.000"));
-    expect(entryFromJson.data,{'test': 'test'}, );
-    expect(entryFromJson.foreignId , "test");
-    expect(entryFromJson.id,"test");
-    expect(entry,entryFromJson);
+    expect(entryFromJson.collection, "test");
+    expect(entryFromJson.createdAt, DateTime.parse("2001-09-11T00:01:02.000"));
+    expect(entryFromJson.updatedAt, DateTime.parse("2001-09-11T00:01:02.000"));
+    expect(
+      entryFromJson.data,
+      {'test': 'test'},
+    );
+    expect(entryFromJson.foreignId, "test");
+    expect(entryFromJson.id, "test");
+    expect(entry, entryFromJson);
   });
   test("User", () {
     final user = User(
@@ -103,9 +105,17 @@ void main() {
     expect(userJson, expectedUserJson);
     final userFromJson = User.fromJson(expectedUserJson);
     //expect(userFromJson, user); //doesnt work
-    // expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.createdAt);//return null
-    // expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.updatedAt);//return null
-    // expect(userFromJson.followersCount, 1);//return null
-    // expect(1, userFromJson.followingCount);//return null
+    // expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.createdAt);//TODO: why this returns null
+    // expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.updatedAt);//TODO: same, return null
+    // expect(userFromJson.followersCount, 1);//TODO: same,return null
+    // expect(1, userFromJson.followingCount);//TODO: same,return null
+  });
+
+  test("Follow", () {
+    final follow = Follow("feedId", "targetId");
+    final followJson =
+        json.decode('{"feed_id": "feedId", "target_id": "targetId"}');
+
+    expect(follow, Follow.fromJson(followJson));
   });
 }
