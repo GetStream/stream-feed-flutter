@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:stream_feed_dart/stream_feed.dart';
 
-main() async {
+Future<void> main() async {
   final apiKey = 'gp6e8sxxzud6';
   final secret =
       '7j7exnksc4nxy399fdxvjqyqsqdahax3nfgtp27pumpc7sfm9um688pzpxjpjbf2';
@@ -607,14 +607,14 @@ main() async {
     filename: 'my-photo',
     contentType: MediaType('image', 'jpeg'),
   );
-  var imageUrl = await client.images.upload(multipartFile);
+  await client.images.upload(multipartFile);
 
   var file = File('...');
   multipartFile = await MultipartFile.fromFile(
     file.path,
     filename: 'my-file',
   );
-  var imageUrl = await client.files.upload(multipartFile);
+  await client.files.upload(multipartFile);
 
   /* -------------------------------------------------------- */
 
@@ -629,7 +629,7 @@ main() async {
   // create a 50x50 thumbnail and crop from center
   await client.images.getCropped(
     'imageUrl',
-    Crop(50, 50, <CropType>[
+    Crop(50, 50, types: <CropType>[
       CropType.center,
     ]),
   );
@@ -637,7 +637,7 @@ main() async {
   // create a 50x50 thumbnail using clipping (keeps aspect ratio)
   await client.images.getResized(
     'imageUrl',
-    Resize(50, 50, ResizeType.clip),
+    Resize(50, 50, type: ResizeType.clip),
   );
 
   /* -------------------------------------------------------- */
