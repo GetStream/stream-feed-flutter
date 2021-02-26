@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   stream_feed_dart:
-    path: ../stream_feed_dart
+    path: ../packages/stream_feed
   get_it: ^5.0.1
   progress_dialog: ^1.2.4
   timeago: ^2.0.27
