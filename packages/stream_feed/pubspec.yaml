@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   json_annotation: ^3.1.0
-  equatable: ^1.2.5
+  equatable: ^1.2.6
   dio: ^3.0.10
   jaguar_jwt: ^2.1.6
 
