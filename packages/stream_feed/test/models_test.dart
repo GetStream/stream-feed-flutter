@@ -65,16 +65,8 @@ void main() {
         updatedAt: DateTime.parse("2001-09-11T00:01:02.000"));
     final entryJson = json.decode(
         '{"id": "test", "collection": "test", "foreign_id": "test", "data": {"test": "test"}, "created_at": "2001-09-11T00:01:02.000", "updated_at": "2001-09-11T00:01:02.000"}');
-    final expectedEntryJson = {
-      "id": "test",
-      "collection": "test",
-      "foreign_id": "test",
-      "data": {"test": "test"},
-      "created_at": "2001-09-11T00:01:02.000",
-      "updated_at": "2001-09-11T00:01:02.000"
-    };
-    expect(entryJson, expectedEntryJson);
-    final entryFromJson = CollectionEntry.fromJson(expectedEntryJson);
+
+    final entryFromJson = CollectionEntry.fromJson(entryJson);
     expect(entryFromJson.collection, "test");
     expect(entryFromJson.createdAt, DateTime.parse("2001-09-11T00:01:02.000"));
     expect(entryFromJson.updatedAt, DateTime.parse("2001-09-11T00:01:02.000"));
