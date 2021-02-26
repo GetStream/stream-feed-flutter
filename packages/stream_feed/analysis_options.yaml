@@ -19,7 +19,7 @@
 # Android Studio, and the `flutter analyze` command.
 
 analyzer:
-  strong-mode:
+  #strong-mode:
     #implicit-casts: false
     #implicit-dynamic: false
   errors:
