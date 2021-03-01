@@ -12,7 +12,7 @@ void main() {
   prepareTest();
 
 //TODOs: setup model tests for the following models
-// - [ ] Group
+// - [x] Group
 // - [x] Activity
 // - [x] ActivityUpdate
 // - [x] EnrichedActivity
@@ -30,19 +30,6 @@ void main() {
 // - [x] Image
 // - [x] User
 
-  test("ActivityUpdate", () {
-    final activityUpdate = ActivityUpdate(
-      id: "test",
-      foreignId: "test",
-      time: DateTime.parse("2001-09-11T00:01:02.000"),
-      set: {"test": "test"},
-      unset: ["test"],
-    );
-    final activityUpdateJson = json.decode(
-        '{"id": "test", "foreign_id": "test", "time": "2001-09-11T00:01:02.000", "set": {"test": "test"}, "unset": ["test"]}');
-    final activityUpdateFromJson = ActivityUpdate.fromJson(activityUpdateJson);
-    expect(activityUpdateFromJson, activityUpdate);
-  });
   test("EnrichedActivity", () {
     final reaction1 = Reaction(
         id: "test",
@@ -86,62 +73,6 @@ void main() {
         '{"id":"test", "actor": "test","object": "test", "verb": "test","target": "test", "to":["test"], "foreign_id": "test", "time": "2001-09-11T00:01:02.000","analytics": {"test": "test"},"extra_context": {"test": "test"},"origin":"test","score":1.0,"reaction_counts": {"test": 1},"own_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]},"latest_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]}, "extra_data": {"test": "test"}}');
     final enrichedActivityFromJson =
         EnrichedActivity.fromJson(enrichedActivityJson);
-    expect(enrichedActivityFromJson.id, "test");
-    expect(enrichedActivityFromJson.actor, EnrichableField("test"));
-    expect(enrichedActivityFromJson.object, EnrichableField("test"));
-    expect(enrichedActivityFromJson.verb, "test");
-    expect(enrichedActivityFromJson.target, EnrichableField("test"));
-    expect(enrichedActivityFromJson.to, ["test"]);
-    expect(enrichedActivityFromJson.foreignId, "test");
-    expect(enrichedActivityFromJson.time,
-        DateTime.parse("2001-09-11T00:01:02.000"));
-    expect(enrichedActivityFromJson.analytics, {"test": "test"});
-    expect(enrichedActivityFromJson.extraContext, {"test": "test"});
-    expect(enrichedActivityFromJson.origin, EnrichableField("test"));
-    expect(enrichedActivityFromJson.score, 1.0);
-    expect(enrichedActivityFromJson.extraData, {"test": "test"});
-    expect(enrichedActivityFromJson.reactionCounts, {"test": 1});
-
-    expect(enrichedActivityFromJson.latestReactions, {
-      "test": [
-        Reaction(
-            id: "test",
-            kind: "test",
-            activityId: "test",
-            userId: "test",
-            parent: "test",
-            createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-            updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
-            targetFeeds: [FeedId("slug", "userId")],
-            user: {"test": "test"},
-            targetFeedsExtraData: {"test": "test"},
-            data: {"test": "test"},
-            // latestChildren: {
-            //   "test": [reaction2]
-            // }
-            childrenCounts: {"test": 1})
-      ]
-    });
-    expect(enrichedActivityFromJson.ownReactions, {
-      "test": [
-        Reaction(
-            id: "test",
-            kind: "test",
-            activityId: "test",
-            userId: "test",
-            parent: "test",
-            createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-            updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
-            targetFeeds: [FeedId("slug", "userId")],
-            user: {"test": "test"},
-            targetFeedsExtraData: {"test": "test"},
-            data: {"test": "test"},
-            // latestChildren: {
-            //   "test": [reaction2]
-            // },//TODO: test this
-            childrenCounts: {"test": 1})
-      ]
-    });
     expect(enrichedActivityFromJson, enrichedActivity);
   });
   test('Activity', () {
@@ -163,11 +94,6 @@ void main() {
         '{"id": "test", "actor": "test", "verb": "test", "object": "test", "foreign_id": "test", "target": "test", "time": "2001-09-11T00:01:02.000", "origin": "test", "to": ["slug:id"], "score": 1.0, "analytics": {"test": "test"}, "extra_context": {"test": "test"}, "test": "test"}');
 
     final activityJson = Activity.fromJson(r);
-    expect(activityJson.actor, "test");
-    expect(activityJson.verb, "test");
-    expect(activityJson.object, "test");
-    expect(activityJson.time, DateTime.parse("2001-09-11T00:01:02.000"));
-    expect(activityJson.to, <FeedId>[FeedId("slug", "id")]);
     expect(activityJson, activity);
   });
 
@@ -312,12 +238,8 @@ void main() {
 
     final paginatedReactionsJson = json.decode(
         '{"next": "test", "results": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}], "duration": "duration", "activity": {"id":"test", "actor": "test","object": "test", "verb": "test","target": "test", "to":["test"], "foreign_id": "test", "time": "2001-09-11T00:01:02.000","analytics": {"test": "test"},"extra_context": {"test": "test"},"origin":"test","score":1.0,"reaction_counts": {"test": 1},"own_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]},"latest_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]}, "extra_data": {"test": "test"}}}');
-    // expect(paginatedReactionsJson, "matcher");
     final paginatedReactionsFromJson =
         PaginatedReactions.fromJson(paginatedReactionsJson);
-    expect(paginatedReactionsFromJson.results, [reaction]);
-    expect(paginatedReactionsFromJson.next, "test");
-    expect(paginatedReactionsFromJson.activity, enrichedActivity);
     expect(paginatedReactionsFromJson, paginatedReactions);
   });
   test("User", () {
@@ -330,21 +252,9 @@ void main() {
         followingCount: 1);
     final userJson = json.decode(
         '{"id": "test", "data": {"test": "test"}, "created_at": "2001-09-11T00:01:02.000","updated_at": "2001-09-11T00:01:02.000","followers_count": 1, "following_count": 1}');
-    final expectedUserJson = {
-      "id": "test",
-      "data": {"test": "test"},
-      "created_at": "2001-09-11T00:01:02.000",
-      "updated_at": "2001-09-11T00:01:02.000",
-      "followers_count": 1,
-      "following_count": 1
-    };
-    expect(userJson, expectedUserJson);
-    final userFromJson = User.fromJson(expectedUserJson);
+
+    final userFromJson = User.fromJson(userJson);
     expect(userFromJson, user); //doesnt work
-    expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.createdAt);
-    expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.updatedAt);
-    expect(userFromJson.followersCount, 1);
-    expect(userFromJson.followingCount, 1);
   });
 
   test("Follow", () {
@@ -390,7 +300,7 @@ void main() {
         targetFeedsExtraData: {"test": "test"},
         data: {"test": "test"},
         childrenCounts: {"test": 1});
-    final reaction1 = Reaction(
+    final reaction = Reaction(
         id: "test",
         kind: "test",
         activityId: "test",
@@ -407,39 +317,11 @@ void main() {
         // },//TODO: test this
         childrenCounts: {"test": 1});
 
-    final reaction2Json = json.decode(
+    final reactionJson = json.decode(
         '{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}');
-    expect(reaction2Json, {
-      "id": "test",
-      "kind": "test",
-      "activity_id": "test",
-      "user_id": "test",
-      "parent": "test",
-      "updated_at": "2001-09-11T00:01:02.000",
-      "created_at": "2001-09-11T00:01:02.000",
-      "target_feeds": <String>["slug:userId"],
-      "user": {"test": "test"},
-      "target_feeds_extra_data": {"test": "test"},
-      "data": {"test": "test"},
-      "children_counts": {"test": 1}
-    });
 
-    final reactionFromJson2 = Reaction.fromJson(reaction2Json);
-    expect(reactionFromJson2.id, "test");
-    expect(reactionFromJson2.kind, "test");
-    expect(reactionFromJson2.activityId, "test");
-    expect(reactionFromJson2.userId, "test");
-    expect(reactionFromJson2.parent, "test");
-    expect(
-        reactionFromJson2.createdAt, DateTime.parse("2001-09-11T00:01:02.000"));
-    expect(
-        reactionFromJson2.updatedAt, DateTime.parse("2001-09-11T00:01:02.000"));
-    expect(reactionFromJson2.targetFeeds, [FeedId("slug", "userId")]);
-    expect(reactionFromJson2.user, {"test": "test"});
-    expect(reactionFromJson2.targetFeedsExtraData, {"test": "test"});
-    expect(reactionFromJson2.data, {"test": "test"});
-    expect(reactionFromJson2.childrenCounts, {"test": 1});
-    expect(reactionFromJson2, reaction2);
+    final reactionFromJson = Reaction.fromJson(reactionJson);
+    expect(reactionFromJson, reaction);
   });
 
   test("Image", () {
