@@ -53,8 +53,7 @@ void main() {
     expect(activityJson.object, "test");
     expect(activityJson.time, DateTime.parse("2001-09-11T00:01:02.000"));
     expect(activityJson.to, <FeedId>[FeedId("slug", "id")]);
-    expect(activityJson,
-        activity); 
+    expect(activityJson, activity);
   });
 
   test("CollectionEntry", () {
@@ -80,20 +79,22 @@ void main() {
         followersCount: 1,
         followingCount: 1);
     final userJson = json.decode(
-        '{"id": "test", "data": {"test": "test"},"followersCount": 1, "followingCount": 1}');
+        '{"id": "test", "data": {"test": "test"}, "created_at": "2001-09-11T00:01:02.000","updated_at": "2001-09-11T00:01:02.000","followers_count": 1, "following_count": 1}');
     final expectedUserJson = {
       "id": "test",
       "data": {"test": "test"},
-      "followersCount": 1,
-      "followingCount": 1
+      "created_at": "2001-09-11T00:01:02.000",
+      "updated_at": "2001-09-11T00:01:02.000",
+      "followers_count": 1,
+      "following_count": 1
     };
     expect(userJson, expectedUserJson);
     final userFromJson = User.fromJson(expectedUserJson);
-    //expect(userFromJson, user); //doesnt work
-    // expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.createdAt);//TODO: why this returns null
-    // expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.updatedAt);//TODO: same, return null
-    // expect(userFromJson.followersCount, 1);//TODO: same,return null
-    // expect(1, userFromJson.followingCount);//TODO: same,return null
+    expect(userFromJson, user); //doesnt work
+    expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.createdAt);
+    expect(DateTime.parse("2001-09-11T00:01:02.000"), userFromJson.updatedAt);
+    expect(userFromJson.followersCount, 1);
+    expect(userFromJson.followingCount, 1);
   });
 
   test("Follow", () {
