@@ -52,6 +52,16 @@ Image _$ImageFromJson(Map json) {
   );
 }
 
+Map<String, dynamic> _$ImageToJson(Image instance) => <String, dynamic>{
+      'image': instance.image,
+      'url': instance.url,
+      'secure_url': instance.secureUrl,
+      'width': instance.width,
+      'height': instance.height,
+      'type': instance.type,
+      'alt': instance.alt,
+    };
+
 Video _$VideoFromJson(Map json) {
   return Video(
     image: json['image'] as String,

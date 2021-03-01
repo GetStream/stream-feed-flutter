@@ -75,7 +75,7 @@ class OpenGraphData extends Equatable {
 }
 
 ///
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Image extends Equatable {
   ///
   final String image;
@@ -122,6 +122,9 @@ class Image extends Equatable {
 
   /// Create a new instance from a json
   factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
+
+  /// Serialize to json
+  Map<String, dynamic> toJson() => _$ImageToJson(this);
 }
 
 ///

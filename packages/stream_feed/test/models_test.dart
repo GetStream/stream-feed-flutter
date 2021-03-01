@@ -14,7 +14,7 @@ void main() {
 // - [ ] Group
 // - [x] Activity
 // - [ ] ActivityUpdate
-// - [ ] EnrichedActivity
+// - [x] EnrichedActivity
 // - [ ] NotificationGroup
 // - [x] CollectionEntry
 // - [x] Follow
@@ -291,5 +291,21 @@ void main() {
     expect(reactionFromJson2.data, {"test": "test"});
     expect(reactionFromJson2.childrenCounts, {"test": 1});
     expect(reactionFromJson2, reaction2);
+  });
+
+  test("Image", () {
+    final image = Image(
+        image: "test",
+        url: "test",
+        secureUrl: "test",
+        width: "test",
+        height: "test",
+        type: "test",
+        alt: "test");
+    final imageJson = json.decode(
+        '{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}');
+
+    final imageFromJson = Image.fromJson(imageJson);
+    expect(imageFromJson, image);
   });
 }
