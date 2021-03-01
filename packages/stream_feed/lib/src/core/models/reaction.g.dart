@@ -19,7 +19,7 @@ Reaction _$ReactionFromJson(Map json) {
     updatedAt: json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String),
-    targetFeeds: FeedId.fromIds(json['target_feeds'] as List<String>),
+    targetFeeds: FeedId.fromIds(json['target_feeds'] as List),
     user: (json['user'] as Map)?.map(
       (k, e) => MapEntry(k as String, e),
     ),

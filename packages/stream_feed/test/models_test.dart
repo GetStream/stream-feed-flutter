@@ -17,8 +17,8 @@ void main() {
 // - [ ] EnrichedActivity
 // - [ ] NotificationGroup
 // - [x] CollectionEntry
-// - [ ] Follow
-// - [ ] Reaction
+// - [x] Follow
+// - [x] Reaction
 // - [ ] PaginatedReactions
 // - [ ] User
 // - [ ] ActivityUpdate
@@ -67,15 +67,6 @@ void main() {
         '{"id": "test", "collection": "test", "foreign_id": "test", "data": {"test": "test"}, "created_at": "2001-09-11T00:01:02.000", "updated_at": "2001-09-11T00:01:02.000"}');
 
     final entryFromJson = CollectionEntry.fromJson(entryJson);
-    expect(entryFromJson.collection, "test");
-    expect(entryFromJson.createdAt, DateTime.parse("2001-09-11T00:01:02.000"));
-    expect(entryFromJson.updatedAt, DateTime.parse("2001-09-11T00:01:02.000"));
-    expect(
-      entryFromJson.data,
-      {'test': 'test'},
-    );
-    expect(entryFromJson.foreignId, "test");
-    expect(entryFromJson.id, "test");
     expect(entry, entryFromJson);
   });
   test("User", () {
@@ -109,5 +100,91 @@ void main() {
         json.decode('{"feed_id": "feedId", "target_id": "targetId"}');
 
     expect(follow, Follow.fromJson(followJson));
+  });
+
+  test("Reaction", () {
+    final reaction2 = Reaction(
+        id: "test",
+        kind: "test",
+        activityId: "test",
+        userId: "test",
+        parent: "test",
+        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        targetFeeds: [
+          FeedId("slug", "userId")
+        ],
+        user: {
+          "test": "test"
+        },
+        targetFeedsExtraData: {
+          "test": "test"
+        },
+        data: {
+          "test": "test"
+        },
+        childrenCounts: {
+          "test": 1
+        });
+    final reaction1 = Reaction(
+        id: "test",
+        kind: "test",
+        activityId: "test",
+        userId: "test",
+        parent: "test",
+        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        targetFeeds: [
+          FeedId("slug", "userId")
+        ],
+        user: {
+          "test": "test"
+        },
+        targetFeedsExtraData: {
+          "test": "test"
+        },
+        data: {
+          "test": "test"
+        },
+        // latestChildren: {
+        //   "test": [reaction2]
+        // },//TODO: test this
+        childrenCounts: {
+          "test": 1
+        });
+
+    final reaction2Json = json.decode(
+        '{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}');
+    expect(reaction2Json, {
+      "id": "test",
+      "kind": "test",
+      "activity_id": "test",
+      "user_id": "test",
+      "parent": "test",
+      "updated_at": "2001-09-11T00:01:02.000",
+      "created_at": "2001-09-11T00:01:02.000",
+      "target_feeds": <String>["slug:userId"],
+      "user": {"test": "test"},
+      "target_feeds_extra_data": {"test": "test"},
+      "data": {"test": "test"},
+      "children_counts": {"test": 1}
+    });
+
+    final reactionFromJson2 = Reaction.fromJson(reaction2Json);
+    expect(reactionFromJson2.id, "test");
+    expect(reactionFromJson2.kind, "test");
+    expect(reactionFromJson2.activityId, "test");
+    expect(reactionFromJson2.userId, "test");
+    expect(reactionFromJson2.parent, "test");
+    expect(
+        reactionFromJson2.createdAt, DateTime.parse("2001-09-11T00:01:02.000"));
+    expect(
+        reactionFromJson2.updatedAt, DateTime.parse("2001-09-11T00:01:02.000"));
+    expect(reactionFromJson2.targetFeeds, [FeedId("slug", "userId")]);
+    expect(reactionFromJson2.user, {"test": "test"});
+    expect(reactionFromJson2.targetFeedsExtraData, {"test": "test"});
+    expect(reactionFromJson2.data, {"test": "test"});
+    expect(reactionFromJson2.childrenCounts, {"test": 1});
+    expect(reactionFromJson2, reaction2);
   });
 }

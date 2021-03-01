@@ -15,7 +15,7 @@ Activity _$ActivityFromJson(Map json) {
     foreignId: json['foreign_id'] as String,
     target: json['target'] as String,
     time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
-    to: FeedId.fromIds(json['to'] as List<String>),
+    to: FeedId.fromIds(json['to'] as List),
     analytics: (json['analytics'] as Map)?.map(
       (k, e) => MapEntry(k as String, e),
     ),
