@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:stream_feed_dart/src/core/models/activity.dart';
+import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -23,7 +24,7 @@ void main() {
 // - [x] User
 // - [x] ActivityUpdate
 // - [x] Unfollow
-// - [ ] OpenGraphData
+// - [x] OpenGraphData
 // - [x] Video
 // - [x] Audio
 // - [x] Image
@@ -170,6 +171,75 @@ void main() {
 
     final entryFromJson = CollectionEntry.fromJson(entryJson);
     expect(entry, entryFromJson);
+  });
+
+  test("PaginatedReactions", () {
+    final reaction1 = Reaction(
+        id: "test",
+        kind: "test",
+        activityId: "test",
+        userId: "test",
+        parent: "test",
+        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        targetFeeds: [FeedId("slug", "userId")],
+        user: {"test": "test"},
+        targetFeedsExtraData: {"test": "test"},
+        data: {"test": "test"},
+        // latestChildren: {
+        //   "test": [reaction2]
+        // },//TODO: test this
+        childrenCounts: {"test": 1});
+    final enrichedActivity = EnrichedActivity(
+      id: "test",
+      actor: EnrichableField("test"),
+      object: EnrichableField("test"),
+      verb: "test",
+      target: EnrichableField("test"),
+      to: ["test"],
+      foreignId: "test",
+      time: DateTime.parse("2001-09-11T00:01:02.000"),
+      analytics: {"test": "test"},
+      extraContext: {"test": "test"},
+      origin: EnrichableField("test"),
+      score: 1.0,
+      extraData: {"test": "test"},
+      reactionCounts: {"test": 1},
+      ownReactions: {
+        "test": [reaction1]
+      },
+      latestReactions: {
+        "test": [reaction1]
+      },
+    );
+    final reaction = Reaction(
+        id: "test",
+        kind: "test",
+        activityId: "test",
+        userId: "test",
+        parent: "test",
+        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        targetFeeds: [FeedId("slug", "userId")],
+        user: {"test": "test"},
+        targetFeedsExtraData: {"test": "test"},
+        data: {"test": "test"},
+        // latestChildren: {
+        //   "test": [reaction2]
+        // },//TODO: test this
+        childrenCounts: {"test": 1});
+    final paginatedReactions =
+        PaginatedReactions("test", [reaction], enrichedActivity, "duration");
+
+    final paginatedReactionsJson = json.decode(
+        '{"next": "test", "results": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}], "duration": "duration", "activity": {"id":"test", "actor": "test","object": "test", "verb": "test","target": "test", "to":["test"], "foreign_id": "test", "time": "2001-09-11T00:01:02.000","analytics": {"test": "test"},"extra_context": {"test": "test"},"origin":"test","score":1.0,"reaction_counts": {"test": 1},"own_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]},"latest_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]}, "extra_data": {"test": "test"}}}');
+    // expect(paginatedReactionsJson, "matcher");
+    final paginatedReactionsFromJson =
+        PaginatedReactions.fromJson(paginatedReactionsJson);
+    expect(paginatedReactionsFromJson.results, [reaction]);
+    expect(paginatedReactionsFromJson.next, "test");
+    expect(paginatedReactionsFromJson.activity, enrichedActivity);
+    expect(paginatedReactionsFromJson, paginatedReactions);
   });
   test("User", () {
     final user = User(
