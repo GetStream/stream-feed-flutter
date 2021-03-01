@@ -20,10 +20,9 @@ void main() {
 // - [x] Follow
 // - [x] Reaction
 // - [ ] PaginatedReactions
-// - [ ] User
+// - [x] User
 // - [ ] ActivityUpdate
 // - [ ] Unfollow
-// - [ ] Follow
 // - [ ] OpenGraphData
 // - [ ] Video
 // - [ ] Audio
@@ -103,6 +102,13 @@ void main() {
         json.decode('{"feed_id": "feedId", "target_id": "targetId"}');
 
     expect(follow, Follow.fromJson(followJson));
+  });
+  test("Unfollow", () {
+    final follow = UnFollow("feedId", "targetId", true);
+    final followJson =
+        json.decode('{"feed_id": "feedId", "target_id": "targetId","keep_history":true}');
+
+    expect(follow, UnFollow.fromJson(followJson));
   });
 
   test("Reaction", () {
