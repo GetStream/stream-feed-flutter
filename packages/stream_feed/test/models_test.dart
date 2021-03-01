@@ -22,7 +22,7 @@ void main() {
 // - [ ] PaginatedReactions
 // - [x] User
 // - [ ] ActivityUpdate
-// - [ ] Unfollow
+// - [x] Unfollow
 // - [ ] OpenGraphData
 // - [ ] Video
 // - [ ] Audio
@@ -105,10 +105,24 @@ void main() {
   });
   test("Unfollow", () {
     final follow = UnFollow("feedId", "targetId", true);
-    final followJson =
-        json.decode('{"feed_id": "feedId", "target_id": "targetId","keep_history":true}');
+    final followJson = json.decode(
+        '{"feed_id": "feedId", "target_id": "targetId","keep_history":true}');
 
     expect(follow, UnFollow.fromJson(followJson));
+  });
+
+  test("ActivityUpdate", () {
+    final activityUpdate = ActivityUpdate(
+        id: "test",
+        foreignId: "test",
+        time: DateTime.parse("2001-09-11T00:01:02.000"),
+        set: {"hey": "hey"},
+        unset: ["test"]);
+    final activityUpdateJson = json.decode(
+        '{"id": "test", "foreign_id": "test", "time": "2001-09-11T00:01:02.000", "set": {"hey": "hey"}, "unset": ["test"]}');
+
+    final activityUpdateFromJson = ActivityUpdate.fromJson(activityUpdateJson);
+    expect(activityUpdateFromJson, activityUpdate);
   });
 
   test("Reaction", () {
