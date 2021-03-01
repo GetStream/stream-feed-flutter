@@ -128,7 +128,7 @@ class Image extends Equatable {
 }
 
 ///
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Video extends Equatable {
   ///
   final String image;
@@ -175,6 +175,9 @@ class Video extends Equatable {
 
   /// Create a new instance from a json
   factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
+
+  /// Serialize to json
+  Map<String, dynamic> toJson() => _$VideoToJson(this);
 }
 
 ///

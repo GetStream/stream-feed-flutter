@@ -308,4 +308,22 @@ void main() {
     final imageFromJson = Image.fromJson(imageJson);
     expect(imageFromJson, image);
   });
+
+  test("Video", () {
+    final video = Video(
+      image: "test",
+      url: "test",
+      secureUrl: "test",
+      width: "test",
+      height: "test",
+      type: "test",
+      alt: "test",
+    );
+
+    final videoJson = json.decode(
+        '{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}');
+
+    final videoFromJson = Video.fromJson(videoJson);
+    expect(videoFromJson, video);
+  });
 }

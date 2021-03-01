@@ -74,6 +74,16 @@ Video _$VideoFromJson(Map json) {
   );
 }
 
+Map<String, dynamic> _$VideoToJson(Video instance) => <String, dynamic>{
+      'image': instance.image,
+      'url': instance.url,
+      'secure_url': instance.secureUrl,
+      'width': instance.width,
+      'height': instance.height,
+      'type': instance.type,
+      'alt': instance.alt,
+    };
+
 Audio _$AudioFromJson(Map json) {
   return Audio(
     audio: json['audio'] as String,
