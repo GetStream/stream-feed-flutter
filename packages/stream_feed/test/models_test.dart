@@ -30,29 +30,31 @@ void main() {
 // - [ ] Image
 // - [x] User
   test('Activity', () {
-    // final result = Activity(
-    //     actor: "test",
-    //     verb: "test",
-    //     object: "test",
-    //     to: <FeedId>[FeedId("slug", "id")],
-    //     time: DateTime.parse("2001-09-11T00:01:02.000"));
+    final activity = Activity(
+        target: "test",
+        foreignId: "test",
+        id: "test",
+        analytics: {"test": "test"},
+        extraContext: {"test": "test"},
+        origin: "test",
+        score: 1.0,
+        extraData: {"test": "test"},
+        actor: "test",
+        verb: "test",
+        object: "test",
+        to: <FeedId>[FeedId("slug", "id")],
+        time: DateTime.parse("2001-09-11T00:01:02.000"));
     final r = json.decode(
-        '{"actor": "test", "verb": "test", "object": "test", "time": "2001-09-11T00:01:02.000", "to": ["slug:id"]}');
-    final matcher = {
-      "actor": "test",
-      "verb": "test",
-      "object": "test",
-      "time": "2001-09-11T00:01:02.000",
-      "to": <String>["slug:id"]
-    };
-    expect(r, matcher);
-    final activity = Activity.fromJson(matcher);
-    expect(activity.actor, "test");
-    expect(activity.verb, "test");
-    expect(activity.object, "test");
-    expect(activity.time, DateTime.parse("2001-09-11T00:01:02.000"));
-    expect(activity.to, <FeedId>[FeedId("slug", "id")]);
-    // expect(result, activity);//TODO: there is something wrong with equatable or json_serializable
+        '{"id": "test", "actor": "test", "verb": "test", "object": "test", "foreign_id": "test", "target": "test", "time": "2001-09-11T00:01:02.000", "origin": "test", "to": ["slug:id"], "score": 1.0, "analytics": {"test": "test"}, "extra_context": {"test": "test"}, "test": "test"}');
+
+    final activityJson = Activity.fromJson(r);
+    expect(activityJson.actor, "test");
+    expect(activityJson.verb, "test");
+    expect(activityJson.object, "test");
+    expect(activityJson.time, DateTime.parse("2001-09-11T00:01:02.000"));
+    expect(activityJson.to, <FeedId>[FeedId("slug", "id")]);
+    expect(activityJson,
+        activity); 
   });
 
   test("CollectionEntry", () {
@@ -111,21 +113,11 @@ void main() {
         parent: "test",
         createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
         updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        targetFeeds: [
-          FeedId("slug", "userId")
-        ],
-        user: {
-          "test": "test"
-        },
-        targetFeedsExtraData: {
-          "test": "test"
-        },
-        data: {
-          "test": "test"
-        },
-        childrenCounts: {
-          "test": 1
-        });
+        targetFeeds: [FeedId("slug", "userId")],
+        user: {"test": "test"},
+        targetFeedsExtraData: {"test": "test"},
+        data: {"test": "test"},
+        childrenCounts: {"test": 1});
     final reaction1 = Reaction(
         id: "test",
         kind: "test",
@@ -134,24 +126,14 @@ void main() {
         parent: "test",
         createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
         updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        targetFeeds: [
-          FeedId("slug", "userId")
-        ],
-        user: {
-          "test": "test"
-        },
-        targetFeedsExtraData: {
-          "test": "test"
-        },
-        data: {
-          "test": "test"
-        },
+        targetFeeds: [FeedId("slug", "userId")],
+        user: {"test": "test"},
+        targetFeedsExtraData: {"test": "test"},
+        data: {"test": "test"},
         // latestChildren: {
         //   "test": [reaction2]
         // },//TODO: test this
-        childrenCounts: {
-          "test": 1
-        });
+        childrenCounts: {"test": 1});
 
     final reaction2Json = json.decode(
         '{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}');
