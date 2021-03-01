@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'open_graph_data.g.dart';
 
 ///
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class OpenGraphData extends Equatable {
   ///
   final String title;
@@ -72,6 +72,9 @@ class OpenGraphData extends Equatable {
   /// Create a new instance from a json
   factory OpenGraphData.fromJson(Map<String, dynamic> json) =>
       _$OpenGraphDataFromJson(json);
+
+  /// Serialize to json
+  Map<String, dynamic> toJson() => _$OpenGraphDataToJson(this);
 }
 
 ///

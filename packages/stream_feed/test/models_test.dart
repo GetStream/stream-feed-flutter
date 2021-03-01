@@ -338,4 +338,51 @@ void main() {
     final audioFromJson = Audio.fromJson(audioJson);
     expect(audioFromJson, audio);
   });
+
+  test("OpenGraphData", () {
+    final openGraphData = OpenGraphData(
+      title: "test",
+      type: "test",
+      url: "test",
+      site: "test",
+      siteName: "test",
+      description: "test",
+      determiner: "test",
+      locale: "test",
+      images: [
+        Image(
+            image: "test",
+            url: "test",
+            secureUrl: "test",
+            width: "test",
+            height: "test",
+            type: "test",
+            alt: "test")
+      ],
+      videos: [
+        Video(
+          image: "test",
+          url: "test",
+          secureUrl: "test",
+          width: "test",
+          height: "test",
+          type: "test",
+          alt: "test",
+        )
+      ],
+      audios: [
+        Audio(
+          audio: "test",
+          url: "test",
+          secureUrl: "test",
+          type: "test",
+        )
+      ],
+    );
+    final openGraphDataJson = json.decode(
+        '{"title": "test", "type": "test", "url": "test", "site": "test", "site_name": "test", "description": "test", "determiner": "test", "locale": "test", "images": [{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}], "videos": [{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}], "audios": [{"audio": "test", "url": "test", "secure_url": "test", "type": "test"}]}');
+    // expect(openGraphDataJson, "matcher");
+    final openGraphDataFromJson = OpenGraphData.fromJson(openGraphDataJson);
+    expect(openGraphDataFromJson, openGraphData);
+  });
 }

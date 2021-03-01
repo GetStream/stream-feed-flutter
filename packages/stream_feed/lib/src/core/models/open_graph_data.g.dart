@@ -40,6 +40,21 @@ OpenGraphData _$OpenGraphDataFromJson(Map json) {
   );
 }
 
+Map<String, dynamic> _$OpenGraphDataToJson(OpenGraphData instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'type': instance.type,
+      'url': instance.url,
+      'site': instance.site,
+      'site_name': instance.siteName,
+      'description': instance.description,
+      'determiner': instance.determiner,
+      'locale': instance.locale,
+      'images': instance.images?.map((e) => e?.toJson())?.toList(),
+      'videos': instance.videos?.map((e) => e?.toJson())?.toList(),
+      'audios': instance.audios?.map((e) => e?.toJson())?.toList(),
+    };
+
 Image _$ImageFromJson(Map json) {
   return Image(
     image: json['image'] as String,
