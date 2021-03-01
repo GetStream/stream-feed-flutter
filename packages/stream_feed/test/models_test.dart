@@ -14,7 +14,7 @@ void main() {
 //TODOs: setup model tests for the following models
 // - [ ] Group
 // - [x] Activity
-// - [ ] ActivityUpdate
+// - [x] ActivityUpdate
 // - [x] EnrichedActivity
 // - [x] NotificationGroup
 // - [x] CollectionEntry
@@ -58,7 +58,7 @@ void main() {
         data: {"test": "test"},
         // latestChildren: {
         //   "test": [reaction2]
-        // },//TODO: test this
+        // },
         childrenCounts: {"test": 1});
     final enrichedActivity = EnrichedActivity(
       id: "test",
@@ -118,7 +118,7 @@ void main() {
             data: {"test": "test"},
             // latestChildren: {
             //   "test": [reaction2]
-            // },//TODO: test this
+            // }
             childrenCounts: {"test": 1})
       ]
     });
@@ -169,6 +169,39 @@ void main() {
     expect(activityJson.time, DateTime.parse("2001-09-11T00:01:02.000"));
     expect(activityJson.to, <FeedId>[FeedId("slug", "id")]);
     expect(activityJson, activity);
+  });
+
+  test("Group", () {
+    final group = Group(
+      id: "test",
+      group: "test",
+      activities: [
+        Activity(
+            target: "test",
+            foreignId: "test",
+            id: "test",
+            analytics: {"test": "test"},
+            extraContext: {"test": "test"},
+            origin: "test",
+            score: 1.0,
+            extraData: {"test": "test"},
+            actor: "test",
+            verb: "test",
+            object: "test",
+            to: <FeedId>[FeedId("slug", "id")],
+            time: DateTime.parse("2001-09-11T00:01:02.000"))
+      ],
+      actorCount: 1,
+      createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
+      updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+    );
+    final groupJson = json.decode(
+        '{"id": "test", "group": "test", "activities": [{"id": "test", "actor": "test", "verb": "test", "object": "test", "foreign_id": "test", "target": "test", "time": "2001-09-11T00:01:02.000", "origin": "test", "to": ["slug:id"], "score": 1.0, "analytics": {"test": "test"}, "extra_context": {"test": "test"}, "test": "test"}], "actor_count": 1, "created_at": "2001-09-11T00:01:02.000", "updated_at": "2001-09-11T00:01:02.000"}');
+
+    // expect(groupJson, matcher)
+    final groupFromJson =
+        Group.fromJson(groupJson, (e) => Activity.fromJson(e));
+    expect(groupFromJson, group);
   });
 
   test("NotificationGroup", () {
@@ -497,7 +530,6 @@ void main() {
     );
     final openGraphDataJson = json.decode(
         '{"title": "test", "type": "test", "url": "test", "site": "test", "site_name": "test", "description": "test", "determiner": "test", "locale": "test", "images": [{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}], "videos": [{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}], "audios": [{"audio": "test", "url": "test", "secure_url": "test", "type": "test"}]}');
-    // expect(openGraphDataJson, "matcher");
     final openGraphDataFromJson = OpenGraphData.fromJson(openGraphDataJson);
     expect(openGraphDataFromJson, openGraphData);
   });
