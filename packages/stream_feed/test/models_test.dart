@@ -10,63 +10,44 @@ import 'utils.dart';
 
 void main() {
   prepareTest();
-
-//TODOs: setup model tests for the following models
-// - [x] Group
-// - [x] Activity
-// - [x] ActivityUpdate
-// - [x] EnrichedActivity
-// - [x] NotificationGroup
-// - [x] CollectionEntry
-// - [x] Follow
-// - [x] Reaction
-// - [x] PaginatedReactions
-// - [x] User
-// - [x] ActivityUpdate
-// - [x] Unfollow
-// - [x] OpenGraphData
-// - [x] Video
-// - [x] Audio
-// - [x] Image
-// - [x] User
-
-  test("EnrichedActivity", () {
+  
+  test('EnrichedActivity', () {
     final reaction1 = Reaction(
-        id: "test",
-        kind: "test",
-        activityId: "test",
-        userId: "test",
-        parent: "test",
-        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        targetFeeds: [FeedId("slug", "userId")],
-        user: {"test": "test"},
-        targetFeedsExtraData: {"test": "test"},
-        data: {"test": "test"},
+        id: 'test',
+        kind: 'test',
+        activityId: 'test',
+        userId: 'test',
+        parent: 'test',
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        targetFeeds: [FeedId('slug', 'userId')],
+        user: const {'test': 'test'},
+        targetFeedsExtraData: const {'test': 'test'},
+        data: const {'test': "test"},
         // latestChildren: {
         //   "test": [reaction2]
         // },
-        childrenCounts: {"test": 1});
+        childrenCounts: const {'test': 1});
     final enrichedActivity = EnrichedActivity(
-      id: "test",
-      actor: EnrichableField("test"),
-      object: EnrichableField("test"),
-      verb: "test",
-      target: EnrichableField("test"),
-      to: ["test"],
-      foreignId: "test",
-      time: DateTime.parse("2001-09-11T00:01:02.000"),
-      analytics: {"test": "test"},
-      extraContext: {"test": "test"},
-      origin: EnrichableField("test"),
+      id: 'test',
+      actor: const EnrichableField('test'),
+      object: const EnrichableField('test'),
+      verb: 'test',
+      target: const EnrichableField("test"),
+      to: const ['test'],
+      foreignId: 'test',
+      time: DateTime.parse('2001-09-11T00:01:02.000'),
+      analytics: const {'test': 'test'},
+      extraContext: const {'test': 'test'},
+      origin: const EnrichableField('test'),
       score: 1.0,
-      extraData: {"test": "test"},
-      reactionCounts: {"test": 1},
+      extraData: const {'test': 'test'},
+      reactionCounts: const {'test': 1},
       ownReactions: {
-        "test": [reaction1]
+        'test': [reaction1]
       },
       latestReactions: {
-        "test": [reaction1]
+        'test': [reaction1]
       },
     );
     final enrichedActivityJson = json.decode(
@@ -77,19 +58,19 @@ void main() {
   });
   test('Activity', () {
     final activity = Activity(
-        target: "test",
-        foreignId: "test",
-        id: "test",
-        analytics: {"test": "test"},
-        extraContext: {"test": "test"},
-        origin: "test",
+        target: 'test',
+        foreignId: 'test',
+        id: 'test',
+        analytics: const {'test': 'test'},
+        extraContext: const {'test': 'test'},
+        origin: 'test',
         score: 1.0,
-        extraData: {"test": "test"},
-        actor: "test",
-        verb: "test",
-        object: "test",
-        to: <FeedId>[FeedId("slug", "id")],
-        time: DateTime.parse("2001-09-11T00:01:02.000"));
+        extraData: const {'test': 'test'},
+        actor: 'test',
+        verb: 'test',
+        object: 'test',
+        to: <FeedId>[FeedId('slug', 'id')],
+        time: DateTime.parse('2001-09-11T00:01:02.000'));
     final r = json.decode(
         '{"id": "test", "actor": "test", "verb": "test", "object": "test", "foreign_id": "test", "target": "test", "time": "2001-09-11T00:01:02.000", "origin": "test", "to": ["slug:id"], "score": 1.0, "analytics": {"test": "test"}, "extra_context": {"test": "test"}, "test": "test"}');
 
@@ -97,29 +78,29 @@ void main() {
     expect(activityJson, activity);
   });
 
-  test("Group", () {
+  test('Group', () {
     final group = Group(
-      id: "test",
-      group: "test",
+      id: 'test',
+      group: 'test',
       activities: [
         Activity(
-            target: "test",
-            foreignId: "test",
-            id: "test",
-            analytics: {"test": "test"},
-            extraContext: {"test": "test"},
-            origin: "test",
+            target: 'test',
+            foreignId: 'test',
+            id: 'test',
+            analytics: const {'test': 'test'},
+            extraContext: const {'test': 'test'},
+            origin: 'test',
             score: 1.0,
-            extraData: {"test": "test"},
-            actor: "test",
-            verb: "test",
-            object: "test",
-            to: <FeedId>[FeedId("slug", "id")],
-            time: DateTime.parse("2001-09-11T00:01:02.000"))
+            extraData: const {'test': 'test'},
+            actor: 'test',
+            verb: 'test',
+            object: 'test',
+            to: <FeedId>[FeedId('slug', 'id')],
+            time: DateTime.parse('2001-09-11T00:01:02.000'))
       ],
       actorCount: 1,
-      createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-      updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+      createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+      updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
     );
     final groupJson = json.decode(
         '{"id": "test", "group": "test", "activities": [{"id": "test", "actor": "test", "verb": "test", "object": "test", "foreign_id": "test", "target": "test", "time": "2001-09-11T00:01:02.000", "origin": "test", "to": ["slug:id"], "score": 1.0, "analytics": {"test": "test"}, "extra_context": {"test": "test"}, "test": "test"}], "actor_count": 1, "created_at": "2001-09-11T00:01:02.000", "updated_at": "2001-09-11T00:01:02.000"}');
@@ -130,29 +111,29 @@ void main() {
     expect(groupFromJson, group);
   });
 
-  test("NotificationGroup", () {
+  test('NotificationGroup', () {
     final notificationGroup = NotificationGroup(
-      id: "test",
-      group: "test",
+      id: 'test',
+      group: 'test',
       activities: [
         Activity(
-            target: "test",
-            foreignId: "test",
-            id: "test",
-            analytics: {"test": "test"},
-            extraContext: {"test": "test"},
-            origin: "test",
+            target: 'test',
+            foreignId: 'test',
+            id: 'test',
+            analytics: const {'test': 'test'},
+            extraContext: const {'test': 'test'},
+            origin: 'test',
             score: 1.0,
-            extraData: {"test": "test"},
-            actor: "test",
-            verb: "test",
-            object: "test",
-            to: <FeedId>[FeedId("slug", "id")],
-            time: DateTime.parse("2001-09-11T00:01:02.000"))
+            extraData: const {'test': 'test'},
+            actor: 'test',
+            verb: 'test',
+            object: 'test',
+            to: <FeedId>[FeedId('slug', 'id')],
+            time: DateTime.parse('2001-09-11T00:01:02.000'))
       ],
       actorCount: 1,
-      createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-      updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+      createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+      updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
       isRead: true,
       isSeen: true,
     );
@@ -163,14 +144,14 @@ void main() {
         notificationGroupJson, (e) => Activity.fromJson(e));
     expect(notificationGroupFromJson, notificationGroup);
   });
-  test("CollectionEntry", () {
+  test('CollectionEntry', () {
     final entry = CollectionEntry(
-        id: "test",
-        collection: "test",
-        foreignId: "test",
-        data: {"test": "test"},
-        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"));
+        id: 'test',
+        collection: 'test',
+        foreignId: 'test',
+        data: const {'test': 'test'},
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'));
     final entryJson = json.decode(
         '{"id": "test", "collection": "test", "foreign_id": "test", "data": {"test": "test"}, "created_at": "2001-09-11T00:01:02.000", "updated_at": "2001-09-11T00:01:02.000"}');
 
@@ -178,63 +159,63 @@ void main() {
     expect(entry, entryFromJson);
   });
 
-  test("PaginatedReactions", () {
+  test('PaginatedReactions', () {
     final reaction1 = Reaction(
-        id: "test",
-        kind: "test",
-        activityId: "test",
-        userId: "test",
-        parent: "test",
-        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        targetFeeds: [FeedId("slug", "userId")],
-        user: {"test": "test"},
-        targetFeedsExtraData: {"test": "test"},
-        data: {"test": "test"},
+        id: 'test',
+        kind: 'test',
+        activityId: 'test',
+        userId: 'test',
+        parent: 'test',
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        targetFeeds: [FeedId('slug', 'userId')],
+        user: const {'test': 'test'},
+        targetFeedsExtraData: const {'test': 'test'},
+        data: const {'test': 'test'},
         // latestChildren: {
         //   "test": [reaction2]
         // },//TODO: test this
-        childrenCounts: {"test": 1});
+        childrenCounts: const {'test': 1});
     final enrichedActivity = EnrichedActivity(
-      id: "test",
-      actor: EnrichableField("test"),
-      object: EnrichableField("test"),
-      verb: "test",
-      target: EnrichableField("test"),
-      to: ["test"],
-      foreignId: "test",
-      time: DateTime.parse("2001-09-11T00:01:02.000"),
-      analytics: {"test": "test"},
-      extraContext: {"test": "test"},
-      origin: EnrichableField("test"),
+      id: 'test',
+      actor: const EnrichableField('test'),
+      object: const EnrichableField('test'),
+      verb: 'test',
+      target: const EnrichableField('test'),
+      to: const ['test'],
+      foreignId: 'test',
+      time: DateTime.parse('2001-09-11T00:01:02.000'),
+      analytics: const {'test': 'test'},
+      extraContext: const {'test': 'test'},
+      origin: const EnrichableField('test'),
       score: 1.0,
-      extraData: {"test": "test"},
-      reactionCounts: {"test": 1},
+      extraData: const {'test': 'test'},
+      reactionCounts: const {'test': 1},
       ownReactions: {
-        "test": [reaction1]
+        'test': [reaction1]
       },
       latestReactions: {
-        "test": [reaction1]
+        'test': [reaction1]
       },
     );
     final reaction = Reaction(
-        id: "test",
-        kind: "test",
-        activityId: "test",
-        userId: "test",
-        parent: "test",
-        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        targetFeeds: [FeedId("slug", "userId")],
-        user: {"test": "test"},
-        targetFeedsExtraData: {"test": "test"},
-        data: {"test": "test"},
+        id: 'test',
+        kind: 'test',
+        activityId: 'test',
+        userId: 'test',
+        parent: 'test',
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        targetFeeds: [FeedId('slug', 'userId')],
+        user: const {'test': 'test'},
+        targetFeedsExtraData: const {'test': 'test'},
+        data: const {'test': 'test'},
         // latestChildren: {
         //   "test": [reaction2]
         // },//TODO: test this
-        childrenCounts: {"test": 1});
+        childrenCounts: const {'test': 1});
     final paginatedReactions =
-        PaginatedReactions("test", [reaction], enrichedActivity, "duration");
+        PaginatedReactions('test', [reaction], enrichedActivity, 'duration');
 
     final paginatedReactionsJson = json.decode(
         '{"next": "test", "results": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}], "duration": "duration", "activity": {"id":"test", "actor": "test","object": "test", "verb": "test","target": "test", "to":["test"], "foreign_id": "test", "time": "2001-09-11T00:01:02.000","analytics": {"test": "test"},"extra_context": {"test": "test"},"origin":"test","score":1.0,"reaction_counts": {"test": 1},"own_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]},"latest_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]}, "extra_data": {"test": "test"}}}');
@@ -242,43 +223,43 @@ void main() {
         PaginatedReactions.fromJson(paginatedReactionsJson);
     expect(paginatedReactionsFromJson, paginatedReactions);
   });
-  test("User", () {
+  test('User', () {
     final user = User(
-        id: "test",
-        data: {"test": "test"},
-        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        id: 'test',
+        data: const {'test': 'test'},
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         followersCount: 1,
         followingCount: 1);
     final userJson = json.decode(
         '{"id": "test", "data": {"test": "test"}, "created_at": "2001-09-11T00:01:02.000","updated_at": "2001-09-11T00:01:02.000","followers_count": 1, "following_count": 1}');
 
     final userFromJson = User.fromJson(userJson);
-    expect(userFromJson, user); //doesnt work
+    expect(userFromJson, user);
   });
 
-  test("Follow", () {
-    final follow = Follow("feedId", "targetId");
+  test('Follow', () {
+    const follow = Follow('feedId', 'targetId');
     final followJson =
         json.decode('{"feed_id": "feedId", "target_id": "targetId"}');
 
     expect(follow, Follow.fromJson(followJson));
   });
-  test("Unfollow", () {
-    final follow = UnFollow("feedId", "targetId", true);
+  test('Unfollow', () {
+    const follow = UnFollow('feedId', 'targetId', true);
     final followJson = json.decode(
         '{"feed_id": "feedId", "target_id": "targetId","keep_history":true}');
 
     expect(follow, UnFollow.fromJson(followJson));
   });
 
-  test("ActivityUpdate", () {
+  test('ActivityUpdate', () {
     final activityUpdate = ActivityUpdate(
-        id: "test",
-        foreignId: "test",
-        time: DateTime.parse("2001-09-11T00:01:02.000"),
-        set: {"hey": "hey"},
-        unset: ["test"]);
+        id: 'test',
+        foreignId: 'test',
+        time: DateTime.parse('2001-09-11T00:01:02.000'),
+        set: const {'hey': 'hey'},
+        unset: const ['test']);
     final activityUpdateJson = json.decode(
         '{"id": "test", "foreign_id": "test", "time": "2001-09-11T00:01:02.000", "set": {"hey": "hey"}, "unset": ["test"]}');
 
@@ -286,36 +267,36 @@ void main() {
     expect(activityUpdateFromJson, activityUpdate);
   });
 
-  test("Reaction", () {
+  test('Reaction', () {
     final reaction2 = Reaction(
-        id: "test",
-        kind: "test",
-        activityId: "test",
-        userId: "test",
-        parent: "test",
-        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        targetFeeds: [FeedId("slug", "userId")],
-        user: {"test": "test"},
-        targetFeedsExtraData: {"test": "test"},
-        data: {"test": "test"},
-        childrenCounts: {"test": 1});
+        id: 'test',
+        kind: 'test',
+        activityId: 'test',
+        userId: 'test',
+        parent: 'test',
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        targetFeeds: [FeedId('slug', 'userId')],
+        user: const {'test': 'test'},
+        targetFeedsExtraData: const {'test': 'test'},
+        data: const {'test': 'test'},
+        childrenCounts: const {'test': 1});
     final reaction = Reaction(
-        id: "test",
-        kind: "test",
-        activityId: "test",
-        userId: "test",
-        parent: "test",
-        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
-        targetFeeds: [FeedId("slug", "userId")],
-        user: {"test": "test"},
-        targetFeedsExtraData: {"test": "test"},
-        data: {"test": "test"},
+        id: 'test',
+        kind: 'test',
+        activityId: 'test',
+        userId: 'test',
+        parent: 'test',
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        targetFeeds: [FeedId('slug', 'userId')],
+        user: const {'test': 'test'},
+        targetFeedsExtraData: const {'test': 'test'},
+        data: const {'test': 'test'},
         // latestChildren: {
         //   "test": [reaction2]
         // },//TODO: test this
-        childrenCounts: {"test": 1});
+        childrenCounts: const {'test': 1});
 
     final reactionJson = json.decode(
         '{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}');
@@ -324,15 +305,15 @@ void main() {
     expect(reactionFromJson, reaction);
   });
 
-  test("Image", () {
-    final image = Image(
-        image: "test",
-        url: "test",
-        secureUrl: "test",
-        width: "test",
-        height: "test",
-        type: "test",
-        alt: "test");
+  test('Image', () {
+    const image = Image(
+        image: 'test',
+        url: 'test',
+        secureUrl: 'test',
+        width: 'test',
+        height: 'test',
+        type: 'test',
+        alt: 'test');
     final imageJson = json.decode(
         '{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}');
 
@@ -340,15 +321,15 @@ void main() {
     expect(imageFromJson, image);
   });
 
-  test("Video", () {
-    final video = Video(
-      image: "test",
-      url: "test",
-      secureUrl: "test",
-      width: "test",
-      height: "test",
-      type: "test",
-      alt: "test",
+  test('Video', () {
+    const video = Video(
+      image: 'test',
+      url: 'test',
+      secureUrl: 'test',
+      width: 'test',
+      height: 'test',
+      type: 'test',
+      alt: 'test',
     );
 
     final videoJson = json.decode(
@@ -357,12 +338,12 @@ void main() {
     final videoFromJson = Video.fromJson(videoJson);
     expect(videoFromJson, video);
   });
-  test("Audio", () {
-    final audio = Audio(
-      audio: "test",
-      url: "test",
-      secureUrl: "test",
-      type: "test",
+  test('Audio', () {
+    const audio = Audio(
+      audio: 'test',
+      url: 'test',
+      secureUrl: 'test',
+      type: 'test',
     );
     final audioJson = json.decode(
         '{"audio": "test", "url": "test", "secure_url": "test", "type": "test"}');
@@ -370,43 +351,43 @@ void main() {
     expect(audioFromJson, audio);
   });
 
-  test("OpenGraphData", () {
-    final openGraphData = OpenGraphData(
-      title: "test",
-      type: "test",
-      url: "test",
-      site: "test",
-      siteName: "test",
-      description: "test",
-      determiner: "test",
-      locale: "test",
+  test('OpenGraphData', () {
+    const openGraphData = OpenGraphData(
+      title: 'test',
+      type: 'test',
+      url: 'test',
+      site: 'test',
+      siteName: 'test',
+      description: 'test',
+      determiner: 'test',
+      locale: 'test',
       images: [
         Image(
-            image: "test",
-            url: "test",
-            secureUrl: "test",
-            width: "test",
-            height: "test",
-            type: "test",
-            alt: "test")
+            image: 'test',
+            url: 'test',
+            secureUrl: 'test',
+            width: 'test',
+            height: 'test',
+            type: 'test',
+            alt: 'test')
       ],
       videos: [
         Video(
-          image: "test",
-          url: "test",
-          secureUrl: "test",
-          width: "test",
-          height: "test",
-          type: "test",
-          alt: "test",
+          image: 'test',
+          url: 'test',
+          secureUrl: 'test',
+          width: 'test',
+          height: 'test',
+          type: 'test',
+          alt: 'test',
         )
       ],
       audios: [
         Audio(
-          audio: "test",
-          url: "test",
-          secureUrl: "test",
-          type: "test",
+          audio: 'test',
+          url: 'test',
+          secureUrl: 'test',
+          type: 'test',
         )
       ],
     );
