@@ -69,10 +69,25 @@ void main() {
       },
     );
     final enrichedActivityJson = json.decode(
-        '{"id":"test", "actor": "test","object": "test", "verb": "test","target": "test", "to":["test"], "foreign_id": "test", "time": "2001-09-11T00:01:02.000","analytics": {"test": "test"},"extra_context": {"test": "test"},"origin":"test","score":1.0,"extra_data": {"test": "test"},"reaction_counts": {"test": 1},"own_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]},"latest_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]} }');
+        '{"id":"test", "actor": "test","object": "test", "verb": "test","target": "test", "to":["test"], "foreign_id": "test", "time": "2001-09-11T00:01:02.000","analytics": {"test": "test"},"extra_context": {"test": "test"},"origin":"test","score":1.0,"reaction_counts": {"test": 1},"own_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]},"latest_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]}, "extra_data": {"test": "test"}}');
     final enrichedActivityFromJson =
         EnrichedActivity.fromJson(enrichedActivityJson);
+    expect(enrichedActivityFromJson.id, "test");
     expect(enrichedActivityFromJson.actor, EnrichableField("test"));
+    expect(enrichedActivityFromJson.object, EnrichableField("test"));
+    expect(enrichedActivityFromJson.verb, "test");
+    expect(enrichedActivityFromJson.target, EnrichableField("test"));
+    expect(enrichedActivityFromJson.to, ["test"]);
+    expect(enrichedActivityFromJson.foreignId, "test");
+    expect(enrichedActivityFromJson.time,
+        DateTime.parse("2001-09-11T00:01:02.000"));
+    expect(enrichedActivityFromJson.analytics, {"test": "test"});
+    expect(enrichedActivityFromJson.extraContext, {"test": "test"});
+    expect(enrichedActivityFromJson.origin, EnrichableField("test"));
+    expect(enrichedActivityFromJson.score, 1.0);
+    expect(enrichedActivityFromJson.extraData, {"test": "test"});
+    expect(enrichedActivityFromJson.reactionCounts, {"test": 1});
+
     expect(enrichedActivityFromJson.latestReactions, {
       "test": [
         Reaction(
@@ -93,7 +108,27 @@ void main() {
             childrenCounts: {"test": 1})
       ]
     });
-    // expect(enrichedActivityFromJson, enrichedActivity);
+    expect(enrichedActivityFromJson.ownReactions, {
+      "test": [
+        Reaction(
+            id: "test",
+            kind: "test",
+            activityId: "test",
+            userId: "test",
+            parent: "test",
+            createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
+            updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+            targetFeeds: [FeedId("slug", "userId")],
+            user: {"test": "test"},
+            targetFeedsExtraData: {"test": "test"},
+            data: {"test": "test"},
+            // latestChildren: {
+            //   "test": [reaction2]
+            // },//TODO: test this
+            childrenCounts: {"test": 1})
+      ]
+    });
+    expect(enrichedActivityFromJson, enrichedActivity);
   });
   test('Activity', () {
     final activity = Activity(
