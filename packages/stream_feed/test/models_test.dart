@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:stream_feed_dart/src/core/models/activity.dart';
+import 'package:stream_feed_dart/src/core/models/group.dart';
 import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
@@ -20,7 +21,7 @@ void main() {
 // - [x] CollectionEntry
 // - [x] Follow
 // - [x] Reaction
-// - [ ] PaginatedReactions
+// - [x] PaginatedReactions
 // - [x] User
 // - [x] ActivityUpdate
 // - [x] Unfollow
@@ -158,6 +159,40 @@ void main() {
     expect(activityJson, activity);
   });
 
+  test("NotificationGroup", () {
+    final notificationGroup = NotificationGroup(
+      id: "test",
+      group: "test",
+      activities: [
+       Activity(
+        target: "test",
+        foreignId: "test",
+        id: "test",
+        analytics: {"test": "test"},
+        extraContext: {"test": "test"},
+        origin: "test",
+        score: 1.0,
+        extraData: {"test": "test"},
+        actor: "test",
+        verb: "test",
+        object: "test",
+        to: <FeedId>[FeedId("slug", "id")],
+        time: DateTime.parse("2001-09-11T00:01:02.000"))
+      ],
+      actorCount: 1,
+      createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
+      updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+      isRead: true,
+      isSeen: true,
+    );
+    final notificationGroupJson = json.decode(
+        '{"id": "test", "group": "test", "activities": [{"id": "test", "actor": "test", "verb": "test", "object": "test", "foreign_id": "test", "target": "test", "time": "2001-09-11T00:01:02.000", "origin": "test", "to": ["slug:id"], "score": 1.0, "analytics": {"test": "test"}, "extra_context": {"test": "test"}, "test": "test"}], "actor_count": 1, "created_at": "2001-09-11T00:01:02.000", "updated_at": "2001-09-11T00:01:02.000","is_read":true,"is_seen":true}');
+
+    final notificationGroupFromJson = NotificationGroup.fromJson(
+        notificationGroupJson, (e) => Activity.fromJson(e));
+    expect(notificationGroupFromJson, notificationGroup);
+    // expect(notificationGroupFromJson.id, "test");
+  });
   test("CollectionEntry", () {
     final entry = CollectionEntry(
         id: "test",
