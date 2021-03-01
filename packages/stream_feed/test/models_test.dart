@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/group.dart';
@@ -17,7 +16,7 @@ void main() {
 // - [x] Activity
 // - [ ] ActivityUpdate
 // - [x] EnrichedActivity
-// - [ ] NotificationGroup
+// - [x] NotificationGroup
 // - [x] CollectionEntry
 // - [x] Follow
 // - [x] Reaction
@@ -31,6 +30,19 @@ void main() {
 // - [x] Image
 // - [x] User
 
+  test("ActivityUpdate", () {
+    final activityUpdate = ActivityUpdate(
+      id: "test",
+      foreignId: "test",
+      time: DateTime.parse("2001-09-11T00:01:02.000"),
+      set: {"test": "test"},
+      unset: ["test"],
+    );
+    final activityUpdateJson = json.decode(
+        '{"id": "test", "foreign_id": "test", "time": "2001-09-11T00:01:02.000", "set": {"test": "test"}, "unset": ["test"]}');
+    final activityUpdateFromJson = ActivityUpdate.fromJson(activityUpdateJson);
+    expect(activityUpdateFromJson, activityUpdate);
+  });
   test("EnrichedActivity", () {
     final reaction1 = Reaction(
         id: "test",
@@ -164,20 +176,20 @@ void main() {
       id: "test",
       group: "test",
       activities: [
-       Activity(
-        target: "test",
-        foreignId: "test",
-        id: "test",
-        analytics: {"test": "test"},
-        extraContext: {"test": "test"},
-        origin: "test",
-        score: 1.0,
-        extraData: {"test": "test"},
-        actor: "test",
-        verb: "test",
-        object: "test",
-        to: <FeedId>[FeedId("slug", "id")],
-        time: DateTime.parse("2001-09-11T00:01:02.000"))
+        Activity(
+            target: "test",
+            foreignId: "test",
+            id: "test",
+            analytics: {"test": "test"},
+            extraContext: {"test": "test"},
+            origin: "test",
+            score: 1.0,
+            extraData: {"test": "test"},
+            actor: "test",
+            verb: "test",
+            object: "test",
+            to: <FeedId>[FeedId("slug", "id")],
+            time: DateTime.parse("2001-09-11T00:01:02.000"))
       ],
       actorCount: 1,
       createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
@@ -191,7 +203,6 @@ void main() {
     final notificationGroupFromJson = NotificationGroup.fromJson(
         notificationGroupJson, (e) => Activity.fromJson(e));
     expect(notificationGroupFromJson, notificationGroup);
-    // expect(notificationGroupFromJson.id, "test");
   });
   test("CollectionEntry", () {
     final entry = CollectionEntry(
