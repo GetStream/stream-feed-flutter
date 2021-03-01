@@ -92,3 +92,10 @@ Audio _$AudioFromJson(Map json) {
     type: json['type'] as String,
   );
 }
+
+Map<String, dynamic> _$AudioToJson(Audio instance) => <String, dynamic>{
+      'audio': instance.audio,
+      'url': instance.url,
+      'secure_url': instance.secureUrl,
+      'type': instance.type,
+    };

@@ -24,9 +24,9 @@ void main() {
 // - [x] ActivityUpdate
 // - [x] Unfollow
 // - [ ] OpenGraphData
-// - [ ] Video
-// - [ ] Audio
-// - [ ] Image
+// - [x] Video
+// - [x] Audio
+// - [x] Image
 // - [x] User
 
   test("EnrichedActivity", () {
@@ -325,5 +325,17 @@ void main() {
 
     final videoFromJson = Video.fromJson(videoJson);
     expect(videoFromJson, video);
+  });
+  test("Audio", () {
+    final audio = Audio(
+      audio: "test",
+      url: "test",
+      secureUrl: "test",
+      type: "test",
+    );
+    final audioJson = json.decode(
+        '{"audio": "test", "url": "test", "secure_url": "test", "type": "test"}');
+    final audioFromJson = Audio.fromJson(audioJson);
+    expect(audioFromJson, audio);
   });
 }
