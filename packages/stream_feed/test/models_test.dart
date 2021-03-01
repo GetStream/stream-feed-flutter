@@ -21,13 +21,80 @@ void main() {
 // - [x] Reaction
 // - [ ] PaginatedReactions
 // - [x] User
-// - [ ] ActivityUpdate
+// - [x] ActivityUpdate
 // - [x] Unfollow
 // - [ ] OpenGraphData
 // - [ ] Video
 // - [ ] Audio
 // - [ ] Image
 // - [x] User
+
+  test("EnrichedActivity", () {
+    final reaction1 = Reaction(
+        id: "test",
+        kind: "test",
+        activityId: "test",
+        userId: "test",
+        parent: "test",
+        createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+        targetFeeds: [FeedId("slug", "userId")],
+        user: {"test": "test"},
+        targetFeedsExtraData: {"test": "test"},
+        data: {"test": "test"},
+        // latestChildren: {
+        //   "test": [reaction2]
+        // },//TODO: test this
+        childrenCounts: {"test": 1});
+    final enrichedActivity = EnrichedActivity(
+      id: "test",
+      actor: EnrichableField("test"),
+      object: EnrichableField("test"),
+      verb: "test",
+      target: EnrichableField("test"),
+      to: ["test"],
+      foreignId: "test",
+      time: DateTime.parse("2001-09-11T00:01:02.000"),
+      analytics: {"test": "test"},
+      extraContext: {"test": "test"},
+      origin: EnrichableField("test"),
+      score: 1.0,
+      extraData: {"test": "test"},
+      reactionCounts: {"test": 1},
+      ownReactions: {
+        "test": [reaction1]
+      },
+      latestReactions: {
+        "test": [reaction1]
+      },
+    );
+    final enrichedActivityJson = json.decode(
+        '{"id":"test", "actor": "test","object": "test", "verb": "test","target": "test", "to":["test"], "foreign_id": "test", "time": "2001-09-11T00:01:02.000","analytics": {"test": "test"},"extra_context": {"test": "test"},"origin":"test","score":1.0,"extra_data": {"test": "test"},"reaction_counts": {"test": 1},"own_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]},"latest_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]} }');
+    final enrichedActivityFromJson =
+        EnrichedActivity.fromJson(enrichedActivityJson);
+    expect(enrichedActivityFromJson.actor, EnrichableField("test"));
+    expect(enrichedActivityFromJson.latestReactions, {
+      "test": [
+        Reaction(
+            id: "test",
+            kind: "test",
+            activityId: "test",
+            userId: "test",
+            parent: "test",
+            createdAt: DateTime.parse("2001-09-11T00:01:02.000"),
+            updatedAt: DateTime.parse("2001-09-11T00:01:02.000"),
+            targetFeeds: [FeedId("slug", "userId")],
+            user: {"test": "test"},
+            targetFeedsExtraData: {"test": "test"},
+            data: {"test": "test"},
+            // latestChildren: {
+            //   "test": [reaction2]
+            // },//TODO: test this
+            childrenCounts: {"test": 1})
+      ]
+    });
+    // expect(enrichedActivityFromJson, enrichedActivity);
+  });
   test('Activity', () {
     final activity = Activity(
         target: "test",
