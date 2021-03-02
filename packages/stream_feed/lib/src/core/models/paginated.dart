@@ -33,8 +33,7 @@ class PaginatedReactions extends _Paginated<Reaction> {
       : super(next, results, duration);
 
   @override
-  List<Object> get props =>
-      [super.next, super.results, super.duration, activity];
+  List<Object> get props => [...super.props, activity];
 
   ///
   final EnrichedActivity activity;
