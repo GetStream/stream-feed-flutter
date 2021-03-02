@@ -40,6 +40,21 @@ OpenGraphData _$OpenGraphDataFromJson(Map json) {
   );
 }
 
+Map<String, dynamic> _$OpenGraphDataToJson(OpenGraphData instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'type': instance.type,
+      'url': instance.url,
+      'site': instance.site,
+      'site_name': instance.siteName,
+      'description': instance.description,
+      'determiner': instance.determiner,
+      'locale': instance.locale,
+      'images': instance.images?.map((e) => e?.toJson())?.toList(),
+      'videos': instance.videos?.map((e) => e?.toJson())?.toList(),
+      'audios': instance.audios?.map((e) => e?.toJson())?.toList(),
+    };
+
 Image _$ImageFromJson(Map json) {
   return Image(
     image: json['image'] as String,
@@ -51,6 +66,16 @@ Image _$ImageFromJson(Map json) {
     alt: json['alt'] as String,
   );
 }
+
+Map<String, dynamic> _$ImageToJson(Image instance) => <String, dynamic>{
+      'image': instance.image,
+      'url': instance.url,
+      'secure_url': instance.secureUrl,
+      'width': instance.width,
+      'height': instance.height,
+      'type': instance.type,
+      'alt': instance.alt,
+    };
 
 Video _$VideoFromJson(Map json) {
   return Video(
@@ -64,6 +89,16 @@ Video _$VideoFromJson(Map json) {
   );
 }
 
+Map<String, dynamic> _$VideoToJson(Video instance) => <String, dynamic>{
+      'image': instance.image,
+      'url': instance.url,
+      'secure_url': instance.secureUrl,
+      'width': instance.width,
+      'height': instance.height,
+      'type': instance.type,
+      'alt': instance.alt,
+    };
+
 Audio _$AudioFromJson(Map json) {
   return Audio(
     audio: json['audio'] as String,
@@ -72,3 +107,10 @@ Audio _$AudioFromJson(Map json) {
     type: json['type'] as String,
   );
 }
+
+Map<String, dynamic> _$AudioToJson(Audio instance) => <String, dynamic>{
+      'audio': instance.audio,
+      'url': instance.url,
+      'secure_url': instance.secureUrl,
+      'type': instance.type,
+    };

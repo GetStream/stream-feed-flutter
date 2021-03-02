@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'open_graph_data.g.dart';
 
 ///
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class OpenGraphData extends Equatable {
   ///
   final String title;
@@ -72,10 +72,13 @@ class OpenGraphData extends Equatable {
   /// Create a new instance from a json
   factory OpenGraphData.fromJson(Map<String, dynamic> json) =>
       _$OpenGraphDataFromJson(json);
+
+  /// Serialize to json
+  Map<String, dynamic> toJson() => _$OpenGraphDataToJson(this);
 }
 
 ///
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Image extends Equatable {
   ///
   final String image;
@@ -122,10 +125,13 @@ class Image extends Equatable {
 
   /// Create a new instance from a json
   factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
+
+  /// Serialize to json
+  Map<String, dynamic> toJson() => _$ImageToJson(this);
 }
 
 ///
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Video extends Equatable {
   ///
   final String image;
@@ -172,10 +178,13 @@ class Video extends Equatable {
 
   /// Create a new instance from a json
   factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
+
+  /// Serialize to json
+  Map<String, dynamic> toJson() => _$VideoToJson(this);
 }
 
 ///
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Audio extends Equatable {
   ///
   final String audio;
@@ -207,4 +216,5 @@ class Audio extends Equatable {
 
   /// Create a new instance from a json
   factory Audio.fromJson(Map<String, dynamic> json) => _$AudioFromJson(json);
+  Map<String, dynamic> toJson() => _$AudioToJson(this);
 }

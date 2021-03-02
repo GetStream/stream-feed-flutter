@@ -24,3 +24,11 @@ PaginatedReactions _$PaginatedReactionsFromJson(Map json) {
     json['duration'] as String,
   );
 }
+
+Map<String, dynamic> _$PaginatedReactionsToJson(PaginatedReactions instance) =>
+    <String, dynamic>{
+      'next': instance.next,
+      'results': instance.results?.map((e) => e?.toJson())?.toList(),
+      'duration': instance.duration,
+      'activity': instance.activity?.toJson(),
+    };

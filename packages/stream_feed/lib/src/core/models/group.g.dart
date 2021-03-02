@@ -24,6 +24,19 @@ Group<T> _$GroupFromJson<T>(
   );
 }
 
+Map<String, dynamic> _$GroupToJson<T>(
+  Group<T> instance,
+  Object Function(T value) toJsonT,
+) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'group': instance.group,
+      'activities': instance.activities?.map(toJsonT)?.toList(),
+      'actor_count': instance.actorCount,
+      'created_at': instance.createdAt?.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
+    };
+
 NotificationGroup<T> _$NotificationGroupFromJson<T>(
   Map json,
   T Function(Object json) fromJsonT,
