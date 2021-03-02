@@ -99,6 +99,7 @@ class NotificationGroup<T> extends Group<T> {
       ];
 
   /// Serialize to json
+  @override
   Map<String, dynamic> toJson(Object Function(T) toJsonT) =>
       _$NotificationGroupToJson(this, toJsonT);
 }
