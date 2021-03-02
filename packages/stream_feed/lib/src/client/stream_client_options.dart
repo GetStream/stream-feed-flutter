@@ -3,6 +3,15 @@ import 'package:stream_feed_dart/src/core/location.dart';
 import 'package:stream_feed_dart/version.dart';
 
 class StreamClientOptions {
+  const StreamClientOptions({
+    this.version = 'v1.0',
+    this.serviceName = 'api',
+    this.baseDomainName = 'stream-io-api.com',
+    this.location = Location.usEast,
+    this.connectTimeout = const Duration(seconds: 6), //TODO: 10s in js
+    this.receiveTimeout = const Duration(seconds: 6), //TODO: 10s in js
+  });
+
   /// advanced usage, custom api versio
   final String version;
   final String serviceName;
@@ -16,15 +25,6 @@ class StreamClientOptions {
 
   /// received timeout
   final Duration receiveTimeout;
-
-  const StreamClientOptions({
-    this.version = 'v1.0',
-    this.serviceName = 'api',
-    this.baseDomainName = 'stream-io-api.com',
-    this.location = Location.usEast,
-    this.connectTimeout = const Duration(seconds: 6), //TODO: 10s in js
-    this.receiveTimeout = const Duration(seconds: 6), //TODO: 10s in js
-  });
 
   String get baseUrl => 'https://${location.name}-$serviceName.$baseDomainName';
 

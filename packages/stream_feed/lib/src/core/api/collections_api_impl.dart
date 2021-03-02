@@ -20,7 +20,7 @@ class CollectionsApiImpl implements CollectionsApi {
         entry.collection.isNotEmpty, "Collection name can't be empty");
     checkNotNull(entry.data, "Collection data can't be null");
     final result = await client.post<Map>(
-      Routes.buildCollectionsUrl('${entry.collection}'),
+      Routes.buildCollectionsUrl(entry.collection),
       headers: {'Authorization': '$token'},
       data: {
         'data': entry.data,
