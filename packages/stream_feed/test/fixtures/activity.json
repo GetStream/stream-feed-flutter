@@ -1,0 +1,21 @@
+{
+  "id": "test",
+  "actor": "test",
+  "verb": "test",
+  "object": "test",
+  "foreign_id": "test",
+  "target": "test",
+  "time": "2001-09-11T00:01:02.000",
+  "origin": "test",
+  "to": [
+    "slug:id"
+  ],
+  "score": 1.0,
+  "analytics": {
+    "test": "test"
+  },
+  "extra_context": {
+    "test": "test"
+  },
+  "test": "test"
+}

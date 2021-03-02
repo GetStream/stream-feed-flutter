@@ -1,0 +1,24 @@
+{
+  "id": "test",
+  "kind": "test",
+  "activity_id": "test",
+  "user_id": "test",
+  "parent": "test",
+  "updated_at": "2001-09-11T00:01:02.000",
+  "created_at": "2001-09-11T00:01:02.000",
+  "target_feeds": [
+    "slug:userId"
+  ],
+  "user": {
+    "test": "test"
+  },
+  "target_feeds_extra_data": {
+    "test": "test"
+  },
+  "data": {
+    "test": "test"
+  },
+  "children_counts": {
+    "test": 1
+  }
+}

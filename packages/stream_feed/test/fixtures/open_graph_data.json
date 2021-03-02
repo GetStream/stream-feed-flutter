@@ -1,0 +1,40 @@
+{
+  "title": "test",
+  "type": "test",
+  "url": "test",
+  "site": "test",
+  "site_name": "test",
+  "description": "test",
+  "determiner": "test",
+  "locale": "test",
+  "images": [
+    {
+      "image": "test",
+      "url": "test",
+      "secure_url": "test",
+      "width": "test",
+      "height": "test",
+      "type": "test",
+      "alt": "test"
+    }
+  ],
+  "videos": [
+    {
+      "image": "test",
+      "url": "test",
+      "secure_url": "test",
+      "width": "test",
+      "height": "test",
+      "type": "test",
+      "alt": "test"
+    }
+  ],
+  "audios": [
+    {
+      "audio": "test",
+      "url": "test",
+      "secure_url": "test",
+      "type": "test"
+    }
+  ]
+}

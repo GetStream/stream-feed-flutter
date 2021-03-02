@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/group.dart';
@@ -8,9 +9,12 @@ import 'package:test/test.dart';
 
 import 'utils.dart';
 
+String fixture(String name) {
+  final dir = currentDirectory.path;
+  return File('$dir/test/fixtures/$name').readAsStringSync();
+}
+
 void main() {
-  prepareTest();
-  
   test('EnrichedActivity', () {
     final reaction1 = Reaction(
         id: 'test',
@@ -23,7 +27,7 @@ void main() {
         targetFeeds: [FeedId('slug', 'userId')],
         user: const {'test': 'test'},
         targetFeedsExtraData: const {'test': 'test'},
-        data: const {'test': "test"},
+        data: const {'test': 'test'},
         // latestChildren: {
         //   "test": [reaction2]
         // },
@@ -33,7 +37,7 @@ void main() {
       actor: const EnrichableField('test'),
       object: const EnrichableField('test'),
       verb: 'test',
-      target: const EnrichableField("test"),
+      target: const EnrichableField('test'),
       to: const ['test'],
       foreignId: 'test',
       time: DateTime.parse('2001-09-11T00:01:02.000'),
@@ -50,8 +54,7 @@ void main() {
         'test': [reaction1]
       },
     );
-    final enrichedActivityJson = json.decode(
-        '{"id":"test", "actor": "test","object": "test", "verb": "test","target": "test", "to":["test"], "foreign_id": "test", "time": "2001-09-11T00:01:02.000","analytics": {"test": "test"},"extra_context": {"test": "test"},"origin":"test","score":1.0,"reaction_counts": {"test": 1},"own_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]},"latest_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]}, "extra_data": {"test": "test"}}');
+    final enrichedActivityJson = json.decode(fixture('enriched_activity.json'));
     final enrichedActivityFromJson =
         EnrichedActivity.fromJson(enrichedActivityJson);
     expect(enrichedActivityFromJson, enrichedActivity);
@@ -71,9 +74,7 @@ void main() {
         object: 'test',
         to: <FeedId>[FeedId('slug', 'id')],
         time: DateTime.parse('2001-09-11T00:01:02.000'));
-    final r = json.decode(
-        '{"id": "test", "actor": "test", "verb": "test", "object": "test", "foreign_id": "test", "target": "test", "time": "2001-09-11T00:01:02.000", "origin": "test", "to": ["slug:id"], "score": 1.0, "analytics": {"test": "test"}, "extra_context": {"test": "test"}, "test": "test"}');
-
+    final r = json.decode(fixture('activity.json'));
     final activityJson = Activity.fromJson(r);
     expect(activityJson, activity);
   });
@@ -102,9 +103,7 @@ void main() {
       createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
       updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
     );
-    final groupJson = json.decode(
-        '{"id": "test", "group": "test", "activities": [{"id": "test", "actor": "test", "verb": "test", "object": "test", "foreign_id": "test", "target": "test", "time": "2001-09-11T00:01:02.000", "origin": "test", "to": ["slug:id"], "score": 1.0, "analytics": {"test": "test"}, "extra_context": {"test": "test"}, "test": "test"}], "actor_count": 1, "created_at": "2001-09-11T00:01:02.000", "updated_at": "2001-09-11T00:01:02.000"}');
-
+    final groupJson = json.decode(fixture('group.json'));
     // expect(groupJson, matcher)
     final groupFromJson =
         Group.fromJson(groupJson, (e) => Activity.fromJson(e));
@@ -137,9 +136,8 @@ void main() {
       isRead: true,
       isSeen: true,
     );
-    final notificationGroupJson = json.decode(
-        '{"id": "test", "group": "test", "activities": [{"id": "test", "actor": "test", "verb": "test", "object": "test", "foreign_id": "test", "target": "test", "time": "2001-09-11T00:01:02.000", "origin": "test", "to": ["slug:id"], "score": 1.0, "analytics": {"test": "test"}, "extra_context": {"test": "test"}, "test": "test"}], "actor_count": 1, "created_at": "2001-09-11T00:01:02.000", "updated_at": "2001-09-11T00:01:02.000","is_read":true,"is_seen":true}');
-
+    final notificationGroupJson =
+        json.decode(fixture('notification_group.json'));
     final notificationGroupFromJson = NotificationGroup.fromJson(
         notificationGroupJson, (e) => Activity.fromJson(e));
     expect(notificationGroupFromJson, notificationGroup);
@@ -152,9 +150,7 @@ void main() {
         data: const {'test': 'test'},
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'));
-    final entryJson = json.decode(
-        '{"id": "test", "collection": "test", "foreign_id": "test", "data": {"test": "test"}, "created_at": "2001-09-11T00:01:02.000", "updated_at": "2001-09-11T00:01:02.000"}');
-
+    final entryJson = json.decode(fixture('collection_entry.json'));
     final entryFromJson = CollectionEntry.fromJson(entryJson);
     expect(entry, entryFromJson);
   });
@@ -217,8 +213,8 @@ void main() {
     final paginatedReactions =
         PaginatedReactions('test', [reaction], enrichedActivity, 'duration');
 
-    final paginatedReactionsJson = json.decode(
-        '{"next": "test", "results": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}], "duration": "duration", "activity": {"id":"test", "actor": "test","object": "test", "verb": "test","target": "test", "to":["test"], "foreign_id": "test", "time": "2001-09-11T00:01:02.000","analytics": {"test": "test"},"extra_context": {"test": "test"},"origin":"test","score":1.0,"reaction_counts": {"test": 1},"own_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]},"latest_reactions": { "test": [{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}]}, "extra_data": {"test": "test"}}}');
+    final paginatedReactionsJson =
+        json.decode(fixture('paginated_reactions.json'));
     final paginatedReactionsFromJson =
         PaginatedReactions.fromJson(paginatedReactionsJson);
     expect(paginatedReactionsFromJson, paginatedReactions);
@@ -231,9 +227,7 @@ void main() {
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         followersCount: 1,
         followingCount: 1);
-    final userJson = json.decode(
-        '{"id": "test", "data": {"test": "test"}, "created_at": "2001-09-11T00:01:02.000","updated_at": "2001-09-11T00:01:02.000","followers_count": 1, "following_count": 1}');
-
+    final userJson = json.decode(fixture('user.json'));
     final userFromJson = User.fromJson(userJson);
     expect(userFromJson, user);
   });
@@ -247,9 +241,7 @@ void main() {
   });
   test('Unfollow', () {
     const follow = UnFollow('feedId', 'targetId', true);
-    final followJson = json.decode(
-        '{"feed_id": "feedId", "target_id": "targetId","keep_history":true}');
-
+    final followJson = json.decode(fixture('unfollow.json'));
     expect(follow, UnFollow.fromJson(followJson));
   });
 
@@ -260,9 +252,7 @@ void main() {
         time: DateTime.parse('2001-09-11T00:01:02.000'),
         set: const {'hey': 'hey'},
         unset: const ['test']);
-    final activityUpdateJson = json.decode(
-        '{"id": "test", "foreign_id": "test", "time": "2001-09-11T00:01:02.000", "set": {"hey": "hey"}, "unset": ["test"]}');
-
+    final activityUpdateJson = json.decode(fixture('activity_update.json'));
     final activityUpdateFromJson = ActivityUpdate.fromJson(activityUpdateJson);
     expect(activityUpdateFromJson, activityUpdate);
   });
@@ -298,9 +288,7 @@ void main() {
         // },//TODO: test this
         childrenCounts: const {'test': 1});
 
-    final reactionJson = json.decode(
-        '{"id": "test","kind": "test", "activity_id": "test", "user_id": "test", "parent": "test",  "updated_at": "2001-09-11T00:01:02.000","created_at": "2001-09-11T00:01:02.000", "target_feeds": ["slug:userId"], "user": {"test": "test"}, "target_feeds_extra_data": {"test": "test"}, "data": {"test": "test"},"children_counts": {"test": 1}}');
-
+    final reactionJson = json.decode(fixture('reaction.json'));
     final reactionFromJson = Reaction.fromJson(reactionJson);
     expect(reactionFromJson, reaction);
   });
@@ -314,9 +302,7 @@ void main() {
         height: 'test',
         type: 'test',
         alt: 'test');
-    final imageJson = json.decode(
-        '{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}');
-
+    final imageJson = json.decode(fixture('image.json'));
     final imageFromJson = Image.fromJson(imageJson);
     expect(imageFromJson, image);
   });
@@ -332,9 +318,7 @@ void main() {
       alt: 'test',
     );
 
-    final videoJson = json.decode(
-        '{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}');
-
+    final videoJson = json.decode(fixture('video.json'));
     final videoFromJson = Video.fromJson(videoJson);
     expect(videoFromJson, video);
   });
@@ -345,8 +329,7 @@ void main() {
       secureUrl: 'test',
       type: 'test',
     );
-    final audioJson = json.decode(
-        '{"audio": "test", "url": "test", "secure_url": "test", "type": "test"}');
+    final audioJson = json.decode(fixture('audio.json'));
     final audioFromJson = Audio.fromJson(audioJson);
     expect(audioFromJson, audio);
   });
@@ -391,8 +374,7 @@ void main() {
         )
       ],
     );
-    final openGraphDataJson = json.decode(
-        '{"title": "test", "type": "test", "url": "test", "site": "test", "site_name": "test", "description": "test", "determiner": "test", "locale": "test", "images": [{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}], "videos": [{"image": "test", "url": "test", "secure_url": "test", "width": "test", "height": "test", "type": "test", "alt": "test"}], "audios": [{"audio": "test", "url": "test", "secure_url": "test", "type": "test"}]}');
+    final openGraphDataJson = json.decode(fixture('open_graph_data.json'));
     final openGraphDataFromJson = OpenGraphData.fromJson(openGraphDataJson);
     expect(openGraphDataFromJson, openGraphData);
   });
