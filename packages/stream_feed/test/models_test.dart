@@ -58,8 +58,10 @@ void main() {
     final enrichedActivityFromJson =
         EnrichedActivity.fromJson(enrichedActivityJson);
     expect(enrichedActivityFromJson, enrichedActivity);
-    // we will never get “extra_data” from the api that's why it's not explicit in the json fixture
-    // all the extra data other than the default fields in json will ultimately gets collected as a field extra_data of type Map
+    // we will never get “extra_data” from the api
+    //that's why it's not explicit in the json fixture
+    // all the extra data other than the default fields in json will ultimately
+    // gets collected as a field extra_data of type Map
     expect(enrichedActivityFromJson.extraData, {'test': 'test'});
   });
   test('Activity', () {

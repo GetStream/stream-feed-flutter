@@ -33,7 +33,8 @@ class StreamHttpClient implements HttpClient {
   String get userAgent => options.userAgent;
 
   /// [Dio] httpClient
-  /// It's be chosen because it's easy to use and supports interesting features out of the box
+  /// It's be chosen because it's easy to use
+  /// and supports interesting features out of the box
   /// (Interceptors, Global configuration, FormData, File downloading etc.)
   @visibleForTesting
   Dio httpClient;

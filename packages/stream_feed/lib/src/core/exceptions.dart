@@ -50,5 +50,6 @@ class StreamApiException implements Exception {
 
   @override
   String toString() =>
+      // ignore: lines_longer_than_80_chars
       'StreamApiException{body: $body, jsonData: $jsonData, status: $status, code: $_code}';
 }

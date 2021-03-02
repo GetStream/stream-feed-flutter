@@ -6,7 +6,8 @@ class Serializer {
   /// Used to avoid to serialize properties to json
   static const Function readOnly = readonly;
 
-  /// Takes values in `extra_data` key and puts them on the root level of the json map
+  /// Takes values in `extra_data` key
+  /// and puts them on the root level of the json map
   static Map<String, dynamic> moveKeysToRoot(
     Map<String, dynamic> json,
     List<String> topLevelFields,
