@@ -30,20 +30,20 @@ class Reaction extends Equatable {
   factory Reaction.fromJson(Map<String, dynamic> json) =>
       _$ReactionFromJson(json);
 
-  ///
+  /// api will generate an id if it's missing
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final String id;
 
-  ///
+  /// required only for add/addChile, not update
   final String kind;
 
-  ///
+  /// only required for reactions
   final String activityId;
 
-  ///
+  /// optional when using client tokens
   final String userId;
 
-  ///
+  /// only required for child reactions
   @JsonKey(includeIfNull: false)
   final String parent;
 

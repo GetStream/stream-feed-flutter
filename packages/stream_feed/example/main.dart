@@ -11,7 +11,8 @@ Future<void> main() async {
 
   final chris = client.flatFeed('user', 'chris');
 
-  // Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
+  // Add an Activity; message is a custom field
+  // - tip: you can add unlimited custom fields!
   await chris.addActivity(
     const Activity(
       actor: 'chris',
@@ -23,7 +24,8 @@ Future<void> main() async {
       },
     ),
   );
-  // Create a following relationship between Jack's "timeline" feed and Chris' "user" feed:
+  // Create a following relationship
+  // between Jack's "timeline" feed and Chris' "user" feed:
   final jack = client.flatFeed('timeline', 'jack');
   await jack.follow(chris);
 
@@ -38,7 +40,8 @@ Future<void> main() async {
   // Instantiate a feed object
   final userFeed = client.flatFeed('user', '1');
 
-  // Add an activity to the feed, where actor, object and target are references to objects
+  // Add an activity to the feed, where actor, object
+  // and target are references to objects
   // (`Eric`, `Hawaii`, `Places to Visit`)
   var activity = const Activity(
     actor: 'user:1',
@@ -229,7 +232,8 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  // Add an activity to the feed, where actor, object and target are references to objects -
+  // Add an activity to the feed,
+  // where actor, object and target are references to objects -
   // adding your ranking method as a parameter (in this case, "popularity"):
   activity = const Activity(
     actor: 'user:1',
@@ -240,7 +244,8 @@ Future<void> main() async {
   );
   await userFeed.addActivity(activity);
 
-  // Get activities sorted by the ranking method labelled 'activity_popularity' (Ranked Feeds
+  // Get activities sorted by the ranking method
+  // labelled 'activity_popularity' (Ranked Feeds
   // Enabled)
   response = await userFeed.getActivities(
     limit: 5,
@@ -261,7 +266,8 @@ Future<void> main() async {
   );
   await userFeed.addActivity(activity);
 
-  // The TO field ensures the activity is send to the player, match and team feed
+  // The TO field ensures the activity is send to
+  // the player, match and team feed
   activity = Activity(
     actor: 'player:suarez',
     verb: 'foul',
@@ -369,7 +375,8 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  // adds a comment reaction to the activity and notify Thierry's notification feed
+  // adds a comment reaction to the activity
+  // and notify Thierry's notification feed
   await client.reactions.add(
     'comment',
     activity.id,
@@ -379,12 +386,14 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  // read bob's timeline and include most recent reactions to all activities and their total count
+  // read bob's timeline and include most recent reactions
+  // to all activities and their total count
   await client.flatFeed('timeline', 'bob').getEnrichedActivities(
         flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
       );
 
-  // read bob's timeline and include most recent reactions to all activities and her own reactions
+  // read bob's timeline and include most recent reactions
+  // to all activities and her own reactions
   await client.flatFeed('timeline', 'bob').getEnrichedActivities(
         flags: EnrichmentFlags()
             .withOwnReactions()
@@ -447,7 +456,8 @@ Future<void> main() async {
     entryId: 'cheese-burger',
   );
 
-  // if you don't have an id on your side, just use null as the ID and Stream will generate a
+  // if you don't have an id on your side, just use null as the ID
+  // and Stream will generate a
   // unique ID
   await client.collections.add(
     'food',
@@ -526,10 +536,12 @@ Future<void> main() async {
     ),
   );
 
-  // if we now read the feed, the activity we just added will include the entire full object
+  // if we now read the feed, the activity we just added
+  // will include the entire full object
   await userFeed.getEnrichedActivities();
 
-  // we can then update the object and Stream will propagate the change to all activities
+  // we can then update the object
+  // and Stream will propagate the change to all activities
   await client.collections.update(cheeseBurger.collection, cheeseBurger.id, {
     'name': 'Amazing Cheese Burger',
     'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
@@ -549,7 +561,8 @@ Future<void> main() async {
     'gender': 'male',
   });
 
-  // Since we know their IDs we can create references to both without reading from APIs
+  // Since we know their IDs
+  // we can create references to both without reading from APIs
   final cheeseBurgerRef = createCollectionReference('food', 'cheese-burger');
   final johnDoeRef = createUserReference('john-doe');
 
@@ -627,15 +640,13 @@ Future<void> main() async {
   // create a 50x50 thumbnail and crop from center
   await client.images.getCropped(
     'imageUrl',
-    const Crop(50, 50, types: <CropType>[
-      CropType.center,
-    ]),
+    const Crop(50, 50),
   );
 
   // create a 50x50 thumbnail using clipping (keeps aspect ratio)
   await client.images.getResized(
     'imageUrl',
-    const Resize(50, 50, type: ResizeType.clip),
+    const Resize(50, 50),
   );
 
   /* -------------------------------------------------------- */

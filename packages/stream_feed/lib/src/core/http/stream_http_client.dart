@@ -63,9 +63,7 @@ class StreamHttpClient implements HttpClient {
         'x-stream-client': userAgent,
       }
       ..interceptors.add(LogInterceptor(
-        requestHeader: true,
         requestBody: true,
-        responseHeader: true,
         responseBody: true,
       ));
   }

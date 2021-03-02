@@ -13,12 +13,29 @@ class BatchOperationsClientImpl implements BatchOperationsClient {
   final String secret;
   final BatchApi batch;
 
+  /// Add one activity to many feeds
+  ///
+  /// It takes in parameters:
+  /// - [activity] : the [Activity] to add
+  /// - [feedIds] : an Iterable of feed ids [FeedId]
+  ///
+  /// API docs: [batch-activity-add](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-activity-add)
   @override
   Future<void> addToMany(Activity activity, Iterable<FeedId> feedIds) {
+    //TODO: why is this void vs Future<APIResponse> compared to js client
     final token = TokenHelper.buildFeedToken(secret, TokenAction.write);
     return batch.addToMany(token, activity, feedIds);
   }
 
+  /// Follow multiple feeds with one API call
+  ///
+  /// It takes in parameters:
+  /// - [follows] : The follow relations to create
+  /// - [activityCopyLimit] : How many activities should be copied
+  /// from the target feed
+  ///
+  /// API docs: [add_many_activities](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-follow)
+  ///
   @override
   Future<void> followMany(
     Iterable<Follow> follows, {
@@ -29,9 +46,20 @@ class BatchOperationsClientImpl implements BatchOperationsClient {
         token, activityCopyLimit ?? Default.activityCopyLimit, follows);
   }
 
+  /// Unfollow multiple feeds with one API call
+  /// This feature is usually restricted,
+  /// please contact support if you face an issue
+  ///
+  /// It takes in parameter:
+  ///
+  ///  [unfollows]: The follow relations to remove
+  /// 
+  /// API docs : [batch-unfollow](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-unfollow)
+  ///
   @override
   Future<void> unfollowMany(
     Iterable<Follow> unfollows, {
+    // TODO: seems to be Iterable<UnFollow> unfollows here
     bool keepHistory = true,
   }) {
     final token = TokenHelper.buildFollowToken(secret, TokenAction.write);

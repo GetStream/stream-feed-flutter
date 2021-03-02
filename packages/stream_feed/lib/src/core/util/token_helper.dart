@@ -2,10 +2,18 @@ import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
+/// Actions permissions
 enum TokenAction {
+  /// allows any operations
   any,
+
+  /// allows read operations
   read,
+
+  /// allows write operations
   write,
+
+  /// allows delete operations
   delete,
 }
 
@@ -18,23 +26,51 @@ extension TokenActionX on TokenAction {
       }[this];
 }
 
+/// Resource Access Restrictions
 enum TokenResource {
+  /// allows access to any resource
   any,
+
+  /// allows access to [Activity] resource
   activities,
+
+  /// allows access to analytics resource
   analytics,
+
+  /// allows access to analyticsRedirect resource
   analyticsRedirect,
+
+  /// allows access to [CollectionEntry] resource
   collections,
+
+  /// allows access to files resource
   files,
+
+  /// allows access to [Feed] resource
   feed,
+
+  /// allows access to feedTargets resource
   feedTargets,
+
+  /// allows access to [Follow] resource
   follower,
+
+  /// allows access to [OpenGraph] resource
   openGraph,
+
+  /// token resource that allows access to personalization resource
   personalization,
+
+  /// token resource that allows access to [Reaction] resource
   reactions,
+
+  /// token resource that allows access to [User] resource
   users,
 }
 
+/// Convenient class Extension to on [TokenResource] enum
 extension TokenResourceX on TokenResource {
+  /// Convenient method Extension to stringify the [TokenResource] enum
   String get resource => {
         TokenResource.any: '*',
         TokenResource.activities: 'activities',
@@ -109,6 +145,8 @@ class TokenHelper {
     return Token(issueJwtHS256(claimSet, secret));
   }
 
+  /// Creates the JWT token for [feedId], [resource] and [action]
+  /// using the api [secret]
   static Token _buildBackendToken(
     String secret,
     TokenResource resource,
