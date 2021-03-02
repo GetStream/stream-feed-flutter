@@ -125,7 +125,6 @@ class EnrichedActivity extends Equatable {
     'reaction_counts',
     'own_reactions',
     'latest_reactions',
-    // 'extra_data',
   ];
 
   ///
@@ -170,7 +169,8 @@ class EnrichedActivity extends Equatable {
 
   /// Create a new instance from a json
   factory EnrichedActivity.fromJson(Map<String, dynamic> json) =>
-      _$EnrichedActivityFromJson(json);
+      _$EnrichedActivityFromJson(
+          Serializer.moveKeysToRoot(json, topLevelFields));
 
   /// Serialize to json
   Map<String, dynamic> toJson() => Serializer.moveKeysToMapInPlace(

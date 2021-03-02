@@ -76,7 +76,5 @@
       }
     ]
   },
-  "extra_data": {
-    "test": "test"
-  }
+  "test": "test"
 }
