@@ -9,7 +9,7 @@ import 'package:stream_feed_dart/src/core/models/group.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-import 'feed.dart';
+import 'package:stream_feed_dart/src/client/feed/feed.dart';
 
 class AggregatedFeed extends Feed {
   const AggregatedFeed(String secret, FeedId id, FeedApi feed)

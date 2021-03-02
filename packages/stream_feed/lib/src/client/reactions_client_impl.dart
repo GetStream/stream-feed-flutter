@@ -9,10 +9,9 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class ReactionsClientImpl implements ReactionsClient {
+  const ReactionsClientImpl(this.secret, this.reactions);
   final String secret;
   final ReactionsApi reactions;
-
-  const ReactionsClientImpl(this.secret, this.reactions);
 
   @override
   Future<Reaction> add(

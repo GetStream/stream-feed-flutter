@@ -8,12 +8,12 @@ import 'package:stream_feed_dart/src/core/models/reaction.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
-import 'reactions_api.dart';
+import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 
 class ReactionsApiImpl implements ReactionsApi {
-  final HttpClient client;
-
   const ReactionsApiImpl(this.client);
+
+  final HttpClient client;
 
   @override
   Future<Reaction> add(Token token, Reaction reaction) async {

@@ -7,9 +7,9 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class CollectionsApiImpl implements CollectionsApi {
-  final HttpClient client;
-
   const CollectionsApiImpl(this.client);
+
+  final HttpClient client;
 
   @override
   Future<CollectionEntry> add(

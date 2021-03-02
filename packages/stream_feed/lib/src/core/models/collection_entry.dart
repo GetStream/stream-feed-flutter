@@ -7,6 +7,20 @@ part 'collection_entry.g.dart';
 @JsonSerializable()
 class CollectionEntry extends Equatable {
   ///
+  const CollectionEntry({
+    this.id,
+    this.collection,
+    this.foreignId,
+    this.data,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  /// Create a new instance from a json
+  factory CollectionEntry.fromJson(Map<String, dynamic> json) =>
+      _$CollectionEntryFromJson(json);
+
+  ///
   final String id;
 
   ///
@@ -23,16 +37,6 @@ class CollectionEntry extends Equatable {
 
   ///
   final DateTime updatedAt;
-
-  ///
-  const CollectionEntry({
-    this.id,
-    this.collection,
-    this.foreignId,
-    this.data,
-    this.createdAt,
-    this.updatedAt,
-  });
 
   @override
   List<Object> get props => [
@@ -61,10 +65,6 @@ class CollectionEntry extends Equatable {
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
-
-  /// Create a new instance from a json
-  factory CollectionEntry.fromJson(Map<String, dynamic> json) =>
-      _$CollectionEntryFromJson(json);
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$CollectionEntryToJson(this);

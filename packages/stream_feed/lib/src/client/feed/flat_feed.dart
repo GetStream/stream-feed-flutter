@@ -7,7 +7,7 @@ import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-import 'feed.dart';
+import 'package:stream_feed_dart/src/client/feed/feed.dart';
 
 class FlatFeet extends Feed {
   const FlatFeet(String secret, FeedId id, FeedApi feed)

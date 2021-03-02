@@ -2,13 +2,12 @@ import 'package:stream_feed_dart/src/core/api/collections_api.dart';
 import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-import 'collections_client.dart';
+import 'package:stream_feed_dart/src/client/collections_client.dart';
 
 class CollectionsClientImpl implements CollectionsClient {
+  const CollectionsClientImpl(this.secret, this.collections);
   final String secret;
   final CollectionsApi collections;
-
-  const CollectionsClientImpl(this.secret, this.collections);
 
   @override
   Future<CollectionEntry> add(

@@ -14,7 +14,7 @@ class Serializer {
     if (json == null) {
       return json;
     }
-    var clone = Map<String, dynamic>.from(json);
+    final clone = Map<String, dynamic>.from(json);
     clone['extra_data'] = <String, dynamic>{};
 
     json?.keys?.forEach((key) {
@@ -35,8 +35,8 @@ class Serializer {
       return intermediateMap;
     }
 
-    var clone = Map<String, dynamic>.from(intermediateMap);
-    Map<String, dynamic> extraData = clone.remove('extra_data');
+    final clone = Map<String, dynamic>.from(intermediateMap);
+    final Map<String, dynamic> extraData = clone.remove('extra_data');
 
     extraData?.keys?.forEach((key) {
       if (!topLevelFields.contains(key)) {

@@ -18,10 +18,6 @@ extension _CropX on CropType {
 
 ///
 class Crop {
-  final int _width;
-  final int _height;
-  final List<CropType> _types;
-
   ///
   const Crop(
     this._width,
@@ -31,6 +27,10 @@ class Crop {
         assert(_width > 0, 'Width should be a positive number'),
         assert(_height > 0, 'Height should be a positive number'),
         _types = types;
+
+  final int _width;
+  final int _height;
+  final List<CropType> _types;
 
   ///
   Map<String, Object> get params {

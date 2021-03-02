@@ -4,10 +4,9 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
 
 class CloudCollectionsClientImpl implements CloudCollectionsClient {
+  const CloudCollectionsClientImpl(this.token, this.collections);
   final Token token;
   final CollectionsApi collections;
-
-  const CloudCollectionsClientImpl(this.token, this.collections);
 
   @override
   Future<CollectionEntry> add(

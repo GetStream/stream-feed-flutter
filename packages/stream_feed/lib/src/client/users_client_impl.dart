@@ -4,10 +4,9 @@ import 'package:stream_feed_dart/src/core/models/user.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class UsersClientImpl implements UsersClient {
+  const UsersClientImpl(this.secret, this.users);
   final String secret;
   final UsersApi users;
-
-  const UsersClientImpl(this.secret, this.users);
 
   @override
   Future<User> add(

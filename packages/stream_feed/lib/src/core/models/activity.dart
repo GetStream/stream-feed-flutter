@@ -3,13 +3,34 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_feed_dart/src/core/util/serializer.dart';
 
-import 'feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 part 'activity.g.dart';
 
 ///
 @JsonSerializable()
 class Activity extends Equatable {
+  ///
+  const Activity({
+    @required this.actor,
+    @required this.verb,
+    @required this.object,
+    this.id,
+    this.foreignId,
+    this.target,
+    this.time,
+    this.to,
+    this.analytics,
+    this.extraContext,
+    this.origin,
+    this.score,
+    this.extraData,
+  });
+
+  /// Create a new instance from a json
+  factory Activity.fromJson(Map<String, dynamic> json) =>
+      _$ActivityFromJson(Serializer.moveKeysToRoot(json, topLevelFields));
+
   ///
   @JsonKey(includeIfNull: false)
   final String id;
@@ -79,27 +100,6 @@ class Activity extends Equatable {
     'origin',
     'score',
   ];
-
-  ///
-  const Activity({
-    @required this.actor,
-    @required this.verb,
-    @required this.object,
-    this.id,
-    this.foreignId,
-    this.target,
-    this.time,
-    this.to,
-    this.analytics,
-    this.extraContext,
-    this.origin,
-    this.score,
-    this.extraData,
-  });
-
-  /// Create a new instance from a json
-  factory Activity.fromJson(Map<String, dynamic> json) =>
-      _$ActivityFromJson(Serializer.moveKeysToRoot(json, topLevelFields));
 
   /// Serialize to json
   Map<String, dynamic> toJson() =>

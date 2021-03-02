@@ -1,6 +1,6 @@
 import 'package:stream_feed_dart/src/core/location.dart';
 
-import '../../version.dart';
+import 'package:stream_feed_dart/version.dart';
 
 class StreamClientOptions {
   final String version;

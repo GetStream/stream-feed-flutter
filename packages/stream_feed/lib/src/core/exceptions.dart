@@ -2,6 +2,14 @@ import 'dart:convert';
 
 /// Exception related to api calls
 class StreamApiException implements Exception {
+  //TODO: test this
+  /// Creates a new ApiError instance using the response body and status code
+  StreamApiException(this.body, this.status) : jsonData = _decode(body) {
+    if (jsonData != null && jsonData.containsKey('code')) {
+      _code = jsonData['code'];
+    }
+  }
+
   /// Raw body of the response
   final String body;
 
@@ -23,13 +31,6 @@ class StreamApiException implements Exception {
       return json.decode(body);
     } on FormatException {
       return null;
-    }
-  }
-
-  /// Creates a new ApiError instance using the response body and status code
-  StreamApiException(this.body, this.status) : jsonData = _decode(body) {
-    if (jsonData != null && jsonData.containsKey('code')) {
-      _code = jsonData['code'];
     }
   }
 

@@ -4,11 +4,12 @@ import 'package:stream_feed_dart/src/cloud/cloud_file_storage_client.dart';
 import 'package:stream_feed_dart/src/cloud/cloud_image_storage_client.dart';
 import 'package:stream_feed_dart/src/core/index.dart';
 
-import 'cloud_reactions_client.dart';
-import 'cloud_users_client.dart';
-import 'feed/index.dart';
-import 'stream_cloud_client_impl.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_reactions_client.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_users_client.dart';
+import 'package:stream_feed_dart/src/cloud/feed/index.dart';
+import 'package:stream_feed_dart/src/cloud/stream_cloud_client_impl.dart';
 
+//TODO: stream_feed_dart/src/cloud/cloud.dart
 abstract class StreamCloudClient {
   factory StreamCloudClient.connect(
     String apiKey,

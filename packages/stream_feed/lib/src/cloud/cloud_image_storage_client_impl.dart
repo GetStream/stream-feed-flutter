@@ -5,10 +5,9 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/index.dart';
 
 class CloudImageStorageClientImpl implements CloudImageStorageClient {
+  const CloudImageStorageClientImpl(this.token, this.images);
   final Token token;
   final ImagesApi images;
-
-  const CloudImageStorageClientImpl(this.token, this.images);
 
   @override
   Future<String> upload(MultipartFile image) => images.upload(token, image);

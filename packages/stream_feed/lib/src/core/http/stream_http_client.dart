@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 
-import '../exceptions.dart';
-import '../util/extension.dart';
-import 'http_client.dart';
+import 'package:stream_feed_dart/src/core/exceptions.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
+import 'package:stream_feed_dart/src/core/http/http_client.dart';
 
 class StreamHttpClient implements HttpClient {
   StreamHttpClient(

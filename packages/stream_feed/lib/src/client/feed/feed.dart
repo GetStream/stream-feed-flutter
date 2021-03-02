@@ -8,14 +8,13 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class Feed {
-  final String secret;
-  final FeedId feedId;
-  final FeedApi feed;
-
   const Feed(this.secret, this.feedId, this.feed)
       : assert(secret != null, "Can't create Feed w/o a Secret"),
         assert(feedId != null, "Can't create feed w/o an FeedId"),
         assert(feed != null, "Can't create feed w/o a FeedApi");
+  final String secret;
+  final FeedId feedId;
+  final FeedApi feed;
 
   Future<Activity> addActivity(Activity activity) {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.write, feedId);

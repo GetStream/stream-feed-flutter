@@ -7,24 +7,6 @@ part 'activity_update.g.dart';
 @JsonSerializable()
 class ActivityUpdate extends Equatable {
   ///
-  @JsonKey(includeIfNull: false)
-  final String id;
-
-  ///
-  @JsonKey(includeIfNull: false)
-  final String foreignId;
-
-  ///
-  @JsonKey(includeIfNull: false)
-  final DateTime time;
-
-  ///
-  final Map<String, Object> set;
-
-  ///
-  final List<String> unset;
-
-  ///
   const ActivityUpdate({
     this.id,
     this.foreignId,
@@ -64,6 +46,24 @@ class ActivityUpdate extends Equatable {
   /// Create a new instance from a json
   factory ActivityUpdate.fromJson(Map<String, dynamic> json) =>
       _$ActivityUpdateFromJson(json);
+
+  ///
+  @JsonKey(includeIfNull: false)
+  final String id;
+
+  ///
+  @JsonKey(includeIfNull: false)
+  final String foreignId;
+
+  ///
+  @JsonKey(includeIfNull: false)
+  final DateTime time;
+
+  ///
+  final Map<String, Object> set;
+
+  ///
+  final List<String> unset;
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$ActivityUpdateToJson(this);

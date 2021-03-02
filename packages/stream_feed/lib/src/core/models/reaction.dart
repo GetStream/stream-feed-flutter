@@ -2,13 +2,34 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed_dart/src/core/util/serializer.dart';
 
-import 'feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 part 'reaction.g.dart';
 
 ///
 @JsonSerializable()
 class Reaction extends Equatable {
+  ///
+  const Reaction({
+    this.id,
+    this.kind,
+    this.activityId,
+    this.userId,
+    this.parent,
+    this.createdAt,
+    this.updatedAt,
+    this.targetFeeds,
+    this.user,
+    this.targetFeedsExtraData,
+    this.data,
+    this.latestChildren,
+    this.childrenCounts,
+  });
+
+  /// Create a new instance from a json
+  factory Reaction.fromJson(Map<String, dynamic> json) =>
+      _$ReactionFromJson(json);
+
   ///
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final String id;
@@ -75,23 +96,6 @@ class Reaction extends Equatable {
   ];
 
   ///
-  const Reaction({
-    this.id,
-    this.kind,
-    this.activityId,
-    this.userId,
-    this.parent,
-    this.createdAt,
-    this.updatedAt,
-    this.targetFeeds,
-    this.user,
-    this.targetFeedsExtraData,
-    this.data,
-    this.latestChildren,
-    this.childrenCounts,
-  });
-
-  ///
   Reaction copyWith({
     String id,
     String kind,
@@ -140,10 +144,6 @@ class Reaction extends Equatable {
         latestChildren,
         childrenCounts,
       ];
-
-  /// Create a new instance from a json
-  factory Reaction.fromJson(Map<String, dynamic> json) =>
-      _$ReactionFromJson(json);
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$ReactionToJson(this);

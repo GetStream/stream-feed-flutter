@@ -12,22 +12,22 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
-import 'cloud_reactions_client_impl.dart';
-import 'cloud_users_client.dart';
-import 'cloud_users_client_impl.dart';
-import 'feed/index.dart';
-import 'stream_cloud_client.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_reactions_client_impl.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_users_client.dart';
+import 'package:stream_feed_dart/src/cloud/cloud_users_client_impl.dart';
+import 'package:stream_feed_dart/src/cloud/feed/index.dart';
+import 'package:stream_feed_dart/src/cloud/stream_cloud_client.dart';
 
 class StreamCloudClientImpl implements StreamCloudClient {
-  final String _token;
-  final StreamApi _api;
-
   StreamCloudClientImpl(
     String apiKey,
     this._token, {
     StreamClientOptions options,
     StreamApi api,
   }) : _api = api ?? StreamApiImpl(apiKey, options: options);
+
+  final String _token;
+  final StreamApi _api;
 
   Token get token => Token(_token);
 

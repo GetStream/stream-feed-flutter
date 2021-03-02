@@ -6,17 +6,17 @@ import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/follow.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 
-import 'cloud_flat_feed.dart';
+import 'package:stream_feed_dart/src/cloud/feed/cloud_flat_feed.dart';
 
 class CloudFeed {
-  final Token token;
-  final FeedId feedId;
-  final FeedApi feed;
-
   const CloudFeed(this.token, this.feedId, this.feed)
       : assert(token != null, "Can't create Feed w/o a Secret"),
         assert(feedId != null, "Can't create feed w/o an FeedId"),
         assert(feed != null, "Can't create feed w/o a FeedApi");
+
+  final Token token;
+  final FeedId feedId;
+  final FeedApi feed;
 
   Future<Activity> addActivity(Activity activity) =>
       feed.addActivity(token, feedId, activity);

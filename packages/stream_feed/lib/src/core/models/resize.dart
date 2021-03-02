@@ -16,10 +16,6 @@ extension _ResizeX on ResizeType {
 
 ///
 class Resize {
-  final int _width;
-  final int _height;
-  final ResizeType _type;
-
   ///
   const Resize(
     this._width,
@@ -29,6 +25,10 @@ class Resize {
         assert(_width > 0, 'Width should be a positive number'),
         assert(_height > 0, 'Height should be a positive number'),
         _type = type;
+
+  final int _width;
+  final int _height;
+  final ResizeType _type;
 
   ///
   Map<String, Object> get params {

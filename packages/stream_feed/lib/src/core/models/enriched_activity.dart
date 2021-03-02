@@ -8,10 +8,10 @@ part 'enriched_activity.g.dart';
 ///
 class EnrichableField extends Equatable {
   ///
-  final Object data;
+  const EnrichableField(this.data);
 
   ///
-  const EnrichableField(this.data);
+  final Object data;
 
   ///
   static EnrichableField deserialize(Object obj) {
@@ -30,6 +30,31 @@ class EnrichableField extends Equatable {
 ///
 @JsonSerializable()
 class EnrichedActivity extends Equatable {
+  ///
+  const EnrichedActivity({
+    this.id,
+    this.actor,
+    this.verb,
+    this.object,
+    this.foreignId,
+    this.target,
+    this.time,
+    this.origin,
+    this.to,
+    this.score,
+    this.analytics,
+    this.extraContext,
+    this.extraData,
+    this.reactionCounts,
+    this.ownReactions,
+    this.latestReactions,
+  });
+
+  /// Create a new instance from a json
+  factory EnrichedActivity.fromJson(Map<String, dynamic> json) =>
+      _$EnrichedActivityFromJson(
+          Serializer.moveKeysToRoot(json, topLevelFields));
+
   ///
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final String id;
@@ -127,26 +152,6 @@ class EnrichedActivity extends Equatable {
     'latest_reactions',
   ];
 
-  ///
-  const EnrichedActivity({
-    this.id,
-    this.actor,
-    this.verb,
-    this.object,
-    this.foreignId,
-    this.target,
-    this.time,
-    this.origin,
-    this.to,
-    this.score,
-    this.analytics,
-    this.extraContext,
-    this.extraData,
-    this.reactionCounts,
-    this.ownReactions,
-    this.latestReactions,
-  });
-
   @override
   List<Object> get props => [
         actor,
@@ -166,11 +171,6 @@ class EnrichedActivity extends Equatable {
         ownReactions,
         latestReactions,
       ];
-
-  /// Create a new instance from a json
-  factory EnrichedActivity.fromJson(Map<String, dynamic> json) =>
-      _$EnrichedActivityFromJson(
-          Serializer.moveKeysToRoot(json, topLevelFields));
 
   /// Serialize to json
   Map<String, dynamic> toJson() => Serializer.moveKeysToMapInPlace(

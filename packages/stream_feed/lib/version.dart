@@ -1,4 +1,4 @@
-import 'src/core/http/http_client.dart';
+import 'package:stream_feed_dart/src/core/http/http_client.dart';
 
 /// Current package version
 /// Used in [HttpClient] to build the `x-stream-client` header

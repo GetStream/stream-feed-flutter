@@ -5,10 +5,9 @@ import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 
 class CloudReactionsClientImpl implements CloudReactionsClient {
+  const CloudReactionsClientImpl(this.token, this.reactions);
   final Token token;
   final ReactionsApi reactions;
-
-  const CloudReactionsClientImpl(this.token, this.reactions);
 
   @override
   Future<Reaction> add(

@@ -8,6 +8,19 @@ part 'user.g.dart';
 @JsonSerializable()
 class User extends Equatable {
   ///
+  const User({
+    this.id,
+    this.data,
+    this.createdAt,
+    this.updatedAt,
+    this.followersCount,
+    this.followingCount,
+  });
+
+  /// Create a new instance from a json
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  ///
   final String id;
 
   ///
@@ -29,16 +42,6 @@ class User extends Equatable {
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final int followingCount;
 
-  ///
-  const User({
-    this.id,
-    this.data,
-    this.createdAt,
-    this.updatedAt,
-    this.followersCount,
-    this.followingCount,
-  });
-
   @override
   List<Object> get props => [
         id,
@@ -48,9 +51,6 @@ class User extends Equatable {
         followersCount,
         followingCount,
       ];
-
-  /// Create a new instance from a json
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$UserToJson(this);

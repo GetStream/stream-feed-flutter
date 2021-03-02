@@ -3,12 +3,6 @@ import 'package:equatable/equatable.dart';
 ///
 class FeedId extends Equatable {
   ///
-  final String slug;
-
-  ///
-  final String userId;
-
-  ///
   FeedId(this.slug, this.userId)
       : assert(slug != null, "Feed slug can't be null"),
         assert(!slug.contains(':'), 'Invalid slug'),
@@ -23,6 +17,12 @@ class FeedId extends Equatable {
     assert(parts.length == 2, 'Invalid FeedId');
     return FeedId(parts[0], parts[1]);
   }
+
+  ///
+  final String slug;
+
+  ///
+  final String userId;
 
   ///
   String get claim => '$slug$userId';

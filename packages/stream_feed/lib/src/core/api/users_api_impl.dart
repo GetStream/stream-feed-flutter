@@ -6,10 +6,10 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class UsersApiImpl implements UsersApi {
-  final HttpClient client;
-
   const UsersApiImpl(this.client)
       : assert(client != null, "Can't create a UserApi w/o Client");
+
+  final HttpClient client;
 
   @override
   Future<User> add(
