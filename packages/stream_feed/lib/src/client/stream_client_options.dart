@@ -14,7 +14,7 @@ class StreamClientOptions {
     this.version = 'v1.0',
     this.serviceName = 'api',
     this.baseDomainName = 'stream-io-api.com',
-    this.location = Location.us_east,
+    this.location = Location.usEast,
     this.connectTimeout = const Duration(seconds: 6),
     this.receiveTimeout = const Duration(seconds: 6),
   });

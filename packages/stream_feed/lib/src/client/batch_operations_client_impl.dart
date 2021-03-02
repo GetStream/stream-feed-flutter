@@ -9,10 +9,9 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class BatchOperationsClientImpl implements BatchOperationsClient {
+  const BatchOperationsClientImpl(this.secret, this.batch);
   final String secret;
   final BatchApi batch;
-
-  const BatchOperationsClientImpl(this.secret, this.batch);
 
   @override
   Future<void> addToMany(Activity activity, Iterable<FeedId> feedIds) {
@@ -70,9 +69,8 @@ class BatchOperationsClientImpl implements BatchOperationsClient {
   }
 
   @override
-  Future<void> updateActivity(Activity activity) {
-    return updateActivities([activity]);
-  }
+  Future<void> updateActivity(Activity activity) =>
+      updateActivities([activity]);
 
   @override
   Future<void> updateActivities(Iterable<Activity> activities) {

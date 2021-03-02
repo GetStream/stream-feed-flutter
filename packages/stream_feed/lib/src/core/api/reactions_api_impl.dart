@@ -81,7 +81,7 @@ class ReactionsApiImpl implements ReactionsApi {
       queryParameters: {
         'limit': limit.toString(),
         if (filter != null) ...filter.params,
-        'with_activity_data': lookupAttr == LookupAttribute.activity_id,
+        'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
     final data = (result.data['results'] as List)
@@ -110,7 +110,7 @@ class ReactionsApiImpl implements ReactionsApi {
       queryParameters: {
         'limit': limit.toString(),
         if (filter != null) ...filter.params,
-        'with_activity_data': lookupAttr == LookupAttribute.activity_id,
+        'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
     return PaginatedReactions.fromJson(result.data);

@@ -22,13 +22,13 @@ enum TokenResource {
   any,
   activities,
   analytics,
-  analytics_redirect,
+  analyticsRedirect,
   collections,
   files,
   feed,
-  feed_targets,
+  feedTargets,
   follower,
-  open_graph,
+  openGraph,
   personalization,
   reactions,
   users,
@@ -39,13 +39,13 @@ extension TokenResourceX on TokenResource {
         TokenResource.any: '*',
         TokenResource.activities: 'activities',
         TokenResource.analytics: 'analytics',
-        TokenResource.analytics_redirect: 'redirect_and_track',
+        TokenResource.analyticsRedirect: 'redirect_and_track',
         TokenResource.collections: 'collections',
         TokenResource.files: 'files',
         TokenResource.feed: 'feed',
-        TokenResource.feed_targets: 'feed_targets',
+        TokenResource.feedTargets: 'feed_targets',
         TokenResource.follower: 'follower',
-        TokenResource.open_graph: 'url',
+        TokenResource.openGraph: 'url',
         TokenResource.personalization: 'ppersonalization',
         TokenResource.reactions: 'reactions',
         TokenResource.users: 'users',
@@ -91,7 +91,7 @@ class TokenHelper {
 
   static Token buildOpenGraphToken(String secret) {
     return _buildBackendToken(
-        secret, TokenResource.open_graph, TokenAction.read, '*');
+        secret, TokenResource.openGraph, TokenAction.read, '*');
   }
 
   static Token buildToTargetUpdateToken(
@@ -100,7 +100,7 @@ class TokenHelper {
     FeedId feed,
   ]) {
     return _buildBackendToken(
-        secret, TokenResource.feed_targets, action, feed?.claim ?? '*');
+        secret, TokenResource.feedTargets, action, feed?.claim ?? '*');
   }
 
   static Token buildFilesToken(String secret, TokenAction action) {
