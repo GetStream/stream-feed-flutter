@@ -87,9 +87,8 @@ class BatchApiImpl implements BatchApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'foreign_ids': pairs.map((it) => it.foreignID).join(','),
-        'timestamps': pairs.map((it) {
-          return it.time.toUtc().toIso8601String();
-        }).join(','),
+        'timestamps':
+            pairs.map((it) => it.time.toUtc().toIso8601String()).join(','),
       },
     );
     final data = (result.data['results'] as List)
@@ -124,9 +123,8 @@ class BatchApiImpl implements BatchApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'foreign_ids': pairs.map((it) => it.foreignID).join(','),
-        'timestamps': pairs.map((it) {
-          return it.time.toUtc().toIso8601String();
-        }).join(','),
+        'timestamps':
+            pairs.map((it) => it.time.toUtc().toIso8601String()).join(','),
       },
     );
     final data = (result.data['results'] as List)

@@ -33,11 +33,9 @@ class Crop {
   final List<CropType> _types;
 
   ///
-  Map<String, Object> get params {
-    return <String, Object>{
-      'crop': _types.map((it) => it.name).join(','),
-      'w': _width,
-      'h': _height,
-    };
-  }
+  Map<String, Object> get params => <String, Object>{
+        'crop': _types.map((it) => it.name).join(','),
+        'w': _width,
+        'h': _height,
+      };
 }

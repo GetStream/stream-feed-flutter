@@ -110,8 +110,7 @@ class Reaction extends Equatable {
     Map<String, Object> data,
     Map<String, List<Reaction>> latestChildren,
     Map<String, int> childrenCounts,
-  }) {
-    return Reaction(
+  }) => Reaction(
       id: id ?? this.id,
       kind: kind ?? this.kind,
       activityId: activityId ?? this.activityId,
@@ -126,7 +125,6 @@ class Reaction extends Equatable {
       latestChildren: latestChildren ?? this.latestChildren,
       childrenCounts: childrenCounts ?? this.childrenCounts,
     );
-  }
 
   @override
   List<Object> get props => [

@@ -49,7 +49,6 @@ class StreamApiException implements Exception {
       body.hashCode ^ jsonData.hashCode ^ status.hashCode ^ _code.hashCode;
 
   @override
-  String toString() {
-    return 'StreamApiException{body: $body, jsonData: $jsonData, status: $status, code: $_code}';
-  }
+  String toString() =>
+      'StreamApiException{body: $body, jsonData: $jsonData, status: $status, code: $_code}';
 }

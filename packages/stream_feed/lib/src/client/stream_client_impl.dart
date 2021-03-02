@@ -26,7 +26,7 @@ class StreamClientImpl implements StreamClient {
   StreamClientImpl(
     this._secret,
     String apiKey, {
-    String appId,
+    // String appId,
     StreamClientOptions options,
     StreamApi api,
   }) : _api = api ?? StreamApiImpl(apiKey, options: options);

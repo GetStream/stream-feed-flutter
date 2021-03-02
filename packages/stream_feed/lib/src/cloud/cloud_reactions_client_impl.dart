@@ -46,14 +46,10 @@ class CloudReactionsClientImpl implements CloudReactionsClient {
   }
 
   @override
-  Future<void> delete(String id) {
-    return reactions.delete(token, id);
-  }
+  Future<void> delete(String id) => reactions.delete(token, id);
 
   @override
-  Future<Reaction> get(String id) {
-    return reactions.get(token, id);
-  }
+  Future<Reaction> get(String id) => reactions.get(token, id);
 
   @override
   Future<void> update(
@@ -76,8 +72,7 @@ class CloudReactionsClientImpl implements CloudReactionsClient {
     Filter filter,
     int limit,
     String kind,
-  }) {
-    return reactions.filter(token, lookupAttr, lookupValue,
-        filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
-  }
+  }) =>
+      reactions.filter(token, lookupAttr, lookupValue, filter ?? Default.filter,
+          limit ?? Default.limit, kind ?? '');
 }

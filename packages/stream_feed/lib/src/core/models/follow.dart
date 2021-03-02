@@ -37,9 +37,8 @@ class UnFollow extends Follow {
       _$UnFollowFromJson(json);
 
   ///
-  factory UnFollow.fromFollow(Follow follow, bool keepHistory) {
-    return UnFollow(follow.feedId, follow.targetId, keepHistory);
-  }
+  factory UnFollow.fromFollow(Follow follow, bool keepHistory) =>
+      UnFollow(follow.feedId, follow.targetId, keepHistory);
 
   ///
   final bool keepHistory;

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:stream_feed_dart/src/core/models/activity.dart';
 
 part 'group.g.dart';
 

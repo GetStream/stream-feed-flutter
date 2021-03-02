@@ -20,13 +20,12 @@ class ActivityUpdate extends Equatable {
     String id,
     Map<String, Object> set,
     List<String> unset,
-  ) {
-    return ActivityUpdate(
-      id: id,
-      set: set,
-      unset: unset,
-    );
-  }
+  ) =>
+      ActivityUpdate(
+        id: id,
+        set: set,
+        unset: unset,
+      );
 
   ///
   factory ActivityUpdate.withForeignId(
@@ -34,14 +33,13 @@ class ActivityUpdate extends Equatable {
     DateTime time,
     Map<String, Object> set,
     List<String> unset,
-  ) {
-    return ActivityUpdate(
-      foreignId: foreignId,
-      time: time,
-      set: set,
-      unset: unset,
-    );
-  }
+  ) =>
+      ActivityUpdate(
+        foreignId: foreignId,
+        time: time,
+        set: set,
+        unset: unset,
+      );
 
   /// Create a new instance from a json
   factory ActivityUpdate.fromJson(Map<String, dynamic> json) =>

@@ -59,53 +59,43 @@ class TokenHelper {
     String secret,
     TokenAction action, [
     FeedId feed,
-  ]) {
-    return _buildBackendToken(
-        secret, TokenResource.feed, action, feed?.claim ?? '*');
-  }
+  ]) =>
+      _buildBackendToken(
+          secret, TokenResource.feed, action, feed?.claim ?? '*');
 
   static Token buildFollowToken(
     String secret,
     TokenAction action, [
     FeedId feed,
-  ]) {
-    return _buildBackendToken(
-        secret, TokenResource.follower, action, feed?.claim ?? '*');
-  }
+  ]) =>
+      _buildBackendToken(
+          secret, TokenResource.follower, action, feed?.claim ?? '*');
 
-  static Token buildReactionToken(String secret, TokenAction action) {
-    return _buildBackendToken(secret, TokenResource.reactions, action, '*');
-  }
+  static Token buildReactionToken(String secret, TokenAction action) =>
+      _buildBackendToken(secret, TokenResource.reactions, action, '*');
 
-  static Token buildActivityToken(String secret, TokenAction action) {
-    return _buildBackendToken(secret, TokenResource.activities, action, '*');
-  }
+  static Token buildActivityToken(String secret, TokenAction action) =>
+      _buildBackendToken(secret, TokenResource.activities, action, '*');
 
-  static Token buildUsersToken(String secret, TokenAction action) {
-    return _buildBackendToken(secret, TokenResource.users, action, '*');
-  }
+  static Token buildUsersToken(String secret, TokenAction action) =>
+      _buildBackendToken(secret, TokenResource.users, action, '*');
 
-  static Token buildCollectionsToken(String secret, TokenAction action) {
-    return _buildBackendToken(secret, TokenResource.collections, action, '*');
-  }
+  static Token buildCollectionsToken(String secret, TokenAction action) =>
+      _buildBackendToken(secret, TokenResource.collections, action, '*');
 
-  static Token buildOpenGraphToken(String secret) {
-    return _buildBackendToken(
-        secret, TokenResource.openGraph, TokenAction.read, '*');
-  }
+  static Token buildOpenGraphToken(String secret) => _buildBackendToken(
+      secret, TokenResource.openGraph, TokenAction.read, '*');
 
   static Token buildToTargetUpdateToken(
     String secret,
     TokenAction action, [
     FeedId feed,
-  ]) {
-    return _buildBackendToken(
-        secret, TokenResource.feedTargets, action, feed?.claim ?? '*');
-  }
+  ]) =>
+      _buildBackendToken(
+          secret, TokenResource.feedTargets, action, feed?.claim ?? '*');
 
-  static Token buildFilesToken(String secret, TokenAction action) {
-    return _buildBackendToken(secret, TokenResource.files, action, '*');
-  }
+  static Token buildFilesToken(String secret, TokenAction action) =>
+      _buildBackendToken(secret, TokenResource.files, action, '*');
 
   static Token buildFrontendToken(
     String secret,

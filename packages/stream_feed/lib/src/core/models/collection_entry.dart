@@ -55,16 +55,15 @@ class CollectionEntry extends Equatable {
     Map<String, Object> data,
     DateTime createdAt,
     DateTime updatedAt,
-  }) {
-    return CollectionEntry(
-      id: id ?? this.id,
-      collection: collection ?? this.collection,
-      foreignId: foreignId ?? this.foreignId,
-      data: data ?? this.data,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
-  }
+  }) =>
+      CollectionEntry(
+        id: id ?? this.id,
+        collection: collection ?? this.collection,
+        foreignId: foreignId ?? this.foreignId,
+        data: data ?? this.data,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$CollectionEntryToJson(this);
