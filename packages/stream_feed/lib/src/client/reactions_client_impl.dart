@@ -16,11 +16,12 @@ class ReactionsClientImpl implements ReactionsClient {
   final String secret;
   final ReactionsApi reactions;
 
-  /// add reaction
+  /// Add reaction
   ///
   /// Examples:
-  /// - add a like reaction to the activity with id activityId
-  // ignore: lines_longer_than_80_chars
+  /// - add a like reaction to the activity
+  /// with id activityId
+  /// 
   /// ```dart
   /// final like = await client.reactions.add('like', activity.id, 'john-doe');
   /// ```
