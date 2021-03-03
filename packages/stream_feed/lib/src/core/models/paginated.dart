@@ -2,12 +2,15 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed_dart/src/core/models/reaction.dart';
 
-import 'enriched_activity.dart';
+import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
 
 part 'paginated.g.dart';
 
 ///
 class _Paginated<T> extends Equatable {
+  ///
+  const _Paginated(this.next, this.results, this.duration);
+
   ///
   final String next;
 
@@ -16,9 +19,6 @@ class _Paginated<T> extends Equatable {
 
   ///
   final String duration;
-
-  ///
-  const _Paginated(this.next, this.results, this.duration);
 
   @override
   List<Object> get props => [next, results, duration];
@@ -32,15 +32,15 @@ class PaginatedReactions extends _Paginated<Reaction> {
       String next, List<Reaction> results, this.activity, String duration)
       : super(next, results, duration);
 
+  ///
+  factory PaginatedReactions.fromJson(Map<String, dynamic> json) =>
+      _$PaginatedReactionsFromJson(json);
+
   @override
   List<Object> get props => [...super.props, activity];
 
   ///
   final EnrichedActivity activity;
-
-  ///
-  factory PaginatedReactions.fromJson(Map<String, dynamic> json) =>
-      _$PaginatedReactionsFromJson(json);
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$PaginatedReactionsToJson(this);

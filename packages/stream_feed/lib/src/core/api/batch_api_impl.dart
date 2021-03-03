@@ -11,12 +11,12 @@ import 'package:stream_feed_dart/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
-import 'batch_api.dart';
+import 'package:stream_feed_dart/src/core/api/batch_api.dart';
 
 class BatchApiImpl implements BatchApi {
-  final HttpClient client;
-
   const BatchApiImpl(this.client);
+
+  final HttpClient client;
 
   @override
   Future<Response> addToMany(
@@ -87,9 +87,8 @@ class BatchApiImpl implements BatchApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'foreign_ids': pairs.map((it) => it.foreignID).join(','),
-        'timestamps': pairs.map((it) {
-          return it.time.toUtc().toIso8601String();
-        }).join(','),
+        'timestamps':
+            pairs.map((it) => it.time.toUtc().toIso8601String()).join(','),
       },
     );
     final data = (result.data['results'] as List)
@@ -124,9 +123,8 @@ class BatchApiImpl implements BatchApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'foreign_ids': pairs.map((it) => it.foreignID).join(','),
-        'timestamps': pairs.map((it) {
-          return it.time.toUtc().toIso8601String();
-        }).join(','),
+        'timestamps':
+            pairs.map((it) => it.time.toUtc().toIso8601String()).join(','),
       },
     );
     final data = (result.data['results'] as List)

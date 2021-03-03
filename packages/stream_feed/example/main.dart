@@ -3,17 +3,18 @@ import 'dart:io';
 import 'package:stream_feed_dart/stream_feed.dart';
 
 Future<void> main() async {
-  final apiKey = 'gp6e8sxxzud6';
-  final secret =
+  const apiKey = 'gp6e8sxxzud6';
+  const secret =
       '7j7exnksc4nxy399fdxvjqyqsqdahax3nfgtp27pumpc7sfm9um688pzpxjpjbf2';
 
   var client = StreamClient.connect(apiKey, secret);
 
   final chris = client.flatFeed('user', 'chris');
 
-  // Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
+  // Add an Activity; message is a custom field
+  // - tip: you can add unlimited custom fields!
   await chris.addActivity(
-    Activity(
+    const Activity(
       actor: 'chris',
       verb: 'add',
       object: 'picture:10',
@@ -23,7 +24,8 @@ Future<void> main() async {
       },
     ),
   );
-  // Create a following relationship between Jack's "timeline" feed and Chris' "user" feed:
+  // Create a following relationship
+  // between Jack's "timeline" feed and Chris' "user" feed:
   final jack = client.flatFeed('timeline', 'jack');
   await jack.follow(chris);
 
@@ -38,9 +40,10 @@ Future<void> main() async {
   // Instantiate a feed object
   final userFeed = client.flatFeed('user', '1');
 
-  // Add an activity to the feed, where actor, object and target are references to objects
+  // Add an activity to the feed, where actor, object
+  // and target are references to objects
   // (`Eric`, `Hawaii`, `Places to Visit`)
-  var activity = Activity(
+  var activity = const Activity(
     actor: 'user:1',
     verb: 'pin',
     object: 'place:42',
@@ -55,13 +58,13 @@ Future<void> main() async {
     object: 'exercise:42',
     foreignId: 'run:1',
     extraData: {
-      'course': {
+      'course': const {
         'name': 'Golden gate park',
         'distance': 10,
       },
-      'participants': ['Thierry', 'Tommaso'],
+      'participants': const ['Thierry', 'Tommaso'],
       'started_at': DateTime.now().toIso8601String(),
-      'location': {
+      'location': const {
         'type': 'point',
         'coordinates': [37.769722, -122.476944]
       }
@@ -81,7 +84,7 @@ Future<void> main() async {
     object: '3',
     time: DateTime.now(),
     foreignId: 'like:3',
-    extraData: {'popularity': 100},
+    extraData: const {'popularity': 100},
   );
 
   // first time the activity is added
@@ -110,11 +113,11 @@ Future<void> main() async {
   // prepare the unset operations
   final unset = ['daily_likes', 'popularity'];
 
-  final id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
-  var update = ActivityUpdate.withId(id, set, unset);
+  const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+  final update = ActivityUpdate.withId(id, set, unset);
   await userFeed.updateActivityById(update);
 
-  final foreignID = 'product:123';
+  const foreignID = 'product:123';
   final timestamp = DateTime.now();
   var activityUpdate = ActivityUpdate.withForeignId(
     foreignID,
@@ -150,7 +153,7 @@ Future<void> main() async {
       object: '3',
       time: now,
       foreignId: 'like:3',
-      extraData: {'extra': 'extra_value'},
+      extraData: const {'extra': 'extra_value'},
     ),
   );
 
@@ -229,9 +232,10 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  // Add an activity to the feed, where actor, object and target are references to objects -
+  // Add an activity to the feed,
+  // where actor, object and target are references to objects -
   // adding your ranking method as a parameter (in this case, "popularity"):
-  activity = Activity(
+  activity = const Activity(
     actor: 'user:1',
     verb: 'pin',
     object: 'place:42',
@@ -240,7 +244,8 @@ Future<void> main() async {
   );
   await userFeed.addActivity(activity);
 
-  // Get activities sorted by the ranking method labelled 'activity_popularity' (Ranked Feeds
+  // Get activities sorted by the ranking method
+  // labelled 'activity_popularity' (Ranked Feeds
   // Enabled)
   response = await userFeed.getActivities(
     limit: 5,
@@ -255,19 +260,20 @@ Future<void> main() async {
     verb: 'tweet',
     object: 'tweet:id',
     to: <FeedId>[FeedId.id('notification:jessica')],
-    extraData: {
+    extraData: const {
       'message': "@Jessica check out getstream.io it's so dang awesome.",
     },
   );
   await userFeed.addActivity(activity);
 
-  // The TO field ensures the activity is send to the player, match and team feed
+  // The TO field ensures the activity is send to
+  // the player, match and team feed
   activity = Activity(
     actor: 'player:suarez',
     verb: 'foul',
     object: 'player:ramos',
     to: <FeedId>[FeedId.id('team:barcelona'), FeedId.id('match:1')],
-    extraData: {
+    extraData: const {
       'match': {'name': 'El Classico', 'id': 10}
     },
   );
@@ -278,9 +284,9 @@ Future<void> main() async {
   // Batch following many feeds
   // Let timeline:1 will follow user:1, user:2 and user:3
   var follows = <Follow>[
-    Follow('timeline:1', 'user:1'),
-    Follow('timeline:1', 'user:2'),
-    Follow('timeline:1', 'user:3'),
+    const Follow('timeline:1', 'user:1'),
+    const Follow('timeline:1', 'user:2'),
+    const Follow('timeline:1', 'user:3'),
   ];
   await client.batch.followMany(follows);
 
@@ -290,12 +296,12 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   activities = <Activity>[
-    Activity(
+    const Activity(
       actor: 'user:1',
       verb: 'tweet',
       object: 'tweet:1',
     ),
-    Activity(
+    const Activity(
       actor: 'user:2',
       verb: 'watch',
       object: 'movie:1',
@@ -306,14 +312,14 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   // adds 1 activity to many feeds in one request
-  activity = Activity(
+  activity = const Activity(
     actor: 'user:2',
     verb: 'pin',
     object: 'place:42',
     target: 'board:1',
   );
 
-  var feeds = <FeedId>[
+  final feeds = <FeedId>[
     FeedId('timeline', '1'),
     FeedId('timeline', '2'),
     FeedId('timeline', '3'),
@@ -342,18 +348,16 @@ Future<void> main() async {
   client = StreamClient.connect(
     apiKey,
     secret,
-    options: const StreamClientOptions(
-      location: Location.us_east,
-    ),
+    options: const StreamClientOptions(),
   );
 
   /* -------------------------------------------------------- */
 
   // add a like reaction to the activity with id activityId
-  var like = await client.reactions.add('like', activity.id, 'john-doe');
+  final like = await client.reactions.add('like', activity.id, 'john-doe');
 
   // adds a comment reaction to the activity with id activityId
-  var comment = await client.reactions.add(
+  final comment = await client.reactions.add(
     'comment',
     activity.id,
     'john-doe',
@@ -371,7 +375,8 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  // adds a comment reaction to the activity and notify Thierry's notification feed
+  // adds a comment reaction to the activity
+  // and notify Thierry's notification feed
   await client.reactions.add(
     'comment',
     activity.id,
@@ -381,12 +386,14 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  // read bob's timeline and include most recent reactions to all activities and their total count
+  // read bob's timeline and include most recent reactions
+  // to all activities and their total count
   await client.flatFeed('timeline', 'bob').getEnrichedActivities(
         flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
       );
 
-  // read bob's timeline and include most recent reactions to all activities and her own reactions
+  // read bob's timeline and include most recent reactions
+  // to all activities and her own reactions
   await client.flatFeed('timeline', 'bob').getEnrichedActivities(
         flags: EnrichmentFlags()
             .withOwnReactions()
@@ -398,13 +405,13 @@ Future<void> main() async {
 
   // retrieve all kind of reactions for an activity
   var reactions = await client.reactions.filter(
-    LookupAttribute.activity_id,
+    LookupAttribute.activityId,
     'ed2837a6-0a3b-4679-adc1-778a1704852d',
   );
 
   // retrieve first 10 likes for an activity
   reactions = await client.reactions.filter(
-    LookupAttribute.activity_id,
+    LookupAttribute.activityId,
     'ed2837a6-0a3b-4679-adc1-778a1704852d',
     limit: 10,
     kind: 'like',
@@ -412,7 +419,7 @@ Future<void> main() async {
 
   // retrieve the next 10 likes using the id_lt param
   reactions = await client.reactions.filter(
-    LookupAttribute.activity_id,
+    LookupAttribute.activityId,
     'ed2837a6-0a3b-4679-adc1-778a1704852d',
     filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0'),
     kind: 'like',
@@ -449,7 +456,8 @@ Future<void> main() async {
     entryId: 'cheese-burger',
   );
 
-  // if you don't have an id on your side, just use null as the ID and Stream will generate a
+  // if you don't have an id on your side, just use null as the ID
+  // and Stream will generate a
   // unique ID
   await client.collections.add(
     'food',
@@ -477,11 +485,11 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   await client.collections.upsert('visitor', <CollectionEntry>[
-    CollectionEntry(id: '123', data: {
+    const CollectionEntry(id: '123', data: {
       'name': 'john',
       'favorite_color': 'blue',
     }),
-    CollectionEntry(id: '124', data: {
+    const CollectionEntry(id: '124', data: {
       'name': 'jane',
       'favorite_color': 'purple',
       'interests': ['fashion', 'jazz'],
@@ -491,7 +499,7 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   // select the entries with ID 123 and 124 from items collection
-  var objects = await client.collections.select('items', ['123', '124']);
+  final objects = await client.collections.select('items', ['123', '124']);
 
   /* -------------------------------------------------------- */
 
@@ -501,7 +509,7 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   // first we add our object to the food collection
-  var cheeseBurger = await client.collections.add(
+  final cheeseBurger = await client.collections.add(
     'food',
     {
       'name': 'Cheese Burger',
@@ -528,10 +536,12 @@ Future<void> main() async {
     ),
   );
 
-  // if we now read the feed, the activity we just added will include the entire full object
+  // if we now read the feed, the activity we just added
+  // will include the entire full object
   await userFeed.getEnrichedActivities();
 
-  // we can then update the object and Stream will propagate the change to all activities
+  // we can then update the object
+  // and Stream will propagate the change to all activities
   await client.collections.update(cheeseBurger.collection, cheeseBurger.id, {
     'name': 'Amazing Cheese Burger',
     'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
@@ -541,7 +551,7 @@ Future<void> main() async {
 
   // First create a collection entry with upsert api
   await client.collections.upsert('food', <CollectionEntry>[
-    CollectionEntry(data: {'name': 'Cheese Burger'})
+    const CollectionEntry(data: {'name': 'Cheese Burger'})
   ]);
 
   // Then create a user
@@ -551,9 +561,10 @@ Future<void> main() async {
     'gender': 'male',
   });
 
-  // Since we know their IDs we can create references to both without reading from APIs
-  var cheeseBurgerRef = createCollectionReference('food', 'cheese-burger');
-  var johnDoeRef = createUserReference('john-doe');
+  // Since we know their IDs
+  // we can create references to both without reading from APIs
+  final cheeseBurgerRef = createCollectionReference('food', 'cheese-burger');
+  final johnDoeRef = createUserReference('john-doe');
 
   await client.flatFeed('user', 'john').addActivity(
         Activity(
@@ -601,7 +612,7 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  var image = File('...');
+  final image = File('...');
   var multipartFile = await MultipartFile.fromFile(
     image.path,
     filename: 'my-photo',
@@ -609,7 +620,7 @@ Future<void> main() async {
   );
   await client.images.upload(multipartFile);
 
-  var file = File('...');
+  final file = File('...');
   multipartFile = await MultipartFile.fromFile(
     file.path,
     filename: 'my-file',
@@ -629,20 +640,18 @@ Future<void> main() async {
   // create a 50x50 thumbnail and crop from center
   await client.images.getCropped(
     'imageUrl',
-    Crop(50, 50, types: <CropType>[
-      CropType.center,
-    ]),
+    const Crop(50, 50),
   );
 
   // create a 50x50 thumbnail using clipping (keeps aspect ratio)
   await client.images.getResized(
     'imageUrl',
-    Resize(50, 50, type: ResizeType.clip),
+    const Resize(50, 50),
   );
 
   /* -------------------------------------------------------- */
 
-  var urlPreview = await client.openGraph(
+  final urlPreview = await client.openGraph(
     'http://www.imdb.com/title/tt0117500/',
   );
 }

@@ -7,9 +7,9 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class CollectionsApiImpl implements CollectionsApi {
-  final HttpClient client;
-
   const CollectionsApiImpl(this.client);
+
+  final HttpClient client;
 
   @override
   Future<CollectionEntry> add(
@@ -20,7 +20,7 @@ class CollectionsApiImpl implements CollectionsApi {
         entry.collection.isNotEmpty, "Collection name can't be empty");
     checkNotNull(entry.data, "Collection data can't be null");
     final result = await client.post<Map>(
-      Routes.buildCollectionsUrl('${entry.collection}'),
+      Routes.buildCollectionsUrl(entry.collection),
       headers: {'Authorization': '$token'},
       data: {
         'data': entry.data,

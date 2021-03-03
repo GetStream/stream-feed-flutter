@@ -9,27 +9,27 @@ import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
-import 'batch_api.dart';
-import 'batch_api_impl.dart';
-import 'collections_api.dart';
-import 'collections_api_impl.dart';
-import 'feed_api.dart';
-import 'feed_api_impl.dart';
-import 'files_api_impl.dart';
-import 'reactions_api.dart';
-import 'reactions_api_impl.dart';
-import 'stream_api.dart';
-import 'users_api.dart';
-import 'users_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/batch_api.dart';
+import 'package:stream_feed_dart/src/core/api/batch_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/collections_api.dart';
+import 'package:stream_feed_dart/src/core/api/collections_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/feed_api.dart';
+import 'package:stream_feed_dart/src/core/api/feed_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/files_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
+import 'package:stream_feed_dart/src/core/api/reactions_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/stream_api.dart';
+import 'package:stream_feed_dart/src/core/api/users_api.dart';
+import 'package:stream_feed_dart/src/core/api/users_api_impl.dart';
 
 class StreamApiImpl implements StreamApi {
-  final HttpClient _client;
-
   StreamApiImpl(
     String apiKey, {
     StreamClientOptions options,
     HttpClient client,
   }) : _client = client ?? StreamHttpClient(apiKey, options: options);
+
+  final HttpClient _client;
 
   @override
   BatchApi get batch => BatchApiImpl(_client);
@@ -61,6 +61,7 @@ class StreamApiImpl implements StreamApi {
       headers: {'Authorization': '$token'},
       queryParameters: {'url': targetUrl},
     );
+    //TODO: OpenGraphData.fromJson() ?
     print(result);
   }
 }

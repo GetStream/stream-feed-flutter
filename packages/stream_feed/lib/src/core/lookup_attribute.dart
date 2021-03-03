@@ -1,13 +1,15 @@
 enum LookupAttribute {
-  activity_id,
-  reaction_id,
-  user_id,
+  activityId,
+  reactionId,
+  userId,
 }
 
+/// Convenient class Extension on [LookupAttribute] enum
 extension LookupAttributeX on LookupAttribute {
+  /// Convenient method Extension to generate [attr] from [LookupAttribute] enum
   String get attr => {
-        LookupAttribute.activity_id: 'activity_id',
-        LookupAttribute.reaction_id: 'reaction_id',
-        LookupAttribute.user_id: 'user_id',
+        LookupAttribute.activityId: 'activity_id',
+        LookupAttribute.reactionId: 'reaction_id',
+        LookupAttribute.userId: 'user_id',
       }[this];
 }

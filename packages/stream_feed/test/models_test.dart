@@ -44,7 +44,7 @@ void main() {
       analytics: const {'test': 'test'},
       extraContext: const {'test': 'test'},
       origin: const EnrichableField('test'),
-      score: 1.0,
+      score: 1,
       extraData: const {'test': 'test'},
       reactionCounts: const {'test': 1},
       ownReactions: {
@@ -58,8 +58,10 @@ void main() {
     final enrichedActivityFromJson =
         EnrichedActivity.fromJson(enrichedActivityJson);
     expect(enrichedActivityFromJson, enrichedActivity);
-    // we will never get “extra_data” from the api that's why it's not explicit in the json fixture
-    // all the extra data other than the default fields in json will ultimately gets collected as a field extra_data of type Map
+    // we will never get “extra_data” from the api
+    //that's why it's not explicit in the json fixture
+    // all the extra data other than the default fields in json will ultimately
+    // gets collected as a field extra_data of type Map
     expect(enrichedActivityFromJson.extraData, {'test': 'test'});
   });
   test('Activity', () {
@@ -70,7 +72,7 @@ void main() {
         analytics: const {'test': 'test'},
         extraContext: const {'test': 'test'},
         origin: 'test',
-        score: 1.0,
+        score: 1,
         extraData: const {'test': 'test'},
         actor: 'test',
         verb: 'test',
@@ -94,7 +96,7 @@ void main() {
             analytics: const {'test': 'test'},
             extraContext: const {'test': 'test'},
             origin: 'test',
-            score: 1.0,
+            score: 1,
             extraData: const {'test': 'test'},
             actor: 'test',
             verb: 'test',
@@ -125,7 +127,7 @@ void main() {
             analytics: const {'test': 'test'},
             extraContext: const {'test': 'test'},
             origin: 'test',
-            score: 1.0,
+            score: 1,
             extraData: const {'test': 'test'},
             actor: 'test',
             verb: 'test',
@@ -187,7 +189,7 @@ void main() {
       analytics: const {'test': 'test'},
       extraContext: const {'test': 'test'},
       origin: const EnrichableField('test'),
-      score: 1.0,
+      score: 1,
       extraData: const {'test': 'test'},
       reactionCounts: const {'test': 1},
       ownReactions: {

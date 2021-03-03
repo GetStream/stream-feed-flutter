@@ -6,7 +6,8 @@ class Serializer {
   /// Used to avoid to serialize properties to json
   static const Function readOnly = readonly;
 
-  /// Takes values in `extra_data` key and puts them on the root level of the json map
+  /// Takes values in `extra_data` key
+  /// and puts them on the root level of the json map
   static Map<String, dynamic> moveKeysToRoot(
     Map<String, dynamic> json,
     List<String> topLevelFields,
@@ -14,7 +15,7 @@ class Serializer {
     if (json == null) {
       return json;
     }
-    var clone = Map<String, dynamic>.from(json);
+    final clone = Map<String, dynamic>.from(json);
     clone['extra_data'] = <String, dynamic>{};
 
     json?.keys?.forEach((key) {
@@ -35,8 +36,8 @@ class Serializer {
       return intermediateMap;
     }
 
-    var clone = Map<String, dynamic>.from(intermediateMap);
-    Map<String, dynamic> extraData = clone.remove('extra_data');
+    final clone = Map<String, dynamic>.from(intermediateMap);
+    final Map<String, dynamic> extraData = clone.remove('extra_data');
 
     extraData?.keys?.forEach((key) {
       if (!topLevelFields.contains(key)) {

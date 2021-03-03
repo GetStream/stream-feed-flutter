@@ -4,10 +4,9 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/user.dart';
 
 class CloudUsersClientImpl implements CloudUsersClient {
+  const CloudUsersClientImpl(this.token, this.users);
   final Token token;
   final UsersApi users;
-
-  const CloudUsersClientImpl(this.token, this.users);
 
   @override
   Future<User> add(

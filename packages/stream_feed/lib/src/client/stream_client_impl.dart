@@ -23,16 +23,16 @@ import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class StreamClientImpl implements StreamClient {
-  final String _secret;
-  final StreamApi _api;
-
   StreamClientImpl(
     this._secret,
     String apiKey, {
-    String appId,
+    // String appId,
     StreamClientOptions options,
     StreamApi api,
   }) : _api = api ?? StreamApiImpl(apiKey, options: options);
+
+  final String _secret;
+  final StreamApi _api;
 
   @override
   BatchOperationsClient get batch =>

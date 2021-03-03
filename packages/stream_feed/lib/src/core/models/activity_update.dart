@@ -7,6 +7,45 @@ part 'activity_update.g.dart';
 @JsonSerializable()
 class ActivityUpdate extends Equatable {
   ///
+  const ActivityUpdate({
+    this.id,
+    this.foreignId,
+    this.time,
+    this.set,
+    this.unset,
+  });
+
+  ///
+  factory ActivityUpdate.withId(
+    String id,
+    Map<String, Object> set,
+    List<String> unset,
+  ) =>
+      ActivityUpdate(
+        id: id,
+        set: set,
+        unset: unset,
+      );
+
+  ///
+  factory ActivityUpdate.withForeignId(
+    String foreignId,
+    DateTime time,
+    Map<String, Object> set,
+    List<String> unset,
+  ) =>
+      ActivityUpdate(
+        foreignId: foreignId,
+        time: time,
+        set: set,
+        unset: unset,
+      );
+
+  /// Create a new instance from a json
+  factory ActivityUpdate.fromJson(Map<String, dynamic> json) =>
+      _$ActivityUpdateFromJson(json);
+
+  ///
   @JsonKey(includeIfNull: false)
   final String id;
 
@@ -23,47 +62,6 @@ class ActivityUpdate extends Equatable {
 
   ///
   final List<String> unset;
-
-  ///
-  const ActivityUpdate({
-    this.id,
-    this.foreignId,
-    this.time,
-    this.set,
-    this.unset,
-  });
-
-  ///
-  factory ActivityUpdate.withId(
-    String id,
-    Map<String, Object> set,
-    List<String> unset,
-  ) {
-    return ActivityUpdate(
-      id: id,
-      set: set,
-      unset: unset,
-    );
-  }
-
-  ///
-  factory ActivityUpdate.withForeignId(
-    String foreignId,
-    DateTime time,
-    Map<String, Object> set,
-    List<String> unset,
-  ) {
-    return ActivityUpdate(
-      foreignId: foreignId,
-      time: time,
-      set: set,
-      unset: unset,
-    );
-  }
-
-  /// Create a new instance from a json
-  factory ActivityUpdate.fromJson(Map<String, dynamic> json) =>
-      _$ActivityUpdateFromJson(json);
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$ActivityUpdateToJson(this);

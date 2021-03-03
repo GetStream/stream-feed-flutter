@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
 
-import '../core/models/activity.dart';
-import '../core/models/feed_id.dart';
-import '../core/models/follow.dart';
-import '../core/models/foreign_id_time_pair.dart';
+import 'package:stream_feed_dart/src/core/models/activity.dart';
+import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/follow.dart';
+import 'package:stream_feed_dart/src/core/models/foreign_id_time_pair.dart';
 
 abstract class BatchOperationsClient {
   Future<void> addToMany(Activity activity, Iterable<FeedId> feedIds);

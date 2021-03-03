@@ -5,10 +5,9 @@ import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 
 class CloudReactionsClientImpl implements CloudReactionsClient {
+  const CloudReactionsClientImpl(this.token, this.reactions);
   final Token token;
   final ReactionsApi reactions;
-
-  const CloudReactionsClientImpl(this.token, this.reactions);
 
   @override
   Future<Reaction> add(
@@ -47,14 +46,10 @@ class CloudReactionsClientImpl implements CloudReactionsClient {
   }
 
   @override
-  Future<void> delete(String id) {
-    return reactions.delete(token, id);
-  }
+  Future<void> delete(String id) => reactions.delete(token, id);
 
   @override
-  Future<Reaction> get(String id) {
-    return reactions.get(token, id);
-  }
+  Future<Reaction> get(String id) => reactions.get(token, id);
 
   @override
   Future<void> update(
@@ -77,8 +72,7 @@ class CloudReactionsClientImpl implements CloudReactionsClient {
     Filter filter,
     int limit,
     String kind,
-  }) {
-    return reactions.filter(token, lookupAttr, lookupValue,
-        filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
-  }
+  }) =>
+      reactions.filter(token, lookupAttr, lookupValue, filter ?? Default.filter,
+          limit ?? Default.limit, kind ?? '');
 }

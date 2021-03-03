@@ -9,7 +9,7 @@ import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/models/group.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 
-import 'cloud_feed.dart';
+import 'package:stream_feed_dart/src/cloud/feed/cloud_feed.dart';
 
 class CloudAggregatedFeed extends CloudFeed {
   const CloudAggregatedFeed(Token token, FeedId feedId, FeedApi feed)

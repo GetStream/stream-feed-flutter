@@ -1,12 +1,28 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:stream_feed_dart/src/core/models/activity.dart';
 
 part 'group.g.dart';
 
 ///
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
 class Group<T> extends Equatable {
+  ///
+  const Group({
+    this.id,
+    this.group,
+    this.activities,
+    this.actorCount,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  /// Create a new instance from a json
+  factory Group.fromJson(
+    Map<String, dynamic> json,
+    T Function(Object) fromJsonT,
+  ) =>
+      _$GroupFromJson(json, fromJsonT);
+
   ///
   final String id;
 
@@ -24,23 +40,6 @@ class Group<T> extends Equatable {
 
   ///
   final DateTime updatedAt;
-
-  ///
-  const Group({
-    this.id,
-    this.group,
-    this.activities,
-    this.actorCount,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  /// Create a new instance from a json
-  factory Group.fromJson(
-    Map<String, dynamic> json,
-    T Function(Object) fromJsonT,
-  ) =>
-      _$GroupFromJson(json, fromJsonT);
 
   @override
   List<Object> get props => [
@@ -60,12 +59,6 @@ class Group<T> extends Equatable {
 ///
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
 class NotificationGroup<T> extends Group<T> {
-  ///
-  final bool isRead;
-
-  ///
-  final bool isSeen;
-
   ///
   const NotificationGroup({
     String id,
@@ -92,6 +85,12 @@ class NotificationGroup<T> extends Group<T> {
   ) =>
       _$NotificationGroupFromJson(json, fromJsonT);
 
+  ///
+  final bool isRead;
+
+  ///
+  final bool isSeen;
+
   @override
   List<Object> get props => [
         ...super.props,
@@ -100,6 +99,7 @@ class NotificationGroup<T> extends Group<T> {
       ];
 
   /// Serialize to json
+  @override
   Map<String, dynamic> toJson(Object Function(T) toJsonT) =>
       _$NotificationGroupToJson(this, toJsonT);
 }

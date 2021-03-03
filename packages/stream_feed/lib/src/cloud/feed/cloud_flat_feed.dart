@@ -7,7 +7,7 @@ import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 
-import 'cloud_feed.dart';
+import 'package:stream_feed_dart/src/cloud/feed/cloud_feed.dart';
 
 class CloudFlatFeed extends CloudFeed {
   CloudFlatFeed(Token token, FeedId feedId, FeedApi feed)

@@ -4,13 +4,12 @@ import 'package:stream_feed_dart/src/core/models/crop.dart';
 import 'package:stream_feed_dart/src/core/models/resize.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-import 'image_storage_client.dart';
+import 'package:stream_feed_dart/src/client/image_storage_client.dart';
 
 class ImageStorageClientImpl implements ImageStorageClient {
+  const ImageStorageClientImpl(this.secret, this.images);
   final String secret;
   final ImagesApi images;
-
-  const ImageStorageClientImpl(this.secret, this.images);
 
   @override
   Future<String> upload(MultipartFile image) {

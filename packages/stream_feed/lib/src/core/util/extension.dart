@@ -1,9 +1,8 @@
-///
+/// Convenient class Extension on [Map]
 extension MapX on Map {
-  ///
-  Map<String, dynamic> get nullProtect {
-    return this..removeWhere((key, value) => key == null || value == null);
-  }
+  /// return a [Map] with no null entries (in their key or values)
+  Map<String, dynamic> get nullProtect =>
+      this..removeWhere((key, value) => key == null || value == null);
 }
 
 /// Throws an [ArgumentError] if the given [expression] is `false`.

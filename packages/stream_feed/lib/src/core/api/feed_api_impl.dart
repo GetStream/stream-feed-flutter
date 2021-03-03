@@ -11,10 +11,10 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class FeedApiImpl implements FeedApi {
-  final HttpClient client;
-
   const FeedApiImpl(this.client)
       : assert(client != null, "Can't create a FeedApi w/o Client");
+
+  final HttpClient client;
 
   @override
   Future<List<Activity>> addActivities(
@@ -53,6 +53,7 @@ class FeedApiImpl implements FeedApi {
     checkArgument(activityCopyLimit >= 0,
         'Activity copy limit should be a non-negative number');
     checkArgument(activityCopyLimit <= Default.maxActivityCopyLimit,
+        // ignore: lines_longer_than_80_chars
         'Activity copy limit should be less then ${Default.maxActivityCopyLimit}');
     return client.post(
       Routes.buildFeedUrl(sourceFeed, 'following'),
@@ -168,7 +169,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(updates, 'No updates');
     checkArgument(updates.isNotEmpty, 'No updates');
     checkArgument(updates.length <= 100, 'Maximum length is 100');
-    for (var update in updates) {
+    for (final update in updates) {
       checkNotNull(update.foreignId, 'No activity to update');
       checkNotNull(update.time, 'Missing timestamp');
       checkNotNull(update.set, 'No activity properties to set');
@@ -191,7 +192,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(updates, 'No updates');
     checkArgument(updates.isNotEmpty, 'No updates');
     checkArgument(updates.length <= 100, 'Maximum length is 100');
-    for (var update in updates) {
+    for (final update in updates) {
       checkNotNull(update.id, 'No activity to update');
       checkNotNull(update.set, 'No activity properties to set');
       checkNotNull(update.unset, 'No activity properties to unset');

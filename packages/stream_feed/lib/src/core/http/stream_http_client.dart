@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 
-import '../exceptions.dart';
-import '../util/extension.dart';
-import 'http_client.dart';
+import 'package:stream_feed_dart/src/core/exceptions.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
+import 'package:stream_feed_dart/src/core/http/http_client.dart';
 
 class StreamHttpClient implements HttpClient {
   StreamHttpClient(
@@ -33,7 +33,8 @@ class StreamHttpClient implements HttpClient {
   String get userAgent => options.userAgent;
 
   /// [Dio] httpClient
-  /// It's be chosen because it's easy to use and supports interesting features out of the box
+  /// It's be chosen because it's easy to use
+  /// and supports interesting features out of the box
   /// (Interceptors, Global configuration, FormData, File downloading etc.)
   @visibleForTesting
   Dio httpClient;
@@ -62,9 +63,7 @@ class StreamHttpClient implements HttpClient {
         'x-stream-client': userAgent,
       }
       ..interceptors.add(LogInterceptor(
-        requestHeader: true,
         requestBody: true,
-        responseHeader: true,
         responseBody: true,
       ));
   }

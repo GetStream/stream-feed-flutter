@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed_dart/src/core/util/serializer.dart';
 
-import 'feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 part 'reaction.g.dart';
 
@@ -10,19 +10,40 @@ part 'reaction.g.dart';
 @JsonSerializable()
 class Reaction extends Equatable {
   ///
+  const Reaction({
+    this.id,
+    this.kind,
+    this.activityId,
+    this.userId,
+    this.parent,
+    this.createdAt,
+    this.updatedAt,
+    this.targetFeeds,
+    this.user,
+    this.targetFeedsExtraData,
+    this.data,
+    this.latestChildren,
+    this.childrenCounts,
+  });
+
+  /// Create a new instance from a json
+  factory Reaction.fromJson(Map<String, dynamic> json) =>
+      _$ReactionFromJson(json);
+
+  /// api will generate an id if it's missing
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final String id;
 
-  ///
+  /// required only for add/addChile, not update
   final String kind;
 
-  ///
+  /// only required for reactions
   final String activityId;
 
-  ///
+  /// optional when using client tokens
   final String userId;
 
-  ///
+  /// only required for child reactions
   @JsonKey(includeIfNull: false)
   final String parent;
 
@@ -75,23 +96,6 @@ class Reaction extends Equatable {
   ];
 
   ///
-  const Reaction({
-    this.id,
-    this.kind,
-    this.activityId,
-    this.userId,
-    this.parent,
-    this.createdAt,
-    this.updatedAt,
-    this.targetFeeds,
-    this.user,
-    this.targetFeedsExtraData,
-    this.data,
-    this.latestChildren,
-    this.childrenCounts,
-  });
-
-  ///
   Reaction copyWith({
     String id,
     String kind,
@@ -106,8 +110,7 @@ class Reaction extends Equatable {
     Map<String, Object> data,
     Map<String, List<Reaction>> latestChildren,
     Map<String, int> childrenCounts,
-  }) {
-    return Reaction(
+  }) => Reaction(
       id: id ?? this.id,
       kind: kind ?? this.kind,
       activityId: activityId ?? this.activityId,
@@ -122,7 +125,6 @@ class Reaction extends Equatable {
       latestChildren: latestChildren ?? this.latestChildren,
       childrenCounts: childrenCounts ?? this.childrenCounts,
     );
-  }
 
   @override
   List<Object> get props => [
@@ -140,10 +142,6 @@ class Reaction extends Equatable {
         latestChildren,
         childrenCounts,
       ];
-
-  /// Create a new instance from a json
-  factory Reaction.fromJson(Map<String, dynamic> json) =>
-      _$ReactionFromJson(json);
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$ReactionToJson(this);

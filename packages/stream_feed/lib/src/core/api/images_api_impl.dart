@@ -4,12 +4,12 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
-import 'images_api.dart';
+import 'package:stream_feed_dart/src/core/api/images_api.dart';
 
 class ImagesApiImpl implements ImagesApi {
-  final HttpClient client;
-
   const ImagesApiImpl(this.client);
+
+  final HttpClient client;
 
   @override
   Future<String> upload(Token token, MultipartFile image) async {

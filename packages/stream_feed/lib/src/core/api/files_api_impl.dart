@@ -4,12 +4,13 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
-import 'files_api.dart';
+import 'package:stream_feed_dart/src/core/api/files_api.dart';
 
+//TODO: stream_feed_dart/src/core/core.dart
 class FilesApiImpl implements FilesApi {
-  final HttpClient client;
-
   const FilesApiImpl(this.client);
+
+  final HttpClient client;
 
   @override
   Future<String> upload(Token token, MultipartFile file) async {

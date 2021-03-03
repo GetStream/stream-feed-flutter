@@ -4,10 +4,9 @@ import 'package:stream_feed_dart/src/core/api/files_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 
 class CloudFileStorageClientImpl implements CloudFileStorageClient {
+  const CloudFileStorageClientImpl(this.token, this.files);
   final Token token;
   final FilesApi files;
-
-  const CloudFileStorageClientImpl(this.token, this.files);
 
   @override
   Future<String> upload(MultipartFile file) => files.upload(token, file);

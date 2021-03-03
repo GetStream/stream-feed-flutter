@@ -7,6 +7,25 @@ part 'open_graph_data.g.dart';
 @JsonSerializable(createToJson: true)
 class OpenGraphData extends Equatable {
   ///
+  const OpenGraphData({
+    this.title,
+    this.type,
+    this.url,
+    this.site,
+    this.siteName,
+    this.description,
+    this.determiner,
+    this.locale,
+    this.images,
+    this.videos,
+    this.audios,
+  });
+
+  /// Create a new instance from a json
+  factory OpenGraphData.fromJson(Map<String, dynamic> json) =>
+      _$OpenGraphDataFromJson(json);
+
+  ///
   final String title;
 
   ///
@@ -39,21 +58,6 @@ class OpenGraphData extends Equatable {
   ///
   final List<Audio> audios;
 
-  ///
-  const OpenGraphData({
-    this.title,
-    this.type,
-    this.url,
-    this.site,
-    this.siteName,
-    this.description,
-    this.determiner,
-    this.locale,
-    this.images,
-    this.videos,
-    this.audios,
-  });
-
   @override
   List<Object> get props => [
         title,
@@ -69,10 +73,6 @@ class OpenGraphData extends Equatable {
         audios,
       ];
 
-  /// Create a new instance from a json
-  factory OpenGraphData.fromJson(Map<String, dynamic> json) =>
-      _$OpenGraphDataFromJson(json);
-
   /// Serialize to json
   Map<String, dynamic> toJson() => _$OpenGraphDataToJson(this);
 }
@@ -80,27 +80,6 @@ class OpenGraphData extends Equatable {
 ///
 @JsonSerializable(createToJson: true)
 class Image extends Equatable {
-  ///
-  final String image;
-
-  ///
-  final String url;
-
-  ///
-  final String secureUrl;
-
-  ///
-  final String width;
-
-  ///
-  final String height;
-
-  ///
-  final String type;
-
-  ///
-  final String alt;
-
   ///
   const Image({
     this.image,
@@ -112,27 +91,9 @@ class Image extends Equatable {
     this.alt,
   });
 
-  @override
-  List<Object> get props => [
-        image,
-        url,
-        secureUrl,
-        width,
-        height,
-        type,
-        alt,
-      ];
-
   /// Create a new instance from a json
   factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
 
-  /// Serialize to json
-  Map<String, dynamic> toJson() => _$ImageToJson(this);
-}
-
-///
-@JsonSerializable(createToJson: true)
-class Video extends Equatable {
   ///
   final String image;
 
@@ -154,6 +115,24 @@ class Video extends Equatable {
   ///
   final String alt;
 
+  @override
+  List<Object> get props => [
+        image,
+        url,
+        secureUrl,
+        width,
+        height,
+        type,
+        alt,
+      ];
+
+  /// Serialize to json
+  Map<String, dynamic> toJson() => _$ImageToJson(this);
+}
+
+///
+@JsonSerializable(createToJson: true)
+class Video extends Equatable {
   ///
   const Video({
     this.image,
@@ -164,6 +143,30 @@ class Video extends Equatable {
     this.type,
     this.alt,
   });
+
+  /// Create a new instance from a json
+  factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
+
+  ///
+  final String image;
+
+  ///
+  final String url;
+
+  ///
+  final String secureUrl;
+
+  ///
+  final String width;
+
+  ///
+  final String height;
+
+  ///
+  final String type;
+
+  ///
+  final String alt;
 
   @override
   List<Object> get props => [
@@ -176,9 +179,6 @@ class Video extends Equatable {
         alt,
       ];
 
-  /// Create a new instance from a json
-  factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
-
   /// Serialize to json
   Map<String, dynamic> toJson() => _$VideoToJson(this);
 }
@@ -186,6 +186,18 @@ class Video extends Equatable {
 ///
 @JsonSerializable(createToJson: true)
 class Audio extends Equatable {
+  ///
+  const Audio({
+    this.audio,
+    this.url,
+    this.secureUrl,
+    this.type,
+  });
+
+  /// Create a new instance from a json
+  factory Audio.fromJson(Map<String, dynamic> json) => _$AudioFromJson(json);
+  Map<String, dynamic> toJson() => _$AudioToJson(this);
+
   ///
   final String audio;
 
@@ -198,14 +210,6 @@ class Audio extends Equatable {
   ///
   final String type;
 
-  ///
-  const Audio({
-    this.audio,
-    this.url,
-    this.secureUrl,
-    this.type,
-  });
-
   @override
   List<Object> get props => [
         audio,
@@ -213,8 +217,4 @@ class Audio extends Equatable {
         secureUrl,
         type,
       ];
-
-  /// Create a new instance from a json
-  factory Audio.fromJson(Map<String, dynamic> json) => _$AudioFromJson(json);
-  Map<String, dynamic> toJson() => _$AudioToJson(this);
 }
