@@ -9,7 +9,7 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 class CollectionsApiImpl implements CollectionsApi {
   const CollectionsApiImpl(this.client);
 
-  final HttpClient client;
+  final Dio client;
 
   @override
   Future<CollectionEntry> add(
@@ -21,7 +21,7 @@ class CollectionsApiImpl implements CollectionsApi {
     checkNotNull(entry.data, "Collection data can't be null");
     final result = await client.post<Map>(
       Routes.buildCollectionsUrl(entry.collection),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       data: {
         'data': entry.data,
         if (userId != null) 'user_id': userId,
@@ -40,7 +40,7 @@ class CollectionsApiImpl implements CollectionsApi {
     checkArgument(entryId.isNotEmpty, "Collection id can't be empty");
     return client.delete(
       Routes.buildCollectionsUrl('$collection/$entryId/'),
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
     );
   }
 
@@ -53,7 +53,7 @@ class CollectionsApiImpl implements CollectionsApi {
     checkArgument(entryIds.isNotEmpty, "Collection ids can't be empty");
     return client.delete(
       Routes.buildCollectionsUrl(),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       queryParameters: {
         'collection_name': collection,
         'ids': entryIds.join(','),
@@ -70,7 +70,7 @@ class CollectionsApiImpl implements CollectionsApi {
     checkArgument(entryId.isNotEmpty, "Collection id can't be empty");
     final result = await client.get<Map>(
       Routes.buildCollectionsUrl('$collection/$entryId/'),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
     );
     return CollectionEntry.fromJson(result.data);
   }
@@ -84,7 +84,7 @@ class CollectionsApiImpl implements CollectionsApi {
     checkArgument(entryIds.isNotEmpty, "Collection ids can't be empty");
     final result = await client.get<Map>(
       Routes.buildCollectionsUrl(),
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       queryParameters: {
         'foreign_ids': entryIds.map((id) => '$collection:$id').join(','),
       },
@@ -105,7 +105,7 @@ class CollectionsApiImpl implements CollectionsApi {
     checkNotNull(entry.data, "Collection data can't be null");
     final result = await client.put<Map>(
       Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       data: {
         'data': entry.data,
         if (userId != null) 'user_id': userId,
@@ -123,7 +123,7 @@ class CollectionsApiImpl implements CollectionsApi {
     checkArgument(entries.isNotEmpty, "Collection data can't be empty");
     return client.post(
       Routes.buildCollectionsUrl(),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       data: {
         'data': {collection: entries}
       },

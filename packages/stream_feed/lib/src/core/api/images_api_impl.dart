@@ -9,17 +9,17 @@ import 'package:stream_feed_dart/src/core/api/images_api.dart';
 class ImagesApiImpl implements ImagesApi {
   const ImagesApiImpl(this.client);
 
-  final HttpClient client;
+  final Dio client;
 
   @override
   Future<String> upload(Token token, MultipartFile image) async {
-    checkNotNull(image, 'No image to upload');
-    final result = await client.postFile<Map>(
-      Routes.imagesUrl,
-      image,
-      headers: {'Authorization': '$token'},
-    );
-    return result.data['file'];
+    // checkNotNull(image, 'No image to upload');
+    // final result = await client.postFile<Map>(
+    //   Routes.imagesUrl,
+    //   image,
+    //   headers: {'Authorization': '$token'},
+    // );
+    // return result.data['file'];
   }
 
   @override
@@ -27,7 +27,7 @@ class ImagesApiImpl implements ImagesApi {
     checkNotNull(targetUrl, 'No image to delete');
     return client.delete(
       Routes.imagesUrl,
-      headers: {'Authorization': '$token'},
+      options: Options(headers: {'Authorization': '$token'}),
       queryParameters: {'url': targetUrl},
     );
   }
@@ -41,7 +41,7 @@ class ImagesApiImpl implements ImagesApi {
     checkNotNull(targetUrl, 'No image to process');
     final result = await client.get(
       Routes.imagesUrl,
-      headers: {'Authorization': '$token'},
+      options: Options(headers: {'Authorization': '$token'}),
       queryParameters: {
         'url': targetUrl,
         if (options != null) ...options,

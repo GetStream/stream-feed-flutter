@@ -14,7 +14,7 @@ class FeedApiImpl implements FeedApi {
   const FeedApiImpl(this.client)
       : assert(client != null, "Can't create a FeedApi w/o Client");
 
-  final HttpClient client;
+  final Dio client;
 
   @override
   Future<List<Activity>> addActivities(
@@ -23,7 +23,7 @@ class FeedApiImpl implements FeedApi {
     checkArgument(activities.isNotEmpty, 'No activities to add');
     final result = await client.post<Map>(
       Routes.buildFeedUrl(feed),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       data: {'activities': activities},
     );
     final data = (result.data['activities'] as List)
@@ -38,7 +38,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(activity, 'No activity to add');
     final result = await client.post<Map>(
       Routes.buildFeedUrl(feed),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       data: activity,
     );
     final data = Activity.fromJson(result.data);
@@ -57,7 +57,7 @@ class FeedApiImpl implements FeedApi {
         'Activity copy limit should be less then ${Default.maxActivityCopyLimit}');
     return client.post(
       Routes.buildFeedUrl(sourceFeed, 'following'),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       data: {
         'target': '$targetFeed',
         'activity_copy_limit': activityCopyLimit,
@@ -72,7 +72,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(options, 'Missing request options');
     return client.get<Map>(
       Routes.buildFeedUrl(feed),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       queryParameters: options,
     );
   }
@@ -83,7 +83,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(options, 'Missing request options');
     return client.get(
       Routes.buildEnrichedFeedUrl(feed),
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       queryParameters: options,
     );
   }
@@ -96,7 +96,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(feedIds, 'No feed ids to filter on');
     final result = await client.get<Map>(
       Routes.buildFeedUrl(feed, 'following'),
-      headers: {'Authorization': '$token'},
+    options:Options(  headers: {'Authorization': '$token'}),
       queryParameters: {
         'limit': limit,
         'offset': offset,
@@ -118,7 +118,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(feedIds, 'No feed ids to filter on');
     final result = await client.get(
       Routes.buildFeedUrl(feed, 'followers'),
-      headers: {'Authorization': '$token'},
+    options:Options(  headers: {'Authorization': '$token'}),
       queryParameters: {
         'limit': limit,
         'offset': offset,
@@ -138,7 +138,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(foreignId, 'No activity id to remove');
     return client.delete(
       Routes.buildFeedUrl(feed, foreignId),
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       queryParameters: {'foreign_id': '1'},
     );
   }
@@ -148,7 +148,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(id, 'No activity id to remove');
     return client.delete(
       Routes.buildFeedUrl(feed, id),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
     );
   }
 
@@ -158,7 +158,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(target, 'No target feed to unfollow');
     return client.delete(
       Routes.buildFeedUrl(source, 'following/$target'),
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       queryParameters: {'keep_history': keepHistory},
     );
   }
@@ -177,7 +177,7 @@ class FeedApiImpl implements FeedApi {
     }
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       data: {'changes': updates},
     );
     final data = (result.data['activities'] as List)
@@ -199,7 +199,7 @@ class FeedApiImpl implements FeedApi {
     }
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       data: {'changes': updates},
     );
     final data = (result.data['activities'] as List)
@@ -218,7 +218,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(update.unset, 'No activity properties to unset');
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       data: update,
     );
     final data = Activity.fromJson(result.data);
@@ -234,7 +234,7 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(update.unset, 'No activity properties to unset');
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       data: update,
     );
     final data = Activity.fromJson(result.data);
@@ -265,7 +265,7 @@ class FeedApiImpl implements FeedApi {
 
     return client.post(
       Routes.activityUpdateUrl,
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       data: {
         'foreign_id': update.foreignId,
         'time': update.time.toIso8601String(),

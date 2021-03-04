@@ -10,17 +10,17 @@ import 'package:stream_feed_dart/src/core/api/files_api.dart';
 class FilesApiImpl implements FilesApi {
   const FilesApiImpl(this.client);
 
-  final HttpClient client;
+  final Dio client;
 
   @override
   Future<String> upload(Token token, MultipartFile file) async {
-    checkNotNull(file, 'No data to upload');
-    final result = await client.postFile<Map>(
-      Routes.filesUrl,
-      file,
-      headers: {'Authorization': '$token'},
-    );
-    return result.data['file'];
+    // checkNotNull(file, 'No data to upload');
+    // final result = await client.postFile<Map>(
+    //   Routes.filesUrl,
+    //   file,
+    //   headers: {'Authorization': '$token'},
+    // );
+    // return result.data['file'];
   }
 
   @override
@@ -28,7 +28,7 @@ class FilesApiImpl implements FilesApi {
     checkNotNull(targetUrl, 'No file to delete');
     return client.delete(
       Routes.filesUrl,
-      headers: {'Authorization': '$token'},
+    options:Options(  headers: {'Authorization': '$token'}),
       queryParameters: {'url': targetUrl},
     );
   }

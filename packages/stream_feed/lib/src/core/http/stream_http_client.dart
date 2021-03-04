@@ -6,7 +6,7 @@ import 'package:stream_feed_dart/src/core/exceptions.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 
-class StreamHttpClient implements HttpClient {
+class StreamHttpClient {
   StreamHttpClient(
     this.apiKey, {
     this.options,
@@ -51,21 +51,20 @@ class StreamHttpClient implements HttpClient {
     } else {
       url = baseURL;
     }
-    this.httpClient
-      ..options.baseUrl = url
-      ..options.receiveTimeout = receiveTimeout.inMilliseconds
-      ..options.connectTimeout = connectTimeout.inMilliseconds
-      ..options.queryParameters = {
-        'api_key': apiKey,
-      }
-      ..options.headers = {
-        'stream-auth-type': 'jwt',
-        'x-stream-client': userAgent,
-      }
-      ..interceptors.add(LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ));
+    this.httpClient.options.baseUrl = url;
+    this.httpClient.options.receiveTimeout = receiveTimeout.inMilliseconds;
+    this.httpClient.options.connectTimeout = connectTimeout.inMilliseconds;
+    this.httpClient.options.queryParameters = {
+      'api_key': apiKey,
+    };
+    this.httpClient.options.headers = {
+      'stream-auth-type': 'jwt',
+      'x-stream-client': userAgent,
+    };
+    this.httpClient.interceptors.add(LogInterceptor(
+          requestBody: true,
+          responseBody: true,
+        ));
   }
 
   Exception _parseError(DioError error) {

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
+import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
@@ -16,7 +17,7 @@ import 'package:stream_feed_dart/src/core/api/batch_api.dart';
 class BatchApiImpl implements BatchApi {
   const BatchApiImpl(this.client);
 
-  final HttpClient client;
+  final Dio client;
 
   @override
   Future<Response> addToMany(
@@ -26,7 +27,7 @@ class BatchApiImpl implements BatchApi {
     checkArgument(feedIds.isNotEmpty, 'No feeds to add to');
     return client.post(
       Routes.addToManyUrl,
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       data: json.encode({
         'feeds': feedIds.map((e) => e.toString()).toList(),
         'activity': activity,
@@ -43,7 +44,7 @@ class BatchApiImpl implements BatchApi {
     checkArgument(follows.isNotEmpty, 'No feeds to follow');
     return client.post(
       Routes.followManyUrl,
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       queryParameters: {'activity_copy_limit': activityCopyLimit},
       data: follows,
     );
@@ -56,7 +57,7 @@ class BatchApiImpl implements BatchApi {
     checkArgument(unfollows.isNotEmpty, 'No feeds to unfollow');
     return client.post(
       Routes.unfollowManyUrl,
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       data: unfollows,
     );
   }
@@ -68,7 +69,7 @@ class BatchApiImpl implements BatchApi {
     checkArgument(ids.isNotEmpty, 'No activities to get');
     final result = await client.get<Map>(
       Routes.activitesUrl,
-      headers: {'Authorization': '$token'},
+    options:Options(  headers: {'Authorization': '$token'}),
       queryParameters: {'ids': ids.join(',')},
     );
     final data = (result.data['results'] as List)
@@ -84,7 +85,7 @@ class BatchApiImpl implements BatchApi {
     checkArgument(pairs.isNotEmpty, 'No activities to get');
     final result = await client.get(
       Routes.activitesUrl,
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       queryParameters: {
         'foreign_ids': pairs.map((it) => it.foreignID).join(','),
         'timestamps':
@@ -104,7 +105,7 @@ class BatchApiImpl implements BatchApi {
     checkArgument(ids.isNotEmpty, 'No activities to get');
     final result = await client.get(
       Routes.enrichedActivitiesUrl,
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       queryParameters: {'ids': ids.join(',')},
     );
     final data = (result.data['results'] as List)
@@ -120,7 +121,7 @@ class BatchApiImpl implements BatchApi {
     checkArgument(pairs.isNotEmpty, 'No activities to get');
     final result = await client.get(
       Routes.enrichedActivitiesUrl,
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       queryParameters: {
         'foreign_ids': pairs.map((it) => it.foreignID).join(','),
         'timestamps':
@@ -140,7 +141,7 @@ class BatchApiImpl implements BatchApi {
     checkArgument(activities.isNotEmpty, 'No activities to update');
     return client.post(
       Routes.activitesUrl,
-      headers: {'Authorization': '$token'},
+    options:Options(  headers: {'Authorization': '$token'}),
       data: {'activities': activities},
     );
   }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:stream_feed_dart/src/core/api/users_api.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
@@ -9,7 +10,7 @@ class UsersApiImpl implements UsersApi {
   const UsersApiImpl(this.client)
       : assert(client != null, "Can't create a UserApi w/o Client");
 
-  final HttpClient client;
+  final Dio client;
 
   @override
   Future<User> add(
@@ -24,7 +25,7 @@ class UsersApiImpl implements UsersApi {
     final user = User(id: id, data: data);
     final result = await client.post<Map>(
       Routes.buildUsersUrl(),
-      headers: {'Authorization': '$token'},
+      options: Options(headers: {'Authorization': '$token'}),
       queryParameters: {'get_or_create': getOrCreate},
       data: user,
     );
@@ -38,7 +39,7 @@ class UsersApiImpl implements UsersApi {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final result = await client.get(
       Routes.buildUsersUrl('$id/'),
-      headers: {'Authorization': '$token'},
+      options: Options(headers: {'Authorization': '$token'}),
       queryParameters: {'with_follow_counts': withFollowCounts},
     );
     return User.fromJson(result.data);
@@ -52,7 +53,7 @@ class UsersApiImpl implements UsersApi {
     final updatedUser = User(id: id, data: data);
     final result = await client.put(
       Routes.buildUsersUrl('$id/'),
-      headers: {'Authorization': '$token'},
+      options: Options(headers: {'Authorization': '$token'}),
       data: updatedUser,
     );
     return User.fromJson(result.data);
@@ -64,7 +65,7 @@ class UsersApiImpl implements UsersApi {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     return client.delete(
       Routes.buildUsersUrl('$id/'),
-      headers: {'Authorization': '$token'},
+      options: Options(headers: {'Authorization': '$token'}),
     );
   }
 }

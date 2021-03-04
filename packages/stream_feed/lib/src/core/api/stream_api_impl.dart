@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/core/api/files_api.dart';
 import 'package:stream_feed_dart/src/core/api/images_api.dart';
@@ -26,10 +27,10 @@ class StreamApiImpl implements StreamApi {
   StreamApiImpl(
     String apiKey, {
     StreamClientOptions options,
-    HttpClient client,
+    Dio client,
   }) : _client = client ?? StreamHttpClient(apiKey, options: options);
 
-  final HttpClient _client;
+  final Dio _client;
 
   @override
   BatchApi get batch => BatchApiImpl(_client);
@@ -58,7 +59,7 @@ class StreamApiImpl implements StreamApi {
     checkArgument(targetUrl.isNotEmpty, "TargetUrl can't be empty");
     final result = await _client.get(
       Routes.openGraphUrl,
-      headers: {'Authorization': '$token'},
+    options:Options( headers: {'Authorization': '$token'}),
       queryParameters: {'url': targetUrl},
     );
     //TODO: OpenGraphData.fromJson() ?

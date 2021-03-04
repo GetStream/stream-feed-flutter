@@ -13,7 +13,7 @@ import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 class ReactionsApiImpl implements ReactionsApi {
   const ReactionsApiImpl(this.client);
 
-  final HttpClient client;
+  final Dio client;
 
   @override
   Future<Reaction> add(Token token, Reaction reaction) async {
@@ -34,7 +34,7 @@ class ReactionsApiImpl implements ReactionsApi {
     checkArgument(reaction.kind.isNotEmpty, "Reaction kind can't be empty");
     final result = await client.post<Map>(
       Routes.buildReactionsUrl(),
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       data: reaction,
     );
     return Reaction.fromJson(result.data);
@@ -46,7 +46,7 @@ class ReactionsApiImpl implements ReactionsApi {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
     final result = await client.get<Map>(
       Routes.buildReactionsUrl('$id/'),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
     );
     return Reaction.fromJson(result.data);
   }
@@ -57,7 +57,7 @@ class ReactionsApiImpl implements ReactionsApi {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
     return client.delete(
       Routes.buildReactionsUrl('$id/'),
-      headers: {'Authorization': '$token'},
+    options:Options(  headers: {'Authorization': '$token'}),
     );
   }
 
@@ -77,7 +77,7 @@ class ReactionsApiImpl implements ReactionsApi {
     checkNotNull(kind, "Kind can't be null");
     final result = await client.get<Map>(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
       queryParameters: {
         'limit': limit.toString(),
         if (filter != null) ...filter.params,
@@ -106,7 +106,7 @@ class ReactionsApiImpl implements ReactionsApi {
     checkNotNull(kind, "Kind can't be null");
     final result = await client.get(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       queryParameters: {
         'limit': limit.toString(),
         if (filter != null) ...filter.params,
@@ -123,7 +123,7 @@ class ReactionsApiImpl implements ReactionsApi {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
     final result = await client.get(
       next,
-      headers: {'Authorization': '$token'},
+      options:Options(headers: {'Authorization': '$token'}),
     );
     return PaginatedReactions.fromJson(result.data);
   }
@@ -140,7 +140,7 @@ class ReactionsApiImpl implements ReactionsApi {
     final data = updatedReaction.data;
     return client.put(
       Routes.buildReactionsUrl('$reactionId/'),
-      headers: {'Authorization': '$token'},
+     options:Options( headers: {'Authorization': '$token'}),
       data: {
         if (data != null && data.isNotEmpty) 'data': data,
         if (targetFeedIds != null && targetFeedIds.isNotEmpty)
