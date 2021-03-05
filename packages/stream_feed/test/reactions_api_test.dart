@@ -7,6 +7,7 @@ import 'package:stream_feed_dart/src/core/api/reactions_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
@@ -19,6 +20,46 @@ Future<void> main() async {
   group('Reactions API', () {
     final mockClient = MockHttpClient();
 
+    test('PaginatedFilter', () async {
+      const token = Token('dummyToken');
+
+      final reactionsApi = ReactionsApiImpl(mockClient);
+      const lookupAttr = LookupAttribute.activityId;
+      const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
+      final filter =
+          Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+      final limit = Default.limit;
+      const kind = 'like';
+      when(mockClient.get(
+        Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'limit': limit.toString(),
+          if (filter != null) ...filter.params,
+          'with_activity_data': lookupAttr == LookupAttribute.activityId,
+        },
+      )).thenAnswer((_) async => Response(
+          data: jsonFixture('paginated_reactions.json'), statusCode: 200));
+
+      await reactionsApi.paginatedFilter(
+        token,
+        lookupAttr,
+        lookupValue,
+        filter,
+        limit,
+        kind,
+      );
+
+      verify(mockClient.get(
+        Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'limit': limit.toString(),
+          if (filter != null) ...filter.params,
+          'with_activity_data': lookupAttr == LookupAttribute.activityId,
+        },
+      )).called(1);
+    });
     test('NextPaginatedFilter', () async {
       const token = Token('dummyToken');
 
