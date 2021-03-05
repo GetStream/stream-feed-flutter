@@ -15,7 +15,6 @@ class MockHttpClient extends Mock implements HttpClient {}
 Future<void> main() async {
   group('Batch API', () {
     final mockClient = MockHttpClient();
-
     test('AddToMany', () async {
       const token = Token('dummyToken');
       const activity = Activity(
@@ -33,9 +32,6 @@ Future<void> main() async {
 
       when(mockClient.post(Routes.addToManyUrl,
           headers: {'Authorization': '$token'},
-          queryParameters: {
-            'api_key': 'apiKey',
-          },
           data: json.encode({
             'feeds': feedIds.map((e) => e.toString()).toList(),
             'activity': activity,
@@ -45,9 +41,6 @@ Future<void> main() async {
 
       verify(mockClient.post(Routes.addToManyUrl,
           headers: {'Authorization': '$token'},
-          queryParameters: {
-            'api_key': 'apiKey',
-          },
           data: json.encode({
             'feeds': feedIds.map((e) => e.toString()).toList(),
             'activity': activity,
