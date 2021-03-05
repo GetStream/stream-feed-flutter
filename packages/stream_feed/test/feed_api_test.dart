@@ -95,5 +95,25 @@ Future<void> main() async {
         queryParameters: {'foreign_id': '1'},
       )).called(1);
     });
+
+    test('RemoveActivityById', () async {
+      const token = Token('dummyToken');
+
+      final feedApi = FeedApiImpl(mockClient);
+      final feed = FeedId('global', 'feed1');
+
+      const id = 'id';
+      when(mockClient.delete(
+        Routes.buildFeedUrl(feed, id),
+        headers: {'Authorization': '$token'},
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await feedApi.removeActivityById(token, feed, id);
+
+      verify(mockClient.delete(
+        Routes.buildFeedUrl(feed, id),
+        headers: {'Authorization': '$token'},
+      )).called(1);
+    });
   });
 }
