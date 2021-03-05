@@ -20,7 +20,7 @@ class ActivityUpdate extends Equatable {
     String id,
     Map<String, Object> set,
     List<String> unset,
-  ) =>
+  ) => 
       ActivityUpdate(
         id: id,
         set: set,

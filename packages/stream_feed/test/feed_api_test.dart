@@ -3,6 +3,7 @@ import 'package:mockito/mockito.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/models/activity_update.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
@@ -136,6 +137,63 @@ Future<void> main() async {
         Routes.buildFeedUrl(source, 'following/$target'),
         headers: {'Authorization': '$token'},
         queryParameters: {'keep_history': keepHistory},
+      )).called(1);
+    });
+
+    test('UpdateActivityToTargets', () async {
+      const token = Token('dummyToken');
+
+      final feedApi = FeedApiImpl(mockClient);
+      final feed = FeedId('global', 'feed1');
+
+      final add = [FeedId('global', 'feed1')];
+      final remove = [FeedId('global', 'feed1')];
+
+      // final replace = [FeedId('global', 'feed1')];
+
+      final unset = ['daily_likes', 'popularity'];
+
+      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+
+      final set = {
+        'product.price': 19.99,
+        'shares': {
+          'facebook': '...',
+          'twitter': '...',
+        }
+      };
+      final update = ActivityUpdate(
+          id: id,
+          foreignId: 'foreignId',
+          set: set,
+          unset: unset,
+          time: DateTime.now());
+
+      when(mockClient.post(
+        Routes.activityUpdateUrl,
+        headers: {'Authorization': '$token'},
+        data: {
+          'foreign_id': update.foreignId,
+          'time': update.time.toIso8601String(),
+          'added_targets': add.map((it) => it.toString()).toList(),
+          'removed_targets': remove.map((it) => it.toString()).toList(),
+          'new_targets': [] //replace.map((it) => it.toString()).toList(),
+        },
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await feedApi.updateActivityToTargets(token, feed, update,
+          add: add, remove: remove, replace: []);
+
+      verify(mockClient.post(
+        Routes.activityUpdateUrl,
+        headers: {'Authorization': '$token'},
+        data: {
+          'foreign_id': update.foreignId,
+          'time': update.time.toIso8601String(),
+          'added_targets': add.map((it) => it.toString()).toList(),
+          'removed_targets': remove.map((it) => it.toString()).toList(),
+          'new_targets': [] //replace.map((it) => it.toString()).toList(),
+        },
       )).called(1);
     });
   });
