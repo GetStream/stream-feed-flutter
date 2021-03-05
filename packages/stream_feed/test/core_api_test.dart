@@ -75,5 +75,35 @@ Future<void> main() async {
         data: follows,
       )).called(1);
     });
+
+    test('UpdateActivities', () async {
+      const token = Token('dummyToken');
+
+      final batchApi = BatchApiImpl(mockClient);
+
+      final activities = [
+        Activity(
+          actor: '1',
+          verb: 'like',
+          object: '3',
+          time: DateTime.now(),
+          foreignId: 'like:3',
+          extraData: const {'popularity': 100},
+        )
+      ];
+      when(mockClient.post(
+        Routes.activitesUrl,
+        headers: {'Authorization': '$token'},
+        data: {'activities': activities},
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await batchApi.updateActivities(token, activities);
+
+      verify(mockClient.post(
+        Routes.activitesUrl,
+        headers: {'Authorization': '$token'},
+        data: {'activities': activities},
+      )).called(1);
+    });
   });
 }
