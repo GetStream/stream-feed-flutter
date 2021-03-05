@@ -89,5 +89,23 @@ Future<void> main() async {
         },
       )).called(1);
     });
+
+    test('Get', () async {
+      const token = Token('dummyToken');
+      const collection = 'food';
+      const entryId = 'cheeseburger';
+      when(mockClient.get<Map>(
+        Routes.buildCollectionsUrl('$collection/$entryId/'),
+        headers: {'Authorization': '$token'},
+      )).thenAnswer((_) async => Response(
+          data: jsonFixture('collection_entry.json'), statusCode: 200));
+
+      await collectionsApi.get(token, collection, entryId);
+
+      verify(mockClient.get<Map>(
+        Routes.buildCollectionsUrl('$collection/$entryId/'),
+        headers: {'Authorization': '$token'},
+      )).called(1);
+    });
   });
 }
