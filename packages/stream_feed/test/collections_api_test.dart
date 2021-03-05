@@ -136,35 +136,34 @@ Future<void> main() async {
       )).called(1);
     });
 
-    // test('Update', () async {
-    //   const token = Token('dummyToken');
-    //   const collection = 'food';
-    //   const userId = 'userId';
-    //   const entry = CollectionEntry(collection: 'users', id: '123', data: {
-    //     'name': 'john',
-    //     'favorite_color': 'blue',
-    //   });
-    //   when(mockClient.put<Map>(
-    //     Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
-    //     headers: {'Authorization': '$token'},
-    //     data: {
-    //       'data': entry.data,
-    //       if (userId != null) 'user_id': userId,
-    //     },
-    //   )).thenAnswer((_) async => Response(
-    //       data: jsonFixture('collection_entry.json'), statusCode: 200));
+    test('Update', () async {
+      const token = Token('dummyToken');
+      const userId = 'userId';
+      const entry = CollectionEntry(collection: 'users', id: '123', data: {
+        'name': 'john',
+        'favorite_color': 'blue',
+      });
+      when(mockClient.put<Map>(
+        Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
+        headers: {'Authorization': '$token'},
+        data: {
+          'data': entry.data,
+          if (userId != null) 'user_id': userId,
+        },
+      )).thenAnswer((_) async => Response(
+          data: jsonFixture('collection_entry.json'), statusCode: 200));
 
-    //   await collectionsApi.update(token, collection, entry);
+      await collectionsApi.update(token, userId, entry);
 
-    //   verify(mockClient.put<Map>(
-    //     Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
-    //     headers: {'Authorization': '$token'},
-    //     data: {
-    //       'data': entry.data,
-    //       if (userId != null) 'user_id': userId,
-    //     },
-    //   )).called(1);
-    // });
+      verify(mockClient.put<Map>(
+        Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
+        headers: {'Authorization': '$token'},
+        data: {
+          'data': entry.data,
+          if (userId != null) 'user_id': userId,
+        },
+      )).called(1);
+    });
 
     test('Upsert', () async {
       const token = Token('dummyToken');
