@@ -18,6 +18,26 @@ class MockHttpClient extends Mock implements HttpClient {}
 Future<void> main() async {
   group('Reactions API', () {
     final mockClient = MockHttpClient();
+
+    test('NextPaginatedFilter', () async {
+      const token = Token('dummyToken');
+
+      final reactionsApi = ReactionsApiImpl(mockClient);
+
+      const next = 'next';
+      when(mockClient.get(
+        next,
+        headers: {'Authorization': '$token'},
+      )).thenAnswer((_) async => Response(
+          data: jsonFixture('paginated_reactions.json'), statusCode: 200));
+
+      await reactionsApi.nextPaginatedFilter(token, next);
+
+      verify(mockClient.get(
+        next,
+        headers: {'Authorization': '$token'},
+      )).called(1);
+    });
     test('Update', () async {
       const token = Token('dummyToken');
 
