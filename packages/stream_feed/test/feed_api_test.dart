@@ -17,11 +17,11 @@ class MockHttpClient extends Mock implements HttpClient {}
 Future<void> main() async {
   group('Feed API', () {
     final mockClient = MockHttpClient();
+    final feedApi = FeedApiImpl(mockClient);
     test('Follow', () async {
       const token = Token('dummyToken');
       const targetToken = Token('dummyToken2');
 
-      final feedApi = FeedApiImpl(mockClient);
       final sourceFeed = FeedId('global', 'feed1');
       final targetFeed = FeedId('global', 'feed2');
       const activityCopyLimit = 10;
@@ -56,7 +56,6 @@ Future<void> main() async {
       final filter =
           Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
 
-      final feedApi = FeedApiImpl(mockClient);
       final feed = FeedId('global', 'feed1');
 
       final options = {
@@ -85,7 +84,6 @@ Future<void> main() async {
     test('GetEnrichedActivities', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final feed = FeedId('global', 'feed1');
 
       final options = {
@@ -114,7 +112,6 @@ Future<void> main() async {
     test('GetFollowed', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final feed = FeedId('global', 'feed1');
 
       final feedIds = [FeedId('global', 'feed1')];
@@ -153,7 +150,6 @@ Future<void> main() async {
     test('GetFollowers', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final feed = FeedId('global', 'feed1');
 
       final feedIds = [FeedId('global', 'feed1')];
@@ -190,7 +186,6 @@ Future<void> main() async {
     test('RemoveActivityByForeignId', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final feed = FeedId('global', 'feed1');
 
       const foreignId = 'foreignId';
@@ -212,7 +207,6 @@ Future<void> main() async {
     test('RemoveActivityById', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final feed = FeedId('global', 'feed1');
 
       const id = 'id';
@@ -232,7 +226,6 @@ Future<void> main() async {
     test('UnFollow', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final source = FeedId('global', 'feed1');
       final target = FeedId('global', 'feed2');
       const keepHistory = true;
@@ -255,7 +248,6 @@ Future<void> main() async {
     test('UpdateActivitiesByForeignId', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final unset = ['daily_likes', 'popularity'];
 
       const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
@@ -296,7 +288,6 @@ Future<void> main() async {
     test('UpdateActivitiesById', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final unset = ['daily_likes', 'popularity'];
 
       const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
@@ -337,7 +328,6 @@ Future<void> main() async {
     test('UpdateActivityByForeignId', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final unset = ['daily_likes', 'popularity'];
 
       const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
@@ -375,7 +365,6 @@ Future<void> main() async {
     test('UpdateActivityById', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final unset = ['daily_likes', 'popularity'];
 
       const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
@@ -413,7 +402,6 @@ Future<void> main() async {
     test('UpdateActivityToTargets', () async {
       const token = Token('dummyToken');
 
-      final feedApi = FeedApiImpl(mockClient);
       final feed = FeedId('global', 'feed1');
 
       final add = [FeedId('global', 'feed1')];
