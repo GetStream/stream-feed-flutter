@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:mockito/mockito.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api_impl.dart';
@@ -8,7 +6,6 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity_update.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/filter.dart';
-import 'package:stream_feed_dart/src/core/models/follow.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:test/test.dart';
@@ -422,8 +419,6 @@ Future<void> main() async {
       final add = [FeedId('global', 'feed1')];
       final remove = [FeedId('global', 'feed1')];
 
-      // final replace = [FeedId('global', 'feed1')];
-
       final unset = ['daily_likes', 'popularity'];
 
       const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
@@ -450,7 +445,7 @@ Future<void> main() async {
           'time': update.time.toIso8601String(),
           'added_targets': add.map((it) => it.toString()).toList(),
           'removed_targets': remove.map((it) => it.toString()).toList(),
-          'new_targets': [] //replace.map((it) => it.toString()).toList(),
+          'new_targets': []
         },
       )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
 
@@ -465,7 +460,8 @@ Future<void> main() async {
           'time': update.time.toIso8601String(),
           'added_targets': add.map((it) => it.toString()).toList(),
           'removed_targets': remove.map((it) => it.toString()).toList(),
-          'new_targets': [] //replace.map((it) => it.toString()).toList(),
+          'new_targets': [] //empty because you can't update
+          // and remove at the same time
         },
       )).called(1);
     });
