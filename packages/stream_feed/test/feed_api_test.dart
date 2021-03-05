@@ -149,6 +149,45 @@ Future<void> main() async {
       )).called(1);
     });
 
+     test('GetFollowers', () async {
+      const token = Token('dummyToken');
+
+      final feedApi = FeedApiImpl(mockClient);
+      final feed = FeedId('global', 'feed1');
+
+      final feedIds = [FeedId('global', 'feed1')];
+      const offset = 5;
+      const limit = 10;
+
+      when(mockClient.get<Map>(
+        Routes.buildFeedUrl(feed, 'followers'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'limit': limit,
+          'offset': offset,
+          if (feedIds.isNotEmpty)
+            'filter': feedIds.map((it) => it.toString()).join(',')
+        },
+      )).thenAnswer((_) async => Response(data: {
+            'results': [
+              {'feed_id': 'feedId', 'target_id': 'targetId'}
+            ]
+          }, statusCode: 200));
+
+      await feedApi.getFollowers(token, feed, limit, offset, feedIds);
+
+      verify(mockClient.get<Map>(
+        Routes.buildFeedUrl(feed, 'followers'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'limit': limit,
+          'offset': offset,
+          if (feedIds.isNotEmpty)
+            'filter': feedIds.map((it) => it.toString()).join(',')
+        },
+      )).called(1);
+    });
+
     test('RemoveActivityByForeignId', () async {
       const token = Token('dummyToken');
 
