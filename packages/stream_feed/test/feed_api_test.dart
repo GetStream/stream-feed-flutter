@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:mockito/mockito.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:test/test.dart';
 
@@ -43,6 +42,35 @@ Future<void> main() async {
           'activity_copy_limit': activityCopyLimit,
           'target_token': '$targetToken',
         },
+      )).called(1);
+    });
+
+    test('GetEnrichedActivities', () async {
+      const token = Token('dummyToken');
+
+      final feedApi = FeedApiImpl(mockClient);
+      final feed = FeedId('global', 'feed1');
+
+      final options = {
+        'limit': Default.limit,
+        'offset': Default.offset,
+        ...Default.filter.params,
+        ...Default.enrichmentFlags.params,
+        ...Default.marker.params
+      };
+
+      when(mockClient.get(
+        Routes.buildEnrichedFeedUrl(feed),
+        headers: {'Authorization': '$token'},
+        queryParameters: options,
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await feedApi.getEnrichedActivities(token, feed, options);
+
+      verify(mockClient.get(
+        Routes.buildEnrichedFeedUrl(feed),
+        headers: {'Authorization': '$token'},
+        queryParameters: options,
       )).called(1);
     });
   });
