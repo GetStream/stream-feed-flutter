@@ -9,11 +9,6 @@ import 'package:test/test.dart';
 
 import 'utils.dart';
 
-String fixture(String name) {
-  final dir = currentDirectory.path;
-  return File('$dir/test/fixtures/$name').readAsStringSync();
-}
-
 void main() {
   test('EnrichedActivity', () {
     final reaction1 = Reaction(

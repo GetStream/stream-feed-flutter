@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:mockito/mockito.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api_impl.dart';
@@ -10,6 +12,8 @@ import 'package:stream_feed_dart/src/core/models/follow.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:test/test.dart';
+
+import 'utils.dart';
 
 class MockHttpClient extends Mock implements HttpClient {}
 
@@ -149,7 +153,7 @@ Future<void> main() async {
       )).called(1);
     });
 
-     test('GetFollowers', () async {
+    test('GetFollowers', () async {
       const token = Token('dummyToken');
 
       final feedApi = FeedApiImpl(mockClient);
@@ -169,9 +173,7 @@ Future<void> main() async {
             'filter': feedIds.map((it) => it.toString()).join(',')
         },
       )).thenAnswer((_) async => Response(data: {
-            'results': [
-              {'feed_id': 'feedId', 'target_id': 'targetId'}
-            ]
+            'results': [jsonFixture('follow.json')]
           }, statusCode: 200));
 
       await feedApi.getFollowers(token, feed, limit, offset, feedIds);
@@ -250,6 +252,47 @@ Future<void> main() async {
         Routes.buildFeedUrl(source, 'following/$target'),
         headers: {'Authorization': '$token'},
         queryParameters: {'keep_history': keepHistory},
+      )).called(1);
+    });
+
+    test('UpdateActivitiesByForeignId', () async {
+      const token = Token('dummyToken');
+
+      final feedApi = FeedApiImpl(mockClient);
+      final unset = ['daily_likes', 'popularity'];
+
+      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+
+      final set = {
+        'product.price': 19.99,
+        'shares': {
+          'facebook': '...',
+          'twitter': '...',
+        }
+      };
+      final updates = [
+        ActivityUpdate(
+            id: id,
+            foreignId: 'foreignId',
+            set: set,
+            unset: unset,
+            time: DateTime.now())
+      ];
+
+      when(mockClient.post<Map>(
+        Routes.activityUpdateUrl,
+        headers: {'Authorization': '$token'},
+        data: {'changes': updates},
+      )).thenAnswer((_) async => Response(data: {
+            'activities': [jsonFixture('activity.json')]
+          }, statusCode: 200));
+
+      await feedApi.updateActivitiesByForeignId(token, updates);
+
+      verify(mockClient.post<Map>(
+        Routes.activityUpdateUrl,
+        headers: {'Authorization': '$token'},
+        data: {'changes': updates},
       )).called(1);
     });
 
