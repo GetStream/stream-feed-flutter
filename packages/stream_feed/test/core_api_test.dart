@@ -76,6 +76,27 @@ Future<void> main() async {
       )).called(1);
     });
 
+    test('UnfollowMany', () async {
+      const token = Token('dummyToken');
+
+      final batchApi = BatchApiImpl(mockClient);
+
+      const unFollows = [UnFollow('feedId', 'targetId', true)];
+      when(mockClient.post(
+        Routes.unfollowManyUrl,
+        headers: {'Authorization': '$token'},
+        data: unFollows,
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await batchApi.unfollowMany(token, unFollows);
+
+      verify(mockClient.post(
+        Routes.unfollowManyUrl,
+        headers: {'Authorization': '$token'},
+        data: unFollows,
+      )).called(1);
+    });
+
     test('UpdateActivities', () async {
       const token = Token('dummyToken');
 
