@@ -61,6 +61,25 @@ Future<void> main() async {
         },
       )).called(1);
     });
+
+    test('Get', () async {
+      final reactionsApi = ReactionsApiImpl(mockClient);
+      const token = Token('dummyToken');
+
+      const id = 'id';
+      when(mockClient.get<Map>(
+        Routes.buildReactionsUrl('$id/'),
+        headers: {'Authorization': '$token'},
+      )).thenAnswer((_) async =>
+          Response(data: jsonFixture('reaction.json'), statusCode: 200));
+
+      await reactionsApi.get(token, id);
+
+      verify(mockClient.get<Map>(
+        Routes.buildReactionsUrl('$id/'),
+        headers: {'Authorization': '$token'},
+      )).called(1);
+    });
     test('Delete', () async {
       final reactionsApi = ReactionsApiImpl(mockClient);
       const token = Token('dummyToken');
