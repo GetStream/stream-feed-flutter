@@ -6,6 +6,7 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity_update.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/filter.dart';
+import 'package:stream_feed_dart/src/core/models/follow.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:test/test.dart';
@@ -106,6 +107,45 @@ Future<void> main() async {
         Routes.buildEnrichedFeedUrl(feed),
         headers: {'Authorization': '$token'},
         queryParameters: options,
+      )).called(1);
+    });
+
+    test('GetFollowed', () async {
+      const token = Token('dummyToken');
+
+      final feedApi = FeedApiImpl(mockClient);
+      final feed = FeedId('global', 'feed1');
+
+      final feedIds = [FeedId('global', 'feed1')];
+      const offset = 5;
+      const limit = 10;
+
+      when(mockClient.get<Map>(
+        Routes.buildFeedUrl(feed, 'following'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'limit': limit,
+          'offset': offset,
+          if (feedIds.isNotEmpty)
+            'filter': feedIds.map((it) => it.toString()).join(',')
+        },
+      )).thenAnswer((_) async => Response(data: {
+            'results': [
+              {'feed_id': 'feedId', 'target_id': 'targetId'}
+            ]
+          }, statusCode: 200));
+
+      await feedApi.getFollowed(token, feed, limit, offset, feedIds);
+
+      verify(mockClient.get<Map>(
+        Routes.buildFeedUrl(feed, 'following'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'limit': limit,
+          'offset': offset,
+          if (feedIds.isNotEmpty)
+            'filter': feedIds.map((it) => it.toString()).join(',')
+        },
       )).called(1);
     });
 
