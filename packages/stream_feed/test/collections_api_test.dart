@@ -107,5 +107,33 @@ Future<void> main() async {
         headers: {'Authorization': '$token'},
       )).called(1);
     });
+
+    test('Select', () async {
+      const token = Token('dummyToken');
+      const collection = 'food';
+      const entryId = 'cheeseburger';
+      const entryIds = [entryId];
+      when(mockClient.get<Map>(
+        Routes.buildCollectionsUrl(),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'foreign_ids': entryIds.map((id) => '$collection:$id').join(','),
+        },
+      )).thenAnswer((_) async => Response(data: {
+            'response': {
+              'data': [jsonFixture('collection_entry.json')]
+            }
+          }, statusCode: 200));
+
+      await collectionsApi.select(token, collection, entryIds);
+
+      verify(mockClient.get<Map>(
+        Routes.buildCollectionsUrl(),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'foreign_ids': entryIds.map((id) => '$collection:$id').join(','),
+        },
+      )).called(1);
+    });
   });
 }
