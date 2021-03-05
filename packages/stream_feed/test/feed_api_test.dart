@@ -5,6 +5,7 @@ import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity_update.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:test/test.dart';
@@ -43,6 +44,39 @@ Future<void> main() async {
           'activity_copy_limit': activityCopyLimit,
           'target_token': '$targetToken',
         },
+      )).called(1);
+    });
+
+    test('GetActivities', () async {
+      const token = Token('dummyToken');
+      const limit = 5;
+      const ranking = 'activity_popularity';
+      final filter =
+          Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+
+      final feedApi = FeedApiImpl(mockClient);
+      final feed = FeedId('global', 'feed1');
+
+      final options = {
+        'limit': limit,
+        'offset': Default.offset,
+        ...filter.params,
+        ...Default.marker.params,
+        'ranking': ranking,
+      };
+
+      when(mockClient.get<Map>(
+        Routes.buildFeedUrl(feed),
+        headers: {'Authorization': '$token'},
+        queryParameters: options,
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await feedApi.getActivities(token, feed, options);
+
+      verify(mockClient.get<Map>(
+        Routes.buildFeedUrl(feed),
+        headers: {'Authorization': '$token'},
+        queryParameters: options,
       )).called(1);
     });
 
