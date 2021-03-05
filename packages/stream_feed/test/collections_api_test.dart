@@ -63,5 +63,31 @@ Future<void> main() async {
         headers: {'Authorization': '$token'},
       )).called(1);
     });
+
+    test('DeleteMany', () async {
+      const token = Token('dummyToken');
+      const collection = 'food';
+      const entryId = 'cheeseburger';
+      final entryIds = [entryId];
+      when(mockClient.delete(
+        Routes.buildCollectionsUrl(),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'collection_name': collection,
+          'ids': entryIds.join(','),
+        },
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await collectionsApi.deleteMany(token, collection, entryIds);
+
+      verify(mockClient.delete(
+        Routes.buildCollectionsUrl(),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'collection_name': collection,
+          'ids': entryIds.join(','),
+        },
+      )).called(1);
+    });
   });
 }
