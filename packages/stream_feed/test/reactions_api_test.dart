@@ -62,6 +62,44 @@ Future<void> main() async {
       )).called(1);
     });
 
+    test('Add', () async {
+      final reactionsApi = ReactionsApiImpl(mockClient);
+      const token = Token('dummyToken');
+
+      final targetFeedIds = [
+        FeedId('global', 'feed1'),
+        FeedId('global', 'feed2')
+      ];
+
+      const kind = 'like';
+      const activityId = 'commentId';
+      const userId = 'john-doe';
+      final data = {'text': 'awesome post!'};
+      const reactionId = 'reactionId';
+      final reaction = Reaction(
+        id: reactionId,
+        kind: kind,
+        activityId: activityId,
+        userId: userId,
+        data: data,
+        targetFeeds: targetFeedIds,
+      );
+      when(mockClient.post<Map>(
+        Routes.buildReactionsUrl(),
+        headers: {'Authorization': '$token'},
+        data: reaction,
+      )).thenAnswer((_) async =>
+          Response(data: jsonFixture('reaction.json'), statusCode: 200));
+
+      await reactionsApi.add(token, reaction);
+
+      verify(mockClient.post<Map>(
+        Routes.buildReactionsUrl(),
+        headers: {'Authorization': '$token'},
+        data: reaction,
+      )).called(1);
+    });
+
     test('Get', () async {
       final reactionsApi = ReactionsApiImpl(mockClient);
       const token = Token('dummyToken');
