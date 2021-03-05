@@ -18,7 +18,7 @@ Future<void> main() async {
     test('Add', () async {
       const token = Token('dummyToken');
       const userId = 'userId';
-      final entry = CollectionEntry(collection: "users", id: '123', data: {
+      const entry = CollectionEntry(collection: 'users', id: '123', data: {
         'name': 'john',
         'favorite_color': 'blue',
       });
@@ -44,6 +44,23 @@ Future<void> main() async {
           if (userId != null) 'user_id': userId,
           if (entry.id != null) 'id': entry.id,
         },
+      )).called(1);
+    });
+
+    test('Delete', () async {
+      const token = Token('dummyToken');
+      const collection = 'food';
+      const entryId = 'cheeseburger';
+      when(mockClient.delete(
+        Routes.buildCollectionsUrl('$collection/$entryId/'),
+        headers: {'Authorization': '$token'},
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await collectionsApi.delete(token, collection, entryId);
+
+      verify(mockClient.delete(
+        Routes.buildCollectionsUrl('$collection/$entryId/'),
+        headers: {'Authorization': '$token'},
       )).called(1);
     });
   });
