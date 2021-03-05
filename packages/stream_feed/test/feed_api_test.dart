@@ -115,5 +115,28 @@ Future<void> main() async {
         headers: {'Authorization': '$token'},
       )).called(1);
     });
+
+    test('UnFollow', () async {
+      const token = Token('dummyToken');
+
+      final feedApi = FeedApiImpl(mockClient);
+      final source = FeedId('global', 'feed1');
+      final target = FeedId('global', 'feed2');
+      const keepHistory = true;
+
+      when(mockClient.delete(
+        Routes.buildFeedUrl(source, 'following/$target'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {'keep_history': keepHistory},
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await feedApi.unfollow(token, source, target, keepHistory);
+
+      verify(mockClient.delete(
+        Routes.buildFeedUrl(source, 'following/$target'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {'keep_history': keepHistory},
+      )).called(1);
+    });
   });
 }
