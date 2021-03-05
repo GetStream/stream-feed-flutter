@@ -61,6 +61,23 @@ Future<void> main() async {
         },
       )).called(1);
     });
+    test('Delete', () async {
+      final reactionsApi = ReactionsApiImpl(mockClient);
+      const token = Token('dummyToken');
+
+      const id = 'id';
+      when(mockClient.delete(
+        Routes.buildReactionsUrl('$id/'),
+        headers: {'Authorization': '$token'},
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await reactionsApi.delete(token, id);
+
+      verify(mockClient.delete(
+        Routes.buildReactionsUrl('$id/'),
+        headers: {'Authorization': '$token'},
+      )).called(1);
+    });
 
     test('PaginatedFilter', () async {
       const token = Token('dummyToken');
