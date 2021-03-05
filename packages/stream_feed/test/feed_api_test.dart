@@ -296,6 +296,47 @@ Future<void> main() async {
       )).called(1);
     });
 
+    test('UpdateActivitiesById', () async {
+      const token = Token('dummyToken');
+
+      final feedApi = FeedApiImpl(mockClient);
+      final unset = ['daily_likes', 'popularity'];
+
+      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+
+      final set = {
+        'product.price': 19.99,
+        'shares': {
+          'facebook': '...',
+          'twitter': '...',
+        }
+      };
+      final updates = [
+        ActivityUpdate(
+            id: id,
+            foreignId: 'foreignId',
+            set: set,
+            unset: unset,
+            time: DateTime.now())
+      ];
+
+      when(mockClient.post<Map>(
+        Routes.activityUpdateUrl,
+        headers: {'Authorization': '$token'},
+        data: {'changes': updates},
+      )).thenAnswer((_) async => Response(data: {
+            'activities': [jsonFixture('activity.json')]
+          }, statusCode: 200));
+
+      await feedApi.updateActivitiesById(token, updates);
+
+      verify(mockClient.post<Map>(
+        Routes.activityUpdateUrl,
+        headers: {'Authorization': '$token'},
+        data: {'changes': updates},
+      )).called(1);
+    });
+
     test('UpdateActivityToTargets', () async {
       const token = Token('dummyToken');
 
