@@ -20,6 +20,48 @@ Future<void> main() async {
   group('Reactions API', () {
     final mockClient = MockHttpClient();
 
+    test('Filter', () async {
+      const token = Token('dummyToken');
+
+      final reactionsApi = ReactionsApiImpl(mockClient);
+      const lookupAttr = LookupAttribute.activityId;
+      const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
+      final filter =
+          Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+      final limit = Default.limit;
+      const kind = 'like';
+      when(mockClient.get<Map>(
+        Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'limit': limit.toString(),
+          if (filter != null) ...filter.params,
+          'with_activity_data': lookupAttr == LookupAttribute.activityId,
+        },
+      )).thenAnswer((_) async => Response(data: {
+            'results': [jsonFixture('reaction.json')]
+          }, statusCode: 200));
+
+      await reactionsApi.filter(
+        token,
+        lookupAttr,
+        lookupValue,
+        filter,
+        limit,
+        kind,
+      );
+
+      verify(mockClient.get(
+        Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'limit': limit.toString(),
+          if (filter != null) ...filter.params,
+          'with_activity_data': lookupAttr == LookupAttribute.activityId,
+        },
+      )).called(1);
+    });
+
     test('PaginatedFilter', () async {
       const token = Token('dummyToken');
 
