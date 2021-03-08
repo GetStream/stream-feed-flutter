@@ -294,6 +294,12 @@ class Feed {
     return feed.updateActivitiesByForeignId(token, updates);
   }
 
+  /// Update [Activity.foreignId] By ForeignId
+  /// 
+  /// Usage:
+  ///```dart
+  ///await userFeed.updateActivityByForeignId(update);
+  ///```
   Future<Activity> updateActivityByForeignId(ActivityUpdate update) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return feed.updateActivityByForeignId(token, update);
