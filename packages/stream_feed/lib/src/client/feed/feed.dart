@@ -257,6 +257,27 @@ class Feed {
     return feed.updateActivitiesById(token, updates);
   }
 
+  /// Partial update by activity ID
+  ///
+  /// For example
+  /// First, prepare the set operations
+  /// ```dart
+  /// final set = {
+  ///   'product.price': 19.99,
+  ///   'shares': {
+  ///     'facebook': '...',
+  ///     'twitter': '...',
+  ///   }
+  /// };
+  /// ```
+  /// Prepare the unset operations
+  ///  ```dart
+  /// final unset = ['daily_likes', 'popularity'];
+  /// const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+  /// final update = ActivityUpdate.withId(id, set, unset);
+  /// await userFeed.updateActivityById(update);
+  ///  ```
+
   Future<Activity> updateActivityById(ActivityUpdate update) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return feed.updateActivityById(token, update);
