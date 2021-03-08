@@ -192,6 +192,24 @@ class Feed {
         offset ?? Default.offset, feedIds ?? []);
   }
 
+  /// Unfollow the given feed
+  ///
+  /// Parameters:
+  /// - [flatFeet] : Slug of the target feed
+  /// - [keepHistory] when provided the activities from target
+  /// feed will not be kept in the feed
+  ///
+  /// For example:
+  /// - Stop following feed user:user_42
+  /// ```dart
+  /// await timeline.unfollow(user);
+  /// ```
+  /// - Stop following feed user:user_42 but keep history of activities
+  /// ```dart
+  /// await timeline.unfollow(user, keepHistory: true);
+  /// ```
+  ///
+  /// API docs: [unfollowing-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#unfollowing-feeds)
   Future<void> unfollow(
     FlatFeet flatFeet, {
     bool keepHistory,
