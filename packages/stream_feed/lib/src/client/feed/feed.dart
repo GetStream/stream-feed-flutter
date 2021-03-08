@@ -219,6 +219,22 @@ class Feed {
     return feed.unfollow(token, feedId, flatFeet.feedId, keepHistory ?? false);
   }
 
+  /// Updates an activity's [Activity.to] fields
+  ///
+  /// Parameters:
+  ///
+  /// - [update]: the [Activity] to update
+  /// - [remove]: Remove these targets from the activity
+  /// - [add] : Add these new targets to the activity
+  ///
+  /// For example:
+  /// ```dart
+  /// final add = <FeedId>[];
+  /// final remove = <FeedId>[];
+  /// await userFeed.updateActivityToTargets(update, add, remove);
+  /// ```
+  ///
+  /// API docs: [targeting](https://getstream.io/activity-feeds/docs/flutter-dart/targeting/?language=dart)
   Future<void> updateActivityToTargets(
       ActivityUpdate update, Iterable<FeedId> add, Iterable<FeedId> remove) {
     final token =
