@@ -90,6 +90,18 @@ class Feed {
     return feed.removeActivityById(token, feedId, id);
   }
 
+  /// Remove an Activity by referencing its foreign_id
+  ///
+  /// Parameters:
+  /// [foreignId]: Identifier of activity to remove
+  ///
+  /// For example :
+  ///```dart
+  /// final chris = client.flatFeed('user', 'chris');
+  /// await chris.removeActivityByForeignId('picture:10');
+  /// ```
+  ///
+  /// API docs: [removing-activities](https://getstream.io/activity-feeds/docs/flutter-dart/adding_activities/?language=dart#removing-activities)
   Future<void> removeActivityByForeignId(String foreignId) {
     final token =
         TokenHelper.buildFeedToken(secret, TokenAction.delete, feedId);
