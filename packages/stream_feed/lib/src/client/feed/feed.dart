@@ -108,6 +108,21 @@ class Feed {
     return feed.removeActivityByForeignId(token, feedId, foreignId);
   }
 
+  /// Follows the given target feed
+  ///
+  /// Parameters:
+  ///
+  /// [flatFeet] : Slug of the target feed
+  /// [activityCopyLimit] : Limit the amount of activities copied over on follow
+  ///
+  /// For example to create a following relationship
+  /// between Jack's "timeline" feed and Chris' "user" feed
+  /// you'd do the following
+  /// ```dart
+  /// final jack = client.flatFeed('timeline', 'jack');
+  /// await jack.follow(chris);
+  /// ```
+  ///
   /// API docs: [following](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart)
   Future<void> follow(
     FlatFeet flatFeet, {
