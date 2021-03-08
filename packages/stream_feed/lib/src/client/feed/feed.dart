@@ -137,6 +137,18 @@ class Feed {
         activityCopyLimit ?? Default.activityCopyLimit);
   }
 
+  /// List the followers of this feed
+  ///
+  /// Parameters:
+  /// [offset] : pagination offset
+  /// [limit] : limit offset
+  /// 
+  /// Usage:
+  /// ```dart
+  /// final followers = await userFeed.getFollowers(limit: 10, offset: 0);
+  /// ```
+  ///
+  /// API docs: [reading-feed-followers](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-feed-followers)
   Future<List<Follow>> getFollowers({
     Iterable<FeedId> feedIds,
     int limit,
