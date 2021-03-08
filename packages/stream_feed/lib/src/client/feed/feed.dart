@@ -243,6 +243,11 @@ class Feed {
         add: add, remove: remove);
   }
 
+  /// Replace [Activity.to] Targets
+  /// Usage:
+  /// ```dart
+  /// await userFeed.replaceActivityToTargets(update, newTargets);
+  /// ```
   Future<void> replaceActivityToTargets(
       ActivityUpdate update, Iterable<FeedId> newTargets) {
     final token =
