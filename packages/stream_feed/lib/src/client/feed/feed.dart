@@ -142,7 +142,7 @@ class Feed {
   /// Parameters:
   /// [offset] : pagination offset
   /// [limit] : limit offset
-  /// 
+  ///
   /// Usage:
   /// ```dart
   /// final followers = await userFeed.getFollowers(limit: 10, offset: 0);
@@ -160,6 +160,27 @@ class Feed {
         offset ?? Default.offset, feedIds ?? []);
   }
 
+  /// List which feeds this feed is following
+  ///
+  /// - Retrieve last 10 feeds followed by user
+  /// ```dart
+  /// var followed = await userFeed.getFollowed(limit: 10, offset: 0);
+  ///```
+  ///
+  /// - Retrieve 10 feeds followed by user starting from the 11th
+  /// ```dart
+  /// followed = await userFeed.getFollowed(limit: 10, offset: 10);
+  ///```
+  ///
+  /// - Check if user follows specific feeds
+  /// ```dart
+  /// followed = await userFeed.getFollowed(limit: 2, offset: 0, feedIds: [
+  ///  FeedId.id('user:42'),
+  ///  FeedId.id('user:43'),
+  ///]);
+  ///```
+  ///
+  /// API docs: [reading-followed-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-followed-feeds)
   Future<List<Follow>> getFollowed({
     Iterable<FeedId> feedIds,
     int limit,
