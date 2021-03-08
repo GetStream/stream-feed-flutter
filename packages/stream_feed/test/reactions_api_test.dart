@@ -19,11 +19,11 @@ class MockHttpClient extends Mock implements HttpClient {}
 Future<void> main() async {
   group('Reactions API', () {
     final mockClient = MockHttpClient();
+    final reactionsApi = ReactionsApiImpl(mockClient);
 
     test('Filter', () async {
       const token = Token('dummyToken');
 
-      final reactionsApi = ReactionsApiImpl(mockClient);
       const lookupAttr = LookupAttribute.activityId;
       const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
       final filter =
@@ -63,7 +63,6 @@ Future<void> main() async {
     });
 
     test('Add', () async {
-      final reactionsApi = ReactionsApiImpl(mockClient);
       const token = Token('dummyToken');
 
       final targetFeedIds = [
@@ -101,7 +100,6 @@ Future<void> main() async {
     });
 
     test('Get', () async {
-      final reactionsApi = ReactionsApiImpl(mockClient);
       const token = Token('dummyToken');
 
       const id = 'id';
@@ -119,7 +117,6 @@ Future<void> main() async {
       )).called(1);
     });
     test('Delete', () async {
-      final reactionsApi = ReactionsApiImpl(mockClient);
       const token = Token('dummyToken');
 
       const id = 'id';
@@ -139,7 +136,6 @@ Future<void> main() async {
     test('PaginatedFilter', () async {
       const token = Token('dummyToken');
 
-      final reactionsApi = ReactionsApiImpl(mockClient);
       const lookupAttr = LookupAttribute.activityId;
       const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
       final filter =
@@ -179,8 +175,6 @@ Future<void> main() async {
     test('NextPaginatedFilter', () async {
       const token = Token('dummyToken');
 
-      final reactionsApi = ReactionsApiImpl(mockClient);
-
       const next = 'next';
       when(mockClient.get(
         next,
@@ -197,8 +191,6 @@ Future<void> main() async {
     });
     test('Update', () async {
       const token = Token('dummyToken');
-
-      final reactionsApi = ReactionsApiImpl(mockClient);
 
       final targetFeedIds = [
         FeedId('global', 'feed1'),
