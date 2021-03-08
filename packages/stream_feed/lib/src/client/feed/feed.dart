@@ -8,7 +8,7 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 /// Manage api calls for specific feeds
-/// The feed object contains convenience functions
+/// The feed object contains convenient functions
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
@@ -256,8 +256,10 @@ class Feed {
         replace: newTargets);
   }
 
+  /// Update Activities By Id
   Future<List<Activity>> updateActivitiesById(
       Iterable<ActivityUpdate> updates) {
+    //TODO: further document that thing
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return feed.updateActivitiesById(token, updates);
   }
@@ -288,14 +290,16 @@ class Feed {
     return feed.updateActivityById(token, update);
   }
 
+  /// Update Activities By ForeignId
   Future<List<Activity>> updateActivitiesByForeignId(
+      //TODO: further document that thing
       Iterable<ActivityUpdate> updates) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return feed.updateActivitiesByForeignId(token, updates);
   }
 
   /// Update [Activity.foreignId] By ForeignId
-  /// 
+  ///
   /// Usage:
   ///```dart
   ///await userFeed.updateActivityByForeignId(update);
