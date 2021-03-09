@@ -65,5 +65,33 @@ Future<void> main() async {
         data: user,
       )).called(1);
     });
+
+    test('Update', () async {
+      const token = Token('dummyToken');
+
+      const id = 'john-doe';
+
+      const data = {
+        'name': 'John Doe',
+        'occupation': 'Software Engineer',
+        'gender': 'male',
+      };
+      final updatedUser = User(id: id, data: data);
+      const getOrCreate = false;
+      when(mockClient.put(
+        Routes.buildUsersUrl('$id/'),
+        headers: {'Authorization': '$token'},
+        data: updatedUser,
+      )).thenAnswer((_) async =>
+          Response(data: jsonFixture('user.json'), statusCode: 200));
+
+      await usersApi.update(token, id, data);
+
+      verify(mockClient.put(
+        Routes.buildUsersUrl('$id/'),
+        headers: {'Authorization': '$token'},
+        data: updatedUser,
+      )).called(1);
+    });
   });
 }
