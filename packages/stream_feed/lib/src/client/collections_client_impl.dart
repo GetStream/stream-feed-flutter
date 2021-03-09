@@ -73,12 +73,25 @@ class CollectionsClientImpl implements CollectionsClient {
     return collections.delete(token, collection, entryId);
   }
 
+
+  /// Remove all objects by id from the collection.
+  /// 
+  /// ### Parameters:
+  /// [collection] : collections name
+  /// [ids] : an array of ids we want to delete
+  /// ### Usage
+  /// For example, to delete the entries with ID 123 and 124 
+  /// from visitor collection we do this
+  /// ```dart
+  /// await client.collections.deleteMany('visitor', ['123', '124']);
+  /// ```
+  /// API docs : [delete_many](https://getstream.io/activity-feeds/docs/flutter-dart/collections_batch/?language=dart#delete_many)
   @override
   Future<void> deleteMany(String collection, Iterable<String> ids) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
     return collections.deleteMany(token, collection, ids);
   }
-
+  
   @override
   Future<CollectionEntry> get(String collection, String entryId) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.read);
