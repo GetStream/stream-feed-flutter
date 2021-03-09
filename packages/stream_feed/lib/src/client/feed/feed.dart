@@ -8,7 +8,7 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 /// Manage api calls for specific feeds
-/// The feed object contains convenience functions
+/// The feed object contains convenient functions
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
@@ -90,12 +90,39 @@ class Feed {
     return feed.removeActivityById(token, feedId, id);
   }
 
+  /// Remove an Activity by referencing its foreign_id
+  ///
+  /// Parameters:
+  /// [foreignId]: Identifier of activity to remove
+  ///
+  /// For example :
+  ///```dart
+  /// final chris = client.flatFeed('user', 'chris');
+  /// await chris.removeActivityByForeignId('picture:10');
+  /// ```
+  ///
+  /// API docs: [removing-activities](https://getstream.io/activity-feeds/docs/flutter-dart/adding_activities/?language=dart#removing-activities)
   Future<void> removeActivityByForeignId(String foreignId) {
     final token =
         TokenHelper.buildFeedToken(secret, TokenAction.delete, feedId);
     return feed.removeActivityByForeignId(token, feedId, foreignId);
   }
 
+  /// Follows the given target feed
+  ///
+  /// Parameters:
+  ///
+  /// [flatFeet] : Slug of the target feed
+  /// [activityCopyLimit] : Limit the amount of activities copied over on follow
+  ///
+  /// For example to create a following relationship
+  /// between Jack's "timeline" feed and Chris' "user" feed
+  /// you'd do the following
+  /// ```dart
+  /// final jack = client.flatFeed('timeline', 'jack');
+  /// await jack.follow(chris);
+  /// ```
+  ///
   /// API docs: [following](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart)
   Future<void> follow(
     FlatFeet flatFeet, {
@@ -110,6 +137,18 @@ class Feed {
         activityCopyLimit ?? Default.activityCopyLimit);
   }
 
+  /// List the followers of this feed
+  ///
+  /// Parameters:
+  /// [offset] : pagination offset
+  /// [limit] : limit offset
+  ///
+  /// Usage:
+  /// ```dart
+  /// final followers = await userFeed.getFollowers(limit: 10, offset: 0);
+  /// ```
+  ///
+  /// API docs: [reading-feed-followers](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-feed-followers)
   Future<List<Follow>> getFollowers({
     Iterable<FeedId> feedIds,
     int limit,
@@ -121,6 +160,27 @@ class Feed {
         offset ?? Default.offset, feedIds ?? []);
   }
 
+  /// List which feeds this feed is following
+  ///
+  /// - Retrieve last 10 feeds followed by user
+  /// ```dart
+  /// var followed = await userFeed.getFollowed(limit: 10, offset: 0);
+  ///```
+  ///
+  /// - Retrieve 10 feeds followed by user starting from the 11th
+  /// ```dart
+  /// followed = await userFeed.getFollowed(limit: 10, offset: 10);
+  ///```
+  ///
+  /// - Check if user follows specific feeds
+  /// ```dart
+  /// followed = await userFeed.getFollowed(limit: 2, offset: 0, feedIds: [
+  ///  FeedId.id('user:42'),
+  ///  FeedId.id('user:43'),
+  ///]);
+  ///```
+  ///
+  /// API docs: [reading-followed-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-followed-feeds)
   Future<List<Follow>> getFollowed({
     Iterable<FeedId> feedIds,
     int limit,
@@ -132,6 +192,24 @@ class Feed {
         offset ?? Default.offset, feedIds ?? []);
   }
 
+  /// Unfollow the given feed
+  ///
+  /// Parameters:
+  /// - [flatFeet] : Slug of the target feed
+  /// - [keepHistory] when provided the activities from target
+  /// feed will not be kept in the feed
+  ///
+  /// For example:
+  /// - Stop following feed user:user_42
+  /// ```dart
+  /// await timeline.unfollow(user);
+  /// ```
+  /// - Stop following feed user:user_42 but keep history of activities
+  /// ```dart
+  /// await timeline.unfollow(user, keepHistory: true);
+  /// ```
+  ///
+  /// API docs: [unfollowing-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#unfollowing-feeds)
   Future<void> unfollow(
     FlatFeet flatFeet, {
     bool keepHistory,
@@ -141,6 +219,22 @@ class Feed {
     return feed.unfollow(token, feedId, flatFeet.feedId, keepHistory ?? false);
   }
 
+  /// Updates an activity's [Activity.to] fields
+  ///
+  /// Parameters:
+  ///
+  /// - [update]: the [Activity] to update
+  /// - [remove]: Remove these targets from the activity
+  /// - [add] : Add these new targets to the activity
+  ///
+  /// For example:
+  /// ```dart
+  /// final add = <FeedId>[];
+  /// final remove = <FeedId>[];
+  /// await userFeed.updateActivityToTargets(update, add, remove);
+  /// ```
+  ///
+  /// API docs: [targeting](https://getstream.io/activity-feeds/docs/flutter-dart/targeting/?language=dart)
   Future<void> updateActivityToTargets(
       ActivityUpdate update, Iterable<FeedId> add, Iterable<FeedId> remove) {
     final token =
@@ -149,6 +243,11 @@ class Feed {
         add: add, remove: remove);
   }
 
+  /// Replace [Activity.to] Targets
+  /// Usage:
+  /// ```dart
+  /// await userFeed.replaceActivityToTargets(update, newTargets);
+  /// ```
   Future<void> replaceActivityToTargets(
       ActivityUpdate update, Iterable<FeedId> newTargets) {
     final token =
@@ -157,23 +256,54 @@ class Feed {
         replace: newTargets);
   }
 
+  /// Update Activities By Id
   Future<List<Activity>> updateActivitiesById(
       Iterable<ActivityUpdate> updates) {
+    //TODO: further document that thing
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return feed.updateActivitiesById(token, updates);
   }
+
+  /// Partial update by activity ID
+  ///
+  /// For example
+  /// First, prepare the set operations
+  /// ```dart
+  /// final set = {
+  ///   'product.price': 19.99,
+  ///   'shares': {
+  ///     'facebook': '...',
+  ///     'twitter': '...',
+  ///   }
+  /// };
+  /// ```
+  /// Prepare the unset operations
+  ///  ```dart
+  /// final unset = ['daily_likes', 'popularity'];
+  /// const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+  /// final update = ActivityUpdate.withId(id, set, unset);
+  /// await userFeed.updateActivityById(update);
+  ///  ```
 
   Future<Activity> updateActivityById(ActivityUpdate update) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return feed.updateActivityById(token, update);
   }
 
+  /// Update Activities By ForeignId
   Future<List<Activity>> updateActivitiesByForeignId(
+      //TODO: further document that thing
       Iterable<ActivityUpdate> updates) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return feed.updateActivitiesByForeignId(token, updates);
   }
 
+  /// Update [Activity.foreignId] By ForeignId
+  ///
+  /// Usage:
+  ///```dart
+  ///await userFeed.updateActivityByForeignId(update);
+  ///```
   Future<Activity> updateActivityByForeignId(ActivityUpdate update) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return feed.updateActivityByForeignId(token, update);

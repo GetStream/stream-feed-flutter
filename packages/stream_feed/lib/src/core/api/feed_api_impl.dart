@@ -11,6 +11,8 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class FeedApiImpl implements FeedApi {
+  // TODO: uppercase API?
+
   const FeedApiImpl(this.client)
       : assert(client != null, "Can't create a FeedApi w/o Client");
 
@@ -52,9 +54,10 @@ class FeedApiImpl implements FeedApi {
     checkArgument(sourceFeed != targetFeed, "Feed can't follow itself");
     checkArgument(activityCopyLimit >= 0,
         'Activity copy limit should be a non-negative number');
-    checkArgument(activityCopyLimit <= Default.maxActivityCopyLimit,
-        // ignore: lines_longer_than_80_chars
-        'Activity copy limit should be less then ${Default.maxActivityCopyLimit}');
+    checkArgument(
+      activityCopyLimit <= Default.maxActivityCopyLimit,
+      'Activity copy limit should be less then ${Default.maxActivityCopyLimit}',
+    );
     return client.post(
       Routes.buildFeedUrl(sourceFeed, 'following'),
       headers: {'Authorization': '$token'},
