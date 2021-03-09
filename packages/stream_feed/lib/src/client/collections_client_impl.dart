@@ -58,8 +58,8 @@ class CollectionsClientImpl implements CollectionsClient {
   /// ## Parameters
   /// [entryId] : Collection entry id
   /// [collection] : Collection name
-  /// 
-  /// 
+  ///
+  ///
   /// ## Usage:
   ///
   /// Let's delete the burger we created in the [add] example, like this:
@@ -73,14 +73,13 @@ class CollectionsClientImpl implements CollectionsClient {
     return collections.delete(token, collection, entryId);
   }
 
-
   /// Remove all objects by id from the collection.
-  /// 
+  ///
   /// ### Parameters:
   /// [collection] : collections name
   /// [ids] : an array of ids we want to delete
   /// ### Usage
-  /// For example, to delete the entries with ID 123 and 124 
+  /// For example, to delete the entries with ID 123 and 124
   /// from visitor collection we do this
   /// ```dart
   /// await client.collections.deleteMany('visitor', ['123', '124']);
@@ -91,7 +90,17 @@ class CollectionsClientImpl implements CollectionsClient {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
     return collections.deleteMany(token, collection, ids);
   }
-  
+
+  /// Get item from collection and sync data
+  ///
+  /// ### Parameters
+  /// [collection] : collections name
+  /// [entryId] : the id of the collection entry we want to get
+  ///
+  /// ### Usage
+  /// ```dart
+  /// final collection = await client.collections.get('food', 'cheese-burger');
+  /// ```
   @override
   Future<CollectionEntry> get(String collection, String entryId) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.read);
