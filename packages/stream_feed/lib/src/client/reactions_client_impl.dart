@@ -8,24 +8,36 @@ import 'package:stream_feed_dart/src/core/models/reaction.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
+/// Manage api calls for all things related to reactions
+/// The ReactionsClientImpl object contains convenient functions
+/// such add, delete, get, update ... reactions
 class ReactionsClientImpl implements ReactionsClient {
   ///Initialize a reaction client
   const ReactionsClientImpl(this.secret, this.reactions);
 
   /// Your API secret. You can get it in your Stream Dashboard [here](https://dashboard.getstream.io/dashboard/v2/)
   final String secret;
+
+  ///
   final ReactionsApi reactions;
 
   /// Add reaction
   ///
+  /// Parameters:
+  /// [kind] : kind of reaction
+  /// [activityId] :  an ActivityID
+  /// [data] : extra data related to target feeds
+  /// [targetFeeds] : an array of feeds to which to send
+  /// an activity with the reaction
+  ///
   /// Examples:
-  /// - add a like reaction to the activity
+  /// - Add a like reaction to the activity
   /// with id activityId
-  /// 
+  ///
   /// ```dart
   /// final like = await client.reactions.add('like', activity.id, 'john-doe');
   /// ```
-  /// - adds a comment reaction to the activity with id activityId
+  /// - Add a comment reaction to the activity with id activityId
   ///```dart
   /// final comment = await client.reactions.add(
   ///   'comment',
@@ -35,7 +47,7 @@ class ReactionsClientImpl implements ReactionsClient {
   /// );
   ///```
   ///
-  ///API docs:
+  /// API docs: [adding-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#adding-reactions)
 
   @override
   Future<Reaction> add(
@@ -56,7 +68,7 @@ class ReactionsClientImpl implements ReactionsClient {
     return reactions.add(token, reaction);
   }
 
-  /// adds a like to the previously created comment
+  /// Adds a like to the previously created comment
   ///
   ///Example:
   ///```dart
@@ -87,7 +99,7 @@ class ReactionsClientImpl implements ReactionsClient {
     return reactions.add(token, reaction);
   }
 
-  /// delete reaction
+  /// Delete reaction
   ///
   /// It takes in parameters:
   /// - [id] : Reaction Id
@@ -104,7 +116,8 @@ class ReactionsClientImpl implements ReactionsClient {
     return reactions.delete(token, id);
   }
 
-  /// get reaction
+  /// Get reaction
+  /// [retrieving-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#retrieving-reactions)
   @override
   Future<Reaction> get(String id) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.read);
