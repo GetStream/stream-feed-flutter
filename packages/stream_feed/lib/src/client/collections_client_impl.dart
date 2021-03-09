@@ -107,9 +107,8 @@ class CollectionsClientImpl implements CollectionsClient {
     return collections.get(token, collection, entryId);
   }
 
-
   /// Select all objects with ids from the collection.
-  /// 
+  ///
   /// ### Parameters
   /// [collection] : collection name
   /// [ids] : an array of ids
@@ -119,7 +118,7 @@ class CollectionsClientImpl implements CollectionsClient {
   /// ```dart
   /// final objects = await client.collections.select('items', ['123', '124']);
   /// ```
-  /// 
+  ///
   /// API docs: [select](https://getstream.io/activity-feeds/docs/flutter-dart/collections_batch/?language=dart#select)
   @override
   Future<List<CollectionEntry>> select(
@@ -128,6 +127,22 @@ class CollectionsClientImpl implements CollectionsClient {
     return collections.select(token, collection, ids);
   }
 
+  /// Update item in the object storage
+  /// ### Parameters
+  ///  - [collection] :  collection name
+  ///  - [data] :  ObjectStore data
+  ///  - [entryId] : Collection entry id
+  /// 
+  /// ### Usage
+  /// Let's update our cheeseburger
+  /// ```dart
+  ///   await client.collections.update('food', 'cheese-burger', {
+  ///   'name': 'Cheese Burger',
+  ///   'rating': '1 Star',
+  /// });
+  /// ```
+  /// 
+  /// API docs : [updating-collections](https://getstream.io/activity-feeds/docs/flutter-dart/collections_introduction/?language=dart#updating-collections)
   @override
   Future<CollectionEntry> update(
     String collection,
