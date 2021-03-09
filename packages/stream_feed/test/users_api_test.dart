@@ -93,5 +93,22 @@ Future<void> main() async {
         data: updatedUser,
       )).called(1);
     });
+
+    test('Delete', () async {
+      const token = Token('dummyToken');
+      const id = 'john-doe';
+
+      when(mockClient.delete(
+        Routes.buildUsersUrl('$id/'),
+        headers: {'Authorization': '$token'},
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await usersApi.delete(token, id);
+
+      verify(mockClient.delete(
+        Routes.buildUsersUrl('$id/'),
+        headers: {'Authorization': '$token'},
+      )).called(1);
+    });
   });
 }
