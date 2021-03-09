@@ -9,6 +9,34 @@ class CollectionsClientImpl implements CollectionsClient {
   final String secret;
   final CollectionsApi collections;
 
+  /// Add item to collection
+  /// 
+  /// Usage:
+  /// 
+  /// For example let's our CheeseBurger object to the food collection
+  /// ```dart
+  /// final cheeseBurger = await client.collections.add(
+  ///   'food',
+  ///   {
+  ///     'name': 'Cheese Burger',
+  ///     'ingredients': [
+  ///       'cheese',
+  ///       'burger',
+  ///       'bread',
+  ///       'lettuce',
+  ///       'tomato',
+  ///     ],
+  ///   },
+  ///   entryId: '123',
+  /// );
+  /// ```
+  /// Example
+  /// Parameters:
+  /// - [collection] : collection name
+  /// - [entryId] : entry id, if null a random id will be assigned to the item
+  /// - [data] :  ObjectStore data
+  ///
+  /// API docs: [adding-collections](https://getstream.io/activity-feeds/docs/flutter-dart/collections_introduction/?language=dart#adding-collections)
   @override
   Future<CollectionEntry> add(
     String collection,
