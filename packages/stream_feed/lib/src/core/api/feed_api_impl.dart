@@ -55,9 +55,9 @@ class FeedApiImpl implements FeedApi {
     checkArgument(activityCopyLimit >= 0,
         'Activity copy limit should be a non-negative number');
     checkArgument(
-        activityCopyLimit <= Default.maxActivityCopyLimit,
-        // ignore: lines_longer_than_80_chars
-        'Activity copy limit should be less then ${Default.maxActivityCopyLimit}');
+      activityCopyLimit <= Default.maxActivityCopyLimit,
+      'Activity copy limit should be less then ${Default.maxActivityCopyLimit}',
+    );
     return client.post(
       Routes.buildFeedUrl(sourceFeed, 'following'),
       headers: {'Authorization': '$token'},
