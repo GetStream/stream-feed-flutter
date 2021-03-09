@@ -132,7 +132,7 @@ class CollectionsClientImpl implements CollectionsClient {
   ///  - [collection] :  collection name
   ///  - [data] :  ObjectStore data
   ///  - [entryId] : Collection entry id
-  /// 
+  ///
   /// ### Usage
   /// Let's update our cheeseburger
   /// ```dart
@@ -141,7 +141,7 @@ class CollectionsClientImpl implements CollectionsClient {
   ///   'rating': '1 Star',
   /// });
   /// ```
-  /// 
+  ///
   /// API docs : [updating-collections](https://getstream.io/activity-feeds/docs/flutter-dart/collections_introduction/?language=dart#updating-collections)
   @override
   Future<CollectionEntry> update(
@@ -159,6 +159,28 @@ class CollectionsClientImpl implements CollectionsClient {
     return collections.update(token, userId, entry);
   }
 
+  /// Upsert one or more items within a collection.
+  ///
+  /// ### Parameters
+  /// - [collection] : collection name
+  /// - [entries] : an array of collection entries
+  ///
+  /// ### Usage
+  ///
+  /// ```dart
+  /// await client.collections.upsert('visitor', <CollectionEntry>[
+  ///   const CollectionEntry(id: '123', data: {
+  ///     'name': 'john',
+  ///     'favorite_color': 'blue',
+  ///   }),
+  ///   const CollectionEntry(id: '124', data: {
+  ///     'name': 'jane',
+  ///     'favorite_color': 'purple',
+  ///     'interests': ['fashion', 'jazz'],
+  ///   }),
+  /// ]);
+  /// ```
+  /// API docs : [upsert](https://getstream.io/activity-feeds/docs/flutter-dart/collections_batch/?language=dart#upsert)
   @override
   Future<void> upsert(String collection, Iterable<CollectionEntry> entries) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
