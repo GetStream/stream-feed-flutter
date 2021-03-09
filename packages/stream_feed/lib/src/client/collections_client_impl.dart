@@ -10,9 +10,9 @@ class CollectionsClientImpl implements CollectionsClient {
   final CollectionsApi collections;
 
   /// Add item to collection
-  /// 
+  ///
   /// Usage:
-  /// 
+  ///
   /// For example let's our CheeseBurger object to the food collection
   /// ```dart
   /// final cheeseBurger = await client.collections.add(
@@ -53,6 +53,20 @@ class CollectionsClientImpl implements CollectionsClient {
     return collections.add(token, userId, entry);
   }
 
+  /// Delete entry from collection
+  ///
+  /// ## Parameters
+  /// [entryId] : Collection entry id
+  /// [collection] : Collection name
+  /// 
+  /// 
+  /// ## Usage:
+  ///
+  /// Let's delete the burger we created in the [add] example, like this:
+  /// ```dart
+  /// await client.collections.delete('food', 'cheese-burger');
+  /// ```
+  /// API docs: [removing-collections](https://getstream.io/activity-feeds/docs/flutter-dart/collections_introduction/?language=dart#removing-collections)
   @override
   Future<void> delete(String collection, String entryId) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
