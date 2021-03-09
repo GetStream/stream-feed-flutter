@@ -107,6 +107,20 @@ class CollectionsClientImpl implements CollectionsClient {
     return collections.get(token, collection, entryId);
   }
 
+
+  /// Select all objects with ids from the collection.
+  /// 
+  /// ### Parameters
+  /// [collection] : collection name
+  /// [ids] : an array of ids
+  /// ### Usage
+  /// To select the entries with ID 123 and 124 from items collection
+  ///  we do this:
+  /// ```dart
+  /// final objects = await client.collections.select('items', ['123', '124']);
+  /// ```
+  /// 
+  /// API docs: [select](https://getstream.io/activity-feeds/docs/flutter-dart/collections_batch/?language=dart#select)
   @override
   Future<List<CollectionEntry>> select(
       String collection, Iterable<String> ids) {
