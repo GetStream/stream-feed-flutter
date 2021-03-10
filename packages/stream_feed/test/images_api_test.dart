@@ -50,5 +50,30 @@ void main() {
         queryParameters: {'url': targetUrl},
       )).called(1);
     });
+
+    test('Get', () async {
+      const token = Token('dummyToken');
+
+      const targetUrl = 'fileUrl';
+      when(mockClient.get(
+        Routes.imagesUrl,
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'url': targetUrl,
+          // if (options != null) ...options,
+        },
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await imagesApi.get(token, targetUrl);
+
+      verify(mockClient.get(
+        Routes.imagesUrl,
+        headers: {'Authorization': '$token'},
+        queryParameters: {
+          'url': targetUrl,
+          // if (options != null) ...options,
+        }, //TODO: test options
+      )).called(1);
+    });
   });
 }
