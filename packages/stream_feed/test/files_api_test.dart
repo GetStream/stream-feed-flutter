@@ -31,5 +31,24 @@ void main() {
         headers: {'Authorization': '$token'},
       )).called(1);
     });
+
+    test('Delete', () async {
+      const token = Token('dummyToken');
+
+      const targetUrl = 'fileUrl';
+      when(mockClient.delete(
+        Routes.filesUrl,
+        headers: {'Authorization': '$token'},
+        queryParameters: {'url': targetUrl},
+      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+
+      await filesApi.delete(token, targetUrl);
+
+      verify(mockClient.delete(
+        Routes.filesUrl,
+        headers: {'Authorization': '$token'},
+        queryParameters: {'url': targetUrl},
+      )).called(1);
+    });
   });
 }
