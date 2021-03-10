@@ -63,6 +63,21 @@ main() {
       expect(payloadJson['resource'], 'reactions');
       expect(payloadJson['feed_id'], '*');
     });
+
+    test('buildActivityToken', () {
+      final expiresAt = DateTime(2021, 03, 08);
+      final feedToken =
+          TokenHelper.buildActivityToken("secret", TokenAction.any);
+      final tokenParts = feedToken.token.split('.');
+      final header = tokenParts[0];
+      final payload = tokenParts[1];
+      expect(header, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9');
+      final payloadStr = b64urlEncRfc7515Decode(payload);
+      final payloadJson = json.decode(payloadStr);
+      expect(payloadJson['action'], '*');
+      expect(payloadJson['resource'], 'activities');
+      expect(payloadJson['feed_id'], '*');
+    });
   });
 }
 
