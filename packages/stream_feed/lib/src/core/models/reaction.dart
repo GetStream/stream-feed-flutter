@@ -110,21 +110,22 @@ class Reaction extends Equatable {
     Map<String, Object> data,
     Map<String, List<Reaction>> latestChildren,
     Map<String, int> childrenCounts,
-  }) => Reaction(
-      id: id ?? this.id,
-      kind: kind ?? this.kind,
-      activityId: activityId ?? this.activityId,
-      userId: userId ?? this.userId,
-      parent: parent ?? this.parent,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      targetFeeds: targetFeeds ?? this.targetFeeds,
-      user: user ?? this.user,
-      targetFeedsExtraData: targetFeedsExtraData ?? this.targetFeedsExtraData,
-      data: data ?? this.data,
-      latestChildren: latestChildren ?? this.latestChildren,
-      childrenCounts: childrenCounts ?? this.childrenCounts,
-    );
+  }) =>
+      Reaction(
+        id: id ?? this.id,
+        kind: kind ?? this.kind,
+        activityId: activityId ?? this.activityId,
+        userId: userId ?? this.userId,
+        parent: parent ?? this.parent,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        targetFeeds: targetFeeds ?? this.targetFeeds,
+        user: user ?? this.user,
+        targetFeedsExtraData: targetFeedsExtraData ?? this.targetFeedsExtraData,
+        data: data ?? this.data,
+        latestChildren: latestChildren ?? this.latestChildren,
+        childrenCounts: childrenCounts ?? this.childrenCounts,
+      );
 
   @override
   List<Object> get props => [

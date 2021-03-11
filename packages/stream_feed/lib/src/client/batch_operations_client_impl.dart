@@ -53,7 +53,7 @@ class BatchOperationsClientImpl implements BatchOperationsClient {
   /// It takes in parameter:
   ///
   ///  [unfollows]: The follow relations to remove
-  /// 
+  ///
   /// API docs : [batch-unfollow](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-unfollow)
   ///
   @override

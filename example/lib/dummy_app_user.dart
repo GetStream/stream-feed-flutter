@@ -12,13 +12,15 @@ extension DummyAppUserX on DummyAppUser {
         DummyAppUser.amit: 'amit-kumar',
         DummyAppUser.ayush: 'ayush-gupta',
       }[this];
-/// Convenient method Extension to generate a [name] from [DummyAppUser] enum
+
+  /// Convenient method Extension to generate a [name] from [DummyAppUser] enum
   String get name => {
         DummyAppUser.sahil: 'Sahil Kumar',
         DummyAppUser.amit: 'Amit Kumar',
         DummyAppUser.ayush: 'Ayush P Gupta',
       }[this];
-/// Convenient method Extension to generate [data] from [DummyAppUser] enum
+
+  /// Convenient method Extension to generate [data] from [DummyAppUser] enum
   Map<String, Object> get data => {
         DummyAppUser.sahil: {
           'first_name': 'Sahil',
