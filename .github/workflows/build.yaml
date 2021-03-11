@@ -35,8 +35,8 @@ jobs:
       - name: Check format
         run: flutter format --set-exit-if-changed .
 
-      - name: Generate (dart)
-        run: melos exec --depends-on="build_runner" --no-flutter -- "dart run build_runner build --delete-conflicting-outputs"
+      # - name: Generate (dart)
+      #   run: melos exec --depends-on="build_runner" --no-flutter -- "dart run build_runner build --delete-conflicting-outputs"
 
       - name: Analyze
         run: melos exec --ignore="marvel" -- "flutter analyze"
