@@ -1,4 +1,4 @@
-import 'package:jaguar_jwt/jaguar_jwt.dart';
+import 'package:jose/jose.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
@@ -141,8 +141,10 @@ class TokenHelper {
     final claims = <String, Object>{
       'user_id': userId,
     };
-    final claimSet = JwtClaim(otherClaims: claims, expiry: expiresAt);
-    return Token(issueJwtHS256(claimSet, secret));
+    // final claimSet = JwtClaim(otherClaims: claims, expiry: expiresAt);
+
+    return Token(
+        issueJwtHS256(secret: secret, expiresAt: expiresAt, claims: claims));
   }
 
   /// Creates the JWT token for [feedId], [resource] and [action]
@@ -162,7 +164,32 @@ class TokenHelper {
     if (userId != null) {
       claims['user_id'] = userId;
     }
-    final claimSet = JwtClaim(otherClaims: claims);
-    return Token(issueJwtHS256(claimSet, secret));
+
+    return Token(issueJwtHS256(secret: secret));
   }
+}
+
+String issueJwtHS256(
+    {String secret, DateTime expiresAt, Map<String, Object> claims}) {
+  final claimSet = JsonWebTokenClaims.fromJson({
+    if (expiresAt != null) 'exp': expiresAt.millisecondsSinceEpoch ~/ 1000,
+    if (claims != null) ...claims
+  });
+
+  // create a builder, decoding the JWT in a JWS, so using a
+  // JsonWebSignatureBuilder
+  var builder = JsonWebSignatureBuilder();
+
+  // set the content
+  builder.jsonContent = claimSet.toJson();
+
+  // add a key to sign, can only add one for JWT
+  builder.addRecipient(JsonWebKey.fromJson({'kty': 'oct', 'k': 'secret'}),
+      algorithm: 'HS256');
+
+  // build the jws
+  var jws = builder.build();
+
+  // output the compact serialization
+  return jws.toCompactSerialization();
 }
