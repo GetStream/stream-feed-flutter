@@ -28,3 +28,4 @@
 .pub/
 build/
 example/pubspec.lock
+coverage*
