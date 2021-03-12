@@ -104,8 +104,8 @@ void main() {
     );
     final groupJson = json.decode(fixture('group.json'));
     // expect(groupJson, matcher)
-    final groupFromJson =
-        Group.fromJson(groupJson, (e) => Activity.fromJson(e as Map<String, dynamic>?));
+    final groupFromJson = Group.fromJson(
+        groupJson, (e) => Activity.fromJson(e as Map<String, dynamic>?));
     expect(groupFromJson, group);
   });
 
@@ -138,7 +138,8 @@ void main() {
     final notificationGroupJson =
         json.decode(fixture('notification_group.json'));
     final notificationGroupFromJson = NotificationGroup.fromJson(
-        notificationGroupJson, (e) => Activity.fromJson(e as Map<String, dynamic>?));
+        notificationGroupJson,
+        (e) => Activity.fromJson(e as Map<String, dynamic>?));
     expect(notificationGroupFromJson, notificationGroup);
   });
   test('CollectionEntry', () {
