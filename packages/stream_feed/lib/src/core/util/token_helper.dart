@@ -165,7 +165,7 @@ class TokenHelper {
       claims['user_id'] = userId;
     }
 
-    return Token(issueJwtHS256(secret: secret));
+    return Token(issueJwtHS256(secret: secret, claims: claims));
   }
 }
 
@@ -173,22 +173,27 @@ String issueJwtHS256(
     {String secret, DateTime expiresAt, Map<String, Object> claims}) {
   final claimSet = JsonWebTokenClaims.fromJson({
     if (expiresAt != null) 'exp': expiresAt.millisecondsSinceEpoch ~/ 1000,
-    if (claims != null) ...claims
+    if (claims != null) ...claims,
   });
 
   // create a builder, decoding the JWT in a JWS, so using a
   // JsonWebSignatureBuilder
-  var builder = JsonWebSignatureBuilder();
+  final builder = JsonWebSignatureBuilder()
 
-  // set the content
-  builder.jsonContent = claimSet.toJson();
+    // set the content
+    ..jsonContent = claimSet.toJson()
 
-  // add a key to sign, can only add one for JWT
-  builder.addRecipient(JsonWebKey.fromJson({'kty': 'oct', 'k': 'secret'}),
-      algorithm: 'HS256');
-
+    // add a key to sign, can only add one for JWT
+    ..addRecipient(
+        JsonWebKey.fromJson({
+          'kty': 'oct',
+          'k': secret,
+        }),
+        algorithm: 'HS256')
+    // builder.recipients
+    ..setProtectedHeader('typ', 'JWT');
   // build the jws
-  var jws = builder.build();
+  final jws = builder.build();
 
   // output the compact serialization
   return jws.toCompactSerialization();
