@@ -8,49 +8,43 @@ part of 'enriched_activity.dart';
 
 EnrichedActivity _$EnrichedActivityFromJson(Map json) {
   return EnrichedActivity(
-    id: json['id'] as String,
+    id: json['id'] as String?,
     actor: EnrichableField.deserialize(json['actor']),
-    verb: json['verb'] as String,
+    verb: json['verb'] as String?,
     object: EnrichableField.deserialize(json['object']),
-    foreignId: json['foreign_id'] as String,
+    foreignId: json['foreign_id'] as String?,
     target: EnrichableField.deserialize(json['target']),
     time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
     origin: EnrichableField.deserialize(json['origin']),
-    to: (json['to'] as List)?.map((e) => e as String)?.toList(),
-    score: (json['score'] as num)?.toDouble(),
-    analytics: (json['analytics'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    score: (json['score'] as num?)?.toDouble(),
+    analytics: (json['analytics'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
-    extraContext: (json['extra_context'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    extraContext: (json['extra_context'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
-    extraData: (json['extra_data'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    extraData: (json['extra_data'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
-    reactionCounts: (json['reaction_counts'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    reactionCounts: (json['reaction_counts'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
-    ownReactions: (json['own_reactions'] as Map)?.map(
+    ownReactions: (json['own_reactions'] as Map?)?.map(
       (k, e) => MapEntry(
           k as String,
-          (e as List)
-              ?.map((e) => e == null
-                  ? null
-                  : Reaction.fromJson((e as Map)?.map(
-                      (k, e) => MapEntry(k as String, e),
-                    )))
-              ?.toList()),
+          (e as List<dynamic>)
+              .map(
+                  (e) => Reaction.fromJson(Map<String, dynamic>.from(e as Map)))
+              .toList()),
     ),
-    latestReactions: (json['latest_reactions'] as Map)?.map(
+    latestReactions: (json['latest_reactions'] as Map?)?.map(
       (k, e) => MapEntry(
           k as String,
-          (e as List)
-              ?.map((e) => e == null
-                  ? null
-                  : Reaction.fromJson((e as Map)?.map(
-                      (k, e) => MapEntry(k as String, e),
-                    )))
-              ?.toList()),
+          (e as List<dynamic>)
+              .map(
+                  (e) => Reaction.fromJson(Map<String, dynamic>.from(e as Map)))
+              .toList()),
     ),
   );
 }

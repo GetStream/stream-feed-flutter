@@ -19,7 +19,7 @@ class Group<T> extends Equatable {
   /// Create a new instance from a json
   factory Group.fromJson(
     Map<String, dynamic> json,
-    T Function(Object) fromJsonT,
+    T Function(Object?) fromJsonT,
   ) =>
       _$GroupFromJson(json, fromJsonT);
 
@@ -81,7 +81,7 @@ class NotificationGroup<T> extends Group<T> {
   /// Create a new instance from a json
   factory NotificationGroup.fromJson(
     Map<String, dynamic> json,
-    T Function(Object json) fromJsonT,
+    T Function(Object? json) fromJsonT,
   ) =>
       _$NotificationGroupFromJson(json, fromJsonT);
 

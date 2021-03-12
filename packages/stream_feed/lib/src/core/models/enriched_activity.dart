@@ -21,7 +21,7 @@ class EnrichableField extends Equatable {
     return EnrichableField(obj as Map<String, Object>?);
   }
 
-  static Object? serialize(EnrichableField field) => field.data;
+  static Object? serialize(EnrichableField? field) => field?.data;
 
   @override
   List<Object?> get props => [data];

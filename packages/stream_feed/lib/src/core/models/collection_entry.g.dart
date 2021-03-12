@@ -8,11 +8,11 @@ part of 'collection_entry.dart';
 
 CollectionEntry _$CollectionEntryFromJson(Map json) {
   return CollectionEntry(
-    id: json['id'] as String,
-    collection: json['collection'] as String,
-    foreignId: json['foreign_id'] as String,
-    data: (json['data'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    id: json['id'] as String?,
+    collection: json['collection'] as String?,
+    foreignId: json['foreign_id'] as String?,
+    data: (json['data'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
     createdAt: json['created_at'] == null
         ? null
