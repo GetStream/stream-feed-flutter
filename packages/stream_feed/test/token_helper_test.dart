@@ -1,3 +1,5 @@
+import 'package:jose/jose.dart';
+import 'package:mockito/mockito.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 import 'package:test/test.dart';
 import 'dart:convert';
@@ -7,11 +9,24 @@ main() {
     const secret =
         // ignore: lines_longer_than_80_chars
         'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow';
-    test('buildFrontendToken', () {
+
+    // create key store to verify the signature
+    final keyStore = JsonWebKeyStore()
+      ..addKey(JsonWebKey.fromJson({
+        'kty': 'oct',
+        'k':
+            // ignore: lines_longer_than_80_chars
+            'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
+      }));
+
+    test('buildFrontendToken', () async {
       final expiresAt = DateTime(2021, 03, 08);
 
       final frontendToken = TokenHelper.buildFrontendToken(secret, 'userId',
           expiresAt: expiresAt);
+      final jwt = JsonWebToken.unverified(frontendToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
       final tokenParts = frontendToken.token.split('.');
       final header = tokenParts[0];
       final payload = tokenParts[1];
@@ -26,8 +41,11 @@ main() {
       expect(payloadJson['user_id'], 'userId');
     });
 
-    test('buildFollowToken', () {
+    test('buildFollowToken', () async {
       final feedToken = TokenHelper.buildFollowToken(secret, TokenAction.any);
+      final jwt = JsonWebToken.unverified(feedToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
       final tokenParts = feedToken.token.split('.');
       final header = tokenParts[0];
       final payload = tokenParts[1];
@@ -45,9 +63,13 @@ main() {
       });
     });
 
-    test('buildReactionToken', () {
-      final feedToken = TokenHelper.buildReactionToken(secret, TokenAction.any);
-      final tokenParts = feedToken.token.split('.');
+    test('buildReactionToken', () async {
+      final reactionToken =
+          TokenHelper.buildReactionToken(secret, TokenAction.any);
+      final tokenParts = reactionToken.token.split('.');
+      final jwt = JsonWebToken.unverified(reactionToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
       final header = tokenParts[0];
       final payload = tokenParts[1];
       final headerdStr = b64urlEncRfc7515Decode(header);
@@ -64,9 +86,13 @@ main() {
       });
     });
 
-    test('buildActivityToken', () {
-      final feedToken = TokenHelper.buildActivityToken(secret, TokenAction.any);
-      final tokenParts = feedToken.token.split('.');
+    test('buildActivityToken', () async {
+      final activityToken =
+          TokenHelper.buildActivityToken(secret, TokenAction.any);
+      final jwt = JsonWebToken.unverified(activityToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = activityToken.token.split('.');
       final header = tokenParts[0];
       final payload = tokenParts[1];
       final headerdStr = b64urlEncRfc7515Decode(header);
@@ -83,9 +109,12 @@ main() {
       });
     });
 
-    test('buildUsersToken', () {
-      final feedToken = TokenHelper.buildUsersToken(secret, TokenAction.any);
-      final tokenParts = feedToken.token.split('.');
+    test('buildUsersToken', () async {
+      final usersToken = TokenHelper.buildUsersToken(secret, TokenAction.any);
+      final jwt = JsonWebToken.unverified(usersToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = usersToken.token.split('.');
       final header = tokenParts[0];
       final payload = tokenParts[1];
       final headerdStr = b64urlEncRfc7515Decode(header);
@@ -102,10 +131,13 @@ main() {
       });
     });
 
-    test('buildCollectionsToken', () {
-      final feedToken =
+    test('buildCollectionsToken', () async {
+      final collectionsToken =
           TokenHelper.buildCollectionsToken(secret, TokenAction.any);
-      final tokenParts = feedToken.token.split('.');
+      final jwt = JsonWebToken.unverified(collectionsToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = collectionsToken.token.split('.');
       final header = tokenParts[0];
       final payload = tokenParts[1];
       final headerdStr = b64urlEncRfc7515Decode(header);
@@ -122,11 +154,14 @@ main() {
       });
     });
 
-    test('buildOpenGraphToken', () {
-      final feedToken = TokenHelper.buildOpenGraphToken(
+    test('buildOpenGraphToken', () async {
+      final openGraphToken = TokenHelper.buildOpenGraphToken(
         secret,
       );
-      final tokenParts = feedToken.token.split('.');
+      final jwt = JsonWebToken.unverified(openGraphToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = openGraphToken.token.split('.');
       final header = tokenParts[0];
       final payload = tokenParts[1];
       final headerdStr = b64urlEncRfc7515Decode(header);
@@ -143,10 +178,13 @@ main() {
       });
     });
 
-    test('buildToTargetUpdateToken', () {
-      final feedToken =
+    test('buildToTargetUpdateToken', () async {
+      final toTargetUpdateToken =
           TokenHelper.buildToTargetUpdateToken(secret, TokenAction.any);
-      final tokenParts = feedToken.token.split('.');
+      final jwt = JsonWebToken.unverified(toTargetUpdateToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = toTargetUpdateToken.token.split('.');
       final header = tokenParts[0];
       final payload = tokenParts[1];
       final headerdStr = b64urlEncRfc7515Decode(header);
@@ -163,9 +201,12 @@ main() {
       });
     });
 
-    test('buildFilesToken', () {
-      final feedToken = TokenHelper.buildFilesToken(secret, TokenAction.any);
-      final tokenParts = feedToken.token.split('.');
+    test('buildFilesToken', () async {
+      final filesToken = TokenHelper.buildFilesToken(secret, TokenAction.any);
+      final jwt = JsonWebToken.unverified(filesToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = filesToken.token.split('.');
       final header = tokenParts[0];
       final payload = tokenParts[1];
       final headerdStr = b64urlEncRfc7515Decode(header);
