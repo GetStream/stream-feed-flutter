@@ -20,8 +20,9 @@ main() {
       expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
-      expect(payloadJson, {'': ''});
-      //expect(payloadJson['exp'], 1615176000); fails on linux somehow
+
+      expect(payloadJson,
+          {'exp': isA<int>(), 'iat': isA<int>(), 'user_id': 'userId'});
       expect(payloadJson['user_id'], 'userId');
     });
 
@@ -35,9 +36,13 @@ main() {
       expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
-      expect(payloadJson['action'], '*');
-      expect(payloadJson['resource'], 'follower');
-      expect(payloadJson['feed_id'], '*');
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'follower',
+        'feed_id': '*',
+      });
     });
 
     test('buildReactionToken', () {
@@ -50,9 +55,13 @@ main() {
       expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
-      expect(payloadJson['action'], '*');
-      expect(payloadJson['resource'], 'reactions');
-      expect(payloadJson['feed_id'], '*');
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'reactions',
+        'feed_id': '*',
+      });
     });
 
     test('buildActivityToken', () {
@@ -65,9 +74,13 @@ main() {
       expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
-      expect(payloadJson['action'], '*');
-      expect(payloadJson['resource'], 'activities');
-      expect(payloadJson['feed_id'], '*');
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'activities',
+        'feed_id': '*',
+      });
     });
 
     test('buildUsersToken', () {
@@ -80,9 +93,13 @@ main() {
       expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
-      expect(payloadJson['action'], '*');
-      expect(payloadJson['resource'], 'users');
-      expect(payloadJson['feed_id'], '*');
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'users',
+        'feed_id': '*',
+      });
     });
 
     test('buildCollectionsToken', () {
@@ -96,9 +113,13 @@ main() {
       expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
-      expect(payloadJson['action'], '*');
-      expect(payloadJson['resource'], 'collections');
-      expect(payloadJson['feed_id'], '*');
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'collections',
+        'feed_id': '*',
+      });
     });
 
     test('buildOpenGraphToken', () {
@@ -113,9 +134,13 @@ main() {
       expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
-      expect(payloadJson['action'], 'read');
-      expect(payloadJson['resource'], 'url');
-      expect(payloadJson['feed_id'], '*');
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': 'read',
+        'resource': 'url',
+        'feed_id': '*',
+      });
     });
 
     test('buildToTargetUpdateToken', () {
@@ -129,9 +154,13 @@ main() {
       expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
-      expect(payloadJson['action'], '*');
-      expect(payloadJson['resource'], 'feed_targets');
-      expect(payloadJson['feed_id'], '*');
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'feed_targets',
+        'feed_id': '*',
+      });
     });
 
     test('buildFilesToken', () {
@@ -144,9 +173,13 @@ main() {
       expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
-      expect(payloadJson['action'], '*');
-      expect(payloadJson['resource'], 'files');
-      expect(payloadJson['feed_id'], '*');
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'files',
+        'feed_id': '*',
+      });
     });
   });
 }

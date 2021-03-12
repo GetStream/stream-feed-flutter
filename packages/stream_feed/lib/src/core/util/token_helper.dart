@@ -172,7 +172,11 @@ class TokenHelper {
 String issueJwtHS256(
     {String secret, DateTime expiresAt, Map<String, Object> claims}) {
   final claimSet = JsonWebTokenClaims.fromJson({
-    if (expiresAt != null) 'exp': expiresAt.millisecondsSinceEpoch ~/ 1000,
+    'exp': DateTime.now()
+            .add(const Duration(seconds: 1200))
+            .millisecondsSinceEpoch ~/
+        1000,
+    'iat': DateTime.now().toUtc().millisecondsSinceEpoch ~/ 1000,
     if (claims != null) ...claims,
   });
 
