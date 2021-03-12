@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/core/api/feed_api_impl.dart';
 import 'package:stream_feed_dart/src/core/api/reactions_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';

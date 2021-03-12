@@ -9,8 +9,8 @@ import 'package:mocktail/mocktail.dart';
 class MockHttpClient extends Mock implements HttpClient {}
 
 void main() {
-  final MockHttpClient mockClient = MockHttpClient();
-  final ImagesApiImpl imagesApi = ImagesApiImpl(mockClient);
+  final mockClient = MockHttpClient();
+  final imagesApi = ImagesApiImpl(mockClient);
 
   group('Images API', () {
     test('Upload', () async {

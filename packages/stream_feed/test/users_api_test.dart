@@ -1,12 +1,11 @@
-import 'package:stream_feed_dart/src/core/api/users_api_impl.dart';
-import 'package:stream_feed_dart/src/core/util/routes.dart';
-import 'dart:convert';
-import 'package:test/test.dart';
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed_dart/src/core/api/users_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/user.dart';
+import 'package:stream_feed_dart/src/core/util/routes.dart';
+import 'package:test/test.dart';
 
 import 'utils.dart';
 
@@ -18,7 +17,6 @@ Future<void> main() async {
     final usersApi = UsersApiImpl(mockClient);
     test('Get', () async {
       const token = Token('dummyToken');
-      const targetToken = Token('dummyToken2');
       const id = 'id';
       const withFollowCounts = true;
       when(() => mockClient.get(
@@ -47,7 +45,7 @@ Future<void> main() async {
         'occupation': 'Software Engineer',
         'gender': 'male',
       };
-      final user = User(id: id, data: data);
+      const user = User(id: id, data: data);
       const getOrCreate = false;
       when(() => mockClient.post<Map>(
                 Routes.buildUsersUrl(),
@@ -78,8 +76,7 @@ Future<void> main() async {
         'occupation': 'Software Engineer',
         'gender': 'male',
       };
-      final updatedUser = User(id: id, data: data);
-      const getOrCreate = false;
+      const updatedUser = User(id: id, data: data);
       when(() => mockClient.put(
                 Routes.buildUsersUrl('$id/'),
                 headers: {'Authorization': '$token'},

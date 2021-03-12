@@ -1,7 +1,7 @@
 import 'package:jose/jose.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 import 'package:test/test.dart';
+// ignore: directives_ordering
 import 'dart:convert';
 
 main() {
