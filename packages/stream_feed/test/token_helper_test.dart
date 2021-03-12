@@ -8,7 +8,7 @@ main() {
   group('TokenHelper', () {
     const secret =
         // ignore: lines_longer_than_80_chars
-        'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow';
+        'secret';
 
     // create key store to verify the signature
     final keyStore = JsonWebKeyStore()
@@ -16,7 +16,7 @@ main() {
         'kty': 'oct',
         'k':
             // ignore: lines_longer_than_80_chars
-            'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow',
+            base64Urlencode(secret),
       }));
 
     test('buildFrontendToken', () async {
