@@ -1,4 +1,6 @@
-import 'package:jaguar_jwt/jaguar_jwt.dart';
+import 'dart:convert';
+import 'package:meta/meta.dart';
+import 'package:jose/jose.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
@@ -141,8 +143,9 @@ class TokenHelper {
     final claims = <String, Object>{
       'user_id': userId,
     };
-    final claimSet = JwtClaim(otherClaims: claims, expiry: expiresAt);
-    return Token(issueJwtHS256(claimSet, secret));
+
+    return Token(
+        issueJwtHS256(secret: secret, expiresAt: expiresAt, claims: claims));
   }
 
   /// Creates the JWT token for [feedId], [resource] and [action]
@@ -162,7 +165,47 @@ class TokenHelper {
     if (userId != null) {
       claims['user_id'] = userId;
     }
-    final claimSet = JwtClaim(otherClaims: claims);
-    return Token(issueJwtHS256(claimSet, secret));
+
+    return Token(issueJwtHS256(secret: secret, claims: claims));
   }
+}
+
+String issueJwtHS256(
+    {String secret, DateTime expiresAt, Map<String, Object> claims}) {
+  final claimSet = JsonWebTokenClaims.fromJson({
+    'exp': DateTime.now()
+            .add(const Duration(seconds: 1200))
+            .millisecondsSinceEpoch ~/
+        1000,
+    'iat': DateTime.now().toUtc().millisecondsSinceEpoch ~/ 1000,
+    if (claims != null) ...claims,
+  });
+
+  // create a builder, decoding the JWT in a JWS, so using a
+  // JsonWebSignatureBuilder
+  final builder = JsonWebSignatureBuilder()
+
+    // set the content
+    ..jsonContent = claimSet.toJson()
+
+    // add a key to sign, can only add one for JWT
+    ..addRecipient(
+        JsonWebKey.fromJson({
+          'kty': 'oct',
+          'k': base64Urlencode(secret),
+        }),
+        algorithm: 'HS256')
+    // builder.recipients
+    ..setProtectedHeader('typ', 'JWT');
+  // build the jws
+  final jws = builder.build();
+
+  // output the compact serialization
+  return jws.toCompactSerialization();
+}
+
+String base64Urlencode(String secret) {
+  Codec<String, String> stringToBase64Url = utf8.fuse(base64Url);
+  String encoded = stringToBase64Url.encode(secret);
+  return encoded;
 }
