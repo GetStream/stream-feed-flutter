@@ -14,15 +14,15 @@ class CloudReactionsClientImpl implements CloudReactionsClient {
     String kind,
     String activityId,
     String userId, {
-    Map<String, Object> data,
-    Iterable<FeedId> targetFeeds,
+    Map<String, Object>? data,
+    Iterable<FeedId>? targetFeeds,
   }) {
     final reaction = Reaction(
       kind: kind,
       activityId: activityId,
       userId: userId,
       data: data,
-      targetFeeds: targetFeeds,
+      targetFeeds: targetFeeds as List<FeedId>?,
     );
     return reactions.add(token, reaction);
   }
@@ -32,15 +32,15 @@ class CloudReactionsClientImpl implements CloudReactionsClient {
     String kind,
     String parentId,
     String userId, {
-    Map<String, Object> data,
-    Iterable<FeedId> targetFeeds,
+    Map<String, Object>? data,
+    Iterable<FeedId>? targetFeeds,
   }) {
     final reaction = Reaction(
       kind: kind,
       parent: parentId,
       userId: userId,
       data: data,
-      targetFeeds: targetFeeds,
+      targetFeeds: targetFeeds as List<FeedId>?,
     );
     return reactions.add(token, reaction);
   }
@@ -54,13 +54,13 @@ class CloudReactionsClientImpl implements CloudReactionsClient {
   @override
   Future<void> update(
     String reactionId, {
-    Map<String, Object> data,
-    Iterable<FeedId> targetFeeds,
+    Map<String, Object>? data,
+    Iterable<FeedId>? targetFeeds,
   }) {
     final reaction = Reaction(
       id: reactionId,
       data: data,
-      targetFeeds: targetFeeds,
+      targetFeeds: targetFeeds as List<FeedId>?,
     );
     return reactions.update(token, reaction);
   }
@@ -69,9 +69,9 @@ class CloudReactionsClientImpl implements CloudReactionsClient {
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-    Filter filter,
-    int limit,
-    String kind,
+    Filter? filter,
+    int? limit,
+    String? kind,
   }) =>
       reactions.filter(token, lookupAttr, lookupValue, filter ?? Default.filter,
           limit ?? Default.limit, kind ?? '');

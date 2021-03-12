@@ -25,8 +25,8 @@ import 'package:stream_feed_dart/src/core/api/users_api_impl.dart';
 class StreamApiImpl implements StreamApi {
   StreamApiImpl(
     String apiKey, {
-    StreamClientOptions options,
-    HttpClient client,
+    StreamClientOptions? options,
+    HttpClient? client,
   }) : _client = client ?? StreamHttpClient(apiKey, options: options);
 
   final HttpClient _client;
@@ -61,7 +61,7 @@ class StreamApiImpl implements StreamApi {
       headers: {'Authorization': '$token'},
       queryParameters: {'url': targetUrl},
     );
-    //TODO: OpenGraphData.fromJson() ?
-    print(result);
+    //TODO: I have no idea if this works just pleasing null safe warnings
+    return OpenGraphData.fromJson(result.data as Map<String, dynamic>);
   }
 }

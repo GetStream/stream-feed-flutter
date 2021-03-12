@@ -126,7 +126,7 @@ class Feed {
   /// API docs: [following](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart)
   Future<void> follow(
     FlatFeet flatFeet, {
-    int activityCopyLimit,
+    int? activityCopyLimit,
   }) {
     //TODO: should return API response
     final token =
@@ -150,9 +150,9 @@ class Feed {
   ///
   /// API docs: [reading-feed-followers](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-feed-followers)
   Future<List<Follow>> getFollowers({
-    Iterable<FeedId> feedIds,
-    int limit,
-    int offset,
+    Iterable<FeedId>? feedIds,
+    int? limit,
+    int? offset,
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.read, feedId);
@@ -182,9 +182,9 @@ class Feed {
   ///
   /// API docs: [reading-followed-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-followed-feeds)
   Future<List<Follow>> getFollowed({
-    Iterable<FeedId> feedIds,
-    int limit,
-    int offset,
+    Iterable<FeedId>? feedIds,
+    int? limit,
+    int? offset,
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.read, feedId);
@@ -212,7 +212,7 @@ class Feed {
   /// API docs: [unfollowing-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#unfollowing-feeds)
   Future<void> unfollow(
     FlatFeet flatFeet, {
-    bool keepHistory,
+    bool? keepHistory,
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.delete, feedId);

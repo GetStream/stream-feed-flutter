@@ -13,14 +13,14 @@ class FilesApiImpl implements FilesApi {
   final HttpClient client;
 
   @override
-  Future<String> upload(Token token, MultipartFile file) async {
+  Future<String?> upload(Token token, MultipartFile file) async {
     checkNotNull(file, 'No data to upload');
     final result = await client.postFile<Map>(
       Routes.filesUrl,
       file,
       headers: {'Authorization': '$token'},
     );
-    return result.data['file'];
+    return result.data!['file'];
   }
 
   @override

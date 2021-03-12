@@ -5,7 +5,7 @@ author:
 homepage:
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   dio: ^4.0.0-beta7
@@ -18,7 +18,7 @@ dev_dependencies:
   build_runner: ^1.10.0
   json_serializable: ^4.0.2
   mocktail: ^0.1.0
-  test: ^1.15.4
+  test: ^1.16.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

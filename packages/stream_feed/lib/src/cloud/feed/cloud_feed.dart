@@ -32,30 +32,30 @@ class CloudFeed {
 
   Future<void> follow(
     CloudFlatFeed flatFeet, {
-    int activityCopyLimit,
+    int? activityCopyLimit,
   }) =>
       feed.follow(token, token, feedId, flatFeet.feedId,
           activityCopyLimit ?? Default.activityCopyLimit);
 
   Future<List<Follow>> getFollowers(
     Iterable<FeedId> feedIds, {
-    int limit,
-    int offset,
+    int? limit,
+    int? offset,
   }) =>
       feed.getFollowers(token, feedId, limit ?? Default.limit,
           offset ?? Default.offset, feedIds);
 
   Future<List<Follow>> getFollowed(
     Iterable<FeedId> feedIds, {
-    int limit,
-    int offset,
+    int? limit,
+    int? offset,
   }) =>
       feed.getFollowed(token, feedId, limit ?? Default.limit,
           offset ?? Default.offset, feedIds);
 
   Future<void> unfollow(
     CloudFlatFeed flatFeet, {
-    bool keepHistory,
+    bool? keepHistory,
   }) =>
       feed.unfollow(token, feedId, flatFeet.feedId, keepHistory ?? false);
 

@@ -35,9 +35,15 @@ Future<void> main() async {
               if (filter != null) ...filter.params,
               'with_activity_data': lookupAttr == LookupAttribute.activityId,
             },
-          )).thenAnswer((_) async => Response(data: {
-            'results': [jsonFixture('reaction.json')]
-          }, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+              data: {
+                'results': [jsonFixture('reaction.json')]
+              },
+              request: RequestOptions(
+                path: Routes.buildReactionsUrl(
+                    '${lookupAttr.attr}/$lookupValue/$kind'),
+              ),
+              statusCode: 200));
 
       await reactionsApi.filter(
         token,
@@ -81,12 +87,15 @@ Future<void> main() async {
         targetFeeds: targetFeedIds,
       );
       when(() => mockClient.post<Map>(
-                Routes.buildReactionsUrl(),
-                headers: {'Authorization': '$token'},
-                data: reaction,
-              ))
-          .thenAnswer((_) async =>
-              Response(data: jsonFixture('reaction.json'), statusCode: 200));
+            Routes.buildReactionsUrl(),
+            headers: {'Authorization': '$token'},
+            data: reaction,
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('reaction.json'),
+          request: RequestOptions(
+            path: Routes.buildReactionsUrl(),
+          ),
+          statusCode: 200));
 
       await reactionsApi.add(token, reaction);
 
@@ -102,11 +111,14 @@ Future<void> main() async {
 
       const id = 'id';
       when(() => mockClient.get<Map>(
-                Routes.buildReactionsUrl('$id/'),
-                headers: {'Authorization': '$token'},
-              ))
-          .thenAnswer((_) async =>
-              Response(data: jsonFixture('reaction.json'), statusCode: 200));
+            Routes.buildReactionsUrl('$id/'),
+            headers: {'Authorization': '$token'},
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('reaction.json'),
+          request: RequestOptions(
+            path: Routes.buildReactionsUrl('$id/'),
+          ),
+          statusCode: 200));
 
       await reactionsApi.get(token, id);
 
@@ -122,7 +134,12 @@ Future<void> main() async {
       when(() => mockClient.delete(
             Routes.buildReactionsUrl('$id/'),
             headers: {'Authorization': '$token'},
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildReactionsUrl('$id/'),
+          ),
+          statusCode: 200));
 
       await reactionsApi.delete(token, id);
 
@@ -142,18 +159,20 @@ Future<void> main() async {
       final limit = Default.limit;
       const kind = 'like';
       when(() => mockClient.get(
-                Routes.buildReactionsUrl(
-                    '${lookupAttr.attr}/$lookupValue/$kind'),
-                headers: {'Authorization': '$token'},
-                queryParameters: {
-                  'limit': limit.toString(),
-                  if (filter != null) ...filter.params,
-                  'with_activity_data':
-                      lookupAttr == LookupAttribute.activityId,
-                },
-              ))
-          .thenAnswer((_) async => Response(
-              data: jsonFixture('paginated_reactions.json'), statusCode: 200));
+            Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
+            headers: {'Authorization': '$token'},
+            queryParameters: {
+              'limit': limit.toString(),
+              if (filter != null) ...filter.params,
+              'with_activity_data': lookupAttr == LookupAttribute.activityId,
+            },
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('paginated_reactions.json'),
+          request: RequestOptions(
+            path: Routes.buildReactionsUrl(
+                '${lookupAttr.attr}/$lookupValue/$kind'),
+          ),
+          statusCode: 200));
 
       await reactionsApi.paginatedFilter(
         token,
@@ -179,11 +198,14 @@ Future<void> main() async {
 
       const next = 'next';
       when(() => mockClient.get(
-                next,
-                headers: {'Authorization': '$token'},
-              ))
-          .thenAnswer((_) async => Response(
-              data: jsonFixture('paginated_reactions.json'), statusCode: 200));
+            next,
+            headers: {'Authorization': '$token'},
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('paginated_reactions.json'),
+          request: RequestOptions(
+            path: next,
+          ),
+          statusCode: 200));
 
       await reactionsApi.nextPaginatedFilter(token, next);
 
@@ -221,7 +243,12 @@ Future<void> main() async {
               'data': data,
               'target_feeds': targetFeedIds.map((e) => e.toString()).toList()
             },
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildReactionsUrl('$reactionId/'),
+          ),
+          statusCode: 200));
 
       await reactionsApi.update(token, updatedReaction);
 

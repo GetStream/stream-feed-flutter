@@ -27,8 +27,8 @@ class StreamClientImpl implements StreamClient {
     this._secret,
     String apiKey, {
     // String appId,
-    StreamClientOptions options,
-    StreamApi api,
+    StreamClientOptions? options,
+    StreamApi? api,
   }) : _api = api ?? StreamApiImpl(apiKey, options: options);
 
   final String _secret;
@@ -75,7 +75,7 @@ class StreamClientImpl implements StreamClient {
   @override
   Token frontendToken(
     String userId, {
-    DateTime expiresAt,
+    DateTime? expiresAt,
   }) =>
       TokenHelper.buildFrontendToken(_secret, userId, expiresAt: expiresAt);
 

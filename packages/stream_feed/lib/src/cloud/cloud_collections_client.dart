@@ -4,8 +4,8 @@ abstract class CloudCollectionsClient {
   Future<CollectionEntry> add(
     String collection,
     Map<String, Object> data, {
-    String entryId,
-    String userId,
+    String? entryId,
+    String? userId,
   });
 
   Future<CollectionEntry> get(String collection, String entryId);
@@ -14,7 +14,7 @@ abstract class CloudCollectionsClient {
     String collection,
     String entryId,
     Map<String, Object> data, {
-    String userId,
+    String? userId,
   });
 
   Future<void> delete(String collection, String entryId);

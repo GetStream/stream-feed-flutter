@@ -24,16 +24,20 @@ Future<void> main() async {
       });
 
       when(() => mockClient.post<Map>(
-                Routes.buildCollectionsUrl(entry.collection),
-                headers: {'Authorization': '$token'},
-                data: {
-                  'data': entry.data,
-                  if (userId != null) 'user_id': userId,
-                  if (entry.id != null) 'id': entry.id,
-                },
-              ))
-          .thenAnswer((_) async => Response(
-              data: jsonFixture('collection_entry.json'), statusCode: 200));
+            Routes.buildCollectionsUrl(entry.collection),
+            headers: {'Authorization': '$token'},
+            data: {
+              'data': entry.data,
+              if (userId != null) 'user_id': userId,
+              if (entry.id != null) 'id': entry.id,
+            },
+          )).thenAnswer((_) async => Response(
+            data: jsonFixture('collection_entry.json'),
+            statusCode: 200,
+            request: RequestOptions(
+              path: Routes.buildCollectionsUrl(entry.collection),
+            ),
+          ));
 
       await collectionsApi.add(token, userId, entry);
 
@@ -55,7 +59,12 @@ Future<void> main() async {
       when(() => mockClient.delete(
             Routes.buildCollectionsUrl('$collection/$entryId/'),
             headers: {'Authorization': '$token'},
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildCollectionsUrl('$collection/$entryId/'),
+          ),
+          statusCode: 200));
 
       await collectionsApi.delete(token, collection, entryId);
 
@@ -77,7 +86,12 @@ Future<void> main() async {
               'collection_name': collection,
               'ids': entryIds.join(','),
             },
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildCollectionsUrl(),
+          ),
+          statusCode: 200));
 
       await collectionsApi.deleteMany(token, collection, entryIds);
 
@@ -96,11 +110,14 @@ Future<void> main() async {
       const collection = 'food';
       const entryId = 'cheeseburger';
       when(() => mockClient.get<Map>(
-                Routes.buildCollectionsUrl('$collection/$entryId/'),
-                headers: {'Authorization': '$token'},
-              ))
-          .thenAnswer((_) async => Response(
-              data: jsonFixture('collection_entry.json'), statusCode: 200));
+            Routes.buildCollectionsUrl('$collection/$entryId/'),
+            headers: {'Authorization': '$token'},
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('collection_entry.json'),
+          request: RequestOptions(
+            path: Routes.buildCollectionsUrl('$collection/$entryId/'),
+          ),
+          statusCode: 200));
 
       await collectionsApi.get(token, collection, entryId);
 
@@ -121,11 +138,16 @@ Future<void> main() async {
             queryParameters: {
               'foreign_ids': entryIds.map((id) => '$collection:$id').join(','),
             },
-          )).thenAnswer((_) async => Response(data: {
-            'response': {
-              'data': [jsonFixture('collection_entry.json')]
-            }
-          }, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+              data: {
+                'response': {
+                  'data': [jsonFixture('collection_entry.json')]
+                }
+              },
+              request: RequestOptions(
+                path: Routes.buildCollectionsUrl(),
+              ),
+              statusCode: 200));
 
       await collectionsApi.select(token, collection, entryIds);
 
@@ -146,15 +168,19 @@ Future<void> main() async {
         'favorite_color': 'blue',
       });
       when(() => mockClient.put<Map>(
+            Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
+            headers: {'Authorization': '$token'},
+            data: {
+              'data': entry.data,
+              if (userId != null) 'user_id': userId,
+            },
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('collection_entry.json'),
+          request: RequestOptions(
+            path:
                 Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
-                headers: {'Authorization': '$token'},
-                data: {
-                  'data': entry.data,
-                  if (userId != null) 'user_id': userId,
-                },
-              ))
-          .thenAnswer((_) async => Response(
-              data: jsonFixture('collection_entry.json'), statusCode: 200));
+          ),
+          statusCode: 200));
 
       await collectionsApi.update(token, userId, entry);
 
@@ -183,7 +209,12 @@ Future<void> main() async {
             data: {
               'data': {collection: entries}
             },
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildCollectionsUrl(),
+          ),
+          statusCode: 200));
 
       await collectionsApi.upsert(token, collection, entries);
 

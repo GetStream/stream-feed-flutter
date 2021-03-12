@@ -8,8 +8,8 @@ class Serializer {
 
   /// Takes values in `extra_data` key
   /// and puts them on the root level of the json map
-  static Map<String, dynamic> moveKeysToRoot(
-    Map<String, dynamic> json,
+  static Map<String, dynamic>? moveKeysToRoot(
+    Map<String, dynamic>? json,
     List<String> topLevelFields,
   ) {
     if (json == null) {
@@ -37,7 +37,7 @@ class Serializer {
     }
 
     final clone = Map<String, dynamic>.from(intermediateMap);
-    final Map<String, dynamic> extraData = clone.remove('extra_data');
+    final Map<String, dynamic>? extraData = clone.remove('extra_data');
 
     extraData?.keys?.forEach((key) {
       if (!topLevelFields.contains(key)) {

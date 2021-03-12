@@ -12,14 +12,14 @@ class ImagesApiImpl implements ImagesApi {
   final HttpClient client;
 
   @override
-  Future<String> upload(Token token, MultipartFile image) async {
+  Future<String?> upload(Token token, MultipartFile image) async {
     checkNotNull(image, 'No image to upload');
     final result = await client.postFile<Map>(
       Routes.imagesUrl,
       image,
       headers: {'Authorization': '$token'},
     );
-    return result.data['file'];
+    return result.data!['file'];
   }
 
   @override
@@ -33,10 +33,10 @@ class ImagesApiImpl implements ImagesApi {
   }
 
   @override
-  Future<String> get(
+  Future<String?> get(
     Token token,
     String targetUrl, {
-    Map<String, Object> options,
+    Map<String, Object?>? options,
   }) async {
     checkNotNull(targetUrl, 'No image to process');
     final result = await client.get(

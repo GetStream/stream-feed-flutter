@@ -6,15 +6,15 @@ abstract class CollectionsClient {
   Future<CollectionEntry> add(
     String collection,
     Map<String, Object> data, {
-    String entryId,
-    String userId,
+    String? entryId,
+    String? userId,
   });
 
   Future<CollectionEntry> update(
-    String collection,
-    String entryId,
+    String? collection,
+    String? entryId,
     Map<String, Object> data, {
-    String userId,
+    String? userId,
   });
 
   Future<void> delete(String collection, String entryId);

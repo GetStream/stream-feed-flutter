@@ -4,10 +4,10 @@ import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
 
 abstract class CollectionsApi {
   Future<CollectionEntry> add(
-      Token token, String userId, CollectionEntry entry);
+      Token token, String? userId, CollectionEntry entry);
 
   Future<CollectionEntry> update(
-      Token token, String userId, CollectionEntry entry);
+      Token token, String? userId, CollectionEntry entry);
 
   Future<Response> upsert(
       Token token, String collection, Iterable<CollectionEntry> entries);

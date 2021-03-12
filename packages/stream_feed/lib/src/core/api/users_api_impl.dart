@@ -28,7 +28,7 @@ class UsersApiImpl implements UsersApi {
       queryParameters: {'get_or_create': getOrCreate},
       data: user,
     );
-    return User.fromJson(result.data);
+    return User.fromJson(result.data as Map<String, dynamic>);
   }
 
   @override

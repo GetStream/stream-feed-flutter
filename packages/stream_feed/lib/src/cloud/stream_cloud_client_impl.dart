@@ -22,8 +22,8 @@ class StreamCloudClientImpl implements StreamCloudClient {
   StreamCloudClientImpl(
     String apiKey,
     this._token, {
-    StreamClientOptions options,
-    StreamApi api,
+    StreamClientOptions? options,
+    StreamApi? api,
   }) : _api = api ?? StreamApiImpl(apiKey, options: options);
 
   final String _token;

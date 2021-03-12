@@ -7,7 +7,7 @@ enum CropType {
 }
 
 extension _CropX on CropType {
-  String get name => {
+  String? get name => {
         CropType.top: 'top',
         CropType.bottom: 'bottom',
         CropType.left: 'left',

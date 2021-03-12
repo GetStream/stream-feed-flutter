@@ -24,25 +24,25 @@ class Group<T> extends Equatable {
       _$GroupFromJson(json, fromJsonT);
 
   ///
-  final String id;
+  final String? id;
 
   ///
-  final String group;
+  final String? group;
 
   ///
-  final List<T> activities;
+  final List<T>? activities;
 
   ///
-  final int actorCount;
+  final int? actorCount;
 
   ///
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   ///
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         group,
         activities,
@@ -61,12 +61,12 @@ class Group<T> extends Equatable {
 class NotificationGroup<T> extends Group<T> {
   ///
   const NotificationGroup({
-    String id,
-    String group,
-    List<T> activities,
-    int actorCount,
-    DateTime createdAt,
-    DateTime updatedAt,
+    String? id,
+    String? group,
+    List<T>? activities,
+    int? actorCount,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     this.isRead,
     this.isSeen,
   }) : super(
@@ -86,13 +86,13 @@ class NotificationGroup<T> extends Group<T> {
       _$NotificationGroupFromJson(json, fromJsonT);
 
   ///
-  final bool isRead;
+  final bool? isRead;
 
   ///
-  final bool isSeen;
+  final bool? isSeen;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         ...super.props,
         isRead,
         isSeen,

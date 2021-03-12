@@ -16,10 +16,10 @@ class AggregatedFeed extends Feed {
       : super(secret, id, feed);
 
   Future<List<Group<Activity>>> getActivities({
-    int limit,
-    int offset,
-    Filter filter,
-    ActivityMarker marker,
+    int? limit,
+    int? offset,
+    Filter? filter,
+    ActivityMarker? marker,
   }) async {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
     final options = {
@@ -29,18 +29,18 @@ class AggregatedFeed extends Feed {
       ...marker?.params ?? Default.marker.params,
     };
     final result = await feed.getActivities(token, feedId, options);
-    final data = (result.data['results'] as List)
-        .map((e) => Group.fromJson(e, (json) => Activity.fromJson(json)))
+    final data = (result.data!['results'] as List)
+        .map((e) => Group.fromJson(e, (json) => Activity.fromJson(json as Map<String, dynamic>?)))
         .toList(growable: false);
     return data;
   }
 
   Future<List<Group<EnrichedActivity>>> getEnrichedActivities({
-    int limit,
-    int offset,
-    Filter filter,
-    ActivityMarker marker,
-    EnrichmentFlags flags,
+    int? limit,
+    int? offset,
+    Filter? filter,
+    ActivityMarker? marker,
+    EnrichmentFlags? flags,
   }) async {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
     final options = {
@@ -53,7 +53,7 @@ class AggregatedFeed extends Feed {
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
         .map(
-            (e) => Group.fromJson(e, (json) => EnrichedActivity.fromJson(json)))
+            (e) => Group.fromJson(e, (json) => EnrichedActivity.fromJson(json as Map<String, dynamic>?)))
         .toList(growable: false);
     return data;
   }

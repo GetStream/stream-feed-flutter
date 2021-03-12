@@ -6,7 +6,7 @@ enum ResizeType {
 }
 
 extension _ResizeX on ResizeType {
-  String get name => {
+  String? get name => {
         ResizeType.clip: 'clip',
         ResizeType.crop: 'crop',
         ResizeType.scale: 'scale',
@@ -31,7 +31,7 @@ class Resize {
   final ResizeType _type;
 
   ///
-  Map<String, Object> get params => <String, Object>{
+  Map<String, Object?> get params => <String, Object?>{
         'resize': _type.name,
         'w': _width,
         'h': _height,
