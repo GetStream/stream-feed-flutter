@@ -9,16 +9,14 @@ import 'package:mocktail/mocktail.dart';
 class MockHttpClient extends Mock implements HttpClient {}
 
 void main() {
-
   final mockClient = MockHttpClient();
-  final filesApi = FilesApiImpl(mockClient)
+  final filesApi = FilesApiImpl(mockClient);
 
   group('Files API', () {
     test('Upload', () async {
       const token = Token('dummyToken');
 
       final multipartFile = MultipartFile.fromString('file');
-
 
       when(() => mockClient.postFile<Map>(
                 Routes.filesUrl,
@@ -34,7 +32,6 @@ void main() {
             multipartFile,
             headers: {'Authorization': '$token'},
           )).called(1);
-
     });
 
     test('Delete', () async {
@@ -55,7 +52,6 @@ void main() {
             headers: {'Authorization': '$token'},
             queryParameters: {'url': targetUrl},
           )).called(1);
-
     });
   });
 }
