@@ -3,7 +3,7 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'dart:convert';
 import 'package:test/test.dart';
 import 'package:dio/dio.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/user.dart';
@@ -21,20 +21,21 @@ Future<void> main() async {
       const targetToken = Token('dummyToken2');
       const id = 'id';
       const withFollowCounts = true;
-      when(mockClient.get(
-        Routes.buildUsersUrl('$id/'),
-        headers: {'Authorization': '$token'},
-        queryParameters: {'with_follow_counts': withFollowCounts},
-      )).thenAnswer((_) async =>
-          Response(data: jsonFixture('user.json'), statusCode: 200));
+      when(() => mockClient.get(
+                Routes.buildUsersUrl('$id/'),
+                headers: {'Authorization': '$token'},
+                queryParameters: {'with_follow_counts': withFollowCounts},
+              ))
+          .thenAnswer((_) async =>
+              Response(data: jsonFixture('user.json'), statusCode: 200));
 
       await usersApi.get(token, id);
 
-      verify(mockClient.get(
-        Routes.buildUsersUrl('$id/'),
-        headers: {'Authorization': '$token'},
-        queryParameters: {'with_follow_counts': withFollowCounts},
-      )).called(1);
+      verify(() => mockClient.get(
+            Routes.buildUsersUrl('$id/'),
+            headers: {'Authorization': '$token'},
+            queryParameters: {'with_follow_counts': withFollowCounts},
+          )).called(1);
     });
     test('Add', () async {
       const token = Token('dummyToken');
@@ -48,22 +49,23 @@ Future<void> main() async {
       };
       final user = User(id: id, data: data);
       const getOrCreate = false;
-      when(mockClient.post<Map>(
-        Routes.buildUsersUrl(),
-        headers: {'Authorization': '$token'},
-        queryParameters: {'get_or_create': getOrCreate},
-        data: user,
-      )).thenAnswer((_) async =>
-          Response(data: jsonFixture('user.json'), statusCode: 200));
+      when(() => mockClient.post<Map>(
+                Routes.buildUsersUrl(),
+                headers: {'Authorization': '$token'},
+                queryParameters: {'get_or_create': getOrCreate},
+                data: user,
+              ))
+          .thenAnswer((_) async =>
+              Response(data: jsonFixture('user.json'), statusCode: 200));
 
       await usersApi.add(token, id, data);
 
-      verify(mockClient.post<Map>(
-        Routes.buildUsersUrl(),
-        headers: {'Authorization': '$token'},
-        queryParameters: {'get_or_create': getOrCreate},
-        data: user,
-      )).called(1);
+      verify(() => mockClient.post<Map>(
+            Routes.buildUsersUrl(),
+            headers: {'Authorization': '$token'},
+            queryParameters: {'get_or_create': getOrCreate},
+            data: user,
+          )).called(1);
     });
 
     test('Update', () async {
@@ -78,37 +80,38 @@ Future<void> main() async {
       };
       final updatedUser = User(id: id, data: data);
       const getOrCreate = false;
-      when(mockClient.put(
-        Routes.buildUsersUrl('$id/'),
-        headers: {'Authorization': '$token'},
-        data: updatedUser,
-      )).thenAnswer((_) async =>
-          Response(data: jsonFixture('user.json'), statusCode: 200));
+      when(() => mockClient.put(
+                Routes.buildUsersUrl('$id/'),
+                headers: {'Authorization': '$token'},
+                data: updatedUser,
+              ))
+          .thenAnswer((_) async =>
+              Response(data: jsonFixture('user.json'), statusCode: 200));
 
       await usersApi.update(token, id, data);
 
-      verify(mockClient.put(
-        Routes.buildUsersUrl('$id/'),
-        headers: {'Authorization': '$token'},
-        data: updatedUser,
-      )).called(1);
+      verify(() => mockClient.put(
+            Routes.buildUsersUrl('$id/'),
+            headers: {'Authorization': '$token'},
+            data: updatedUser,
+          )).called(1);
     });
 
     test('Delete', () async {
       const token = Token('dummyToken');
       const id = 'john-doe';
 
-      when(mockClient.delete(
-        Routes.buildUsersUrl('$id/'),
-        headers: {'Authorization': '$token'},
-      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+      when(() => mockClient.delete(
+            Routes.buildUsersUrl('$id/'),
+            headers: {'Authorization': '$token'},
+          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
 
       await usersApi.delete(token, id);
 
-      verify(mockClient.delete(
-        Routes.buildUsersUrl('$id/'),
-        headers: {'Authorization': '$token'},
-      )).called(1);
+      verify(() => mockClient.delete(
+            Routes.buildUsersUrl('$id/'),
+            headers: {'Authorization': '$token'},
+          )).called(1);
     });
   });
 }
