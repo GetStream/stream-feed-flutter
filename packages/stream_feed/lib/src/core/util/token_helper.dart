@@ -143,7 +143,6 @@ class TokenHelper {
     final claims = <String, Object>{
       'user_id': userId,
     };
-    // final claimSet = JwtClaim(otherClaims: claims, expiry: expiresAt);
 
     return Token(
         issueJwtHS256(secret: secret, expiresAt: expiresAt, claims: claims));
