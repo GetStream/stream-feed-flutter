@@ -32,7 +32,6 @@ class Serializer {
     Map<String, dynamic> intermediateMap,
     List<String> topLevelFields,
   ) {
-
     final clone = Map<String, dynamic>.from(intermediateMap);
     final Map<String, dynamic>? extraData = clone.remove('extra_data');
 
