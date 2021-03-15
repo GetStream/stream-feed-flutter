@@ -12,7 +12,6 @@ class StreamHttpClient implements HttpClient {
     required this.options,
     Dio? httpClient,
   }) {
-    options ??= const StreamClientOptions();
     _setupDio(httpClient, options);
   }
 
