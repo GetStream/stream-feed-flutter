@@ -28,7 +28,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             data: {
               'data': entry.data,
-              if (userId != null) 'user_id': userId,
+              'user_id': userId,
               if (entry.id != null) 'id': entry.id,
             },
           )).thenAnswer((_) async => Response(
@@ -46,7 +46,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             data: {
               'data': entry.data,
-              if (userId != null) 'user_id': userId,
+              'user_id': userId,
               if (entry.id != null) 'id': entry.id,
             },
           )).called(1);
@@ -172,7 +172,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             data: {
               'data': entry.data,
-              if (userId != null) 'user_id': userId,
+              'user_id': userId,
             },
           )).thenAnswer((_) async => Response(
           data: jsonFixture('collection_entry.json'),
@@ -189,7 +189,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             data: {
               'data': entry.data,
-              if (userId != null) 'user_id': userId,
+              'user_id': userId,
             },
           )).called(1);
     });

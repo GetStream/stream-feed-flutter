@@ -9,10 +9,7 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/cloud/feed/cloud_flat_feed.dart';
 
 class CloudFeed {
-  const CloudFeed(this.token, this.feedId, this.feed)
-      : assert(token != null, "Can't create Feed w/o a Secret"),
-        assert(feedId != null, "Can't create feed w/o an FeedId"),
-        assert(feed != null, "Can't create feed w/o a FeedApi");
+  const CloudFeed(this.token, this.feedId, this.feed);
 
   final Token token;
   final FeedId feedId;

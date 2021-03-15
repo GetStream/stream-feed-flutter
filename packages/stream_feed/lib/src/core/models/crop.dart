@@ -23,8 +23,7 @@ class Crop {
     this._width,
     this._height, {
     List<CropType> types = const [CropType.center],
-  })  : assert(types != null, 'Missing crop type'),
-        assert(_width > 0, 'Width should be a positive number'),
+  })  : assert(_width > 0, 'Width should be a positive number'),
         assert(_height > 0, 'Height should be a positive number'),
         _types = types;
 

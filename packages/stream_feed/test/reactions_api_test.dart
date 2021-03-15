@@ -32,7 +32,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             queryParameters: {
               'limit': limit.toString(),
-              if (filter != null) ...filter.params,
+              ...filter.params,
               'with_activity_data': lookupAttr == LookupAttribute.activityId,
             },
           )).thenAnswer((_) async => Response(
@@ -59,7 +59,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             queryParameters: {
               'limit': limit.toString(),
-              if (filter != null) ...filter.params,
+              ...filter.params,
               'with_activity_data': lookupAttr == LookupAttribute.activityId,
             },
           )).called(1);
@@ -163,7 +163,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             queryParameters: {
               'limit': limit.toString(),
-              if (filter != null) ...filter.params,
+              ...filter.params,
               'with_activity_data': lookupAttr == LookupAttribute.activityId,
             },
           )).thenAnswer((_) async => Response(
@@ -188,7 +188,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             queryParameters: {
               'limit': limit.toString(),
-              if (filter != null) ...filter.params,
+              ...filter.params,
               'with_activity_data': lookupAttr == LookupAttribute.activityId,
             },
           )).called(1);

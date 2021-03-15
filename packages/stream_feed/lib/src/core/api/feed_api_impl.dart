@@ -13,8 +13,7 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 class FeedApiImpl implements FeedApi {
   // TODO: uppercase API?
 
-  const FeedApiImpl(this.client)
-      : assert(client != null, "Can't create a FeedApi w/o Client");
+  const FeedApiImpl(this.client);
 
   final HttpClient client;
 

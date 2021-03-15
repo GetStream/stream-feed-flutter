@@ -80,7 +80,7 @@ class ReactionsApiImpl implements ReactionsApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'limit': limit.toString(),
-        if (filter != null) ...filter.params,
+        ...filter.params,
         'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
@@ -109,7 +109,7 @@ class ReactionsApiImpl implements ReactionsApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'limit': limit.toString(),
-        if (filter != null) ...filter.params,
+        ...filter.params,
         'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
@@ -143,8 +143,7 @@ class ReactionsApiImpl implements ReactionsApi {
       headers: {'Authorization': '$token'},
       data: {
         if (data != null && data.isNotEmpty) 'data': data,
-        if (targetFeedIds != null && targetFeedIds.isNotEmpty)
-          'target_feeds': targetFeedIds,
+        if (targetFeedIds.isNotEmpty) 'target_feeds': targetFeedIds,
       },
     );
   }

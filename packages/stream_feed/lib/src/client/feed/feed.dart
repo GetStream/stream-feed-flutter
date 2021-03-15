@@ -12,10 +12,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  const Feed(this.secret, this.feedId, this.feed)
-      : assert(secret != null, "Can't create Feed w/o a Secret"),
-        assert(feedId != null, "Can't create feed w/o an FeedId"),
-        assert(feed != null, "Can't create feed w/o a FeedApi");
+  const Feed(this.secret, this.feedId, this.feed);
 
   /// Your API secret
   final String secret;
