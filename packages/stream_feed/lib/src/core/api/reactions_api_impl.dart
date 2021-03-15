@@ -23,21 +23,21 @@ class ReactionsApiImpl implements ReactionsApi {
     checkArgument(reaction.activityId == null || reaction.parent == null,
         "Reaction can't have both activity ID and parent");
     if (reaction.activityId != null) {
-      checkArgument(reaction.activityId.isNotEmpty,
+      checkArgument(reaction.activityId!.isNotEmpty,
           "Reaction activity ID can't be empty");
     }
     if (reaction.parent != null) {
       checkArgument(
-          reaction.parent.isNotEmpty, "Reaction parent can't be empty");
+          reaction.parent!.isNotEmpty, "Reaction parent can't be empty");
     }
     checkNotNull(reaction.kind, "Reaction kind can't be null");
-    checkArgument(reaction.kind.isNotEmpty, "Reaction kind can't be empty");
+    checkArgument(reaction.kind!.isNotEmpty, "Reaction kind can't be empty");
     final result = await client.post<Map>(
       Routes.buildReactionsUrl(),
       headers: {'Authorization': '$token'},
       data: reaction,
     );
-    return Reaction.fromJson(result.data);
+    return Reaction.fromJson(result.data as Map<String, dynamic>);
   }
 
   @override
@@ -48,13 +48,13 @@ class ReactionsApiImpl implements ReactionsApi {
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
-    return Reaction.fromJson(result.data);
+    return Reaction.fromJson(result.data as Map<String, dynamic>);
   }
 
   @override
-  Future<Response> delete(Token token, String id) async {
+  Future<Response> delete(Token token, String? id) async {
     checkNotNull(id, "Reaction id can't be null");
-    checkArgument(id.isNotEmpty, "Reaction id can't be empty");
+    checkArgument(id!.isNotEmpty, "Reaction id can't be empty");
     return client.delete(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
@@ -80,11 +80,11 @@ class ReactionsApiImpl implements ReactionsApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'limit': limit.toString(),
-        if (filter != null) ...filter.params,
+        ...filter.params,
         'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
-    final data = (result.data['results'] as List)
+    final data = (result.data!['results'] as List)
         .map((e) => Reaction.fromJson(e))
         .toList(growable: false);
     return data;
@@ -109,7 +109,7 @@ class ReactionsApiImpl implements ReactionsApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'limit': limit.toString(),
-        if (filter != null) ...filter.params,
+        ...filter.params,
         'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
@@ -132,8 +132,8 @@ class ReactionsApiImpl implements ReactionsApi {
   Future<Response> update(Token token, Reaction updatedReaction) async {
     checkNotNull(updatedReaction, "Reaction can't be null");
     checkNotNull(updatedReaction.id, "Reaction id can't be null");
-    checkArgument(updatedReaction.id.isNotEmpty, "Reaction id can't be empty");
-    final targetFeedIds = updatedReaction.targetFeeds
+    checkArgument(updatedReaction.id!.isNotEmpty, "Reaction id can't be empty");
+    final targetFeedIds = updatedReaction.targetFeeds!
         .map((e) => e.toString())
         .toList(growable: false);
     final reactionId = updatedReaction.id;
@@ -143,8 +143,7 @@ class ReactionsApiImpl implements ReactionsApi {
       headers: {'Authorization': '$token'},
       data: {
         if (data != null && data.isNotEmpty) 'data': data,
-        if (targetFeedIds != null && targetFeedIds.isNotEmpty)
-          'target_feeds': targetFeedIds,
+        if (targetFeedIds.isNotEmpty) 'target_feeds': targetFeedIds,
       },
     );
   }

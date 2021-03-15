@@ -33,7 +33,12 @@ Future<void> main() async {
               'activity_copy_limit': activityCopyLimit,
               'target_token': '$targetToken',
             },
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildFeedUrl(sourceFeed, 'following'),
+          ),
+          statusCode: 200));
 
       await feedApi.follow(
           token, targetToken, sourceFeed, targetFeed, activityCopyLimit);
@@ -70,7 +75,12 @@ Future<void> main() async {
             Routes.buildFeedUrl(feed),
             headers: {'Authorization': '$token'},
             queryParameters: options,
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildFeedUrl(feed),
+          ),
+          statusCode: 200));
 
       await feedApi.getActivities(token, feed, options);
 
@@ -98,7 +108,12 @@ Future<void> main() async {
             Routes.buildEnrichedFeedUrl(feed),
             headers: {'Authorization': '$token'},
             queryParameters: options,
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildEnrichedFeedUrl(feed),
+          ),
+          statusCode: 200));
 
       await feedApi.getEnrichedActivities(token, feed, options);
 
@@ -127,11 +142,16 @@ Future<void> main() async {
               if (feedIds.isNotEmpty)
                 'filter': feedIds.map((it) => it.toString()).join(',')
             },
-          )).thenAnswer((_) async => Response(data: {
-            'results': [
-              {'feed_id': 'feedId', 'target_id': 'targetId'}
-            ]
-          }, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+              data: {
+                'results': [
+                  {'feed_id': 'feedId', 'target_id': 'targetId'}
+                ]
+              },
+              request: RequestOptions(
+                path: Routes.buildFeedUrl(feed, 'following'),
+              ),
+              statusCode: 200));
 
       await feedApi.getFollowed(token, feed, limit, offset, feedIds);
 
@@ -165,9 +185,14 @@ Future<void> main() async {
               if (feedIds.isNotEmpty)
                 'filter': feedIds.map((it) => it.toString()).join(',')
             },
-          )).thenAnswer((_) async => Response(data: {
-            'results': [jsonFixture('follow.json')]
-          }, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+              data: {
+                'results': [jsonFixture('follow.json')]
+              },
+              request: RequestOptions(
+                path: Routes.buildFeedUrl(feed, 'followers'),
+              ),
+              statusCode: 200));
 
       await feedApi.getFollowers(token, feed, limit, offset, feedIds);
 
@@ -193,7 +218,12 @@ Future<void> main() async {
             Routes.buildFeedUrl(feed, foreignId),
             headers: {'Authorization': '$token'},
             queryParameters: {'foreign_id': '1'},
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildFeedUrl(feed, foreignId),
+          ),
+          statusCode: 200));
 
       await feedApi.removeActivityByForeignId(token, feed, foreignId);
 
@@ -213,7 +243,12 @@ Future<void> main() async {
       when(() => mockClient.delete(
             Routes.buildFeedUrl(feed, id),
             headers: {'Authorization': '$token'},
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildFeedUrl(feed, id),
+          ),
+          statusCode: 200));
 
       await feedApi.removeActivityById(token, feed, id);
 
@@ -234,7 +269,12 @@ Future<void> main() async {
             Routes.buildFeedUrl(source, 'following/$target'),
             headers: {'Authorization': '$token'},
             queryParameters: {'keep_history': keepHistory},
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.buildFeedUrl(source, 'following/$target'),
+          ),
+          statusCode: 200));
 
       await feedApi.unfollow(token, source, target, keepHistory);
 
@@ -272,9 +312,14 @@ Future<void> main() async {
             Routes.activityUpdateUrl,
             headers: {'Authorization': '$token'},
             data: {'changes': updates},
-          )).thenAnswer((_) async => Response(data: {
-            'activities': [jsonFixture('activity.json')]
-          }, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+              data: {
+                'activities': [jsonFixture('activity.json')]
+              },
+              request: RequestOptions(
+                path: Routes.activityUpdateUrl,
+              ),
+              statusCode: 200));
 
       await feedApi.updateActivitiesByForeignId(token, updates);
 
@@ -312,9 +357,14 @@ Future<void> main() async {
             Routes.activityUpdateUrl,
             headers: {'Authorization': '$token'},
             data: {'changes': updates},
-          )).thenAnswer((_) async => Response(data: {
-            'activities': [jsonFixture('activity.json')]
-          }, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+              data: {
+                'activities': [jsonFixture('activity.json')],
+              },
+              request: RequestOptions(
+                path: Routes.activityUpdateUrl,
+              ),
+              statusCode: 200));
 
       await feedApi.updateActivitiesById(token, updates);
 
@@ -347,12 +397,15 @@ Future<void> main() async {
           time: DateTime.now());
 
       when(() => mockClient.post<Map>(
-                Routes.activityUpdateUrl,
-                headers: {'Authorization': '$token'},
-                data: update,
-              ))
-          .thenAnswer((_) async =>
-              Response(data: jsonFixture('activity.json'), statusCode: 200));
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: update,
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('activity.json'),
+          request: RequestOptions(
+            path: Routes.activityUpdateUrl,
+          ),
+          statusCode: 200));
 
       await feedApi.updateActivityByForeignId(token, update);
 
@@ -385,12 +438,15 @@ Future<void> main() async {
           time: DateTime.now());
 
       when(() => mockClient.post<Map>(
-                Routes.activityUpdateUrl,
-                headers: {'Authorization': '$token'},
-                data: update,
-              ))
-          .thenAnswer((_) async =>
-              Response(data: jsonFixture('activity.json'), statusCode: 200));
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: update,
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('activity.json'),
+          request: RequestOptions(
+            path: Routes.activityUpdateUrl,
+          ),
+          statusCode: 200));
 
       await feedApi.updateActivityById(token, update);
 
@@ -432,12 +488,17 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             data: {
               'foreign_id': update.foreignId,
-              'time': update.time.toIso8601String(),
+              'time': update.time!.toIso8601String(),
               'added_targets': add.map((it) => it.toString()).toList(),
               'removed_targets': remove.map((it) => it.toString()).toList(),
               'new_targets': []
             },
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.activityUpdateUrl,
+          ),
+          statusCode: 200));
 
       await feedApi.updateActivityToTargets(token, feed, update,
           add: add, remove: remove, replace: []);
@@ -447,7 +508,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
             data: {
               'foreign_id': update.foreignId,
-              'time': update.time.toIso8601String(),
+              'time': update.time!.toIso8601String(),
               'added_targets': add.map((it) => it.toString()).toList(),
               'removed_targets': remove.map((it) => it.toString()).toList(),
               'new_targets': [] //empty because you can't update

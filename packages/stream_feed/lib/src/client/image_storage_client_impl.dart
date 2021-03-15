@@ -12,7 +12,7 @@ class ImageStorageClientImpl implements ImageStorageClient {
   final ImagesApi images;
 
   @override
-  Future<String> upload(MultipartFile image) {
+  Future<String?> upload(MultipartFile image) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.write);
     return images.upload(token, image);
   }
@@ -24,19 +24,19 @@ class ImageStorageClientImpl implements ImageStorageClient {
   }
 
   @override
-  Future<String> get(String url) {
+  Future<String?> get(String url) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.read);
     return images.get(token, url);
   }
 
   @override
-  Future<String> getCropped(String url, Crop crop) {
+  Future<String?> getCropped(String url, Crop crop) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.read);
     return images.get(token, url, options: crop.params);
   }
 
   @override
-  Future<String> getResized(String url, Resize resize) {
+  Future<String?> getResized(String url, Resize resize) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.read);
     return images.get(token, url, options: resize.params);
   }

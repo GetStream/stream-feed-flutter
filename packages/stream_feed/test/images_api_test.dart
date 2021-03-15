@@ -19,12 +19,15 @@ void main() {
       final multipartFile = MultipartFile.fromString('file');
 
       when(() => mockClient.postFile<Map>(
-                Routes.imagesUrl,
-                multipartFile,
-                headers: {'Authorization': '$token'},
-              ))
-          .thenAnswer(
-              (_) async => Response(data: {'file': ''}, statusCode: 200));
+            Routes.imagesUrl,
+            multipartFile,
+            headers: {'Authorization': '$token'},
+          )).thenAnswer((_) async => Response(
+          data: {'file': ''},
+          request: RequestOptions(
+            path: Routes.imagesUrl,
+          ),
+          statusCode: 200));
 
       await imagesApi.upload(token, multipartFile);
       verify(() => mockClient.postFile<Map>(
@@ -42,7 +45,12 @@ void main() {
             Routes.imagesUrl,
             headers: {'Authorization': '$token'},
             queryParameters: {'url': targetUrl},
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.imagesUrl,
+          ),
+          statusCode: 200));
 
       await imagesApi.delete(token, targetUrl);
 
@@ -64,7 +72,12 @@ void main() {
               'url': targetUrl,
               // if (options != null) ...options,
             },
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+          )).thenAnswer((_) async => Response(
+          data: {},
+          request: RequestOptions(
+            path: Routes.imagesUrl,
+          ),
+          statusCode: 200));
 
       await imagesApi.get(token, targetUrl);
 

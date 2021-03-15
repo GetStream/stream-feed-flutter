@@ -26,40 +26,40 @@ class OpenGraphData extends Equatable {
       _$OpenGraphDataFromJson(json);
 
   ///
-  final String title;
+  final String? title;
 
   ///
-  final String type;
+  final String? type;
 
   ///
-  final String url;
+  final String? url;
 
   ///
-  final String site;
+  final String? site;
 
   ///
-  final String siteName;
+  final String? siteName;
 
   ///
-  final String description;
+  final String? description;
 
   ///
-  final String determiner;
+  final String? determiner;
 
   ///
-  final String locale;
+  final String? locale;
 
   ///
-  final List<Image> images;
+  final List<Image>? images;
 
   ///
-  final List<Video> videos;
+  final List<Video>? videos;
 
   ///
-  final List<Audio> audios;
+  final List<Audio>? audios;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         title,
         type,
         url,
@@ -95,28 +95,28 @@ class Image extends Equatable {
   factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
 
   ///
-  final String image;
+  final String? image;
 
   ///
-  final String url;
+  final String? url;
 
   ///
-  final String secureUrl;
+  final String? secureUrl;
 
   ///
-  final String width;
+  final String? width;
 
   ///
-  final String height;
+  final String? height;
 
   ///
-  final String type;
+  final String? type;
 
   ///
-  final String alt;
+  final String? alt;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         image,
         url,
         secureUrl,
@@ -148,28 +148,28 @@ class Video extends Equatable {
   factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
 
   ///
-  final String image;
+  final String? image;
 
   ///
-  final String url;
+  final String? url;
 
   ///
-  final String secureUrl;
+  final String? secureUrl;
 
   ///
-  final String width;
+  final String? width;
 
   ///
-  final String height;
+  final String? height;
 
   ///
-  final String type;
+  final String? type;
 
   ///
-  final String alt;
+  final String? alt;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         image,
         url,
         secureUrl,
@@ -199,19 +199,19 @@ class Audio extends Equatable {
   Map<String, dynamic> toJson() => _$AudioToJson(this);
 
   ///
-  final String audio;
+  final String? audio;
 
   ///
-  final String url;
+  final String? url;
 
   ///
-  final String secureUrl;
+  final String? secureUrl;
 
   ///
-  final String type;
+  final String? type;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         audio,
         url,
         secureUrl,

@@ -39,7 +39,7 @@ class BatchOperationsClientImpl implements BatchOperationsClient {
   @override
   Future<void> followMany(
     Iterable<Follow> follows, {
-    int activityCopyLimit,
+    int? activityCopyLimit,
   }) {
     final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
     return batch.followMany(
@@ -60,7 +60,7 @@ class BatchOperationsClientImpl implements BatchOperationsClient {
   Future<void> unfollowMany(
     Iterable<Follow> unfollows, {
     // TODO: seems to be Iterable<UnFollow> unfollows here
-    bool keepHistory = true,
+    required bool keepHistory,
   }) {
     final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
     return batch.unfollowMany(

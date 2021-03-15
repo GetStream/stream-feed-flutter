@@ -12,7 +12,7 @@ abstract class ReactionsApi {
 
   Future<Response> update(Token token, Reaction updatedReaction);
 
-  Future<Response> delete(Token token, String id);
+  Future<Response> delete(Token token, String? id);
 
   Future<List<Reaction>> filter(Token token, LookupAttribute lookupAttr,
       String lookupValue, Filter filter, int limit, String kind);

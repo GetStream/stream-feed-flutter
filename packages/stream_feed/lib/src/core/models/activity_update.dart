@@ -47,27 +47,27 @@ class ActivityUpdate extends Equatable {
 
   ///
   @JsonKey(includeIfNull: false)
-  final String id;
+  final String? id;
 
   ///
   @JsonKey(includeIfNull: false)
-  final String foreignId;
+  final String? foreignId;
 
   ///
   @JsonKey(includeIfNull: false)
-  final DateTime time;
+  final DateTime? time;
 
   ///
-  final Map<String, Object> set;
+  final Map<String, Object>? set;
 
   ///
-  final List<String> unset;
+  final List<String>? unset;
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$ActivityUpdateToJson(this);
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         foreignId,
         time,

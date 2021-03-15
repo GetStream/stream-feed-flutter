@@ -8,13 +8,13 @@ part of 'group.dart';
 
 Group<T> _$GroupFromJson<T>(
   Map json,
-  T Function(Object json) fromJsonT,
+  T Function(Object? json) fromJsonT,
 ) {
   return Group<T>(
-    id: json['id'] as String,
-    group: json['group'] as String,
-    activities: (json['activities'] as List)?.map(fromJsonT)?.toList(),
-    actorCount: json['actor_count'] as int,
+    id: json['id'] as String?,
+    group: json['group'] as String?,
+    activities: (json['activities'] as List<dynamic>?)?.map(fromJsonT).toList(),
+    actorCount: json['actor_count'] as int?,
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
@@ -31,7 +31,7 @@ Map<String, dynamic> _$GroupToJson<T>(
     <String, dynamic>{
       'id': instance.id,
       'group': instance.group,
-      'activities': instance.activities?.map(toJsonT)?.toList(),
+      'activities': instance.activities?.map(toJsonT).toList(),
       'actor_count': instance.actorCount,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
@@ -39,21 +39,21 @@ Map<String, dynamic> _$GroupToJson<T>(
 
 NotificationGroup<T> _$NotificationGroupFromJson<T>(
   Map json,
-  T Function(Object json) fromJsonT,
+  T Function(Object? json) fromJsonT,
 ) {
   return NotificationGroup<T>(
-    id: json['id'] as String,
-    group: json['group'] as String,
-    activities: (json['activities'] as List)?.map(fromJsonT)?.toList(),
-    actorCount: json['actor_count'] as int,
+    id: json['id'] as String?,
+    group: json['group'] as String?,
+    activities: (json['activities'] as List<dynamic>?)?.map(fromJsonT).toList(),
+    actorCount: json['actor_count'] as int?,
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
     updatedAt: json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String),
-    isRead: json['is_read'] as bool,
-    isSeen: json['is_seen'] as bool,
+    isRead: json['is_read'] as bool?,
+    isSeen: json['is_seen'] as bool?,
   );
 }
 
@@ -64,7 +64,7 @@ Map<String, dynamic> _$NotificationGroupToJson<T>(
     <String, dynamic>{
       'id': instance.id,
       'group': instance.group,
-      'activities': instance.activities?.map(toJsonT)?.toList(),
+      'activities': instance.activities?.map(toJsonT).toList(),
       'actor_count': instance.actorCount,
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),

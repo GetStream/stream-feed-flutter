@@ -8,7 +8,7 @@ enum _EnrichmentType {
 }
 
 extension _EnrichmentTypeX on _EnrichmentType {
-  String get type => {
+  String? get type => {
         _EnrichmentType.ownChildren: 'with_own_children',
         _EnrichmentType.ownReactions: 'with_own_reactions',
         _EnrichmentType.reactionCounts: 'with_reaction_counts',
@@ -19,12 +19,12 @@ extension _EnrichmentTypeX on _EnrichmentType {
 }
 
 class EnrichmentFlags {
-  String _userId;
+  String? _userId;
   final Map<_EnrichmentType, Object> _flags = {};
 
-  Map<String, Object> get params {
+  Map<String?, Object?> get params {
     final params = _flags.map((key, value) => MapEntry(key.type, value));
-    if (_userId != null) params['user_id'] = _userId;
+    if (_userId != null) params['user_id'] = _userId!;
     return params;
   }
 
@@ -44,7 +44,7 @@ class EnrichmentFlags {
     return this;
   }
 
-  EnrichmentFlags withRecentReactions([int limit]) {
+  EnrichmentFlags withRecentReactions([int? limit]) {
     if (limit == null) {
       _flags[_EnrichmentType.recentReactions] = true;
     } else {

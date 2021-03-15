@@ -8,8 +8,8 @@ part of 'follow.dart';
 
 Follow _$FollowFromJson(Map json) {
   return Follow(
-    json['feed_id'] as String,
-    json['target_id'] as String,
+    json['feed_id'] as String?,
+    json['target_id'] as String?,
   );
 }
 
@@ -20,9 +20,9 @@ Map<String, dynamic> _$FollowToJson(Follow instance) => <String, dynamic>{
 
 UnFollow _$UnFollowFromJson(Map json) {
   return UnFollow(
-    json['feed_id'] as String,
-    json['target_id'] as String,
-    json['keep_history'] as bool,
+    json['feed_id'] as String?,
+    json['target_id'] as String?,
+    json['keep_history'] as bool?,
   );
 }
 

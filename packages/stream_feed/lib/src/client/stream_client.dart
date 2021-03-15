@@ -15,9 +15,10 @@ abstract class StreamClient {
   factory StreamClient.connect(
     String apiKey,
     String secret, {
-    StreamClientOptions options,
+    StreamClientOptions? options,
   }) =>
-      StreamClientImpl(secret, apiKey, options: options);
+      StreamClientImpl(secret, apiKey,
+          options: options ?? StreamClientOptions());
 
   BatchOperationsClient get batch;
 
@@ -39,7 +40,7 @@ abstract class StreamClient {
 
   Token frontendToken(
     String userId, {
-    DateTime expiresAt,
+    DateTime? expiresAt,
   });
 
   Future<OpenGraphData> openGraph(String targetUrl);

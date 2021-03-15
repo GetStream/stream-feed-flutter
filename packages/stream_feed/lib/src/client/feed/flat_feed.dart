@@ -14,10 +14,10 @@ class FlatFeet extends Feed {
       : super(secret, id, feed);
 
   Future<List<Activity>> getActivities({
-    int limit,
-    int offset,
-    Filter filter,
-    String ranking,
+    int? limit,
+    int? offset,
+    Filter? filter,
+    String? ranking,
   }) async {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
     final options = {
@@ -28,18 +28,18 @@ class FlatFeet extends Feed {
       if (ranking != null) 'ranking': ranking,
     };
     final result = await feed.getActivities(token, feedId, options);
-    final data = (result.data['results'] as List)
+    final data = (result.data!['results'] as List)
         .map((e) => Activity.fromJson(e))
         .toList(growable: false);
     return data;
   }
 
   Future<List<EnrichedActivity>> getEnrichedActivities({
-    int limit,
-    int offset,
-    Filter filter,
-    EnrichmentFlags flags,
-    String ranking,
+    int? limit,
+    int? offset,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
   }) async {
     final token = TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
     final options = {

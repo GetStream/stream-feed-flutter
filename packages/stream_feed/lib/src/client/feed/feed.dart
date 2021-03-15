@@ -12,10 +12,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  const Feed(this.secret, this.feedId, this.feed)
-      : assert(secret != null, "Can't create Feed w/o a Secret"),
-        assert(feedId != null, "Can't create feed w/o an FeedId"),
-        assert(feed != null, "Can't create feed w/o a FeedApi");
+  const Feed(this.secret, this.feedId, this.feed);
 
   /// Your API secret
   final String secret;
@@ -126,7 +123,7 @@ class Feed {
   /// API docs: [following](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart)
   Future<void> follow(
     FlatFeet flatFeet, {
-    int activityCopyLimit,
+    int? activityCopyLimit,
   }) {
     //TODO: should return API response
     final token =
@@ -150,9 +147,9 @@ class Feed {
   ///
   /// API docs: [reading-feed-followers](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-feed-followers)
   Future<List<Follow>> getFollowers({
-    Iterable<FeedId> feedIds,
-    int limit,
-    int offset,
+    Iterable<FeedId>? feedIds,
+    int? limit,
+    int? offset,
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.read, feedId);
@@ -182,9 +179,9 @@ class Feed {
   ///
   /// API docs: [reading-followed-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-followed-feeds)
   Future<List<Follow>> getFollowed({
-    Iterable<FeedId> feedIds,
-    int limit,
-    int offset,
+    Iterable<FeedId>? feedIds,
+    int? limit,
+    int? offset,
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.read, feedId);
@@ -212,7 +209,7 @@ class Feed {
   /// API docs: [unfollowing-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#unfollowing-feeds)
   Future<void> unfollow(
     FlatFeet flatFeet, {
-    bool keepHistory,
+    bool? keepHistory,
   }) {
     final token =
         TokenHelper.buildFollowToken(secret, TokenAction.delete, feedId);

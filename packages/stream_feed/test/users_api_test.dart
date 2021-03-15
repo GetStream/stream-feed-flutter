@@ -20,12 +20,15 @@ Future<void> main() async {
       const id = 'id';
       const withFollowCounts = true;
       when(() => mockClient.get(
-                Routes.buildUsersUrl('$id/'),
-                headers: {'Authorization': '$token'},
-                queryParameters: {'with_follow_counts': withFollowCounts},
-              ))
-          .thenAnswer((_) async =>
-              Response(data: jsonFixture('user.json'), statusCode: 200));
+            Routes.buildUsersUrl('$id/'),
+            headers: {'Authorization': '$token'},
+            queryParameters: {'with_follow_counts': withFollowCounts},
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('user.json'),
+          request: RequestOptions(
+            path: Routes.buildUsersUrl('$id/'),
+          ),
+          statusCode: 200));
 
       await usersApi.get(token, id);
 
@@ -48,13 +51,16 @@ Future<void> main() async {
       const user = User(id: id, data: data);
       const getOrCreate = false;
       when(() => mockClient.post<Map>(
-                Routes.buildUsersUrl(),
-                headers: {'Authorization': '$token'},
-                queryParameters: {'get_or_create': getOrCreate},
-                data: user,
-              ))
-          .thenAnswer((_) async =>
-              Response(data: jsonFixture('user.json'), statusCode: 200));
+            Routes.buildUsersUrl(),
+            headers: {'Authorization': '$token'},
+            queryParameters: {'get_or_create': getOrCreate},
+            data: user,
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('user.json'),
+          request: RequestOptions(
+            path: Routes.buildUsersUrl(),
+          ),
+          statusCode: 200));
 
       await usersApi.add(token, id, data);
 
@@ -82,8 +88,10 @@ Future<void> main() async {
                 headers: {'Authorization': '$token'},
                 data: updatedUser,
               ))
-          .thenAnswer((_) async =>
-              Response(data: jsonFixture('user.json'), statusCode: 200));
+          .thenAnswer((_) async => Response(
+              data: jsonFixture('user.json'),
+              request: RequestOptions(path: Routes.buildUsersUrl('$id/')),
+              statusCode: 200));
 
       await usersApi.update(token, id, data);
 
@@ -99,9 +107,13 @@ Future<void> main() async {
       const id = 'john-doe';
 
       when(() => mockClient.delete(
-            Routes.buildUsersUrl('$id/'),
-            headers: {'Authorization': '$token'},
-          )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+                Routes.buildUsersUrl('$id/'),
+                headers: {'Authorization': '$token'},
+              ))
+          .thenAnswer((_) async => Response(
+              data: {},
+              request: RequestOptions(path: Routes.buildUsersUrl('$id/')),
+              statusCode: 200));
 
       await usersApi.delete(token, id);
 

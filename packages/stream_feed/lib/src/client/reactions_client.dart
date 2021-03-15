@@ -7,18 +7,18 @@ import 'package:stream_feed_dart/src/core/models/reaction.dart';
 abstract class ReactionsClient {
   Future<Reaction> add(
     String kind,
-    String activityId,
+    String? activityId,
     String userId, {
-    Map<String, Object> data,
-    Iterable<FeedId> targetFeeds,
+    Map<String, Object>? data,
+    Iterable<FeedId>? targetFeeds,
   });
 
   Future<Reaction> addChild(
     String kind,
-    String parentId,
+    String? parentId,
     String userId, {
-    Map<String, Object> data,
-    Iterable<FeedId> targetFeeds,
+    Map<String, Object>? data,
+    Iterable<FeedId>? targetFeeds,
   });
 
   Future<Reaction> get(String id);
@@ -26,24 +26,24 @@ abstract class ReactionsClient {
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-    Filter filter,
-    int limit,
-    String kind,
+    Filter? filter,
+    int? limit,
+    String? kind,
   });
 
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-    Filter filter,
-    int limit,
-    String kind,
+    Filter? filter,
+    int? limit,
+    String? kind,
   });
 
   Future<void> update(
-    String reactionId, {
-    Map<String, Object> data,
-    Iterable<FeedId> targetFeeds,
+    String? reactionId, {
+    Map<String, Object>? data,
+    Iterable<FeedId>? targetFeeds,
   });
 
-  Future<void> delete(String id);
+  Future<void> delete(String? id);
 }
