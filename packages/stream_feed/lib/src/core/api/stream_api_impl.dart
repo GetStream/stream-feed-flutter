@@ -27,7 +27,8 @@ class StreamApiImpl implements StreamApi {
     String apiKey, {
     StreamClientOptions? options,
     HttpClient? client,
-  }) : _client = client ?? StreamHttpClient(apiKey, options: options);
+  }) : _client = client ??
+            StreamHttpClient(apiKey, options: options ?? StreamClientOptions());
 
   final HttpClient _client;
 

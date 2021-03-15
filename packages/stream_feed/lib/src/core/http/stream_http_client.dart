@@ -9,11 +9,41 @@ import 'package:stream_feed_dart/src/core/http/http_client.dart';
 class StreamHttpClient implements HttpClient {
   StreamHttpClient(
     this.apiKey, {
-    Dio? client,
-    StreamClientOptions? options,
+    required this.options,
+    Dio? httpClient,
   }) {
-    options = const StreamClientOptions();
-    httpClient = client ?? Dio();
+    options ??= const StreamClientOptions();
+    _setupDio(httpClient, options);
+  }
+
+  /// Your project Stream Chat api key.
+  /// Find your API keys here https://getstream.io/dashboard/
+  final String apiKey;
+
+  /// Your project Stream Chat base url.
+  String get baseURL => options.baseUrl;
+
+  /// Your project Stream Feed clientOptions.
+  StreamClientOptions options;
+
+  Duration get receiveTimeout => options.receiveTimeout;
+
+  Duration get connectTimeout => options.connectTimeout;
+
+  String get userAgent => options.userAgent;
+
+  /// [Dio] httpClient
+  /// It's be chosen because it's easy to use
+  /// and supports interesting features out of the box
+  /// (Interceptors, Global configuration, FormData, File downloading etc.)
+  @visibleForTesting
+  late Dio httpClient;
+
+  void _setupDio(
+    Dio? httpClient,
+    StreamClientOptions options,
+  ) {
+    this.httpClient = httpClient ?? Dio();
 
     String url;
     if (!baseURL.startsWith('https') && !baseURL.startsWith('http')) {
@@ -21,7 +51,7 @@ class StreamHttpClient implements HttpClient {
     } else {
       url = baseURL;
     }
-    httpClient
+    this.httpClient
       ..options.baseUrl = url
       ..options.receiveTimeout = receiveTimeout.inMilliseconds
       ..options.connectTimeout = connectTimeout.inMilliseconds
@@ -37,58 +67,6 @@ class StreamHttpClient implements HttpClient {
         responseBody: true,
       ));
   }
-
-  /// Your project Stream Chat api key.
-  /// Find your API keys here https://getstream.io/dashboard/
-  final String apiKey;
-
-  /// Your project Stream Chat base url.
-  String get baseURL => options.baseUrl;
-
-  /// Your project Stream Feed clientOptions.
-  late StreamClientOptions options;
-
-  Duration get receiveTimeout => options.receiveTimeout;
-
-  Duration get connectTimeout => options.connectTimeout;
-
-  String get userAgent => options.userAgent;
-
-  /// [Dio] httpClient
-  /// It's be chosen because it's easy to use
-  /// and supports interesting features out of the box
-  /// (Interceptors, Global configuration, FormData, File downloading etc.)
-  @visibleForTesting
-  late Dio httpClient;
-
-  // void _setupDio(
-  //   Dio httpClient,
-  //   StreamClientOptions options,
-  // ) {
-  //   this.httpClient = httpClient ?? Dio();
-
-  //   String url;
-  //   if (!baseURL.startsWith('https') && !baseURL.startsWith('http')) {
-  //     url = Uri.https(baseURL, '').toString();
-  //   } else {
-  //     url = baseURL;
-  //   }
-  //   this.httpClient
-  //     ..options.baseUrl = url
-  //     ..options.receiveTimeout = receiveTimeout.inMilliseconds
-  //     ..options.connectTimeout = connectTimeout.inMilliseconds
-  //     ..options.queryParameters = {
-  //       'api_key': apiKey,
-  //     }
-  //     ..options.headers = {
-  //       'stream-auth-type': 'jwt',
-  //       'x-stream-client': userAgent,
-  //     }
-  //     ..interceptors.add(LogInterceptor(
-  //       requestBody: true,
-  //       responseBody: true,
-  //     ));
-  // }
 
   Exception _parseError(DioError error) {
     if (error.type == DioErrorType.response) {

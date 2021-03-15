@@ -17,7 +17,8 @@ abstract class StreamClient {
     String secret, {
     StreamClientOptions? options,
   }) =>
-      StreamClientImpl(secret, apiKey, options: options);
+      StreamClientImpl(secret, apiKey,
+          options: options ?? StreamClientOptions());
 
   BatchOperationsClient get batch;
 
