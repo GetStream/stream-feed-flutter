@@ -39,7 +39,7 @@ Future<void> main() async {
               data: {
                 'results': [jsonFixture('reaction.json')]
               },
-              request: RequestOptions(
+              requestOptions: RequestOptions(
                 path: Routes.buildReactionsUrl(
                     '${lookupAttr.attr}/$lookupValue/$kind'),
               ),
@@ -92,7 +92,7 @@ Future<void> main() async {
             data: reaction,
           )).thenAnswer((_) async => Response(
           data: jsonFixture('reaction.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildReactionsUrl(),
           ),
           statusCode: 200));
@@ -115,7 +115,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
           data: jsonFixture('reaction.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildReactionsUrl('$id/'),
           ),
           statusCode: 200));
@@ -136,7 +136,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildReactionsUrl('$id/'),
           ),
           statusCode: 200));
@@ -168,7 +168,7 @@ Future<void> main() async {
             },
           )).thenAnswer((_) async => Response(
           data: jsonFixture('paginated_reactions.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildReactionsUrl(
                 '${lookupAttr.attr}/$lookupValue/$kind'),
           ),
@@ -202,7 +202,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
           data: jsonFixture('paginated_reactions.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: next,
           ),
           statusCode: 200));
@@ -245,7 +245,7 @@ Future<void> main() async {
             },
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildReactionsUrl('$reactionId/'),
           ),
           statusCode: 200));

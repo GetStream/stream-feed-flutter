@@ -34,7 +34,7 @@ Future<void> main() async {
           )).thenAnswer((_) async => Response(
             data: jsonFixture('collection_entry.json'),
             statusCode: 200,
-            request: RequestOptions(
+            requestOptions: RequestOptions(
               path: Routes.buildCollectionsUrl(entry.collection),
             ),
           ));
@@ -61,7 +61,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildCollectionsUrl('$collection/$entryId/'),
           ),
           statusCode: 200));
@@ -88,7 +88,7 @@ Future<void> main() async {
             },
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildCollectionsUrl(),
           ),
           statusCode: 200));
@@ -114,7 +114,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
           data: jsonFixture('collection_entry.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildCollectionsUrl('$collection/$entryId/'),
           ),
           statusCode: 200));
@@ -144,7 +144,7 @@ Future<void> main() async {
                   'data': [jsonFixture('collection_entry.json')]
                 }
               },
-              request: RequestOptions(
+              requestOptions: RequestOptions(
                 path: Routes.buildCollectionsUrl(),
               ),
               statusCode: 200));
@@ -176,7 +176,7 @@ Future<void> main() async {
             },
           )).thenAnswer((_) async => Response(
           data: jsonFixture('collection_entry.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path:
                 Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
           ),
@@ -211,7 +211,7 @@ Future<void> main() async {
             },
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildCollectionsUrl(),
           ),
           statusCode: 200));

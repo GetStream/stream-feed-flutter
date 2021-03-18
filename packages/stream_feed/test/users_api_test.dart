@@ -25,7 +25,7 @@ Future<void> main() async {
             queryParameters: {'with_follow_counts': withFollowCounts},
           )).thenAnswer((_) async => Response(
           data: jsonFixture('user.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildUsersUrl('$id/'),
           ),
           statusCode: 200));
@@ -57,7 +57,7 @@ Future<void> main() async {
             data: user,
           )).thenAnswer((_) async => Response(
           data: jsonFixture('user.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildUsersUrl(),
           ),
           statusCode: 200));
@@ -90,7 +90,7 @@ Future<void> main() async {
               ))
           .thenAnswer((_) async => Response(
               data: jsonFixture('user.json'),
-              request: RequestOptions(path: Routes.buildUsersUrl('$id/')),
+              requestOptions: RequestOptions(path: Routes.buildUsersUrl('$id/')),
               statusCode: 200));
 
       await usersApi.update(token, id, data);
@@ -112,7 +112,7 @@ Future<void> main() async {
               ))
           .thenAnswer((_) async => Response(
               data: {},
-              request: RequestOptions(path: Routes.buildUsersUrl('$id/')),
+              requestOptions: RequestOptions(path: Routes.buildUsersUrl('$id/')),
               statusCode: 200));
 
       await usersApi.delete(token, id);

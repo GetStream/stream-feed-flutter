@@ -24,7 +24,7 @@ void main() {
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
           data: {'file': ''},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.imagesUrl,
           ),
           statusCode: 200));
@@ -47,7 +47,7 @@ void main() {
             queryParameters: {'url': targetUrl},
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.imagesUrl,
           ),
           statusCode: 200));
@@ -74,7 +74,7 @@ void main() {
             },
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.imagesUrl,
           ),
           statusCode: 200));

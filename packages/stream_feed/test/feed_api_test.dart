@@ -35,7 +35,7 @@ Future<void> main() async {
             },
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildFeedUrl(sourceFeed, 'following'),
           ),
           statusCode: 200));
@@ -77,7 +77,7 @@ Future<void> main() async {
             queryParameters: options,
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildFeedUrl(feed),
           ),
           statusCode: 200));
@@ -110,7 +110,7 @@ Future<void> main() async {
             queryParameters: options,
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildEnrichedFeedUrl(feed),
           ),
           statusCode: 200));
@@ -148,7 +148,7 @@ Future<void> main() async {
                   {'feed_id': 'feedId', 'target_id': 'targetId'}
                 ]
               },
-              request: RequestOptions(
+              requestOptions: RequestOptions(
                 path: Routes.buildFeedUrl(feed, 'following'),
               ),
               statusCode: 200));
@@ -189,7 +189,7 @@ Future<void> main() async {
               data: {
                 'results': [jsonFixture('follow.json')]
               },
-              request: RequestOptions(
+              requestOptions: RequestOptions(
                 path: Routes.buildFeedUrl(feed, 'followers'),
               ),
               statusCode: 200));
@@ -220,7 +220,7 @@ Future<void> main() async {
             queryParameters: {'foreign_id': '1'},
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildFeedUrl(feed, foreignId),
           ),
           statusCode: 200));
@@ -245,7 +245,7 @@ Future<void> main() async {
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildFeedUrl(feed, id),
           ),
           statusCode: 200));
@@ -271,7 +271,7 @@ Future<void> main() async {
             queryParameters: {'keep_history': keepHistory},
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.buildFeedUrl(source, 'following/$target'),
           ),
           statusCode: 200));
@@ -316,7 +316,7 @@ Future<void> main() async {
               data: {
                 'activities': [jsonFixture('activity.json')]
               },
-              request: RequestOptions(
+              requestOptions: RequestOptions(
                 path: Routes.activityUpdateUrl,
               ),
               statusCode: 200));
@@ -361,7 +361,7 @@ Future<void> main() async {
               data: {
                 'activities': [jsonFixture('activity.json')],
               },
-              request: RequestOptions(
+              requestOptions: RequestOptions(
                 path: Routes.activityUpdateUrl,
               ),
               statusCode: 200));
@@ -402,7 +402,7 @@ Future<void> main() async {
             data: update,
           )).thenAnswer((_) async => Response(
           data: jsonFixture('activity.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.activityUpdateUrl,
           ),
           statusCode: 200));
@@ -443,7 +443,7 @@ Future<void> main() async {
             data: update,
           )).thenAnswer((_) async => Response(
           data: jsonFixture('activity.json'),
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.activityUpdateUrl,
           ),
           statusCode: 200));
@@ -495,7 +495,7 @@ Future<void> main() async {
             },
           )).thenAnswer((_) async => Response(
           data: {},
-          request: RequestOptions(
+          requestOptions: RequestOptions(
             path: Routes.activityUpdateUrl,
           ),
           statusCode: 200));
