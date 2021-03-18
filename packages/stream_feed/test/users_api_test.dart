@@ -90,7 +90,8 @@ Future<void> main() async {
               ))
           .thenAnswer((_) async => Response(
               data: jsonFixture('user.json'),
-              requestOptions: RequestOptions(path: Routes.buildUsersUrl('$id/')),
+              requestOptions:
+                  RequestOptions(path: Routes.buildUsersUrl('$id/')),
               statusCode: 200));
 
       await usersApi.update(token, id, data);
@@ -112,7 +113,8 @@ Future<void> main() async {
               ))
           .thenAnswer((_) async => Response(
               data: {},
-              requestOptions: RequestOptions(path: Routes.buildUsersUrl('$id/')),
+              requestOptions:
+                  RequestOptions(path: Routes.buildUsersUrl('$id/')),
               statusCode: 200));
 
       await usersApi.delete(token, id);
