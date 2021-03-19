@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/core/api/reactions_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
@@ -16,7 +16,7 @@ class MockHttpClient extends Mock implements HttpClient {}
 Future<void> main() async {
   group('Reactions API', () {
     final mockClient = MockHttpClient();
-    final reactionsApi = ReactionsApiImpl(mockClient);
+    final reactionsApi = ReactionsApi(mockClient);
 
     test('Filter', () async {
       const token = Token('dummyToken');

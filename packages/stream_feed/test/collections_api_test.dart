@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/core/api/collections_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/collections_api.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
@@ -14,7 +14,7 @@ class MockHttpClient extends Mock implements HttpClient {}
 Future<void> main() async {
   group('Collections API', () {
     final mockClient = MockHttpClient();
-    final collectionsApi = CollectionsApiImpl(mockClient);
+    final collectionsApi = CollectionsApi(mockClient);
     test('Add', () async {
       const token = Token('dummyToken');
       const userId = 'userId';
