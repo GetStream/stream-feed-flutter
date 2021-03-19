@@ -12,12 +12,12 @@ abstract class BatchOperationsClient {
 
   Future<void> followMany(
     Iterable<Follow> follows, {
-    int activityCopyLimit,
+    int? activityCopyLimit,
   });
 
   Future<void> unfollowMany(
     Iterable<Follow> unfollows, {
-    bool keepHistory,
+    required bool keepHistory,
   });
 
   Future<Iterable<Activity>> getActivitiesById(Iterable<String> ids);

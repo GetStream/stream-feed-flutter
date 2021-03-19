@@ -13,11 +13,11 @@ class CollectionsApiImpl implements CollectionsApi {
 
   @override
   Future<CollectionEntry> add(
-      Token token, String userId, CollectionEntry entry) async {
+      Token token, String? userId, CollectionEntry entry) async {
     checkNotNull(entry, "Collection can't be null");
     checkNotNull(entry.collection, "Collection name can't be null");
     checkArgument(
-        entry.collection.isNotEmpty, "Collection name can't be empty");
+        entry.collection!.isNotEmpty, "Collection name can't be empty");
     checkNotNull(entry.data, "Collection data can't be null");
     final result = await client.post<Map>(
       Routes.buildCollectionsUrl(entry.collection),
@@ -28,7 +28,7 @@ class CollectionsApiImpl implements CollectionsApi {
         if (entry.id != null) 'id': entry.id,
       },
     );
-    return CollectionEntry.fromJson(result.data);
+    return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
   @override
@@ -72,7 +72,7 @@ class CollectionsApiImpl implements CollectionsApi {
       Routes.buildCollectionsUrl('$collection/$entryId/'),
       headers: {'Authorization': '$token'},
     );
-    return CollectionEntry.fromJson(result.data);
+    return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
   @override
@@ -89,7 +89,7 @@ class CollectionsApiImpl implements CollectionsApi {
         'foreign_ids': entryIds.map((id) => '$collection:$id').join(','),
       },
     );
-    final data = (result.data['response']['data'] as List)
+    final data = (result.data!['response']['data'] as List)
         .map((e) => CollectionEntry.fromJson(e))
         .toList(growable: false);
     return data;
@@ -97,11 +97,11 @@ class CollectionsApiImpl implements CollectionsApi {
 
   @override
   Future<CollectionEntry> update(
-      Token token, String userId, CollectionEntry entry) async {
+      Token token, String? userId, CollectionEntry entry) async {
     checkNotNull(entry, "Collection can't be null");
     checkNotNull(entry.collection, "Collection name can't be null");
     checkArgument(
-        entry.collection.isNotEmpty, "Collection name can't be empty");
+        entry.collection!.isNotEmpty, "Collection name can't be empty");
     checkNotNull(entry.data, "Collection data can't be null");
     final result = await client.put<Map>(
       Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
@@ -111,7 +111,7 @@ class CollectionsApiImpl implements CollectionsApi {
         if (userId != null) 'user_id': userId,
       },
     );
-    return CollectionEntry.fromJson(result.data);
+    return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
   @override

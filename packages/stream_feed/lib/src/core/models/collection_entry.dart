@@ -21,25 +21,25 @@ class CollectionEntry extends Equatable {
       _$CollectionEntryFromJson(json);
 
   ///
-  final String id;
+  final String? id;
 
   ///
-  final String collection;
+  final String? collection;
 
   ///
-  final String foreignId;
+  final String? foreignId;
 
   ///
-  final Map<String, Object> data;
+  final Map<String, Object>? data;
 
   ///
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   ///
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         collection,
         foreignId,
@@ -49,12 +49,12 @@ class CollectionEntry extends Equatable {
       ];
 
   CollectionEntry copyWith({
-    String id,
-    String collection,
-    String foreignId,
-    Map<String, Object> data,
-    DateTime createdAt,
-    DateTime updatedAt,
+    String? id,
+    String? collection,
+    String? foreignId,
+    Map<String, Object>? data,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) =>
       CollectionEntry(
         id: id ?? this.id,

@@ -52,10 +52,10 @@ class ReactionsClientImpl implements ReactionsClient {
   @override
   Future<Reaction> add(
     String kind,
-    String activityId,
+    String? activityId,
     String userId, {
-    Map<String, Object> data,
-    Iterable<FeedId> targetFeeds,
+    Map<String, Object>? data,
+    Iterable<FeedId>? targetFeeds,
   }) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.write);
     final reaction = Reaction(
@@ -63,7 +63,7 @@ class ReactionsClientImpl implements ReactionsClient {
       activityId: activityId,
       userId: userId,
       data: data,
-      targetFeeds: targetFeeds,
+      targetFeeds: targetFeeds as List<FeedId>?,
     );
     return reactions.add(token, reaction);
   }
@@ -83,10 +83,10 @@ class ReactionsClientImpl implements ReactionsClient {
   @override
   Future<Reaction> addChild(
     String kind,
-    String parentId,
+    String? parentId,
     String userId, {
-    Map<String, Object> data,
-    Iterable<FeedId> targetFeeds,
+    Map<String, Object>? data,
+    Iterable<FeedId>? targetFeeds,
   }) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.write);
     final reaction = Reaction(
@@ -94,7 +94,7 @@ class ReactionsClientImpl implements ReactionsClient {
       parent: parentId,
       userId: userId,
       data: data,
-      targetFeeds: targetFeeds,
+      targetFeeds: targetFeeds as List<FeedId>?,
     );
     return reactions.add(token, reaction);
   }
@@ -111,7 +111,7 @@ class ReactionsClientImpl implements ReactionsClient {
   ///
   /// API docs: [removing-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#removing-reactions)
   @override
-  Future<void> delete(String id) {
+  Future<void> delete(String? id) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.delete);
     return reactions.delete(token, id);
   }
@@ -126,15 +126,15 @@ class ReactionsClientImpl implements ReactionsClient {
 
   @override
   Future<void> update(
-    String reactionId, {
-    Map<String, Object> data,
-    Iterable<FeedId> targetFeeds,
+    String? reactionId, {
+    Map<String, Object>? data,
+    Iterable<FeedId>? targetFeeds,
   }) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.write);
     final reaction = Reaction(
       id: reactionId,
       data: data,
-      targetFeeds: targetFeeds,
+      targetFeeds: targetFeeds as List<FeedId>?,
     );
     return reactions.update(token, reaction);
   }
@@ -143,9 +143,9 @@ class ReactionsClientImpl implements ReactionsClient {
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-    Filter filter,
-    int limit,
-    String kind,
+    Filter? filter,
+    int? limit,
+    String? kind,
   }) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.read);
     return reactions.filter(token, lookupAttr, lookupValue,
@@ -156,9 +156,9 @@ class ReactionsClientImpl implements ReactionsClient {
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {
-    Filter filter,
-    int limit,
-    String kind,
+    Filter? filter,
+    int? limit,
+    String? kind,
   }) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.read);
     return reactions.paginatedFilter(token, lookupAttr, lookupValue,

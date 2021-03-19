@@ -21,29 +21,29 @@ class User extends Equatable {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   ///
-  final String id;
+  final String? id;
 
   ///
-  final Map<String, Object> data;
-
-  ///
-  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
-  final DateTime createdAt;
+  final Map<String, Object>? data;
 
   ///
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
-  final DateTime updatedAt;
+  final DateTime? createdAt;
 
   ///
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
-  final int followersCount;
+  final DateTime? updatedAt;
 
   ///
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
-  final int followingCount;
+  final int? followersCount;
+
+  ///
+  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
+  final int? followingCount;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         data,
         createdAt,

@@ -13,13 +13,13 @@ class Follow extends Equatable {
   factory Follow.fromJson(Map<String, dynamic> json) => _$FollowFromJson(json);
 
   ///
-  final String feedId;
+  final String? feedId;
 
   ///
-  final String targetId;
+  final String? targetId;
 
   @override
-  List<Object> get props => [feedId, targetId];
+  List<Object?> get props => [feedId, targetId];
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$FollowToJson(this);
@@ -29,7 +29,7 @@ class Follow extends Equatable {
 @JsonSerializable()
 class UnFollow extends Follow {
   ///
-  const UnFollow(String feedId, String targetId, this.keepHistory)
+  const UnFollow(String? feedId, String? targetId, this.keepHistory)
       : super(feedId, targetId);
 
   /// Create a new instance from a json
@@ -37,14 +37,14 @@ class UnFollow extends Follow {
       _$UnFollowFromJson(json);
 
   ///
-  factory UnFollow.fromFollow(Follow follow, bool keepHistory) =>
+  factory UnFollow.fromFollow(Follow follow, bool? keepHistory) =>
       UnFollow(follow.feedId, follow.targetId, keepHistory);
 
   ///
-  final bool keepHistory;
+  final bool? keepHistory;
 
   @override
-  List<Object> get props => [...super.props, keepHistory];
+  List<Object?> get props => [...super.props, keepHistory];
 
   /// Serialize to json
   @override

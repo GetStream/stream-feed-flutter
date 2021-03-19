@@ -18,10 +18,10 @@ abstract class FeedApi {
       Token token, ActivityUpdate update);
 
   Future<Response<Map>> getActivities(
-      Token token, FeedId feed, Map<String, Object> options);
+      Token token, FeedId feed, Map<String?, Object> options);
 
   Future<Response> getEnrichedActivities(
-      Token token, FeedId feed, Map<String, Object> options);
+      Token token, FeedId feed, Map<String?, Object?> options);
 
   Future<Activity> addActivity(Token token, FeedId feed, Activity activity);
 
@@ -49,8 +49,8 @@ abstract class FeedApi {
     Token token,
     FeedId feed,
     ActivityUpdate update, {
-    Iterable<FeedId> add,
-    Iterable<FeedId> remove,
-    Iterable<FeedId> replace,
+    Iterable<FeedId>? add,
+    Iterable<FeedId>? remove,
+    Iterable<FeedId>? replace,
   });
 }

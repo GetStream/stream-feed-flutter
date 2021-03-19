@@ -10,19 +10,19 @@ class CloudImageStorageClientImpl implements CloudImageStorageClient {
   final ImagesApi images;
 
   @override
-  Future<String> upload(MultipartFile image) => images.upload(token, image);
+  Future<String?> upload(MultipartFile image) => images.upload(token, image);
 
   @override
   Future<void> delete(String url) => images.delete(token, url);
 
   @override
-  Future<String> get(String url) => images.get(token, url);
+  Future<String?> get(String url) => images.get(token, url);
 
   @override
-  Future<String> getCropped(String url, Crop crop) =>
+  Future<String?> getCropped(String url, Crop crop) =>
       images.get(token, url, options: crop.params);
 
   @override
-  Future<String> getResized(String url, Resize resize) =>
+  Future<String?> getResized(String url, Resize resize) =>
       images.get(token, url, options: resize.params);
 }

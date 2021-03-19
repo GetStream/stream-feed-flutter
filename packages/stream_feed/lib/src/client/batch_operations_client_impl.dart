@@ -39,7 +39,7 @@ class BatchOperationsClientImpl implements BatchOperationsClient {
   @override
   Future<void> followMany(
     Iterable<Follow> follows, {
-    int activityCopyLimit,
+    int? activityCopyLimit,
   }) {
     final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
     return batch.followMany(
@@ -53,14 +53,14 @@ class BatchOperationsClientImpl implements BatchOperationsClient {
   /// It takes in parameter:
   ///
   ///  [unfollows]: The follow relations to remove
-  /// 
+  ///
   /// API docs : [batch-unfollow](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-unfollow)
   ///
   @override
   Future<void> unfollowMany(
     Iterable<Follow> unfollows, {
     // TODO: seems to be Iterable<UnFollow> unfollows here
-    bool keepHistory = true,
+    required bool keepHistory,
   }) {
     final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
     return batch.unfollowMany(

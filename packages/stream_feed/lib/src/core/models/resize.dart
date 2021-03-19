@@ -6,7 +6,7 @@ enum ResizeType {
 }
 
 extension _ResizeX on ResizeType {
-  String get name => {
+  String? get name => {
         ResizeType.clip: 'clip',
         ResizeType.crop: 'crop',
         ResizeType.scale: 'scale',
@@ -21,8 +21,7 @@ class Resize {
     this._width,
     this._height, {
     ResizeType type = ResizeType.clip,
-  })  : assert(type != null, 'Missing resize type'),
-        assert(_width > 0, 'Width should be a positive number'),
+  })  : assert(_width > 0, 'Width should be a positive number'),
         assert(_height > 0, 'Height should be a positive number'),
         _type = type;
 
@@ -31,7 +30,7 @@ class Resize {
   final ResizeType _type;
 
   ///
-  Map<String, Object> get params => <String, Object>{
+  Map<String, Object?> get params => <String, Object?>{
         'resize': _type.name,
         'w': _width,
         'h': _height,

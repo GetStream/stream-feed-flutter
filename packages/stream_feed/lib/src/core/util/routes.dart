@@ -26,7 +26,7 @@ class Routes {
   static String get enrichedActivitiesUrl =>
       '$_basePath/$_enrichActivitiesPath';
 
-  static String buildCollectionsUrl([String path = '']) =>
+  static String buildCollectionsUrl([String? path = '']) =>
       '$_basePath/$_collectionsPath/$path';
 
   static String buildReactionsUrl([String path = '']) =>

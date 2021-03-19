@@ -13,8 +13,7 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 class FeedApiImpl implements FeedApi {
   // TODO: uppercase API?
 
-  const FeedApiImpl(this.client)
-      : assert(client != null, "Can't create a FeedApi w/o Client");
+  const FeedApiImpl(this.client);
 
   final HttpClient client;
 
@@ -28,7 +27,7 @@ class FeedApiImpl implements FeedApi {
       headers: {'Authorization': '$token'},
       data: {'activities': activities},
     );
-    final data = (result.data['activities'] as List)
+    final data = (result.data!['activities'] as List)
         .map((e) => Activity.fromJson(e))
         .toList(growable: false);
     return data;
@@ -43,7 +42,7 @@ class FeedApiImpl implements FeedApi {
       headers: {'Authorization': '$token'},
       data: activity,
     );
-    final data = Activity.fromJson(result.data);
+    final data = Activity.fromJson(result.data as Map<String, dynamic>?);
     return data;
   }
 
@@ -71,7 +70,7 @@ class FeedApiImpl implements FeedApi {
 
   @override
   Future<Response<Map>> getActivities(
-      Token token, FeedId feed, Map<String, Object> options) {
+      Token token, FeedId feed, Map<String?, Object> options) {
     checkNotNull(options, 'Missing request options');
     return client.get<Map>(
       Routes.buildFeedUrl(feed),
@@ -82,7 +81,7 @@ class FeedApiImpl implements FeedApi {
 
   @override
   Future<Response> getEnrichedActivities(
-      Token token, FeedId feed, Map<String, Object> options) {
+      Token token, FeedId feed, Map<String?, Object?> options) {
     checkNotNull(options, 'Missing request options');
     return client.get(
       Routes.buildEnrichedFeedUrl(feed),
@@ -107,7 +106,7 @@ class FeedApiImpl implements FeedApi {
           'filter': feedIds.map((it) => it.toString()).join(',')
       },
     );
-    final data = (result.data['results'] as List)
+    final data = (result.data!['results'] as List)
         .map((e) => Follow.fromJson(e))
         .toList(growable: false);
     return data;
@@ -183,7 +182,7 @@ class FeedApiImpl implements FeedApi {
       headers: {'Authorization': '$token'},
       data: {'changes': updates},
     );
-    final data = (result.data['activities'] as List)
+    final data = (result.data!['activities'] as List)
         .map((e) => Activity.fromJson(e))
         .toList(growable: false);
     return data;
@@ -205,7 +204,7 @@ class FeedApiImpl implements FeedApi {
       headers: {'Authorization': '$token'},
       data: {'changes': updates},
     );
-    final data = (result.data['activities'] as List)
+    final data = (result.data!['activities'] as List)
         .map((e) => Activity.fromJson(e))
         .toList(growable: false);
     return data;
@@ -224,7 +223,7 @@ class FeedApiImpl implements FeedApi {
       headers: {'Authorization': '$token'},
       data: update,
     );
-    final data = Activity.fromJson(result.data);
+    final data = Activity.fromJson(result.data as Map<String, dynamic>?);
     return data;
   }
 
@@ -240,7 +239,7 @@ class FeedApiImpl implements FeedApi {
       headers: {'Authorization': '$token'},
       data: update,
     );
-    final data = Activity.fromJson(result.data);
+    final data = Activity.fromJson(result.data as Map<String, dynamic>?);
     return data;
   }
 
@@ -249,9 +248,9 @@ class FeedApiImpl implements FeedApi {
     Token token,
     FeedId feed,
     ActivityUpdate update, {
-    Iterable<FeedId> add = const [],
-    Iterable<FeedId> remove = const [],
-    Iterable<FeedId> replace = const [],
+    Iterable<FeedId>? add = const [],
+    Iterable<FeedId>? remove = const [],
+    Iterable<FeedId>? replace = const [],
   }) async {
     checkNotNull(update, 'No activity to update');
     checkNotNull(
@@ -261,8 +260,8 @@ class FeedApiImpl implements FeedApi {
     checkNotNull(remove, 'No targets to remove');
     checkNotNull(replace, 'No targets to set');
     final modification =
-        replace.isEmpty && (add.isNotEmpty || remove.isNotEmpty);
-    final replacement = replace.isNotEmpty && add.isEmpty && remove.isEmpty;
+        replace!.isEmpty && (add!.isNotEmpty || remove!.isNotEmpty);
+    final replacement = replace.isNotEmpty && add!.isEmpty && remove!.isEmpty;
     checkArgument(modification || replacement,
         "Can't replace and modify activity to targets at the same time");
 
@@ -271,9 +270,9 @@ class FeedApiImpl implements FeedApi {
       headers: {'Authorization': '$token'},
       data: {
         'foreign_id': update.foreignId,
-        'time': update.time.toIso8601String(),
-        'added_targets': add.map((it) => it.toString()).toList(),
-        'removed_targets': remove.map((it) => it.toString()).toList(),
+        'time': update.time!.toIso8601String(),
+        'added_targets': add!.map((it) => it.toString()).toList(),
+        'removed_targets': remove!.map((it) => it.toString()).toList(),
         'new_targets': replace.map((it) => it.toString()).toList(),
       },
     );
