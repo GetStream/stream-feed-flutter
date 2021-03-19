@@ -17,7 +17,7 @@ class FeedApi {
 
   final HttpClient client;
 
-  @override
+  
   Future<List<Activity>> addActivities(
       Token token, FeedId feed, Iterable<Activity> activities) async {
     checkNotNull(activities, 'No activities to add');
@@ -33,7 +33,7 @@ class FeedApi {
     return data;
   }
 
-  @override
+  
   Future<Activity> addActivity(
       Token token, FeedId feed, Activity activity) async {
     checkNotNull(activity, 'No activity to add');
@@ -46,7 +46,7 @@ class FeedApi {
     return data;
   }
 
-  @override
+  
   Future<Response> follow(Token token, Token targetToken, FeedId sourceFeed,
       FeedId targetFeed, int activityCopyLimit) {
     checkNotNull(targetFeed, 'No feed to follow');
@@ -68,7 +68,7 @@ class FeedApi {
     );
   }
 
-  @override
+  
   Future<Response<Map>> getActivities(
       Token token, FeedId feed, Map<String?, Object> options) {
     checkNotNull(options, 'Missing request options');
@@ -79,7 +79,7 @@ class FeedApi {
     );
   }
 
-  @override
+  
   Future<Response> getEnrichedActivities(
       Token token, FeedId feed, Map<String?, Object?> options) {
     checkNotNull(options, 'Missing request options');
@@ -90,7 +90,7 @@ class FeedApi {
     );
   }
 
-  @override
+  
   Future<List<Follow>> getFollowed(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
@@ -112,7 +112,7 @@ class FeedApi {
     return data;
   }
 
-  @override
+  
   Future<List<Follow>> getFollowers(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
@@ -134,7 +134,7 @@ class FeedApi {
     return data;
   }
 
-  @override
+  
   Future<Response> removeActivityByForeignId(
       Token token, FeedId feed, String foreignId) {
     checkNotNull(foreignId, 'No activity id to remove');
@@ -145,7 +145,7 @@ class FeedApi {
     );
   }
 
-  @override
+  
   Future<Response> removeActivityById(Token token, FeedId feed, String id) {
     checkNotNull(id, 'No activity id to remove');
     return client.delete(
@@ -154,7 +154,7 @@ class FeedApi {
     );
   }
 
-  @override
+  
   Future<Response> unfollow(
       Token token, FeedId source, FeedId target, bool keepHistory) {
     checkNotNull(target, 'No target feed to unfollow');
@@ -165,7 +165,7 @@ class FeedApi {
     );
   }
 
-  @override
+  
   Future<List<Activity>> updateActivitiesByForeignId(
       Token token, Iterable<ActivityUpdate> updates) async {
     checkNotNull(updates, 'No updates');
@@ -188,7 +188,7 @@ class FeedApi {
     return data;
   }
 
-  @override
+  
   Future<List<Activity>> updateActivitiesById(
       Token token, Iterable<ActivityUpdate> updates) async {
     checkNotNull(updates, 'No updates');
@@ -210,7 +210,7 @@ class FeedApi {
     return data;
   }
 
-  @override
+  
   Future<Activity> updateActivityByForeignId(
       Token token, ActivityUpdate update) async {
     checkNotNull(update, 'No activity to update');
@@ -227,7 +227,7 @@ class FeedApi {
     return data;
   }
 
-  @override
+  
   Future<Activity> updateActivityById(
       Token token, ActivityUpdate update) async {
     checkNotNull(update, 'No activity to update');
@@ -243,7 +243,7 @@ class FeedApi {
     return data;
   }
 
-  @override
+  
   Future<Response> updateActivityToTargets(
     Token token,
     FeedId feed,

@@ -19,7 +19,6 @@ class BatchOperationsClient {
   /// - [feedIds] : an Iterable of feed ids [FeedId]
   ///
   /// API docs: [batch-activity-add](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-activity-add)
-  @override
   Future<void> addToMany(Activity activity, Iterable<FeedId> feedIds) {
     //TODO: why is this void vs Future<APIResponse> compared to js client
     final token = TokenHelper.buildFeedToken(secret, TokenAction.write);
@@ -35,7 +34,6 @@ class BatchOperationsClient {
   ///
   /// API docs: [add_many_activities](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-follow)
   ///
-  @override
   Future<void> followMany(
     Iterable<Follow> follows, {
     int? activityCopyLimit,
@@ -55,7 +53,6 @@ class BatchOperationsClient {
   ///
   /// API docs : [batch-unfollow](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-unfollow)
   ///
-  @override
   Future<void> unfollowMany(
     Iterable<Follow> unfollows, {
     // TODO: seems to be Iterable<UnFollow> unfollows here
@@ -68,38 +65,37 @@ class BatchOperationsClient {
     );
   }
 
-  @override
   Future<Iterable<Activity>> getActivitiesById(Iterable<String> ids) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getActivitiesById(token, ids);
   }
 
-  @override
+  
   Future<Iterable<EnrichedActivity>> getEnrichedActivitiesById(
       Iterable<String> ids) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getEnrichedActivitiesById(token, ids);
   }
 
-  @override
+  
   Future<Iterable<Activity>> getActivitiesByForeignId(
       Iterable<ForeignIdTimePair> pairs) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getActivitiesByForeignId(token, pairs);
   }
 
-  @override
+  
   Future<Iterable<EnrichedActivity>> getEnrichedActivitiesByForeignId(
       Iterable<ForeignIdTimePair> pairs) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getEnrichedActivitiesByForeignId(token, pairs);
   }
 
-  @override
+  
   Future<void> updateActivity(Activity activity) =>
       updateActivities([activity]);
 
-  @override
+  
   Future<void> updateActivities(Iterable<Activity> activities) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return batch.updateActivities(token, activities);

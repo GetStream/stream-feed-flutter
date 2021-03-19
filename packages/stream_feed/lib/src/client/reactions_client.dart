@@ -35,8 +35,6 @@ class ReactionsClient {
   ///```
   ///
   ///API docs:
-
-  @override
   Future<Reaction> add(
     String kind,
     String? activityId,
@@ -67,7 +65,6 @@ class ReactionsClient {
   ///```
   ///
   /// API docs: [reactions_add_child](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_add_child/?language=dart)
-  @override
   Future<Reaction> addChild(
     String kind,
     String? parentId,
@@ -97,20 +94,17 @@ class ReactionsClient {
   /// ```
   ///
   /// API docs: [removing-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#removing-reactions)
-  @override
   Future<void> delete(String? id) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.delete);
     return reactions.delete(token, id);
   }
 
   /// get reaction
-  @override
   Future<Reaction> get(String id) {
     final token = TokenHelper.buildReactionToken(secret, TokenAction.read);
     return reactions.get(token, id);
   }
 
-  @override
   Future<void> update(
     String? reactionId, {
     Map<String, Object>? data,
@@ -125,7 +119,7 @@ class ReactionsClient {
     return reactions.update(token, reaction);
   }
 
-  @override
+  
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -138,7 +132,7 @@ class ReactionsClient {
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
 
-  @override
+
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {

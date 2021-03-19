@@ -9,31 +9,31 @@ class ImageStorageClient {
   final String secret;
   final ImagesApi images;
 
-  @override
+  
   Future<String?> upload(MultipartFile image) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.write);
     return images.upload(token, image);
   }
 
-  @override
+  
   Future<void> delete(String url) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.delete);
     return images.delete(token, url);
   }
 
-  @override
+  
   Future<String?> get(String url) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.read);
     return images.get(token, url);
   }
 
-  @override
+  
   Future<String?> getCropped(String url, Crop crop) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.read);
     return images.get(token, url, options: crop.params);
   }
 
-  @override
+
   Future<String?> getResized(String url, Resize resize) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.read);
     return images.get(token, url, options: resize.params);

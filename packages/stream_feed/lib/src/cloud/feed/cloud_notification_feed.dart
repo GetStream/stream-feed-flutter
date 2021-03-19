@@ -15,7 +15,7 @@ class CloudNotificationFeed extends CloudAggregatedFeed {
   const CloudNotificationFeed(Token token, FeedId feedId, FeedApi feed)
       : super(token, feedId, feed);
 
-  @override
+  
   Future<List<NotificationGroup<Activity>>> getActivities({
     int? limit,
     int? offset,
@@ -36,7 +36,6 @@ class CloudNotificationFeed extends CloudAggregatedFeed {
     return data;
   }
 
-  @override
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
     int? offset,

@@ -9,7 +9,7 @@ class CollectionsClient {
   final String secret;
   final CollectionsApi collections;
 
-  @override
+  
   Future<CollectionEntry> add(
     String collection,
     Map<String, Object> data, {
@@ -25,32 +25,32 @@ class CollectionsClient {
     return collections.add(token, userId, entry);
   }
 
-  @override
+  
   Future<void> delete(String collection, String entryId) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
     return collections.delete(token, collection, entryId);
   }
 
-  @override
+  
   Future<void> deleteMany(String collection, Iterable<String> ids) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
     return collections.deleteMany(token, collection, ids);
   }
 
-  @override
+  
   Future<CollectionEntry> get(String collection, String entryId) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.read);
     return collections.get(token, collection, entryId);
   }
 
-  @override
+  
   Future<List<CollectionEntry>> select(
       String collection, Iterable<String> ids) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.read);
     return collections.select(token, collection, ids);
   }
 
-  @override
+  
   Future<CollectionEntry> update(
     String? collection,
     String? entryId,
@@ -66,7 +66,7 @@ class CollectionsClient {
     return collections.update(token, userId, entry);
   }
 
-  @override
+  
   Future<void> upsert(String collection, Iterable<CollectionEntry> entries) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
     return collections.upsert(token, collection, entries);

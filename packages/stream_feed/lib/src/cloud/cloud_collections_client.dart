@@ -7,7 +7,7 @@ class CloudCollectionsClient {
   final Token token;
   final CollectionsApi collections;
 
-  @override
+  
   Future<CollectionEntry> add(
     String collection,
     Map<String, Object> data, {
@@ -22,15 +22,15 @@ class CloudCollectionsClient {
     return collections.add(token, userId, entry);
   }
 
-  @override
+  
   Future<void> delete(String collection, String entryId) =>
       collections.delete(token, collection, entryId);
 
-  @override
+  
   Future<CollectionEntry> get(String collection, String entryId) =>
       collections.get(token, collection, entryId);
 
-  @override
+  
   Future<CollectionEntry> update(
     String collection,
     String entryId,

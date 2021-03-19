@@ -8,7 +8,7 @@ class UsersClient {
   final String secret;
   final UsersApi users;
 
-  @override
+  
   Future<User> add(
     String id,
     Map<String, Object> data, {
@@ -18,13 +18,13 @@ class UsersClient {
     return users.add(token, id, data, getOrCreate ?? false);
   }
 
-  @override
+  
   Future<void> delete(String id) {
     final token = TokenHelper.buildUsersToken(secret, TokenAction.delete);
     return users.delete(token, id);
   }
 
-  @override
+  
   Future<User> get(
     String id, {
     bool? withFollowCounts,
@@ -33,7 +33,7 @@ class UsersClient {
     return users.get(token, id, withFollowCounts ?? true);
   }
 
-  @override
+  
   Future<User> update(String id, Map<String, Object> data) {
     final token = TokenHelper.buildUsersToken(secret, TokenAction.write);
     return users.update(token, id, data);

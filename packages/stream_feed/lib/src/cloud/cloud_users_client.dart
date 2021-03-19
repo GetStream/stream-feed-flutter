@@ -8,7 +8,7 @@ class CloudUsersClient {
   final Token token;
   final UsersApi users;
 
-  @override
+  
   Future<User> add(
     String id,
     Map<String, Object> data, {
@@ -16,17 +16,17 @@ class CloudUsersClient {
   }) =>
       users.add(token, id, data, getOrCreate ?? false);
 
-  @override
+  
   Future<void> delete(String id) => users.delete(token, id);
 
-  @override
+  
   Future<User> get(
     String id, {
     bool? withFollowCounts,
   }) =>
       users.get(token, id, withFollowCounts ?? true);
 
-  @override
+  
   Future<User> update(String id, Map<String, Object> data) =>
       users.update(token, id, data);
 }

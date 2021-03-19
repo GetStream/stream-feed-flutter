@@ -7,9 +7,9 @@ class CloudFileStorageClient {
   final Token token;
   final FilesApi files;
 
-  @override
+  
   Future<String?> upload(MultipartFile file) => files.upload(token, file);
 
-  @override
+  
   Future<void> delete(String url) => files.delete(token, url);
 }

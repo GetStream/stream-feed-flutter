@@ -10,7 +10,7 @@ class CollectionsApi {
 
   final HttpClient client;
 
-  @override
+
   Future<CollectionEntry> add(
       Token token, String? userId, CollectionEntry entry) async {
     checkNotNull(entry, "Collection can't be null");
@@ -30,7 +30,7 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
-  @override
+  
   Future<Response> delete(
       Token token, String collection, String entryId) async {
     checkNotNull(collection, "Collection name can't be null");
@@ -43,7 +43,7 @@ class CollectionsApi {
     );
   }
 
-  @override
+
   Future<Response> deleteMany(
       Token token, String collection, Iterable<String> entryIds) async {
     checkNotNull(collection, "Collection name can't be null");
@@ -60,7 +60,7 @@ class CollectionsApi {
     );
   }
 
-  @override
+  
   Future<CollectionEntry> get(
       Token token, String collection, String entryId) async {
     checkNotNull(collection, "Collection name can't be null");
@@ -74,7 +74,7 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
-  @override
+  
   Future<List<CollectionEntry>> select(
       Token token, String collection, Iterable<String> entryIds) async {
     checkNotNull(collection, "Collection name can't be null");
@@ -94,7 +94,7 @@ class CollectionsApi {
     return data;
   }
 
-  @override
+  
   Future<CollectionEntry> update(
       Token token, String? userId, CollectionEntry entry) async {
     checkNotNull(entry, "Collection can't be null");
@@ -113,7 +113,7 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
-  @override
+  
   Future<Response> upsert(
       Token token, String collection, Iterable<CollectionEntry> entries) async {
     checkNotNull(collection, "Collection name can't be null");

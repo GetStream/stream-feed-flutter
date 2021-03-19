@@ -16,7 +16,7 @@ class BatchApi {
 
   final HttpClient client;
 
-  @override
+  
   Future<Response> addToMany(
       Token token, Activity activity, Iterable<FeedId> feedIds) async {
     checkNotNull(activity, 'Missing activity');
@@ -32,7 +32,7 @@ class BatchApi {
     );
   }
 
-  @override
+  
   Future<Response> followMany(
       Token token, int activityCopyLimit, Iterable<Follow> follows) async {
     checkArgument(
@@ -47,7 +47,7 @@ class BatchApi {
     );
   }
 
-  @override
+  
   Future<Response> unfollowMany(
       Token token, Iterable<UnFollow> unfollows) async {
     checkNotNull(unfollows, 'No feeds to unfollow');
@@ -59,7 +59,7 @@ class BatchApi {
     );
   }
 
-  @override
+  
   Future<List<Activity>> getActivitiesById(
       Token token, Iterable<String> ids) async {
     checkNotNull(ids, 'No activities to get');
@@ -75,7 +75,7 @@ class BatchApi {
     return data;
   }
 
-  @override
+  
   Future<List<Activity>> getActivitiesByForeignId(
       Token token, Iterable<ForeignIdTimePair> pairs) async {
     checkNotNull(pairs, 'No activities to get');
@@ -95,7 +95,7 @@ class BatchApi {
     return data;
   }
 
-  @override
+  
   Future<List<EnrichedActivity>> getEnrichedActivitiesById(
       Token token, Iterable<String> ids) async {
     checkNotNull(ids, 'No activities to get');
@@ -111,7 +111,7 @@ class BatchApi {
     return data;
   }
 
-  @override
+  
   Future<List<EnrichedActivity>> getEnrichedActivitiesByForeignId(
       Token token, Iterable<ForeignIdTimePair> pairs) async {
     checkNotNull(pairs, 'No activities to get');
@@ -131,7 +131,7 @@ class BatchApi {
     return data;
   }
 
-  @override
+  
   Future<Response> updateActivities(
       Token token, Iterable<Activity> activities) async {
     checkNotNull(activities, 'No activities to update');

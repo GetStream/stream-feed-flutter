@@ -9,7 +9,7 @@ class ImagesApi {
 
   final HttpClient client;
 
-  @override
+  
   Future<String?> upload(Token token, MultipartFile image) async {
     checkNotNull(image, 'No image to upload');
     final result = await client.postFile<Map>(
@@ -20,7 +20,7 @@ class ImagesApi {
     return result.data!['file'];
   }
 
-  @override
+  
   Future<Response> delete(Token token, String targetUrl) {
     checkNotNull(targetUrl, 'No image to delete');
     return client.delete(
@@ -30,7 +30,7 @@ class ImagesApi {
     );
   }
 
-  @override
+  
   Future<String?> get(
     Token token,
     String targetUrl, {

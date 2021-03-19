@@ -7,13 +7,13 @@ class FileStorageClient {
   final String secret;
   final FilesApi files;
 
-  @override
+  
   Future<String?> upload(MultipartFile file) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.write);
     return files.upload(token, file);
   }
 
-  @override
+  
   Future<void> delete(String url) {
     final token = TokenHelper.buildFilesToken(secret, TokenAction.delete);
     return files.delete(token, url);

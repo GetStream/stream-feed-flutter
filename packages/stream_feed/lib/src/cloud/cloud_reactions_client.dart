@@ -8,7 +8,7 @@ class CloudReactionsClient {
   final Token token;
   final ReactionsApi reactions;
 
-  @override
+  
   Future<Reaction> add(
     String kind,
     String activityId,
@@ -26,7 +26,7 @@ class CloudReactionsClient {
     return reactions.add(token, reaction);
   }
 
-  @override
+  
   Future<Reaction> addChild(
     String kind,
     String parentId,
@@ -44,13 +44,13 @@ class CloudReactionsClient {
     return reactions.add(token, reaction);
   }
 
-  @override
+  
   Future<void> delete(String id) => reactions.delete(token, id);
 
-  @override
+  
   Future<Reaction> get(String id) => reactions.get(token, id);
 
-  @override
+  
   Future<void> update(
     String reactionId, {
     Map<String, Object>? data,
@@ -64,7 +64,7 @@ class CloudReactionsClient {
     return reactions.update(token, reaction);
   }
 
-  @override
+  
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
