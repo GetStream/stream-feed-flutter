@@ -9,10 +9,9 @@ import 'package:stream_feed_dart/src/core/http/http_client.dart';
 class StreamHttpClient implements HttpClient {
   StreamHttpClient(
     this.apiKey, {
-    this.options,
-    Dio httpClient,
+    required this.options,
+    Dio? httpClient,
   }) {
-    options ??= const StreamClientOptions();
     _setupDio(httpClient, options);
   }
 
@@ -37,10 +36,10 @@ class StreamHttpClient implements HttpClient {
   /// and supports interesting features out of the box
   /// (Interceptors, Global configuration, FormData, File downloading etc.)
   @visibleForTesting
-  Dio httpClient;
+  late Dio httpClient;
 
   void _setupDio(
-    Dio httpClient,
+    Dio? httpClient,
     StreamClientOptions options,
   ) {
     this.httpClient = httpClient ?? Dio();
@@ -69,7 +68,7 @@ class StreamHttpClient implements HttpClient {
   }
 
   Exception _parseError(DioError error) {
-    if (error.type == DioErrorType.RESPONSE) {
+    if (error.type == DioErrorType.response) {
       final apiError = StreamApiException(
           error.response?.data?.toString(), error.response?.statusCode);
       return apiError;
@@ -81,8 +80,8 @@ class StreamHttpClient implements HttpClient {
   @override
   Future<Response<T>> get<T>(
     String path, {
-    Map<String, dynamic> queryParameters,
-    Map<String, dynamic> headers,
+    Map<String?, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await httpClient.get<T>(
@@ -100,9 +99,9 @@ class StreamHttpClient implements HttpClient {
   @override
   Future<Response<T>> post<T>(
     String path, {
-    Map<String, dynamic> queryParameters,
+    Map<String, dynamic>? queryParameters,
     dynamic data,
-    Map<String, dynamic> headers,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await httpClient.post<T>(
@@ -121,8 +120,8 @@ class StreamHttpClient implements HttpClient {
   @override
   Future<Response<T>> delete<T>(
     String path, {
-    Map<String, dynamic> queryParameters,
-    Map<String, dynamic> headers,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await httpClient.delete<T>(
@@ -140,9 +139,9 @@ class StreamHttpClient implements HttpClient {
   @override
   Future<Response<T>> patch<T>(
     String path, {
-    Map<String, dynamic> queryParameters,
+    Map<String, dynamic>? queryParameters,
     dynamic data,
-    Map<String, dynamic> headers,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await httpClient.patch<T>(
@@ -161,9 +160,9 @@ class StreamHttpClient implements HttpClient {
   @override
   Future<Response<T>> put<T>(
     String path, {
-    Map<String, dynamic> queryParameters,
+    Map<String, dynamic>? queryParameters,
     dynamic data,
-    Map<String, dynamic> headers,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await httpClient.put<T>(
@@ -183,8 +182,8 @@ class StreamHttpClient implements HttpClient {
   Future<Response<T>> postFile<T>(
     String path,
     MultipartFile file, {
-    Map<String, dynamic> queryParameters,
-    Map<String, dynamic> headers,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       final formData = FormData.fromMap({'file': file});

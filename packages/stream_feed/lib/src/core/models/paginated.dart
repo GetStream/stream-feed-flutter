@@ -12,16 +12,16 @@ class _Paginated<T> extends Equatable {
   const _Paginated(this.next, this.results, this.duration);
 
   ///
-  final String next;
+  final String? next;
 
   ///
-  final List<T> results;
+  final List<T>? results;
 
   ///
-  final String duration;
+  final String? duration;
 
   @override
-  List<Object> get props => [next, results, duration];
+  List<Object?> get props => [next, results, duration];
 }
 
 ///
@@ -29,7 +29,7 @@ class _Paginated<T> extends Equatable {
 class PaginatedReactions extends _Paginated<Reaction> {
   ///
   const PaginatedReactions(
-      String next, List<Reaction> results, this.activity, String duration)
+      String? next, List<Reaction>? results, this.activity, String? duration)
       : super(next, results, duration);
 
   ///
@@ -37,10 +37,10 @@ class PaginatedReactions extends _Paginated<Reaction> {
       _$PaginatedReactionsFromJson(json);
 
   @override
-  List<Object> get props => [...super.props, activity];
+  List<Object?> get props => [...super.props, activity];
 
   ///
-  final EnrichedActivity activity;
+  final EnrichedActivity? activity;
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$PaginatedReactionsToJson(this);

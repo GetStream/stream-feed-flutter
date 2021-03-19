@@ -9,10 +9,7 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/cloud/feed/cloud_flat_feed.dart';
 
 class CloudFeed {
-  const CloudFeed(this.token, this.feedId, this.feed)
-      : assert(token != null, "Can't create Feed w/o a Secret"),
-        assert(feedId != null, "Can't create feed w/o an FeedId"),
-        assert(feed != null, "Can't create feed w/o a FeedApi");
+  const CloudFeed(this.token, this.feedId, this.feed);
 
   final Token token;
   final FeedId feedId;
@@ -32,30 +29,30 @@ class CloudFeed {
 
   Future<void> follow(
     CloudFlatFeed flatFeet, {
-    int activityCopyLimit,
+    int? activityCopyLimit,
   }) =>
       feed.follow(token, token, feedId, flatFeet.feedId,
           activityCopyLimit ?? Default.activityCopyLimit);
 
   Future<List<Follow>> getFollowers(
     Iterable<FeedId> feedIds, {
-    int limit,
-    int offset,
+    int? limit,
+    int? offset,
   }) =>
       feed.getFollowers(token, feedId, limit ?? Default.limit,
           offset ?? Default.offset, feedIds);
 
   Future<List<Follow>> getFollowed(
     Iterable<FeedId> feedIds, {
-    int limit,
-    int offset,
+    int? limit,
+    int? offset,
   }) =>
       feed.getFollowed(token, feedId, limit ?? Default.limit,
           offset ?? Default.offset, feedIds);
 
   Future<void> unfollow(
     CloudFlatFeed flatFeet, {
-    bool keepHistory,
+    bool? keepHistory,
   }) =>
       feed.unfollow(token, feedId, flatFeet.feedId, keepHistory ?? false);
 

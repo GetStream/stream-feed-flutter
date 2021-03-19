@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
@@ -25,28 +25,33 @@ Future<void> main() async {
       final sourceFeed = FeedId('global', 'feed1');
       final targetFeed = FeedId('global', 'feed2');
       const activityCopyLimit = 10;
-      when(mockClient.post(
-        Routes.buildFeedUrl(sourceFeed, 'following'),
-        headers: {'Authorization': '$token'},
-        data: {
-          'target': '$targetFeed',
-          'activity_copy_limit': activityCopyLimit,
-          'target_token': '$targetToken',
-        },
-      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+      when(() => mockClient.post(
+            Routes.buildFeedUrl(sourceFeed, 'following'),
+            headers: {'Authorization': '$token'},
+            data: {
+              'target': '$targetFeed',
+              'activity_copy_limit': activityCopyLimit,
+              'target_token': '$targetToken',
+            },
+          )).thenAnswer((_) async => Response(
+          data: {},
+          requestOptions: RequestOptions(
+            path: Routes.buildFeedUrl(sourceFeed, 'following'),
+          ),
+          statusCode: 200));
 
       await feedApi.follow(
           token, targetToken, sourceFeed, targetFeed, activityCopyLimit);
 
-      verify(mockClient.post(
-        Routes.buildFeedUrl(sourceFeed, 'following'),
-        headers: {'Authorization': '$token'},
-        data: {
-          'target': '$targetFeed',
-          'activity_copy_limit': activityCopyLimit,
-          'target_token': '$targetToken',
-        },
-      )).called(1);
+      verify(() => mockClient.post(
+            Routes.buildFeedUrl(sourceFeed, 'following'),
+            headers: {'Authorization': '$token'},
+            data: {
+              'target': '$targetFeed',
+              'activity_copy_limit': activityCopyLimit,
+              'target_token': '$targetToken',
+            },
+          )).called(1);
     });
 
     test('GetActivities', () async {
@@ -66,19 +71,24 @@ Future<void> main() async {
         'ranking': ranking,
       };
 
-      when(mockClient.get<Map>(
-        Routes.buildFeedUrl(feed),
-        headers: {'Authorization': '$token'},
-        queryParameters: options,
-      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+      when(() => mockClient.get<Map>(
+            Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            queryParameters: options,
+          )).thenAnswer((_) async => Response(
+          data: {},
+          requestOptions: RequestOptions(
+            path: Routes.buildFeedUrl(feed),
+          ),
+          statusCode: 200));
 
       await feedApi.getActivities(token, feed, options);
 
-      verify(mockClient.get<Map>(
-        Routes.buildFeedUrl(feed),
-        headers: {'Authorization': '$token'},
-        queryParameters: options,
-      )).called(1);
+      verify(() => mockClient.get<Map>(
+            Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            queryParameters: options,
+          )).called(1);
     });
 
     test('GetEnrichedActivities', () async {
@@ -94,19 +104,24 @@ Future<void> main() async {
         ...Default.marker.params
       };
 
-      when(mockClient.get(
-        Routes.buildEnrichedFeedUrl(feed),
-        headers: {'Authorization': '$token'},
-        queryParameters: options,
-      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+      when(() => mockClient.get(
+            Routes.buildEnrichedFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            queryParameters: options,
+          )).thenAnswer((_) async => Response(
+          data: {},
+          requestOptions: RequestOptions(
+            path: Routes.buildEnrichedFeedUrl(feed),
+          ),
+          statusCode: 200));
 
       await feedApi.getEnrichedActivities(token, feed, options);
 
-      verify(mockClient.get(
-        Routes.buildEnrichedFeedUrl(feed),
-        headers: {'Authorization': '$token'},
-        queryParameters: options,
-      )).called(1);
+      verify(() => mockClient.get(
+            Routes.buildEnrichedFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            queryParameters: options,
+          )).called(1);
     });
 
     test('GetFollowed', () async {
@@ -118,33 +133,38 @@ Future<void> main() async {
       const offset = 5;
       const limit = 10;
 
-      when(mockClient.get<Map>(
-        Routes.buildFeedUrl(feed, 'following'),
-        headers: {'Authorization': '$token'},
-        queryParameters: {
-          'limit': limit,
-          'offset': offset,
-          if (feedIds.isNotEmpty)
-            'filter': feedIds.map((it) => it.toString()).join(',')
-        },
-      )).thenAnswer((_) async => Response(data: {
-            'results': [
-              {'feed_id': 'feedId', 'target_id': 'targetId'}
-            ]
-          }, statusCode: 200));
+      when(() => mockClient.get<Map>(
+            Routes.buildFeedUrl(feed, 'following'),
+            headers: {'Authorization': '$token'},
+            queryParameters: {
+              'limit': limit,
+              'offset': offset,
+              if (feedIds.isNotEmpty)
+                'filter': feedIds.map((it) => it.toString()).join(',')
+            },
+          )).thenAnswer((_) async => Response(
+              data: {
+                'results': [
+                  {'feed_id': 'feedId', 'target_id': 'targetId'}
+                ]
+              },
+              requestOptions: RequestOptions(
+                path: Routes.buildFeedUrl(feed, 'following'),
+              ),
+              statusCode: 200));
 
       await feedApi.getFollowed(token, feed, limit, offset, feedIds);
 
-      verify(mockClient.get<Map>(
-        Routes.buildFeedUrl(feed, 'following'),
-        headers: {'Authorization': '$token'},
-        queryParameters: {
-          'limit': limit,
-          'offset': offset,
-          if (feedIds.isNotEmpty)
-            'filter': feedIds.map((it) => it.toString()).join(',')
-        },
-      )).called(1);
+      verify(() => mockClient.get<Map>(
+            Routes.buildFeedUrl(feed, 'following'),
+            headers: {'Authorization': '$token'},
+            queryParameters: {
+              'limit': limit,
+              'offset': offset,
+              if (feedIds.isNotEmpty)
+                'filter': feedIds.map((it) => it.toString()).join(',')
+            },
+          )).called(1);
     });
 
     test('GetFollowers', () async {
@@ -156,31 +176,36 @@ Future<void> main() async {
       const offset = 5;
       const limit = 10;
 
-      when(mockClient.get<Map>(
-        Routes.buildFeedUrl(feed, 'followers'),
-        headers: {'Authorization': '$token'},
-        queryParameters: {
-          'limit': limit,
-          'offset': offset,
-          if (feedIds.isNotEmpty)
-            'filter': feedIds.map((it) => it.toString()).join(',')
-        },
-      )).thenAnswer((_) async => Response(data: {
-            'results': [jsonFixture('follow.json')]
-          }, statusCode: 200));
+      when(() => mockClient.get<Map>(
+            Routes.buildFeedUrl(feed, 'followers'),
+            headers: {'Authorization': '$token'},
+            queryParameters: {
+              'limit': limit,
+              'offset': offset,
+              if (feedIds.isNotEmpty)
+                'filter': feedIds.map((it) => it.toString()).join(',')
+            },
+          )).thenAnswer((_) async => Response(
+              data: {
+                'results': [jsonFixture('follow.json')]
+              },
+              requestOptions: RequestOptions(
+                path: Routes.buildFeedUrl(feed, 'followers'),
+              ),
+              statusCode: 200));
 
       await feedApi.getFollowers(token, feed, limit, offset, feedIds);
 
-      verify(mockClient.get<Map>(
-        Routes.buildFeedUrl(feed, 'followers'),
-        headers: {'Authorization': '$token'},
-        queryParameters: {
-          'limit': limit,
-          'offset': offset,
-          if (feedIds.isNotEmpty)
-            'filter': feedIds.map((it) => it.toString()).join(',')
-        },
-      )).called(1);
+      verify(() => mockClient.get<Map>(
+            Routes.buildFeedUrl(feed, 'followers'),
+            headers: {'Authorization': '$token'},
+            queryParameters: {
+              'limit': limit,
+              'offset': offset,
+              if (feedIds.isNotEmpty)
+                'filter': feedIds.map((it) => it.toString()).join(',')
+            },
+          )).called(1);
     });
 
     test('RemoveActivityByForeignId', () async {
@@ -189,19 +214,24 @@ Future<void> main() async {
       final feed = FeedId('global', 'feed1');
 
       const foreignId = 'foreignId';
-      when(mockClient.delete(
-        Routes.buildFeedUrl(feed, foreignId),
-        headers: {'Authorization': '$token'},
-        queryParameters: {'foreign_id': '1'},
-      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+      when(() => mockClient.delete(
+            Routes.buildFeedUrl(feed, foreignId),
+            headers: {'Authorization': '$token'},
+            queryParameters: {'foreign_id': '1'},
+          )).thenAnswer((_) async => Response(
+          data: {},
+          requestOptions: RequestOptions(
+            path: Routes.buildFeedUrl(feed, foreignId),
+          ),
+          statusCode: 200));
 
       await feedApi.removeActivityByForeignId(token, feed, foreignId);
 
-      verify(mockClient.delete(
-        Routes.buildFeedUrl(feed, foreignId),
-        headers: {'Authorization': '$token'},
-        queryParameters: {'foreign_id': '1'},
-      )).called(1);
+      verify(() => mockClient.delete(
+            Routes.buildFeedUrl(feed, foreignId),
+            headers: {'Authorization': '$token'},
+            queryParameters: {'foreign_id': '1'},
+          )).called(1);
     });
 
     test('RemoveActivityById', () async {
@@ -210,17 +240,22 @@ Future<void> main() async {
       final feed = FeedId('global', 'feed1');
 
       const id = 'id';
-      when(mockClient.delete(
-        Routes.buildFeedUrl(feed, id),
-        headers: {'Authorization': '$token'},
-      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+      when(() => mockClient.delete(
+            Routes.buildFeedUrl(feed, id),
+            headers: {'Authorization': '$token'},
+          )).thenAnswer((_) async => Response(
+          data: {},
+          requestOptions: RequestOptions(
+            path: Routes.buildFeedUrl(feed, id),
+          ),
+          statusCode: 200));
 
       await feedApi.removeActivityById(token, feed, id);
 
-      verify(mockClient.delete(
-        Routes.buildFeedUrl(feed, id),
-        headers: {'Authorization': '$token'},
-      )).called(1);
+      verify(() => mockClient.delete(
+            Routes.buildFeedUrl(feed, id),
+            headers: {'Authorization': '$token'},
+          )).called(1);
     });
 
     test('UnFollow', () async {
@@ -230,19 +265,24 @@ Future<void> main() async {
       final target = FeedId('global', 'feed2');
       const keepHistory = true;
 
-      when(mockClient.delete(
-        Routes.buildFeedUrl(source, 'following/$target'),
-        headers: {'Authorization': '$token'},
-        queryParameters: {'keep_history': keepHistory},
-      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+      when(() => mockClient.delete(
+            Routes.buildFeedUrl(source, 'following/$target'),
+            headers: {'Authorization': '$token'},
+            queryParameters: {'keep_history': keepHistory},
+          )).thenAnswer((_) async => Response(
+          data: {},
+          requestOptions: RequestOptions(
+            path: Routes.buildFeedUrl(source, 'following/$target'),
+          ),
+          statusCode: 200));
 
       await feedApi.unfollow(token, source, target, keepHistory);
 
-      verify(mockClient.delete(
-        Routes.buildFeedUrl(source, 'following/$target'),
-        headers: {'Authorization': '$token'},
-        queryParameters: {'keep_history': keepHistory},
-      )).called(1);
+      verify(() => mockClient.delete(
+            Routes.buildFeedUrl(source, 'following/$target'),
+            headers: {'Authorization': '$token'},
+            queryParameters: {'keep_history': keepHistory},
+          )).called(1);
     });
 
     test('UpdateActivitiesByForeignId', () async {
@@ -268,21 +308,26 @@ Future<void> main() async {
             time: DateTime.now())
       ];
 
-      when(mockClient.post<Map>(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: {'changes': updates},
-      )).thenAnswer((_) async => Response(data: {
-            'activities': [jsonFixture('activity.json')]
-          }, statusCode: 200));
+      when(() => mockClient.post<Map>(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: {'changes': updates},
+          )).thenAnswer((_) async => Response(
+              data: {
+                'activities': [jsonFixture('activity.json')]
+              },
+              requestOptions: RequestOptions(
+                path: Routes.activityUpdateUrl,
+              ),
+              statusCode: 200));
 
       await feedApi.updateActivitiesByForeignId(token, updates);
 
-      verify(mockClient.post<Map>(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: {'changes': updates},
-      )).called(1);
+      verify(() => mockClient.post<Map>(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: {'changes': updates},
+          )).called(1);
     });
 
     test('UpdateActivitiesById', () async {
@@ -308,21 +353,26 @@ Future<void> main() async {
             time: DateTime.now())
       ];
 
-      when(mockClient.post<Map>(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: {'changes': updates},
-      )).thenAnswer((_) async => Response(data: {
-            'activities': [jsonFixture('activity.json')]
-          }, statusCode: 200));
+      when(() => mockClient.post<Map>(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: {'changes': updates},
+          )).thenAnswer((_) async => Response(
+              data: {
+                'activities': [jsonFixture('activity.json')],
+              },
+              requestOptions: RequestOptions(
+                path: Routes.activityUpdateUrl,
+              ),
+              statusCode: 200));
 
       await feedApi.updateActivitiesById(token, updates);
 
-      verify(mockClient.post<Map>(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: {'changes': updates},
-      )).called(1);
+      verify(() => mockClient.post<Map>(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: {'changes': updates},
+          )).called(1);
     });
 
     test('UpdateActivityByForeignId', () async {
@@ -346,20 +396,24 @@ Future<void> main() async {
           unset: unset,
           time: DateTime.now());
 
-      when(mockClient.post<Map>(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: update,
-      )).thenAnswer((_) async =>
-          Response(data: jsonFixture('activity.json'), statusCode: 200));
+      when(() => mockClient.post<Map>(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: update,
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('activity.json'),
+          requestOptions: RequestOptions(
+            path: Routes.activityUpdateUrl,
+          ),
+          statusCode: 200));
 
       await feedApi.updateActivityByForeignId(token, update);
 
-      verify(mockClient.post<Map>(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: update,
-      )).called(1);
+      verify(() => mockClient.post<Map>(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: update,
+          )).called(1);
     });
 
     test('UpdateActivityById', () async {
@@ -383,20 +437,24 @@ Future<void> main() async {
           unset: unset,
           time: DateTime.now());
 
-      when(mockClient.post<Map>(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: update,
-      )).thenAnswer((_) async =>
-          Response(data: jsonFixture('activity.json'), statusCode: 200));
+      when(() => mockClient.post<Map>(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: update,
+          )).thenAnswer((_) async => Response(
+          data: jsonFixture('activity.json'),
+          requestOptions: RequestOptions(
+            path: Routes.activityUpdateUrl,
+          ),
+          statusCode: 200));
 
       await feedApi.updateActivityById(token, update);
 
-      verify(mockClient.post<Map>(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: update,
-      )).called(1);
+      verify(() => mockClient.post<Map>(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: update,
+          )).called(1);
     });
 
     test('UpdateActivityToTargets', () async {
@@ -425,33 +483,38 @@ Future<void> main() async {
           unset: unset,
           time: DateTime.now());
 
-      when(mockClient.post(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: {
-          'foreign_id': update.foreignId,
-          'time': update.time.toIso8601String(),
-          'added_targets': add.map((it) => it.toString()).toList(),
-          'removed_targets': remove.map((it) => it.toString()).toList(),
-          'new_targets': []
-        },
-      )).thenAnswer((_) async => Response(data: {}, statusCode: 200));
+      when(() => mockClient.post(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: {
+              'foreign_id': update.foreignId,
+              'time': update.time!.toIso8601String(),
+              'added_targets': add.map((it) => it.toString()).toList(),
+              'removed_targets': remove.map((it) => it.toString()).toList(),
+              'new_targets': []
+            },
+          )).thenAnswer((_) async => Response(
+          data: {},
+          requestOptions: RequestOptions(
+            path: Routes.activityUpdateUrl,
+          ),
+          statusCode: 200));
 
       await feedApi.updateActivityToTargets(token, feed, update,
           add: add, remove: remove, replace: []);
 
-      verify(mockClient.post(
-        Routes.activityUpdateUrl,
-        headers: {'Authorization': '$token'},
-        data: {
-          'foreign_id': update.foreignId,
-          'time': update.time.toIso8601String(),
-          'added_targets': add.map((it) => it.toString()).toList(),
-          'removed_targets': remove.map((it) => it.toString()).toList(),
-          'new_targets': [] //empty because you can't update
-          // and remove at the same time
-        },
-      )).called(1);
+      verify(() => mockClient.post(
+            Routes.activityUpdateUrl,
+            headers: {'Authorization': '$token'},
+            data: {
+              'foreign_id': update.foreignId,
+              'time': update.time!.toIso8601String(),
+              'added_targets': add.map((it) => it.toString()).toList(),
+              'removed_targets': remove.map((it) => it.toString()).toList(),
+              'new_targets': [] //empty because you can't update
+              // and remove at the same time
+            },
+          )).called(1);
     });
   });
 }

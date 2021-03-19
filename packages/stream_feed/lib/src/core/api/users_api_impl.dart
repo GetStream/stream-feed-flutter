@@ -6,8 +6,7 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class UsersApiImpl implements UsersApi {
-  const UsersApiImpl(this.client)
-      : assert(client != null, "Can't create a UserApi w/o Client");
+  const UsersApiImpl(this.client);
 
   final HttpClient client;
 
@@ -28,7 +27,7 @@ class UsersApiImpl implements UsersApi {
       queryParameters: {'get_or_create': getOrCreate},
       data: user,
     );
-    return User.fromJson(result.data);
+    return User.fromJson(result.data as Map<String, dynamic>);
   }
 
   @override

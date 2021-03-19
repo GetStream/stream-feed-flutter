@@ -12,7 +12,7 @@ class UsersClientImpl implements UsersClient {
   Future<User> add(
     String id,
     Map<String, Object> data, {
-    bool getOrCreate,
+    bool? getOrCreate,
   }) {
     final token = TokenHelper.buildUsersToken(secret, TokenAction.write);
     return users.add(token, id, data, getOrCreate ?? false);
@@ -27,7 +27,7 @@ class UsersClientImpl implements UsersClient {
   @override
   Future<User> get(
     String id, {
-    bool withFollowCounts,
+    bool? withFollowCounts,
   }) {
     final token = TokenHelper.buildUsersToken(secret, TokenAction.read);
     return users.get(token, id, withFollowCounts ?? true);

@@ -41,8 +41,8 @@ class CollectionsClientImpl implements CollectionsClient {
   Future<CollectionEntry> add(
     String collection,
     Map<String, Object> data, {
-    String entryId,
-    String userId,
+    String? entryId,
+    String? userId,
   }) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
     final entry = CollectionEntry(
@@ -145,10 +145,10 @@ class CollectionsClientImpl implements CollectionsClient {
   /// API docs : [updating-collections](https://getstream.io/activity-feeds/docs/flutter-dart/collections_introduction/?language=dart#updating-collections)
   @override
   Future<CollectionEntry> update(
-    String collection,
-    String entryId,
+    String? collection,
+    String? entryId,
     Map<String, Object> data, {
-    String userId,
+    String? userId,
   }) {
     final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
     final entry = CollectionEntry(

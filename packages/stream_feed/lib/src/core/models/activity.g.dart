@@ -8,24 +8,24 @@ part of 'activity.dart';
 
 Activity _$ActivityFromJson(Map json) {
   return Activity(
-    actor: json['actor'] as String,
-    verb: json['verb'] as String,
-    object: json['object'] as String,
-    id: json['id'] as String,
-    foreignId: json['foreign_id'] as String,
-    target: json['target'] as String,
+    actor: json['actor'] as String?,
+    verb: json['verb'] as String?,
+    object: json['object'] as String?,
+    id: json['id'] as String?,
+    foreignId: json['foreign_id'] as String?,
+    target: json['target'] as String?,
     time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
-    to: FeedId.fromIds(json['to'] as List),
-    analytics: (json['analytics'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    to: FeedId.fromIds(json['to'] as List?),
+    analytics: (json['analytics'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
-    extraContext: (json['extra_context'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    extraContext: (json['extra_context'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
-    origin: json['origin'] as String,
-    score: (json['score'] as num)?.toDouble(),
-    extraData: (json['extra_data'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    origin: json['origin'] as String?,
+    score: (json['score'] as num?)?.toDouble(),
+    extraData: (json['extra_data'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
   );
 }

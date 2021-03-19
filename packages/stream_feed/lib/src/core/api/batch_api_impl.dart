@@ -71,7 +71,7 @@ class BatchApiImpl implements BatchApi {
       headers: {'Authorization': '$token'},
       queryParameters: {'ids': ids.join(',')},
     );
-    final data = (result.data['results'] as List)
+    final data = (result.data!['results'] as List)
         .map((e) => Activity.fromJson(e))
         .toList(growable: false);
     return data;
