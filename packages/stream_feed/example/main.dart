@@ -7,7 +7,7 @@ Future<void> main() async {
   const secret =
       '7j7exnksc4nxy399fdxvjqyqsqdahax3nfgtp27pumpc7sfm9um688pzpxjpjbf2';
 
-  var client = StreamClient.connect(apiKey, secret);
+  var client = StreamClient.connect(apiKey, secret: secret);
 
   final chris = client.flatFeed('user', 'chris');
 
@@ -347,7 +347,7 @@ Future<void> main() async {
   // connect to the us-east region
   client = StreamClient.connect(
     apiKey,
-    secret,
+    secret: secret,
     options: const StreamClientOptions(),
   );
 

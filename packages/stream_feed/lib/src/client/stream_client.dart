@@ -16,13 +16,13 @@ import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 //TODO: stream_feed_dart/src/cloud/cloud.dart
 abstract class StreamClient {
   factory StreamClient.connect(
-    String apiKey,
-    String token, {
+    String apiKey, {
+    Token? token,
     String? secret,
     StreamClientOptions? options,
   }) =>
       StreamClientImpl(apiKey,
-          userToken: Token(token), secret: secret, options: options);
+          userToken: token, secret: secret, options: options);
 
   BatchOperationsClient get batch;
   CollectionsClient get collections;
