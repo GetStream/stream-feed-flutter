@@ -8,8 +8,8 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class BatchOperationsClient {
-  const BatchOperationsClient(this.secret, this.batch);
-  final String secret;
+  const BatchOperationsClient(this.batch, {this.secret});
+  final String? secret;
   final BatchApi batch;
 
   /// Add one activity to many feeds
@@ -70,32 +70,27 @@ class BatchOperationsClient {
     return batch.getActivitiesById(token, ids);
   }
 
-  
   Future<Iterable<EnrichedActivity>> getEnrichedActivitiesById(
       Iterable<String> ids) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getEnrichedActivitiesById(token, ids);
   }
 
-  
   Future<Iterable<Activity>> getActivitiesByForeignId(
       Iterable<ForeignIdTimePair> pairs) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getActivitiesByForeignId(token, pairs);
   }
 
-  
   Future<Iterable<EnrichedActivity>> getEnrichedActivitiesByForeignId(
       Iterable<ForeignIdTimePair> pairs) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getEnrichedActivitiesByForeignId(token, pairs);
   }
 
-  
   Future<void> updateActivity(Activity activity) =>
       updateActivities([activity]);
 
-  
   Future<void> updateActivities(Iterable<Activity> activities) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return batch.updateActivities(token, activities);
