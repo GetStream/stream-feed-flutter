@@ -38,12 +38,11 @@ class StreamClientImpl implements StreamClient {
 
   @override
   CollectionsClient get collections =>
-      CollectionsClient(_api.collections,
-          userToken: userToken, secret: secret);
+      CollectionsClient(_api.collections, userToken: userToken, secret: secret);
 
   @override
-  ReactionsClient get reactions => ReactionsClient(_api.reactions,
-      userToken: userToken, secret: secret);
+  ReactionsClient get reactions =>
+      ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
 
   @override
   UsersClient get users =>
@@ -54,14 +53,13 @@ class StreamClientImpl implements StreamClient {
       FileStorageClient(_api.files, userToken: userToken, secret: secret);
 
   @override
-  ImageStorageClient get images => ImageStorageClient(_api.images,
-      userToken: userToken, secret: secret);
+  ImageStorageClient get images =>
+      ImageStorageClient(_api.images, userToken: userToken, secret: secret);
 
   @override
   AggregatedFeed aggregatedFeed(String slug, String userId) {
     final id = FeedId(slug, userId);
-    return AggregatedFeed(id, _api.feed,
-        userToken: userToken, secret: secret);
+    return AggregatedFeed(id, _api.feed, userToken: userToken, secret: secret);
   }
 
   @override

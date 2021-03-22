@@ -37,7 +37,6 @@ class ReactionsApi {
     return Reaction.fromJson(result.data as Map<String, dynamic>);
   }
 
-  
   Future<Reaction> get(Token token, String id) async {
     checkNotNull(id, "Reaction id can't be null");
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
@@ -48,7 +47,6 @@ class ReactionsApi {
     return Reaction.fromJson(result.data as Map<String, dynamic>);
   }
 
-  
   Future<Response> delete(Token token, String? id) async {
     checkNotNull(id, "Reaction id can't be null");
     checkArgument(id!.isNotEmpty, "Reaction id can't be empty");
@@ -58,7 +56,6 @@ class ReactionsApi {
     );
   }
 
-  
   Future<List<Reaction>> filter(
     Token token,
     LookupAttribute lookupAttr,
@@ -87,7 +84,6 @@ class ReactionsApi {
     return data;
   }
 
-  
   Future<PaginatedReactions> paginatedFilter(
     Token token,
     LookupAttribute lookupAttr,
@@ -113,7 +109,6 @@ class ReactionsApi {
     return PaginatedReactions.fromJson(result.data);
   }
 
-  
   Future<PaginatedReactions> nextPaginatedFilter(
       Token token, String next) async {
     checkNotNull(next, "Next url can't be null");
@@ -125,7 +120,6 @@ class ReactionsApi {
     return PaginatedReactions.fromJson(result.data);
   }
 
-  
   Future<Response> update(Token token, Reaction updatedReaction) async {
     checkNotNull(updatedReaction, "Reaction can't be null");
     checkNotNull(updatedReaction.id, "Reaction id can't be null");

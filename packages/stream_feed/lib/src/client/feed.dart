@@ -183,9 +183,8 @@ class Feed {
   ///```
   ///
   /// API docs: [reading-followed-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-followed-feeds)
-  Future<List<Follow>> getFollowed(
-     {
-       Iterable<FeedId>? feedIds,
+  Future<List<Follow>> getFollowed({
+    Iterable<FeedId>? feedIds,
     int? limit,
     int? offset,
   }) {

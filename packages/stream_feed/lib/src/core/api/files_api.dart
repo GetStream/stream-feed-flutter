@@ -11,7 +11,7 @@ class FilesApi {
   const FilesApi(this.client);
 
   final HttpClient client;
-  
+
   Future<String?> upload(Token token, MultipartFile file) async {
     checkNotNull(file, 'No data to upload');
     final result = await client.postFile<Map>(
@@ -22,7 +22,6 @@ class FilesApi {
     return result.data!['file'];
   }
 
-  
   Future<Response> delete(Token token, String targetUrl) {
     checkNotNull(targetUrl, 'No file to delete');
     return client.delete(

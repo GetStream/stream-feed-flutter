@@ -10,7 +10,6 @@ class CollectionsApi {
 
   final HttpClient client;
 
-
   Future<CollectionEntry> add(
       Token token, String? userId, CollectionEntry entry) async {
     checkNotNull(entry, "Collection can't be null");
@@ -30,7 +29,6 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
-  
   Future<Response> delete(
       Token token, String collection, String entryId) async {
     checkNotNull(collection, "Collection name can't be null");
@@ -42,7 +40,6 @@ class CollectionsApi {
       headers: {'Authorization': '$token'},
     );
   }
-
 
   Future<Response> deleteMany(
       Token token, String collection, Iterable<String> entryIds) async {
@@ -60,7 +57,6 @@ class CollectionsApi {
     );
   }
 
-  
   Future<CollectionEntry> get(
       Token token, String collection, String entryId) async {
     checkNotNull(collection, "Collection name can't be null");
@@ -74,7 +70,6 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
-  
   Future<List<CollectionEntry>> select(
       Token token, String collection, Iterable<String> entryIds) async {
     checkNotNull(collection, "Collection name can't be null");
@@ -94,7 +89,6 @@ class CollectionsApi {
     return data;
   }
 
-  
   Future<CollectionEntry> update(
       Token token, String? userId, CollectionEntry entry) async {
     checkNotNull(entry, "Collection can't be null");
@@ -113,7 +107,6 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
-  
   Future<Response> upsert(
       Token token, String collection, Iterable<CollectionEntry> entries) async {
     checkNotNull(collection, "Collection name can't be null");

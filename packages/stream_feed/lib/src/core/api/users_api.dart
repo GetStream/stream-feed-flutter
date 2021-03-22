@@ -9,7 +9,6 @@ class UsersApi {
 
   final HttpClient client;
 
-  
   Future<User> add(
     Token token,
     String id,
@@ -29,7 +28,6 @@ class UsersApi {
     return User.fromJson(result.data as Map<String, dynamic>);
   }
 
-  
   Future<User> get(Token token, String id,
       [bool withFollowCounts = true]) async {
     checkNotNull(id, 'Missing user ID');
@@ -42,7 +40,6 @@ class UsersApi {
     return User.fromJson(result.data);
   }
 
-  
   Future<User> update(Token token, String id, Map<String, Object> data) async {
     checkNotNull(id, 'Missing user ID');
     checkNotNull(data, 'Missing user data');
@@ -56,7 +53,6 @@ class UsersApi {
     return User.fromJson(result.data);
   }
 
-  
   Future<void> delete(Token token, String id) {
     checkNotNull(id, 'Missing user ID');
     checkArgument(id.isNotEmpty, 'Missing user ID');
