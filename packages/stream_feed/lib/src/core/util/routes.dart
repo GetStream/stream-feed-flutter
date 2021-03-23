@@ -6,7 +6,9 @@ class Routes {
   static const _followManyPath = 'follow_many';
   static const _unfollowManyPath = 'unfollow_many';
   static const _activitiesPath = 'activities';
+  static const _personalizationPath = 'personalization';
   static const _enrichActivitiesPath = 'enrich/$_activitiesPath';
+  static const _enrichPersonalizationsPath = 'enrich/$_personalizationPath';
   static const _activityUpdatePath = 'activity';
   static const _reactionsPath = 'reaction';
   static const _usersPath = 'user';
@@ -19,6 +21,9 @@ class Routes {
 
   static String buildFeedUrl(FeedId feed, [String path = '']) =>
       '$_basePath/$_feedPath/${feed.slug}/${feed.userId}/$path';
+
+      static String buildpersonalizationPath(String resource, [String path = '']) =>
+      '$_personalizationPath/$_feedPath/$resource/$path';
 
   static String buildEnrichedFeedUrl(FeedId feed, [String path = '']) =>
       '$_basePath/$_enrichedFeedPath/${feed.slug}/${feed.userId}/$path';

@@ -84,7 +84,7 @@ extension TokenResourceX on TokenResource {
         TokenResource.feedTargets: 'feed_targets',
         TokenResource.follower: 'follower',
         TokenResource.openGraph: 'url',
-        TokenResource.personalization: 'ppersonalization',
+        TokenResource.personalization: 'personalization',
         TokenResource.reactions: 'reactions',
         TokenResource.users: 'users',
       }[this];
@@ -108,6 +108,9 @@ class TokenHelper {
   ]) =>
       _buildBackendToken(
           secret, TokenResource.follower, action, feed?.claim ?? '*');
+
+static Token buildPersonalizationToken(String? secret, TokenAction action) =>
+      _buildBackendToken(secret, TokenResource.personalization, action, '*');
 
   static Token buildReactionToken(String? secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.reactions, action, '*');
