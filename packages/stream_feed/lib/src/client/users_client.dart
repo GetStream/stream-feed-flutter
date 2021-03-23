@@ -7,15 +7,16 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 class UsersClient {
   ///Initialize a user session object
   const UsersClient(this.users, {this.userToken, this.secret});
+
   ///User JWT token
   final Token? userToken;
   final UsersApi users;
   final String? secret;
 
   /// Create a new user in stream
-  /// 
+  ///
   /// Usage
-  /// 
+  ///
   /// ```dart
   /// await users.add('john-doe', {
   ///   'name': 'John Doe',
@@ -34,18 +35,24 @@ class UsersClient {
     return users.add(token, id, data, getOrCreate ?? false);
   }
 
-/// Delete the user
-/// Usage:
-///```dart
-///await client.users.delete('123');
-///```
-///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
+  /// Delete the user
+  /// Usage:
+  ///```dart
+  ///await client.users.delete('123');
+  ///```
+  ///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
   Future<void> delete(String id) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.delete);
     return users.delete(token, id);
   }
 
+/// Get the user data
+/// Usage
+/// ```dart
+/// await users.get('123');
+/// ```
+/// API docs: [retrieving-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#retrieving-users)
   Future<User> get(
     String id, {
     bool? withFollowCounts,
