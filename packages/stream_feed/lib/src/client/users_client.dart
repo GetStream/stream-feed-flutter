@@ -38,7 +38,7 @@ class UsersClient {
   /// Delete the user
   /// Usage:
   ///```dart
-  ///await client.users.delete('123');
+  ///await users.delete('123');
   ///```
   ///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
   Future<void> delete(String id) {
@@ -47,12 +47,12 @@ class UsersClient {
     return users.delete(token, id);
   }
 
-/// Get the user data
-/// Usage
-/// ```dart
-/// await users.get('123');
-/// ```
-/// API docs: [retrieving-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#retrieving-users)
+  /// Get the user data
+  /// Usage
+  /// ```dart
+  /// await users.get('123');
+  /// ```
+  /// API docs: [retrieving-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#retrieving-users)
   Future<User> get(
     String id, {
     bool? withFollowCounts,
@@ -62,6 +62,16 @@ class UsersClient {
     return users.get(token, id, withFollowCounts ?? true);
   }
 
+  /// Update the user
+  /// Usage:
+  /// ```dart
+  ///   await users.update('123', {
+  ///    'name': 'Jane Doe',
+  ///    'occupation': 'Software Engineer',
+  ///    'gender': 'female',
+  ///  });
+  /// ```
+  /// API docs: [updating-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#updating-users)
   Future<User> update(String id, Map<String, Object> data) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.write);
