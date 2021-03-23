@@ -18,7 +18,6 @@ class ReactionsClient {
   /// Your API secret. You can get it in your Stream Dashboard [here](https://dashboard.getstream.io/dashboard/v2/)
   final String? secret;
 
-  
   /// Add reaction
   ///
   /// Parameters:
@@ -96,7 +95,7 @@ class ReactionsClient {
     return reactions.add(token, reaction);
   }
 
-/// Delete reaction
+  /// Delete reaction
   ///
   /// It takes in parameters:
   /// - [id] : Reaction Id
