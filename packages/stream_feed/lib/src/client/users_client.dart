@@ -5,11 +5,25 @@ import 'package:stream_feed_dart/src/core/models/user.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class UsersClient {
+  ///Initialize a user session object
   const UsersClient(this.users, {this.userToken, this.secret});
+  ///User JWT token
   final Token? userToken;
   final UsersApi users;
   final String? secret;
 
+  /// Create a new user in stream
+  /// 
+  /// Usage
+  /// 
+  /// ```dart
+  /// await client.users.add('john-doe', {
+  ///   'name': 'John Doe',
+  ///   'occupation': 'Software Engineer',
+  ///   'gender': 'male',
+  /// });
+  /// ```
+  /// API docs: [adding-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#adding-users)
   Future<User> add(
     String id,
     Map<String, Object> data, {
