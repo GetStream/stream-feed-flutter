@@ -17,7 +17,7 @@ class UsersClient {
   /// Usage
   /// 
   /// ```dart
-  /// await client.users.add('john-doe', {
+  /// await users.add('john-doe', {
   ///   'name': 'John Doe',
   ///   'occupation': 'Software Engineer',
   ///   'gender': 'male',
@@ -34,6 +34,12 @@ class UsersClient {
     return users.add(token, id, data, getOrCreate ?? false);
   }
 
+/// Delete the user
+/// Usage:
+///```dart
+///await client.users.delete('123');
+///```
+///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
   Future<void> delete(String id) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.delete);
