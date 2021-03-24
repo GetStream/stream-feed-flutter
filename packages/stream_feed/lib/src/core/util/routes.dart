@@ -22,7 +22,7 @@ class Routes {
   static String buildFeedUrl(FeedId feed, [String path = '']) =>
       '$_basePath/$_feedPath/${feed.slug}/${feed.userId}/$path';
 
-      static String buildpersonalizationPath(String resource, [String path = '']) =>
+  static String buildPersonalizationURL(String resource, [String path = '']) =>
       '$_personalizationPath/$_feedPath/$resource/$path';
 
   static String buildEnrichedFeedUrl(FeedId feed, [String path = '']) =>
@@ -55,4 +55,16 @@ class Routes {
   static String get unfollowManyUrl => '$_basePath/$_unfollowManyPath';
 
   static String get activitesUrl => '$_basePath/$_activitiesPath';
+
+  static String buildSubdomainPath(String baseURL, String subdomain,
+          String apiPath, String apiVersion, String path) =>
+      Uri(
+        scheme: 'https',
+        host: '$subdomain.$baseURL',
+        pathSegments: [
+          apiPath,
+          apiVersion,
+          path,
+        ],
+      ).toString();
 }
