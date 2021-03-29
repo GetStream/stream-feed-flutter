@@ -16,12 +16,13 @@ main() {
 
     final logs = [];
     channel.addListener('event', (data) {
-       logs.add(data);
+      logs.add(data);
     });
     expect(channel.mounted, true);
     expect(channel.hasListeners('event'), true);
-    channel.emit('event', Message("bayeuxChannel"));
-    expect(logs, ['data']);
+    var message = Message("bayeuxChannel");
+    channel.emit('event', message);
+    expect(logs, [message]);
     expect(channel.ext, _ext);
     expect(channel.name, "/$_name");
     // expect(channel.subscription, matcher)
