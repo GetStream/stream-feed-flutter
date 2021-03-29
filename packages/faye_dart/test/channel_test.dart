@@ -15,16 +15,19 @@ main() {
     )..ext = _ext;
 
     final logs = [];
-    channel.addListener('event', (data) {
+    var listener = (data) {
       logs.add(data);
-    });
+    };
+    channel.addListener('event', listener);
     expect(channel.mounted, true);
-    expect(channel.hasListeners('event'), true);
+    var event = 'event';
+    expect(channel.hasListeners(event), true);
     var message = Message("bayeuxChannel");
     channel.emit('event', message);
     expect(logs, [message]);
     expect(channel.ext, _ext);
     expect(channel.name, "/$_name");
-    // expect(channel.subscription, matcher)
+    channel.removeListener('event', listener);
+    expect(channel.hasListeners(event), false);
   });
 }
