@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:equatable/equatable.dart';
+
 import 'channel.dart';
 
 int _messageId = 0;
@@ -12,7 +14,7 @@ abstract class _MessageObject {
   }
 }
 
-class Message {
+class Message extends Equatable {
   final String? clientId;
   final String channel;
   final String id;
@@ -81,9 +83,25 @@ class Message {
     }
     return message;
   }
+
+  @override
+  List<Object?> get props => [
+        clientId,
+        channel,
+        id,
+        connectionType,
+        version,
+        minimumVersion,
+        supportedConnectionTypes,
+        advice,
+        successful,
+        subscription,
+        ext,
+        error,
+      ];
 }
 
-class Advice {
+class Advice extends Equatable {
   final String reconnect;
   final int interval;
   final int timeout;
@@ -112,4 +130,11 @@ class Advice {
     final timeout = json['timeout'] as int;
     return Advice(reconnect: reconnect, interval: interval, timeout: timeout);
   }
+
+  @override
+  List<Object?> get props => [
+        reconnect,
+        interval,
+        timeout,
+      ];
 }
