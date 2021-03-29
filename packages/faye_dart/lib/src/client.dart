@@ -13,6 +13,15 @@ import '../src/ws/web_socket_channel_stub.dart'
 
 part 'subscription.dart';
 
+/// Typedef used for connecting to a websocket. Method returns a
+/// [WebSocketChannel] and accepts a connection [url] and an optional
+/// [Iterable] of `protocols`.
+typedef ConnectWebSocket = WebSocketChannel? Function(
+  String url, {
+  Iterable<String>? protocols,
+  Duration? connectionTimeout,
+});
+
 enum FayeClientState {
   unconnected,
   connecting,
@@ -32,7 +41,7 @@ class FayeClient {
   final int healthCheckInterval;
   final int maxAttemptsToReconnect;
   final _channels = <String, Channel>{};
-  late WebSocketChannel _webSocketChannel;
+  late WebSocketChannel? _webSocketChannel;
 
   int _attemptsToReconnect = 0;
   String? _clientId;
@@ -151,18 +160,18 @@ class FayeClient {
     return _connectionCompleter!.future;
   }
 
-  _subscribeToWebsocket() {
+  void _subscribeToWebsocket() {
     if (_websocketSubscription != null) {
       _unsubscribeFromWebsocket();
     }
-    _websocketSubscription = _webSocketChannel.stream.listen(
+    _websocketSubscription = _webSocketChannel?.stream.listen(
       _onDataReceived,
       onError: _onConnectionError,
       onDone: _onConnectionClosed,
     );
   }
 
-  _unsubscribeFromWebsocket() {
+  void _unsubscribeFromWebsocket() {
     if (_websocketSubscription != null) {
       _websocketSubscription!.cancel();
       _websocketSubscription = null;
@@ -223,7 +232,7 @@ class FayeClient {
   void _handleDisconnectChannelResponse(Message message) {
     if (message.successful == true) {
       _clientId = null;
-      _webSocketChannel.sink.close(status.goingAway);
+      _webSocketChannel?.sink.close(status.goingAway);
       _websocketSubscription?.cancel();
       _disconnectionCompleter?.complete();
     } else {
@@ -296,12 +305,12 @@ class FayeClient {
   //             //handleError(error)
   void _onConnectionClosed() {
     Future.delayed(const Duration(seconds: 6), () {
-      print(_webSocketChannel.closeCode);
+      print(_webSocketChannel?.closeCode);
     });
     // _isWebSocketConnected = false;
     // // TODO: LogConnectionClosed;
     // // Checking if we manually closed the connection
-    if (_webSocketChannel.closeCode == status.goingAway) {
+    if (_webSocketChannel?.closeCode == status.goingAway) {
       return;
     }
     // _handleAdvice();
@@ -314,7 +323,7 @@ class FayeClient {
   void ping() {
     // TODO : Log
     // log("🏓 --->")
-    _webSocketChannel.sink.add(const _WebSocketPing());
+    _webSocketChannel?.sink.add(const _WebSocketPing());
   }
 
   //private func webSocketWrite(_ bayeuxChannel: BayeuxChannel,
@@ -341,7 +350,7 @@ class FayeClient {
       clientId: _clientId,
     );
     final data = jsonEncode(message);
-    _webSocketChannel.sink.add(data);
+    _webSocketChannel?.sink.add(data);
   }
 
   void _subscribeChannels() {
