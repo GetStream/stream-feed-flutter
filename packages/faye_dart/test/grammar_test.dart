@@ -23,7 +23,11 @@ main() {
 
       test('matches valid channel patterns', () {
         expect(Channel.isValid("/foo/**"), true);
-          expect(Channel.isValid("/foo/*"), true);
+        expect(Channel.isValid("/foo/*"), true);
+      });
+
+      test('does not match invalid channel patterns', () {
+        expect(Channel.isValid("/foo/**/*"), false);
       });
     });
   });
