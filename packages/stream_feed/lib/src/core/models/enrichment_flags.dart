@@ -22,8 +22,8 @@ class EnrichmentFlags {
   String? _userId;
   final Map<_EnrichmentType, Object> _flags = {};
 
-  Map<String?, Object?> get params {
-    final params = _flags.map((key, value) => MapEntry(key.type, value));
+  Map<String, Object> get params {
+    final params = _flags.map((key, value) => MapEntry(key.type!, value));
     if (_userId != null) params['user_id'] = _userId!;
     return params;
   }

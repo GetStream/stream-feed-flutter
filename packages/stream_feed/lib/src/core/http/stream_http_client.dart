@@ -80,14 +80,14 @@ class StreamHttpClient implements HttpClient {
   @override
   Future<Response<T>> get<T>(
     String path, {
-    Map<String?, dynamic>? queryParameters,
+    Map<String, Object>? queryParameters,
     Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await httpClient.get<T>(
         path,
-        queryParameters: queryParameters?.nullProtect,
-        options: Options(headers: headers?.nullProtect),
+        queryParameters: queryParameters,
+        options: Options(headers: headers),
       );
       return response;
     } on DioError catch (error) {
@@ -106,9 +106,9 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.post<T>(
         path,
-        queryParameters: queryParameters?.nullProtect,
+        queryParameters: queryParameters,
         data: data,
-        options: Options(headers: headers?.nullProtect),
+        options: Options(headers: headers),
       );
       return response;
     } on DioError catch (error) {
@@ -126,8 +126,8 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.delete<T>(
         path,
-        queryParameters: queryParameters?.nullProtect,
-        options: Options(headers: headers?.nullProtect),
+        queryParameters: queryParameters,
+        options: Options(headers: headers),
       );
       return response;
     } on DioError catch (error) {
@@ -146,9 +146,9 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.patch<T>(
         path,
-        queryParameters: queryParameters?.nullProtect,
+        queryParameters: queryParameters,
         data: data,
-        options: Options(headers: headers?.nullProtect),
+        options: Options(headers: headers),
       );
       return response;
     } on DioError catch (error) {
@@ -167,9 +167,9 @@ class StreamHttpClient implements HttpClient {
     try {
       final response = await httpClient.put<T>(
         path,
-        queryParameters: queryParameters?.nullProtect,
+        queryParameters: queryParameters,
         data: data,
-        options: Options(headers: headers?.nullProtect),
+        options: Options(headers: headers),
       );
       return response;
     } on DioError catch (error) {

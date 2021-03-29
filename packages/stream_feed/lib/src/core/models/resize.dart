@@ -30,8 +30,8 @@ class Resize {
   final ResizeType _type;
 
   ///
-  Map<String, Object?> get params => <String, Object?>{
-        'resize': _type.name,
+  Map<String, Object> get params => <String, Object>{
+        'resize': _type.name!,
         'w': _width,
         'h': _height,
       };

@@ -3,8 +3,8 @@ import 'package:dio/dio.dart';
 abstract class HttpClient {
   /// Handy method to make http GET request with error parsing.
   Future<Response<T>> get<T>(
-    String path, {
-    Map<String?, dynamic>? queryParameters,
+   String path, {
+    Map<String, Object>? queryParameters,
     Map<String, dynamic>? headers,
   });
 

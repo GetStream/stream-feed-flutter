@@ -17,8 +17,8 @@ extension _FilterX on _Filter {
 class Filter {
   final Map<_Filter, String> _filters = {};
 
-  Map<String?, String> get params =>
-      _filters.map((key, value) => MapEntry(key.name, value));
+  Map<String, String> get params =>
+      _filters.map((key, value) => MapEntry(key.name!, value));
 
   Filter idGreaterThanOrEqual(String id) {
     _filters[_Filter.idGreaterThanOrEqual] = id;

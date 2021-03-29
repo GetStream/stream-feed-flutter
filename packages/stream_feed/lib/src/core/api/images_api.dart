@@ -31,7 +31,7 @@ class ImagesApi {
   Future<String?> get(
     Token token,
     String targetUrl, {
-    Map<String, Object?>? options,
+    Map<String, Object>? options,
   }) async {
     checkNotNull(targetUrl, 'No image to process');
     final result = await client.get(

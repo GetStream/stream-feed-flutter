@@ -66,7 +66,7 @@ class FeedApi {
   }
 
   Future<Response<Map>> getActivities(
-      Token token, FeedId feed, Map<String?, Object> options) {
+      Token token, FeedId feed, Map<String, Object>? options) {
     checkNotNull(options, 'Missing request options');
     return client.get<Map>(
       Routes.buildFeedUrl(feed),
@@ -76,7 +76,7 @@ class FeedApi {
   }
 
   Future<Response> getEnrichedActivities(
-      Token? token, FeedId feed, Map<String?, Object?> options) {
+      Token? token, FeedId feed, Map<String, Object> options) {
     checkNotNull(options, 'Missing request options');
     return client.get(
       Routes.buildEnrichedFeedUrl(feed),

@@ -74,7 +74,7 @@ class ReactionsApi {
       headers: {'Authorization': '$token'},
       queryParameters: {
         'limit': limit.toString(),
-        ...filter.params,
+         ...filter.params,
         'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
