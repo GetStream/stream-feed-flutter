@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 
 import 'channel.dart';
 
-int _messageId = 0;
+int _messageId = 0; //TODO: weird uuid instead?
 
 abstract class _MessageObject {
   static String get id {
@@ -85,20 +85,7 @@ class Message extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        clientId,
-        channel,
-        id,
-        connectionType,
-        version,
-        minimumVersion,
-        supportedConnectionTypes,
-        advice,
-        successful,
-        subscription,
-        ext,
-        error,
-      ];
+  List<Object?> get props => [clientId, channel]; //, id
 }
 
 class Advice extends Equatable {

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:faye_dart/faye_dart.dart';
 import 'package:faye_dart/src/event_emitter.dart';
 
@@ -12,7 +13,7 @@ const unsubscribe_channel = '/meta/unsubscribe';
 
 const event_message = 'message';
 
-class Channel with EventEmitter<Message> {
+class Channel extends Equatable with EventEmitter<Message> {
   final String name;
   Subscription? subscription;
   Map<String, Object>? ext;
@@ -82,6 +83,13 @@ class Channel with EventEmitter<Message> {
 
   @override
   int get hashCode => runtimeType.hashCode ^ name.hashCode;
+
+  @override
+  List<Object?> get props => [
+        name,
+        subscription,
+        ext,
+      ];
 }
 
 extension ChannelMapX on Map<String, Channel> {
