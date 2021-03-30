@@ -201,6 +201,10 @@ class FeedApi {
 
   Future<Activity> updateActivityById(
       Token token, ActivityUpdate update) async {
+    checkNotNull(update.foreignId, 'No activity to update');
+    checkNotNull(update.time, 'Missing timestamp');
+    checkNotNull(update.set, 'No activity properties to set');
+    checkNotNull(update.unset, 'No activity properties to unset');
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
       headers: {'Authorization': '$token'},
