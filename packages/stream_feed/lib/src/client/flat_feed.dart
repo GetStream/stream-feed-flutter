@@ -28,7 +28,7 @@ class FlatFeed extends Feed {
       if (ranking != null) 'ranking': ranking,
     };
     final token = userToken ??
-        TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getActivities(token, feedId, options);
     final data = (result.data!['results'] as List)
         .map((e) => Activity.fromJson(e))
@@ -51,7 +51,7 @@ class FlatFeed extends Feed {
       if (ranking != null) 'ranking': ranking,
     };
     final token = userToken ??
-        TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
         .map((e) => EnrichedActivity.fromJson(e))

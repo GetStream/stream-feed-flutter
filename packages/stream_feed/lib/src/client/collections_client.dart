@@ -21,19 +21,19 @@ class CollectionsClient {
       data: data,
     );
     final token = userToken ??
-        TokenHelper.buildCollectionsToken(secret, TokenAction.write);
+        TokenHelper.buildCollectionsToken(secret!, TokenAction.write);
     return collections.add(token, userId, entry);
   }
 
   Future<void> delete(String collection, String entryId) {
     final token = userToken ??
-        TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
+        TokenHelper.buildCollectionsToken(secret!, TokenAction.delete);
     return collections.delete(token, collection, entryId);
   }
 
   Future<CollectionEntry> get(String collection, String entryId) {
     final token = userToken ??
-        TokenHelper.buildCollectionsToken(secret, TokenAction.read);
+        TokenHelper.buildCollectionsToken(secret!, TokenAction.read);
     return collections.get(token, collection, entryId);
   }
 
@@ -48,7 +48,7 @@ class CollectionsClient {
       collection: collection,
       data: data,
     );
-    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
+    final token = TokenHelper.buildCollectionsToken(secret!, TokenAction.write);
     return collections.update(token, userId, entry);
   }
 
@@ -56,18 +56,19 @@ class CollectionsClient {
 
   Future<void> deleteMany(String collection, Iterable<String> ids) {
     //TODO: assert that secret is not null since it is a serverside method
-    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
+    final token =
+        TokenHelper.buildCollectionsToken(secret!, TokenAction.delete);
     return collections.deleteMany(token, collection, ids);
   }
 
   Future<List<CollectionEntry>> select(
       String collection, Iterable<String> ids) {
-    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.read);
+    final token = TokenHelper.buildCollectionsToken(secret!, TokenAction.read);
     return collections.select(token, collection, ids);
   }
 
   Future<void> upsert(String collection, Iterable<CollectionEntry> entries) {
-    final token = TokenHelper.buildCollectionsToken(secret, TokenAction.write);
+    final token = TokenHelper.buildCollectionsToken(secret!, TokenAction.write);
     return collections.upsert(token, collection, entries);
   }
 }

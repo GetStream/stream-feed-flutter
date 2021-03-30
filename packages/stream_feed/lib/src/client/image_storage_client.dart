@@ -12,31 +12,31 @@ class ImageStorageClient {
 
   Future<String?> upload(MultipartFile image) {
     final token =
-        userToken ?? TokenHelper.buildFilesToken(secret, TokenAction.write);
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return images.upload(token, image);
   }
 
   Future<void> delete(String url) {
     final token =
-        userToken ?? TokenHelper.buildFilesToken(secret, TokenAction.delete);
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.delete);
     return images.delete(token, url);
   }
 
   Future<String?> get(String url) {
     final token =
-        userToken ?? TokenHelper.buildFilesToken(secret, TokenAction.read);
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
     return images.get(token, url);
   }
 
   Future<String?> getCropped(String url, Crop crop) {
     final token =
-        userToken ?? TokenHelper.buildFilesToken(secret, TokenAction.read);
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
     return images.get(token, url, options: crop.params);
   }
 
   Future<String?> getResized(String url, Resize resize) {
     final token =
-        userToken ?? TokenHelper.buildFilesToken(secret, TokenAction.read);
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
     return images.get(token, url, options: resize.params);
   }
 }

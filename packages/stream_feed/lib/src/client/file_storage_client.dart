@@ -11,13 +11,13 @@ class FileStorageClient {
 
   Future<String?> upload(MultipartFile file) {
     final token =
-        userToken ?? TokenHelper.buildFilesToken(secret, TokenAction.write);
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return files.upload(token, file);
   }
 
   Future<void> delete(String url) {
     final token =
-        userToken ?? TokenHelper.buildFilesToken(secret, TokenAction.delete);
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.delete);
     return files.delete(token, url);
   }
 }

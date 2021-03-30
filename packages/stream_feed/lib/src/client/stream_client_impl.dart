@@ -24,14 +24,17 @@ class StreamClientImpl implements StreamClient {
     StreamClientOptions? options,
     StreamApi? api,
     this.secret,
-  }) : _api = api ??
+  })  : assert(
+          userToken != null || secret != null,
+          'At least a secret or userToken must be provided',
+        ),
+        _api = api ??
             StreamApiImpl(apiKey, options: options ?? StreamClientOptions());
 
   final Token? userToken;
   final StreamApi _api;
   final String? secret;
 
-  // Token get token => Token(_token!);
   @override
   BatchOperationsClient get batch =>
       BatchOperationsClient(_api.batch, secret: secret);
@@ -80,11 +83,11 @@ class StreamClientImpl implements StreamClient {
     String userId, {
     DateTime? expiresAt,
   }) =>
-      TokenHelper.buildFrontendToken(secret, userId, expiresAt: expiresAt);
+      TokenHelper.buildFrontendToken(secret!, userId, expiresAt: expiresAt);
 
   @override
   Future<OpenGraphData> openGraph(String targetUrl) {
-    final token = userToken ?? TokenHelper.buildOpenGraphToken(secret);
+    final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
   }
 }
