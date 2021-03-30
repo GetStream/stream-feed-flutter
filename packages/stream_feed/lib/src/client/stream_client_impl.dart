@@ -36,8 +36,10 @@ class StreamClientImpl implements StreamClient {
   final String? secret;
 
   @override
-  BatchOperationsClient get batch =>
-      BatchOperationsClient(_api.batch, secret: secret!);
+  BatchOperationsClient get batch {
+    assert(secret != null, "You can't use batch operations client side");
+    return BatchOperationsClient(_api.batch, secret: secret!);
+  }
 
   @override
   CollectionsClient get collections =>
@@ -82,8 +84,12 @@ class StreamClientImpl implements StreamClient {
   Token frontendToken(
     String userId, {
     DateTime? expiresAt,
-  }) =>
-      TokenHelper.buildFrontendToken(secret!, userId, expiresAt: expiresAt);
+  }) {
+    assert(
+        secret != null, "You can't use the frontendToken method client side");
+    return TokenHelper.buildFrontendToken(secret!, userId,
+        expiresAt: expiresAt);
+  }
 
   @override
   Future<OpenGraphData> openGraph(String targetUrl) {

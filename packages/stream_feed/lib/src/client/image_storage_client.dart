@@ -5,7 +5,11 @@ import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class ImageStorageClient {
-  const ImageStorageClient(this.images, {this.userToken, this.secret});
+  const ImageStorageClient(this.images, {this.userToken, this.secret})
+      : assert(
+          userToken != null || secret != null,
+          'At least a secret or userToken must be provided',
+        );
   final String? secret;
   final Token? userToken;
   final ImagesApi images;

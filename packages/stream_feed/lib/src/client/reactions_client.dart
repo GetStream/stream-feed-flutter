@@ -7,7 +7,11 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class ReactionsClient {
   ///Initialize a reaction client
-  const ReactionsClient(this.reactions, {this.userToken, this.secret});
+  const ReactionsClient(this.reactions, {this.userToken, this.secret})
+      : assert(
+          userToken != null || secret != null,
+          'At least a secret or userToken must be provided',
+        );
   final Token? userToken;
 
   final ReactionsApi reactions;

@@ -4,7 +4,11 @@ import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class CollectionsClient {
-  const CollectionsClient(this.collections, {this.userToken, this.secret});
+  const CollectionsClient(this.collections, {this.userToken, this.secret})
+      : assert(
+          userToken != null || secret != null,
+          'At least a secret or userToken must be provided',
+        );
   final Token? userToken;
   final String? secret;
   final CollectionsApi collections;

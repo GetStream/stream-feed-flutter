@@ -4,7 +4,11 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class FileStorageClient {
-  const FileStorageClient(this.files, {this.userToken, this.secret});
+  const FileStorageClient(this.files, {this.userToken, this.secret})
+      : assert(
+          userToken != null || secret != null,
+          'At least a secret or userToken must be provided',
+        );
   final String? secret;
   final Token? userToken;
   final FilesApi files;
