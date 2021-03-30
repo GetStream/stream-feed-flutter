@@ -15,6 +15,7 @@ import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 import 'package:stream_feed_dart/src/client/users_client.dart';
 import 'package:stream_feed_dart/src/client/stream_client.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class StreamClientImpl implements StreamClient {
@@ -37,7 +38,7 @@ class StreamClientImpl implements StreamClient {
 
   @override
   BatchOperationsClient get batch {
-    assert(secret != null, "You can't use batch operations client side");
+    checkNotNull(secret, "You can't use batch operations client side");
     return BatchOperationsClient(_api.batch, secret: secret!);
   }
 
@@ -85,8 +86,7 @@ class StreamClientImpl implements StreamClient {
     String userId, {
     DateTime? expiresAt,
   }) {
-    assert(
-        secret != null, "You can't use the frontendToken method client side");
+    checkNotNull(secret, "You can't use the frontendToken method client side");
     return TokenHelper.buildFrontendToken(secret!, userId,
         expiresAt: expiresAt);
   }
