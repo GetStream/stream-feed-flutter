@@ -7,7 +7,7 @@ Future<void> main() async {
   const secret =
       '7j7exnksc4nxy399fdxvjqyqsqdahax3nfgtp27pumpc7sfm9um688pzpxjpjbf2';
 
-  var client = StreamClient.connect(apiKey, secret);
+  var client = StreamClient.connect(apiKey, secret: secret);
 
   final chris = client.flatFeed('user', 'chris');
 
@@ -347,19 +347,19 @@ Future<void> main() async {
   // connect to the us-east region
   client = StreamClient.connect(
     apiKey,
-    secret,
+    secret: secret,
     options: const StreamClientOptions(),
   );
 
   /* -------------------------------------------------------- */
 
   // add a like reaction to the activity with id activityId
-  final like = await client.reactions.add('like', activity.id, 'john-doe');
+  final like = await client.reactions.add('like', activity.id!, 'john-doe');
 
   // adds a comment reaction to the activity with id activityId
   final comment = await client.reactions.add(
     'comment',
-    activity.id,
+    activity.id!,
     'john-doe',
     data: {'text': 'awesome post!'},
   );
@@ -371,7 +371,7 @@ Future<void> main() async {
   activity = response.first;
 
   // then let's add a like reaction to that activity
-  await client.reactions.add('like', activity.id, 'john-doe');
+  await client.reactions.add('like', activity.id!, 'john-doe');
 
   /* -------------------------------------------------------- */
 
@@ -379,7 +379,7 @@ Future<void> main() async {
   // and notify Thierry's notification feed
   await client.reactions.add(
     'comment',
-    activity.id,
+    activity.id!,
     'john-doe',
     targetFeeds: <FeedId>[FeedId.id('notification:thierry')],
   );
@@ -430,7 +430,7 @@ Future<void> main() async {
   // adds a like to the previously created comment
   var reaction = await client.reactions.addChild(
     'like',
-    comment.id,
+    comment.id!,
     'john-doe',
   );
 
@@ -443,7 +443,7 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  await client.reactions.delete(reaction.id);
+  await client.reactions.delete(reaction.id!);
 
   /* -------------------------------------------------------- */
 

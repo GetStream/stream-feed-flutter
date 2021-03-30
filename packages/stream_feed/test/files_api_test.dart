@@ -3,14 +3,14 @@ import 'package:test/test.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
-import 'package:stream_feed_dart/src/core/api/files_api_impl.dart';
+import 'package:stream_feed_dart/src/core/api/files_api.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockHttpClient extends Mock implements HttpClient {}
 
 void main() {
   final mockClient = MockHttpClient();
-  final filesApi = FilesApiImpl(mockClient);
+  final filesApi = FilesApi(mockClient);
 
   group('Files API', () {
     test('Upload', () async {

@@ -25,7 +25,7 @@ void main() async {
 
   final client = StreamClient.connect(
     '9wbdt7vucby6',
-    'bksn37r6k7j5p75mmy6znts47j9f9pc49bmw3jjyd7rshg2enbcnq666d2ryfzs8',
+    secret: 'bksn37r6k7j5p75mmy6znts47j9f9pc49bmw3jjyd7rshg2enbcnq666d2ryfzs8',
   );
 
   locator.registerSingleton<StreamClient>(client);

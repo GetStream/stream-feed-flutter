@@ -9,13 +9,14 @@ import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/models/group.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 
-import 'package:stream_feed_dart/src/cloud/feed/cloud_aggregated_feed.dart';
+import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
+import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-class CloudNotificationFeed extends CloudAggregatedFeed {
-  const CloudNotificationFeed(Token token, FeedId feedId, FeedApi feed)
-      : super(token, feedId, feed);
+class NotificationFeed extends AggregatedFeed {
+  const NotificationFeed(FeedId feedId, FeedApi feed,
+      {Token? userToken, String? secret})
+      : super(feedId, feed, userToken: userToken, secret: secret);
 
-  @override
   Future<List<NotificationGroup<Activity>>> getActivities({
     int? limit,
     int? offset,
@@ -28,6 +29,7 @@ class CloudNotificationFeed extends CloudAggregatedFeed {
       ...filter?.params ?? Default.filter.params,
       ...marker?.params ?? Default.marker.params,
     };
+    final token = TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getActivities(token, feedId, options);
     final data = (result.data!['results'] as List)
         .map((e) => NotificationGroup.fromJson(
@@ -36,7 +38,6 @@ class CloudNotificationFeed extends CloudAggregatedFeed {
     return data;
   }
 
-  @override
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
     int? offset,
@@ -51,6 +52,7 @@ class CloudNotificationFeed extends CloudAggregatedFeed {
       ...marker?.params ?? Default.marker.params,
       ...flags?.params ?? Default.enrichmentFlags.params,
     };
+    final token = TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
         .map((e) => NotificationGroup.fromJson(e,

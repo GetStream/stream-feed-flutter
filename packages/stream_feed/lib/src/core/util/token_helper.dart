@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:meta/meta.dart';
 import 'package:jose/jose.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
@@ -170,8 +169,11 @@ class TokenHelper {
   }
 }
 
-String issueJwtHS256(
-    {String? secret, DateTime? expiresAt, Map<String, Object?>? claims}) {
+String issueJwtHS256({
+  required String secret,
+  required Map<String, Object?>? claims,
+  DateTime? expiresAt,
+}) {
   final claimSet = JsonWebTokenClaims.fromJson({
     'exp': DateTime.now()
             .add(const Duration(seconds: 1200))
@@ -204,7 +206,7 @@ String issueJwtHS256(
   return jws.toCompactSerialization();
 }
 
-String base64Urlencode(String? secret) {
+String base64Urlencode(String secret) {
   Codec<String?, String> stringToBase64Url = utf8.fuse(base64Url);
   String encoded = stringToBase64Url.encode(secret);
   return encoded;

@@ -1,87 +1,99 @@
-import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
-import 'package:stream_feed_dart/src/client/batch_operations_client_impl.dart';
-import 'package:stream_feed_dart/src/client/collections_client.dart';
-import 'package:stream_feed_dart/src/client/collections_client_impl.dart';
-import 'package:stream_feed_dart/src/client/feed/aggregated_feed.dart';
-import 'package:stream_feed_dart/src/client/feed/flat_feed.dart';
-import 'package:stream_feed_dart/src/client/feed/notification_feed.dart';
-import 'package:stream_feed_dart/src/client/file_storage_client.dart';
-import 'package:stream_feed_dart/src/client/file_storage_client_impl.dart';
-import 'package:stream_feed_dart/src/client/image_storage_client.dart';
-import 'package:stream_feed_dart/src/client/image_storage_client_impl.dart';
-import 'package:stream_feed_dart/src/client/reactions_client.dart';
-import 'package:stream_feed_dart/src/client/reactions_client_impl.dart';
-import 'package:stream_feed_dart/src/client/stream_client.dart';
+import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
+import 'package:stream_feed_dart/src/client/flat_feed.dart';
+import 'package:stream_feed_dart/src/client/notification_feed.dart';
 import 'package:stream_feed_dart/src/client/stream_client_options.dart';
-import 'package:stream_feed_dart/src/client/users_client.dart';
-import 'package:stream_feed_dart/src/client/users_client_impl.dart';
+import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
+import 'package:stream_feed_dart/src/client/collections_client.dart';
+import 'package:stream_feed_dart/src/client/file_storage_client.dart';
+import 'package:stream_feed_dart/src/client/image_storage_client.dart';
+import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api_impl.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
-import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
+
+import 'package:stream_feed_dart/src/client/users_client.dart';
+import 'package:stream_feed_dart/src/client/stream_client.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class StreamClientImpl implements StreamClient {
   StreamClientImpl(
-    this._secret,
     String apiKey, {
-    // String appId,
+    this.userToken,
     StreamClientOptions? options,
     StreamApi? api,
-  }) : _api = api ?? StreamApiImpl(apiKey, options: options);
+    this.secret,
+  })  : assert(
+          userToken != null || secret != null,
+          'At least a secret or userToken must be provided',
+        ),
+        _api = api ??
+            StreamApiImpl(apiKey, options: options ?? StreamClientOptions());
 
-  final String _secret;
+  final Token? userToken;
   final StreamApi _api;
+  final String? secret;
 
   @override
-  BatchOperationsClient get batch =>
-      BatchOperationsClientImpl(_secret, _api.batch);
-
-  @override
-  ReactionsClient get reactions => ReactionsClientImpl(_secret, _api.reactions);
-
-  @override
-  UsersClient get users => UsersClientImpl(_secret, _api.users);
+  BatchOperationsClient get batch {
+    checkNotNull(secret, "You can't use batch operations client side");
+    return BatchOperationsClient(_api.batch, secret: secret!);
+  }
 
   @override
   CollectionsClient get collections =>
-      CollectionsClientImpl(_secret, _api.collections);
+      CollectionsClient(_api.collections, userToken: userToken, secret: secret);
 
   @override
-  FileStorageClient get files => FileStorageClientImpl(_secret, _api.files);
+  ReactionsClient get reactions =>
+      ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
 
   @override
-  ImageStorageClient get images => ImageStorageClientImpl(_secret, _api.images);
+  UsersClient get users =>
+      UsersClient(_api.users, userToken: userToken, secret: secret);
 
   @override
-  FlatFeet flatFeed(String slug, String userId) {
-    final id = FeedId(slug, userId);
-    return FlatFeet(_secret, id, _api.feed);
-  }
+  FileStorageClient get files =>
+      FileStorageClient(_api.files, userToken: userToken, secret: secret);
+
+  @override
+  ImageStorageClient get images =>
+      ImageStorageClient(_api.images, userToken: userToken, secret: secret);
 
   @override
   AggregatedFeed aggregatedFeed(String slug, String userId) {
     final id = FeedId(slug, userId);
-    return AggregatedFeed(_secret, id, _api.feed);
+    return AggregatedFeed(id, _api.feed, userToken: userToken, secret: secret);
+  }
+
+  @override
+  FlatFeed flatFeed(String slug, String userId) {
+    final id = FeedId(slug, userId);
+    return FlatFeed(id, _api.feed, userToken: userToken, secret: secret);
   }
 
   @override
   NotificationFeed notificationFeed(String slug, String userId) {
     final id = FeedId(slug, userId);
-    return NotificationFeed(_secret, id, _api.feed);
+    return NotificationFeed(id, _api.feed,
+        userToken: userToken, secret: secret);
   }
 
   @override
   Token frontendToken(
     String userId, {
     DateTime? expiresAt,
-  }) =>
-      TokenHelper.buildFrontendToken(_secret, userId, expiresAt: expiresAt);
+  }) {
+    checkNotNull(secret, "You can't use the frontendToken method client side");
+    return TokenHelper.buildFrontendToken(secret!, userId,
+        expiresAt: expiresAt);
+  }
 
   @override
   Future<OpenGraphData> openGraph(String targetUrl) {
-    final token = TokenHelper.buildOpenGraphToken(_secret);
+    final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
   }
 }

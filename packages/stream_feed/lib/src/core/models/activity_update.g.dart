@@ -8,13 +8,13 @@ part of 'activity_update.dart';
 
 ActivityUpdate _$ActivityUpdateFromJson(Map json) {
   return ActivityUpdate(
+    set: (json['set'] as Map).map(
+      (k, e) => MapEntry(k as String, e as Object),
+    ),
+    unset: (json['unset'] as List<dynamic>).map((e) => e as String).toList(),
     id: json['id'] as String?,
     foreignId: json['foreign_id'] as String?,
     time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
-    set: (json['set'] as Map?)?.map(
-      (k, e) => MapEntry(k as String, e as Object),
-    ),
-    unset: (json['unset'] as List<dynamic>?)?.map((e) => e as String).toList(),
   );
 }
 
