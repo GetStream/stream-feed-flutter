@@ -26,7 +26,7 @@ class ReactionsApi {
       checkArgument(
           reaction.parent!.isNotEmpty, "Reaction parent can't be empty");
     }
-
+    checkNotNull(reaction.kind, "Reaction kind can't be null");
     checkArgument(reaction.kind!.isNotEmpty, "Reaction kind can't be empty");
     final result = await client.post<Map>(
       Routes.buildReactionsUrl(),
