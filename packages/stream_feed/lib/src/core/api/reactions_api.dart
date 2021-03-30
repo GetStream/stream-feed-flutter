@@ -46,6 +46,7 @@ class ReactionsApi {
   }
 
   Future<Response> delete(Token token, String? id) async {
+    checkNotNull(id, "Reaction id can't be null");
     checkArgument(id!.isNotEmpty, "Reaction id can't be empty");
     return client.delete(
       Routes.buildReactionsUrl('$id/'),
