@@ -10,7 +10,6 @@ class ImagesApi {
   final HttpClient client;
 
   Future<String?> upload(Token token, MultipartFile image) async {
-    checkNotNull(image, 'No image to upload');
     final result = await client.postFile<Map>(
       Routes.imagesUrl,
       image,
@@ -20,7 +19,6 @@ class ImagesApi {
   }
 
   Future<Response> delete(Token token, String targetUrl) {
-    checkNotNull(targetUrl, 'No image to delete');
     return client.delete(
       Routes.imagesUrl,
       headers: {'Authorization': '$token'},
@@ -33,7 +31,6 @@ class ImagesApi {
     String targetUrl, {
     Map<String, Object?>? options,
   }) async {
-    checkNotNull(targetUrl, 'No image to process');
     final result = await client.get(
       Routes.imagesUrl,
       headers: {'Authorization': '$token'},

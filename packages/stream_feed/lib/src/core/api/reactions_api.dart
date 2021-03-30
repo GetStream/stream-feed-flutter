@@ -14,7 +14,6 @@ class ReactionsApi {
   final HttpClient client;
 
   Future<Reaction> add(Token token, Reaction reaction) async {
-    checkNotNull(reaction, "Reaction can't be null");
     checkArgument(reaction.activityId != null || reaction.parent != null,
         'Reaction has to either have and activity ID or parent');
     checkArgument(reaction.activityId == null || reaction.parent == null,
@@ -27,7 +26,7 @@ class ReactionsApi {
       checkArgument(
           reaction.parent!.isNotEmpty, "Reaction parent can't be empty");
     }
-    checkNotNull(reaction.kind, "Reaction kind can't be null");
+
     checkArgument(reaction.kind!.isNotEmpty, "Reaction kind can't be empty");
     final result = await client.post<Map>(
       Routes.buildReactionsUrl(),
@@ -38,7 +37,6 @@ class ReactionsApi {
   }
 
   Future<Reaction> get(Token token, String id) async {
-    checkNotNull(id, "Reaction id can't be null");
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
     final result = await client.get<Map>(
       Routes.buildReactionsUrl('$id/'),
@@ -48,7 +46,6 @@ class ReactionsApi {
   }
 
   Future<Response> delete(Token token, String? id) async {
-    checkNotNull(id, "Reaction id can't be null");
     checkArgument(id!.isNotEmpty, "Reaction id can't be empty");
     return client.delete(
       Routes.buildReactionsUrl('$id/'),
@@ -64,11 +61,7 @@ class ReactionsApi {
     int limit,
     String kind,
   ) async {
-    checkNotNull(lookupAttr, "Lookup attr can't be null");
-    checkNotNull(lookupValue, "Lookup value can't be null");
     checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
-    checkNotNull(filter, "Filter can't be null");
-    checkNotNull(kind, "Kind can't be null");
     final result = await client.get<Map>(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
@@ -92,11 +85,8 @@ class ReactionsApi {
     int limit,
     String kind,
   ) async {
-    checkNotNull(lookupAttr, "Lookup attr can't be null");
-    checkNotNull(lookupValue, "Lookup value can't be null");
     checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
-    checkNotNull(filter, "Filter can't be null");
-    checkNotNull(kind, "Kind can't be null");
+
     final result = await client.get(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
@@ -111,7 +101,6 @@ class ReactionsApi {
 
   Future<PaginatedReactions> nextPaginatedFilter(
       Token token, String next) async {
-    checkNotNull(next, "Next url can't be null");
     checkArgument(next.isNotEmpty, "Next url can't be empty");
     final result = await client.get(
       next,
@@ -121,8 +110,6 @@ class ReactionsApi {
   }
 
   Future<Response> update(Token token, Reaction updatedReaction) async {
-    checkNotNull(updatedReaction, "Reaction can't be null");
-    checkNotNull(updatedReaction.id, "Reaction id can't be null");
     checkArgument(updatedReaction.id!.isNotEmpty, "Reaction id can't be empty");
     final targetFeedIds = updatedReaction.targetFeeds!
         .map((e) => e.toString())
