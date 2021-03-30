@@ -18,7 +18,7 @@ class FeedApi {
   final HttpClient client;
 
   Future<List<Activity>> addActivities(
-      Token? token, FeedId feed, Iterable<Activity> activities) async {
+      Token token, FeedId feed, Iterable<Activity> activities) async {
     checkNotNull(activities, 'No activities to add');
     checkArgument(activities.isNotEmpty, 'No activities to add');
     final result = await client.post<Map>(
@@ -33,7 +33,7 @@ class FeedApi {
   }
 
   Future<Activity> addActivity(
-      Token? token, FeedId feed, Activity activity) async {
+      Token token, FeedId feed, Activity activity) async {
     checkNotNull(activity, 'No activity to add');
     final result = await client.post<Map>(
       Routes.buildFeedUrl(feed),
@@ -44,7 +44,7 @@ class FeedApi {
     return data;
   }
 
-  Future<Response> follow(Token? token, Token? targetToken, FeedId sourceFeed,
+  Future<Response> follow(Token token, Token targetToken, FeedId sourceFeed,
       FeedId targetFeed, int activityCopyLimit) {
     checkNotNull(targetFeed, 'No feed to follow');
     checkArgument(sourceFeed != targetFeed, "Feed can't follow itself");
@@ -76,7 +76,7 @@ class FeedApi {
   }
 
   Future<Response> getEnrichedActivities(
-      Token? token, FeedId feed, Map<String?, Object?> options) {
+      Token token, FeedId feed, Map<String?, Object?> options) {
     checkNotNull(options, 'Missing request options');
     return client.get(
       Routes.buildEnrichedFeedUrl(feed),
@@ -85,7 +85,7 @@ class FeedApi {
     );
   }
 
-  Future<List<Follow>> getFollowed(Token? token, FeedId feed, int limit,
+  Future<List<Follow>> getFollowed(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
     checkArgument(offset >= 0, 'Offset should be a non-negative number');
@@ -106,7 +106,7 @@ class FeedApi {
     return data;
   }
 
-  Future<List<Follow>> getFollowers(Token? token, FeedId feed, int limit,
+  Future<List<Follow>> getFollowers(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
     checkArgument(offset >= 0, 'Offset should be a non-negative number');
@@ -128,7 +128,7 @@ class FeedApi {
   }
 
   Future<Response> removeActivityByForeignId(
-      Token? token, FeedId feed, String foreignId) {
+      Token token, FeedId feed, String foreignId) {
     checkNotNull(foreignId, 'No activity id to remove');
     return client.delete(
       Routes.buildFeedUrl(feed, foreignId),
@@ -137,7 +137,7 @@ class FeedApi {
     );
   }
 
-  Future<Response> removeActivityById(Token? token, FeedId feed, String id) {
+  Future<Response> removeActivityById(Token token, FeedId feed, String id) {
     checkNotNull(id, 'No activity id to remove');
     return client.delete(
       Routes.buildFeedUrl(feed, id),
@@ -146,7 +146,7 @@ class FeedApi {
   }
 
   Future<Response> unfollow(
-      Token? token, FeedId source, FeedId target, bool keepHistory) {
+      Token token, FeedId source, FeedId target, bool keepHistory) {
     checkNotNull(target, 'No target feed to unfollow');
     return client.delete(
       Routes.buildFeedUrl(source, 'following/$target'),
@@ -156,7 +156,7 @@ class FeedApi {
   }
 
   Future<List<Activity>> updateActivitiesByForeignId(
-      Token? token, Iterable<ActivityUpdate> updates) async {
+      Token token, Iterable<ActivityUpdate> updates) async {
     checkNotNull(updates, 'No updates');
     checkArgument(updates.isNotEmpty, 'No updates');
     checkArgument(updates.length <= 100, 'Maximum length is 100');
@@ -178,7 +178,7 @@ class FeedApi {
   }
 
   Future<List<Activity>> updateActivitiesById(
-      Token? token, Iterable<ActivityUpdate> updates) async {
+      Token token, Iterable<ActivityUpdate> updates) async {
     checkNotNull(updates, 'No updates');
     checkArgument(updates.isNotEmpty, 'No updates');
     checkArgument(updates.length <= 100, 'Maximum length is 100');
@@ -199,7 +199,7 @@ class FeedApi {
   }
 
   Future<Activity> updateActivityByForeignId(
-      Token? token, ActivityUpdate update) async {
+      Token token, ActivityUpdate update) async {
     checkNotNull(update, 'No activity to update');
     checkNotNull(update.foreignId, 'No activity to update');
     checkNotNull(update.time, 'Missing timestamp');
@@ -215,7 +215,7 @@ class FeedApi {
   }
 
   Future<Activity> updateActivityById(
-      Token? token, ActivityUpdate update) async {
+      Token token, ActivityUpdate update) async {
     checkNotNull(update, 'No activity to update');
     checkNotNull(update.id, 'No activity to update');
     checkNotNull(update.set, 'No activity properties to set');
@@ -230,7 +230,7 @@ class FeedApi {
   }
 
   Future<Response> updateActivityToTargets(
-    Token? token,
+    Token token,
     FeedId feed,
     ActivityUpdate update, {
     Iterable<FeedId>? add = const [],

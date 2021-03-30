@@ -24,5 +24,5 @@ abstract class StreamApi {
 
   ImagesApi get images;
 
-  Future<OpenGraphData> openGraph(Token? token, String targetUrl);
+  Future<OpenGraphData> openGraph(Token token, String targetUrl);
 }
