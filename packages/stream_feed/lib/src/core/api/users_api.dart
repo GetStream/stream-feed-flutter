@@ -15,8 +15,6 @@ class UsersApi {
     Map<String, Object> data, [
     bool getOrCreate = false,
   ]) async {
-    checkNotNull(id, 'Missing user ID');
-    checkNotNull(data, 'Missing user data');
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final user = User(id: id, data: data);
     final result = await client.post<Map>(
@@ -30,7 +28,6 @@ class UsersApi {
 
   Future<User> get(Token token, String id,
       [bool withFollowCounts = true]) async {
-    checkNotNull(id, 'Missing user ID');
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final result = await client.get(
       Routes.buildUsersUrl('$id/'),
@@ -41,8 +38,6 @@ class UsersApi {
   }
 
   Future<User> update(Token token, String id, Map<String, Object> data) async {
-    checkNotNull(id, 'Missing user ID');
-    checkNotNull(data, 'Missing user data');
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final updatedUser = User(id: id, data: data);
     final result = await client.put(
@@ -54,7 +49,6 @@ class UsersApi {
   }
 
   Future<void> delete(Token token, String id) {
-    checkNotNull(id, 'Missing user ID');
     checkArgument(id.isNotEmpty, 'Missing user ID');
     return client.delete(
       Routes.buildUsersUrl('$id/'),

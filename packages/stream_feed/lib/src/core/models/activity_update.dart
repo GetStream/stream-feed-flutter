@@ -8,11 +8,11 @@ part 'activity_update.g.dart';
 class ActivityUpdate extends Equatable {
   ///
   const ActivityUpdate({
+    required this.set,
+    required this.unset,
     this.id,
     this.foreignId,
     this.time,
-    this.set,
-    this.unset,
   });
 
   ///
@@ -58,10 +58,10 @@ class ActivityUpdate extends Equatable {
   final DateTime? time;
 
   ///
-  final Map<String, Object>? set;
+  final Map<String, Object> set;
 
   ///
-  final List<String>? unset;
+  final List<String> unset;
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$ActivityUpdateToJson(this);

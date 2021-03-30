@@ -18,8 +18,6 @@ class BatchApi {
 
   Future<Response> addToMany(
       Token token, Activity activity, Iterable<FeedId> feedIds) async {
-    checkNotNull(activity, 'Missing activity');
-    checkNotNull(feedIds, 'No feeds to add to');
     checkArgument(feedIds.isNotEmpty, 'No feeds to add to');
     return client.post(
       Routes.addToManyUrl,
@@ -35,7 +33,7 @@ class BatchApi {
       Token token, int activityCopyLimit, Iterable<Follow> follows) async {
     checkArgument(
         activityCopyLimit >= 0, 'Activity copy limit must be non negative');
-    checkNotNull(follows, 'No feeds to follow');
+
     checkArgument(follows.isNotEmpty, 'No feeds to follow');
     return client.post(
       Routes.followManyUrl,
@@ -47,7 +45,6 @@ class BatchApi {
 
   Future<Response> unfollowMany(
       Token token, Iterable<UnFollow> unfollows) async {
-    checkNotNull(unfollows, 'No feeds to unfollow');
     checkArgument(unfollows.isNotEmpty, 'No feeds to unfollow');
     return client.post(
       Routes.unfollowManyUrl,
@@ -58,7 +55,6 @@ class BatchApi {
 
   Future<List<Activity>> getActivitiesById(
       Token token, Iterable<String> ids) async {
-    checkNotNull(ids, 'No activities to get');
     checkArgument(ids.isNotEmpty, 'No activities to get');
     final result = await client.get<Map>(
       Routes.activitesUrl,
@@ -73,7 +69,6 @@ class BatchApi {
 
   Future<List<Activity>> getActivitiesByForeignId(
       Token token, Iterable<ForeignIdTimePair> pairs) async {
-    checkNotNull(pairs, 'No activities to get');
     checkArgument(pairs.isNotEmpty, 'No activities to get');
     final result = await client.get(
       Routes.activitesUrl,
@@ -92,7 +87,6 @@ class BatchApi {
 
   Future<List<EnrichedActivity>> getEnrichedActivitiesById(
       Token token, Iterable<String> ids) async {
-    checkNotNull(ids, 'No activities to get');
     checkArgument(ids.isNotEmpty, 'No activities to get');
     final result = await client.get(
       Routes.enrichedActivitiesUrl,
@@ -107,7 +101,6 @@ class BatchApi {
 
   Future<List<EnrichedActivity>> getEnrichedActivitiesByForeignId(
       Token token, Iterable<ForeignIdTimePair> pairs) async {
-    checkNotNull(pairs, 'No activities to get');
     checkArgument(pairs.isNotEmpty, 'No activities to get');
     final result = await client.get(
       Routes.enrichedActivitiesUrl,
@@ -126,7 +119,6 @@ class BatchApi {
 
   Future<Response> updateActivities(
       Token token, Iterable<Activity> activities) async {
-    checkNotNull(activities, 'No activities to update');
     checkArgument(activities.isNotEmpty, 'No activities to update');
     return client.post(
       Routes.activitesUrl,

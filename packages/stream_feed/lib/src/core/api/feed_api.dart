@@ -18,8 +18,7 @@ class FeedApi {
   final HttpClient client;
 
   Future<List<Activity>> addActivities(
-      Token? token, FeedId feed, Iterable<Activity> activities) async {
-    checkNotNull(activities, 'No activities to add');
+      Token token, FeedId feed, Iterable<Activity> activities) async {
     checkArgument(activities.isNotEmpty, 'No activities to add');
     final result = await client.post<Map>(
       Routes.buildFeedUrl(feed),
@@ -33,8 +32,7 @@ class FeedApi {
   }
 
   Future<Activity> addActivity(
-      Token? token, FeedId feed, Activity activity) async {
-    checkNotNull(activity, 'No activity to add');
+      Token token, FeedId feed, Activity activity) async {
     final result = await client.post<Map>(
       Routes.buildFeedUrl(feed),
       headers: {'Authorization': '$token'},
@@ -44,9 +42,8 @@ class FeedApi {
     return data;
   }
 
-  Future<Response> follow(Token? token, Token? targetToken, FeedId sourceFeed,
+  Future<Response> follow(Token token, Token targetToken, FeedId sourceFeed,
       FeedId targetFeed, int activityCopyLimit) {
-    checkNotNull(targetFeed, 'No feed to follow');
     checkArgument(sourceFeed != targetFeed, "Feed can't follow itself");
     checkArgument(activityCopyLimit >= 0,
         'Activity copy limit should be a non-negative number');
@@ -67,7 +64,6 @@ class FeedApi {
 
   Future<Response<Map>> getActivities(
       Token token, FeedId feed, Map<String?, Object> options) {
-    checkNotNull(options, 'Missing request options');
     return client.get<Map>(
       Routes.buildFeedUrl(feed),
       headers: {'Authorization': '$token'},
@@ -76,8 +72,7 @@ class FeedApi {
   }
 
   Future<Response> getEnrichedActivities(
-      Token? token, FeedId feed, Map<String?, Object?> options) {
-    checkNotNull(options, 'Missing request options');
+      Token token, FeedId feed, Map<String?, Object?> options) {
     return client.get(
       Routes.buildEnrichedFeedUrl(feed),
       headers: {'Authorization': '$token'},
@@ -85,11 +80,11 @@ class FeedApi {
     );
   }
 
-  Future<List<Follow>> getFollowed(Token? token, FeedId feed, int limit,
+  Future<List<Follow>> getFollowed(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
     checkArgument(offset >= 0, 'Offset should be a non-negative number');
-    checkNotNull(feedIds, 'No feed ids to filter on');
+
     final result = await client.get<Map>(
       Routes.buildFeedUrl(feed, 'following'),
       headers: {'Authorization': '$token'},
@@ -106,11 +101,11 @@ class FeedApi {
     return data;
   }
 
-  Future<List<Follow>> getFollowers(Token? token, FeedId feed, int limit,
+  Future<List<Follow>> getFollowers(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
     checkArgument(offset >= 0, 'Offset should be a non-negative number');
-    checkNotNull(feedIds, 'No feed ids to filter on');
+
     final result = await client.get(
       Routes.buildFeedUrl(feed, 'followers'),
       headers: {'Authorization': '$token'},
@@ -128,8 +123,7 @@ class FeedApi {
   }
 
   Future<Response> removeActivityByForeignId(
-      Token? token, FeedId feed, String foreignId) {
-    checkNotNull(foreignId, 'No activity id to remove');
+      Token token, FeedId feed, String foreignId) {
     return client.delete(
       Routes.buildFeedUrl(feed, foreignId),
       headers: {'Authorization': '$token'},
@@ -137,8 +131,7 @@ class FeedApi {
     );
   }
 
-  Future<Response> removeActivityById(Token? token, FeedId feed, String id) {
-    checkNotNull(id, 'No activity id to remove');
+  Future<Response> removeActivityById(Token token, FeedId feed, String id) {
     return client.delete(
       Routes.buildFeedUrl(feed, id),
       headers: {'Authorization': '$token'},
@@ -146,8 +139,7 @@ class FeedApi {
   }
 
   Future<Response> unfollow(
-      Token? token, FeedId source, FeedId target, bool keepHistory) {
-    checkNotNull(target, 'No target feed to unfollow');
+      Token token, FeedId source, FeedId target, bool keepHistory) {
     return client.delete(
       Routes.buildFeedUrl(source, 'following/$target'),
       headers: {'Authorization': '$token'},
@@ -156,15 +148,14 @@ class FeedApi {
   }
 
   Future<List<Activity>> updateActivitiesByForeignId(
-      Token? token, Iterable<ActivityUpdate> updates) async {
-    checkNotNull(updates, 'No updates');
+      Token token, Iterable<ActivityUpdate> updates) async {
     checkArgument(updates.isNotEmpty, 'No updates');
     checkArgument(updates.length <= 100, 'Maximum length is 100');
     for (final update in updates) {
       checkNotNull(update.foreignId, 'No activity to update');
       checkNotNull(update.time, 'Missing timestamp');
-      checkNotNull(update.set, 'No activity properties to set');
-      checkNotNull(update.unset, 'No activity properties to unset');
+      checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+          'No activity properties to set or unset');
     }
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
@@ -178,14 +169,13 @@ class FeedApi {
   }
 
   Future<List<Activity>> updateActivitiesById(
-      Token? token, Iterable<ActivityUpdate> updates) async {
-    checkNotNull(updates, 'No updates');
+      Token token, Iterable<ActivityUpdate> updates) async {
     checkArgument(updates.isNotEmpty, 'No updates');
     checkArgument(updates.length <= 100, 'Maximum length is 100');
     for (final update in updates) {
       checkNotNull(update.id, 'No activity to update');
-      checkNotNull(update.set, 'No activity properties to set');
-      checkNotNull(update.unset, 'No activity properties to unset');
+      checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+          'No activity properties to set or unset');
     }
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
@@ -199,12 +189,7 @@ class FeedApi {
   }
 
   Future<Activity> updateActivityByForeignId(
-      Token? token, ActivityUpdate update) async {
-    checkNotNull(update, 'No activity to update');
-    checkNotNull(update.foreignId, 'No activity to update');
-    checkNotNull(update.time, 'Missing timestamp');
-    checkNotNull(update.set, 'No activity properties to set');
-    checkNotNull(update.unset, 'No activity properties to unset');
+      Token token, ActivityUpdate update) async {
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
       headers: {'Authorization': '$token'},
@@ -215,11 +200,11 @@ class FeedApi {
   }
 
   Future<Activity> updateActivityById(
-      Token? token, ActivityUpdate update) async {
-    checkNotNull(update, 'No activity to update');
-    checkNotNull(update.id, 'No activity to update');
-    checkNotNull(update.set, 'No activity properties to set');
-    checkNotNull(update.unset, 'No activity properties to unset');
+      Token token, ActivityUpdate update) async {
+    checkNotNull(update.foreignId, 'No activity to update');
+    checkNotNull(update.time, 'Missing timestamp');
+    checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+        'No activity properties to set or unset');
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
       headers: {'Authorization': '$token'},
@@ -230,14 +215,16 @@ class FeedApi {
   }
 
   Future<Response> updateActivityToTargets(
-    Token? token,
+    Token token,
     FeedId feed,
     ActivityUpdate update, {
-    Iterable<FeedId>? add = const [],
-    Iterable<FeedId>? remove = const [],
-    Iterable<FeedId>? replace = const [],
+    Iterable<FeedId> add = const [],
+    Iterable<FeedId> remove = const [],
+    Iterable<FeedId> replace = const [],
   }) async {
-    checkNotNull(update, 'No activity to update');
+    checkNotNull(update.id, 'No activity to update');
+    checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+        'No activity properties to set or unset');
     checkNotNull(
         update.foreignId, 'Activity is required to have foreign ID attribute');
     checkNotNull(update.time, 'Activity is required to have time attribute');
@@ -245,8 +232,8 @@ class FeedApi {
     checkNotNull(remove, 'No targets to remove');
     checkNotNull(replace, 'No targets to set');
     final modification =
-        replace!.isEmpty && (add!.isNotEmpty || remove!.isNotEmpty);
-    final replacement = replace.isNotEmpty && add!.isEmpty && remove!.isEmpty;
+        replace.isEmpty && (add.isNotEmpty || remove.isNotEmpty);
+    final replacement = replace.isNotEmpty && add.isEmpty && remove.isEmpty;
     checkArgument(modification || replacement,
         "Can't replace and modify activity to targets at the same time");
 

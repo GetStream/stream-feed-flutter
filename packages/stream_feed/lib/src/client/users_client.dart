@@ -31,7 +31,7 @@ class UsersClient {
     bool? getOrCreate,
   }) {
     final token =
-        userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.write);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
     return users.add(token, id, data, getOrCreate ?? false);
   }
 
@@ -43,7 +43,7 @@ class UsersClient {
   ///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
   Future<void> delete(String id) {
     final token =
-        userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.delete);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
     return users.delete(token, id);
   }
 
@@ -58,7 +58,7 @@ class UsersClient {
     bool? withFollowCounts,
   }) {
     final token =
-        userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.read);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
     return users.get(token, id, withFollowCounts ?? true);
   }
 
@@ -74,7 +74,7 @@ class UsersClient {
   /// API docs: [updating-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#updating-users)
   Future<User> update(String id, Map<String, Object> data) {
     final token =
-        userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.write);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
     return users.update(token, id, data);
   }
 }
