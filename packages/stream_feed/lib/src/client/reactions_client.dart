@@ -41,7 +41,7 @@ class ReactionsClient {
   ///API docs:
   Future<Reaction> add(
     String kind,
-    String? activityId,
+    String activityId,
     String userId, {
     Map<String, Object>? data,
     Iterable<FeedId>? targetFeeds,
@@ -72,7 +72,7 @@ class ReactionsClient {
   /// API docs: [reactions_add_child](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_add_child/?language=dart)
   Future<Reaction> addChild(
     String kind,
-    String? parentId,
+    String parentId,
     String userId, {
     Map<String, Object>? data,
     Iterable<FeedId>? targetFeeds,
@@ -100,7 +100,7 @@ class ReactionsClient {
   /// ```
   ///
   /// API docs: [removing-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#removing-reactions)
-  Future<void> delete(String? id) {
+  Future<void> delete(String id) {
     final token = userToken ??
         TokenHelper.buildReactionToken(secret!, TokenAction.delete);
     return reactions.delete(token, id);

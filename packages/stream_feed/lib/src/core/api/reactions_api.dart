@@ -15,7 +15,7 @@ class ReactionsApi {
 
   Future<Reaction> add(Token token, Reaction reaction) async {
     checkArgument(reaction.activityId != null || reaction.parent != null,
-        'Reaction has to either have and activity ID or parent');
+        'Reaction has to either have an activity ID or parent');
     checkArgument(reaction.activityId == null || reaction.parent == null,
         "Reaction can't have both activity ID and parent");
     if (reaction.activityId != null) {
@@ -45,9 +45,8 @@ class ReactionsApi {
     return Reaction.fromJson(result.data as Map<String, dynamic>);
   }
 
-  Future<Response> delete(Token token, String? id) async {
-    checkNotNull(id, "Reaction id can't be null");
-    checkArgument(id!.isNotEmpty, "Reaction id can't be empty");
+  Future<Response> delete(Token token, String id) async {
+    checkArgument(id.isNotEmpty, "Reaction id can't be empty");
     return client.delete(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
