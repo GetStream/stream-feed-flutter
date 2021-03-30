@@ -1,5 +1,4 @@
 import 'package:faye_dart/src/channel.dart';
-import 'package:faye_dart/src/grammar.dart';
 import 'package:test/test.dart';
 
 main() {

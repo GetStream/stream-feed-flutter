@@ -32,6 +32,14 @@ main() {
       expect(channel.hasListeners(event), false);
     });
 
+    group('expand', () {
+      test('returns all patterns that match a channel",', () {
+        expect(["/**", "/foo", "/*"], Channel.expand("/foo"));
+        expect(["/**", "/foo/bar", "/foo/*", "/foo/**"], Channel.expand("/foo/bar"));
+        expect(["/**", "/foo/bar/qux", "/foo/bar/*", "/foo/**", "/foo/bar/**"], Channel.expand("/foo/bar/qux"));
+      });
+    });
+
     test('subscription', () {
       var _ext = {
         "api_key": 'Client.shared.apiKey',
