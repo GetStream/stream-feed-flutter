@@ -80,6 +80,8 @@ class CollectionsApi {
 
   Future<CollectionEntry> update(
       Token token, String? userId, CollectionEntry entry) async {
+    checkNotNull(entry, "Collection can't be null");
+    checkNotNull(entry.collection, "Collection name can't be null");
     checkArgument(
         entry.collection!.isNotEmpty, "Collection name can't be empty");
     final result = await client.put<Map>(
