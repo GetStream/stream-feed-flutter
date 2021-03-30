@@ -37,7 +37,7 @@ class StreamClientImpl implements StreamClient {
 
   @override
   BatchOperationsClient get batch =>
-      BatchOperationsClient(_api.batch, secret: secret);
+      BatchOperationsClient(_api.batch, secret: secret!);
 
   @override
   CollectionsClient get collections =>
