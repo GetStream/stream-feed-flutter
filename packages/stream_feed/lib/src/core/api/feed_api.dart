@@ -222,6 +222,10 @@ class FeedApi {
     Iterable<FeedId>? remove = const [],
     Iterable<FeedId>? replace = const [],
   }) async {
+    checkNotNull(update, 'No activity to update');
+    checkNotNull(update.id, 'No activity to update');
+    checkNotNull(update.set, 'No activity properties to set');
+    checkNotNull(update.unset, 'No activity properties to unset');
     checkNotNull(
         update.foreignId, 'Activity is required to have foreign ID attribute');
     checkNotNull(update.time, 'Activity is required to have time attribute');
