@@ -16,13 +16,13 @@ class UsersClient {
     bool? getOrCreate,
   }) {
     final token =
-        userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.write);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
     return users.add(token, id, data, getOrCreate ?? false);
   }
 
   Future<void> delete(String id) {
     final token =
-        userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.delete);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
     return users.delete(token, id);
   }
 
@@ -31,13 +31,13 @@ class UsersClient {
     bool? withFollowCounts,
   }) {
     final token =
-        userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.read);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
     return users.get(token, id, withFollowCounts ?? true);
   }
 
   Future<User> update(String id, Map<String, Object> data) {
     final token =
-        userToken ?? TokenHelper.buildUsersToken(secret, TokenAction.write);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
     return users.update(token, id, data);
   }
 }
