@@ -109,7 +109,7 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.follower, action, feed?.claim ?? '*');
 
-static Token buildPersonalizationToken(String? secret, TokenAction action) =>
+  static Token buildPersonalizationToken(String? secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.personalization, action, '*');
 
   static Token buildReactionToken(String? secret, TokenAction action) =>
