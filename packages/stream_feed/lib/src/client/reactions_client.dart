@@ -10,7 +10,11 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// such add, delete, get, update ... reactions
 class ReactionsClient {
   ///Initialize a reaction client
-  const ReactionsClient(this.reactions, {this.userToken, this.secret});
+  const ReactionsClient(this.reactions, {this.userToken, this.secret})
+      : assert(
+          userToken != null || secret != null,
+          'At least a secret or userToken must be provided',
+        );
   final Token? userToken;
 
   final ReactionsApi reactions;
@@ -47,7 +51,7 @@ class ReactionsClient {
   /// API docs: [adding-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#adding-reactions)
   Future<Reaction> add(
     String kind,
-    String? activityId,
+    String activityId,
     String userId, {
     Map<String, Object>? data,
     Iterable<FeedId>? targetFeeds,
@@ -60,7 +64,7 @@ class ReactionsClient {
       targetFeeds: targetFeeds as List<FeedId>?,
     );
     final token =
-        userToken ?? TokenHelper.buildReactionToken(secret, TokenAction.write);
+        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
     return reactions.add(token, reaction);
   }
 
@@ -78,7 +82,7 @@ class ReactionsClient {
   /// API docs: [reactions_add_child](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_add_child/?language=dart)
   Future<Reaction> addChild(
     String kind,
-    String? parentId,
+    String parentId,
     String userId, {
     Map<String, Object>? data,
     Iterable<FeedId>? targetFeeds,
@@ -91,7 +95,7 @@ class ReactionsClient {
       targetFeeds: targetFeeds as List<FeedId>?,
     );
     final token =
-        userToken ?? TokenHelper.buildReactionToken(secret, TokenAction.write);
+        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
     return reactions.add(token, reaction);
   }
 
@@ -106,9 +110,9 @@ class ReactionsClient {
   /// ```
   ///
   /// API docs: [removing-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#removing-reactions)
-  Future<void> delete(String? id) {
-    final token =
-        userToken ?? TokenHelper.buildReactionToken(secret, TokenAction.delete);
+  Future<void> delete(String id) {
+    final token = userToken ??
+        TokenHelper.buildReactionToken(secret!, TokenAction.delete);
     return reactions.delete(token, id);
   }
 
@@ -116,7 +120,7 @@ class ReactionsClient {
   /// [retrieving-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#retrieving-reactions)
   Future<Reaction> get(String id) {
     final token =
-        userToken ?? TokenHelper.buildReactionToken(secret, TokenAction.read);
+        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
     return reactions.get(token, id);
   }
 
@@ -131,7 +135,7 @@ class ReactionsClient {
       targetFeeds: targetFeeds as List<FeedId>?,
     );
     final token =
-        userToken ?? TokenHelper.buildReactionToken(secret, TokenAction.write);
+        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
     return reactions.update(token, reaction);
   }
 
@@ -143,7 +147,7 @@ class ReactionsClient {
     String? kind,
   }) {
     final token =
-        userToken ?? TokenHelper.buildReactionToken(secret, TokenAction.read);
+        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
     return reactions.filter(token, lookupAttr, lookupValue,
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
@@ -157,7 +161,7 @@ class ReactionsClient {
     String? kind,
   }) {
     final token =
-        userToken ?? TokenHelper.buildReactionToken(secret, TokenAction.read);
+        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
     return reactions.paginatedFilter(token, lookupAttr, lookupValue,
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }

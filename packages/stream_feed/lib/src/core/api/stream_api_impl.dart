@@ -47,8 +47,7 @@ class StreamApiImpl implements StreamApi {
   ImagesApi get images => ImagesApi(_client);
 
   @override
-  Future<OpenGraphData> openGraph(Token? token, String targetUrl) async {
-    checkNotNull(targetUrl, "TargetUrl can't be null");
+  Future<OpenGraphData> openGraph(Token token, String targetUrl) async {
     checkArgument(targetUrl.isNotEmpty, "TargetUrl can't be empty");
     final result = await _client.get(
       Routes.openGraphUrl,

@@ -31,7 +31,7 @@ class AggregatedFeed extends Feed {
     };
 
     final token = userToken ??
-        TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getActivities(token, feedId, options);
     final data = (result.data!['results'] as List)
         .map((e) => Group.fromJson(
@@ -55,7 +55,7 @@ class AggregatedFeed extends Feed {
       ...flags?.params ?? Default.enrichmentFlags.params,
     };
     final token = userToken ??
-        TokenHelper.buildFeedToken(secret, TokenAction.read, feedId);
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
         .map((e) => Group.fromJson(e,
