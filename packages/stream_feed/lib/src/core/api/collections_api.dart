@@ -12,8 +12,10 @@ class CollectionsApi {
 
   Future<CollectionEntry> add(
       Token token, String? userId, CollectionEntry entry) async {
+    checkNotNull(entry.collection, "Collection name can't be null");
     checkArgument(
         entry.collection!.isNotEmpty, "Collection name can't be empty");
+    checkNotNull(entry.data, "Collection data can't be null");
     final result = await client.post<Map>(
       Routes.buildCollectionsUrl(entry.collection),
       headers: {'Authorization': '$token'},
