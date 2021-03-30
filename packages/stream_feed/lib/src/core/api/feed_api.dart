@@ -154,8 +154,8 @@ class FeedApi {
     for (final update in updates) {
       checkNotNull(update.foreignId, 'No activity to update');
       checkNotNull(update.time, 'Missing timestamp');
-      checkNotNull(update.set, 'No activity properties to set');
-      checkNotNull(update.unset, 'No activity properties to unset');
+      checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+          'No activity properties to set or unset');
     }
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
@@ -174,8 +174,8 @@ class FeedApi {
     checkArgument(updates.length <= 100, 'Maximum length is 100');
     for (final update in updates) {
       checkNotNull(update.id, 'No activity to update');
-      checkNotNull(update.set, 'No activity properties to set');
-      checkNotNull(update.unset, 'No activity properties to unset');
+      checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+          'No activity properties to set or unset');
     }
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
@@ -203,8 +203,8 @@ class FeedApi {
       Token token, ActivityUpdate update) async {
     checkNotNull(update.foreignId, 'No activity to update');
     checkNotNull(update.time, 'Missing timestamp');
-    checkNotNull(update.set, 'No activity properties to set');
-    checkNotNull(update.unset, 'No activity properties to unset');
+    checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+        'No activity properties to set or unset');
     final result = await client.post<Map>(
       Routes.activityUpdateUrl,
       headers: {'Authorization': '$token'},
@@ -218,14 +218,13 @@ class FeedApi {
     Token token,
     FeedId feed,
     ActivityUpdate update, {
-    Iterable<FeedId>? add = const [],
-    Iterable<FeedId>? remove = const [],
-    Iterable<FeedId>? replace = const [],
+    Iterable<FeedId> add = const [],
+    Iterable<FeedId> remove = const [],
+    Iterable<FeedId> replace = const [],
   }) async {
-    checkNotNull(update, 'No activity to update');
     checkNotNull(update.id, 'No activity to update');
-    checkNotNull(update.set, 'No activity properties to set');
-    checkNotNull(update.unset, 'No activity properties to unset');
+    checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+        'No activity properties to set or unset');
     checkNotNull(
         update.foreignId, 'Activity is required to have foreign ID attribute');
     checkNotNull(update.time, 'Activity is required to have time attribute');
@@ -233,8 +232,8 @@ class FeedApi {
     checkNotNull(remove, 'No targets to remove');
     checkNotNull(replace, 'No targets to set');
     final modification =
-        replace!.isEmpty && (add!.isNotEmpty || remove!.isNotEmpty);
-    final replacement = replace.isNotEmpty && add!.isEmpty && remove!.isEmpty;
+        replace.isEmpty && (add.isNotEmpty || remove.isNotEmpty);
+    final replacement = replace.isNotEmpty && add.isEmpty && remove.isEmpty;
     checkArgument(modification || replacement,
         "Can't replace and modify activity to targets at the same time");
 
