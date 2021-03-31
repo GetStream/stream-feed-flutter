@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
@@ -63,22 +62,20 @@ class FeedApi {
   }
 
   Future<Response<Map>> getActivities(
-      Token token, FeedId feed, Map<String?, Object> options) {
-    return client.get<Map>(
-      Routes.buildFeedUrl(feed),
-      headers: {'Authorization': '$token'},
-      queryParameters: options,
-    );
-  }
+          Token token, FeedId feed, Map<String?, Object> options) =>
+      client.get<Map>(
+        Routes.buildFeedUrl(feed),
+        headers: {'Authorization': '$token'},
+        queryParameters: options,
+      );
 
   Future<Response> getEnrichedActivities(
-      Token token, FeedId feed, Map<String?, Object?> options) {
-    return client.get(
-      Routes.buildEnrichedFeedUrl(feed),
-      headers: {'Authorization': '$token'},
-      queryParameters: options,
-    );
-  }
+          Token token, FeedId feed, Map<String?, Object?> options) =>
+      client.get(
+        Routes.buildEnrichedFeedUrl(feed),
+        headers: {'Authorization': '$token'},
+        queryParameters: options,
+      );
 
   Future<List<Follow>> getFollowed(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
@@ -123,29 +120,26 @@ class FeedApi {
   }
 
   Future<Response> removeActivityByForeignId(
-      Token token, FeedId feed, String foreignId) {
-    return client.delete(
-      Routes.buildFeedUrl(feed, foreignId),
-      headers: {'Authorization': '$token'},
-      queryParameters: {'foreign_id': '1'},
-    );
-  }
+          Token token, FeedId feed, String foreignId) =>
+      client.delete(
+        Routes.buildFeedUrl(feed, foreignId),
+        headers: {'Authorization': '$token'},
+        queryParameters: {'foreign_id': '1'},
+      );
 
-  Future<Response> removeActivityById(Token token, FeedId feed, String id) {
-    return client.delete(
-      Routes.buildFeedUrl(feed, id),
-      headers: {'Authorization': '$token'},
-    );
-  }
+  Future<Response> removeActivityById(Token token, FeedId feed, String id) =>
+      client.delete(
+        Routes.buildFeedUrl(feed, id),
+        headers: {'Authorization': '$token'},
+      );
 
   Future<Response> unfollow(
-      Token token, FeedId source, FeedId target, bool keepHistory) {
-    return client.delete(
-      Routes.buildFeedUrl(source, 'following/$target'),
-      headers: {'Authorization': '$token'},
-      queryParameters: {'keep_history': keepHistory},
-    );
-  }
+          Token token, FeedId source, FeedId target, bool keepHistory) =>
+      client.delete(
+        Routes.buildFeedUrl(source, 'following/$target'),
+        headers: {'Authorization': '$token'},
+        queryParameters: {'keep_history': keepHistory},
+      );
 
   Future<List<Activity>> updateActivitiesByForeignId(
       Token token, Iterable<ActivityUpdate> updates) async {
@@ -243,8 +237,8 @@ class FeedApi {
       data: {
         'foreign_id': update.foreignId,
         'time': update.time!.toIso8601String(),
-        'added_targets': add!.map((it) => it.toString()).toList(),
-        'removed_targets': remove!.map((it) => it.toString()).toList(),
+        'added_targets': add.map((it) => it.toString()).toList(),
+        'removed_targets': remove.map((it) => it.toString()).toList(),
         'new_targets': replace.map((it) => it.toString()).toList(),
       },
     );

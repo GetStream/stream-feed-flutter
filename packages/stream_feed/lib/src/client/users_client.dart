@@ -1,4 +1,3 @@
-import 'package:stream_feed_dart/src/client/users_client.dart';
 import 'package:stream_feed_dart/src/core/api/users_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/user.dart';

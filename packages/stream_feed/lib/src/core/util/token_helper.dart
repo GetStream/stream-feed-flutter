@@ -207,7 +207,7 @@ String issueJwtHS256({
 }
 
 String base64Urlencode(String secret) {
-  Codec<String?, String> stringToBase64Url = utf8.fuse(base64Url);
-  String encoded = stringToBase64Url.encode(secret);
+  final Codec<String?, String> stringToBase64Url = utf8.fuse(base64Url);
+  final encoded = stringToBase64Url.encode(secret);
   return encoded;
 }

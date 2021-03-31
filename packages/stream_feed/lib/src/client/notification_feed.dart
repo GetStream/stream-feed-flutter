@@ -17,6 +17,7 @@ class NotificationFeed extends AggregatedFeed {
       {Token? userToken, String? secret})
       : super(feedId, feed, userToken: userToken, secret: secret);
 
+  @override
   Future<List<NotificationGroup<Activity>>> getActivities({
     int? limit,
     int? offset,
@@ -38,6 +39,7 @@ class NotificationFeed extends AggregatedFeed {
     return data;
   }
 
+  @override
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
     int? offset,

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class ImagesApi {
@@ -18,13 +17,11 @@ class ImagesApi {
     return result.data!['file'];
   }
 
-  Future<Response> delete(Token token, String targetUrl) {
-    return client.delete(
-      Routes.imagesUrl,
-      headers: {'Authorization': '$token'},
-      queryParameters: {'url': targetUrl},
-    );
-  }
+  Future<Response> delete(Token token, String targetUrl) => client.delete(
+        Routes.imagesUrl,
+        headers: {'Authorization': '$token'},
+        queryParameters: {'url': targetUrl},
+      );
 
   Future<String?> get(
     Token token,

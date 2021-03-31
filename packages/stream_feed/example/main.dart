@@ -119,7 +119,7 @@ Future<void> main() async {
 
   const foreignID = 'product:123';
   final timestamp = DateTime.now();
-  var activityUpdate = ActivityUpdate.withForeignId(
+  final activityUpdate = ActivityUpdate.withForeignId(
     foreignID,
     timestamp,
     set,
@@ -195,7 +195,7 @@ Future<void> main() async {
 
   // list followers
   final followers = await userFeed.getFollowers(limit: 10, offset: 0);
-  for (var follow in followers) {
+  for (final follow in followers) {
     print('${follow.feedId} -> ${follow.targetId}');
   }
 
@@ -218,7 +218,7 @@ Future<void> main() async {
   var activityGroups = await notifications.getActivities(
     marker: ActivityMarker().allSeen(),
   );
-  for (var group in activityGroups) {
+  for (final group in activityGroups) {
     // ...
   }
 
@@ -283,7 +283,7 @@ Future<void> main() async {
 
   // Batch following many feeds
   // Let timeline:1 will follow user:1, user:2 and user:3
-  var follows = <Follow>[
+  final follows = <Follow>[
     const Follow('timeline:1', 'user:1'),
     const Follow('timeline:1', 'user:2'),
     const Follow('timeline:1', 'user:3'),
@@ -428,7 +428,7 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   // adds a like to the previously created comment
-  var reaction = await client.reactions.addChild(
+  final reaction = await client.reactions.addChild(
     'like',
     comment.id!,
     'john-doe',
@@ -469,7 +469,7 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  var collection = await client.collections.get('food', 'cheese-burger');
+  final collection = await client.collections.get('food', 'cheese-burger');
 
   /* -------------------------------------------------------- */
 
