@@ -78,6 +78,7 @@ class Message extends Equatable {
       ..error = json['error'] as String?;
 
     final advice = json['advice'];
+    print("received advice: $advice");
     if (advice != null) {
       message..advice = Advice.fromJson(advice as Map<String, Object?>);
     }
@@ -88,35 +89,32 @@ class Message extends Equatable {
   List<Object?> get props => [clientId, channel]; //, id
 }
 
-class Advice extends Equatable {
-  final String reconnect;
-  final int interval;
-  final int timeout;
+class Advice extends Equatable{
+  Advice({
+    required this.reconnect,
+    required this.interval,
+    this.timeout,
+  });
+
+  String reconnect;
+  int interval;
+  int? timeout;
 
   static const none = 'none';
   static const handshake = 'handshake';
   static const retry = 'retry';
 
-  const Advice({
-    required this.reconnect,
-    required this.interval,
-    required this.timeout,
-  });
+  factory Advice.fromJson(Map<String, dynamic> json) => Advice(
+        reconnect: json["reconnect"] == null ? null : json["reconnect"],
+        interval: json["interval"] == null ? null : json["interval"],
+        timeout: json["timeout"] == null ? null : json["timeout"],
+      );
 
-  Map<String, Object?> toJson() {
-    final data = <String, Object?>{};
-    data['reconnect'] = reconnect;
-    data['interval'] = interval;
-    data['timeout'] = timeout;
-    return data;
-  }
-
-  factory Advice.fromJson(Map<String, Object?> json) {
-    final reconnect = json['reconnect'] as String;
-    final interval = json['interval'] as int;
-    final timeout = json['timeout'] as int;
-    return Advice(reconnect: reconnect, interval: interval, timeout: timeout);
-  }
+  Map<String, dynamic> toJson() => {
+        "reconnect": reconnect,
+        "interval": interval,
+        "timeout": timeout == null ? null : timeout,
+      };
 
   @override
   List<Object?> get props => [

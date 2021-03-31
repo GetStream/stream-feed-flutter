@@ -1,6 +1,6 @@
 part of 'client.dart';
 
-typedef ChannelCallback = void Function(String);
+typedef ChannelCallback = void Function(String data);
 typedef WithChannelCallback = void Function(String, String);
 
 class Subscription {

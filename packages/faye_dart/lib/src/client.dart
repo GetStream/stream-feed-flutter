@@ -206,6 +206,7 @@ class FayeClient {
   }
 
   void _handleSubscribeChannelResponse(Message message) {
+    print("received subscription message : $message");
     final subscription = message.subscription;
     final channel = _channels[subscription];
     if (message.successful == true) {
@@ -245,6 +246,7 @@ class FayeClient {
   void _onDataReceived(dynamic data) {
     final json = jsonDecode(data);
     final messages = (json as List).map((it) => Message.fromJson(it));
+    print("messages : $messages");
     for (final message in messages) {
       if (message.advice != null) _handleAdvice(message.advice!);
       _deliverMessage(message);
@@ -348,8 +350,14 @@ class FayeClient {
       bayeuxChannel,
       channel: _channels[channel],
       clientId: _clientId,
-    );
+    )..ext = getAuth(
+        token:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiamVzc2ljYSJ9.k0gZ1kKKCPGdps0gyHyFMPOfC3i5J9DG4qU1Wz7Q01s",
+        apiKey: 'ay57s8swfnan',
+        userId: 'asasas');
+    print("sending message : $message");
     final data = jsonEncode(message);
+
     _webSocketChannel?.sink.add(data);
   }
 
@@ -409,17 +417,17 @@ class FayeClient {
     return _disconnectionCompleter!.future;
   }
 
-//
-//
-// // MARK: - Error
-//
-// extension Client {
-//     public enum Error: String, Swift.Error {
-//         case notConnected
-//         case clientIdIsEmpty
-//     }
-// }
-//
+  //
+  //
+  // // MARK: - Error
+  //
+  // extension Client {
+  //     public enum Error: String, Swift.Error {
+  //         case notConnected
+  //         case clientIdIsEmpty
+  //     }
+  // }
+  //
 
   void _log([
     String title = '',
@@ -430,14 +438,24 @@ class FayeClient {
   ]) {
     if (logsEnabled) {
       print('''
-      🕸 $title,
-      Date : ${DateTime.now()},
-      ${item1 ?? ''},
-      ${item2 ?? ''},
-      ${item3 ?? ''},
-      ''');
+          🕸 $title,
+          Date : ${DateTime.now()},
+          ${item1 ?? ''},
+          ${item2 ?? ''},
+          ${item3 ?? ''},
+          ''');
     }
   }
+
+  Map<String, Object>? getAuth(
+          {required String userId,
+          required String apiKey,
+          required String token}) =>
+      {
+        "user_id": userId,
+        "api_key": apiKey,
+        "signature": token,
+      };
 }
 
 class _WebSocketPing {
