@@ -246,6 +246,7 @@ class FayeClient {
   void _onDataReceived(dynamic data) {
     final json = jsonDecode(data);
     final messages = (json as List).map((it) => Message.fromJson(it));
+    //TODO: refactor so that we return a stream<Message> in subscribe()
     print("messages : $messages");
     for (final message in messages) {
       if (message.advice != null) _handleAdvice(message.advice!);
@@ -345,16 +346,19 @@ class FayeClient {
   //         log("--->", message.channel, message.clientId ?? "", message.ext ?? [:])
   //     }
 
-  void _sendMessage(String bayeuxChannel, {String? channel}) {
+  void _sendMessage(String bayeuxChannel, {String? channel, bool? auth}) {
     final message = Message(
       bayeuxChannel,
       channel: _channels[channel],
       clientId: _clientId,
-    )..ext = getAuth(
-        token:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiamVzc2ljYSJ9.k0gZ1kKKCPGdps0gyHyFMPOfC3i5J9DG4qU1Wz7Q01s",
-        apiKey: 'ay57s8swfnan',
-        userId: 'asasas');
+    );
+    if (auth != null) {
+      message.ext = getAuth(
+          apiKey: "ay57s8swfnan",
+          token:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSJ9.9Xeyd2J2HadWi-FCwCDGGX2x62Ospe24zJcX-AJ6eHw",
+          userId: 'site-110925-feed-reward1');
+    }
     print("sending message : $message");
     final data = jsonEncode(message);
 
@@ -378,7 +382,7 @@ class FayeClient {
       subscription._complete();
     } else {
       if (!force) _channels.subscribe([channel], subscription);
-      _sendMessage(subscribe_channel, channel: channel);
+      _sendMessage(subscribe_channel, channel: channel, auth: true);
     }
     return subscription._future;
   }

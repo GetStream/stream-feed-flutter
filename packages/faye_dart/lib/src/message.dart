@@ -49,19 +49,23 @@ class Message extends Equatable {
 
   Map<String, Object?> toJson() {
     final data = <String, Object?>{};
-    data['clientId'] = clientId;
+    if (clientId != null) data['clientId'] = clientId;
     data['channel'] = channel;
-    data['connectionType'] = connectionType;
-    data['version'] = version;
-    data['minimumVersion'] = minimumVersion;
-    data['supportedConnectionTypes'] = supportedConnectionTypes;
-    data['advice'] = advice;
-    data['successful'] = successful;
-    data['subscription'] = subscription;
-    data['ext'] = ext;
-    data['error'] = error;
+    if (connectionType != null) data['connectionType'] = connectionType;
+    if (version != null) data['version'] = version;
+    if (minimumVersion != null) data['minimumVersion'] = minimumVersion;
+    if (supportedConnectionTypes != null)
+      data['supportedConnectionTypes'] = supportedConnectionTypes;
+    if (advice != null) data['advice'] = advice;
+    if (successful != null) data['successful'] = successful;
+    if (subscription != null) data['subscription'] = subscription;
+    if (ext != null) data['ext'] = ext;
+    if (version != null) data['error'] = error;
     return data;
   }
+
+  @override
+  toString() => "${toJson()}";
 
   factory Message.fromJson(Map<String, Object?> json) {
     final channel = json['channel'] as String;
@@ -89,7 +93,7 @@ class Message extends Equatable {
   List<Object?> get props => [clientId, channel]; //, id
 }
 
-class Advice extends Equatable{
+class Advice extends Equatable {
   Advice({
     required this.reconnect,
     required this.interval,
