@@ -33,7 +33,8 @@ main() {
 
     final client = StreamClient.connect(apiKey,
         secret:
-            "ajencvb6gfrbzvt2975kk3563j3vg86fhrswjsbk32zzgjcgtfn3293er4tk9bf4");
+            "ajencvb6gfrbzvt2975kk3563j3vg86fhrswjsbk32zzgjcgtfn3293er4tk9bf4",
+        appId: appId);
     const userId = '1';
     final slug = "reward";
     final userFeed = client.flatFeed('$slug', userId);
@@ -58,8 +59,7 @@ main() {
     await faye.connect();
     await expectLater(
         faye.stateStream, emitsInOrder([FayeClientState.connected]));
-    final feedTogether = "${userFeed.feedId.slug}${userFeed.feedId.userId}";
-    final notificationChannel = 'site-$appId-feed-$feedTogether';
+    final notificationChannel = userFeed.notificationChannel;
     await faye.subscribe('/$notificationChannel', callback: logs.add);
 
     expect(logs, []);

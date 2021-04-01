@@ -14,7 +14,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  const Feed(this.feedId, this.feed, {this.userToken, this.secret})
+  const Feed(this.feedId, this.feed, {this.userToken, this.secret,this.appId})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -23,6 +23,10 @@ class Feed {
   /// Your API secret
   final String? secret;
   final Token? userToken;
+  String get _feedTogether => "${feedId.slug}${feedId.userId}";
+  String get notificationChannel => 'site-$appId-feed-$_feedTogether';
+
+  final String? appId;
 
   /// The feed id
   final FeedId feedId;

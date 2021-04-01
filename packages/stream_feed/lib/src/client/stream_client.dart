@@ -20,9 +20,10 @@ abstract class StreamClient {
     Token? token,
     String? secret,
     StreamClientOptions? options,
+    String? appId
   }) =>
       StreamClientImpl(apiKey,
-          userToken: token, secret: secret, options: options);
+          userToken: token, secret: secret, options: options,appId:appId);
 
   BatchOperationsClient get batch;
   CollectionsClient get collections;

@@ -25,13 +25,14 @@ class StreamClientImpl implements StreamClient {
     StreamClientOptions? options,
     StreamApi? api,
     this.secret,
+    this.appId,
   })  : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
         _api = api ??
             StreamApiImpl(apiKey, options: options ?? StreamClientOptions());
-
+  final String? appId;
   final Token? userToken;
   final StreamApi _api;
   final String? secret;
@@ -65,20 +66,22 @@ class StreamClientImpl implements StreamClient {
   @override
   AggregatedFeed aggregatedFeed(String slug, String userId) {
     final id = FeedId(slug, userId);
-    return AggregatedFeed(id, _api.feed, userToken: userToken, secret: secret);
+    return AggregatedFeed(id, _api.feed,
+        userToken: userToken, secret: secret, appId: appId);
   }
 
   @override
   FlatFeed flatFeed(String slug, String userId) {
     final id = FeedId(slug, userId);
-    return FlatFeed(id, _api.feed, userToken: userToken, secret: secret);
+    return FlatFeed(id, _api.feed,
+        userToken: userToken, secret: secret, appId: appId);
   }
 
   @override
   NotificationFeed notificationFeed(String slug, String userId) {
     final id = FeedId(slug, userId);
     return NotificationFeed(id, _api.feed,
-        userToken: userToken, secret: secret);
+        userToken: userToken, secret: secret, appId: appId);
   }
 
   @override

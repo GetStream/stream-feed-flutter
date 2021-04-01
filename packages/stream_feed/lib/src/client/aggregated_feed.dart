@@ -14,8 +14,8 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class AggregatedFeed extends Feed {
   const AggregatedFeed(FeedId feedId, FeedApi feed,
-      {Token? userToken, String? secret})
-      : super(feedId, feed, userToken: userToken, secret: secret);
+      {Token? userToken, String? secret, String? appId})
+      : super(feedId, feed, userToken: userToken, secret: secret, appId: appId);
 
   Future<List<Group<Activity>>> getActivities({
     int? limit,
