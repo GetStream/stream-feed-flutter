@@ -12,6 +12,8 @@ dependencies:
   equatable: ^2.0.0
   jose: ^0.3.0-nullsafety.2
   json_annotation: ^4.0.0
+  faye_dart:
+    path: ../faye_dart
 
 
 dev_dependencies:
