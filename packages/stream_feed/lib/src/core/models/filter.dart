@@ -6,7 +6,7 @@ enum _Filter {
 }
 
 extension _FilterX on _Filter {
-  String get name => {
+  String? get name => {
         _Filter.idGreaterThanOrEqual: 'id_gte',
         _Filter.idGreaterThan: 'id_gt',
         _Filter.idLessThanOrEqual: 'id_lte',
@@ -17,7 +17,7 @@ extension _FilterX on _Filter {
 class Filter {
   final Map<_Filter, String> _filters = {};
 
-  Map<String, String> get params =>
+  Map<String?, String> get params =>
       _filters.map((key, value) => MapEntry(key.name, value));
 
   Filter idGreaterThanOrEqual(String id) {

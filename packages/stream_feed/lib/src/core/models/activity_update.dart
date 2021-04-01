@@ -8,11 +8,11 @@ part 'activity_update.g.dart';
 class ActivityUpdate extends Equatable {
   ///
   const ActivityUpdate({
+    required this.set,
+    required this.unset,
     this.id,
     this.foreignId,
     this.time,
-    this.set,
-    this.unset,
   });
 
   ///
@@ -20,7 +20,7 @@ class ActivityUpdate extends Equatable {
     String id,
     Map<String, Object> set,
     List<String> unset,
-  ) => 
+  ) =>
       ActivityUpdate(
         id: id,
         set: set,
@@ -47,15 +47,15 @@ class ActivityUpdate extends Equatable {
 
   ///
   @JsonKey(includeIfNull: false)
-  final String id;
+  final String? id;
 
   ///
   @JsonKey(includeIfNull: false)
-  final String foreignId;
+  final String? foreignId;
 
   ///
   @JsonKey(includeIfNull: false)
-  final DateTime time;
+  final DateTime? time;
 
   ///
   final Map<String, Object> set;
@@ -67,7 +67,7 @@ class ActivityUpdate extends Equatable {
   Map<String, dynamic> toJson() => _$ActivityUpdateToJson(this);
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         foreignId,
         time,

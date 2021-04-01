@@ -16,14 +16,14 @@ class ActivityMarker {
   }
 
   ActivityMarker read(Iterable<String> activityIds) {
-    if (!_allRead && activityIds != null) {
+    if (!_allRead) {
       _readIds = {..._readIds, ...activityIds};
     }
     return this;
   }
 
   ActivityMarker seen(Iterable<String> activityIds) {
-    if (!_allSeen && activityIds != null) {
+    if (!_allSeen) {
       _seenIds = {..._seenIds, ...activityIds};
     }
     return this;

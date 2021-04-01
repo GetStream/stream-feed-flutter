@@ -8,39 +8,36 @@ part of 'reaction.dart';
 
 Reaction _$ReactionFromJson(Map json) {
   return Reaction(
-    id: json['id'] as String,
-    kind: json['kind'] as String,
-    activityId: json['activity_id'] as String,
-    userId: json['user_id'] as String,
-    parent: json['parent'] as String,
+    id: json['id'] as String?,
+    kind: json['kind'] as String?,
+    activityId: json['activity_id'] as String?,
+    userId: json['user_id'] as String?,
+    parent: json['parent'] as String?,
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
     updatedAt: json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String),
-    targetFeeds: FeedId.fromIds(json['target_feeds'] as List),
-    user: (json['user'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    targetFeeds: FeedId.fromIds(json['target_feeds'] as List?),
+    user: (json['user'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
-    targetFeedsExtraData: (json['target_feeds_extra_data'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    targetFeedsExtraData: (json['target_feeds_extra_data'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
-    data: (json['data'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    data: (json['data'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
-    latestChildren: (json['latest_children'] as Map)?.map(
+    latestChildren: (json['latest_children'] as Map?)?.map(
       (k, e) => MapEntry(
           k as String,
-          (e as List)
-              ?.map((e) => e == null
-                  ? null
-                  : Reaction.fromJson((e as Map)?.map(
-                      (k, e) => MapEntry(k as String, e),
-                    )))
-              ?.toList()),
+          (e as List<dynamic>)
+              .map(
+                  (e) => Reaction.fromJson(Map<String, dynamic>.from(e as Map)))
+              .toList()),
     ),
-    childrenCounts: (json['children_counts'] as Map)?.map(
+    childrenCounts: (json['children_counts'] as Map?)?.map(
       (k, e) => MapEntry(k as String, e as int),
     ),
   );

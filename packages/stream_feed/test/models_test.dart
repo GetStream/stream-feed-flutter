@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/group.dart';
@@ -105,8 +104,8 @@ void main() {
     );
     final groupJson = json.decode(fixture('group.json'));
     // expect(groupJson, matcher)
-    final groupFromJson =
-        Group.fromJson(groupJson, (e) => Activity.fromJson(e));
+    final groupFromJson = Group.fromJson(
+        groupJson, (e) => Activity.fromJson(e as Map<String, dynamic>?));
     expect(groupFromJson, group);
   });
 
@@ -139,7 +138,8 @@ void main() {
     final notificationGroupJson =
         json.decode(fixture('notification_group.json'));
     final notificationGroupFromJson = NotificationGroup.fromJson(
-        notificationGroupJson, (e) => Activity.fromJson(e));
+        notificationGroupJson,
+        (e) => Activity.fromJson(e as Map<String, dynamic>?));
     expect(notificationGroupFromJson, notificationGroup);
   });
   test('CollectionEntry', () {

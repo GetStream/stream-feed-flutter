@@ -9,17 +9,19 @@ import 'package:stream_feed_dart/src/core/models/filter.dart';
 import 'package:stream_feed_dart/src/core/models/group.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 
-import 'package:stream_feed_dart/src/cloud/feed/cloud_feed.dart';
+import 'package:stream_feed_dart/src/client/feed.dart';
+import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-class CloudAggregatedFeed extends CloudFeed {
-  const CloudAggregatedFeed(Token token, FeedId feedId, FeedApi feed)
-      : super(token, feedId, feed);
+class AggregatedFeed extends Feed {
+  const AggregatedFeed(FeedId feedId, FeedApi feed,
+      {Token? userToken, String? secret})
+      : super(feedId, feed, userToken: userToken, secret: secret);
 
   Future<List<Group<Activity>>> getActivities({
-    int limit,
-    int offset,
-    Filter filter,
-    ActivityMarker marker,
+    int? limit,
+    int? offset,
+    Filter? filter,
+    ActivityMarker? marker,
   }) async {
     final options = {
       'limit': limit ?? Default.limit,
@@ -27,19 +29,23 @@ class CloudAggregatedFeed extends CloudFeed {
       ...filter?.params ?? Default.filter.params,
       ...marker?.params ?? Default.marker.params,
     };
+
+    final token = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getActivities(token, feedId, options);
-    final data = (result.data['results'] as List)
-        .map((e) => Group.fromJson(e, (json) => Activity.fromJson(json)))
+    final data = (result.data!['results'] as List)
+        .map((e) => Group.fromJson(
+            e, (json) => Activity.fromJson(json as Map<String, dynamic>?)))
         .toList(growable: false);
     return data;
   }
 
   Future<List<Group<EnrichedActivity>>> getEnrichedActivities({
-    int limit,
-    int offset,
-    Filter filter,
-    ActivityMarker marker,
-    EnrichmentFlags flags,
+    int? limit,
+    int? offset,
+    Filter? filter,
+    ActivityMarker? marker,
+    EnrichmentFlags? flags,
   }) async {
     final options = {
       'limit': limit ?? Default.limit,
@@ -48,10 +54,12 @@ class CloudAggregatedFeed extends CloudFeed {
       ...marker?.params ?? Default.marker.params,
       ...flags?.params ?? Default.enrichmentFlags.params,
     };
+    final token = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
-        .map(
-            (e) => Group.fromJson(e, (json) => EnrichedActivity.fromJson(json)))
+        .map((e) => Group.fromJson(e,
+            (json) => EnrichedActivity.fromJson(json as Map<String, dynamic>?)))
         .toList(growable: false);
     return data;
   }

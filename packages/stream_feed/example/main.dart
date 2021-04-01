@@ -7,7 +7,7 @@ Future<void> main() async {
   const secret =
       '7j7exnksc4nxy399fdxvjqyqsqdahax3nfgtp27pumpc7sfm9um688pzpxjpjbf2';
 
-  var client = StreamClient.connect(apiKey, secret);
+  var client = StreamClient.connect(apiKey, secret: secret);
 
   final chris = client.flatFeed('user', 'chris');
 
@@ -119,7 +119,7 @@ Future<void> main() async {
 
   const foreignID = 'product:123';
   final timestamp = DateTime.now();
-  var activityUpdate = ActivityUpdate.withForeignId(
+  final activityUpdate = ActivityUpdate.withForeignId(
     foreignID,
     timestamp,
     set,
@@ -195,7 +195,7 @@ Future<void> main() async {
 
   // list followers
   final followers = await userFeed.getFollowers(limit: 10, offset: 0);
-  for (var follow in followers) {
+  for (final follow in followers) {
     print('${follow.feedId} -> ${follow.targetId}');
   }
 
@@ -218,7 +218,7 @@ Future<void> main() async {
   var activityGroups = await notifications.getActivities(
     marker: ActivityMarker().allSeen(),
   );
-  for (var group in activityGroups) {
+  for (final group in activityGroups) {
     // ...
   }
 
@@ -283,7 +283,7 @@ Future<void> main() async {
 
   // Batch following many feeds
   // Let timeline:1 will follow user:1, user:2 and user:3
-  var follows = <Follow>[
+  final follows = <Follow>[
     const Follow('timeline:1', 'user:1'),
     const Follow('timeline:1', 'user:2'),
     const Follow('timeline:1', 'user:3'),
@@ -347,19 +347,19 @@ Future<void> main() async {
   // connect to the us-east region
   client = StreamClient.connect(
     apiKey,
-    secret,
+    secret: secret,
     options: const StreamClientOptions(),
   );
 
   /* -------------------------------------------------------- */
 
   // add a like reaction to the activity with id activityId
-  final like = await client.reactions.add('like', activity.id, 'john-doe');
+  final like = await client.reactions.add('like', activity.id!, 'john-doe');
 
   // adds a comment reaction to the activity with id activityId
   final comment = await client.reactions.add(
     'comment',
-    activity.id,
+    activity.id!,
     'john-doe',
     data: {'text': 'awesome post!'},
   );
@@ -371,7 +371,7 @@ Future<void> main() async {
   activity = response.first;
 
   // then let's add a like reaction to that activity
-  await client.reactions.add('like', activity.id, 'john-doe');
+  await client.reactions.add('like', activity.id!, 'john-doe');
 
   /* -------------------------------------------------------- */
 
@@ -379,7 +379,7 @@ Future<void> main() async {
   // and notify Thierry's notification feed
   await client.reactions.add(
     'comment',
-    activity.id,
+    activity.id!,
     'john-doe',
     targetFeeds: <FeedId>[FeedId.id('notification:thierry')],
   );
@@ -428,9 +428,9 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   // adds a like to the previously created comment
-  var reaction = await client.reactions.addChild(
+  final reaction = await client.reactions.addChild(
     'like',
-    comment.id,
+    comment.id!,
     'john-doe',
   );
 
@@ -443,7 +443,7 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  await client.reactions.delete(reaction.id);
+  await client.reactions.delete(reaction.id!);
 
   /* -------------------------------------------------------- */
 
@@ -469,7 +469,7 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  var collection = await client.collections.get('food', 'cheese-burger');
+  final collection = await client.collections.get('food', 'cheese-burger');
 
   /* -------------------------------------------------------- */
 

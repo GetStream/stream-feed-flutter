@@ -8,9 +8,9 @@ part of 'user.dart';
 
 User _$UserFromJson(Map json) {
   return User(
-    id: json['id'] as String,
-    data: (json['data'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e),
+    id: json['id'] as String?,
+    data: (json['data'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, e as Object),
     ),
     createdAt: json['created_at'] == null
         ? null
@@ -18,8 +18,8 @@ User _$UserFromJson(Map json) {
     updatedAt: json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String),
-    followersCount: json['followers_count'] as int,
-    followingCount: json['following_count'] as int,
+    followersCount: json['followers_count'] as int?,
+    followingCount: json['following_count'] as int?,
   );
 }
 
