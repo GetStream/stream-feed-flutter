@@ -26,18 +26,18 @@ class MockWSSink extends Mock implements WebSocketSink {}
 
 main() {
   test('FayeClient', () async {
-    final computedUrl = 'wss://faye-us-east.stream-io-api.com/faye';
+    const computedUrl = 'wss://faye-us-east.stream-io-api.com/faye';
     final faye = FayeClient(computedUrl);
     const apiKey = 'ay57s8swfnan';
     const appId = '110925';
 
     final client = StreamClient.connect(apiKey,
         secret:
-            "ajencvb6gfrbzvt2975kk3563j3vg86fhrswjsbk32zzgjcgtfn3293er4tk9bf4",
+            'ajencvb6gfrbzvt2975kk3563j3vg86fhrswjsbk32zzgjcgtfn3293er4tk9bf4',
         appId: appId);
     const userId = '1';
-    final slug = "reward";
-    final userFeed = client.flatFeed('$slug', userId);
+    const slug = 'reward';
+    final userFeed = client.flatFeed(slug, userId);
 
     // expect(client.frontendToken(userId), "matcher");
 
