@@ -1,3 +1,4 @@
+import 'package:faye_dart/faye_dart.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
@@ -12,8 +13,17 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class FlatFeed extends Feed {
   FlatFeed(FeedId feedId, FeedApi feed,
-      {Token? userToken, String? secret, String? appId})
-      : super(feedId, feed, userToken: userToken, secret: secret, appId: appId);
+      {Token? userToken,
+      String? secret,
+      String? appId,
+      String? apiKey,
+      FayeClient? faye})
+      : super(feedId, feed,
+            userToken: userToken,
+            secret: secret,
+            appId: appId,
+            apiKey: apiKey,
+            faye: faye);
 
   Future<List<Activity>> getActivities({
     int? limit,

@@ -1,3 +1,4 @@
+import 'package:faye_dart/faye_dart.dart';
 import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
 import 'package:stream_feed_dart/src/client/notification_feed.dart';
@@ -19,23 +20,28 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class StreamClientImpl implements StreamClient {
-  StreamClientImpl(
-    String apiKey, {
-    this.userToken,
-    StreamClientOptions? options,
-    StreamApi? api,
-    this.secret,
-    this.appId,
-  })  : assert(
+  StreamClientImpl(this.apiKey,
+      {this.userToken,
+      StreamClientOptions? options,
+      StreamApi? api,
+      this.secret,
+      this.appId,
+      this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye'})
+      : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
         _api = api ??
-            StreamApiImpl(apiKey, options: options ?? StreamClientOptions());
+            StreamApiImpl(apiKey, options: options ?? StreamClientOptions()) {
+    faye = FayeClient(fayeUrl, authExtension: AuthExtension());
+  }
+  final String apiKey;
   final String? appId;
   final Token? userToken;
   final StreamApi _api;
   final String? secret;
+  final String fayeUrl;
+  late FayeClient faye;
 
   @override
   BatchOperationsClient get batch {
@@ -67,21 +73,25 @@ class StreamClientImpl implements StreamClient {
   AggregatedFeed aggregatedFeed(String slug, String userId) {
     final id = FeedId(slug, userId);
     return AggregatedFeed(id, _api.feed,
-        userToken: userToken, secret: secret, appId: appId);
+        userToken: userToken, secret: secret, appId: appId, faye: faye);
   }
 
   @override
   FlatFeed flatFeed(String slug, String userId) {
     final id = FeedId(slug, userId);
     return FlatFeed(id, _api.feed,
-        userToken: userToken, secret: secret, appId: appId);
+        apiKey: apiKey,
+        userToken: userToken,
+        secret: secret,
+        appId: appId,
+        faye: faye);
   }
 
   @override
   NotificationFeed notificationFeed(String slug, String userId) {
     final id = FeedId(slug, userId);
     return NotificationFeed(id, _api.feed,
-        userToken: userToken, secret: secret, appId: appId);
+        userToken: userToken, secret: secret, appId: appId, faye: faye);
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:faye_dart/faye_dart.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
@@ -14,17 +15,38 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  const Feed(this.feedId, this.feed, {this.userToken, this.secret,this.appId})
+  Feed(this.feedId, this.feed,
+      {this.userToken, this.secret, this.appId, this.faye, this.apiKey})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
-        );
+        ) {
+    setFayeAuthorization();
+    faye!.connect();
+  }
+
+  final FayeClient? faye;
+  final String? apiKey;
 
   /// Your API secret
   final String? secret;
   final Token? userToken;
   String get _feedTogether => "${feedId.slug}${feedId.userId}";
-  String get notificationChannel => 'site-$appId-feed-$_feedTogether';
+  String get _notificationChannel => 'site-$appId-feed-$_feedTogether';
+
+  Future<void> subscribe({required void Function(String) callback}) async {
+    await faye!.subscribe('/$_notificationChannel', callback: callback);
+  }
+
+  void setFayeAuthorization() {
+    final feedToken = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
+    faye!.authExtension!.ext = {
+      'user_id': _notificationChannel,
+      'api_key': apiKey!,
+      'signature': feedToken.token,
+    };
+  }
 
   final String? appId;
 

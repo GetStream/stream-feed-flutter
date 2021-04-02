@@ -34,13 +34,19 @@ typedef VoidCallback = void Function();
 const defaultConnectionTimeout = 60;
 const defaultConnectionInterval = 0;
 
-class FayeClient {
+class AuthExtension {
+  Map<String, String>? ext = {};
+  Map<String, String>? getAuth() => ext; //TODO: throw missing implementation
+}
+
+class FayeClient<T extends AuthExtension> {
   final String baseUrl;
   final Iterable<String>? protocols;
   final bool logsEnabled;
   final int healthCheckInterval;
   final int maxAttemptsToReconnect;
   final _channels = <String, Channel>{};
+  final T? authExtension;
   late WebSocketChannel? _webSocketChannel;
 
   int _attemptsToReconnect = 0;
@@ -90,6 +96,7 @@ class FayeClient {
 
   FayeClient(
     this.baseUrl, {
+    this.authExtension,
     this.protocols,
     this.logsEnabled = false,
     this.healthCheckInterval = 10,
@@ -352,12 +359,8 @@ class FayeClient {
       channel: _channels[channel],
       clientId: _clientId,
     );
-    if (auth != null) {
-      message.ext = getAuth(
-          apiKey: "ay57s8swfnan",
-          token:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSJ9.9Xeyd2J2HadWi-FCwCDGGX2x62Ospe24zJcX-AJ6eHw",
-          userId: 'site-110925-feed-reward1');
+    if ((auth != null) & (authExtension != null)) {
+      message.ext = authExtension!.getAuth();
     }
     print("sending message : $message");
     final data = jsonEncode(message);
@@ -451,15 +454,15 @@ class FayeClient {
     }
   }
 
-  Map<String, Object>? getAuth(
-          {required String userId,
-          required String apiKey,
-          required String token}) =>
-      {
-        "user_id": userId,
-        "api_key": apiKey,
-        "signature": token,
-      };
+  // Map<String, Object>? getAuth(
+  //         {required String userId,
+  //         required String apiKey,
+  //         required String token}) =>
+  //     {
+  //       "user_id": userId,
+  //       "api_key": apiKey,
+  //       "signature": token,
+  //     };
 }
 
 class _WebSocketPing {
