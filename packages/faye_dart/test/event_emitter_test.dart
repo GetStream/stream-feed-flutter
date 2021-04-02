@@ -12,7 +12,6 @@ main() {
     expect(eventEmitter.hasListeners('event'), true);
     eventEmitter.emit('event', 'data');
     expect(logs, ['data']);
-
   });
 }
 

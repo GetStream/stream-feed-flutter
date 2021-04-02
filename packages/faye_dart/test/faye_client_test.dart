@@ -31,6 +31,5 @@ main() {
     await faye.connect();
     await expectLater(
         faye.stateStream, emitsInOrder([FayeClientState.connected]));
-
   });
 }
