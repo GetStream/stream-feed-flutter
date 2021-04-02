@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 
 import 'channel.dart';
 
-int _messageId = 0; //TODO: weird uuid instead?
+int _messageId = 0; //TODO: weird, uuid instead?
 
 abstract class _MessageObject {
   static String get id {

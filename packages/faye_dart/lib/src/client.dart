@@ -36,7 +36,7 @@ const defaultConnectionInterval = 0;
 
 class AuthExtension {
   Map<String, String>? ext = {};
-  Map<String, String>? getAuth() => ext; //TODO: throw missing implementation
+  Map<String, String>? getAuth() => ext; //TODO: throw maybe?
 }
 
 class FayeClient<T extends AuthExtension> {
@@ -453,16 +453,6 @@ class FayeClient<T extends AuthExtension> {
           ''');
     }
   }
-
-  // Map<String, Object>? getAuth(
-  //         {required String userId,
-  //         required String apiKey,
-  //         required String token}) =>
-  //     {
-  //       "user_id": userId,
-  //       "api_key": apiKey,
-  //       "signature": token,
-  //     };
 }
 
 class _WebSocketPing {

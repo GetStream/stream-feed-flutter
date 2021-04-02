@@ -48,8 +48,6 @@ main() {
     const slug = 'reward';
     final userFeed = client.flatFeed(slug, userId);
 
-    // expect(client.frontendToken(userId), "matcher");
-
     final activity = Activity(
       actor: '$slug:$userId',
       verb: 'tweet',
@@ -62,12 +60,6 @@ main() {
     await userFeed.addActivity(activity);
 
     final logs = [];
-    // await expectLater(
-    //     faye.stateStream, emitsInOrder([FayeClientState.unconnected]));
-
-    // await faye.connect();
-    // await expectLater(
-    //     faye.stateStream, emitsInOrder([FayeClientState.connected]));
     userFeed.subscribe(callback: logs.add);
 
     expect(logs, []);

@@ -31,12 +31,6 @@ main() {
     await faye.connect();
     await expectLater(
         faye.stateStream, emitsInOrder([FayeClientState.connected]));
-    // const appId = 110925;
-    // const timeline = "scott";
-    // var notificationChannel = "site-$appId-feed-${timeline}";
-    // await faye.subscribe("/$notificationChannel",
-    //     callback: (data) => logs.add(data));
 
-    // expect(logs, []);
   });
 }
