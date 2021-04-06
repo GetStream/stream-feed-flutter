@@ -1,15 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/api/users_api.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/user.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:test/test.dart';
 
+import 'mock.dart';
 import 'utils.dart';
-
-class MockHttpClient extends Mock implements HttpClient {}
 
 Future<void> main() async {
   group('Users API', () {

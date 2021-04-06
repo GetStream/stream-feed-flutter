@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
@@ -9,9 +8,8 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
 
+import 'mock.dart';
 import 'utils.dart';
-
-class MockHttpClient extends Mock implements HttpClient {}
 
 Future<void> main() async {
   group('Reactions API', () {
@@ -25,7 +23,7 @@ Future<void> main() async {
       const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
       final filter =
           Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
-      final limit = Default.limit;
+      const limit = Default.limit;
       const kind = 'like';
       when(() => mockClient.get<Map>(
             Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
@@ -156,7 +154,7 @@ Future<void> main() async {
       const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
       final filter =
           Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
-      final limit = Default.limit;
+      const limit = Default.limit;
       const kind = 'like';
       when(() => mockClient.get(
             Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),

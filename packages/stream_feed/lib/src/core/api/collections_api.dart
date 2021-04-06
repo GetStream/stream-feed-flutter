@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
+import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
@@ -8,11 +8,10 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 class CollectionsApi {
   const CollectionsApi(this.client);
 
-  final HttpClient client;
+  final StreamHttpClient client;
 
   Future<CollectionEntry> add(
       Token token, String? userId, CollectionEntry entry) async {
-    checkNotNull(entry, "Collection can't be null");
     checkNotNull(entry.collection, "Collection name can't be null");
     checkArgument(
         entry.collection!.isNotEmpty, "Collection name can't be empty");
@@ -31,9 +30,7 @@ class CollectionsApi {
 
   Future<Response> delete(
       Token token, String collection, String entryId) async {
-    checkNotNull(collection, "Collection name can't be null");
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
-    checkNotNull(entryId, "Collection id can't be null");
     checkArgument(entryId.isNotEmpty, "Collection id can't be empty");
     return client.delete(
       Routes.buildCollectionsUrl('$collection/$entryId/'),
@@ -43,9 +40,7 @@ class CollectionsApi {
 
   Future<Response> deleteMany(
       Token token, String collection, Iterable<String> entryIds) async {
-    checkNotNull(collection, "Collection name can't be null");
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
-    checkNotNull(entryIds, "Collection ids can't be null");
     checkArgument(entryIds.isNotEmpty, "Collection ids can't be empty");
     return client.delete(
       Routes.buildCollectionsUrl(),
@@ -59,9 +54,7 @@ class CollectionsApi {
 
   Future<CollectionEntry> get(
       Token token, String collection, String entryId) async {
-    checkNotNull(collection, "Collection name can't be null");
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
-    checkNotNull(entryId, "Collection id can't be null");
     checkArgument(entryId.isNotEmpty, "Collection id can't be empty");
     final result = await client.get<Map>(
       Routes.buildCollectionsUrl('$collection/$entryId/'),
@@ -72,9 +65,7 @@ class CollectionsApi {
 
   Future<List<CollectionEntry>> select(
       Token token, String collection, Iterable<String> entryIds) async {
-    checkNotNull(collection, "Collection name can't be null");
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
-    checkNotNull(entryIds, "Collection ids can't be null");
     checkArgument(entryIds.isNotEmpty, "Collection ids can't be empty");
     final result = await client.get<Map>(
       Routes.buildCollectionsUrl(),
@@ -95,7 +86,6 @@ class CollectionsApi {
     checkNotNull(entry.collection, "Collection name can't be null");
     checkArgument(
         entry.collection!.isNotEmpty, "Collection name can't be empty");
-    checkNotNull(entry.data, "Collection data can't be null");
     final result = await client.put<Map>(
       Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
       headers: {'Authorization': '$token'},
@@ -109,9 +99,7 @@ class CollectionsApi {
 
   Future<Response> upsert(
       Token token, String collection, Iterable<CollectionEntry> entries) async {
-    checkNotNull(collection, "Collection name can't be null");
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
-    checkNotNull(entries, "Collection data can't be null");
     checkArgument(entries.isNotEmpty, "Collection data can't be empty");
     return client.post(
       Routes.buildCollectionsUrl(),
