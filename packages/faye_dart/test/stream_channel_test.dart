@@ -68,6 +68,9 @@ class ChannelsBloc {
   void trigger(String eventType, String rawMessage) {
     _channels[eventType]!.add(rawMessage);
   }
+
+  bool hasListeners(String event_message) =>
+      _channels.containsKey(event_message);
 }
 
 main() {
@@ -77,7 +80,9 @@ main() {
   });
   test('decodes JSON emitted by the channel', () {
     const event_message = 'message';
+    expect(bloc.hasListeners(event_message), false);
     bloc.bind(event_message);
+    expect(bloc.hasListeners(event_message), true);
     var subscription = bloc.subscribe(event_message);
     bloc.trigger(event_message, '{"channel": "bayeuxChannel"}');
 
