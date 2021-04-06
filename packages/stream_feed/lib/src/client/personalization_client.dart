@@ -4,7 +4,6 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class PersonalizationClient {
-  ///Initialize a Personalization client
   const PersonalizationClient(
     this.personalization, {
     this.userToken,
@@ -27,13 +26,13 @@ class PersonalizationClient {
     return personalization.get(token, resource, params);
   }
 
-  // Server side methods
+  //------------------------- Server side methods ----------------------------//
   Future<void> post(
     String resource,
     Map<String, Object> params, {
     Map<String, Object>? payload,
   }) {
-    checkNotNull(secret, '');
+    checkNotNull(secret, "You can't use this method client side");
     final token =
         TokenHelper.buildPersonalizationToken(secret!, TokenAction.write);
     return personalization.post(token, resource, params, payload);
@@ -43,7 +42,7 @@ class PersonalizationClient {
     String resource, {
     Map<String, Object>? params,
   }) {
-    checkNotNull(secret, '');
+    checkNotNull(secret, "You can't use this method client side");
     final token =
         TokenHelper.buildPersonalizationToken(secret!, TokenAction.delete);
     return personalization.delete(token, resource, params);

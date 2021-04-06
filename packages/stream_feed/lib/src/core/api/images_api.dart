@@ -26,7 +26,7 @@ class ImagesApi {
   Future<String?> get(
     Token token,
     String targetUrl, {
-    Map<String, Object>? options,
+    Map<String, Object?>? options,
   }) async {
     final result = await client.get(
       Routes.imagesUrl,

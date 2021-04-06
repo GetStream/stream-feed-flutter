@@ -13,7 +13,7 @@ class PersonalizationApi {
   Future<Map> get(
     Token token,
     String resource,
-    Map<String, Object>? params,
+    Map<String, Object?>? params,
   ) async {
     checkArgument(resource.isNotEmpty, "Resource can't be empty");
     if (params != null) checkArgument(params.isNotEmpty, 'Missing params');
@@ -29,8 +29,8 @@ class PersonalizationApi {
   Future<Response> post(
     Token token,
     String resource,
-    Map<String, Object> params,
-    Map<String, Object>? payload,
+    Map<String, Object?> params,
+    Map<String, Object?>? payload,
   ) async {
     checkArgument(resource.isNotEmpty, "Resource can't be empty");
     checkArgument(params.isNotEmpty, 'Missing params');
@@ -47,7 +47,7 @@ class PersonalizationApi {
   Future<Response> delete(
     Token token,
     String resource,
-    Map<String, Object>? params,
+    Map<String, Object?>? params,
   ) {
     checkArgument(resource.isNotEmpty, "Resource can't be empty");
     if (params != null) checkArgument(params.isNotEmpty, 'Missing params');
