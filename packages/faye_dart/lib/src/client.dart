@@ -381,7 +381,7 @@ class FayeClient<T extends AuthExtension> {
     final hasSubscribe = _channels.contains(channel);
 
     if (hasSubscribe && !force) {
-      _channels.subscribe([channel], subscription);
+      _channels.subscribe([channel], subscription);//TODO channel expand
       subscription._complete();
     } else {
       if (!force) _channels.subscribe([channel], subscription);
@@ -409,7 +409,7 @@ class FayeClient<T extends AuthExtension> {
     }
   }
 
-  _deliverMessage(Message message) {
+  void _deliverMessage(Message message) {
     // if (message.data == null) return;
     // this.info('Client ? calling listeners for ? with ?', this._dispatcher.clientId, message.channel, message.data);
     _channels.distributeMessage(message);

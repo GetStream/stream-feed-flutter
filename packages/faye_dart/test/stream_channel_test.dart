@@ -47,15 +47,42 @@ class MessageBloc {
   }
 }
 
+class ChannelsBloc {
+  late Map<String, MessageBloc> _channels;
+  ChannelsBloc() {
+    _channels = {};
+  }
+  Stream<Message?> subscribe(String eventType) {
+    return _channels[eventType]!.messages;
+  }
+
+  void bind(String eventType) {
+    _channels[eventType] = MessageBloc();
+  }
+
+  void unbind(String eventType) {
+    _channels[eventType]!.dispose();
+    _channels.remove(eventType);
+  }
+
+  void trigger(String eventType, String rawMessage) {
+    _channels[eventType]!.add(rawMessage);
+  }
+}
+
 main() {
-  late MessageBloc bloc;
+  late ChannelsBloc bloc;
   setUp(() {
-    bloc = MessageBloc();
+    bloc = ChannelsBloc();
   });
   test('decodes JSON emitted by the channel', () {
-    bloc.add('{"channel": "bayeuxChannel"}');
+    const event_message = 'message';
+    bloc.bind(event_message);
+    var subscription = bloc.subscribe(event_message);
+    bloc.trigger(event_message, '{"channel": "bayeuxChannel"}');
+
     expectLater(
-        bloc.messages,
+        subscription,
         emitsInOrder(
             [Message("bayeuxChannel", channel: Channel(name: "hey"))]));
   });
