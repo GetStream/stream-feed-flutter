@@ -36,7 +36,7 @@ class MessageBloc {
         StreamChannel<String>(_streamController.stream, _sinkController.sink);
   }
 
-  Stream<Message?> get messages => _transformed.stream;
+  Stream<Message?> get messages => _transformed.stream.asBroadcastStream();
 
   void add(String rawMessage) {
     _streamController.add(rawMessage);
