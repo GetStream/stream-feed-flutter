@@ -5,6 +5,7 @@ import 'package:faye_dart/src/channel.dart';
 import 'package:faye_dart/src/message.dart';
 import 'package:stream_channel/stream_channel.dart';
 import 'package:test/test.dart';
+import 'package:rxdart/rxdart.dart';
 
 class _MessageTransformer
     implements StreamChannelTransformer<Message?, String> {
@@ -30,7 +31,7 @@ class MessageBloc {
       _channel.transform(_MessageTransformer());
 
   MessageBloc() {
-    _streamController = StreamController<String>();
+    _streamController = StreamController<String>.broadcast(sync: true);
     _sinkController = StreamController<String>();
     _channel =
         StreamChannel<String>(_streamController.stream, _sinkController.sink);
@@ -53,11 +54,10 @@ class ChannelsBloc {
     _channels = {};
   }
   Stream<Message?> subscribe(String eventType) {
+    if (!_channels.containsKey(eventType)) {
+      _channels[eventType] = MessageBloc();
+    }
     return _channels[eventType]!.messages;
-  }
-
-  void bind(String eventType) {
-    _channels[eventType] = MessageBloc();
   }
 
   void unbind(String eventType) {
@@ -81,14 +81,18 @@ main() {
   test('decodes JSON emitted by the channel', () {
     const event_message = 'message';
     expect(bloc.hasListeners(event_message), false);
-    bloc.bind(event_message);
-    expect(bloc.hasListeners(event_message), true);
     var subscription = bloc.subscribe(event_message);
-    bloc.trigger(event_message, '{"channel": "bayeuxChannel"}');
+    expect(bloc.hasListeners(event_message), true);
+    var subscription2 = bloc.subscribe(event_message);
 
-    expectLater(
-        subscription,
-        emitsInOrder(
-            [Message("bayeuxChannel", channel: Channel(name: "hey"))]));
+    subscription.listen((event) {
+      print("subscription1 $event");
+    });
+
+    subscription2.listen((event) {
+      print("subscription2 $event");
+    });
+
+    bloc.trigger(event_message, '{"channel": "bayeuxChannel"}');
   });
 }
