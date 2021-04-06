@@ -14,10 +14,35 @@ main() {
 
   group('Message', () {
     test('fromJson', () {
+      var data = {
+        "id": "test",
+        "group": "test",
+        "activities": [
+          {
+            "id": "test",
+            "actor": "test",
+            "verb": "test",
+            "object": "test",
+            "foreign_id": "test",
+            "target": "test",
+            "time": "2001-09-11T00:01:02.000",
+            "origin": "test",
+            "to": ["slug:id"],
+            "score": 1.0,
+            "analytics": {"test": "test"},
+            "extra_context": {"test": "test"},
+            "test": "test"
+          }
+        ],
+        "actor_count": 1,
+        "created_at": "2001-09-11T00:01:02.000",
+        "updated_at": "2001-09-11T00:01:02.000"
+      };
       final message = Message.fromJson(
-        {'channel': 'bayeuxChannel'},
+        {'channel': 'bayeuxChannel', 'data': data},
       );
-      expect(message, Message("bayeuxChannel", channel: Channel(name: "hey")));
+      expect(message,
+          Message("bayeuxChannel", channel: Channel(name: "hey"), data: data));
     });
 
     test('bayeuxChannel equals handshake_channel', () {

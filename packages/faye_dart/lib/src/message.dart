@@ -26,14 +26,17 @@ class Message extends Equatable {
   bool? successful;
   String? subscription;
   Map<String, Object>? ext;
+  Map<String, Object>? data;
   String? error;
 
   Message(
     String bayeuxChannel, {
     Channel? channel,
+    Map<String, Object>? data,
     this.clientId,
   })  : id = _MessageObject.id,
-        channel = bayeuxChannel {
+        channel = bayeuxChannel,
+        data = data {
     if (bayeuxChannel == handshake_channel) {
       version = '1.0';
       minimumVersion = '1.0';
@@ -48,20 +51,21 @@ class Message extends Equatable {
   }
 
   Map<String, Object?> toJson() {
-    final data = <String, Object?>{};
-    if (clientId != null) data['clientId'] = clientId;
-    data['channel'] = channel;
-    if (connectionType != null) data['connectionType'] = connectionType;
-    if (version != null) data['version'] = version;
-    if (minimumVersion != null) data['minimumVersion'] = minimumVersion;
+    final result = <String, Object?>{};
+    if (clientId != null) result['clientId'] = clientId;
+    result['data'] = data;
+    result['channel'] = channel;
+    if (connectionType != null) result['connectionType'] = connectionType;
+    if (version != null) result['version'] = version;
+    if (minimumVersion != null) result['minimumVersion'] = minimumVersion;
     if (supportedConnectionTypes != null)
-      data['supportedConnectionTypes'] = supportedConnectionTypes;
-    if (advice != null) data['advice'] = advice;
-    if (successful != null) data['successful'] = successful;
-    if (subscription != null) data['subscription'] = subscription;
-    if (ext != null) data['ext'] = ext;
-    if (version != null) data['error'] = error;
-    return data;
+      result['supportedConnectionTypes'] = supportedConnectionTypes;
+    if (advice != null) result['advice'] = advice;
+    if (successful != null) result['successful'] = successful;
+    if (subscription != null) result['subscription'] = subscription;
+    if (ext != null) result['ext'] = ext;
+    if (version != null) result['error'] = error;
+    return result;
   }
 
   @override
@@ -78,6 +82,7 @@ class Message extends Equatable {
           .toList()
       ..successful = json['successful'] as bool?
       ..subscription = json['subscription'] as String?
+      ..data = json['data'] as Map<String, Object>?
       ..ext = json['ext'] as Map<String, Object>?
       ..error = json['error'] as String?;
 
@@ -89,7 +94,7 @@ class Message extends Equatable {
   }
 
   @override
-  List<Object?> get props => [clientId, channel]; //, id
+  List<Object?> get props => [clientId, channel, data]; //, id
 }
 
 class Advice extends Equatable {

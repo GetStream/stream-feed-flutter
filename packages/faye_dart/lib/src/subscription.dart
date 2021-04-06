@@ -36,8 +36,8 @@ class Subscription {
 // },
 
   void call(Message message) {
-    _callback?.call('');
-    _withChannel?.call(message.channel, '');
+    _callback?.call(message.data.toString());
+    _withChannel?.call(message.channel, message.data.toString());
   }
 
   Subscription withChannel(WithChannelCallback withChannel) {
