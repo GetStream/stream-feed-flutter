@@ -6,11 +6,9 @@ import 'package:faye_dart/src/message.dart';
 import 'package:stream_channel/stream_channel.dart';
 import 'package:test/test.dart';
 
-final StreamChannelTransformer<Message?, String> jsonDocument =
-    const _JsonDocument();
-
-class _JsonDocument implements StreamChannelTransformer<Message?, String> {
-  const _JsonDocument();
+class _MessageTransformer
+    implements StreamChannelTransformer<Message?, String> {
+  const _MessageTransformer();
 
   @override
   StreamChannel<Message?> bind(StreamChannel<String> channel) {
@@ -24,22 +22,41 @@ class _JsonDocument implements StreamChannelTransformer<Message?, String> {
   }
 }
 
+class MessageBloc {
+  late StreamController<String> _streamController;
+  late StreamController<String> _sinkController;
+  late StreamChannel<String> _channel;
+  late StreamChannel<Message?> _transformed =
+      _channel.transform(_MessageTransformer());
+
+  MessageBloc() {
+    _streamController = StreamController<String>();
+    _sinkController = StreamController<String>();
+    _channel =
+        StreamChannel<String>(_streamController.stream, _sinkController.sink);
+  }
+
+  Stream<Message?> get messages => _transformed.stream;
+
+  void add(String rawMessage) {
+    _streamController.add(rawMessage);
+  }
+
+  void dispose() {
+    _streamController.close();
+  }
+}
+
 main() {
-  late StreamController<String> streamController;
-  late StreamController<String> sinkController;
-  late StreamChannel<String> channel;
+  late MessageBloc bloc;
   setUp(() {
-    streamController = StreamController<String>();
-    sinkController = StreamController<String>();
-    channel =
-        StreamChannel<String>(streamController.stream, sinkController.sink);
+    bloc = MessageBloc();
   });
   test('decodes JSON emitted by the channel', () {
-    var transformed = channel.transform(jsonDocument);
-    streamController.add('{"channel": "bayeuxChannel"}');
-    expect(
-        transformed.stream.first,
-        completion(
-            equals(Message("bayeuxChannel", channel: Channel(name: "hey")))));
+    bloc.add('{"channel": "bayeuxChannel"}');
+    expectLater(
+        bloc.messages,
+        emitsInOrder(
+            [Message("bayeuxChannel", channel: Channel(name: "hey"))]));
   });
 }
