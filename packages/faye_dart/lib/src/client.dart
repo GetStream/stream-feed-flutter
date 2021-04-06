@@ -381,7 +381,7 @@ class FayeClient<T extends AuthExtension> {
     final hasSubscribe = _channels.contains(channel);
 
     if (hasSubscribe && !force) {
-      _channels.subscribe([channel], subscription);//TODO channel expand
+      _channels.subscribe([channel], subscription); //TODO channel expand
       subscription._complete();
     } else {
       if (!force) _channels.subscribe([channel], subscription);
