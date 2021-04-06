@@ -82,7 +82,6 @@ class Message extends Equatable {
       ..error = json['error'] as String?;
 
     final advice = json['advice'];
-    print("received advice: $advice");
     if (advice != null) {
       message..advice = Advice.fromJson(advice as Map<String, Object?>);
     }
