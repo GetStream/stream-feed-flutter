@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:async/async.dart';
-import 'package:faye_dart/src/channel.dart';
 import 'package:faye_dart/src/message.dart';
 import 'package:stream_channel/stream_channel.dart';
 import 'package:test/test.dart';
-import 'package:rxdart/rxdart.dart';
 
 class _MessageTransformer
     implements StreamChannelTransformer<Message?, String> {
@@ -85,14 +83,13 @@ main() {
     expect(bloc.hasListeners(event_message), true);
     var subscription2 = bloc.subscribe(event_message);
 
-    subscription.listen((event) {
-      print("subscription1 $event");
-    });
+    subscription.listen(expectAsync1((result) {
+      expect(result, Message("bayeuxChannel"));
+    }));
 
-    subscription2.listen((event) {
-      print("subscription2 $event");
-    });
-
+    subscription2.listen(expectAsync1((result) {
+      expect(result, Message("bayeuxChannel"));
+    }));
     bloc.trigger(event_message, '{"channel": "bayeuxChannel"}');
   });
 }
