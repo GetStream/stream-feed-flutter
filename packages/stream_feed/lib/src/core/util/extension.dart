@@ -1,8 +1,8 @@
 /// Convenient class Extension on [Map]
-extension MapX on Map {
+extension MapX<K, V> on Map<K, V> {
   /// return a [Map] with no null entries (in their key or values)
-  Map<String, dynamic> get nullProtect => this as Map<String, dynamic>
-    ..removeWhere((dynamic key, value) => key == null || value == null);
+  Map<K, V> get nullProtected =>
+      this..removeWhere((key, value) => key == null || value == null);
 }
 
 /// Throws an [ArgumentError] if the given [expression] is `false`.
