@@ -2,6 +2,7 @@ import 'package:stream_feed_dart/src/core/location.dart';
 
 import 'package:stream_feed_dart/version.dart';
 
+/// Stream Client Options used by Stream http client
 class StreamClientOptions {
   const StreamClientOptions({
     this.version = 'v1.0',
@@ -14,7 +15,11 @@ class StreamClientOptions {
 
   /// advanced usage, custom api versio
   final String version;
+
+  /// the name of the service
   final String serviceName;
+
+  /// base Domain Name
   final String baseDomainName;
 
   /// which data center to use
@@ -26,8 +31,10 @@ class StreamClientOptions {
   /// received timeout
   final Duration receiveTimeout;
 
+  /// base url
   String get baseUrl => 'https://${location.name}-$serviceName.$baseDomainName';
 
+  /// route Base Path
   String get routeBasePath => '/$serviceName/$version/';
 
   /// Getter for the current user agent
