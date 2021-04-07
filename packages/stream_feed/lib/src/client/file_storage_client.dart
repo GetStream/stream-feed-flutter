@@ -3,13 +3,21 @@ import 'package:stream_feed_dart/src/core/api/files_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
+/// This API endpoint allows you to upload files
+/// and to process your images (eg. create image thumbnails).
 class FileStorageClient {
+  /// Initialize a FileStorageClient object
   const FileStorageClient(this.files, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         );
+
+  /// Your API secret
   final String? secret;
+
+  /// Your user token obtain via the dashboard.
+  /// Required if you are using the sdk client side
   final Token? userToken;
   final FilesApi files;
 
