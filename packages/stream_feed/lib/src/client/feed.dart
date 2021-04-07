@@ -22,6 +22,9 @@ class Feed {
 
   /// Your API secret
   final String? secret;
+
+  /// Your user token obtain via the dashboard.
+  /// Required if you are using the sdk client side
   final Token? userToken;
 
   /// The feed id

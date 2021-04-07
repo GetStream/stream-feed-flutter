@@ -48,6 +48,7 @@ class NotificationFeed extends AggregatedFeed {
     return data;
   }
 
+ /// Retrieve activities with reaction enrichment
   @override
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedActivities({
     int? limit,

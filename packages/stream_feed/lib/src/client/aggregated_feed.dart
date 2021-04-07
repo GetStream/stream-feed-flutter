@@ -17,6 +17,7 @@ class AggregatedFeed extends Feed {
       {Token? userToken, String? secret})
       : super(feedId, feed, userToken: userToken, secret: secret);
 
+  /// Retrieve activities of type Aggregated feed
   Future<List<Group<Activity>>> getActivities({
     int? limit,
     int? offset,
@@ -39,7 +40,7 @@ class AggregatedFeed extends Feed {
         .toList(growable: false);
     return data;
   }
-
+ /// Retrieve activities with reaction enrichment
   Future<List<Group<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
     int? offset,

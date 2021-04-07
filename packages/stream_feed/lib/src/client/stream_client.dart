@@ -15,6 +15,25 @@ import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 
 //TODO: stream_feed_dart/src/cloud/cloud.dart
 abstract class StreamClient {
+  /// If you want to use the API client directly on your web/mobile app
+  /// you need to generate a user token server-side and pass it.
+  ///
+  ///
+  /// - Instantiate a new client (server side) with [StreamClient.connect]
+  /// using your api [secret] parameter and [apiKey]
+  /// ```dart
+  /// var client = connect('YOUR_API_KEY',secret: 'API_KEY_SECRET');
+  /// ```
+  /// - Create a token for user with id "the-user-id"
+  /// ```dart
+  /// var userToken = client.frontendToken('the-user-id');
+  /// ```
+  /// - if you are using the SDK client side, get a userToken in your dashboard
+  /// and pass it to [StreamClient.connect] using the [token] parameter
+  /// and [apiKey]
+  /// ```dart
+  /// var client = connect('YOUR_API_KEY',token: Token('userToken'));
+  /// ```
   factory StreamClient.connect(
     String apiKey, {
     Token? token,
