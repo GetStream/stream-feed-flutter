@@ -17,6 +17,15 @@ class NotificationFeed extends AggregatedFeed {
       {Token? userToken, String? secret})
       : super(feedId, feed, userToken: userToken, secret: secret);
 
+  /// Retrieve feed of type notifications
+  /// # Example
+  /// Mark all activities in the feed as seen
+  /// ```dart
+  /// final notifications = client.notificationFeed('notifications', '1');
+  /// var activityGroups = await notifications.getActivities(
+  ///   marker: ActivityMarker().allSeen(),
+  /// );
+  /// ```
   @override
   Future<List<NotificationGroup<Activity>>> getActivities({
     int? limit,
