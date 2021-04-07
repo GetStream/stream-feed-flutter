@@ -5,9 +5,13 @@ import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-/// Manage api calls for all things related to reactions
-/// The ReactionsClientImpl object contains convenient functions
-/// such add, delete, get, update ... reactions
+/// Reactions are a special kind of data that can be used 
+/// to capture user interaction with specific activities. 
+/// 
+/// Common examples of reactions are likes, comments, and upvotes. 
+/// 
+/// Reactions are automatically returned to feeds' activities at read time 
+/// when the reactions parameters are used. 
 class ReactionsClient {
   ///Initialize a reaction client
   const ReactionsClient(this.reactions, {this.userToken, this.secret})
