@@ -26,7 +26,7 @@ class Message extends Equatable {
   bool? successful;
   String? subscription;
   Map<String, Object>? ext;
-  Map<String, Object>? data;
+  Map<String, dynamic>? data;
   String? error;
 
   Message(
@@ -53,7 +53,7 @@ class Message extends Equatable {
   Map<String, Object?> toJson() {
     final result = <String, Object?>{};
     if (clientId != null) result['clientId'] = clientId;
-    result['data'] = data;
+    if (data != null) result['data'] = data;
     result['channel'] = channel;
     if (connectionType != null) result['connectionType'] = connectionType;
     if (version != null) result['version'] = version;
@@ -82,7 +82,7 @@ class Message extends Equatable {
           .toList()
       ..successful = json['successful'] as bool?
       ..subscription = json['subscription'] as String?
-      ..data = json['data'] as Map<String, Object>?
+      ..data = json['data'] as Map<String, dynamic>?
       ..ext = json['ext'] as Map<String, Object>?
       ..error = json['error'] as String?;
 
