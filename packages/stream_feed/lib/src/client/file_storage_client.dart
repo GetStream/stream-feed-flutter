@@ -29,7 +29,7 @@ class FileStorageClient {
   ///   file.path,
   ///   filename: 'my-file'
   /// );
-  /// await images.upload(multipartFile);
+  /// await files.upload(multipartFile);
   /// ```
   /// API docs: [upload](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#upload)
   Future<String?> upload(MultipartFile file) {
