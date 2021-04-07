@@ -9,7 +9,8 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-/// Manage api calls for specific feeds
+/// Manage api calls for specific feeds.
+/// 
 /// The feed object contains convenient functions
 /// such add activity, remove activity etc
 class Feed {

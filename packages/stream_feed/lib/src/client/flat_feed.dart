@@ -10,7 +10,14 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/client/feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
+///Flat is the default feed type -
+///and the only feed type that you can follow.
+///
+///It's not possible to follow either aggregated or notification feeds.
+///
+/// You can create new feed groups based on the flat type in the dashboard.
 class FlatFeed extends Feed {
+  /// Initialize a feed object
   FlatFeed(FeedId feedId, FeedApi feed, {Token? userToken, String? secret})
       : super(feedId, feed, userToken: userToken, secret: secret);
 
