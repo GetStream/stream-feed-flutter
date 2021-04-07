@@ -93,7 +93,8 @@ class FayeClient<T extends AuthExtension> {
   DateTime? _lastEventAt;
   Completer<void>? _connectionCompleter;
   Completer<void>? _disconnectionCompleter;
-
+  Future? _doneFuture;
+  Future? get isInitialized => _doneFuture;
   FayeClient(
     this.baseUrl, {
     this.authExtension,
@@ -101,7 +102,9 @@ class FayeClient<T extends AuthExtension> {
     this.logsEnabled = false,
     this.healthCheckInterval = 10,
     this.maxAttemptsToReconnect = 5,
-  });
+  }) {
+    _doneFuture = connect();
+  }
 
   //    if (_writeClosed) return;
   //     _pingTimer?.cancel();

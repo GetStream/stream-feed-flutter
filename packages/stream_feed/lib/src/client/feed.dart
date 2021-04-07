@@ -22,7 +22,6 @@ class Feed {
           'At least a secret or userToken must be provided',
         ) {
     setFayeAuthorization();
-    faye!.connect();
   }
 
   final FayeClient? faye;
@@ -35,6 +34,7 @@ class Feed {
   String get _notificationChannel => 'site-$appId-feed-$_feedTogether';
 
   Future<void> subscribe({required void Function(String) callback}) async {
+    await faye!.isInitialized;
     await faye!.subscribe('/$_notificationChannel', callback: callback);
   }
 
