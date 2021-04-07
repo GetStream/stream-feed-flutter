@@ -34,6 +34,8 @@ class Feed {
   String get _notificationChannel => 'site-$appId-feed-$_feedTogether';
 
   Future<void> subscribe({required void Function(String) callback}) async {
+    assert(
+        faye != null, 'faye must be initialized to use realtime methods');
     await faye!.isInitialized;
     await faye!.subscribe('/$_notificationChannel', callback: callback);
   }
