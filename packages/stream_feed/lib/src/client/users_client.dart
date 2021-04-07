@@ -8,7 +8,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 ///
 /// When stored in activities, users are automatically enriched by Stream.
 class UsersClient {
-  ///Initialize a user session object
+  ///Initialize a [UsersClient] session object
   const UsersClient(this.users, {this.userToken, this.secret});
 
   ///User JWT token
