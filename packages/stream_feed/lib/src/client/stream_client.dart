@@ -13,7 +13,9 @@ import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/client/users_client.dart';
 import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 
-//TODO: stream_feed_dart/src/cloud/cloud.dart
+/// To instantiate the client you need an API key and secret.
+/// You can find the key and secret on the dashboard.
+/// The examples below already include your key and secret.
 abstract class StreamClient {
   /// If you want to use the API client directly on your web/mobile app
   /// you need to generate a user token server-side and pass it.
@@ -44,26 +46,51 @@ abstract class StreamClient {
           userToken: token, secret: secret, options: options);
 
   BatchOperationsClient get batch;
+
+  /// Convenient getter for [CollectionsClient]
   CollectionsClient get collections;
 
+  /// Convenient getter for [ReactionsClient]
   ReactionsClient get reactions;
 
+  /// Convenient getter for [UsersClient]
   UsersClient get users;
 
+  /// Convenient getter for [FileStorageClient]
   FileStorageClient get files;
 
+  /// Convenient getter for [ImageStorageClient]
   ImageStorageClient get images;
 
+  /// Convenient getter for [FlatFeed]
   FlatFeed flatFeed(String slug, String userId);
 
+  /// Convenient getter for [AggregatedFeed]
   AggregatedFeed aggregatedFeed(String slug, String userId);
 
+  /// Convenient getter for [NotificationFeed]
   NotificationFeed notificationFeed(String slug, String userId);
 
+  /// Generate a JWT tokens that include the [userId] as payload
+  /// and that are signed using your Stream API Secret.
+  ///
+  /// Optionally you can have tokens expire after a certain amount of time.
+  ///
+  /// By default all SDK libraries generate user tokens
+  /// without an expiration time.
   Token frontendToken(
     String userId, {
     DateTime? expiresAt,
   });
 
+  ///This endpoint allows you to retrieve open graph information from a URL
+  ///which you can then use to add images and a description to activities.
+  ///
+  ///For example:
+  ///```dart
+  /// final urlPreview = await client.openGraph(
+  ///   'http://www.imdb.com/title/tt0117500/',
+  /// );
+  /// ```
   Future<OpenGraphData> openGraph(String targetUrl);
 }
