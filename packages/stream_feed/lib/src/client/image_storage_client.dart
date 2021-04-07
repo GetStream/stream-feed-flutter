@@ -4,16 +4,16 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-// Image and files have separate API endpoints
-// (e.g. images can be resized, whereas files cannot).
-//
-// Once the upload is completed the URL of the file/image is returned and is ready for use.
-
-// The returned URL is served via CDN and can be requested by anyone.
-//
+/// Image and files have separate API endpoints
+/// (e.g. images can be resized, whereas files cannot).
+///
+/// Once the upload is completed the URL of the file/image is returned and is ready for use.
+///
+/// The returned URL is served via CDN and can be requested by anyone.
+///
 /// In order to avoid resource enumeration attacks,
 /// a unique signature is added.
-// Manipulating the returned URL will likely result in HTTP errors.
+/// Manipulating the returned URL will likely result in HTTP errors.
 class ImageStorageClient {
   const ImageStorageClient(this.images, {this.userToken, this.secret})
       : assert(
