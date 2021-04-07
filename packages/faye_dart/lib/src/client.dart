@@ -220,7 +220,7 @@ class FayeClient<T extends AuthExtension> {
     final subscription = message.subscription;
     final channel = _channels[subscription];
     if (message.successful == true) {
-      final channels = [message.subscription];
+      final channels = [message.subscription]; //TODO: not used?
       // this.info('Subscription acknowledged for ? to ?', this._dispatcher.clientId, channels);
       channel!.subscription?._complete();
     } else {
@@ -233,7 +233,7 @@ class FayeClient<T extends AuthExtension> {
 
   void _handleUnsubscribeChannelResponse(Message message) {
     if (message.successful == true) {
-      final channels = [message.subscription];
+      final channels = [message.subscription]; //TODO: unused?
       // this.info('Unsubscription acknowledged for ? to ?', this._dispatcher.clientId, channels);
     } else {
       // logError
@@ -283,6 +283,7 @@ class FayeClient<T extends AuthExtension> {
   }
 
   void _startHealthCheck() {
+    //TODO: never used
     _healthCheckTimer?.cancel();
 
     final duration = Duration(seconds: healthCheckInterval);
@@ -440,6 +441,7 @@ class FayeClient<T extends AuthExtension> {
   //
 
   void _log([
+    //TODO: never used
     String title = '',
     Object? item1,
     Object? item2,

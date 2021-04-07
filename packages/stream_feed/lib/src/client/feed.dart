@@ -30,7 +30,7 @@ class Feed {
   /// Your API secret
   final String? secret;
   final Token? userToken;
-  String get _feedTogether => "${feedId.slug}${feedId.userId}";
+  String get _feedTogether => '${feedId.slug}${feedId.userId}';
   String get _notificationChannel => 'site-$appId-feed-$_feedTogether';
 
   Future<void> subscribe(
