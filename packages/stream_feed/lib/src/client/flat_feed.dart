@@ -14,6 +14,12 @@ class FlatFeed extends Feed {
   FlatFeed(FeedId feedId, FeedApi feed, {Token? userToken, String? secret})
       : super(feedId, feed, userToken: userToken, secret: secret);
 
+  ///Retrieve activities
+  ///# Example:
+  /// Read Jack's timeline
+  ///```dart
+  ///  var activities = await jack.getActivities(limit: 10);
+  /// ```
   Future<List<Activity>> getActivities({
     int? limit,
     int? offset,
