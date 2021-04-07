@@ -24,7 +24,7 @@ class MockWSChannel extends Mock implements WebSocketChannel {}
 
 class MockWSSink extends Mock implements WebSocketSink {}
 
-main() {
+main() async {
   test('FayeClient', () async {
     const apiKey = 'ay57s8swfnan';
     const appId = '110925';
@@ -37,6 +37,8 @@ main() {
     const slug = 'reward';
     final userFeed = client.flatFeed(slug, userId);
 
+    final logs = [];
+    await userFeed.subscribe(callback: logs.add);
     final activity = Activity(
       actor: '$slug:$userId',
       verb: 'tweet',
@@ -48,9 +50,45 @@ main() {
     );
     await userFeed.addActivity(activity);
 
-    final logs = [];
-    userFeed.subscribe(callback: logs.add);
-
-    expect(logs, []);
+    expect(logs, [
+      {
+        'deleted': [],
+        'deleted_foreign_ids': [],
+        'feed': 'reward:1',
+        'new': [
+          {
+            'actor': 'reward:1',
+            'foreign_id': '',
+            'id': isA<String>(),
+            'message': "@Jessica check out getstream.io it\'s so dang awesome.",
+            'object': 'tweet:id',
+            'origin': null,
+            'target': '',
+            'time': isA<String>(),
+            'to': ['notification:jessica'],
+            'verb': 'tweet'
+          }
+        ]
+      },
+      {
+        'deleted': [],
+        'deleted_foreign_ids': [],
+        'feed': 'reward:1',
+        'new': [
+          {
+            'actor': 'reward:1',
+            'foreign_id': '',
+            'id': isA<String>(),
+            'message': "@Jessica check out getstream.io it\'s so dang awesome.",
+            'object': 'tweet:id',
+            'origin': null,
+            'target': '',
+            'time': isA<String>(),
+            'to': ['notification:jessica'],
+            'verb': 'tweet'
+          }
+        ]
+      }
+    ]);
   });
 }

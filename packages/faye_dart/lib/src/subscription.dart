@@ -1,7 +1,7 @@
 part of 'client.dart';
 
-typedef ChannelCallback = void Function(String data);
-typedef WithChannelCallback = void Function(String, String);
+typedef ChannelCallback = void Function(Map<String,dynamic>? data);
+typedef WithChannelCallback = void Function(String, Map<String,dynamic>?);
 
 class Subscription {
   final FayeClient _client;
@@ -36,8 +36,8 @@ class Subscription {
 // },
 
   void call(Message message) {
-    _callback?.call(message.data.toString());
-    _withChannel?.call(message.channel, message.data.toString());
+    _callback?.call(message.data);
+    _withChannel?.call(message.channel, message.data);
   }
 
   Subscription withChannel(WithChannelCallback withChannel) {
