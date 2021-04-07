@@ -12,7 +12,13 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/client/feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
+/// Aggregated feeds are helpful if you want to group activities. 
+/// 
+/// Here are some examples of what you can achieve using aggregated feeds:
+/// - 'Eric followed 10 people'
+/// - 'Julie and 14 others liked your photo'
 class AggregatedFeed extends Feed {
+  /// Initialize a [AggregatedFeed] object
   const AggregatedFeed(FeedId feedId, FeedApi feed,
       {Token? userToken, String? secret})
       : super(feedId, feed, userToken: userToken, secret: secret);
