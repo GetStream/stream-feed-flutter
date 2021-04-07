@@ -42,6 +42,26 @@ class FlatFeed extends Feed {
     return data;
   }
 
+  /// Retrieve activities with reaction enrichment
+  ///
+  /// # Examples
+  /// - read bob's timeline and include most recent reactions
+  /// to all activities and their total count
+  /// ```dart
+  ///await client.flatFeed('timeline', 'bob').getEnrichedActivities(
+  ///     flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
+  ///   );
+  /// ```
+  /// - read bob's timeline and include most recent reactions
+  /// to all activities and her own reactions
+  /// ```dart
+  /// await client.flatFeed('timeline', 'bob').getEnrichedActivities(
+  ///      flags: EnrichmentFlags()
+  ///         .withOwnReactions()
+  ///         .withRecentReactions()
+  ///         .withReactionCounts(),
+  ///   );
+  /// ```
   Future<List<EnrichedActivity>> getEnrichedActivities({
     int? limit,
     int? offset,
