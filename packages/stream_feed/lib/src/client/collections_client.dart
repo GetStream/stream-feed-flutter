@@ -3,14 +3,38 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
+/// Collections enable you to store information to Stream.
+///
+/// This allows you to use it inside your feeds,
+/// and to provide additional data for the personalized endpoints.
+///
+/// Examples include products and articles,
+/// but any unstructured object (e.g. JSON)
+/// is a good match for collections.
+///
+/// Collection entries can be embedded inside activities
+/// and used to store nested data inside activities.
+///
+/// When doing so, Stream will automatically enrich your activities
+/// with the current version of the data (see later section).
+///
+/// Collection endpoints can be used both client-side
+/// and server-side except the batch methods that are only available server-side
 class CollectionsClient {
+  ///Initialize a CollectionsClient object
   const CollectionsClient(this.collections, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         );
+
+  /// Your user token obtain via the dashboard.
+  /// Required if you are using the sdk client side
   final Token? userToken;
+
+  /// Your API secret
   final String? secret;
+
   final CollectionsApi collections;
 
   /// Add item to collection

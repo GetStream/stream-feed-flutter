@@ -30,7 +30,7 @@ class Feed {
   /// The feed id
   final FeedId feedId;
 
-  ///The stream client this feed is constructed from
+  ///The feed client this feed is constructed from
   final FeedApi feed;
 
   /// Adds the given [Activity] to the feed
