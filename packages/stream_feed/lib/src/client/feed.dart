@@ -52,21 +52,20 @@ class Feed {
   final FeedApi feed;
 
   /// Subscribes to any changes in the feed, return a [Subscription]
-  Future<Subscription> subscribe({
-    required void Function(RealtimeMessage? message) callback,
-  }) {
+  Future<Subscription> subscribe(
+    void Function(RealtimeMessage? message) callback,
+  ) {
     checkNotNull(
       subscriber,
       'A subscriber must me provided in order to start listening to feed',
     );
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
-    void subscriptionCallback(Map<String, dynamic>? data) {
+
+    return subscriber!(token, feedId, (data) {
       final realtimeMessage = RealtimeMessage.fromJson(data!);
       callback(realtimeMessage);
-    }
-
-    return subscriber!(token, feedId, subscriptionCallback);
+    });
   }
 
   /// Adds the given [Activity] to the feed

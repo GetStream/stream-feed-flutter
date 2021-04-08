@@ -37,8 +37,8 @@ main() async {
     final userFeed = client.flatFeed(slug, userId);
 
     RealtimeMessage? realTimeMessage;
-    final subscription = await userFeed.subscribe(
-        callback: (message) => realTimeMessage = message);
+    final subscription =
+        await userFeed.subscribe((message) => realTimeMessage = message);
 
     var activity = Activity(
       actor: '$slug:$userId',
