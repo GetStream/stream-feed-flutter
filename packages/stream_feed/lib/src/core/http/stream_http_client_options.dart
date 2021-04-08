@@ -43,10 +43,16 @@ class StreamHttpClientOptions {
     if (urlOverride.containsKey(serviceName)) {
       return urlOverride[serviceName]!;
     }
-
     const baseDomainName = 'stream-io-api.com';
     var hostname = '$serviceName.$baseDomainName';
     if (location != null) hostname = '${location!.name}-$hostname';
-    return '$protocol://$hostname/$serviceName/$version';
+
+    final uri = Uri(
+      scheme: protocol,
+      host: hostname,
+      pathSegments: [serviceName, version],
+    );
+
+    return uri.toString();
   }
 }
