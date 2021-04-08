@@ -12,9 +12,16 @@ main() {
         'content-type': 'application/json; charset=utf-8'
       });
     });
-    test('enrichUrl', () {
-      expect(streamHttpClient.enrichUrl('feed', 'api'),
-          'https://api.stream-io-api.com/api/v1.0/feed');
+    group('enrichUrl', () {
+      test('api', () {
+        expect(streamHttpClient.enrichUrl('feed', 'api'),
+            'https://api.stream-io-api.com/api/v1.0/feed');
+      });
+
+      test('analytics', () {
+        expect(streamHttpClient.enrichUrl('analytics', 'analytics'),
+            'https://analytics.stream-io-api.com/analytics/v1.0/analytics'); //TODO: weird
+      });
     });
   });
 }
