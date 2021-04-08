@@ -1,12 +1,12 @@
 part of 'client.dart';
 
-typedef ChannelCallback = void Function(Map<String, dynamic>? data);
+typedef Callback = void Function(Map<String, dynamic>? data);
 typedef WithChannelCallback = void Function(String, Map<String, dynamic>?);
 
 class Subscription {
   final FayeClient _client;
   final String _channel;
-  final ChannelCallback? _callback;
+  final Callback? _callback;
   WithChannelCallback? _withChannel;
   bool _cancelled = false;
 
@@ -15,7 +15,7 @@ class Subscription {
   Subscription(
     this._client,
     this._channel, {
-    ChannelCallback? callback,
+    Callback? callback,
   }) : _callback = callback;
 
   Future<Subscription> get _future => _completer.future;
@@ -23,17 +23,6 @@ class Subscription {
   void _complete() => _completer.complete(this);
 
   void _completeError(String error) => _completer.completeError(error);
-
-  //
-// apply: function(context, args) {
-//   var message = args[0];
-//
-//   if (this._callback)
-//     this._callback.call(this._context, message.data);
-//
-//   if (this._withChannel)
-//     this._withChannel[0].call(this._withChannel[1], message.channel, message.data);
-// },
 
   void call(Message message) {
     _callback?.call(message.data);

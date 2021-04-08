@@ -14,10 +14,19 @@ import 'package:stream_feed_dart/src/client/feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class AggregatedFeed extends Feed {
-  AggregatedFeed(FeedId feedId, FeedApi feed,
-      {Token? userToken, String? secret, String? appId, FayeClient? faye})
-      : super(feedId, feed,
-            userToken: userToken, secret: secret, appId: appId, faye: faye);
+  AggregatedFeed(
+    FeedId feedId,
+    FeedApi feed, {
+    Token? userToken,
+    String? secret,
+    FeedSubscriber? subscriber,
+  }) : super(
+          feedId,
+          feed,
+          userToken: userToken,
+          secret: secret,
+          subscriber: subscriber,
+        );
 
   Future<List<Group<Activity>>> getActivities({
     int? limit,

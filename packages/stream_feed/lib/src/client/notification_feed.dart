@@ -1,4 +1,3 @@
-import 'package:faye_dart/faye_dart.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
@@ -13,11 +12,22 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
+import 'package:stream_feed_dart/src/client/feed.dart' show FeedSubscriber;
+
 class NotificationFeed extends AggregatedFeed {
-  NotificationFeed(FeedId feedId, FeedApi feed,
-      {Token? userToken, String? secret, String? appId, FayeClient? faye})
-      : super(feedId, feed,
-            userToken: userToken, secret: secret, appId: appId, faye: faye);
+  NotificationFeed(
+    FeedId feedId,
+    FeedApi feed, {
+    Token? userToken,
+    String? secret,
+    FeedSubscriber? subscriber,
+  }) : super(
+          feedId,
+          feed,
+          userToken: userToken,
+          secret: secret,
+          subscriber: subscriber,
+        );
 
   @override
   Future<List<NotificationGroup<Activity>>> getActivities({

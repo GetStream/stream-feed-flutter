@@ -11,6 +11,8 @@ import '../src/ws/web_socket_channel_stub.dart'
     if (dart.library.html) '../src/ws/web_socket_channel_html.dart'
     if (dart.library.io) '../src/ws/web_socket_channel_io.dart' as platform;
 
+import 'extensible.dart';
+
 part 'subscription.dart';
 
 /// Typedef used for connecting to a websocket. Method returns a
@@ -34,19 +36,13 @@ typedef VoidCallback = void Function();
 const defaultConnectionTimeout = 60;
 const defaultConnectionInterval = 0;
 
-class AuthExtension {
-  Map<String, String>? ext = {};
-  Map<String, String>? getAuth() => ext; //TODO: throw maybe?
-}
-
-class FayeClient<T extends AuthExtension> {
+class FayeClient with Extensible {
   final String baseUrl;
   final Iterable<String>? protocols;
   final bool logsEnabled;
   final int healthCheckInterval;
   final int maxAttemptsToReconnect;
   final _channels = <String, Channel>{};
-  final T? authExtension;
   late WebSocketChannel? _webSocketChannel;
 
   int _attemptsToReconnect = 0;
@@ -93,18 +89,14 @@ class FayeClient<T extends AuthExtension> {
   DateTime? _lastEventAt;
   Completer<void>? _connectionCompleter;
   Completer<void>? _disconnectionCompleter;
-  Future? _doneFuture;
-  Future? get isInitialized => _doneFuture;
+
   FayeClient(
     this.baseUrl, {
-    this.authExtension,
     this.protocols,
     this.logsEnabled = false,
     this.healthCheckInterval = 10,
     this.maxAttemptsToReconnect = 5,
-  }) {
-    _doneFuture = connect();
-  }
+  });
 
   //    if (_writeClosed) return;
   //     _pingTimer?.cancel();
@@ -161,10 +153,14 @@ class FayeClient<T extends AuthExtension> {
 
     // TODO : Add logger
     _connectionCompleter = Completer();
-    _webSocketChannel = await platform.connectWebSocket(
-      baseUrl,
+    _webSocketChannel = WebSocketChannel.connect(
+      Uri.parse(baseUrl),
       protocols: protocols,
     );
+    // _webSocketChannel = await platform.connectWebSocket(
+    //   baseUrl,
+    //   protocols: protocols,
+    // );
     _subscribeToWebsocket();
     _connectFaye();
     return _connectionCompleter!.future;
@@ -256,11 +252,8 @@ class FayeClient<T extends AuthExtension> {
   void _onDataReceived(dynamic data) {
     final json = jsonDecode(data);
     final messages = (json as List).map((it) => Message.fromJson(it));
-    //TODO: refactor so that we return a stream<Message> in subscribe()
-    print("messages : $messages");
     for (final message in messages) {
       if (message.advice != null) _handleAdvice(message.advice!);
-      _deliverMessage(message);
       final channel = message.channel;
       if (channel == handshake_channel) {
         _handleHandshakeChannelResponse(message);
@@ -363,13 +356,11 @@ class FayeClient<T extends AuthExtension> {
       channel: _channels[channel],
       clientId: _clientId,
     );
-    if ((auth != null) & (authExtension != null)) {
-      message.ext = authExtension!.getAuth();
-    }
-    print("sending message : $message");
-    final data = jsonEncode(message);
-
-    _webSocketChannel?.sink.add(data);
+    pipeThroughExtensions('outgoing', message, (message) {
+      print("sending message : $message");
+      final data = jsonEncode(message);
+      _webSocketChannel?.sink.add(data);
+    });
   }
 
   void _subscribeChannels() {
@@ -378,7 +369,7 @@ class FayeClient<T extends AuthExtension> {
 
   Future<Subscription> subscribe(
     String channel, {
-    ChannelCallback? callback,
+    Callback? callback,
     bool force = false,
   }) async {
     final subscription = Subscription(this, channel, callback: callback);
@@ -413,12 +404,6 @@ class FayeClient<T extends AuthExtension> {
     }
   }
 
-  void _deliverMessage(Message message) {
-    // if (message.data == null) return;
-    // this.info('Client ? calling listeners for ? with ?', this._dispatcher.clientId, message.channel, message.data);
-    _channels.distributeMessage(message);
-  }
-
   Future<void> disconnect() async {
     if (state != FayeClientState.connected) return;
     state = FayeClientState.disconnected;
@@ -427,18 +412,6 @@ class FayeClient<T extends AuthExtension> {
     _sendMessage(disconnect_channel);
     return _disconnectionCompleter!.future;
   }
-
-  //
-  //
-  // // MARK: - Error
-  //
-  // extension Client {
-  //     public enum Error: String, Swift.Error {
-  //         case notConnected
-  //         case clientIdIsEmpty
-  //     }
-  // }
-  //
 
   void _log([
     //TODO: never used

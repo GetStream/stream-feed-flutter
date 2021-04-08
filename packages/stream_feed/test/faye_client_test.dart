@@ -1,6 +1,7 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/client/stream_client.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed_dart/src/core/models/realtime_message.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -13,7 +14,7 @@ class Functions {
   }) =>
       null;
 
-  // void handleFunc(Event event) => null;
+// void handleFunc(Event event) => null;
 }
 
 class MockFunctions extends Mock implements Functions {}
@@ -35,9 +36,11 @@ main() async {
     const slug = 'reward';
     final userFeed = client.flatFeed(slug, userId);
 
-    final logs = [];
-    await userFeed.subscribe(callback: logs.add);
-    final activity = Activity(
+    RealtimeMessage? realTimeMessage;
+    final subscription = await userFeed.subscribe(
+        callback: (message) => realTimeMessage = message);
+
+    var activity = Activity(
       actor: '$slug:$userId',
       verb: 'tweet',
       object: 'tweet:id',
@@ -46,47 +49,13 @@ main() async {
         'message': "@Jessica check out getstream.io it's so dang awesome.",
       },
     );
-    await userFeed.addActivity(activity);
+    activity = await userFeed.addActivity(activity);
 
-    expect(logs, [
-      {
-        'deleted': [],
-        'deleted_foreign_ids': [],
-        'feed': 'reward:1',
-        'new': [
-          {
-            'actor': 'reward:1',
-            'foreign_id': '',
-            'id': isA<String>(),
-            'message': "@Jessica check out getstream.io it\'s so dang awesome.",
-            'object': 'tweet:id',
-            'origin': null,
-            'target': '',
-            'time': isA<String>(),
-            'to': ['notification:jessica'],
-            'verb': 'tweet'
-          }
-        ]
-      },
-      {
-        'deleted': [],
-        'deleted_foreign_ids': [],
-        'feed': 'reward:1',
-        'new': [
-          {
-            'actor': 'reward:1',
-            'foreign_id': '',
-            'id': isA<String>(),
-            'message': "@Jessica check out getstream.io it\'s so dang awesome.",
-            'object': 'tweet:id',
-            'origin': null,
-            'target': '',
-            'time': isA<String>(),
-            'to': ['notification:jessica'],
-            'verb': 'tweet'
-          }
-        ]
-      }
-    ]);
+    await Future.delayed(const Duration(seconds: 3));
+
+    expect(realTimeMessage, isNotNull);
+    expect(realTimeMessage!.newActivities.first.id, activity.id);
+
+    addTearDown(subscription.cancel);
   });
 }

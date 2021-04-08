@@ -1,62 +1,73 @@
-import 'package:faye_dart/faye_dart.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/activity_update.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/follow.dart';
+import 'package:stream_feed_dart/src/core/models/realtime_message.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+
+import 'package:faye_dart/faye_dart.dart';
+
+///
+typedef MessageDataCallback = void Function(Map<String, dynamic>? data);
+
+///
+typedef FeedSubscriber = Future<Subscription> Function(
+  Token token,
+  FeedId feedId,
+  MessageDataCallback callback,
+);
 
 /// Manage api calls for specific feeds
 /// The feed object contains convenient functions
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  Feed(this.feedId, this.feed,
-      {this.userToken, this.secret, this.appId, this.faye, this.apiKey})
-      : assert(
+  Feed(
+    this.feedId,
+    this.feed, {
+    this.userToken,
+    this.secret,
+    this.subscriber,
+  }) : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
-        ) {
-    setFayeAuthorization();
-  }
+        );
 
-  final FayeClient? faye;
-  final String? apiKey;
+  final FeedSubscriber? subscriber;
 
   /// Your API secret
   final String? secret;
   final Token? userToken;
-  String get _feedTogether => '${feedId.slug}${feedId.userId}';
-  String get _notificationChannel => 'site-$appId-feed-$_feedTogether';
-
-  Future<void> subscribe(
-      {required void Function(Map<String, dynamic>?) callback}) async {
-    assert(faye != null, 'faye must be initialized to use realtime methods');
-    await faye!.isInitialized;
-    await faye!.subscribe('/$_notificationChannel', callback: callback);
-  }
-
-  void setFayeAuthorization() {
-    final feedToken = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
-    faye!.authExtension!.ext = {
-      'user_id': _notificationChannel,
-      'api_key': apiKey!,
-      'signature': feedToken.token,
-    };
-  }
-
-  final String? appId;
 
   /// The feed id
   final FeedId feedId;
 
   ///The stream client this feed is constructed from
   final FeedApi feed;
+
+  /// Subscribes to any changes in the feed, return a [Subscription]
+  Future<Subscription> subscribe({
+    required void Function(RealtimeMessage? message) callback,
+  }) {
+    checkNotNull(
+      subscriber,
+      'A subscriber must me provided in order to start listening to feed',
+    );
+    final token = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
+    void subscriptionCallback(Map<String, dynamic>? data) {
+      final realtimeMessage = RealtimeMessage.fromJson(data!);
+      callback(realtimeMessage);
+    }
+
+    return subscriber!(token, feedId, subscriptionCallback);
+  }
 
   /// Adds the given [Activity] to the feed
   /// parameters:
