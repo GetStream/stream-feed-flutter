@@ -1,9 +1,17 @@
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:test/test.dart';
+import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 
 main() {
   group('StreamHttpClient', () {
-    final streamHttpClient = StreamHttpClient("apiKey");
+    final streamHttpClient = StreamHttpClient('apiKey');
+
+    test('throws an AssertionError when no secret provided', () {
+      expect(
+          () => StreamClientImpl('apiKey'),
+          throwsA(predicate<AssertionError>((e) =>
+              e.message == 'At least a secret or userToken must be provided')));
+    });
     test('headers', () {
       expect(streamHttpClient.httpClient.options.headers, {
         'stream-auth-type': 'jwt',
