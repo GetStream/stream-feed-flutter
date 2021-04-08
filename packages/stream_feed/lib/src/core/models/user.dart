@@ -20,25 +20,25 @@ class User extends Equatable {
   /// Create a new instance from a json
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  ///
+  ///	User ID.
   final String? id;
 
-  ///
+  /// User additional data.
   final Map<String, Object>? data;
 
-  ///
+  /// When the user was created.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final DateTime? createdAt;
 
-  ///
+  /// When the user was last updated.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final DateTime? updatedAt;
 
-  ///
+  /// Number of users that follow this user.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final int? followersCount;
 
-  ///
+  /// Number of users this user is following.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final int? followingCount;
 
