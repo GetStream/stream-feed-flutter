@@ -53,6 +53,13 @@ class ReactionsApi {
     );
   }
 
+  /// Parameters:
+  /// - [lookupAttr]: name of the reaction attribute to paginate on.
+  /// Can be activity_id, reaction_id or user_id.
+  /// - [lookupValue]: value to use
+  /// depending if paginating reactions for an activity,
+  /// from a user or reactions of a reaction.
+  /// - [kind]: type of reaction( e.g.: like).
   Future<List<Reaction>> filter(
     Token token,
     LookupAttribute lookupAttr,
