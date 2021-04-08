@@ -257,6 +257,12 @@ void main() {
     expect(activityUpdateFromJson, activityUpdate);
   });
 
+  test('Location Names', () {
+    final locationNames =
+        Location.values.map((location) => location.name).toList();
+    expect(locationNames, ['us-east', 'dublin', 'singapore', 'tokyo']);
+  });
+
   group('Crop', () {
     test('params', () {
       const crop = Crop(10, 10);
