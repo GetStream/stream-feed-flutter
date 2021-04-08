@@ -13,9 +13,9 @@ import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/client/users_client.dart';
 import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 
+/// The client class that manages API calls and authentication
 /// To instantiate the client you need an API key and secret.
 /// You can find the key and secret on the dashboard.
-/// The examples below already include your key and secret.
 abstract class StreamClient {
   /// If you want to use the API client directly on your web/mobile app
   /// you need to generate a user token server-side and pass it.

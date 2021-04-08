@@ -22,7 +22,8 @@ class StreamClientOptions {
   /// base Domain Name
   final String baseDomainName;
 
-  /// which data center to use
+  /// 	The name of the API location
+  /// For example: us-east, us-west etc
   final Location location;
 
   /// connect imeout, default to 6s

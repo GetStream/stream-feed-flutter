@@ -15,10 +15,11 @@ class FeedId extends Equatable {
     return FeedId(parts[0], parts[1]);
   }
 
-  ///
+  /// The name of the feed group, for instance user, trending, flat etc.
+  /// For example: flat
   final String slug;
 
-  ///
+  /// The owner of the given feed
   final String userId;
 
   ///

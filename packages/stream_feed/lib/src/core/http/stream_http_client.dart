@@ -36,6 +36,7 @@ class StreamHttpClient {
 
   /// Your project Stream Chat api key.
   /// Find your API keys here https://getstream.io/dashboard/
+  /// The API key, it can be safely shared with untrusted entities
   final String apiKey;
 
   /// Your project Stream Feed clientOptions.
