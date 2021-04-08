@@ -111,6 +111,9 @@ class TokenHelper {
   static Token buildReactionToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.reactions, action, '*');
 
+  static Token buildAnalyticsRedirect(String secret, TokenAction action) =>
+      _buildBackendToken(secret, TokenResource.analyticsRedirect, action, '*');
+
   static Token buildActivityToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.activities, action, '*');
 
