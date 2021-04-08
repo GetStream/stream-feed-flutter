@@ -4,7 +4,7 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-/// Image and files have separate API endpoints
+/// Image and files have separate clients
 /// (e.g. images can be resized, whereas files cannot).
 ///
 /// Once the upload is completed the URL of the file/image is returned and is ready for use.
@@ -15,7 +15,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// a unique signature is added.
 /// Manipulating the returned URL will likely result in HTTP errors.
 class ImageStorageClient {
-  ///Initialize a ImageStorageClient object
+  ///Initialize a [ImageStorageClient] object
   const ImageStorageClient(this.images, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
