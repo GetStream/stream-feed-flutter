@@ -257,6 +257,11 @@ void main() {
     expect(activityUpdateFromJson, activityUpdate);
   });
 
+  test('Crop', () {
+    const crop = Crop(10, 10);
+    expect(crop.params, {'crop': 'center', 'w': 10, 'h': 10});
+  });
+
   test('Reaction', () {
     final reaction2 = Reaction(
         id: 'test',
