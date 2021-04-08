@@ -10,6 +10,10 @@ class CollectionsApi {
 
   final StreamHttpClient client;
 
+  /// Note: when using client-side auth the user_id field must not be provided
+  /// as the value will be taken from the user token.
+  /// Note: If a collection object with the same ID already exists,
+  /// the request will error with code 409 Conflict.
   Future<CollectionEntry> add(
       Token token, String? userId, CollectionEntry entry) async {
     checkNotNull(entry.collection, "Collection name can't be null");
@@ -28,6 +32,7 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
+  ///Will return an empty response on success.
   Future<Response> delete(
       Token token, String collection, String entryId) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
