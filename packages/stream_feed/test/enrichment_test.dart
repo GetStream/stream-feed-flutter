@@ -8,8 +8,8 @@ main() {
   test('createUserReference', () {
     expect(createUserReference('id'), 'SU:id');
   });
+
+  test('createActivityReference', () {
+    expect(createActivityReference('id'), 'SA:id');
+  });
 }
-
-// String (String id) => 'SU:$id';
-
-// String createActivityReference(String id) => 'SA:$id';
