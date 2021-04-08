@@ -30,36 +30,37 @@ class Reaction extends Equatable {
   factory Reaction.fromJson(Map<String, dynamic> json) =>
       _$ReactionFromJson(json);
 
-  /// api will generate an id if it's missing
+  /// Reaction ID
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final String? id;
 
-  /// required only for add/addChile, not update
+  /// Type of reaction. Must not be empty or longer than 255 characters.
   final String? kind;
 
-  /// only required for reactions
+  /// Activity ID for the reaction. Must be a valid activity ID.
   final String? activityId;
 
-  /// optional when using client tokens
+  ///	user_id of the reaction. Must not be empty or longer than 255 characters.
   final String? userId;
 
-  /// only required for child reactions
+  /// ID of the parent reaction.
+  /// If provided, it must be the ID of a reaction that has no parents.
   @JsonKey(includeIfNull: false)
   final String? parent;
 
-  ///
+  /// When the reaction was created.
   @JsonKey(includeIfNull: false)
   final DateTime? createdAt;
 
-  ///
+  ///	When the reaction was last updated.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final DateTime? updatedAt;
 
-  ///
+  /// Target feeds for the reaction. List of feed ids (e.g.: timeline:bob)
   @JsonKey(includeIfNull: false, fromJson: FeedId.fromIds, toJson: FeedId.toIds)
   final List<FeedId>? targetFeeds;
 
-  ///
+  /// User of the reaction
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? user;
 
@@ -67,15 +68,15 @@ class Reaction extends Equatable {
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? targetFeedsExtraData;
 
-  ///
+  /// Extra data of the reaction
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? data;
 
-  ///
+  /// Children reactions, grouped by reaction type.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final Map<String, List<Reaction>>? latestChildren;
 
-  ///
+  /// Child reaction count, grouped by reaction kind
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final Map<String, int>? childrenCounts;
 
