@@ -268,6 +268,13 @@ void main() {
           throwsA(predicate<AssertionError>(
               (e) => e.message == 'Width should be a positive number')));
     });
+
+    test('Height should be a positive number', () {
+      expect(
+          () => Crop(10, -1),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Height should be a positive number')));
+    });
   });
 
   test('Reaction', () {
