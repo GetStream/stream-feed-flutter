@@ -16,7 +16,7 @@ class Follow extends Equatable {
   ///For example: flat:1
   final String? feedId;
 
-  ///
+  /// the id of the feed you want to follow
   final String? targetId;
 
   @override
