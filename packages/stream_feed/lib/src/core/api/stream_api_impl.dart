@@ -1,7 +1,5 @@
-import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/core/api/files_api.dart';
 import 'package:stream_feed_dart/src/core/api/images_api.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
@@ -18,12 +16,11 @@ import 'package:stream_feed_dart/src/core/api/users_api.dart';
 class StreamApiImpl implements StreamApi {
   StreamApiImpl(
     String apiKey, {
-    StreamClientOptions? options,
-    HttpClient? client,
-  }) : _client = client ??
-            StreamHttpClient(apiKey, options: options ?? StreamClientOptions());
+    StreamHttpClient? client,
+    StreamHttpClientOptions? options,
+  }) : _client = client ?? StreamHttpClient(apiKey, options: options);
 
-  final HttpClient _client;
+  final StreamHttpClient _client;
 
   @override
   BatchApi get batch => BatchApi(_client);

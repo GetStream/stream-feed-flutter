@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
+import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
@@ -7,7 +7,7 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 class FilesApi {
   const FilesApi(this.client);
 
-  final HttpClient client;
+  final StreamHttpClient client;
 
   Future<String?> upload(Token token, MultipartFile file) async {
     final result = await client.postFile<Map>(

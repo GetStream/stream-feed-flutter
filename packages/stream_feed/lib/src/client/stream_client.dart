@@ -1,11 +1,11 @@
 import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
 import 'package:stream_feed_dart/src/client/notification_feed.dart';
-import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
 import 'package:stream_feed_dart/src/client/collections_client.dart';
 import 'package:stream_feed_dart/src/client/file_storage_client.dart';
 import 'package:stream_feed_dart/src/client/image_storage_client.dart';
+import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/index.dart';
 
@@ -40,10 +40,14 @@ abstract class StreamClient {
     String apiKey, {
     Token? token,
     String? secret,
-    StreamClientOptions? options,
+    StreamHttpClientOptions? options,
   }) =>
-      StreamClientImpl(apiKey,
-          userToken: token, secret: secret, options: options);
+      StreamClientImpl(
+        apiKey,
+        userToken: token,
+        secret: secret,
+        options: options,
+      );
 
   BatchOperationsClient get batch;
 
