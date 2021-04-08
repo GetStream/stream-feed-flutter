@@ -11,10 +11,10 @@ class _Paginated<T> extends Equatable {
   ///
   const _Paginated(this.next, this.results, this.duration);
 
-  ///
+  /// A url string that can be used to fetch the next page of reactions.
   final String? next;
 
-  ///
+  /// List of reactions. The reaction object schema can be found
   final List<T>? results;
 
   ///
@@ -39,7 +39,8 @@ class PaginatedReactions extends _Paginated<Reaction> {
   @override
   List<Object?> get props => [...super.props, activity];
 
-  ///
+  /// The activity data,
+  /// this field is returned only when with_activity_data is sent.
   final EnrichedActivity? activity;
 
   /// Serialize to json
