@@ -38,5 +38,5 @@ class StreamClientOptions {
   String get routeBasePath => '/$serviceName/$version/';
 
   /// Getter for the current user agent
-  String get userAgent => 'stream-feed-dart-client-$PACKAGE_VERSION';
+  String get userAgent => 'stream-feed-dart-client-$packageVersion';
 }
