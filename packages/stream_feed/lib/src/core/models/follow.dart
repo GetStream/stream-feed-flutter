@@ -12,7 +12,8 @@ class Follow extends Equatable {
   /// Create a new instance from a json
   factory Follow.fromJson(Map<String, dynamic> json) => _$FollowFromJson(json);
 
-  ///
+  /// The combination of feed slug and user id separated by a colon
+  ///For example: flat:1
   final String? feedId;
 
   ///
