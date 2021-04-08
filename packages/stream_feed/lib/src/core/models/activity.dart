@@ -143,7 +143,8 @@ class Activity extends Equatable {
   Map<String, dynamic> toJson() =>
       Serializer.moveKeysToMapInPlace(_$ActivityToJson(this), topLevelFields);
 
-  ///
+  ///  allows us to copy an Activity
+  ///and pass in arguments that overwrite settable values.
   Activity copyWith({
     String? id,
     String? actor,

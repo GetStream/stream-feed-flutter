@@ -48,6 +48,8 @@ class CollectionEntry extends Equatable {
         updatedAt,
       ];
 
+  ///allows us to copy a CollectionEntry
+  ///and pass in arguments that overwrite settable values.
   CollectionEntry copyWith({
     String? id,
     String? collection,

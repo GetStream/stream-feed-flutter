@@ -96,7 +96,8 @@ class Reaction extends Equatable {
     'children_counts',
   ];
 
-  ///
+  ///allows us to copy a Reaction
+  ///and pass in arguments that overwrite settable values.
   Reaction copyWith({
     String? id,
     String? kind,
