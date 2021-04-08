@@ -4,7 +4,8 @@ import 'package:equatable/equatable.dart';
 class FeedId extends Equatable {
   ///
   FeedId(this.slug, this.userId)
-      : assert(!slug.contains(':'), 'Invalid slug'),
+      : assert(!slug.contains(':'), 'Invalid slug'), //TODO:
+        // validate feed slug stream-python style using regex
         assert(!userId.contains(':'), 'Invalid userId');
 
   ///
