@@ -19,8 +19,11 @@ class ReactionsClient {
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         );
+
+  ///User JWT Token
   final Token? userToken;
 
+  ///The reactions client
   final ReactionsApi reactions;
 
   /// Your API secret. You can get it in your Stream Dashboard [here](https://dashboard.getstream.io/dashboard/v2/)
@@ -128,6 +131,19 @@ class ReactionsClient {
     return reactions.get(token, id);
   }
 
+  ///Reactions can be updated by providing the reaction ID parameter.
+  ///
+  ///Changes to reactions are propagated to all notified feeds;
+  ///
+  ///if the target_feeds list is updated,
+  ///notifications will be added and removed accordingly.
+  ///# Examples
+  ///```dart
+  /// await client.reactions.update(
+  ///   reaction.id,
+  ///   data: {'text': 'love it!'},
+  /// );
+  ///```
   Future<void> update(
     String? reactionId, {
     Map<String, Object>? data,

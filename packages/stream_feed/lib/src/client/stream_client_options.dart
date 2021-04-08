@@ -13,7 +13,7 @@ class StreamClientOptions {
     this.receiveTimeout = const Duration(seconds: 6), //TODO: 10s in js
   });
 
-  /// advanced usage, custom api versio
+  /// advanced usage, custom api version
   final String version;
 
   /// the name of the service

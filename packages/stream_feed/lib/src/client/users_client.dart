@@ -13,6 +13,8 @@ class UsersClient {
 
   ///User JWT token
   final Token? userToken;
+
+  ///The users client
   final UsersApi users;
 
   /// You API secret
