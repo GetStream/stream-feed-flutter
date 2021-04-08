@@ -159,6 +159,23 @@ class ReactionsClient {
     return reactions.update(token, reaction);
   }
 
+  /// You can read reactions and filter them
+  /// based on their user_id or activity_id values.
+  /// Further filtering can be done
+  /// with the kind parameter (e.g. retrieve all likes by one user,
+  ///  retrieve all comments for one activity, etc.).
+  ///
+  /// Reactions are returned in descending order (newest to oldest) by default
+  /// and when using id_lt[e] , and in ascending order (oldest to newest)
+  /// when using id_gt[e].
+  /// # Examples
+  /// - retrieve all kind of reactions for an activity
+  /// ```dart
+  /// var reactions = await client.reactions.filter(
+  ///   LookupAttribute.activityId,
+  ///   'ed2837a6-0a3b-4679-adc1-778a1704852d',
+  /// );
+  /// ```
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
