@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 //TODO change this to typedef in dart 2.13
-/// 
+///
 class Token extends Equatable {
   /// Instantiates a new [Token]
   const Token(this.token);
