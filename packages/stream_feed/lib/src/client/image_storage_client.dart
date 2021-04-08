@@ -15,6 +15,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// a unique signature is added.
 /// Manipulating the returned URL will likely result in HTTP errors.
 class ImageStorageClient {
+  ///Initialize a ImageStorageClient object
   const ImageStorageClient(this.images, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
