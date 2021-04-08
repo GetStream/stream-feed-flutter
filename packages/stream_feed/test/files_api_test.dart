@@ -2,11 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:test/test.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
 import 'package:stream_feed_dart/src/core/api/files_api.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockHttpClient extends Mock implements HttpClient {}
+import 'mock.dart';
 
 void main() {
   final mockClient = MockHttpClient();

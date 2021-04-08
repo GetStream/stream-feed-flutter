@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
+import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
@@ -14,7 +14,7 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 class BatchApi {
   const BatchApi(this.client);
 
-  final HttpClient client;
+  final StreamHttpClient client;
 
   Future<Response> addToMany(
       Token token, Activity activity, Iterable<FeedId> feedIds) async {

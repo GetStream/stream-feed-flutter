@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
+import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
 import 'package:stream_feed_dart/src/core/models/filter.dart';
@@ -11,7 +11,7 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 class ReactionsApi {
   const ReactionsApi(this.client);
 
-  final HttpClient client;
+  final StreamHttpClient client;
 
   Future<Reaction> add(Token token, Reaction reaction) async {
     checkArgument(reaction.activityId != null || reaction.parent != null,

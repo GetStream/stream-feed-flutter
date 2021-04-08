@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
+import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/activity_update.dart';
@@ -14,7 +14,7 @@ class FeedApi {
 
   const FeedApi(this.client);
 
-  final HttpClient client;
+  final StreamHttpClient client;
 
   Future<List<Activity>> addActivities(
       Token token, FeedId feed, Iterable<Activity> activities) async {
@@ -62,7 +62,7 @@ class FeedApi {
   }
 
   Future<Response<Map>> getActivities(
-          Token token, FeedId feed, Map<String?, Object> options) =>
+          Token token, FeedId feed, Map<String, Object?> options) =>
       client.get<Map>(
         Routes.buildFeedUrl(feed),
         headers: {'Authorization': '$token'},
@@ -70,7 +70,7 @@ class FeedApi {
       );
 
   Future<Response> getEnrichedActivities(
-          Token token, FeedId feed, Map<String?, Object?> options) =>
+          Token token, FeedId feed, Map<String, Object?> options) =>
       client.get(
         Routes.buildEnrichedFeedUrl(feed),
         headers: {'Authorization': '$token'},

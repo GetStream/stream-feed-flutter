@@ -12,6 +12,6 @@ void main() {
     final regex = RegExp('version:s*(.*)');
     final match = regex.firstMatch(pubspec)!;
     expect(match, isNotNull);
-    expect(PACKAGE_VERSION, match.group(1)!.trim());
+    expect(packageVersion, match.group(1)!.trim());
   });
 }

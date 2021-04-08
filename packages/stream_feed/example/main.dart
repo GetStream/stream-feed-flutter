@@ -348,7 +348,7 @@ Future<void> main() async {
   client = StreamClient.connect(
     apiKey,
     secret: secret,
-    options: const StreamClientOptions(),
+    options: const StreamHttpClientOptions(location: Location.usEast),
   );
 
   /* -------------------------------------------------------- */

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/http/http_client.dart';
+import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
@@ -8,7 +8,7 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 class CollectionsApi {
   const CollectionsApi(this.client);
 
-  final HttpClient client;
+  final StreamHttpClient client;
 
   Future<CollectionEntry> add(
       Token token, String? userId, CollectionEntry entry) async {
