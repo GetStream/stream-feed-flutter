@@ -3,13 +3,13 @@ import 'package:test/test.dart';
 
 main() {
   test('createCollectionReference', () {
-    expect(createCollectionReference("collection", "id"), "SO:collection:id");
+    expect(createCollectionReference('collection', 'id'), 'SO:collection:id');
+  });
+  test('createUserReference', () {
+    expect(createUserReference('id'), 'SU:id');
   });
 }
 
-//     createCollectionReference(String? collection, String? id) =>
-//     'SO:$collection:$id';
-
-// String createUserReference(String id) => 'SU:$id';
+// String (String id) => 'SU:$id';
 
 // String createActivityReference(String id) => 'SA:$id';
