@@ -1,9 +1,20 @@
 enum _EnrichmentType {
+  ///"ownChildren" attribute
   ownChildren,
+
+  ///"ownReactions" attribute
   ownReactions,
+
+  ///"reactionCounts" attribute
   reactionCounts,
+
+  ///"reaction_kinds_filter" attribute
   reactionKinds,
+
+  ///"with_recent_reactions" attribute
   recentReactions,
+
+  ///"latest_reactions" attribute
   recentReactionsLimit,
 }
 
@@ -33,6 +44,8 @@ class EnrichmentFlags {
     return this;
   }
 
+  ///	If called activity object will have attribute "own_reactions"
+  ///that contains list of reactions created by the user himself.
   EnrichmentFlags withOwnReactions() {
     _flags[_EnrichmentType.ownReactions] = true;
     return this;
@@ -44,6 +57,8 @@ class EnrichmentFlags {
     return this;
   }
 
+  /// If called activity object will have attribute "latest_reactions"
+  ///  that contains list of recently created reactions
   EnrichmentFlags withRecentReactions([int? limit]) {
     if (limit == null) {
       _flags[_EnrichmentType.recentReactions] = true;
@@ -58,6 +73,8 @@ class EnrichmentFlags {
     return this;
   }
 
+  ///	If called activity object will have attribute "reaction_counts"
+  /// that contains number of reactions for each kind
   EnrichmentFlags withReactionCounts() {
     _flags[_EnrichmentType.reactionCounts] = true;
     return this;
