@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 // ignore: directives_ordering
 import 'dart:convert';
 
-main() {
+void main() {
   group('TokenHelper', () {
     const secret =
         // ignore: lines_longer_than_80_chars
