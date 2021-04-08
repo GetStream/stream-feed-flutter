@@ -257,9 +257,17 @@ void main() {
     expect(activityUpdateFromJson, activityUpdate);
   });
 
-  test('Crop', () {
-    const crop = Crop(10, 10);
-    expect(crop.params, {'crop': 'center', 'w': 10, 'h': 10});
+  group('Crop', () {
+    test('params', () {
+      const crop = Crop(10, 10);
+      expect(crop.params, {'crop': 'center', 'w': 10, 'h': 10});
+    });
+    test('Width should be a positive number', () {
+      expect(
+          () => Crop(-1, 10),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Width should be a positive number')));
+    });
   });
 
   test('Reaction', () {
