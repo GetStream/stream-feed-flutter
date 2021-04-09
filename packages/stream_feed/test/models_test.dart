@@ -43,9 +43,11 @@ void main() {
       expect(withReactionCounts.params, {'with_reaction_counts': true});
     });
 
-    // EnrichmentFlags
-
-    // EnrichmentFlags withUserChildren
+    test('withUserChildren', () {
+      final withUserChildren = EnrichmentFlags().withUserChildren('userId');
+      expect(withUserChildren.params,
+          {'with_own_children': true, 'user_id': 'userId'});
+    });
   });
   group('FeedId', () {
     test('claim', () {
