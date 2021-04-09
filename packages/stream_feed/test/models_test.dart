@@ -25,9 +25,13 @@ void main() {
       expect(withUserReactions.params,
           {'with_own_reactions': true, 'user_id': 'userId'});
     });
-    // EnrichmentFlags
 
-    // EnrichmentFlags withRecentReactions
+    test('withRecentReactions', () {
+      final withRecentReactions = EnrichmentFlags().withRecentReactions(10);
+      expect(withRecentReactions.params, {'recent_reactions_limit': 10});
+    });
+
+    // EnrichmentFlags
 
     // EnrichmentFlags reactionKindFilter
 
