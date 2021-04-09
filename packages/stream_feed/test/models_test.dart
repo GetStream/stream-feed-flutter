@@ -218,6 +218,31 @@ void main() {
     final paginatedReactionsFromJson =
         PaginatedReactions.fromJson(paginatedReactionsJson);
     expect(paginatedReactionsFromJson, paginatedReactions);
+    expect(paginatedReactions.toJson(), {
+            'next': 'test',
+            'results': [
+              {
+                'kind': 'test',
+                'activity_id': 'test',
+                'user_id': 'test',
+                'parent': 'test',
+                'created_at': '2001-09-11T00:01:02.000',
+                'target_feeds': ['slug:userId'],
+                'user': {'test': 'test'},
+                'target_feeds_extra_data': {'test': 'test'},
+                'data': {'test': 'test'}
+              }
+            ],
+            'duration': 'duration',
+            'activity': {
+              'actor': 'test',
+              'verb': 'test',
+              'object': 'test',
+              'foreign_id': 'test',
+              'time': '2001-09-11T00:01:02.000',
+              'test': 'test'
+            }
+          });
   });
   test('User', () {
     final user = User(
