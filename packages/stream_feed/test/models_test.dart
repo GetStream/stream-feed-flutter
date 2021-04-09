@@ -219,30 +219,30 @@ void main() {
         PaginatedReactions.fromJson(paginatedReactionsJson);
     expect(paginatedReactionsFromJson, paginatedReactions);
     expect(paginatedReactions.toJson(), {
-            'next': 'test',
-            'results': [
-              {
-                'kind': 'test',
-                'activity_id': 'test',
-                'user_id': 'test',
-                'parent': 'test',
-                'created_at': '2001-09-11T00:01:02.000',
-                'target_feeds': ['slug:userId'],
-                'user': {'test': 'test'},
-                'target_feeds_extra_data': {'test': 'test'},
-                'data': {'test': 'test'}
-              }
-            ],
-            'duration': 'duration',
-            'activity': {
-              'actor': 'test',
-              'verb': 'test',
-              'object': 'test',
-              'foreign_id': 'test',
-              'time': '2001-09-11T00:01:02.000',
-              'test': 'test'
-            }
-          });
+      'next': 'test',
+      'results': [
+        {
+          'kind': 'test',
+          'activity_id': 'test',
+          'user_id': 'test',
+          'parent': 'test',
+          'created_at': '2001-09-11T00:01:02.000',
+          'target_feeds': ['slug:userId'],
+          'user': {'test': 'test'},
+          'target_feeds_extra_data': {'test': 'test'},
+          'data': {'test': 'test'}
+        }
+      ],
+      'duration': 'duration',
+      'activity': {
+        'actor': 'test',
+        'verb': 'test',
+        'object': 'test',
+        'foreign_id': 'test',
+        'time': '2001-09-11T00:01:02.000',
+        'test': 'test'
+      }
+    });
   });
   test('User', () {
     final user = User(
@@ -463,5 +463,40 @@ void main() {
     final openGraphDataJson = json.decode(fixture('open_graph_data.json'));
     final openGraphDataFromJson = OpenGraphData.fromJson(openGraphDataJson);
     expect(openGraphDataFromJson, openGraphData);
+    expect(openGraphData.toJson(), {
+      'title': 'test',
+      'type': 'test',
+      'url': 'test',
+      'site': 'test',
+      'site_name': 'test',
+      'description': 'test',
+      'determiner': 'test',
+      'locale': 'test',
+      'images': [
+        {
+          'image': 'test',
+          'url': 'test',
+          'secure_url': 'test',
+          'width': 'test',
+          'height': 'test',
+          'type': 'test',
+          'alt': 'test'
+        }
+      ],
+      'videos': [
+        {
+          'image': 'test',
+          'url': 'test',
+          'secure_url': 'test',
+          'width': 'test',
+          'height': 'test',
+          'type': 'test',
+          'alt': 'test'
+        }
+      ],
+      'audios': [
+        {'audio': 'test', 'url': 'test', 'secure_url': 'test', 'type': 'test'}
+      ]
+    });
   });
 }
