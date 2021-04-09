@@ -391,6 +391,11 @@ void main() {
       final seen = ActivityMarker()..seen(['id1', 'id2']);
       expect(seen.params, {'mark_seen': 'id1,id2'});
     });
+
+    test("read 'id1', 'id2'", () {
+      final seen = ActivityMarker()..read(['id1', 'id2']);
+      expect(seen.params, {'mark_read': 'id1,id2'});
+    });
   });
 
   test('Follow', () {
