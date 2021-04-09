@@ -132,6 +132,7 @@ void main() {
       'updated_at': '2001-09-11T00:01:02.000'
     });
   });
+
   test('ForeignIdTimePair equatable', () {
     final foreignIdTimePair =
         ForeignIdTimePair('foreignID', DateTime(2021, 03, 03));
@@ -297,6 +298,7 @@ void main() {
         json.decode('{"feed_id": "feedId", "target_id": "targetId"}');
 
     expect(follow, Follow.fromJson(followJson));
+    expect(follow.toJson(), {'feed_id': 'feedId', 'target_id': 'targetId'});
   });
   test('Unfollow', () {
     const follow = UnFollow('feedId', 'targetId', true);
