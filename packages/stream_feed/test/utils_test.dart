@@ -4,6 +4,10 @@ import 'package:test/test.dart';
 
 main() {
   group('extension', () {
+    test('nullProtected', () {
+      expect({null: 'nullKey'}.nullProtected, {});
+      expect({'nullValue': null}.nullProtected, {});
+    });
     test('checkNotNull', () {
       expect(
           () => checkNotNull(null, 'your custom message'),
