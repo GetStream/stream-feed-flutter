@@ -386,6 +386,11 @@ void main() {
         ..allSeen();
       expect(allSeen.params, {'mark_seen': 'true'});
     });
+
+    test("seen 'id1', 'id2'", () {
+      final seen = ActivityMarker()..seen(['id1', 'id2']);
+      expect(seen.params, {'mark_seen': 'id1,id2'});
+    });
   });
 
   test('Follow', () {
