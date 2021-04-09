@@ -13,7 +13,7 @@ const unsubscribe_channel = '/meta/unsubscribe';
 
 const event_message = 'message';
 
-class Channel extends Equatable with EventEmitter<Message> {
+class Channel with EquatableMixin, EventEmitter<Message> {
   final String name;
   Subscription? subscription;
   Map<String, Object>? ext;

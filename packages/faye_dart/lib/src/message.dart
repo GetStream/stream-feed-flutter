@@ -14,7 +14,7 @@ abstract class _MessageObject {
   }
 }
 
-class Message extends Equatable {
+class Message with EquatableMixin {
   final String? clientId;
   final String channel;
   final String id;
@@ -104,9 +104,9 @@ class Advice extends Equatable {
     this.timeout,
   });
 
-  String reconnect;
-  int interval;
-  int? timeout;
+  final String reconnect;
+  final int interval;
+  final int? timeout;
 
   static const none = 'none';
   static const handshake = 'handshake';
