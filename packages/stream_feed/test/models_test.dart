@@ -14,6 +14,11 @@ void main() {
       final feedId = FeedId('slug', 'userId');
       expect(feedId.claim, 'sluguserId');
     });
+
+    test('feedIds', () {
+      final feedIds = FeedId.toIds([FeedId('slug', 'userId')]);
+      expect(feedIds, ['slug:userId']);
+    });
   });
   test('EnrichedActivity', () {
     final reaction1 = Reaction(
