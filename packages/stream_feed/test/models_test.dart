@@ -107,6 +107,30 @@ void main() {
     final groupFromJson = Group.fromJson(
         groupJson, (e) => Activity.fromJson(e as Map<String, dynamic>?));
     expect(groupFromJson, group);
+    expect(group.toJson((activity) => activity.toJson()), {
+      'id': 'test',
+      'group': 'test',
+      'activities': [
+        {
+          'id': 'test',
+          'actor': 'test',
+          'verb': 'test',
+          'object': 'test',
+          'foreign_id': 'test',
+          'target': 'test',
+          'time': '2001-09-11T00:01:02.000',
+          'origin': 'test',
+          'to': ['slug:id'],
+          'score': 1.0,
+          'analytics': {'test': 'test'},
+          'extra_context': {'test': 'test'},
+          'test': 'test'
+        }
+      ],
+      'actor_count': 1,
+      'created_at': '2001-09-11T00:01:02.000',
+      'updated_at': '2001-09-11T00:01:02.000'
+    });
   });
 
   test('NotificationGroup', () {
