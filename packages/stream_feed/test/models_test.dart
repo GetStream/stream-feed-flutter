@@ -372,6 +372,15 @@ void main() {
     });
   });
 
+  group('ActivityMarker', () {
+    test('allRead', () {
+      final activityMarker = ActivityMarker()
+        ..read(['id1', 'id2'])
+        ..allRead();
+      expect(activityMarker.params, {'mark_read': 'true'});
+    });
+  });
+
   test('Follow', () {
     const follow = Follow('feedId', 'targetId');
     final followJson =
