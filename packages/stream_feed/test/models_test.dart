@@ -283,6 +283,26 @@ void main() {
     });
   });
 
+  group('Resize', () {
+    test('params', () {
+      const resize = Resize(10, 10);
+      expect(resize.params, {'resize': 'clip', 'w': 10, 'h': 10});
+    });
+    test('Width should be a positive number', () {
+      expect(
+          () => Resize(-1, 10),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Width should be a positive number')));
+    });
+
+    test('Height should be a positive number', () {
+      expect(
+          () => Resize(10, -1),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Height should be a positive number')));
+    });
+  });
+
   test('Reaction', () {
     final reaction2 = Reaction(
         id: 'test',
