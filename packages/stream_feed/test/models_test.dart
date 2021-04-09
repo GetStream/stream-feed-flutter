@@ -20,7 +20,12 @@ void main() {
       expect(withOwnReactions.params, {'with_own_reactions': true});
     });
 
-    // EnrichmentFlags withUserReactions
+    test('withUserReactions', () {
+      final withUserReactions = EnrichmentFlags().withUserReactions('userId');
+      expect(withUserReactions.params,
+          {'with_own_reactions': true, 'user_id': 'userId'});
+    });
+    // EnrichmentFlags
 
     // EnrichmentFlags withRecentReactions
 
