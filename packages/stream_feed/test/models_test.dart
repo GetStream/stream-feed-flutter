@@ -396,6 +396,13 @@ void main() {
     final activityUpdateJson = json.decode(fixture('activity_update.json'));
     final activityUpdateFromJson = ActivityUpdate.fromJson(activityUpdateJson);
     expect(activityUpdateFromJson, activityUpdate);
+    expect(activityUpdate.toJson(), {
+      'id': 'test',
+      'foreign_id': 'test',
+      'time': '2001-09-11T00:01:02.000',
+      'set': {'hey': 'hey'},
+      'unset': ['test']
+    });
   });
 
   test('Location Names', () {
