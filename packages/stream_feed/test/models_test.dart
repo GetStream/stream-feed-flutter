@@ -275,6 +275,13 @@ void main() {
       }
     });
   });
+
+  group('Filter', () {
+    test('idGreaterThanOrEqual', () {
+      final filter = Filter().idGreaterThanOrEqual('id');
+      expect(filter.params, {'id_gte': 'id'});
+    });
+  });
   test('User', () {
     final user = User(
         id: 'test',
