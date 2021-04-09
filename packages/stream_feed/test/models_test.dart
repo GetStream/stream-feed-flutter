@@ -235,6 +235,14 @@ void main() {
     final entryJson = json.decode(fixture('collection_entry.json'));
     final entryFromJson = CollectionEntry.fromJson(entryJson);
     expect(entry, entryFromJson);
+    expect(entry.toJson(), {
+      'id': 'test',
+      'collection': 'test',
+      'foreign_id': 'test',
+      'data': {'test': 'test'},
+      'created_at': '2001-09-11T00:01:02.000',
+      'updated_at': '2001-09-11T00:01:02.000'
+    });
   });
 
   test('PaginatedReactions', () {
