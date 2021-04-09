@@ -31,9 +31,12 @@ void main() {
       expect(withRecentReactions.params, {'recent_reactions_limit': 10});
     });
 
-    // EnrichmentFlags
-
-    // EnrichmentFlags reactionKindFilter
+    test('reactionKindFilter', () {
+      final reactionKindFilter =
+          EnrichmentFlags().reactionKindFilter(['kind1', 'kind2']);
+      expect(
+          reactionKindFilter.params, {'reaction_kinds_filter': 'kind1,kind2'});
+    });
 
     // EnrichmentFlags withReactionCounts
 
