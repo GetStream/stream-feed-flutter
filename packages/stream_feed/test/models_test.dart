@@ -38,7 +38,12 @@ void main() {
           reactionKindFilter.params, {'reaction_kinds_filter': 'kind1,kind2'});
     });
 
-    // EnrichmentFlags withReactionCounts
+    test('withReactionCounts', () {
+      final withReactionCounts = EnrichmentFlags().withReactionCounts();
+      expect(withReactionCounts.params, {'with_reaction_counts': true});
+    });
+
+    // EnrichmentFlags
 
     // EnrichmentFlags withUserChildren
   });
