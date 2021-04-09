@@ -132,7 +132,13 @@ void main() {
       'updated_at': '2001-09-11T00:01:02.000'
     });
   });
-
+  test('ForeignIdTimePair equatable', () {
+    final foreignIdTimePair =
+        ForeignIdTimePair('foreignID', DateTime(2021, 03, 03));
+    final otherForeignIdTimePair =
+        ForeignIdTimePair('foreignID', DateTime(2021, 04, 03));
+    expect(foreignIdTimePair, otherForeignIdTimePair);
+  });
   test('NotificationGroup', () {
     final notificationGroup = NotificationGroup(
       id: 'test',
