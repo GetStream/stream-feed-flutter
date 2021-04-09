@@ -230,6 +230,10 @@ void main() {
     final userJson = json.decode(fixture('user.json'));
     final userFromJson = User.fromJson(userJson);
     expect(userFromJson, user);
+    expect(user.toJson(), {
+      'id': 'test',
+      'data': {'test': 'test'}
+    });
   });
 
   test('Follow', () {
