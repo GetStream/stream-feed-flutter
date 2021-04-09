@@ -290,6 +290,11 @@ void main() {
       final filter = Filter().idLessThan('id');
       expect(filter.params, {'id_lt': 'id'});
     });
+
+    test('idLessThanOrEqual', () {
+      final filter = Filter().idLessThanOrEqual('id');
+      expect(filter.params, {'id_lte': 'id'});
+    });
   });
   test('User', () {
     final user = User(
