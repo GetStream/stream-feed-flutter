@@ -374,10 +374,17 @@ void main() {
 
   group('ActivityMarker', () {
     test('allRead', () {
-      final activityMarker = ActivityMarker()
+      final allRead = ActivityMarker()
         ..read(['id1', 'id2'])
         ..allRead();
-      expect(activityMarker.params, {'mark_read': 'true'});
+      expect(allRead.params, {'mark_read': 'true'});
+    });
+
+    test('allSeen', () {
+      final allSeen = ActivityMarker()
+        ..seen(['id1', 'id2'])
+        ..allSeen();
+      expect(allSeen.params, {'mark_seen': 'true'});
     });
   });
 
