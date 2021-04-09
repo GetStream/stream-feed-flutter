@@ -9,6 +9,12 @@ import 'package:test/test.dart';
 import 'utils.dart';
 
 void main() {
+  group('FeedId', () {
+    test('claim', () {
+      final feedId = FeedId('slug', 'userId');
+      expect(feedId.claim, 'sluguserId');
+    });
+  });
   test('EnrichedActivity', () {
     final reaction1 = Reaction(
         id: 'test',
