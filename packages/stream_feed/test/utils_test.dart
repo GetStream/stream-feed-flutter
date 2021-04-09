@@ -10,6 +10,12 @@ main() {
           throwsA(predicate<ArgumentError>(
               (e) => e.message == 'your custom message')));
     });
+    test('checkArgument', () {
+      expect(
+          () => checkArgument(false, 'your custom message'),
+          throwsA(predicate<ArgumentError>(
+              (e) => e.message == 'your custom message')));
+    });
   });
 
   group('Serializer', () {
