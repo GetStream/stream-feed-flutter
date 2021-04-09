@@ -281,6 +281,10 @@ void main() {
       final filter = Filter().idGreaterThanOrEqual('id');
       expect(filter.params, {'id_gte': 'id'});
     });
+    test('idGreaterThan', () {
+      final filter = Filter().idGreaterThan('id');
+      expect(filter.params, {'id_gt': 'id'});
+    });
   });
   test('User', () {
     final user = User(
