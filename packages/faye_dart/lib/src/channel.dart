@@ -99,14 +99,14 @@ extension ChannelMapX on Map<String, Channel> {
     for (final name in names) {
       final channel = this[name] ?? Channel(name: name);
       this[name] = channel..subscription = subscription;
-      channel.bind(event_message, subscription.call);
+      channel.bind(event_message, subscription);
     }
   }
 
   bool unsubscribe(String name, Subscription subscription) {
     final channel = this[name];
     if (channel == null) return false;
-    channel.unbind(event_message, subscription.call);
+    channel.unbind(event_message, subscription);
     if (!channel.hasListeners(event_message)) {
       remove(name);
       return true;
