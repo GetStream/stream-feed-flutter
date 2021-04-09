@@ -9,6 +9,24 @@ import 'package:test/test.dart';
 import 'utils.dart';
 
 void main() {
+  group('EnrichmentFlags', () {
+    test('withOwnChildren', () {
+      final withOwnChildren = EnrichmentFlags().withOwnChildren();
+      expect(withOwnChildren.params, {'with_own_children': true});
+    });
+
+    // EnrichmentFlags withOwnReactions
+
+    // EnrichmentFlags withUserReactions
+
+    // EnrichmentFlags withRecentReactions
+
+    // EnrichmentFlags reactionKindFilter
+
+    // EnrichmentFlags withReactionCounts
+
+    // EnrichmentFlags withUserChildren
+  });
   group('FeedId', () {
     test('claim', () {
       final feedId = FeedId('slug', 'userId');
