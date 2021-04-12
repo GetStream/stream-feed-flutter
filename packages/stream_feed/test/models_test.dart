@@ -232,7 +232,7 @@ void main() {
         (e) => Activity.fromJson(e as Map<String, dynamic>?));
     expect(notificationGroupFromJson, notificationGroup);
   });
-  test('CollectionEntry', () {
+  group('CollectionEntry', () {
     final entry = CollectionEntry(
         id: 'test',
         collection: 'test',
@@ -240,16 +240,32 @@ void main() {
         data: const {'test': 'test'},
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'));
-    final entryJson = json.decode(fixture('collection_entry.json'));
-    final entryFromJson = CollectionEntry.fromJson(entryJson);
-    expect(entry, entryFromJson);
-    expect(entry.toJson(), {
-      'id': 'test',
-      'collection': 'test',
-      'foreign_id': 'test',
-      'data': {'test': 'test'},
-      'created_at': '2001-09-11T00:01:02.000',
-      'updated_at': '2001-09-11T00:01:02.000'
+    test('fromJson', () {
+      final entryJson = json.decode(fixture('collection_entry.json'));
+      final entryFromJson = CollectionEntry.fromJson(entryJson);
+      expect(entry, entryFromJson);
+    });
+
+    test('copyWith', () {
+      final entryCopiedWith = entry.copyWith(data: {
+        'name': 'Cheese Burger',
+        'rating': '4 stars',
+      });
+      expect(entryCopiedWith.data, {
+        'name': 'Cheese Burger',
+        'rating': '4 stars',
+      });
+    });
+
+    test('toJson', () {
+      expect(entry.toJson(), {
+        'id': 'test',
+        'collection': 'test',
+        'foreign_id': 'test',
+        'data': {'test': 'test'},
+        'created_at': '2001-09-11T00:01:02.000',
+        'updated_at': '2001-09-11T00:01:02.000'
+      });
     });
   });
 
