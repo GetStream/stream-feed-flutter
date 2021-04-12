@@ -41,6 +41,28 @@ main() {
       expect(payloadJson['user_id'], 'userId');
     });
 
+    test('buildFeedToken', () async {
+      final feedToken = TokenHelper.buildFeedToken(secret, TokenAction.any);
+      final jwt = JsonWebToken.unverified(feedToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = feedToken.token.split('.');
+      final header = tokenParts[0];
+      final payload = tokenParts[1];
+      final headerdStr = b64urlEncRfc7515Decode(header);
+      final headerJson = json.decode(headerdStr);
+      expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
+      final payloadStr = b64urlEncRfc7515Decode(payload);
+      final payloadJson = json.decode(payloadStr);
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'feed',
+        'feed_id': '*',
+      });
+    });
+
     test('buildFollowToken', () async {
       final feedToken = TokenHelper.buildFollowToken(secret, TokenAction.any);
       final jwt = JsonWebToken.unverified(feedToken.token);
