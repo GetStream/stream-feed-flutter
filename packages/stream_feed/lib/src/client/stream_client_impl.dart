@@ -30,7 +30,7 @@ class StreamClientImpl implements StreamClient {
     this.appId,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
     StreamHttpClientOptions? options,
-      })  : assert(
+  })  : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
