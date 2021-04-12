@@ -571,7 +571,7 @@ void main() {
     });
   });
 
-  test('Reaction', () {
+  group('Reaction', () {
     final reaction2 = Reaction(
         id: 'test',
         kind: 'test',
@@ -602,19 +602,29 @@ void main() {
         // },//TODO: test this
         childrenCounts: const {'test': 1});
 
-    final reactionJson = json.decode(fixture('reaction.json'));
-    final reactionFromJson = Reaction.fromJson(reactionJson);
-    expect(reactionFromJson, reaction);
-    expect(reaction.toJson(), {
-      'kind': 'test',
-      'activity_id': 'test',
-      'user_id': 'test',
-      'parent': 'test',
-      'created_at': '2001-09-11T00:01:02.000',
-      'target_feeds': ['slug:userId'],
-      'user': {'test': 'test'},
-      'target_feeds_extra_data': {'test': 'test'},
-      'data': {'test': 'test'}
+    test('copyWith', () {
+      final reactionCopiedWith =
+          reaction.copyWith(data: {'text': 'awesome post!'});
+      expect(reactionCopiedWith.data, {'text': 'awesome post!'});
+    });
+    test('fromJson', () {
+      final reactionJson = json.decode(fixture('reaction.json'));
+      final reactionFromJson = Reaction.fromJson(reactionJson);
+      expect(reactionFromJson, reaction);
+    });
+
+    test('toJson', () {
+      expect(reaction.toJson(), {
+        'kind': 'test',
+        'activity_id': 'test',
+        'user_id': 'test',
+        'parent': 'test',
+        'created_at': '2001-09-11T00:01:02.000',
+        'target_feeds': ['slug:userId'],
+        'user': {'test': 'test'},
+        'target_feeds_extra_data': {'test': 'test'},
+        'data': {'test': 'test'}
+      });
     });
   });
 
