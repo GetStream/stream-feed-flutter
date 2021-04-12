@@ -109,7 +109,7 @@ void main() {
     // gets collected as a field extra_data of type Map
     expect(enrichedActivityFromJson.extraData, {'test': 'test'});
   });
-  test('Activity', () {
+  group('Activity', () {
     final activity = Activity(
         target: 'test',
         foreignId: 'test',
@@ -125,8 +125,16 @@ void main() {
         to: <FeedId>[FeedId('slug', 'id')],
         time: DateTime.parse('2001-09-11T00:01:02.000'));
     final r = json.decode(fixture('activity.json'));
-    final activityJson = Activity.fromJson(r);
-    expect(activityJson, activity);
+    test('fromJson', () {
+      final activityJson = Activity.fromJson(r);
+      expect(activityJson, activity);
+    });
+
+    test('copyWith', () {
+      final activityCopiedWith =
+          activity.copyWith(extraData: {'popularity': 10});
+      expect(activityCopiedWith.extraData, {'popularity': 10});
+    });
   });
 
   test('Group', () {
