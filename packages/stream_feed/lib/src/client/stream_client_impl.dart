@@ -35,6 +35,7 @@ class StreamClientImpl implements StreamClient {
   final Token? userToken;
   final StreamApi _api;
   final String? secret;
+  late CollectionsClient? _collections;
 
   @override
   BatchOperationsClient get batch {
@@ -42,8 +43,10 @@ class StreamClientImpl implements StreamClient {
     return BatchOperationsClient(_api.batch, secret: secret!);
   }
 
+  set collections(CollectionsClient client) => _collections = client;
   @override
   CollectionsClient get collections =>
+      _collections ??
       CollectionsClient(_api.collections, userToken: userToken, secret: secret);
 
   @override
