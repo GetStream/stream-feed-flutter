@@ -166,6 +166,37 @@ Future<void> main() async {
           )).called(1);
     });
 
+    test('AddActivity', () async {
+      const token = Token('dummyToken');
+
+      final feed = FeedId('global', 'feed1');
+
+      const activity = Activity(
+        actor: 'user:1',
+        verb: 'tweet',
+        object: 'tweet:1',
+      );
+
+      when(() => mockClient.post<Map>(
+            Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            data: activity,
+          )).thenAnswer((_) async => Response(
+          data: activity.toJson(),
+          requestOptions: RequestOptions(
+            path: Routes.buildFeedUrl(feed),
+          ),
+          statusCode: 200));
+
+      await feedApi.addActivity(token, feed, activity);
+
+      verify(() => mockClient.post<Map>(
+            Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            data: activity,
+          )).called(1);
+    });
+
     test('AddActivities', () async {
       const token = Token('dummyToken');
 
