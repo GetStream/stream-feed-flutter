@@ -199,7 +199,7 @@ void main() {
         ForeignIdTimePair('foreignID', DateTime(2021, 04, 03));
     expect(foreignIdTimePair, otherForeignIdTimePair);
   });
-  test('NotificationGroup', () {
+  group('NotificationGroup', () {
     final notificationGroup = NotificationGroup(
       id: 'test',
       group: 'test',
@@ -225,12 +225,43 @@ void main() {
       isRead: true,
       isSeen: true,
     );
-    final notificationGroupJson =
-        json.decode(fixture('notification_group.json'));
-    final notificationGroupFromJson = NotificationGroup.fromJson(
-        notificationGroupJson,
-        (e) => Activity.fromJson(e as Map<String, dynamic>?));
-    expect(notificationGroupFromJson, notificationGroup);
+    test('fromJson', () {
+      final notificationGroupJson =
+          json.decode(fixture('notification_group.json'));
+      final notificationGroupFromJson = NotificationGroup.fromJson(
+          notificationGroupJson,
+          (e) => Activity.fromJson(e as Map<String, dynamic>?));
+      expect(notificationGroupFromJson, notificationGroup);
+    });
+
+    test('toJson', () {
+      expect(notificationGroup.toJson((activity) => activity.toJson()), {
+        'id': 'test',
+        'group': 'test',
+        'activities': [
+          {
+            'id': 'test',
+            'actor': 'test',
+            'verb': 'test',
+            'object': 'test',
+            'foreign_id': 'test',
+            'target': 'test',
+            'time': '2001-09-11T00:01:02.000',
+            'origin': 'test',
+            'to': ['slug:id'],
+            'score': 1.0,
+            'analytics': {'test': 'test'},
+            'extra_context': {'test': 'test'},
+            'test': 'test'
+          }
+        ],
+        'actor_count': 1,
+        'created_at': '2001-09-11T00:01:02.000',
+        'updated_at': '2001-09-11T00:01:02.000',
+        'is_read': true,
+        'is_seen': true
+      });
+    });
   });
   group('CollectionEntry', () {
     final entry = CollectionEntry(
