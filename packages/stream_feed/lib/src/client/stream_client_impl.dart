@@ -3,7 +3,6 @@ import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/client/feed.dart';
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
 import 'package:stream_feed_dart/src/client/notification_feed.dart';
-import 'package:stream_feed_dart/src/client/stream_client_options.dart';
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
 import 'package:stream_feed_dart/src/client/collections_client.dart';
 import 'package:stream_feed_dart/src/client/file_storage_client.dart';
@@ -11,6 +10,7 @@ import 'package:stream_feed_dart/src/client/image_storage_client.dart';
 import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api_impl.dart';
+import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/index.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
@@ -20,23 +20,21 @@ import 'package:stream_feed_dart/src/client/stream_client.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-import 'package:faye_dart/faye_dart.dart';
-
+///
 class StreamClientImpl implements StreamClient {
+  ///
   StreamClientImpl(
     this.apiKey, {
-    this.userToken,
-    StreamClientOptions? options,
-    StreamApi? api,
     this.secret,
+    this.userToken,
     this.appId,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
-  })  : assert(
+    StreamHttpClientOptions? options,
+      })  : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
-        _api = api ??
-            StreamApiImpl(apiKey, options: options ?? StreamClientOptions());
+        _api = StreamApiImpl(apiKey, options: options);
 
   final String apiKey;
   final String? appId;
