@@ -432,6 +432,12 @@ void main() {
   });
   group('Unfollow', () {
     const unfollow = UnFollow('feedId', 'targetId', true);
+
+    test('fromFollow', () {
+      const follow = Follow('feedId', 'targetId');
+      final unfollowFromFollow = UnFollow.fromFollow(follow, true);
+      expect(unfollowFromFollow, unfollow);
+    });
     test('fromJson', () {
       final unfollowJson = json.decode(fixture('unfollow.json'));
       expect(unfollow, UnFollow.fromJson(unfollowJson));
