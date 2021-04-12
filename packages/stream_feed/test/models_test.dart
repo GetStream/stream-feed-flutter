@@ -412,22 +412,34 @@ void main() {
     expect(follow, UnFollow.fromJson(followJson));
   });
 
-  test('ActivityUpdate', () {
+  group('ActivityUpdate', () {
     final activityUpdate = ActivityUpdate(
         id: 'test',
         foreignId: 'test',
         time: DateTime.parse('2001-09-11T00:01:02.000'),
         set: const {'hey': 'hey'},
         unset: const ['test']);
-    final activityUpdateJson = json.decode(fixture('activity_update.json'));
-    final activityUpdateFromJson = ActivityUpdate.fromJson(activityUpdateJson);
-    expect(activityUpdateFromJson, activityUpdate);
-    expect(activityUpdate.toJson(), {
-      'id': 'test',
-      'foreign_id': 'test',
-      'time': '2001-09-11T00:01:02.000',
-      'set': {'hey': 'hey'},
-      'unset': ['test']
+
+    test('withId', () {
+      final activityUpdateWithId =
+          ActivityUpdate.withId('id', const {'hey': 'hey'}, const ['test']);
+      expect(activityUpdateWithId,
+          const ActivityUpdate(id: 'id', set: {'hey': 'hey'}, unset: ['test']));
+    });
+    test('fromJson', () {
+      final activityUpdateJson = json.decode(fixture('activity_update.json'));
+      final activityUpdateFromJson =
+          ActivityUpdate.fromJson(activityUpdateJson);
+      expect(activityUpdateFromJson, activityUpdate);
+    });
+    test('toJson', () {
+      expect(activityUpdate.toJson(), {
+        'id': 'test',
+        'foreign_id': 'test',
+        'time': '2001-09-11T00:01:02.000',
+        'set': {'hey': 'hey'},
+        'unset': ['test']
+      });
     });
   });
 
