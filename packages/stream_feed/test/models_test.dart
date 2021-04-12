@@ -430,10 +430,17 @@ void main() {
     expect(follow, Follow.fromJson(followJson));
     expect(follow.toJson(), {'feed_id': 'feedId', 'target_id': 'targetId'});
   });
-  test('Unfollow', () {
-    const follow = UnFollow('feedId', 'targetId', true);
-    final followJson = json.decode(fixture('unfollow.json'));
-    expect(follow, UnFollow.fromJson(followJson));
+  group('Unfollow', () {
+    const unfollow = UnFollow('feedId', 'targetId', true);
+    test('fromJson', () {
+      final unfollowJson = json.decode(fixture('unfollow.json'));
+      expect(unfollow, UnFollow.fromJson(unfollowJson));
+    });
+
+    test('toJson', () {
+      expect(unfollow.toJson(),
+          {'feed_id': 'feedId', 'target_id': 'targetId', 'keep_history': true});
+    });
   });
 
   group('ActivityUpdate', () {
