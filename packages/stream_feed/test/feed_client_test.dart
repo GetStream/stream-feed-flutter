@@ -204,5 +204,26 @@ void main() {
       await client.removeActivityById(id);
       verify(() => api.removeActivityById(token, feedId, id)).called(1);
     });
+
+    test('replaceActivityToTargets', () async {
+      final unset = ['daily_likes', 'popularity'];
+      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+      final set = {
+        'product.price': 19.99,
+        'shares': {
+          'facebook': '...',
+          'twitter': '...',
+        }
+      };
+
+      final update = ActivityUpdate.withId(id, set, unset);
+      final newTargets = <FeedId>[];
+      final feed = FeedId('slug', 'userId');
+      when(() => api.updateActivityToTargets(token, feed, update,
+          replace: newTargets)).thenAnswer((_) async => dummyResponse);
+      await client.replaceActivityToTargets(update, newTargets);
+      verify(() => api.updateActivityToTargets(token, feed, update,
+          replace: newTargets)).called(1);
+    });
   });
 }
