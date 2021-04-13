@@ -2,10 +2,12 @@ import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
 import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 
 import 'mock.dart';
+import 'utils.dart';
 
 main() {
   group('StreamClientImpl', () {
@@ -36,6 +38,24 @@ main() {
       expect(client.reactions, isNotNull);
       expect(client.users, isNotNull);
       expect(client.frontendToken(userId), isNotNull);
+    });
+
+    test('openGraph', () async {
+      final mockApi = MockApi();
+      final mockTokenHelper = MockTokenHelper();
+      const secret = 'secret';
+      final client = StreamClientImpl('apiKey',
+          secret: secret, api: mockApi, tokenHelper: mockTokenHelper);
+      const token = Token('token');
+      const targetUrl = 'targetUrl';
+
+      when(() => mockTokenHelper.buildOpenGraphToken(secret)).thenReturn(token);
+      when(() => mockApi.openGraph(token, targetUrl)).thenAnswer(
+        (_) async =>
+            OpenGraphData.fromJson(jsonFixture('open_graph_data.json')!),
+      );
+      await client.openGraph(targetUrl);
+      verify(() => mockApi.openGraph(token, targetUrl)).called(1);
     });
   });
   group('StreamHttpClient', () {

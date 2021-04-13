@@ -25,12 +25,13 @@ class StreamClientImpl implements StreamClient {
       {this.secret,
       this.userToken,
       StreamHttpClientOptions? options,
-      this.tokenHelper})
+      this.tokenHelper,
+      StreamApi? api})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
-        _api = StreamApiImpl(apiKey, options: options);
+        _api = api ?? StreamApiImpl(apiKey, options: options);
 
   final Token? userToken;
   late TokenHelper? tokenHelper = TokenHelper();
