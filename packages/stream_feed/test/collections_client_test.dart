@@ -12,9 +12,7 @@ void main() {
   group('CollectionsClient', () {
     final api = MockCollectionsApi();
 
-    // final mockTokenHelper = MockTokenHelper();
     const secret = 'secret';
-    // final clientWithSecret = CollectionsClient(api, secret: secret);
     const token = Token('dummyToken');
     final client = CollectionsClient(api, userToken: token);
     test('Add', () async {
