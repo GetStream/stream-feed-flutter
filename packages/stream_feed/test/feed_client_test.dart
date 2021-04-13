@@ -15,6 +15,12 @@ void main() {
     const token = Token('dummyToken');
     const targetToken = Token('dummyToken2');
     final client = Feed(feedId, api, userToken: token);
+    final dummyResponse = Response(
+        data: {},
+        requestOptions: RequestOptions(
+          path: '',
+        ),
+        statusCode: 200);
 
     test('addActivity', () async {
       const activity = Activity(
@@ -175,17 +181,28 @@ void main() {
       final add = <FeedId>[];
       final remove = <FeedId>[];
       final feed = FeedId('slug', 'userId');
-      when(() => api.updateActivityToTargets(
-              token, feed, update, add: add, remove: remove))
-          .thenAnswer((_) async => Response(
-              data: {},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
-              statusCode: 200));
+      when(() => api.updateActivityToTargets(token, feed, update,
+          add: add, remove: remove)).thenAnswer((_) async => dummyResponse);
       await client.updateActivityToTargets(update, add, remove);
       verify(() => api.updateActivityToTargets(token, feed, update,
           add: add, remove: remove)).called(1);
+    });
+
+    test('removeActivityByForeignId', () async {
+      const foreignId = 'foreignId';
+      when(() => api.removeActivityByForeignId(token, feedId, foreignId))
+          .thenAnswer((_) async => dummyResponse);
+      await client.removeActivityByForeignId(foreignId);
+      verify(() => api.removeActivityByForeignId(token, feedId, foreignId))
+          .called(1);
+    });
+
+    test('removeActivityById', () async {
+      const id = 'foreignId';
+      when(() => api.removeActivityById(token, feedId, id))
+          .thenAnswer((_) async => dummyResponse);
+      await client.removeActivityById(id);
+      verify(() => api.removeActivityById(token, feedId, id)).called(1);
     });
   });
 }
