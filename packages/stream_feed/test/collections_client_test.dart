@@ -88,6 +88,24 @@ void main() {
       verify(() => api.update(token, userId, entry)).called(1);
     });
 
+    test('deleteMany', () async {
+      const collection = 'food';
+      const entryId = 'cheeseburger';
+      final entryIds = [entryId];
+      when(() =>
+              mockTokenHelper.buildCollectionsToken(secret, TokenAction.delete))
+          .thenReturn(token);
+      when(() => api.deleteMany(token, collection, entryIds))
+          .thenAnswer((_) async => Response(
+              data: {},
+              requestOptions: RequestOptions(
+                path: '',
+              ),
+              statusCode: 200));
+      await clientWithSecret.deleteMany(collection, entryIds);
+      verify(() => api.deleteMany(token, collection, entryIds)).called(1);
+    });
+
     test('select', () async {
       const collection = 'food';
       const entryId = 'cheeseburger';
