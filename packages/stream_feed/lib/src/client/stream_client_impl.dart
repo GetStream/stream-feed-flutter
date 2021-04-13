@@ -21,18 +21,19 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 ///
 class StreamClientImpl implements StreamClient {
   ///
-  StreamClientImpl(
-    String apiKey, {
-    this.secret,
-    this.userToken,
-    StreamHttpClientOptions? options,
-  })  : assert(
+  StreamClientImpl(String apiKey,
+      {this.secret,
+      this.userToken,
+      StreamHttpClientOptions? options,
+      this.tokenHelper})
+      : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
         _api = StreamApiImpl(apiKey, options: options);
 
   final Token? userToken;
+  late TokenHelper? tokenHelper = TokenHelper();
   final StreamApi _api;
   final String? secret;
 
@@ -87,13 +88,13 @@ class StreamClientImpl implements StreamClient {
     DateTime? expiresAt,
   }) {
     checkNotNull(secret, "You can't use the frontendToken method client side");
-    return TokenHelper.buildFrontendToken(secret!, userId,
-        expiresAt: expiresAt);
+    return tokenHelper!
+        .buildFrontendToken(secret!, userId, expiresAt: expiresAt);
   }
 
   @override
   Future<OpenGraphData> openGraph(String targetUrl) {
-    final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
+    final token = userToken ?? tokenHelper!.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
   }
 }

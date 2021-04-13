@@ -6,6 +6,7 @@ import 'dart:convert';
 
 main() {
   group('TokenHelper', () {
+    final tokenHelper = TokenHelper();
     const secret =
         // ignore: lines_longer_than_80_chars
         'secret';
@@ -22,7 +23,7 @@ main() {
     test('buildFrontendToken', () async {
       final expiresAt = DateTime(2021, 03, 08);
 
-      final frontendToken = TokenHelper.buildFrontendToken(secret, 'userId',
+      final frontendToken = tokenHelper.buildFrontendToken(secret, 'userId',
           expiresAt: expiresAt);
       final jwt = JsonWebToken.unverified(frontendToken.token);
       final verified = await jwt.verify(keyStore);
@@ -42,7 +43,7 @@ main() {
     });
 
     test('buildFeedToken', () async {
-      final feedToken = TokenHelper.buildFeedToken(secret, TokenAction.any);
+      final feedToken = tokenHelper.buildFeedToken(secret, TokenAction.any);
       final jwt = JsonWebToken.unverified(feedToken.token);
       final verified = await jwt.verify(keyStore);
       expect(verified, true);
@@ -64,7 +65,7 @@ main() {
     });
 
     test('buildFollowToken', () async {
-      final feedToken = TokenHelper.buildFollowToken(secret, TokenAction.any);
+      final feedToken = tokenHelper.buildFollowToken(secret, TokenAction.any);
       final jwt = JsonWebToken.unverified(feedToken.token);
       final verified = await jwt.verify(keyStore);
       expect(verified, true);
@@ -87,7 +88,7 @@ main() {
 
     test('buildReactionToken', () async {
       final reactionToken =
-          TokenHelper.buildReactionToken(secret, TokenAction.any);
+          tokenHelper.buildReactionToken(secret, TokenAction.any);
       final tokenParts = reactionToken.token.split('.');
       final jwt = JsonWebToken.unverified(reactionToken.token);
       final verified = await jwt.verify(keyStore);
@@ -110,7 +111,7 @@ main() {
 
     test('buildActivityToken', () async {
       final activityToken =
-          TokenHelper.buildActivityToken(secret, TokenAction.any);
+          tokenHelper.buildActivityToken(secret, TokenAction.any);
       final jwt = JsonWebToken.unverified(activityToken.token);
       final verified = await jwt.verify(keyStore);
       expect(verified, true);
@@ -132,7 +133,7 @@ main() {
     });
 
     test('buildUsersToken', () async {
-      final usersToken = TokenHelper.buildUsersToken(secret, TokenAction.any);
+      final usersToken = tokenHelper.buildUsersToken(secret, TokenAction.any);
       final jwt = JsonWebToken.unverified(usersToken.token);
       final verified = await jwt.verify(keyStore);
       expect(verified, true);
@@ -155,7 +156,7 @@ main() {
 
     test('buildCollectionsToken', () async {
       final collectionsToken =
-          TokenHelper.buildCollectionsToken(secret, TokenAction.any);
+          tokenHelper.buildCollectionsToken(secret, TokenAction.any);
       final jwt = JsonWebToken.unverified(collectionsToken.token);
       final verified = await jwt.verify(keyStore);
       expect(verified, true);
@@ -177,7 +178,7 @@ main() {
     });
 
     test('buildOpenGraphToken', () async {
-      final openGraphToken = TokenHelper.buildOpenGraphToken(
+      final openGraphToken = tokenHelper.buildOpenGraphToken(
         secret,
       );
       final jwt = JsonWebToken.unverified(openGraphToken.token);
@@ -202,7 +203,7 @@ main() {
 
     test('buildToTargetUpdateToken', () async {
       final toTargetUpdateToken =
-          TokenHelper.buildToTargetUpdateToken(secret, TokenAction.any);
+          tokenHelper.buildToTargetUpdateToken(secret, TokenAction.any);
       final jwt = JsonWebToken.unverified(toTargetUpdateToken.token);
       final verified = await jwt.verify(keyStore);
       expect(verified, true);
@@ -224,7 +225,7 @@ main() {
     });
 
     test('buildFilesToken', () async {
-      final filesToken = TokenHelper.buildFilesToken(secret, TokenAction.any);
+      final filesToken = tokenHelper.buildFilesToken(secret, TokenAction.any);
       final jwt = JsonWebToken.unverified(filesToken.token);
       final verified = await jwt.verify(keyStore);
       expect(verified, true);

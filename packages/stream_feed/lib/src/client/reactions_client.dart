@@ -10,12 +10,14 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// such add, delete, get, update ... reactions
 class ReactionsClient {
   ///Initialize a reaction client
-  const ReactionsClient(this.reactions, {this.userToken, this.secret})
+  ReactionsClient(this.reactions,
+      {this.userToken, this.secret, this.tokenHelper})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         );
   final Token? userToken;
+  late TokenHelper? tokenHelper = TokenHelper();
 
   final ReactionsApi reactions;
 
@@ -63,8 +65,8 @@ class ReactionsClient {
       data: data,
       targetFeeds: targetFeeds as List<FeedId>?,
     );
-    final token =
-        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
+    final token = userToken ??
+        tokenHelper!.buildReactionToken(secret!, TokenAction.write);
     return reactions.add(token, reaction);
   }
 
@@ -94,8 +96,8 @@ class ReactionsClient {
       data: data,
       targetFeeds: targetFeeds as List<FeedId>?,
     );
-    final token =
-        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
+    final token = userToken ??
+        tokenHelper!.buildReactionToken(secret!, TokenAction.write);
     return reactions.add(token, reaction);
   }
 
@@ -112,7 +114,7 @@ class ReactionsClient {
   /// API docs: [removing-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#removing-reactions)
   Future<void> delete(String id) {
     final token = userToken ??
-        TokenHelper.buildReactionToken(secret!, TokenAction.delete);
+        tokenHelper!.buildReactionToken(secret!, TokenAction.delete);
     return reactions.delete(token, id);
   }
 
@@ -120,7 +122,7 @@ class ReactionsClient {
   /// [retrieving-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#retrieving-reactions)
   Future<Reaction> get(String id) {
     final token =
-        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
+        userToken ?? tokenHelper!.buildReactionToken(secret!, TokenAction.read);
     return reactions.get(token, id);
   }
 
@@ -134,8 +136,8 @@ class ReactionsClient {
       data: data,
       targetFeeds: targetFeeds as List<FeedId>?,
     );
-    final token =
-        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
+    final token = userToken ??
+        tokenHelper!.buildReactionToken(secret!, TokenAction.write);
     return reactions.update(token, reaction);
   }
 
@@ -147,7 +149,7 @@ class ReactionsClient {
     String? kind,
   }) {
     final token =
-        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
+        userToken ?? tokenHelper!.buildReactionToken(secret!, TokenAction.read);
     return reactions.filter(token, lookupAttr, lookupValue,
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
@@ -161,7 +163,7 @@ class ReactionsClient {
     String? kind,
   }) {
     final token =
-        userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
+        userToken ?? tokenHelper!.buildReactionToken(secret!, TokenAction.read);
     return reactions.paginatedFilter(token, lookupAttr, lookupValue,
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }

@@ -1,6 +1,11 @@
+import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
+import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 import 'package:test/test.dart';
 import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
+
+import 'mock.dart';
 
 main() {
   group('StreamClientImpl', () {
@@ -11,7 +16,16 @@ main() {
               e.message == 'At least a secret or userToken must be provided')));
     });
     test('getters', () async {
-      final client = StreamClientImpl('apiKey', secret: 'secret');
+      final mockTokenHelper = MockTokenHelper();
+      const secret = 'secret';
+      const userId = 'userId';
+      final client = StreamClientImpl('apiKey',
+          secret: secret, tokenHelper: mockTokenHelper);
+      const token = Token('dummyToken');
+      when(() => mockTokenHelper.buildFrontendToken(
+            secret,
+            userId,
+          )).thenReturn(token);
       expect(client.collections, isNotNull);
       expect(client.batch, isNotNull);
       expect(client.aggregatedFeed('slug', 'userId'), isNotNull);
@@ -21,7 +35,7 @@ main() {
       expect(client.images, isNotNull);
       expect(client.reactions, isNotNull);
       expect(client.users, isNotNull);
-      expect(client.frontendToken('userId'), isNotNull);
+      expect(client.frontendToken(userId), isNotNull);
     });
   });
   group('StreamHttpClient', () {

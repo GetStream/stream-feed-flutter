@@ -97,7 +97,7 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
-  Future<Response> upsert(
+  Future<Response> upsert(//TODO: Map<String, Iterable<CollectionEntry>>
       Token token, String collection, Iterable<CollectionEntry> entries) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
     checkArgument(entries.isNotEmpty, "Collection data can't be empty");
@@ -106,7 +106,7 @@ class CollectionsApi {
       headers: {'Authorization': '$token'},
       data: {
         'data': {collection: entries}
-      },
+      }
     );
   }
 }

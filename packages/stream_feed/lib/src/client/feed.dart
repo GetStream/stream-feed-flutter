@@ -14,7 +14,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  const Feed(this.feedId, this.feed, {this.userToken, this.secret})
+  Feed(this.feedId, this.feed, {this.userToken, this.secret, this.tokenHelper})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -23,6 +23,7 @@ class Feed {
   /// Your API secret
   final String? secret;
   final Token? userToken;
+  late TokenHelper? tokenHelper = TokenHelper();
 
   /// The feed id
   final FeedId feedId;
@@ -49,7 +50,7 @@ class Feed {
   /// API docs: [adding-activities-basic](https://getstream.io/activity-feeds/docs/flutter-dart/adding_activities/?language=dart#adding-activities-basic)
   Future<Activity> addActivity(Activity activity) {
     final token = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.write, feedId);
+        tokenHelper!.buildFeedToken(secret!, TokenAction.write, feedId);
     return feed.addActivity(token, feedId, activity);
   }
 
@@ -74,7 +75,7 @@ class Feed {
   /// API docs : [batch-add-activities](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-add-activities)
   Future<List<Activity>> addActivities(Iterable<Activity> activities) {
     final token = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.write, feedId);
+        tokenHelper!.buildFeedToken(secret!, TokenAction.write, feedId);
     return feed.addActivities(token, feedId, activities);
   }
 
@@ -92,7 +93,7 @@ class Feed {
     //TODO: named removeActivity in js
     //TODO: should return response
     final token = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.delete, feedId);
+        tokenHelper!.buildFeedToken(secret!, TokenAction.delete, feedId);
     return feed.removeActivityById(token, feedId, id);
   }
 
@@ -110,7 +111,7 @@ class Feed {
   /// API docs: [removing-activities](https://getstream.io/activity-feeds/docs/flutter-dart/adding_activities/?language=dart#removing-activities)
   Future<void> removeActivityByForeignId(String foreignId) {
     final token = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.delete, feedId);
+        tokenHelper!.buildFeedToken(secret!, TokenAction.delete, feedId);
     return feed.removeActivityByForeignId(token, feedId, foreignId);
   }
 
@@ -136,9 +137,9 @@ class Feed {
   }) {
     //TODO: should return API response
     final token = userToken ??
-        TokenHelper.buildFollowToken(secret!, TokenAction.write, feedId);
+        tokenHelper!.buildFollowToken(secret!, TokenAction.write, feedId);
     final targetToken = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.read, flatFeet.feedId);
+        tokenHelper!.buildFeedToken(secret!, TokenAction.read, flatFeet.feedId);
     return feed.follow(token, targetToken, feedId, flatFeet.feedId,
         activityCopyLimit ?? Default.activityCopyLimit);
   }
@@ -161,7 +162,7 @@ class Feed {
     int? offset,
   }) {
     final token = userToken ??
-        TokenHelper.buildFollowToken(secret!, TokenAction.read, feedId);
+        tokenHelper!.buildFollowToken(secret!, TokenAction.read, feedId);
     return feed.getFollowers(token, feedId, limit ?? Default.limit,
         offset ?? Default.offset, feedIds ?? []);
   }
@@ -193,7 +194,7 @@ class Feed {
     int? offset,
   }) {
     final token = userToken ??
-        TokenHelper.buildFollowToken(secret!, TokenAction.read, feedId);
+        tokenHelper!.buildFollowToken(secret!, TokenAction.read, feedId);
     return feed.getFollowed(token, feedId, limit ?? Default.limit,
         offset ?? Default.offset, feedIds ?? []);
   }
@@ -222,7 +223,7 @@ class Feed {
     bool? keepHistory,
   }) {
     final token = userToken ??
-        TokenHelper.buildFollowToken(secret!, TokenAction.delete, feedId);
+        tokenHelper!.buildFollowToken(secret!, TokenAction.delete, feedId);
     return feed.unfollow(token, feedId, flatFeet.feedId, keepHistory ?? false);
   }
 
@@ -245,8 +246,8 @@ class Feed {
   Future<void> updateActivityToTargets(
       ActivityUpdate update, Iterable<FeedId> add, Iterable<FeedId> remove) {
     final token = userToken ??
-        TokenHelper.buildToTargetUpdateToken(
-            secret!, TokenAction.write, feedId);
+        tokenHelper!
+            .buildToTargetUpdateToken(secret!, TokenAction.write, feedId);
     return feed.updateActivityToTargets(token, feedId, update,
         add: add, remove: remove);
   }
@@ -259,8 +260,8 @@ class Feed {
   Future<void> replaceActivityToTargets(
       ActivityUpdate update, Iterable<FeedId> newTargets) {
     final token = userToken ??
-        TokenHelper.buildToTargetUpdateToken(
-            secret!, TokenAction.write, feedId);
+        tokenHelper!
+            .buildToTargetUpdateToken(secret!, TokenAction.write, feedId);
     return feed.updateActivityToTargets(token, feedId, update,
         replace: newTargets);
   }
@@ -269,8 +270,8 @@ class Feed {
   Future<List<Activity>> updateActivitiesById(
       Iterable<ActivityUpdate> updates) {
     //TODO: further document that thing
-    final token =
-        userToken ?? TokenHelper.buildActivityToken(secret!, TokenAction.write);
+    final token = userToken ??
+        tokenHelper!.buildActivityToken(secret!, TokenAction.write);
     return feed.updateActivitiesById(token, updates);
   }
 
@@ -295,16 +296,16 @@ class Feed {
   /// await userFeed.updateActivityById(update);
   ///  ```
   Future<Activity> updateActivityById(ActivityUpdate update) {
-    final token =
-        userToken ?? TokenHelper.buildActivityToken(secret!, TokenAction.write);
+    final token = userToken ??
+        tokenHelper!.buildActivityToken(secret!, TokenAction.write);
     return feed.updateActivityById(token, update);
   }
 
   /// Update Activities By ForeignId
   Future<List<Activity>> updateActivitiesByForeignId(
       Iterable<ActivityUpdate> updates) {
-    final token =
-        userToken ?? TokenHelper.buildActivityToken(secret!, TokenAction.write);
+    final token = userToken ??
+        tokenHelper!.buildActivityToken(secret!, TokenAction.write);
     return feed.updateActivitiesByForeignId(token, updates);
   }
 
@@ -315,8 +316,8 @@ class Feed {
   ///await userFeed.updateActivityByForeignId(update);
   ///```
   Future<Activity> updateActivityByForeignId(ActivityUpdate update) {
-    final token =
-        userToken ?? TokenHelper.buildActivityToken(secret!, TokenAction.write);
+    final token = userToken ??
+        tokenHelper!.buildActivityToken(secret!, TokenAction.write);
 
     return feed.updateActivityByForeignId(token, update);
   }
