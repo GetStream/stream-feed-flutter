@@ -18,7 +18,6 @@ main() {
       const kind = 'like';
       const activityId = 'activityId';
       const userId = 'john-doe';
-      // const reaction = Reaction(kind: kind);
       const targetFeeds = <FeedId>[];
       const data = {'text': 'awesome post!'};
       const reaction = Reaction(
@@ -35,6 +34,16 @@ main() {
               data: data, targetFeeds: targetFeeds),
           reaction);
       verify(() => api.add(token, reaction)).called(1);
+    });
+
+    test('get', () async {
+      const id = 'id';
+
+      const reaction = Reaction(id: id);
+      when(() => api.get(token, id)).thenAnswer((_) async => reaction);
+
+      expect(await client.get(id), reaction);
+      verify(() => api.get(token, id)).called(1);
     });
   });
 }
