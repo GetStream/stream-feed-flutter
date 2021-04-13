@@ -107,5 +107,27 @@ main() {
               api.filter(token, lookupAttr, lookupValue, filter, limit, kind))
           .called(1);
     });
+
+    test('addChild', () async {
+      const kind = 'like';
+      const userId = 'john-doe';
+      const parentId = 'parentId';
+      const targetFeeds = <FeedId>[];
+      const data = {'text': 'awesome post!'};
+      final reaction = Reaction(
+        kind: kind,
+        parent: parentId,
+        userId: userId,
+        data: data,
+        targetFeeds: targetFeeds,
+      );
+      when(() => api.add(token, reaction)).thenAnswer((_) async => reaction);
+
+      expect(
+          await client.addChild(kind, parentId, userId,
+              data: data, targetFeeds: targetFeeds),
+          reaction);
+      verify(() => api.add(token, reaction)).called(1);
+    });
   });
 }
