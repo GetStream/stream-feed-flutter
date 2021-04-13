@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
@@ -44,6 +45,27 @@ main() {
 
       expect(await client.get(id), reaction);
       verify(() => api.get(token, id)).called(1);
+    });
+
+    test('update', () async {
+      const reactionId = 'reactionId';
+      const targetFeeds = <FeedId>[];
+      const data = {'text': 'modified post'};
+      final updatedReaction = Reaction(
+        id: reactionId,
+        data: data,
+        targetFeeds: targetFeeds,
+      );
+
+      when(() => api.update(token, updatedReaction))
+          .thenAnswer((_) async => Response(
+              data: {},
+              requestOptions: RequestOptions(
+                path: '',
+              ),
+              statusCode: 200));
+      await client.update(reactionId, data: data, targetFeeds: targetFeeds);
+      verify(() => api.update(token, updatedReaction)).called(1);
     });
   });
 }
