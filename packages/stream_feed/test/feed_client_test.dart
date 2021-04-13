@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/client/feed.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
@@ -155,6 +156,36 @@ void main() {
           .thenAnswer((_) async => actitivity);
       await client.updateActivityByForeignId(update);
       verify(() => api.updateActivityByForeignId(token, update)).called(1);
+    });
+
+    test('updateActivityToTargets', () async {
+      final unset = ['daily_likes', 'popularity'];
+      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+      final set = {
+        'product.price': 19.99,
+        'shares': {
+          'facebook': '...',
+          'twitter': '...',
+        }
+      };
+
+      final update = ActivityUpdate.withId(id, set, unset);
+      // const actitivity =
+      //     Activity(actor: 'actor', verb: 'verb', object: 'object');
+      final add = <FeedId>[];
+      final remove = <FeedId>[];
+      final feed = FeedId('slug', 'userId');
+      when(() => api.updateActivityToTargets(
+              token, feed, update, add: add, remove: remove))
+          .thenAnswer((_) async => Response(
+              data: {},
+              requestOptions: RequestOptions(
+                path: '',
+              ),
+              statusCode: 200));
+      await client.updateActivityToTargets(update, add, remove);
+      verify(() => api.updateActivityToTargets(token, feed, update,
+          add: add, remove: remove)).called(1);
     });
   });
 }
