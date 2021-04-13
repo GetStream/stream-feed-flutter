@@ -1,29 +1,35 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
+import 'package:stream_feed_dart/src/client/collections_client.dart';
+import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
 
-main() {
+void main() {
   group('CollectionsClient', () {
-    final collections = MockCollectionsClient();
-    final client = StreamClientImpl('apiKey', secret: 'dummy')
-      ..collections = collections;
+    final api = MockCollectionsApi();
+    const token = Token('dummyToken');
+    final client = CollectionsClient(api, userToken: token);
     test('add', () async {
+      const collection = 'users';
       const entryId = '123';
       const userId = 'userId';
-      const entry = CollectionEntry(collection: 'users', id: entryId, data: {
-        'name': 'john',
-        'favorite_color': 'blue',
-      });
-      when(() => client.collections.add('user', entry.data!,
-          entryId: entryId, userId: userId)).thenAnswer((_) async => entry);
-      final addedCollection = await client.collections
-          .add('user', entry.data!, entryId: entryId, userId: userId);
+      const data = {'name': 'john', 'favorite_color': 'blue'};
+      const entry = CollectionEntry(
+        collection: collection,
+        id: entryId,
+        data: data,
+      );
+      when(() => api.add(token, userId, entry)).thenAnswer((_) async => entry);
+      final addedCollection = await client.add(
+        collection,
+        data,
+        entryId: entryId,
+        userId: userId,
+      );
       expect(addedCollection, entry);
-      verify(() => client.collections.add('user', entry.data!,
-          entryId: entryId, userId: userId)).called(1);
+      verify(() => api.add(token, userId, entry)).called(1);
     });
   });
 }
