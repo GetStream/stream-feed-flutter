@@ -11,6 +11,11 @@ import 'mock.dart';
 void main() {
   group('CollectionsClient', () {
     final api = MockCollectionsApi();
+
+    final mockTokenHelper = MockTokenHelper();
+    const secret = 'secret';
+    final clientWithSecret =
+        CollectionsClient(api, secret: secret, tokenHelper: mockTokenHelper);
     const token = Token('dummyToken');
     final client = CollectionsClient(api, userToken: token);
     test('Add', () async {
@@ -83,10 +88,23 @@ void main() {
       verify(() => api.update(token, userId, entry)).called(1);
     });
 
+    test('select', () async {
+      const collection = 'food';
+      const entryId = 'cheeseburger';
+      const entryIds = [entryId];
+      const entries = [CollectionEntry(id: entryId, collection: collection)];
+      when(() =>
+              mockTokenHelper.buildCollectionsToken('secret', TokenAction.read))
+          .thenReturn(token);
+      when(() => api.select(token, collection, entryIds))
+          .thenAnswer((_) async => entries);
+      final selectEd = await clientWithSecret.select(collection, entryIds);
+      expect(selectEd, entries);
+      when(() => api.select(token, collection, entryIds))
+          .thenAnswer((_) async => entries);
+    });
+
     test('upsert', () async {
-      final mockTokenHelper = MockTokenHelper();
-      final clientWithSecret = CollectionsClient(api,
-          secret: 'secret', tokenHelper: mockTokenHelper);
       const collection = 'food';
       const entryId = 'cheeseburger';
 
@@ -94,8 +112,9 @@ void main() {
       const entries = [
         CollectionEntry(collection: collection, id: entryId, data: data)
       ];
-      when(() => mockTokenHelper.buildCollectionsToken(
-          'secret', TokenAction.write)).thenReturn(token);
+      when(() =>
+              mockTokenHelper.buildCollectionsToken(secret, TokenAction.write))
+          .thenReturn(token);
       when(() => api.upsert(token, collection, entries))
           .thenAnswer((_) async => Response(
               data: {},
