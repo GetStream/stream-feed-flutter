@@ -40,5 +40,22 @@ void main() {
       await client.addActivities(activities);
       verify(() => api.addActivities(token, feedId, activities)).called(1);
     });
+
+    test('getFollowed', () async {
+      const limit = 5;
+      const offset = 0;
+      final feed = FeedId('slug', 'userId');
+      final feedIds = [FeedId('slug', 'userId')];
+      final follows = <Follow>[
+        const Follow('timeline:1', 'user:1'),
+        const Follow('timeline:1', 'user:2'),
+        const Follow('timeline:1', 'user:3'),
+      ];
+      when(() => api.getFollowed(token, feed, limit, offset, feedIds))
+          .thenAnswer((_) async => follows);
+      await client.getFollowed(limit: limit, offset: offset, feedIds: feedIds);
+      verify(() => api.getFollowed(token, feed, limit, offset, feedIds))
+          .called(1);
+    });
   });
 }
