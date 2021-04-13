@@ -74,5 +74,25 @@ void main() {
       verify(() => api.getFollowers(token, feed, limit, offset, feedIds))
           .called(1);
     });
+
+    test('updateActivityById', () async {
+      final unset = ['daily_likes', 'popularity'];
+      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+      final set = {
+        'product.price': 19.99,
+        'shares': {
+          'facebook': '...',
+          'twitter': '...',
+        }
+      };
+
+      final update = ActivityUpdate.withId(id, set, unset);
+      const actitivity =
+          Activity(actor: 'actor', verb: 'verb', object: 'object');
+      when(() => api.updateActivityById(token, update))
+          .thenAnswer((_) async => actitivity);
+      await client.updateActivityById(update);
+      verify(() => api.updateActivityById(token, update)).called(1);
+    });
   });
 }
