@@ -26,5 +26,19 @@ void main() {
       await client.addActivity(activity);
       verify(() => api.addActivity(token, feedId, activity)).called(1);
     });
+
+    test('addActivities', () async {
+      const activities = [
+        Activity(
+          actor: 'user:1',
+          verb: 'tweet',
+          object: 'tweet:1',
+        )
+      ];
+      when(() => api.addActivities(token, feedId, activities))
+          .thenAnswer((_) async => activities);
+      await client.addActivities(activities);
+      verify(() => api.addActivities(token, feedId, activities)).called(1);
+    });
   });
 }
