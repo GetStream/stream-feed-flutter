@@ -11,6 +11,12 @@ import 'mock.dart';
 main() {
   group('ReactionsClient', () {
     final api = MockReactionsApi();
+    final dummyResponse = Response(
+        data: {},
+        requestOptions: RequestOptions(
+          path: '',
+        ),
+        statusCode: 200);
 
     const secret = 'secret';
     const token = Token('dummyToken');
@@ -58,14 +64,16 @@ main() {
       );
 
       when(() => api.update(token, updatedReaction))
-          .thenAnswer((_) async => Response(
-              data: {},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
-              statusCode: 200));
+          .thenAnswer((_) async => dummyResponse);
       await client.update(reactionId, data: data, targetFeeds: targetFeeds);
       verify(() => api.update(token, updatedReaction)).called(1);
+    });
+
+    test('delete', () async {
+      const id = 'id';
+      when(() => api.delete(token, id)).thenAnswer((_) async => dummyResponse);
+      await client.delete(id);
+      verify(() => api.delete(token, id)).called(1);
     });
   });
 }
