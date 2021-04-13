@@ -3,15 +3,31 @@ import 'package:test/test.dart';
 import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 
 main() {
-  group('StreamHttpClient', () {
-    final streamHttpClient = StreamHttpClient('apiKey');
-
+  group('StreamClientImpl', () {
     test('throws an AssertionError when no secret provided', () {
       expect(
           () => StreamClientImpl('apiKey'),
           throwsA(predicate<AssertionError>((e) =>
               e.message == 'At least a secret or userToken must be provided')));
     });
+    test('getters', () {
+      final client = StreamClientImpl('apiKey', secret: 'secret');
+      expect(client.collections, isNotNull);
+      expect(client.batch, isNotNull);
+      expect(client.aggregatedFeed('slug', 'userId'), isNotNull);
+      expect(client.flatFeed('slug', 'userId'), isNotNull);
+      expect(client.notificationFeed('slug', 'userId'), isNotNull);
+      expect(client.files, isNotNull);
+      expect(client.images, isNotNull);
+      expect(client.reactions, isNotNull);
+      expect(client.users, isNotNull);
+      expect(client.frontendToken('userId'), isNotNull);
+      expect(client.openGraph('targetUrl'), isNotNull);
+    });
+  });
+  group('StreamHttpClient', () {
+    final streamHttpClient = StreamHttpClient('apiKey');
+
     test('headers', () {
       expect(streamHttpClient.httpClient.options.headers, {
         'stream-auth-type': 'jwt',
