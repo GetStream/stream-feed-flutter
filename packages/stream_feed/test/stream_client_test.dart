@@ -1,6 +1,10 @@
+import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
+import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:test/test.dart';
 import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
+
+import 'mock.dart';
 
 main() {
   group('StreamClientImpl', () {
@@ -10,7 +14,7 @@ main() {
           throwsA(predicate<AssertionError>((e) =>
               e.message == 'At least a secret or userToken must be provided')));
     });
-    test('getters', () {
+    test('getters', () async {
       final client = StreamClientImpl('apiKey', secret: 'secret');
       expect(client.collections, isNotNull);
       expect(client.batch, isNotNull);
@@ -22,7 +26,6 @@ main() {
       expect(client.reactions, isNotNull);
       expect(client.users, isNotNull);
       expect(client.frontendToken('userId'), isNotNull);
-      expect(client.openGraph('targetUrl'), isNotNull);
     });
   });
   group('StreamHttpClient', () {
