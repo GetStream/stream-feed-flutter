@@ -42,7 +42,7 @@ class FeedApi {
   }
 
   Future<Response> follow(Token token, Token targetToken, FeedId sourceFeed,
-      FeedId targetFeed, int activityCopyLimit) {
+      FeedId targetFeed, int activityCopyLimit) async {
     checkArgument(sourceFeed != targetFeed, "Feed can't follow itself");
     checkArgument(activityCopyLimit >= 0,
         'Activity copy limit should be a non-negative number');
