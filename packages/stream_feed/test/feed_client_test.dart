@@ -94,5 +94,26 @@ void main() {
       await client.updateActivityById(update);
       verify(() => api.updateActivityById(token, update)).called(1);
     });
+
+    test('updateActivitiesById', () async {
+      final unset = ['daily_likes', 'popularity'];
+      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
+      final set = {
+        'product.price': 19.99,
+        'shares': {
+          'facebook': '...',
+          'twitter': '...',
+        }
+      };
+
+      final updates = [ActivityUpdate.withId(id, set, unset)];
+      const actitivities = [
+        Activity(actor: 'actor', verb: 'verb', object: 'object')
+      ];
+      when(() => api.updateActivitiesById(token, updates))
+          .thenAnswer((_) async => actitivities);
+      await client.updateActivitiesById(updates);
+      verify(() => api.updateActivitiesById(token, updates)).called(1);
+    });
   });
 }
