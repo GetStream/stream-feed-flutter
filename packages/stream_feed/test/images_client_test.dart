@@ -1,16 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/client/file_storage_client.dart';
+import 'package:stream_feed_dart/src/client/image_storage_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
 
 main() {
-  group('FileStorageClient', () {
-    final api = MockFilesApi();
+  group('ImagesStorageClient', () {
+    final api = MockImagesApi();
     const token = Token('dummyToken');
-    final client = FileStorageClient(api, userToken: token);
+    final client = ImageStorageClient(api, userToken: token);
     test('upload', () async {
       final multipartFile = MultipartFile(Stream.value([]), 2);
       when(() => api.upload(token, multipartFile))
