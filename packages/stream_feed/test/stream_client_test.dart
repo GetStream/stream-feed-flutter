@@ -1,10 +1,6 @@
-import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:test/test.dart';
 import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
-
-import 'mock.dart';
 
 main() {
   group('StreamClientImpl', () {
