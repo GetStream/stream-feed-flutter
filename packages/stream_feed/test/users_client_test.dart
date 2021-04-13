@@ -52,5 +52,18 @@ main() {
 
       verify(() => api.get(token, id)).called(1);
     });
+
+    test('update', () async {
+      const id = 'john-doe';
+      const data = {
+        'name': 'John Doe',
+        'occupation': 'Software Engineer',
+        'gender': 'male',
+      };
+      const user = User(id: id, data: data);
+      when(() => api.update(token, id, data)).thenAnswer((_) async => user);
+      await client.update(id, data);
+      verify(() => api.update(token, id, data)).called(1);
+    });
   });
 }
