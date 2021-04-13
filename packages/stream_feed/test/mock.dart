@@ -13,5 +13,3 @@ class MockCollectionsApi extends Mock implements CollectionsApi {}
 class MockFeedApi extends Mock implements FeedApi {}
 
 class MockApi extends Mock implements StreamApi {}
-
-class MockTokenHelper extends Mock implements TokenHelper {}

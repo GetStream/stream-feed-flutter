@@ -14,9 +14,8 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class AggregatedFeed extends Feed {
   AggregatedFeed(FeedId feedId, FeedApi feed,
-      {Token? userToken, String? secret, TokenHelper? tokenHelper})
-      : super(feedId, feed,
-            userToken: userToken, secret: secret, tokenHelper: tokenHelper);
+      {Token? userToken, String? secret})
+      : super(feedId, feed, userToken: userToken, secret: secret);
 
   Future<List<Group<Activity>>> getActivities({
     int? limit,
@@ -32,7 +31,7 @@ class AggregatedFeed extends Feed {
     };
 
     final token = userToken ??
-        tokenHelper!.buildFeedToken(secret!, TokenAction.read, feedId);
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getActivities(token, feedId, options);
     final data = (result.data!['results'] as List)
         .map((e) => Group.fromJson(
@@ -56,7 +55,7 @@ class AggregatedFeed extends Feed {
       ...flags?.params ?? Default.enrichmentFlags.params,
     };
     final token = userToken ??
-        tokenHelper!.buildFeedToken(secret!, TokenAction.read, feedId);
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
         .map((e) => Group.fromJson(e,

@@ -8,10 +8,9 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class BatchOperationsClient {
-  BatchOperationsClient(this.batch, {required this.secret, this.tokenHelper});
+  BatchOperationsClient(this.batch, {required this.secret});
   final String secret;
   final BatchApi batch;
-  late TokenHelper? tokenHelper = TokenHelper();
 
   /// Add one activity to many feeds
   ///
@@ -22,7 +21,7 @@ class BatchOperationsClient {
   /// API docs: [batch-activity-add](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-activity-add)
   Future<void> addToMany(Activity activity, Iterable<FeedId> feedIds) {
     //TODO: why is this void vs Future<APIResponse> compared to js client
-    final token = tokenHelper!.buildFeedToken(secret, TokenAction.write);
+    final token = TokenHelper.buildFeedToken(secret, TokenAction.write);
     return batch.addToMany(token, activity, feedIds);
   }
 
@@ -39,7 +38,7 @@ class BatchOperationsClient {
     Iterable<Follow> follows, {
     int? activityCopyLimit,
   }) {
-    final token = tokenHelper!.buildFollowToken(secret, TokenAction.write);
+    final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
     return batch.followMany(
         token, activityCopyLimit ?? Default.activityCopyLimit, follows);
   }
@@ -59,7 +58,7 @@ class BatchOperationsClient {
     // TODO: seems to be Iterable<UnFollow> unfollows here
     required bool keepHistory,
   }) {
-    final token = tokenHelper!.buildFollowToken(secret, TokenAction.write);
+    final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
     return batch.unfollowMany(
       token,
       unfollows.map((e) => UnFollow.fromFollow(e, keepHistory)),
@@ -67,25 +66,25 @@ class BatchOperationsClient {
   }
 
   Future<Iterable<Activity>> getActivitiesById(Iterable<String> ids) {
-    final token = tokenHelper!.buildActivityToken(secret, TokenAction.read);
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getActivitiesById(token, ids);
   }
 
   Future<Iterable<EnrichedActivity>> getEnrichedActivitiesById(
       Iterable<String> ids) {
-    final token = tokenHelper!.buildActivityToken(secret, TokenAction.read);
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getEnrichedActivitiesById(token, ids);
   }
 
   Future<Iterable<Activity>> getActivitiesByForeignId(
       Iterable<ForeignIdTimePair> pairs) {
-    final token = tokenHelper!.buildActivityToken(secret, TokenAction.read);
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getActivitiesByForeignId(token, pairs);
   }
 
   Future<Iterable<EnrichedActivity>> getEnrichedActivitiesByForeignId(
       Iterable<ForeignIdTimePair> pairs) {
-    final token = tokenHelper!.buildActivityToken(secret, TokenAction.read);
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return batch.getEnrichedActivitiesByForeignId(token, pairs);
   }
 
@@ -93,7 +92,7 @@ class BatchOperationsClient {
       updateActivities([activity]);
 
   Future<void> updateActivities(Iterable<Activity> activities) {
-    final token = tokenHelper!.buildActivityToken(secret, TokenAction.write);
+    final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return batch.updateActivities(token, activities);
   }
 }

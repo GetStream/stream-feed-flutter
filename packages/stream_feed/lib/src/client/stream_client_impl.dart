@@ -25,7 +25,6 @@ class StreamClientImpl implements StreamClient {
       {this.secret,
       this.userToken,
       StreamHttpClientOptions? options,
-      this.tokenHelper,
       StreamApi? api})
       : assert(
           userToken != null || secret != null,
@@ -34,7 +33,6 @@ class StreamClientImpl implements StreamClient {
         _api = api ?? StreamApiImpl(apiKey, options: options);
 
   final Token? userToken;
-  late TokenHelper? tokenHelper = TokenHelper();
   final StreamApi _api;
   final String? secret;
 
@@ -89,13 +87,13 @@ class StreamClientImpl implements StreamClient {
     DateTime? expiresAt,
   }) {
     checkNotNull(secret, "You can't use the frontendToken method client side");
-    return tokenHelper!
-        .buildFrontendToken(secret!, userId, expiresAt: expiresAt);
+    return TokenHelper.buildFrontendToken(secret!, userId,
+        expiresAt: expiresAt);
   }
 
   @override
   Future<OpenGraphData> openGraph(String targetUrl) {
-    final token = userToken ?? tokenHelper!.buildOpenGraphToken(secret!);
+    final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
   }
 }

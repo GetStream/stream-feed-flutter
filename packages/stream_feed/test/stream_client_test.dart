@@ -18,16 +18,11 @@ main() {
               e.message == 'At least a secret or userToken must be provided')));
     });
     test('getters', () async {
-      final mockTokenHelper = MockTokenHelper();
       const secret = 'secret';
       const userId = 'userId';
-      final client = StreamClientImpl('apiKey',
-          secret: secret, tokenHelper: mockTokenHelper);
-      const token = Token('dummyToken');
-      when(() => mockTokenHelper.buildFrontendToken(
-            secret,
-            userId,
-          )).thenReturn(token);
+      final client = StreamClientImpl('apiKey', secret: secret);
+      // const token = Token('dummyToken');
+      // final token = TokenHelper.buildFrontendToken(secret, userId);
       expect(client.collections, isNotNull);
       expect(client.batch, isNotNull);
       expect(client.aggregatedFeed('slug', 'userId'), isNotNull);
@@ -42,14 +37,13 @@ main() {
 
     test('openGraph', () async {
       final mockApi = MockApi();
-      final mockTokenHelper = MockTokenHelper();
       const secret = 'secret';
-      final client = StreamClientImpl('apiKey',
-          secret: secret, api: mockApi, tokenHelper: mockTokenHelper);
-      const token = Token('token');
+      final client = StreamClientImpl('apiKey', secret: secret, api: mockApi);
+      // const token = Token('token');
       const targetUrl = 'targetUrl';
 
-      when(() => mockTokenHelper.buildOpenGraphToken(secret)).thenReturn(token);
+      final token = TokenHelper.buildOpenGraphToken(secret);
+
       when(() => mockApi.openGraph(token, targetUrl)).thenAnswer(
         (_) async =>
             OpenGraphData.fromJson(jsonFixture('open_graph_data.json')!),

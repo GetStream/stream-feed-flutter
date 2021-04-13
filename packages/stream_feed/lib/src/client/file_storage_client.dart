@@ -4,7 +4,7 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class FileStorageClient {
-  FileStorageClient(this.files, {this.userToken, this.secret, this.tokenHelper})
+  FileStorageClient(this.files, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -12,7 +12,6 @@ class FileStorageClient {
   final String? secret;
   final Token? userToken;
   final FilesApi files;
-  late TokenHelper? tokenHelper = TokenHelper();
 
   /// Upload a File instance or a readable stream of data
   /// Usage:
@@ -27,7 +26,7 @@ class FileStorageClient {
   /// API docs: [upload](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#upload)
   Future<String?> upload(MultipartFile file) {
     final token =
-        userToken ?? tokenHelper!.buildFilesToken(secret!, TokenAction.write);
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return files.upload(token, file);
   }
 
@@ -42,7 +41,7 @@ class FileStorageClient {
   /// API docs: [delete](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#delete)
   Future<void> delete(String url) {
     final token =
-        userToken ?? tokenHelper!.buildFilesToken(secret!, TokenAction.delete);
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.delete);
     return files.delete(token, url);
   }
 }

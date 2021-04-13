@@ -90,9 +90,9 @@ extension TokenResourceX on TokenResource {
 }
 
 class TokenHelper {
-  // const TokenHelper();
+  const TokenHelper();
 
-  Token buildFeedToken(
+  static Token buildFeedToken(
     String secret,
     TokenAction action, [
     FeedId? feed,
@@ -100,7 +100,7 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.feed, action, feed?.claim ?? '*');
 
-  Token buildFollowToken(
+  static Token buildFollowToken(
     String secret,
     TokenAction action, [
     FeedId? feed,
@@ -108,22 +108,22 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.follower, action, feed?.claim ?? '*');
 
-  Token buildReactionToken(String secret, TokenAction action) =>
+  static Token buildReactionToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.reactions, action, '*');
 
-  Token buildActivityToken(String secret, TokenAction action) =>
+  static Token buildActivityToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.activities, action, '*');
 
-  Token buildUsersToken(String secret, TokenAction action) =>
+  static Token buildUsersToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.users, action, '*');
 
-  Token buildCollectionsToken(String secret, TokenAction action) =>
+  static Token buildCollectionsToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.collections, action, '*');
 
-  Token buildOpenGraphToken(String secret) => _buildBackendToken(
+  static Token buildOpenGraphToken(String secret) => _buildBackendToken(
       secret, TokenResource.openGraph, TokenAction.read, '*');
 
-  Token buildToTargetUpdateToken(
+  static Token buildToTargetUpdateToken(
     String secret,
     TokenAction action, [
     FeedId? feed,
@@ -131,10 +131,10 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.feedTargets, action, feed?.claim ?? '*');
 
-  Token buildFilesToken(String secret, TokenAction action) =>
+  static Token buildFilesToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.files, action, '*');
 
-  Token buildFrontendToken(
+  static Token buildFrontendToken(
     String secret,
     String userId, {
     DateTime? expiresAt,
@@ -149,7 +149,7 @@ class TokenHelper {
 
   /// Creates the JWT token for [feedId], [resource] and [action]
   /// using the api [secret]
-  Token _buildBackendToken(
+  static Token _buildBackendToken(
     String secret,
     TokenResource resource,
     TokenAction action,

@@ -12,10 +12,9 @@ void main() {
   group('CollectionsClient', () {
     final api = MockCollectionsApi();
 
-    final mockTokenHelper = MockTokenHelper();
+    // final mockTokenHelper = MockTokenHelper();
     const secret = 'secret';
-    final clientWithSecret =
-        CollectionsClient(api, secret: secret, tokenHelper: mockTokenHelper);
+    // final clientWithSecret = CollectionsClient(api, secret: secret);
     const token = Token('dummyToken');
     final client = CollectionsClient(api, userToken: token);
     test('Add', () async {
@@ -92,9 +91,10 @@ void main() {
       const collection = 'food';
       const entryId = 'cheeseburger';
       final entryIds = [entryId];
-      when(() =>
-              mockTokenHelper.buildCollectionsToken(secret, TokenAction.delete))
-          .thenReturn(token);
+
+      final token =
+          TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
+      final clientWithSecret = CollectionsClient(api, secret: secret);
       when(() => api.deleteMany(token, collection, entryIds))
           .thenAnswer((_) async => Response(
               data: {},
@@ -111,9 +111,9 @@ void main() {
       const entryId = 'cheeseburger';
       const entryIds = [entryId];
       const entries = [CollectionEntry(id: entryId, collection: collection)];
-      when(() =>
-              mockTokenHelper.buildCollectionsToken('secret', TokenAction.read))
-          .thenReturn(token);
+      final token =
+          TokenHelper.buildCollectionsToken('secret', TokenAction.read);
+      final clientWithSecret = CollectionsClient(api, secret: secret);
       when(() => api.select(token, collection, entryIds))
           .thenAnswer((_) async => entries);
       final selectEd = await clientWithSecret.select(collection, entryIds);
@@ -130,9 +130,9 @@ void main() {
       const entries = [
         CollectionEntry(collection: collection, id: entryId, data: data)
       ];
-      when(() =>
-              mockTokenHelper.buildCollectionsToken(secret, TokenAction.write))
-          .thenReturn(token);
+      final token =
+          TokenHelper.buildCollectionsToken(secret, TokenAction.write);
+      final clientWithSecret = CollectionsClient(api, secret: secret);
       when(() => api.upsert(token, collection, entries))
           .thenAnswer((_) async => Response(
               data: {},

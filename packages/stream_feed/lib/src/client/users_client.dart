@@ -5,11 +5,10 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class UsersClient {
   ///Initialize a user session object
-  UsersClient(this.users, {this.userToken, this.secret, this.tokenHelper});
+  UsersClient(this.users, {this.userToken, this.secret});
 
   ///User JWT token
   final Token? userToken;
-  late TokenHelper? tokenHelper = TokenHelper();
   final UsersApi users;
   final String? secret;
 
@@ -31,7 +30,7 @@ class UsersClient {
     bool? getOrCreate,
   }) {
     final token =
-        userToken ?? tokenHelper!.buildUsersToken(secret!, TokenAction.write);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
     return users.add(token, id, data, getOrCreate ?? false);
   }
 
@@ -43,7 +42,7 @@ class UsersClient {
   ///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
   Future<void> delete(String id) {
     final token =
-        userToken ?? tokenHelper!.buildUsersToken(secret!, TokenAction.delete);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
     return users.delete(token, id);
   }
 
@@ -58,7 +57,7 @@ class UsersClient {
     bool? withFollowCounts,
   }) {
     final token =
-        userToken ?? tokenHelper!.buildUsersToken(secret!, TokenAction.read);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
     return users.get(token, id, withFollowCounts ?? true);
   }
 
@@ -74,7 +73,7 @@ class UsersClient {
   /// API docs: [updating-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#updating-users)
   Future<User> update(String id, Map<String, Object> data) {
     final token =
-        userToken ?? tokenHelper!.buildUsersToken(secret!, TokenAction.write);
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
     return users.update(token, id, data);
   }
 }
