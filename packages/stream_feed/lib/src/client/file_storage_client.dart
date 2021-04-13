@@ -39,7 +39,7 @@ class FileStorageClient {
   /// Parameters:
   /// - [url] : the url of the file you want to delete
   /// API docs: [delete](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#delete)
-  Future<void> delete(String url) {
+  Future<Response> delete(String url) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.delete);
     return files.delete(token, url);
