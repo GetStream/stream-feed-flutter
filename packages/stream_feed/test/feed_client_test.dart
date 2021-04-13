@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/client/feed.dart';
+import 'package:stream_feed_dart/src/client/flat_feed.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
@@ -11,6 +12,7 @@ void main() {
   group('Feed Client', () {
     final api = MockFeedApi();
     final feedId = FeedId('slug', 'userId');
+    final targetFeed = FeedId('slug', 'userId2');
     const secret = 'secret';
     const token = Token('dummyToken');
     const targetToken = Token('dummyToken2');
@@ -46,6 +48,15 @@ void main() {
           .thenAnswer((_) async => activities);
       await client.addActivities(activities);
       verify(() => api.addActivities(token, feedId, activities)).called(1);
+    });
+
+    test('unfollow', () async {
+      final flatFeed = FlatFeed(feedId, api, userToken: token);
+      when(() => api.unfollow(token, feedId, flatFeed.feedId, true))
+          .thenAnswer((_) async => dummyResponse);
+      await client.unfollow(flatFeed, keepHistory: true);
+      verify(() => api.unfollow(token, feedId, flatFeed.feedId, true))
+          .called(1);
     });
 
     test('getFollowed', () async {
