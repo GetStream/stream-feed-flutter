@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/client/reactions_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/lookup_attribute.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/reaction.dart';
+import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
@@ -74,6 +76,36 @@ main() {
       when(() => api.delete(token, id)).thenAnswer((_) async => dummyResponse);
       await client.delete(id);
       verify(() => api.delete(token, id)).called(1);
+    });
+
+    test('filter', () async {
+      const lookupAttr = LookupAttribute.activityId;
+      const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
+      final filter =
+          Filter().idGreaterThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+      const kind = 'like';
+      const limit = 5;
+      const activityId = 'activityId';
+      const userId = 'john-doe';
+      const targetFeeds = <FeedId>[];
+      const data = {'text': 'awesome post!'};
+      const reactions = [
+        Reaction(
+          kind: kind,
+          activityId: activityId,
+          userId: userId,
+          data: data,
+          targetFeeds: targetFeeds,
+        )
+      ];
+      when(() =>
+              api.filter(token, lookupAttr, lookupValue, filter, limit, kind))
+          .thenAnswer((_) async => reactions);
+      await client.filter(lookupAttr, lookupValue,
+          filter: filter, limit: limit, kind: kind);
+      verify(() =>
+              api.filter(token, lookupAttr, lookupValue, filter, limit, kind))
+          .called(1);
     });
   });
 }
