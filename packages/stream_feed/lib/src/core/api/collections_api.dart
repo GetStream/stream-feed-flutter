@@ -10,6 +10,7 @@ class CollectionsApi {
 
   final StreamHttpClient client;
 
+  /// Add item to collection
   /// Note: when using client-side auth the user_id field must not be provided
   /// as the value will be taken from the user token.
   /// Note: If a collection object with the same ID already exists,
@@ -32,6 +33,7 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
+  /// Delete entry from collection
   ///Will return an empty response on success.
   Future<Response> delete(
       Token token, String collection, String entryId) async {
@@ -43,6 +45,7 @@ class CollectionsApi {
     );
   }
 
+  ///Remove all objects by id from the collection.
   Future<Response> deleteMany(
       Token token, String collection, Iterable<String> entryIds) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
@@ -57,6 +60,7 @@ class CollectionsApi {
     );
   }
 
+  ///Get item from collection and sync data
   Future<CollectionEntry> get(
       Token token, String collection, String entryId) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
@@ -68,6 +72,7 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
+  /// Select all objects with ids from the collection.
   Future<List<CollectionEntry>> select(
       Token token, String collection, Iterable<String> entryIds) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
@@ -85,6 +90,7 @@ class CollectionsApi {
     return data;
   }
 
+  /// Update item in the object storage
   Future<CollectionEntry> update(
       Token token, String? userId, CollectionEntry entry) async {
     checkNotNull(entry, "Collection can't be null");
@@ -102,6 +108,7 @@ class CollectionsApi {
     return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
   }
 
+  ///Upsert one or more items within a collection.
   Future<Response> upsert(
       Token token, String collection, Iterable<CollectionEntry> entries) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
