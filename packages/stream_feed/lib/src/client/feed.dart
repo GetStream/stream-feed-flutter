@@ -26,7 +26,7 @@ class Feed {
   /// Your API secret
   @protected
   final String? secret;
-  
+
   /// Your user token obtain via the dashboard.
   /// Required if you are using the sdk client side
   @protected
