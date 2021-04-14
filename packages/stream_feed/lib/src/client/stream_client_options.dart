@@ -4,6 +4,7 @@ import 'package:stream_feed_dart/version.dart';
 
 /// Stream Client Options used by Stream http client
 class StreamClientOptions {
+  /// [StreamClientOptions] constructor
   const StreamClientOptions({
     this.version = 'v1.0',
     this.serviceName = 'api',

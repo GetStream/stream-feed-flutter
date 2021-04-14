@@ -49,6 +49,7 @@ abstract class StreamClient {
         options: options,
       );
 
+  /// Convenient getter for [BatchOperationsClient]
   BatchOperationsClient get batch;
 
   /// Convenient getter for [CollectionsClient]
