@@ -9,6 +9,7 @@ class UsersApi {
 
   final StreamHttpClient client;
 
+  /// Create a new user
   Future<User> add(
     Token token,
     String id,
@@ -26,6 +27,7 @@ class UsersApi {
     return User.fromJson(result.data as Map<String, dynamic>);
   }
 
+  /// Get the user data
   Future<User> get(Token token, String id,
       [bool withFollowCounts = true]) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
@@ -37,6 +39,7 @@ class UsersApi {
     return User.fromJson(result.data);
   }
 
+  ///Update the user
   Future<User> update(Token token, String id, Map<String, Object> data) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final updatedUser = User(id: id, data: data);
@@ -48,6 +51,7 @@ class UsersApi {
     return User.fromJson(result.data);
   }
 
+  ///Delete the user
   Future<void> delete(Token token, String id) {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     return client.delete(
