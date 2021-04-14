@@ -6,19 +6,14 @@ import 'dart:convert';
 
 main() {
   group('TokenHelper', () {
-    final tokenHelper = TokenHelper();
     const secret =
         // ignore: lines_longer_than_80_chars
         'secret';
 
     // create key store to verify the signature
     final keyStore = JsonWebKeyStore()
-      ..addKey(JsonWebKey.fromJson({
-        'kty': 'oct',
-        'k':
-            // ignore: lines_longer_than_80_chars
-            base64Urlencode(secret),
-      }));
+      ..addKey(
+          JsonWebKey.fromJson({'kty': 'oct', 'k': base64Urlencode(secret)}));
 
     test('buildFrontendToken', () async {
       final expiresAt = DateTime(2021, 03, 08);

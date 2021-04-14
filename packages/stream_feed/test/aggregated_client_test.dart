@@ -20,12 +20,7 @@ main() {
     final feedId = FeedId('slug', 'userId');
     const token = Token('dummyToken');
     final client = AggregatedFeed(feedId, api, userToken: token);
-    final dummyResponse = Response(
-        data: {},
-        requestOptions: RequestOptions(
-          path: '',
-        ),
-        statusCode: 200);
+
     test('getActivities', () async {
       const limit = 5;
       const offset = 0;
@@ -82,7 +77,7 @@ main() {
                 path: '',
               ),
               statusCode: 200));
-   final activities = await client.getEnrichedActivities(
+      final activities = await client.getEnrichedActivities(
           limit: limit,
           offset: offset,
           filter: filter,
