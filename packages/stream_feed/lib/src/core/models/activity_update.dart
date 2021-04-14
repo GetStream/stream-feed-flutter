@@ -27,7 +27,7 @@ class ActivityUpdate extends Equatable {
         unset: unset,
       );
 
- /// ActivityUpdate withForeignId
+  /// ActivityUpdate withForeignId
   factory ActivityUpdate.withForeignId(
     String foreignId,
     DateTime time,

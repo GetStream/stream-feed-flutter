@@ -33,7 +33,8 @@ class ActivityMarker {
     }
     return this;
   }
-/// serialize ActivityMarker params
+
+  /// serialize ActivityMarker params
   Map<String, Object> get params {
     final params = <String, Object>{};
     if (_allRead) {

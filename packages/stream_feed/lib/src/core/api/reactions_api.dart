@@ -87,7 +87,8 @@ class ReactionsApi {
         .toList(growable: false);
     return data;
   }
-///paginated reactions and filter them
+
+  ///paginated reactions and filter them
   Future<PaginatedReactions> paginatedFilter(
     Token token,
     LookupAttribute lookupAttr,
