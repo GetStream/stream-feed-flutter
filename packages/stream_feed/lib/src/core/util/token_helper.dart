@@ -91,7 +91,7 @@ extension TokenResourceX on TokenResource {
 
 ///Class that generates tokens
 class TokenHelper {
-  const TokenHelper._();
+  const TokenHelper();
 
   /// build Feed Token
   static Token buildFeedToken(

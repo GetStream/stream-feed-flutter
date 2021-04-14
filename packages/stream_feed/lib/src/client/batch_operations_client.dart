@@ -8,7 +8,7 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class BatchOperationsClient {
-  const BatchOperationsClient(this.batch, {required this.secret});
+  BatchOperationsClient(this.batch, {required this.secret});
   final String secret;
   final BatchApi batch;
 

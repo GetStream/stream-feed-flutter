@@ -14,7 +14,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// when the reactions parameters are used.
 class ReactionsClient {
   ///Initialize a reaction client
-  const ReactionsClient(this.reactions, {this.userToken, this.secret})
+  ReactionsClient(this._reactions, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -24,7 +24,7 @@ class ReactionsClient {
   final Token? userToken;
 
   ///The reactions client
-  final ReactionsApi reactions;
+  final ReactionsApi _reactions;
 
   /// Your API secret. You can get it in your Stream Dashboard [here](https://dashboard.getstream.io/dashboard/v2/)
   final String? secret;
@@ -72,7 +72,7 @@ class ReactionsClient {
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
-    return reactions.add(token, reaction);
+    return _reactions.add(token, reaction);
   }
 
   /// Adds a like to the previously created comment
@@ -103,7 +103,7 @@ class ReactionsClient {
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
-    return reactions.add(token, reaction);
+    return _reactions.add(token, reaction);
   }
 
   /// Delete reaction
@@ -120,7 +120,7 @@ class ReactionsClient {
   Future<void> delete(String id) {
     final token = userToken ??
         TokenHelper.buildReactionToken(secret!, TokenAction.delete);
-    return reactions.delete(token, id);
+    return _reactions.delete(token, id);
   }
 
   /// Get reaction
@@ -128,7 +128,7 @@ class ReactionsClient {
   Future<Reaction> get(String id) {
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
-    return reactions.get(token, id);
+    return _reactions.get(token, id);
   }
 
   ///Reactions can be updated by providing the reaction ID parameter.
@@ -156,7 +156,7 @@ class ReactionsClient {
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
-    return reactions.update(token, reaction);
+    return _reactions.update(token, reaction);
   }
 
   /// You can read reactions and filter them
@@ -185,7 +185,7 @@ class ReactionsClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
-    return reactions.filter(token, lookupAttr, lookupValue,
+    return _reactions.filter(token, lookupAttr, lookupValue,
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
 
@@ -200,7 +200,7 @@ class ReactionsClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
-    return reactions.paginatedFilter(token, lookupAttr, lookupValue,
+    return _reactions.paginatedFilter(token, lookupAttr, lookupValue,
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
 }

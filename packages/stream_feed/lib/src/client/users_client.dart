@@ -9,13 +9,13 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// When stored in activities, users are automatically enriched by Stream.
 class UsersClient {
   ///Initialize a [UsersClient] session object
-  const UsersClient(this.users, {this.userToken, this.secret});
+  const UsersClient(this._users, {this.userToken, this.secret});
 
   ///User JWT token
   final Token? userToken;
 
   ///The users client
-  final UsersApi users;
+  final UsersApi _users;
 
   /// You API secret
   final String? secret;
@@ -39,7 +39,7 @@ class UsersClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
-    return users.add(token, id, data, getOrCreate ?? false);
+    return _users.add(token, id, data, getOrCreate ?? false);
   }
 
   /// Delete the user
@@ -51,7 +51,7 @@ class UsersClient {
   Future<void> delete(String id) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
-    return users.delete(token, id);
+    return _users.delete(token, id);
   }
 
   /// Get the user data
@@ -66,7 +66,7 @@ class UsersClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
-    return users.get(token, id, withFollowCounts ?? true);
+    return _users.get(token, id, withFollowCounts ?? true);
   }
 
   /// Update the user
@@ -82,6 +82,6 @@ class UsersClient {
   Future<User> update(String id, Map<String, Object> data) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
-    return users.update(token, id, data);
+    return _users.update(token, id, data);
   }
 }

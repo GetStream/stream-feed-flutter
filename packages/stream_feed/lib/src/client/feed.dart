@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:meta/meta.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
@@ -15,23 +17,27 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  const Feed(this.feedId, this.feed, {this.userToken, this.secret})
+  Feed(this.feedId, this.feed, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         );
 
   /// Your API secret
+  @protected
   final String? secret;
-
+  
   /// Your user token obtain via the dashboard.
   /// Required if you are using the sdk client side
+  @protected
   final Token? userToken;
 
   /// The feed id
+  @protected
   final FeedId feedId;
 
-  ///The feed client this feed is constructed from
+  ///The stream client this feed is constructed from
+  @protected
   final FeedApi feed;
 
   /// Adds the given [Activity] to the feed
@@ -134,16 +140,16 @@ class Feed {
   /// ```
   ///
   /// API docs: [following](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart)
-  Future<void> follow(
-    FlatFeed flatFeet, {
+  Future<Response> follow(
+    FlatFeed flatFeed, {
     int? activityCopyLimit,
-  }) {
+  }) async {
     //TODO: should return API response
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.write, feedId);
     final targetToken = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.read, flatFeet.feedId);
-    return feed.follow(token, targetToken, feedId, flatFeet.feedId,
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, flatFeed.feedId);
+    return feed.follow(token, targetToken, feedId, flatFeed.feedId,
         activityCopyLimit ?? Default.activityCopyLimit);
   }
 

@@ -16,7 +16,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// Manipulating the returned URL will likely result in HTTP errors.
 class ImageStorageClient {
   ///Initialize a [ImageStorageClient] object
-  const ImageStorageClient(this.images, {this.userToken, this.secret})
+  ImageStorageClient(this._images, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -28,7 +28,7 @@ class ImageStorageClient {
   /// Your user token obtain via the dashboard.
   /// Required if you are using the sdk client side
   final Token? userToken;
-  final ImagesApi images;
+  final ImagesApi _images;
 
   /// Uploading an image
   /// input is a [MultipartFile]
@@ -47,7 +47,7 @@ class ImageStorageClient {
   Future<String?> upload(MultipartFile image) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
-    return images.upload(token, image);
+    return _images.upload(token, image);
   }
 
   /// Images can be deleted using their URL.
@@ -60,7 +60,7 @@ class ImageStorageClient {
   Future<void> delete(String url) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.delete);
-    return images.delete(token, url);
+    return _images.delete(token, url);
   }
 
   /// Images can be obtained using their URL.
@@ -71,7 +71,7 @@ class ImageStorageClient {
   Future<String?> get(String url) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
-    return images.get(token, url);
+    return _images.get(token, url);
   }
 
   /// Crop an image using its URL. A new URL is then returned by the API.
@@ -87,7 +87,7 @@ class ImageStorageClient {
   Future<String?> getCropped(String url, Crop crop) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
-    return images.get(token, url, options: crop.params);
+    return _images.get(token, url, options: crop.params);
   }
 
   /// Resize an image using its URL. A new URL is then returned by the API.
@@ -102,6 +102,6 @@ class ImageStorageClient {
   Future<String?> getResized(String url, Resize resize) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
-    return images.get(token, url, options: resize.params);
+    return _images.get(token, url, options: resize.params);
   }
 }

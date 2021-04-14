@@ -4,13 +4,13 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class ImagesApi {
-  const ImagesApi(this.client);
+  const ImagesApi(this._client);
 
-  final StreamHttpClient client;
+  final StreamHttpClient _client;
 
   /// Uploading an image
   Future<String?> upload(Token token, MultipartFile image) async {
-    final result = await client.postFile<Map>(
+    final result = await _client.postFile<Map>(
       Routes.imagesUrl,
       image,
       headers: {'Authorization': '$token'},
@@ -19,7 +19,7 @@ class ImagesApi {
   }
 
   /// Images can be deleted using their URL.
-  Future<Response> delete(Token token, String targetUrl) => client.delete(
+  Future<Response> delete(Token token, String targetUrl) => _client.delete(
         Routes.imagesUrl,
         headers: {'Authorization': '$token'},
         queryParameters: {'url': targetUrl},
@@ -31,7 +31,7 @@ class ImagesApi {
     String targetUrl, {
     Map<String, Object?>? options,
   }) async {
-    final result = await client.get(
+    final result = await _client.get(
       Routes.imagesUrl,
       headers: {'Authorization': '$token'},
       queryParameters: {
