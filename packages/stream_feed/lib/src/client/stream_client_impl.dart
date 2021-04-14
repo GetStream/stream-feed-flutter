@@ -1,5 +1,4 @@
 import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
-import 'package:stream_feed_dart/src/client/analytics_client.dart';
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
 import 'package:stream_feed_dart/src/client/notification_feed.dart';
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
@@ -62,10 +61,6 @@ class StreamClientImpl implements StreamClient {
   @override
   ImageStorageClient get images =>
       ImageStorageClient(_api.images, userToken: userToken, secret: secret);
-
-  @override
-  AnalyticsClient get analytics =>
-      AnalyticsClient(_api.analytics, userToken: userToken);
 
   @override
   AggregatedFeed aggregatedFeed(String slug, String userId) {

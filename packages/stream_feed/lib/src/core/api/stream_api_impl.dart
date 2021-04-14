@@ -1,4 +1,3 @@
-import 'package:stream_feed_dart/src/core/api/analytics_api.dart';
 import 'package:stream_feed_dart/src/core/api/files_api.dart';
 import 'package:stream_feed_dart/src/core/api/images_api.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
@@ -43,9 +42,6 @@ class StreamApiImpl implements StreamApi {
 
   @override
   ImagesApi get images => ImagesApi(_client);
-
-  @override
-  AnalyticsApi get analytics => AnalyticsApi(_client);
 
   @override
   Future<OpenGraphData> openGraph(Token token, String targetUrl) async {

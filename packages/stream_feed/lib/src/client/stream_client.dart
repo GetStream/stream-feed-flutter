@@ -1,5 +1,4 @@
 import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
-import 'package:stream_feed_dart/src/client/analytics_client.dart';
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
 import 'package:stream_feed_dart/src/client/notification_feed.dart';
 import 'package:stream_feed_dart/src/client/batch_operations_client.dart';
@@ -40,8 +39,6 @@ abstract class StreamClient {
   FileStorageClient get files;
 
   ImageStorageClient get images;
-
-  AnalyticsClient get analytics;
 
   FlatFeed flatFeed(String slug, String userId);
 
