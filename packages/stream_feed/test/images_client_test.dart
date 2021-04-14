@@ -11,6 +11,15 @@ main() {
     final api = MockImagesApi();
     const token = Token('dummyToken');
     final client = ImageStorageClient(api, userToken: token);
+
+    test('get', () async {
+      const url = 'url';
+      when(() => api.get(token, url))
+          .thenAnswer((invocation) async => 'whatever');
+
+      expect(await client.get(url), 'whatever');
+      verify(() => api.get(token, url)).called(1);
+    });
     test('upload', () async {
       final multipartFile = MultipartFile(Stream.value([]), 2);
       when(() => api.upload(token, multipartFile))
