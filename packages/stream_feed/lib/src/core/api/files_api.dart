@@ -3,7 +3,6 @@ import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
-//TODO: stream_feed_dart/src/core/core.dart
 class FilesApi {
   const FilesApi(this.client);
 

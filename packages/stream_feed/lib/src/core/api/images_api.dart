@@ -8,6 +8,7 @@ class ImagesApi {
 
   final StreamHttpClient client;
 
+  /// Uploading an image
   Future<String?> upload(Token token, MultipartFile image) async {
     final result = await client.postFile<Map>(
       Routes.imagesUrl,
@@ -17,12 +18,14 @@ class ImagesApi {
     return result.data!['file'];
   }
 
+  /// Images can be deleted using their URL.
   Future<Response> delete(Token token, String targetUrl) => client.delete(
         Routes.imagesUrl,
         headers: {'Authorization': '$token'},
         queryParameters: {'url': targetUrl},
       );
 
+  /// Images can be obtained using their URL.
   Future<String?> get(
     Token token,
     String targetUrl, {
