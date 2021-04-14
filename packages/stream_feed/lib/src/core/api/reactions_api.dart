@@ -13,6 +13,7 @@ class ReactionsApi {
 
   final StreamHttpClient client;
 
+  ///Add reaction
   Future<Reaction> add(Token token, Reaction reaction) async {
     checkArgument(reaction.activityId != null || reaction.parent != null,
         'Reaction has to either have an activity ID or parent');
@@ -36,6 +37,7 @@ class ReactionsApi {
     return Reaction.fromJson(result.data as Map<String, dynamic>);
   }
 
+  /// Get reaction
   Future<Reaction> get(Token token, String id) async {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
     final result = await client.get<Map>(
@@ -45,6 +47,7 @@ class ReactionsApi {
     return Reaction.fromJson(result.data as Map<String, dynamic>);
   }
 
+  /// Delete reaction
   Future<Response> delete(Token token, String id) async {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
     return client.delete(
@@ -53,6 +56,7 @@ class ReactionsApi {
     );
   }
 
+  ///read reactions and filter them
   /// Parameters:
   /// - [lookupAttr]: name of the reaction attribute to paginate on.
   /// Can be activity_id, reaction_id or user_id.
@@ -83,7 +87,7 @@ class ReactionsApi {
         .toList(growable: false);
     return data;
   }
-
+///paginated reactions and filter them
   Future<PaginatedReactions> paginatedFilter(
     Token token,
     LookupAttribute lookupAttr,

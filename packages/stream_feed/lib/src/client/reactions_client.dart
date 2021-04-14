@@ -190,6 +190,7 @@ class ReactionsClient {
   }
 
   //Server side functions
+  ///paginated reactions and filter them
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {
