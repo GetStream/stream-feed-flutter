@@ -12,10 +12,7 @@ void main() {
   group('Feed Client', () {
     final api = MockFeedApi();
     final feedId = FeedId('slug', 'userId');
-    final targetFeed = FeedId('slug', 'userId2');
-    const secret = 'secret';
     const token = Token('dummyToken');
-    const targetToken = Token('dummyToken2');
     final client = Feed(feedId, api, userToken: token);
     final dummyResponse = Response(
         data: {},
