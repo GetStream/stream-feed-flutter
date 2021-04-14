@@ -70,7 +70,10 @@ class FeedApi {
       );
 
   Future<Response> getEnrichedActivities(
-          Token token, FeedId feed, Map<String, Object?> options) =>
+          //TODO; hmm I think we can type this
+          Token token,
+          FeedId feed,
+          Map<String, Object?> options) =>
       client.get(
         Routes.buildEnrichedFeedUrl(feed),
         headers: {'Authorization': '$token'},
