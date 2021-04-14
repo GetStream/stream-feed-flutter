@@ -12,7 +12,7 @@ main() {
   group('StreamClientImpl', () {
     test('throws an AssertionError when no secret provided', () {
       expect(
-          () => StreamClientImpl('apiKey'),
+          () => StreamClient.connect('apiKey'),
           throwsA(predicate<AssertionError>((e) =>
               e.message == 'At least a secret or userToken must be provided')));
     });
