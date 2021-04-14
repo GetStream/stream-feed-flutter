@@ -17,7 +17,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  Feed(this.feedId, this.feed, {this.userToken, this.secret})
+ const Feed(this.feedId, this.feed, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
