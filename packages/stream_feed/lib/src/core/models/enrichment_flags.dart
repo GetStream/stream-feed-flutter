@@ -68,18 +68,19 @@ class EnrichmentFlags {
     return this;
   }
 
+  ///	filter reactions by kinds
   EnrichmentFlags reactionKindFilter(Iterable<String> kinds) {
     _flags[_EnrichmentType.reactionKinds] = kinds.join(',');
     return this;
   }
 
   ///	If called activity object will have attribute "reaction_counts"
-  /// that contains number of reactions for each kind
   EnrichmentFlags withReactionCounts() {
     _flags[_EnrichmentType.reactionCounts] = true;
     return this;
   }
 
+  ///	If called activity object will have attribute "with_own_children"
   EnrichmentFlags withUserChildren(String userId) {
     _flags[_EnrichmentType.ownChildren] = true;
     _userId = userId;
