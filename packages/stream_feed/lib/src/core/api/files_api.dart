@@ -9,6 +9,7 @@ class FilesApi {
 
   final StreamHttpClient client;
 
+  /// Upload a File instance or a readable stream of data
   Future<String?> upload(Token token, MultipartFile file) async {
     final result = await client.postFile<Map>(
       Routes.filesUrl,
@@ -18,6 +19,7 @@ class FilesApi {
     return result.data!['file'];
   }
 
+  /// Delete a file using the url returned by the APIs
   Future<Response> delete(Token token, String targetUrl) => client.delete(
         Routes.filesUrl,
         headers: {'Authorization': '$token'},
