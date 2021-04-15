@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/client/notification_feed.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
@@ -15,7 +14,7 @@ import 'package:test/test.dart';
 import 'mock.dart';
 import 'utils.dart';
 
-main() {
+void main() {
   group('NotificationFeed Client', () {
     final api = MockFeedApi();
     final feedId = FeedId('slug', 'userId');

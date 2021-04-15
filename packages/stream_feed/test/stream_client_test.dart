@@ -8,7 +8,7 @@ import 'package:stream_feed_dart/src/client/stream_client_impl.dart';
 import 'mock.dart';
 import 'utils.dart';
 
-main() {
+void main() {
   group('StreamClientImpl', () {
     test('throws an AssertionError when no secret provided', () {
       expect(

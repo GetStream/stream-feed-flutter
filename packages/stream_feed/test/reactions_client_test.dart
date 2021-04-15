@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 
 import 'mock.dart';
 
-main() {
+void main() {
   group('ReactionsClient', () {
     final api = MockReactionsApi();
     final dummyResponse = Response(
@@ -21,7 +21,6 @@ main() {
         ),
         statusCode: 200);
 
-    const secret = 'secret';
     const token = Token('dummyToken');
     final client = ReactionsClient(api, userToken: token);
     test('add', () async {

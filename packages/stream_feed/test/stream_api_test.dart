@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 import 'mock.dart';
 import 'utils.dart';
 
-main() {
+void main() {
   test('streamApi', () async {
     final mockClient = MockHttpClient();
 

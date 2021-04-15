@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 import 'mock.dart';
 import 'utils.dart';
 
-main() {
+void main() {
   group('AggregatedFeed Client', () {
     final api = MockFeedApi();
     final feedId = FeedId('slug', 'userId');
