@@ -123,7 +123,7 @@ class TokenHelper {
   /// build Analytics Redirect Token
   static Token buildAnalyticsRedirect(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.analyticsRedirect, action, '*');
-  
+
   /// build Activity Token
   static Token buildActivityToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.activities, action, '*');
