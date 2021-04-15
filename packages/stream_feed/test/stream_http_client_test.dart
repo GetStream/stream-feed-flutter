@@ -65,10 +65,12 @@ void main() {
     test('get', () async {
       const relativePath = 'collections';
       const serviceName = 'api';
+      const queryParams = {'group': 'unknown'};
+
       final enriched = client.enrichUrl(relativePath, serviceName);
       when(() => mockDio.get(
             enriched,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onReceiveProgress: any(named: 'onReceiveProgress'),
@@ -76,7 +78,11 @@ void main() {
         (_) async => successResponse(enriched),
       );
 
-      final res = await client.get(relativePath, serviceName: serviceName);
+      final res = await client.get(
+        relativePath,
+        serviceName: serviceName,
+        queryParameters: queryParams,
+      );
 
       expect(res, isNotNull);
       expect(res.statusCode, 200);
@@ -84,7 +90,7 @@ void main() {
 
       verify(() => mockDio.get(
             enriched,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onReceiveProgress: any(named: 'onReceiveProgress'),
@@ -94,6 +100,7 @@ void main() {
     test('post', () async {
       const relativePath = 'collections';
       const serviceName = 'api';
+      const queryParams = {'group': 'unknown'};
       const data = {};
 
       final enriched = client.enrichUrl(relativePath, serviceName);
@@ -101,7 +108,7 @@ void main() {
       when(() => mockDio.post(
             enriched,
             data: data,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onSendProgress: any(named: 'onSendProgress'),
@@ -114,6 +121,7 @@ void main() {
         relativePath,
         data: data,
         serviceName: serviceName,
+        queryParameters: queryParams,
       );
 
       expect(res, isNotNull);
@@ -123,7 +131,7 @@ void main() {
       verify(() => mockDio.post(
             enriched,
             data: data,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onSendProgress: any(named: 'onSendProgress'),
@@ -134,19 +142,24 @@ void main() {
     test('delete', () async {
       const relativePath = 'collections';
       const serviceName = 'api';
+      const queryParams = {'group': 'unknown'};
 
       final enriched = client.enrichUrl(relativePath, serviceName);
 
       when(() => mockDio.delete(
             enriched,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
           )).thenAnswer(
         (_) async => successResponse(enriched),
       );
 
-      final res = await client.delete(relativePath, serviceName: serviceName);
+      final res = await client.delete(
+        relativePath,
+        serviceName: serviceName,
+        queryParameters: queryParams,
+      );
 
       expect(res, isNotNull);
       expect(res.statusCode, 200);
@@ -154,7 +167,7 @@ void main() {
 
       verify(() => mockDio.delete(
             enriched,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
           )).called(1);
@@ -163,6 +176,7 @@ void main() {
     test('patch', () async {
       const relativePath = 'collections';
       const serviceName = 'api';
+      const queryParams = {'group': 'unknown'};
       const data = {};
 
       final enriched = client.enrichUrl(relativePath, serviceName);
@@ -170,7 +184,7 @@ void main() {
       when(() => mockDio.patch(
             enriched,
             data: data,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onSendProgress: any(named: 'onSendProgress'),
@@ -183,6 +197,7 @@ void main() {
         relativePath,
         data: data,
         serviceName: serviceName,
+        queryParameters: queryParams,
       );
 
       expect(res, isNotNull);
@@ -192,7 +207,7 @@ void main() {
       verify(() => mockDio.patch(
             enriched,
             data: data,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onSendProgress: any(named: 'onSendProgress'),
@@ -203,6 +218,7 @@ void main() {
     test('put', () async {
       const relativePath = 'collections';
       const serviceName = 'api';
+      const queryParams = {'group': 'unknown'};
       const data = {};
 
       final enriched = client.enrichUrl(relativePath, serviceName);
@@ -210,7 +226,7 @@ void main() {
       when(() => mockDio.put(
             enriched,
             data: data,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onSendProgress: any(named: 'onSendProgress'),
@@ -223,6 +239,7 @@ void main() {
         relativePath,
         data: data,
         serviceName: serviceName,
+        queryParameters: queryParams,
       );
 
       expect(res, isNotNull);
@@ -232,7 +249,7 @@ void main() {
       verify(() => mockDio.put(
             enriched,
             data: data,
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onSendProgress: any(named: 'onSendProgress'),
@@ -243,6 +260,7 @@ void main() {
     test('postFile', () async {
       const relativePath = 'collections';
       const serviceName = 'api';
+      const queryParams = {'group': 'unknown'};
       final file = MultipartFile.fromBytes([]);
 
       final enriched = client.enrichUrl(relativePath, serviceName);
@@ -250,7 +268,7 @@ void main() {
       when(() => mockDio.post(
             enriched,
             data: any(named: 'data'),
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onSendProgress: any(named: 'onSendProgress'),
@@ -263,6 +281,7 @@ void main() {
         relativePath,
         file,
         serviceName: serviceName,
+        queryParameters: queryParams,
       );
 
       expect(res, isNotNull);
@@ -272,7 +291,7 @@ void main() {
       verify(() => mockDio.post(
             enriched,
             data: any(named: 'data'),
-            queryParameters: any(named: 'queryParameters'),
+            queryParameters: queryParams,
             options: any(named: 'options'),
             cancelToken: any(named: 'cancelToken'),
             onSendProgress: any(named: 'onSendProgress'),
