@@ -6,7 +6,7 @@ String fixture(String name) {
   return File('$dir/test/fixtures/$name').readAsStringSync();
 }
 
-Map<String, dynamic>? jsonFixture(String name) => json.decode(fixture(name));
+Map<String, dynamic> jsonFixture(String name) => json.decode(fixture(name));
 
 // https://github.com/flutter/flutter/issues/20907
 Directory get currentDirectory {

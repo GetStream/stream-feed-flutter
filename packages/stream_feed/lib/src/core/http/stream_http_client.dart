@@ -173,7 +173,8 @@ class StreamHttpClient {
     try {
       final formData = FormData.fromMap({'file': file});
       final response = await post<T>(
-        enrichUrl(path, serviceName),
+        path,
+        serviceName: serviceName,
         data: formData,
         queryParameters: queryParameters,
         headers: headers,

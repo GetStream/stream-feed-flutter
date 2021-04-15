@@ -21,12 +21,13 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 ///
 class StreamClientImpl implements StreamClient {
   ///
-  StreamClientImpl(String apiKey,
-      {this.secret,
-      this.userToken,
-      StreamHttpClientOptions? options,
-      StreamApi? api})
-      : assert(
+  StreamClientImpl(
+    String apiKey, {
+    this.secret,
+    this.userToken,
+    StreamApi? api,
+    StreamHttpClientOptions? options,
+  })  : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),

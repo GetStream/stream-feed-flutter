@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/api/collections_api.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
@@ -7,6 +8,20 @@ import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/users_api.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
+
+class MockHttpClientAdapter extends Mock implements HttpClientAdapter {}
+
+class MockDio extends Mock implements Dio {
+  BaseOptions? _options;
+
+  @override
+  BaseOptions get options => _options ??= BaseOptions();
+
+  Interceptors? _interceptors;
+
+  @override
+  Interceptors get interceptors => _interceptors ??= Interceptors();
+}
 
 class MockHttpClient extends Mock implements StreamHttpClient {}
 
