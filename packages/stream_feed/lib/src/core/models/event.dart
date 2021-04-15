@@ -28,10 +28,10 @@ class UserData extends Equatable {
   Map<String, dynamic> toJson() => _$UserDataToJson(this);
 }
 
-///
+/// Custom meta-data for your event.
 @JsonSerializable()
 class Feature extends Equatable {
-  ///
+  /// Create a new [Feature] with the given group and value.
   const Feature(this.group, this.value);
 
   /// Create a new instance from a json
@@ -73,15 +73,18 @@ class Event extends Equatable {
   @JsonKey(includeIfNull: false)
   final List<Feature>? features;
 
-  ///
+  /// (optional) the feed the user is looking at
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
   final FeedId? feedId;
 
-  ///
+  /// (optional) the location of the content in your app. 
+  /// ie email, profile page etc
   @JsonKey(includeIfNull: false)
   final String? location;
 
-  ///
+  /// (optional) the position in a list of activities
+  /// When tracking interactions with content, 
+  /// it might be useful to provide the ordinal position (eg. 2)
   @JsonKey(includeIfNull: false)
   final int? position;
 
@@ -135,20 +138,21 @@ class Engagement extends Event {
   factory Engagement.fromJson(Map<String, dynamic> json) =>
       _$EngagementFromJson(json);
 
-  ///
+  /// the ID of the content that the user clicked
   final Map<String, Object> content;
 
-  ///
+  /// The type of event (i.e. click, share, search, etc.)
   final String label;
 
-  ///
+  /// score between 0 and 100 indicating the importance of this event
+  /// IE. a like is typically a more significant indicator than a click
   final int score;
 
-  ///
+  /// An integer that multiplies the score of the interaction (eg. 2 or -1)
   @JsonKey(includeIfNull: false)
   final int? boost;
 
-  ///
+  /// time at which this event as been tracked
   @JsonKey(includeIfNull: false)
   final String? trackedAt;
 
@@ -187,10 +191,15 @@ class Engagement extends Event {
   Map<String, dynamic> toJson() => _$EngagementToJson(this);
 }
 
-///
+/// By using Impression you can track which activities are shown to the user.
+/// Tracking impressions allows you to learn what specific users
+/// are not interested in. If the app often shows posts about football,
+/// and the user never engages with those posts,
+/// we can conclude that we're displaying the wrong content.
+/// The code below shows how to track that a user viewed 3 specific activities:
 @JsonSerializable()
 class Impression extends Event {
-  ///
+  /// [Impression] constructor
   const Impression({
     required this.contentList,
     List<Feature>? features,
@@ -211,7 +220,8 @@ class Impression extends Event {
   factory Impression.fromJson(Map<String, dynamic> json) =>
       _$ImpressionFromJson(json);
 
-  ///
+  /// The list of content the user is looking at.
+  /// Either a list of IDs or objects.
   final List<Map<String, Object>> contentList;
 
   ///
