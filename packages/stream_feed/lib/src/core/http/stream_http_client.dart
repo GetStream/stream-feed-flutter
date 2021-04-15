@@ -14,9 +14,10 @@ class StreamHttpClient {
   ///
   StreamHttpClient(
     this.apiKey, {
+    Dio? dio,
     StreamHttpClientOptions? options,
   })  : options = options ?? const StreamHttpClientOptions(),
-        httpClient = Dio() {
+        httpClient = dio ?? Dio() {
     httpClient
       ..options.receiveTimeout = this.options.receiveTimeout.inMilliseconds
       ..options.connectTimeout = this.options.connectTimeout.inMilliseconds

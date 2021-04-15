@@ -16,19 +16,50 @@ void main() {
     final mockDio = MockDio();
     final client = StreamHttpClient(apiKey, dio: mockDio);
 
-    test('`enrichUrl` should return an enriched url', () {
-      const serviceName = 'api';
-      const baseUrl = 'https://api.stream-io-api.com/api/v1.0/collections';
+    group('enrichUrl', () {
+      const apiService = 'api';
+      const analyticsService = 'analytics';
+      const personalizationService = 'personalization';
+
+      const apiBaseUrl = 'https://api.stream-io-api.com/api/v1.0';
+      const analyticsBaseUrl =
+          'https://analytics.stream-io-api.com/analytics/v1.0';
+      const personalizationBaseUrl =
+          'https://personalization.stream-io-api.com/personalization/v1.0';
 
       const options = StreamHttpClientOptions(
-        urlOverride: {serviceName: baseUrl},
+        urlOverride: {
+          apiService: apiBaseUrl,
+          analyticsService: analyticsBaseUrl,
+          personalizationService: personalizationBaseUrl,
+        },
       );
+
       final clientWithOptions = StreamHttpClient(apiKey, options: options);
 
-      const relativeUrl = 'collections';
+      test('should return an `api` service enriched url', () {
+        const relativeUrl = 'collections';
+        final enriched = clientWithOptions.enrichUrl(relativeUrl, apiService);
+        expect(enriched, '$apiBaseUrl/$relativeUrl');
+      });
 
-      final enriched = clientWithOptions.enrichUrl(relativeUrl, serviceName);
-      expect(enriched, '$baseUrl/$relativeUrl');
+      test('should return an `analytics` service enriched url', () {
+        const relativeUrl = 'impression';
+        final enriched = clientWithOptions.enrichUrl(
+          relativeUrl,
+          analyticsService,
+        );
+        expect(enriched, '$analyticsBaseUrl/$relativeUrl');
+      });
+
+      test('should return an `personalization` service enriched url', () {
+        const relativeUrl = 'feeds';
+        final enriched = clientWithOptions.enrichUrl(
+          relativeUrl,
+          personalizationService,
+        );
+        expect(enriched, '$personalizationBaseUrl/$relativeUrl');
+      });
     });
 
     test('get', () async {
