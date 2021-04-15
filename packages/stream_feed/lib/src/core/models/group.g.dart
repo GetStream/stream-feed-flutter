@@ -26,7 +26,7 @@ Group<T> _$GroupFromJson<T>(
 
 Map<String, dynamic> _$GroupToJson<T>(
   Group<T> instance,
-  Object Function(T value) toJsonT,
+  Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
       'id': instance.id,
@@ -59,7 +59,7 @@ NotificationGroup<T> _$NotificationGroupFromJson<T>(
 
 Map<String, dynamic> _$NotificationGroupToJson<T>(
   NotificationGroup<T> instance,
-  Object Function(T value) toJsonT,
+  Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
       'id': instance.id,

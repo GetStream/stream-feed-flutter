@@ -34,6 +34,15 @@ class FeedId extends Equatable {
   static List<String>? toIds(List<FeedId>? feeds) =>
       feeds?.map((e) => e.toString()).toList(growable: false);
 
+  ///
+  static FeedId? fromId(String? id) {
+    if (id == null) return null;
+    return FeedId.id(id);
+  }
+
+  ///
+  static String? toId(FeedId? feedId) => feedId?.toString();
+
   @override
   List<Object> get props => [slug, userId];
 

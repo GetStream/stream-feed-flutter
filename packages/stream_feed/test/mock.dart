@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed_dart/src/core/api/analytics_api.dart';
 import 'package:stream_feed_dart/src/core/api/collections_api.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/api/files_api.dart';
@@ -24,6 +25,8 @@ class MockDio extends Mock implements Dio {
 }
 
 class MockHttpClient extends Mock implements StreamHttpClient {}
+
+class MockAnalyticsApi extends Mock implements AnalyticsApi {}
 
 class MockCollectionsApi extends Mock implements CollectionsApi {}
 
