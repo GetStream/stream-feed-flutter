@@ -9,9 +9,10 @@ import 'package:stream_feed_dart/src/core/location.dart';
 
 part 'stream_http_client_options.dart';
 
-///
+/// This is where we configure the base url, headers,
+///  query parameters and convenient methods for http verbs with error parsing.
 class StreamHttpClient {
-  ///
+  /// [StreamHttpClient] constructor
   StreamHttpClient(
     this.apiKey, {
     StreamHttpClientOptions? options,
