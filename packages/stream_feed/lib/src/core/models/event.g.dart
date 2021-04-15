@@ -8,13 +8,13 @@ part of 'event.dart';
 
 UserData _$UserDataFromJson(Map json) {
   return UserData(
-    json['user_id'] as String,
+    json['id'] as String,
     json['alias'] as String,
   );
 }
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
-      'user_id': instance.userId,
+      'id': instance.id,
       'alias': instance.alias,
     };
 

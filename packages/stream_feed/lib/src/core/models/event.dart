@@ -9,20 +9,20 @@ part 'event.g.dart';
 @JsonSerializable()
 class UserData extends Equatable {
   ///
-  const UserData(this.userId, this.alias);
+  const UserData(this.id, this.alias);
 
   /// Create a new instance from a json
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
 
   ///
-  final String userId;
+  final String id;
 
   ///
   final String alias;
 
   @override
-  List<Object?> get props => [userId, alias];
+  List<Object?> get props => [id, alias];
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$UserDataToJson(this);

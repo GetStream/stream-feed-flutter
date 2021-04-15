@@ -18,7 +18,7 @@ void main() {
     const alias = 'testAlias';
     client.setUser(id: userId, alias: alias);
     expect(client.userData, isNotNull);
-    expect(client.userData!.userId, userId);
+    expect(client.userData!.id, userId);
     expect(client.userData!.alias, alias);
   });
 
