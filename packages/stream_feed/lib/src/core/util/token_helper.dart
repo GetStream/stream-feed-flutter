@@ -18,7 +18,7 @@ enum TokenAction {
   delete,
 }
 
-extension TokenActionX on TokenAction {
+extension _TokenActionX on TokenAction {
   String? get action => {
         TokenAction.any: '*',
         TokenAction.read: 'read',
@@ -91,6 +91,7 @@ extension TokenResourceX on TokenResource {
 
 ///Class that generates tokens
 class TokenHelper {
+  /// Constructor for [TokenHelper]
   const TokenHelper();
 
   /// build Feed Token
@@ -180,7 +181,7 @@ class TokenHelper {
   }
 }
 
-//Issues a Jwt issue signed with HS256
+///Issues a Jwt issue signed with HS256
 String issueJwtHS256({
   required String secret,
   required Map<String, Object?>? claims,
