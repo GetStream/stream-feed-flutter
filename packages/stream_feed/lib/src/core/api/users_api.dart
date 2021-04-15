@@ -5,9 +5,9 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class UsersApi {
-  const UsersApi(this.client);
+  const UsersApi(this._client);
 
-  final StreamHttpClient client;
+  final StreamHttpClient _client;
 
   Future<User> add(
     Token token,
@@ -17,7 +17,7 @@ class UsersApi {
   ]) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final user = User(id: id, data: data);
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.buildUsersUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {'get_or_create': getOrCreate},
@@ -29,7 +29,7 @@ class UsersApi {
   Future<User> get(Token token, String id,
       [bool withFollowCounts = true]) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
-    final result = await client.get(
+    final result = await _client.get(
       Routes.buildUsersUrl('$id/'),
       headers: {'Authorization': '$token'},
       queryParameters: {'with_follow_counts': withFollowCounts},
@@ -40,7 +40,7 @@ class UsersApi {
   Future<User> update(Token token, String id, Map<String, Object> data) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final updatedUser = User(id: id, data: data);
-    final result = await client.put(
+    final result = await _client.put(
       Routes.buildUsersUrl('$id/'),
       headers: {'Authorization': '$token'},
       data: updatedUser,
@@ -50,7 +50,7 @@ class UsersApi {
 
   Future<void> delete(Token token, String id) {
     checkArgument(id.isNotEmpty, 'Missing user ID');
-    return client.delete(
+    return _client.delete(
       Routes.buildUsersUrl('$id/'),
       headers: {'Authorization': '$token'},
     );

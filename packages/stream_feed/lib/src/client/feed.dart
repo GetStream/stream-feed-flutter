@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:meta/meta.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
@@ -22,13 +23,17 @@ class Feed {
         );
 
   /// Your API secret
+  @protected
   final String? secret;
+  @protected
   final Token? userToken;
 
   /// The feed id
+  @protected
   final FeedId feedId;
 
   ///The stream client this feed is constructed from
+  @protected
   final FeedApi feed;
 
   /// Adds the given [Activity] to the feed
