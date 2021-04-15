@@ -6,7 +6,7 @@ import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 part 'reaction.g.dart';
 
-/// Reactions are a special kind of data that 
+/// Reactions are a special kind of data that
 /// can be used to capture user interaction
 ///  with specific activities. Common examples of reactions are likes, comments,
 /// and upvotes.
