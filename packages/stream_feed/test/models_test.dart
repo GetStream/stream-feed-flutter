@@ -9,6 +9,57 @@ import 'package:test/test.dart';
 import 'utils.dart';
 
 void main() {
+  group('EnrichmentFlags', () {
+    test('withOwnChildren', () {
+      final withOwnChildren = EnrichmentFlags().withOwnChildren();
+      expect(withOwnChildren.params, {'with_own_children': true});
+    });
+
+    test('withOwnReactions', () {
+      final withOwnReactions = EnrichmentFlags().withOwnReactions();
+      expect(withOwnReactions.params, {'with_own_reactions': true});
+    });
+
+    test('withUserReactions', () {
+      final withUserReactions = EnrichmentFlags().withUserReactions('userId');
+      expect(withUserReactions.params,
+          {'with_own_reactions': true, 'user_id': 'userId'});
+    });
+
+    test('withRecentReactions', () {
+      final withRecentReactions = EnrichmentFlags().withRecentReactions(10);
+      expect(withRecentReactions.params, {'recent_reactions_limit': 10});
+    });
+
+    test('reactionKindFilter', () {
+      final reactionKindFilter =
+          EnrichmentFlags().reactionKindFilter(['kind1', 'kind2']);
+      expect(
+          reactionKindFilter.params, {'reaction_kinds_filter': 'kind1,kind2'});
+    });
+
+    test('withReactionCounts', () {
+      final withReactionCounts = EnrichmentFlags().withReactionCounts();
+      expect(withReactionCounts.params, {'with_reaction_counts': true});
+    });
+
+    test('withUserChildren', () {
+      final withUserChildren = EnrichmentFlags().withUserChildren('userId');
+      expect(withUserChildren.params,
+          {'with_own_children': true, 'user_id': 'userId'});
+    });
+  });
+  group('FeedId', () {
+    test('claim', () {
+      final feedId = FeedId('slug', 'userId');
+      expect(feedId.claim, 'sluguserId');
+    });
+
+    test('feedIds', () {
+      final feedIds = FeedId.toIds([FeedId('slug', 'userId')]);
+      expect(feedIds, ['slug:userId']);
+    });
+  });
   test('EnrichedActivity', () {
     final reaction1 = Reaction(
         id: 'test',
@@ -58,7 +109,7 @@ void main() {
     // gets collected as a field extra_data of type Map
     expect(enrichedActivityFromJson.extraData, {'test': 'test'});
   });
-  test('Activity', () {
+  group('Activity', () {
     final activity = Activity(
         target: 'test',
         foreignId: 'test',
@@ -74,8 +125,16 @@ void main() {
         to: <FeedId>[FeedId('slug', 'id')],
         time: DateTime.parse('2001-09-11T00:01:02.000'));
     final r = json.decode(fixture('activity.json'));
-    final activityJson = Activity.fromJson(r);
-    expect(activityJson, activity);
+    test('fromJson', () {
+      final activityJson = Activity.fromJson(r);
+      expect(activityJson, activity);
+    });
+
+    test('copyWith', () {
+      final activityCopiedWith =
+          activity.copyWith(extraData: {'popularity': 10});
+      expect(activityCopiedWith.extraData, {'popularity': 10});
+    });
   });
 
   test('Group', () {
@@ -107,9 +166,40 @@ void main() {
     final groupFromJson = Group.fromJson(
         groupJson, (e) => Activity.fromJson(e as Map<String, dynamic>?));
     expect(groupFromJson, group);
+    expect(group.toJson((activity) => activity.toJson()), {
+      'id': 'test',
+      'group': 'test',
+      'activities': [
+        {
+          'id': 'test',
+          'actor': 'test',
+          'verb': 'test',
+          'object': 'test',
+          'foreign_id': 'test',
+          'target': 'test',
+          'time': '2001-09-11T00:01:02.000',
+          'origin': 'test',
+          'to': ['slug:id'],
+          'score': 1.0,
+          'analytics': {'test': 'test'},
+          'extra_context': {'test': 'test'},
+          'test': 'test'
+        }
+      ],
+      'actor_count': 1,
+      'created_at': '2001-09-11T00:01:02.000',
+      'updated_at': '2001-09-11T00:01:02.000'
+    });
   });
 
-  test('NotificationGroup', () {
+  test('ForeignIdTimePair equatable', () {
+    final foreignIdTimePair =
+        ForeignIdTimePair('foreignID', DateTime(2021, 03, 03));
+    final otherForeignIdTimePair =
+        ForeignIdTimePair('foreignID', DateTime(2021, 04, 03));
+    expect(foreignIdTimePair, otherForeignIdTimePair);
+  });
+  group('NotificationGroup', () {
     final notificationGroup = NotificationGroup(
       id: 'test',
       group: 'test',
@@ -135,14 +225,45 @@ void main() {
       isRead: true,
       isSeen: true,
     );
-    final notificationGroupJson =
-        json.decode(fixture('notification_group.json'));
-    final notificationGroupFromJson = NotificationGroup.fromJson(
-        notificationGroupJson,
-        (e) => Activity.fromJson(e as Map<String, dynamic>?));
-    expect(notificationGroupFromJson, notificationGroup);
+    test('fromJson', () {
+      final notificationGroupJson =
+          json.decode(fixture('notification_group.json'));
+      final notificationGroupFromJson = NotificationGroup.fromJson(
+          notificationGroupJson,
+          (e) => Activity.fromJson(e as Map<String, dynamic>?));
+      expect(notificationGroupFromJson, notificationGroup);
+    });
+
+    test('toJson', () {
+      expect(notificationGroup.toJson((activity) => activity.toJson()), {
+        'id': 'test',
+        'group': 'test',
+        'activities': [
+          {
+            'id': 'test',
+            'actor': 'test',
+            'verb': 'test',
+            'object': 'test',
+            'foreign_id': 'test',
+            'target': 'test',
+            'time': '2001-09-11T00:01:02.000',
+            'origin': 'test',
+            'to': ['slug:id'],
+            'score': 1.0,
+            'analytics': {'test': 'test'},
+            'extra_context': {'test': 'test'},
+            'test': 'test'
+          }
+        ],
+        'actor_count': 1,
+        'created_at': '2001-09-11T00:01:02.000',
+        'updated_at': '2001-09-11T00:01:02.000',
+        'is_read': true,
+        'is_seen': true
+      });
+    });
   });
-  test('CollectionEntry', () {
+  group('CollectionEntry', () {
     final entry = CollectionEntry(
         id: 'test',
         collection: 'test',
@@ -150,9 +271,33 @@ void main() {
         data: const {'test': 'test'},
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'));
-    final entryJson = json.decode(fixture('collection_entry.json'));
-    final entryFromJson = CollectionEntry.fromJson(entryJson);
-    expect(entry, entryFromJson);
+    test('fromJson', () {
+      final entryJson = json.decode(fixture('collection_entry.json'));
+      final entryFromJson = CollectionEntry.fromJson(entryJson);
+      expect(entry, entryFromJson);
+    });
+
+    test('copyWith', () {
+      final entryCopiedWith = entry.copyWith(data: {
+        'name': 'Cheese Burger',
+        'rating': '4 stars',
+      });
+      expect(entryCopiedWith.data, {
+        'name': 'Cheese Burger',
+        'rating': '4 stars',
+      });
+    });
+
+    test('toJson', () {
+      expect(entry.toJson(), {
+        'id': 'test',
+        'collection': 'test',
+        'foreign_id': 'test',
+        'data': {'test': 'test'},
+        'created_at': '2001-09-11T00:01:02.000',
+        'updated_at': '2001-09-11T00:01:02.000'
+      });
+    });
   });
 
   test('PaginatedReactions', () {
@@ -218,6 +363,52 @@ void main() {
     final paginatedReactionsFromJson =
         PaginatedReactions.fromJson(paginatedReactionsJson);
     expect(paginatedReactionsFromJson, paginatedReactions);
+    expect(paginatedReactions.toJson(), {
+      'next': 'test',
+      'results': [
+        {
+          'kind': 'test',
+          'activity_id': 'test',
+          'user_id': 'test',
+          'parent': 'test',
+          'created_at': '2001-09-11T00:01:02.000',
+          'target_feeds': ['slug:userId'],
+          'user': {'test': 'test'},
+          'target_feeds_extra_data': {'test': 'test'},
+          'data': {'test': 'test'}
+        }
+      ],
+      'duration': 'duration',
+      'activity': {
+        'actor': 'test',
+        'verb': 'test',
+        'object': 'test',
+        'foreign_id': 'test',
+        'time': '2001-09-11T00:01:02.000',
+        'test': 'test'
+      }
+    });
+  });
+
+  group('Filter', () {
+    test('idGreaterThanOrEqual', () {
+      final filter = Filter().idGreaterThanOrEqual('id');
+      expect(filter.params, {'id_gte': 'id'});
+    });
+    test('idGreaterThan', () {
+      final filter = Filter().idGreaterThan('id');
+      expect(filter.params, {'id_gt': 'id'});
+    });
+
+    test('idLessThan', () {
+      final filter = Filter().idLessThan('id');
+      expect(filter.params, {'id_lt': 'id'});
+    });
+
+    test('idLessThanOrEqual', () {
+      final filter = Filter().idLessThanOrEqual('id');
+      expect(filter.params, {'id_lte': 'id'});
+    });
   });
   test('User', () {
     final user = User(
@@ -230,6 +421,36 @@ void main() {
     final userJson = json.decode(fixture('user.json'));
     final userFromJson = User.fromJson(userJson);
     expect(userFromJson, user);
+    expect(user.toJson(), {
+      'id': 'test',
+      'data': {'test': 'test'}
+    });
+  });
+
+  group('ActivityMarker', () {
+    test('allRead', () {
+      final allRead = ActivityMarker()
+        ..read(['id1', 'id2'])
+        ..allRead();
+      expect(allRead.params, {'mark_read': 'true'});
+    });
+
+    test('allSeen', () {
+      final allSeen = ActivityMarker()
+        ..seen(['id1', 'id2'])
+        ..allSeen();
+      expect(allSeen.params, {'mark_seen': 'true'});
+    });
+
+    test("seen 'id1', 'id2'", () {
+      final seen = ActivityMarker()..seen(['id1', 'id2']);
+      expect(seen.params, {'mark_seen': 'id1,id2'});
+    });
+
+    test("read 'id1', 'id2'", () {
+      final seen = ActivityMarker()..read(['id1', 'id2']);
+      expect(seen.params, {'mark_read': 'id1,id2'});
+    });
   });
 
   test('Follow', () {
@@ -238,26 +459,119 @@ void main() {
         json.decode('{"feed_id": "feedId", "target_id": "targetId"}');
 
     expect(follow, Follow.fromJson(followJson));
+    expect(follow.toJson(), {'feed_id': 'feedId', 'target_id': 'targetId'});
   });
-  test('Unfollow', () {
-    const follow = UnFollow('feedId', 'targetId', true);
-    final followJson = json.decode(fixture('unfollow.json'));
-    expect(follow, UnFollow.fromJson(followJson));
+  group('Unfollow', () {
+    const unfollow = UnFollow('feedId', 'targetId', true);
+
+    test('fromFollow', () {
+      const follow = Follow('feedId', 'targetId');
+      final unfollowFromFollow = UnFollow.fromFollow(follow, true);
+      expect(unfollowFromFollow, unfollow);
+    });
+    test('fromJson', () {
+      final unfollowJson = json.decode(fixture('unfollow.json'));
+      expect(unfollow, UnFollow.fromJson(unfollowJson));
+    });
+
+    test('toJson', () {
+      expect(unfollow.toJson(),
+          {'feed_id': 'feedId', 'target_id': 'targetId', 'keep_history': true});
+    });
   });
 
-  test('ActivityUpdate', () {
+  group('ActivityUpdate', () {
     final activityUpdate = ActivityUpdate(
         id: 'test',
         foreignId: 'test',
         time: DateTime.parse('2001-09-11T00:01:02.000'),
         set: const {'hey': 'hey'},
         unset: const ['test']);
-    final activityUpdateJson = json.decode(fixture('activity_update.json'));
-    final activityUpdateFromJson = ActivityUpdate.fromJson(activityUpdateJson);
-    expect(activityUpdateFromJson, activityUpdate);
+
+    test('withForeignId', () {
+      final activityUpdateWithForeignId = ActivityUpdate.withForeignId(
+          'id',
+          DateTime.parse('2001-09-11T00:01:02.000'),
+          const {'hey': 'hey'},
+          const ['test']);
+      expect(
+          activityUpdateWithForeignId,
+          ActivityUpdate(
+              foreignId: 'id',
+              time: DateTime.parse('2001-09-11T00:01:02.000'),
+              set: const {'hey': 'hey'},
+              unset: const ['test']));
+    });
+    test('withId', () {
+      final activityUpdateWithId =
+          ActivityUpdate.withId('id', const {'hey': 'hey'}, const ['test']);
+      expect(activityUpdateWithId,
+          const ActivityUpdate(id: 'id', set: {'hey': 'hey'}, unset: ['test']));
+    });
+    test('fromJson', () {
+      final activityUpdateJson = json.decode(fixture('activity_update.json'));
+      final activityUpdateFromJson =
+          ActivityUpdate.fromJson(activityUpdateJson);
+      expect(activityUpdateFromJson, activityUpdate);
+    });
+    test('toJson', () {
+      expect(activityUpdate.toJson(), {
+        'id': 'test',
+        'foreign_id': 'test',
+        'time': '2001-09-11T00:01:02.000',
+        'set': {'hey': 'hey'},
+        'unset': ['test']
+      });
+    });
   });
 
-  test('Reaction', () {
+  test('Location Names', () {
+    final locationNames =
+        Location.values.map((location) => location.name).toList();
+    expect(locationNames, ['us-east', 'dublin', 'singapore', 'tokyo']);
+  });
+
+  group('Crop', () {
+    test('params', () {
+      const crop = Crop(10, 10);
+      expect(crop.params, {'crop': 'center', 'w': 10, 'h': 10});
+    });
+    test('Width should be a positive number', () {
+      expect(
+          () => Crop(-1, 10),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Width should be a positive number')));
+    });
+
+    test('Height should be a positive number', () {
+      expect(
+          () => Crop(10, -1),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Height should be a positive number')));
+    });
+  });
+
+  group('Resize', () {
+    test('params', () {
+      const resize = Resize(10, 10);
+      expect(resize.params, {'resize': 'clip', 'w': 10, 'h': 10});
+    });
+    test('Width should be a positive number', () {
+      expect(
+          () => Resize(-1, 10),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Width should be a positive number')));
+    });
+
+    test('Height should be a positive number', () {
+      expect(
+          () => Resize(10, -1),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Height should be a positive number')));
+    });
+  });
+
+  group('Reaction', () {
     final reaction2 = Reaction(
         id: 'test',
         kind: 'test',
@@ -288,9 +602,30 @@ void main() {
         // },//TODO: test this
         childrenCounts: const {'test': 1});
 
-    final reactionJson = json.decode(fixture('reaction.json'));
-    final reactionFromJson = Reaction.fromJson(reactionJson);
-    expect(reactionFromJson, reaction);
+    test('copyWith', () {
+      final reactionCopiedWith =
+          reaction.copyWith(data: {'text': 'awesome post!'});
+      expect(reactionCopiedWith.data, {'text': 'awesome post!'});
+    });
+    test('fromJson', () {
+      final reactionJson = json.decode(fixture('reaction.json'));
+      final reactionFromJson = Reaction.fromJson(reactionJson);
+      expect(reactionFromJson, reaction);
+    });
+
+    test('toJson', () {
+      expect(reaction.toJson(), {
+        'kind': 'test',
+        'activity_id': 'test',
+        'user_id': 'test',
+        'parent': 'test',
+        'created_at': '2001-09-11T00:01:02.000',
+        'target_feeds': ['slug:userId'],
+        'user': {'test': 'test'},
+        'target_feeds_extra_data': {'test': 'test'},
+        'data': {'test': 'test'}
+      });
+    });
   });
 
   test('Image', () {
@@ -377,5 +712,40 @@ void main() {
     final openGraphDataJson = json.decode(fixture('open_graph_data.json'));
     final openGraphDataFromJson = OpenGraphData.fromJson(openGraphDataJson);
     expect(openGraphDataFromJson, openGraphData);
+    expect(openGraphData.toJson(), {
+      'title': 'test',
+      'type': 'test',
+      'url': 'test',
+      'site': 'test',
+      'site_name': 'test',
+      'description': 'test',
+      'determiner': 'test',
+      'locale': 'test',
+      'images': [
+        {
+          'image': 'test',
+          'url': 'test',
+          'secure_url': 'test',
+          'width': 'test',
+          'height': 'test',
+          'type': 'test',
+          'alt': 'test'
+        }
+      ],
+      'videos': [
+        {
+          'image': 'test',
+          'url': 'test',
+          'secure_url': 'test',
+          'width': 'test',
+          'height': 'test',
+          'type': 'test',
+          'alt': 'test'
+        }
+      ],
+      'audios': [
+        {'audio': 'test', 'url': 'test', 'secure_url': 'test', 'type': 'test'}
+      ]
+    });
   });
 }
