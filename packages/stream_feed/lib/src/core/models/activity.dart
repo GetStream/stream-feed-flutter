@@ -6,10 +6,12 @@ import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 part 'activity.g.dart';
 
-///
+/// "In its simplest form, an activity consists of
+/// an actor, a verb, and an object.
+/// It tells the story of a person performing an action on or with an object."
 @JsonSerializable()
 class Activity extends Equatable {
-  ///
+  /// Instantiate a new [Activity]
   const Activity({
     required this.actor,
     required this.verb,
@@ -30,7 +32,7 @@ class Activity extends Equatable {
   factory Activity.fromJson(Map<String, dynamic>? json) =>
       _$ActivityFromJson(Serializer.moveKeysToRoot(json, topLevelFields)!);
 
-  ///
+  /// Activity id
   @JsonKey(includeIfNull: false)
   final String? id;
 
@@ -110,7 +112,13 @@ class Activity extends Equatable {
   @JsonKey(includeIfNull: false)
   final double? score;
 
-  ///
+  ///  This allows you to gain a better understanding of that user's interests.
+  ///  Common examples include:
+  ///     Clicking on a link
+  ///     Liking or commenting
+  ///     Sharing an activity
+  ///     Viewing another user's profile page
+  ///     Searching for a certain user/content/topic/etc.
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? analytics;
 

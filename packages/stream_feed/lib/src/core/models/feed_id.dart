@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-///
+/// A feed identifier based on [slug] and [userId].
 class FeedId extends Equatable {
-  ///
+  /// [FeedId] constructor
   FeedId(this.slug, this.userId)
       : assert(!slug.contains(':'), 'Invalid slug'), //TODO:
         // validate feed slug stream-python style using regex
         assert(!userId.contains(':'), 'Invalid userId');
 
-  ///
+  /// [FeedId] factory constructor based on id
   factory FeedId.id(String id) {
     assert(id.contains(':'), 'Invalid FeedId');
     final parts = id.split(':');

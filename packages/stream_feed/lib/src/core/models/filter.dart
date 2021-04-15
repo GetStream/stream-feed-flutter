@@ -27,6 +27,7 @@ extension _FilterX on _Filter {
 class Filter {
   final Map<_Filter, String> _filters = {};
 
+  ///Serialize [Filter] parameters
   Map<String, String> get params =>
       _filters.map((key, value) => MapEntry(key.name, value));
 

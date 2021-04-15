@@ -3,10 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'group.g.dart';
 
-///
+/// An aggregated group type.
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
 class Group<T> extends Equatable {
-  ///
+  /// [Group] constructor
   const Group({
     this.id,
     this.group,
@@ -23,22 +23,22 @@ class Group<T> extends Equatable {
   ) =>
       _$GroupFromJson(json, fromJsonT);
 
-  ///
+  /// A group id.
   final String? id;
 
-  ///
+  /// A group name.
   final String? group;
 
-  ///
+  /// A list of activities.
   final List<T>? activities;
 
-  ///
+  /// A number of actors in the group.
   final int? actorCount;
 
-  ///
+  /// A created date.
   final DateTime? createdAt;
 
-  ///
+  /// An updated date.
   final DateTime? updatedAt;
 
   @override
@@ -56,10 +56,10 @@ class Group<T> extends Equatable {
       _$GroupToJson(this, toJsonT);
 }
 
-///
+/// A notification group.
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
 class NotificationGroup<T> extends Group<T> {
-  ///
+  /// [NotificationGroup] constructor
   const NotificationGroup({
     String? id,
     String? group,
@@ -85,10 +85,10 @@ class NotificationGroup<T> extends Group<T> {
   ) =>
       _$NotificationGroupFromJson(json, fromJsonT);
 
-  ///
+  /// True if the notification group is read.
   final bool? isRead;
 
-  ///
+  ///  True if the notification group is seen.
   final bool? isSeen;
 
   @override

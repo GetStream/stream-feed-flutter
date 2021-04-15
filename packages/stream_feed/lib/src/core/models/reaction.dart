@@ -6,10 +6,15 @@ import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 
 part 'reaction.g.dart';
 
-///
+/// Reactions are a special kind of data that 
+/// can be used to capture user interaction
+///  with specific activities. Common examples of reactions are likes, comments,
+/// and upvotes.
+///  Reactions are automatically returned to feeds' activities at read time
+/// when the reactions parameters are used.
 @JsonSerializable()
 class Reaction extends Equatable {
-  ///
+  /// [Reaction] constructor
   const Reaction({
     this.id,
     this.kind,
@@ -64,7 +69,7 @@ class Reaction extends Equatable {
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? user;
 
-  ///
+  /// Extra Data of the target Feed
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? targetFeedsExtraData;
 

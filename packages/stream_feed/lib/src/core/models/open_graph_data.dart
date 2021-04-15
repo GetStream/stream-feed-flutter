@@ -3,10 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'open_graph_data.g.dart';
 
-///
+/// Open graph data from a website.
 @JsonSerializable(createToJson: true)
 class OpenGraphData extends Equatable {
-  ///
+  /// [OpenGraphData] constructor
   const OpenGraphData({
     this.title,
     this.type,
@@ -77,10 +77,10 @@ class OpenGraphData extends Equatable {
   Map<String, dynamic> toJson() => _$OpenGraphDataToJson(this);
 }
 
-///
+/// OG Image object
 @JsonSerializable(createToJson: true)
 class Image extends Equatable {
-  ///
+  /// [Image] constructor
   const Image({
     this.image,
     this.url,
@@ -130,10 +130,10 @@ class Image extends Equatable {
   Map<String, dynamic> toJson() => _$ImageToJson(this);
 }
 
-///
+/// OG Video object
 @JsonSerializable(createToJson: true)
 class Video extends Equatable {
-  ///
+  /// [Video] constructor
   const Video({
     this.image,
     this.url,
@@ -183,10 +183,10 @@ class Video extends Equatable {
   Map<String, dynamic> toJson() => _$VideoToJson(this);
 }
 
-///
+/// OG Audio object
 @JsonSerializable(createToJson: true)
 class Audio extends Equatable {
-  ///
+  /// [Audio] constructor
   const Audio({
     this.audio,
     this.url,
@@ -196,6 +196,8 @@ class Audio extends Equatable {
 
   /// Create a new instance from a json
   factory Audio.fromJson(Map<String, dynamic> json) => _$AudioFromJson(json);
+
+  /// Serialize to json the [Audio] object
   Map<String, dynamic> toJson() => _$AudioToJson(this);
 
   /// Value of the audio OG field.

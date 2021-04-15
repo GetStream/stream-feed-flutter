@@ -41,7 +41,8 @@ class UnFollow extends Follow {
   factory UnFollow.fromFollow(Follow follow, bool? keepHistory) =>
       UnFollow(follow.feedId, follow.targetId, keepHistory);
 
-  ///
+  /// when provided the activities from target feed
+  /// will not be kept in the feed.
   final bool? keepHistory;
 
   @override

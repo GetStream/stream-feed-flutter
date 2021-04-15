@@ -3,10 +3,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'activity_update.g.dart';
 
-///
+/// For updating only parts of one or more activities by changing,
+/// adding, or removing fields.
 @JsonSerializable()
 class ActivityUpdate extends Equatable {
-  ///
+  /// [ActivityUpdate] constructor
   const ActivityUpdate({
     required this.set,
     required this.unset,

@@ -3,10 +3,21 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'collection_entry.g.dart';
 
-///
+/// Collections enable you to store information to Stream.
+///  This allows you to use it inside your feeds,
+/// and to provide additional data for the personalized endpoints.
+/// Examples include products and articles,
+/// but any unstructured object (e.g. JSON) is a good match for collections.
+/// Collection entries can be embedded inside activities
+/// and used to store nested data inside activities. When doing so,
+/// Stream will automatically enrich your activities
+/// with the current version of the data (see later section).
+/// Collection endpoints can be used both client-side
+/// and server-side except the batch methods
+/// that are only available server-side.
 @JsonSerializable()
 class CollectionEntry extends Equatable {
-  ///
+  /// [CollectionEntry] constructor
   const CollectionEntry({
     this.id,
     this.collection,
