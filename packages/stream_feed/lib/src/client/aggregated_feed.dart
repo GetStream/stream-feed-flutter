@@ -13,7 +13,7 @@ import 'package:stream_feed_dart/src/client/feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class AggregatedFeed extends Feed {
-  const AggregatedFeed(FeedId feedId, FeedApi feed,
+  AggregatedFeed(FeedId feedId, FeedApi feed,
       {Token? userToken, String? secret})
       : super(feedId, feed, userToken: userToken, secret: secret);
 

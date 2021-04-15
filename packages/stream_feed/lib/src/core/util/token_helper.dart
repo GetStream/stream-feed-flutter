@@ -90,7 +90,7 @@ extension TokenResourceX on TokenResource {
 }
 
 class TokenHelper {
-  const TokenHelper._();
+  const TokenHelper();
 
   static Token buildFeedToken(
     String secret,

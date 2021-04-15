@@ -14,9 +14,10 @@ class StreamHttpClient {
   ///
   StreamHttpClient(
     this.apiKey, {
+    Dio? dio,
     StreamHttpClientOptions? options,
   })  : options = options ?? const StreamHttpClientOptions(),
-        httpClient = Dio() {
+        httpClient = dio ?? Dio() {
     httpClient
       ..options.receiveTimeout = this.options.receiveTimeout.inMilliseconds
       ..options.connectTimeout = this.options.connectTimeout.inMilliseconds
@@ -173,7 +174,8 @@ class StreamHttpClient {
     try {
       final formData = FormData.fromMap({'file': file});
       final response = await post<T>(
-        enrichUrl(path, serviceName),
+        path,
+        serviceName: serviceName,
         data: formData,
         queryParameters: queryParameters,
         headers: headers,

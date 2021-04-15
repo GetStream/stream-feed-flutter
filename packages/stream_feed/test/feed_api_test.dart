@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
+import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/activity_update.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/filter.dart';
@@ -162,6 +163,76 @@ Future<void> main() async {
               if (feedIds.isNotEmpty)
                 'filter': feedIds.map((it) => it.toString()).join(',')
             },
+          )).called(1);
+    });
+
+    test('AddActivity', () async {
+      const token = Token('dummyToken');
+
+      final feed = FeedId('global', 'feed1');
+
+      const activity = Activity(
+        actor: 'user:1',
+        verb: 'tweet',
+        object: 'tweet:1',
+      );
+
+      when(() => mockClient.post<Map>(
+            Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            data: activity,
+          )).thenAnswer((_) async => Response(
+          data: activity.toJson(),
+          requestOptions: RequestOptions(
+            path: Routes.buildFeedUrl(feed),
+          ),
+          statusCode: 200));
+
+      await feedApi.addActivity(token, feed, activity);
+
+      verify(() => mockClient.post<Map>(
+            Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            data: activity,
+          )).called(1);
+    });
+
+    test('AddActivities', () async {
+      const token = Token('dummyToken');
+
+      final feed = FeedId('global', 'feed1');
+
+      final activities = <Activity>[
+        const Activity(
+          actor: 'user:1',
+          verb: 'tweet',
+          object: 'tweet:1',
+        ),
+        const Activity(
+          actor: 'user:2',
+          verb: 'watch',
+          object: 'movie:1',
+        ),
+      ];
+      final activityList =
+          activities.map((activity) => activity.toJson()).toList();
+      when(() => mockClient.post<Map>(
+            Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            data: {'activities': activities},
+          )).thenAnswer((_) async => Response(
+          data: {'activities': activityList},
+          requestOptions: RequestOptions(
+            path: Routes.buildFeedUrl(feed),
+          ),
+          statusCode: 200));
+
+      await feedApi.addActivities(token, feed, activities);
+
+      verify(() => mockClient.post<Map>(
+            Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            data: {'activities': activities},
           )).called(1);
     });
 

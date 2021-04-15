@@ -6,9 +6,9 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class CollectionsApi {
-  const CollectionsApi(this.client);
+  const CollectionsApi(this._client);
 
-  final StreamHttpClient client;
+  final StreamHttpClient _client;
 
   Future<CollectionEntry> add(
       Token token, String? userId, CollectionEntry entry) async {
@@ -16,7 +16,7 @@ class CollectionsApi {
     checkArgument(
         entry.collection!.isNotEmpty, "Collection name can't be empty");
     checkNotNull(entry.data, "Collection data can't be null");
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.buildCollectionsUrl(entry.collection),
       headers: {'Authorization': '$token'},
       data: {
@@ -32,7 +32,7 @@ class CollectionsApi {
       Token token, String collection, String entryId) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
     checkArgument(entryId.isNotEmpty, "Collection id can't be empty");
-    return client.delete(
+    return _client.delete(
       Routes.buildCollectionsUrl('$collection/$entryId/'),
       headers: {'Authorization': '$token'},
     );
@@ -42,7 +42,7 @@ class CollectionsApi {
       Token token, String collection, Iterable<String> entryIds) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
     checkArgument(entryIds.isNotEmpty, "Collection ids can't be empty");
-    return client.delete(
+    return _client.delete(
       Routes.buildCollectionsUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -56,7 +56,7 @@ class CollectionsApi {
       Token token, String collection, String entryId) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
     checkArgument(entryId.isNotEmpty, "Collection id can't be empty");
-    final result = await client.get<Map>(
+    final result = await _client.get<Map>(
       Routes.buildCollectionsUrl('$collection/$entryId/'),
       headers: {'Authorization': '$token'},
     );
@@ -67,7 +67,7 @@ class CollectionsApi {
       Token token, String collection, Iterable<String> entryIds) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
     checkArgument(entryIds.isNotEmpty, "Collection ids can't be empty");
-    final result = await client.get<Map>(
+    final result = await _client.get<Map>(
       Routes.buildCollectionsUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -86,7 +86,7 @@ class CollectionsApi {
     checkNotNull(entry.collection, "Collection name can't be null");
     checkArgument(
         entry.collection!.isNotEmpty, "Collection name can't be empty");
-    final result = await client.put<Map>(
+    final result = await _client.put<Map>(
       Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
       headers: {'Authorization': '$token'},
       data: {
@@ -98,15 +98,16 @@ class CollectionsApi {
   }
 
   Future<Response> upsert(
-      Token token, String collection, Iterable<CollectionEntry> entries) async {
+      //TODO: Map<String, Iterable<CollectionEntry>>
+      Token token,
+      String collection,
+      Iterable<CollectionEntry> entries) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
     checkArgument(entries.isNotEmpty, "Collection data can't be empty");
-    return client.post(
-      Routes.buildCollectionsUrl(),
-      headers: {'Authorization': '$token'},
-      data: {
-        'data': {collection: entries}
-      },
-    );
+    return _client.post(Routes.buildCollectionsUrl(), headers: {
+      'Authorization': '$token'
+    }, data: {
+      'data': {collection: entries}
+    });
   }
 }
