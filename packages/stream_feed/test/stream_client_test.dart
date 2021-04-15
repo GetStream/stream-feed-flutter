@@ -68,9 +68,14 @@ main() {
             'https://api.stream-io-api.com/api/v1.0/feed');
       });
 
-      test('analytics', () {
-        expect(streamHttpClient.enrichUrl('analytics', 'analytics'),
-            'https://analytics.stream-io-api.com/analytics/v1.0/analytics'); //TODO: weird
+      test('impression', () {
+        expect(streamHttpClient.enrichUrl('impression', 'impression'),
+            'https://impression.stream-io-api.com/impression/v1.0/impression'); //TODO: weird
+      });
+
+      test('engagement', () {
+        expect(streamHttpClient.enrichUrl('engagement', 'engagement'),
+            'https://engagement.stream-io-api.com/engagement/v1.0/engagement'); //TODO: weird
       });
     });
   });
