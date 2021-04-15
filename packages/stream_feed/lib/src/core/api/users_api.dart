@@ -4,7 +4,9 @@ import 'package:stream_feed_dart/src/core/models/user.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
+/// The http layer api for CRUD operation on Users
 class UsersApi {
+  /// [UsersApi] constructor
   const UsersApi(this._client);
 
   final StreamHttpClient _client;

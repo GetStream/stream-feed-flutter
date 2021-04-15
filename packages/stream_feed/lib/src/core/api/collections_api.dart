@@ -5,7 +5,9 @@ import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
+/// The http layer api for CRUD operations on Collections
 class CollectionsApi {
+  /// [CollectionsApi] constructor
   const CollectionsApi(this._client);
 
   final StreamHttpClient _client;

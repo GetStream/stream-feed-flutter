@@ -8,7 +8,9 @@ import 'package:stream_feed_dart/src/core/models/reaction.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
+/// The http layer api for CRUD operations on Reactions
 class ReactionsApi {
+  /// [ReactionsApi] constructor
   const ReactionsApi(this._client);
 
   final StreamHttpClient _client;
@@ -111,6 +113,7 @@ class ReactionsApi {
     return PaginatedReactions.fromJson(result.data);
   }
 
+  /// Next reation pagination returned by [PaginatedReactions].next
   Future<PaginatedReactions> nextPaginatedFilter(
       Token token, String next) async {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
@@ -121,6 +124,7 @@ class ReactionsApi {
     return PaginatedReactions.fromJson(result.data);
   }
 
+  /// update a reaction
   Future<Response> update(Token token, Reaction updatedReaction) async {
     checkArgument(updatedReaction.id!.isNotEmpty, "Reaction id can't be empty");
     final targetFeedIds = updatedReaction.targetFeeds!
