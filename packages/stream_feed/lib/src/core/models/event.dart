@@ -77,13 +77,13 @@ class Event extends Equatable {
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
   final FeedId? feedId;
 
-  /// (optional) the location of the content in your app. 
+  /// (optional) the location of the content in your app.
   /// ie email, profile page etc
   @JsonKey(includeIfNull: false)
   final String? location;
 
   /// (optional) the position in a list of activities
-  /// When tracking interactions with content, 
+  /// When tracking interactions with content,
   /// it might be useful to provide the ordinal position (eg. 2)
   @JsonKey(includeIfNull: false)
   final int? position;
