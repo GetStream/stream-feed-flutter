@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 import 'mock.dart';
 
-main() {
+void main() {
   group('FileStorageClient', () {
     final api = MockFilesApi();
     const token = Token('dummyToken');

@@ -18,7 +18,7 @@ enum TokenAction {
   delete,
 }
 
-extension TokenActionX on TokenAction {
+extension _TokenActionX on TokenAction {
   String? get action => {
         TokenAction.any: '*',
         TokenAction.read: 'read',
@@ -89,9 +89,12 @@ extension TokenResourceX on TokenResource {
       }[this];
 }
 
+///Class that generates tokens
 class TokenHelper {
+  /// Constructor for [TokenHelper]
   const TokenHelper();
 
+  /// build Feed Token
   static Token buildFeedToken(
     String secret,
     TokenAction action, [
@@ -100,6 +103,7 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.feed, action, feed?.claim ?? '*');
 
+  /// build Follow Token
   static Token buildFollowToken(
     String secret,
     TokenAction action, [
@@ -108,27 +112,35 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.follower, action, feed?.claim ?? '*');
 
+  /// build Reaction Token
   static Token buildReactionToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.reactions, action, '*');
 
+  /// build Analytics Token
   static Token buildAnalytics(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.analytics, action, '*');
 
+  /// build Analytics Redirect Token
   static Token buildAnalyticsRedirect(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.analyticsRedirect, action, '*');
 
+  /// build Activity Token
   static Token buildActivityToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.activities, action, '*');
 
+  /// build Users Token
   static Token buildUsersToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.users, action, '*');
 
+  /// build Collections Token
   static Token buildCollectionsToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.collections, action, '*');
 
+  /// build Open Graph Token
   static Token buildOpenGraphToken(String secret) => _buildBackendToken(
       secret, TokenResource.openGraph, TokenAction.read, '*');
 
+  /// build To Target Update Token
   static Token buildToTargetUpdateToken(
     String secret,
     TokenAction action, [
@@ -137,9 +149,11 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.feedTargets, action, feed?.claim ?? '*');
 
+  /// build Files Token
   static Token buildFilesToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.files, action, '*');
 
+  /// build Frontend Token
   static Token buildFrontendToken(
     String secret,
     String userId, {
@@ -175,6 +189,7 @@ class TokenHelper {
   }
 }
 
+///Issues a Jwt issue signed with HS256
 String issueJwtHS256({
   required String secret,
   required Map<String, Object?>? claims,
@@ -212,6 +227,7 @@ String issueJwtHS256({
   return jws.toCompactSerialization();
 }
 
+///base64 url encodes a secret
 String base64Urlencode(String secret) {
   final Codec<String?, String> stringToBase64Url = utf8.fuse(base64Url);
   final encoded = stringToBase64Url.encode(secret);

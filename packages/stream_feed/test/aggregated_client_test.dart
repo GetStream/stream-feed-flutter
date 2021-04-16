@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 import 'mock.dart';
 import 'utils.dart';
 
-main() {
+void main() {
   group('AggregatedFeed Client', () {
     final api = MockFeedApi();
     final feedId = FeedId('slug', 'userId');
@@ -47,7 +47,7 @@ main() {
       expect(
           activities,
           rawActivities
-              .map((e) => Group.fromJson(e!,
+              .map((e) => Group.fromJson(e,
                   (json) => Activity.fromJson(json as Map<String, dynamic>?)))
               .toList(growable: false));
       verify(() => api.getActivities(token, feedId, options)).called(1);
@@ -88,7 +88,7 @@ main() {
           activities,
           rawActivities
               .map((e) => Group.fromJson(
-                  e!,
+                  e,
                   (json) =>
                       EnrichedActivity.fromJson(json as Map<String, dynamic>?)))
               .toList(growable: false));

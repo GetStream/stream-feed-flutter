@@ -12,7 +12,6 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
-
 import 'package:faye_dart/faye_dart.dart';
 
 ///
@@ -25,7 +24,6 @@ typedef FeedSubscriber = Future<Subscription> Function(
   MessageDataCallback callback,
 );
 
-/// Manage api calls for specific feeds
 /// The feed object contains convenient functions
 /// such add activity, remove activity etc
 class Feed {
@@ -46,6 +44,9 @@ class Feed {
   /// Your API secret
   @protected
   final String? secret;
+
+  /// Your user token obtain via the dashboard.
+  /// Required if you are using the sdk client side
   @protected
   final Token? userToken;
 

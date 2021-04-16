@@ -9,20 +9,29 @@ import 'package:stream_feed_dart/src/core/api/files_api.dart';
 import 'package:stream_feed_dart/src/core/api/images_api.dart';
 import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 
+///Umbrella interface for all of our http layer apis
 abstract class StreamApi {
+  /// getter for [BatchApi]
   BatchApi get batch;
 
+  /// getter for [ReactionsApi]
   ReactionsApi get reactions;
 
+  /// getter for [UsersApi]
   UsersApi get users;
 
+  /// getter for [CollectionsApi]
   CollectionsApi get collections;
 
+  /// getter for [FeedApi]
   FeedApi get feed;
 
+  /// getter for [FilesApi]
   FilesApi get files;
 
+  /// getter for [ImagesApi]
   ImagesApi get images;
 
+  /// retrieve for [OpenGraphData]
   Future<OpenGraphData> openGraph(Token token, String targetUrl);
 }

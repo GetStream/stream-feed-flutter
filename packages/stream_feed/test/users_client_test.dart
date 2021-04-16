@@ -7,11 +7,10 @@ import 'package:test/test.dart';
 
 import 'mock.dart';
 
-main() {
+void main() {
   group('Users Client', () {
     final api = MockUsersApi();
 
-    const secret = 'secret';
     const token = Token('dummyToken');
     final client = UsersClient(api, userToken: token);
     test('add', () async {

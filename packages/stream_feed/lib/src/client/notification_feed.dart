@@ -11,10 +11,30 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 
 import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
-
 import 'package:stream_feed_dart/src/client/feed.dart' show FeedSubscriber;
 
+/// Notification Feed Groups extend the "Aggregated Feed Group" concept
+/// with additional features that make them well suited to notification systems:
+///
+/// Notification Feeds contain Activity Groups,
+/// each with a seen and read status field.
+///
+///  These fields can be updated to reflect
+/// how a user has interacted with a given notification.
+///
+/// When retrieved, the Feed includes a real-time count of
+/// the total number of unseen and unread Activity Groups (notifications).
+///
+/// For example, take the notification system on Facebook.
+///
+/// If you click the notification icon, all notifications get marked as seen.
+///
+///  However, an individual notification only gets marked as read
+/// when you click on it.
+///
+/// You can create new Notification Feed Groups in the dashboard.
 class NotificationFeed extends AggregatedFeed {
+  ///Initialize a [NotificationFeed] object
   NotificationFeed(
     FeedId feedId,
     FeedApi feed, {
@@ -28,7 +48,16 @@ class NotificationFeed extends AggregatedFeed {
           secret: secret,
           subscriber: subscriber,
         );
-
+  
+  /// Retrieve feed of type notifications
+  /// # Example
+  /// Mark all activities in the feed as seen
+  /// ```dart
+  /// final notifications = client.notificationFeed('notifications', '1');
+  /// var activityGroups = await notifications.getActivities(
+  ///   marker: ActivityMarker().allSeen(),
+  /// );
+  /// ```
   @override
   Future<List<NotificationGroup<Activity>>> getActivities({
     int? limit,
@@ -52,6 +81,7 @@ class NotificationFeed extends AggregatedFeed {
     return data;
   }
 
+  /// Retrieve activities with reaction enrichment
   @override
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
