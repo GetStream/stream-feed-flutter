@@ -47,7 +47,7 @@ void main() {
       expect(
           activities,
           rawActivities
-              .map((e) => Group.fromJson(e!,
+              .map((e) => Group.fromJson(e,
                   (json) => Activity.fromJson(json as Map<String, dynamic>?)))
               .toList(growable: false));
       verify(() => api.getActivities(token, feedId, options)).called(1);
@@ -88,7 +88,7 @@ void main() {
           activities,
           rawActivities
               .map((e) => Group.fromJson(
-                  e!,
+                  e,
                   (json) =>
                       EnrichedActivity.fromJson(json as Map<String, dynamic>?)))
               .toList(growable: false));
