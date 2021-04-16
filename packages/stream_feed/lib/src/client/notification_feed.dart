@@ -48,7 +48,7 @@ class NotificationFeed extends AggregatedFeed {
           secret: secret,
           subscriber: subscriber,
         );
-  
+
   /// Retrieve feed of type notifications
   /// # Example
   /// Mark all activities in the feed as seen
