@@ -49,9 +49,11 @@ void main() {
 
     test('unfollow', () async {
       final flatFeed = FlatFeed(feedId, api, userToken: token);
+      // ignore: invalid_use_of_protected_member
       when(() => api.unfollow(token, feedId, flatFeed.feedId, true))
           .thenAnswer((_) async => dummyResponse);
       await client.unfollow(flatFeed, keepHistory: true);
+      // ignore: invalid_use_of_protected_member
       verify(() => api.unfollow(token, feedId, flatFeed.feedId, true))
           .called(1);
     });
