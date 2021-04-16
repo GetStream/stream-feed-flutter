@@ -1,5 +1,6 @@
 import 'package:stream_feed_dart/src/core/api/files_api.dart';
 import 'package:stream_feed_dart/src/core/api/images_api.dart';
+import 'package:stream_feed_dart/src/core/api/personalization_api.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
@@ -43,6 +44,9 @@ class StreamApiImpl implements StreamApi {
 
   @override
   ImagesApi get images => ImagesApi(_client);
+
+  @override
+  PersonalizationApi get personalization => PersonalizationApi(_client);
 
   @override
   Future<OpenGraphData> openGraph(Token token, String targetUrl) async {
