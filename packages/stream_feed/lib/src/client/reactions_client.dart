@@ -5,19 +5,26 @@ import 'package:stream_feed_dart/src/core/models/paginated.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-/// Manage api calls for all things related to reactions
-/// The ReactionsClientImpl object contains convenient functions
-/// such add, delete, get, update ... reactions
+/// Reactions are a special kind of data that can be used
+/// to capture user interaction with specific activities.
+///
+/// Common examples of reactions are likes, comments, and upvotes.
+///
+/// Reactions are automatically returned to feeds' activities at read time
+/// when the reactions parameters are used.
 class ReactionsClient {
   ///Initialize a reaction client
-  const ReactionsClient(this.reactions, {this.userToken, this.secret})
+  ReactionsClient(this._reactions, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         );
+
+  ///User JWT Token
   final Token? userToken;
 
-  final ReactionsApi reactions;
+  ///The reactions client
+  final ReactionsApi _reactions;
 
   /// Your API secret. You can get it in your Stream Dashboard [here](https://dashboard.getstream.io/dashboard/v2/)
   final String? secret;
@@ -65,7 +72,7 @@ class ReactionsClient {
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
-    return reactions.add(token, reaction);
+    return _reactions.add(token, reaction);
   }
 
   /// Adds a like to the previously created comment
@@ -96,7 +103,7 @@ class ReactionsClient {
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
-    return reactions.add(token, reaction);
+    return _reactions.add(token, reaction);
   }
 
   /// Delete reaction
@@ -113,7 +120,7 @@ class ReactionsClient {
   Future<void> delete(String id) {
     final token = userToken ??
         TokenHelper.buildReactionToken(secret!, TokenAction.delete);
-    return reactions.delete(token, id);
+    return _reactions.delete(token, id);
   }
 
   /// Get reaction
@@ -121,9 +128,22 @@ class ReactionsClient {
   Future<Reaction> get(String id) {
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
-    return reactions.get(token, id);
+    return _reactions.get(token, id);
   }
 
+  ///Reactions can be updated by providing the reaction ID parameter.
+  ///
+  ///Changes to reactions are propagated to all notified feeds;
+  ///
+  ///if the target_feeds list is updated,
+  ///notifications will be added and removed accordingly.
+  ///# Examples
+  ///```dart
+  /// await client.reactions.update(
+  ///   reaction.id,
+  ///   data: {'text': 'love it!'},
+  /// );
+  ///```
   Future<void> update(
     String? reactionId, {
     Map<String, Object>? data,
@@ -136,9 +156,26 @@ class ReactionsClient {
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
-    return reactions.update(token, reaction);
+    return _reactions.update(token, reaction);
   }
 
+  /// You can read reactions and filter them
+  /// based on their user_id or activity_id values.
+  /// Further filtering can be done
+  /// with the kind parameter (e.g. retrieve all likes by one user,
+  ///  retrieve all comments for one activity, etc.).
+  ///
+  /// Reactions are returned in descending order (newest to oldest) by default
+  /// and when using id_lt[e] , and in ascending order (oldest to newest)
+  /// when using id_gt[e].
+  /// # Examples
+  /// - retrieve all kind of reactions for an activity
+  /// ```dart
+  /// var reactions = await client.reactions.filter(
+  ///   LookupAttribute.activityId,
+  ///   'ed2837a6-0a3b-4679-adc1-778a1704852d',
+  /// );
+  /// ```
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -148,11 +185,12 @@ class ReactionsClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
-    return reactions.filter(token, lookupAttr, lookupValue,
+    return _reactions.filter(token, lookupAttr, lookupValue,
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
 
   //Server side functions
+  ///paginated reactions and filter them
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -162,7 +200,7 @@ class ReactionsClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
-    return reactions.paginatedFilter(token, lookupAttr, lookupValue,
+    return _reactions.paginatedFilter(token, lookupAttr, lookupValue,
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
 }

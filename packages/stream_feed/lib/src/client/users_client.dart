@@ -3,13 +3,21 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/user.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
+/// Stream allows you to store user information
+/// and embed them inside activities or use them for personalization.
+///
+/// When stored in activities, users are automatically enriched by Stream.
 class UsersClient {
-  ///Initialize a user session object
-  const UsersClient(this.users, {this.userToken, this.secret});
+  ///Initialize a [UsersClient] session object
+  const UsersClient(this._users, {this.userToken, this.secret});
 
   ///User JWT token
   final Token? userToken;
-  final UsersApi users;
+
+  ///The users client
+  final UsersApi _users;
+
+  /// You API secret
   final String? secret;
 
   /// Create a new user in stream
@@ -31,7 +39,7 @@ class UsersClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
-    return users.add(token, id, data, getOrCreate ?? false);
+    return _users.add(token, id, data, getOrCreate ?? false);
   }
 
   /// Delete the user
@@ -43,7 +51,7 @@ class UsersClient {
   Future<void> delete(String id) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
-    return users.delete(token, id);
+    return _users.delete(token, id);
   }
 
   /// Get the user data
@@ -58,11 +66,11 @@ class UsersClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
-    return users.get(token, id, withFollowCounts ?? true);
+    return _users.get(token, id, withFollowCounts ?? true);
   }
 
   /// Update the user
-  /// Usage:
+  /// # Usage:
   /// ```dart
   ///   await users.update('123', {
   ///    'name': 'Jane Doe',
@@ -74,6 +82,6 @@ class UsersClient {
   Future<User> update(String id, Map<String, Object> data) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
-    return users.update(token, id, data);
+    return _users.update(token, id, data);
   }
 }

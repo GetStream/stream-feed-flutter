@@ -1,7 +1,16 @@
+/// Location of the cluster
+/// the closest to your user it is the less latency they'll have
 enum Location {
+  /// us East cluster
   usEast,
+
+  /// us West cluster
   euWest,
+
+  /// singapore cluster
   singapore,
+
+  /// tokyo cluster
   tokyo,
 }
 

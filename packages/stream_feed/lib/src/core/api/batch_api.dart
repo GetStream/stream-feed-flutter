@@ -11,15 +11,17 @@ import 'package:stream_feed_dart/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
+/// The http layer api for for anything related to Batch operations
 class BatchApi {
-  const BatchApi(this.client);
+  /// [CollectionsApi] constructor
+  const BatchApi(this._client);
 
-  final StreamHttpClient client;
+  final StreamHttpClient _client;
 
   Future<Response> addToMany(
       Token token, Activity activity, Iterable<FeedId> feedIds) async {
     checkArgument(feedIds.isNotEmpty, 'No feeds to add to');
-    return client.post(
+    return _client.post(
       Routes.addToManyUrl,
       headers: {'Authorization': '$token'},
       data: json.encode({
@@ -35,7 +37,7 @@ class BatchApi {
         activityCopyLimit >= 0, 'Activity copy limit must be non negative');
 
     checkArgument(follows.isNotEmpty, 'No feeds to follow');
-    return client.post(
+    return _client.post(
       Routes.followManyUrl,
       headers: {'Authorization': '$token'},
       queryParameters: {'activity_copy_limit': activityCopyLimit},
@@ -46,7 +48,7 @@ class BatchApi {
   Future<Response> unfollowMany(
       Token token, Iterable<UnFollow> unfollows) async {
     checkArgument(unfollows.isNotEmpty, 'No feeds to unfollow');
-    return client.post(
+    return _client.post(
       Routes.unfollowManyUrl,
       headers: {'Authorization': '$token'},
       data: unfollows,
@@ -56,7 +58,7 @@ class BatchApi {
   Future<List<Activity>> getActivitiesById(
       Token token, Iterable<String> ids) async {
     checkArgument(ids.isNotEmpty, 'No activities to get');
-    final result = await client.get<Map>(
+    final result = await _client.get<Map>(
       Routes.activitesUrl,
       headers: {'Authorization': '$token'},
       queryParameters: {'ids': ids.join(',')},
@@ -70,7 +72,7 @@ class BatchApi {
   Future<List<Activity>> getActivitiesByForeignId(
       Token token, Iterable<ForeignIdTimePair> pairs) async {
     checkArgument(pairs.isNotEmpty, 'No activities to get');
-    final result = await client.get(
+    final result = await _client.get(
       Routes.activitesUrl,
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -88,7 +90,7 @@ class BatchApi {
   Future<List<EnrichedActivity>> getEnrichedActivitiesById(
       Token token, Iterable<String> ids) async {
     checkArgument(ids.isNotEmpty, 'No activities to get');
-    final result = await client.get(
+    final result = await _client.get(
       Routes.enrichedActivitiesUrl,
       headers: {'Authorization': '$token'},
       queryParameters: {'ids': ids.join(',')},
@@ -102,7 +104,7 @@ class BatchApi {
   Future<List<EnrichedActivity>> getEnrichedActivitiesByForeignId(
       Token token, Iterable<ForeignIdTimePair> pairs) async {
     checkArgument(pairs.isNotEmpty, 'No activities to get');
-    final result = await client.get(
+    final result = await _client.get(
       Routes.enrichedActivitiesUrl,
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -120,7 +122,7 @@ class BatchApi {
   Future<Response> updateActivities(
       Token token, Iterable<Activity> activities) async {
     checkArgument(activities.isNotEmpty, 'No activities to update');
-    return client.post(
+    return _client.post(
       Routes.activitesUrl,
       headers: {'Authorization': '$token'},
       data: {'activities': activities},

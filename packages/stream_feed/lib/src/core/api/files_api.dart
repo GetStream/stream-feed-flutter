@@ -3,14 +3,16 @@ import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
-//TODO: stream_feed_dart/src/core/core.dart
+/// The http layer api for CRUD operations on Files
 class FilesApi {
-  const FilesApi(this.client);
+  /// [FilesApi] constructor
+  const FilesApi(this._client);
 
-  final StreamHttpClient client;
+  final StreamHttpClient _client;
 
+  /// Upload a File instance or a readable stream of data
   Future<String?> upload(Token token, MultipartFile file) async {
-    final result = await client.postFile<Map>(
+    final result = await _client.postFile<Map>(
       Routes.filesUrl,
       file,
       headers: {'Authorization': '$token'},
@@ -18,7 +20,8 @@ class FilesApi {
     return result.data!['file'];
   }
 
-  Future<Response> delete(Token token, String targetUrl) => client.delete(
+  /// Delete a file using the url returned by the APIs
+  Future<Response> delete(Token token, String targetUrl) => _client.delete(
         Routes.filesUrl,
         headers: {'Authorization': '$token'},
         queryParameters: {'url': targetUrl},

@@ -1,7 +1,15 @@
+/// The type of resize
 enum ResizeType {
+  /// resize by clipping the image
   clip,
+
+  /// resize by cropping the image
   crop,
+
+  /// resize by scaling the image
   scale,
+
+  /// resize by filling the image
   fill,
 }
 
@@ -14,9 +22,9 @@ extension _ResizeX on ResizeType {
       }[this]!;
 }
 
-///
+/// Resize an image based on supplied [_width],[_height] and eventually [_type]
 class Resize {
-  ///
+  /// [Resize] constructor
   const Resize(
     this._width,
     this._height, {
@@ -29,8 +37,8 @@ class Resize {
   final int _height;
   final ResizeType _type;
 
-  ///
-  Map<String, Object> get params => <String, Object>{
+  /// Serialize params
+  Map<String, Object?> get params => <String, Object?>{
         'resize': _type.name,
         'w': _width,
         'h': _height,

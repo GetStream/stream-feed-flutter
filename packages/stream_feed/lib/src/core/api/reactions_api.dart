@@ -8,11 +8,14 @@ import 'package:stream_feed_dart/src/core/models/reaction.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
+/// The http layer api for CRUD operations on Reactions
 class ReactionsApi {
-  const ReactionsApi(this.client);
+  /// [ReactionsApi] constructor
+  const ReactionsApi(this._client);
 
-  final StreamHttpClient client;
+  final StreamHttpClient _client;
 
+  ///Add reaction
   Future<Reaction> add(Token token, Reaction reaction) async {
     checkArgument(reaction.activityId != null || reaction.parent != null,
         'Reaction has to either have an activity ID or parent');
@@ -28,7 +31,7 @@ class ReactionsApi {
     }
     checkNotNull(reaction.kind, "Reaction kind can't be null");
     checkArgument(reaction.kind!.isNotEmpty, "Reaction kind can't be empty");
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.buildReactionsUrl(),
       headers: {'Authorization': '$token'},
       data: reaction,
@@ -36,23 +39,33 @@ class ReactionsApi {
     return Reaction.fromJson(result.data as Map<String, dynamic>);
   }
 
+  /// Get reaction
   Future<Reaction> get(Token token, String id) async {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
-    final result = await client.get<Map>(
+    final result = await _client.get<Map>(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
     return Reaction.fromJson(result.data as Map<String, dynamic>);
   }
 
+  /// Delete reaction
   Future<Response> delete(Token token, String id) async {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
-    return client.delete(
+    return _client.delete(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
   }
 
+  ///read reactions and filter them
+  /// Parameters:
+  /// - [lookupAttr]: name of the reaction attribute to paginate on.
+  /// Can be activity_id, reaction_id or user_id.
+  /// - [lookupValue]: value to use
+  /// depending if paginating reactions for an activity,
+  /// from a user or reactions of a reaction.
+  /// - [kind]: type of reaction( e.g.: like).
   Future<List<Reaction>> filter(
     Token token,
     LookupAttribute lookupAttr,
@@ -62,7 +75,7 @@ class ReactionsApi {
     String kind,
   ) async {
     checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
-    final result = await client.get<Map>(
+    final result = await _client.get<Map>(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -77,6 +90,7 @@ class ReactionsApi {
     return data;
   }
 
+  ///paginated reactions and filter them
   Future<PaginatedReactions> paginatedFilter(
     Token token,
     LookupAttribute lookupAttr,
@@ -87,7 +101,7 @@ class ReactionsApi {
   ) async {
     checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
 
-    final result = await client.get(
+    final result = await _client.get(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -99,16 +113,18 @@ class ReactionsApi {
     return PaginatedReactions.fromJson(result.data);
   }
 
+  /// Next reation pagination returned by [PaginatedReactions].next
   Future<PaginatedReactions> nextPaginatedFilter(
       Token token, String next) async {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
-    final result = await client.get(
+    final result = await _client.get(
       next,
       headers: {'Authorization': '$token'},
     );
     return PaginatedReactions.fromJson(result.data);
   }
 
+  /// update a reaction
   Future<Response> update(Token token, Reaction updatedReaction) async {
     checkArgument(updatedReaction.id!.isNotEmpty, "Reaction id can't be empty");
     final targetFeedIds = updatedReaction.targetFeeds!
@@ -116,7 +132,7 @@ class ReactionsApi {
         .toList(growable: false);
     final reactionId = updatedReaction.id;
     final data = updatedReaction.data;
-    return client.put(
+    return _client.put(
       Routes.buildReactionsUrl('$reactionId/'),
       headers: {'Authorization': '$token'},
       data: {

@@ -9,14 +9,16 @@ import 'package:stream_feed_dart/src/core/location.dart';
 
 part 'stream_http_client_options.dart';
 
-///
+/// This is where we configure the base url, headers,
+///  query parameters and convenient methods for http verbs with error parsing.
 class StreamHttpClient {
-  ///
+  /// [StreamHttpClient] constructor
   StreamHttpClient(
     this.apiKey, {
+    Dio? dio,
     StreamHttpClientOptions? options,
   })  : options = options ?? const StreamHttpClientOptions(),
-        httpClient = Dio() {
+        httpClient = dio ?? Dio() {
     httpClient
       ..options.receiveTimeout = this.options.receiveTimeout.inMilliseconds
       ..options.connectTimeout = this.options.connectTimeout.inMilliseconds
@@ -36,6 +38,7 @@ class StreamHttpClient {
 
   /// Your project Stream Chat api key.
   /// Find your API keys here https://getstream.io/dashboard/
+  /// The API key, it can be safely shared with untrusted entities
   final String apiKey;
 
   /// Your project Stream Feed clientOptions.
@@ -173,7 +176,8 @@ class StreamHttpClient {
     try {
       final formData = FormData.fromMap({'file': file});
       final response = await post<T>(
-        enrichUrl(path, serviceName),
+        path,
+        serviceName: serviceName,
         data: formData,
         queryParameters: queryParameters,
         headers: headers,

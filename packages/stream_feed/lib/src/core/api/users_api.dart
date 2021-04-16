@@ -4,11 +4,14 @@ import 'package:stream_feed_dart/src/core/models/user.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
+/// The http layer api for CRUD operation on Users
 class UsersApi {
-  const UsersApi(this.client);
+  /// [UsersApi] constructor
+  const UsersApi(this._client);
 
-  final StreamHttpClient client;
+  final StreamHttpClient _client;
 
+  /// Create a new user
   Future<User> add(
     Token token,
     String id,
@@ -17,7 +20,7 @@ class UsersApi {
   ]) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final user = User(id: id, data: data);
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.buildUsersUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {'get_or_create': getOrCreate},
@@ -26,10 +29,11 @@ class UsersApi {
     return User.fromJson(result.data as Map<String, dynamic>);
   }
 
+  /// Get the user data
   Future<User> get(Token token, String id,
       [bool withFollowCounts = true]) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
-    final result = await client.get(
+    final result = await _client.get(
       Routes.buildUsersUrl('$id/'),
       headers: {'Authorization': '$token'},
       queryParameters: {'with_follow_counts': withFollowCounts},
@@ -37,10 +41,11 @@ class UsersApi {
     return User.fromJson(result.data);
   }
 
+  ///Update the user
   Future<User> update(Token token, String id, Map<String, Object> data) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final updatedUser = User(id: id, data: data);
-    final result = await client.put(
+    final result = await _client.put(
       Routes.buildUsersUrl('$id/'),
       headers: {'Authorization': '$token'},
       data: updatedUser,
@@ -48,9 +53,10 @@ class UsersApi {
     return User.fromJson(result.data);
   }
 
+  ///Delete the user
   Future<void> delete(Token token, String id) {
     checkArgument(id.isNotEmpty, 'Missing user ID');
-    return client.delete(
+    return _client.delete(
       Routes.buildUsersUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
