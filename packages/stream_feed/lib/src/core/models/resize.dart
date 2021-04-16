@@ -14,12 +14,12 @@ enum ResizeType {
 }
 
 extension _ResizeX on ResizeType {
-  String? get name => {
+  String get name => {
         ResizeType.clip: 'clip',
         ResizeType.crop: 'crop',
         ResizeType.scale: 'scale',
         ResizeType.fill: 'fill',
-      }[this];
+      }[this]!;
 }
 
 /// Resize an image based on supplied [_width],[_height] and eventually [_type]
