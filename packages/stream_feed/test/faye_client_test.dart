@@ -1,27 +1,8 @@
-import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_dart/src/client/stream_client.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/realtime_message.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 import 'package:test/test.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-
-class Functions {
-  WebSocketChannel? connectFunc(
-    String url, {
-    Iterable<String>? protocols,
-    Duration? connectionTimeout,
-  }) =>
-      null;
-
-// void handleFunc(Event event) => null;
-}
-
-class MockFunctions extends Mock implements Functions {}
-
-class MockWSChannel extends Mock implements WebSocketChannel {}
-
-class MockWSSink extends Mock implements WebSocketSink {}
 
 void main() async {
   test('FayeClient', () async {
