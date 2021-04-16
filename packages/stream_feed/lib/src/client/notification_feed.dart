@@ -15,7 +15,6 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 import 'package:stream_feed_dart/src/client/feed.dart' show FeedSubscriber;
 
 class NotificationFeed extends AggregatedFeed {
-
   NotificationFeed(
     FeedId feedId,
     FeedApi feed, {

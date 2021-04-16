@@ -14,7 +14,6 @@ import 'package:stream_feed_dart/src/client/feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
 class AggregatedFeed extends Feed {
-  
   AggregatedFeed(
     FeedId feedId,
     FeedApi feed, {
