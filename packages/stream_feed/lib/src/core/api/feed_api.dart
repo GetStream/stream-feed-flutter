@@ -12,14 +12,14 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 class FeedApi {
   // TODO: uppercase API?
 
-  const FeedApi(this.client);
+  const FeedApi(this._client);
 
-  final StreamHttpClient client;
+  final StreamHttpClient _client;
 
   Future<List<Activity>> addActivities(
       Token token, FeedId feed, Iterable<Activity> activities) async {
     checkArgument(activities.isNotEmpty, 'No activities to add');
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.buildFeedUrl(feed),
       headers: {'Authorization': '$token'},
       data: {'activities': activities},
@@ -32,7 +32,7 @@ class FeedApi {
 
   Future<Activity> addActivity(
       Token token, FeedId feed, Activity activity) async {
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.buildFeedUrl(feed),
       headers: {'Authorization': '$token'},
       data: activity,
@@ -42,7 +42,7 @@ class FeedApi {
   }
 
   Future<Response> follow(Token token, Token targetToken, FeedId sourceFeed,
-      FeedId targetFeed, int activityCopyLimit) {
+      FeedId targetFeed, int activityCopyLimit) async {
     checkArgument(sourceFeed != targetFeed, "Feed can't follow itself");
     checkArgument(activityCopyLimit >= 0,
         'Activity copy limit should be a non-negative number');
@@ -50,7 +50,7 @@ class FeedApi {
       activityCopyLimit <= Default.maxActivityCopyLimit,
       'Activity copy limit should be less then ${Default.maxActivityCopyLimit}',
     );
-    return client.post(
+    return _client.post(
       Routes.buildFeedUrl(sourceFeed, 'following'),
       headers: {'Authorization': '$token'},
       data: {
@@ -63,15 +63,18 @@ class FeedApi {
 
   Future<Response<Map>> getActivities(
           Token token, FeedId feed, Map<String, Object?> options) =>
-      client.get<Map>(
+      _client.get<Map>(
         Routes.buildFeedUrl(feed),
         headers: {'Authorization': '$token'},
         queryParameters: options,
       );
 
   Future<Response> getEnrichedActivities(
-          Token token, FeedId feed, Map<String, Object?> options) =>
-      client.get(
+          //TODO; hmm I think we can type this
+          Token token,
+          FeedId feed,
+          Map<String, Object?> options) =>
+      _client.get(
         Routes.buildEnrichedFeedUrl(feed),
         headers: {'Authorization': '$token'},
         queryParameters: options,
@@ -82,7 +85,7 @@ class FeedApi {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
     checkArgument(offset >= 0, 'Offset should be a non-negative number');
 
-    final result = await client.get<Map>(
+    final result = await _client.get<Map>(
       Routes.buildFeedUrl(feed, 'following'),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -103,7 +106,7 @@ class FeedApi {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
     checkArgument(offset >= 0, 'Offset should be a non-negative number');
 
-    final result = await client.get(
+    final result = await _client.get(
       Routes.buildFeedUrl(feed, 'followers'),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -121,21 +124,21 @@ class FeedApi {
 
   Future<Response> removeActivityByForeignId(
           Token token, FeedId feed, String foreignId) =>
-      client.delete(
+      _client.delete(
         Routes.buildFeedUrl(feed, foreignId),
         headers: {'Authorization': '$token'},
         queryParameters: {'foreign_id': '1'},
       );
 
   Future<Response> removeActivityById(Token token, FeedId feed, String id) =>
-      client.delete(
+      _client.delete(
         Routes.buildFeedUrl(feed, id),
         headers: {'Authorization': '$token'},
       );
 
   Future<Response> unfollow(
           Token token, FeedId source, FeedId target, bool keepHistory) =>
-      client.delete(
+      _client.delete(
         Routes.buildFeedUrl(source, 'following/$target'),
         headers: {'Authorization': '$token'},
         queryParameters: {'keep_history': keepHistory},
@@ -151,7 +154,7 @@ class FeedApi {
       checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
           'No activity properties to set or unset');
     }
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.activityUpdateUrl,
       headers: {'Authorization': '$token'},
       data: {'changes': updates},
@@ -171,7 +174,7 @@ class FeedApi {
       checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
           'No activity properties to set or unset');
     }
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.activityUpdateUrl,
       headers: {'Authorization': '$token'},
       data: {'changes': updates},
@@ -184,7 +187,7 @@ class FeedApi {
 
   Future<Activity> updateActivityByForeignId(
       Token token, ActivityUpdate update) async {
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.activityUpdateUrl,
       headers: {'Authorization': '$token'},
       data: update,
@@ -199,7 +202,7 @@ class FeedApi {
     checkNotNull(update.time, 'Missing timestamp');
     checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
         'No activity properties to set or unset');
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.activityUpdateUrl,
       headers: {'Authorization': '$token'},
       data: update,
@@ -231,7 +234,7 @@ class FeedApi {
     checkArgument(modification || replacement,
         "Can't replace and modify activity to targets at the same time");
 
-    return client.post(
+    return _client.post(
       Routes.activityUpdateUrl,
       headers: {'Authorization': '$token'},
       data: {

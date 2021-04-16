@@ -53,7 +53,7 @@ class FlatFeed extends Feed {
     int? offset,
     Filter? filter,
     EnrichmentFlags? flags,
-    String? ranking,
+    String? ranking, //TODO: no way to parameterized marker?
   }) async {
     final options = {
       'limit': limit ?? Default.limit,

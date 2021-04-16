@@ -9,9 +9,9 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 class ReactionsApi {
-  const ReactionsApi(this.client);
+  const ReactionsApi(this._client);
 
-  final StreamHttpClient client;
+  final StreamHttpClient _client;
 
   Future<Reaction> add(Token token, Reaction reaction) async {
     checkArgument(reaction.activityId != null || reaction.parent != null,
@@ -28,7 +28,7 @@ class ReactionsApi {
     }
     checkNotNull(reaction.kind, "Reaction kind can't be null");
     checkArgument(reaction.kind!.isNotEmpty, "Reaction kind can't be empty");
-    final result = await client.post<Map>(
+    final result = await _client.post<Map>(
       Routes.buildReactionsUrl(),
       headers: {'Authorization': '$token'},
       data: reaction,
@@ -38,7 +38,7 @@ class ReactionsApi {
 
   Future<Reaction> get(Token token, String id) async {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
-    final result = await client.get<Map>(
+    final result = await _client.get<Map>(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
@@ -47,7 +47,7 @@ class ReactionsApi {
 
   Future<Response> delete(Token token, String id) async {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
-    return client.delete(
+    return _client.delete(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
@@ -62,7 +62,7 @@ class ReactionsApi {
     String kind,
   ) async {
     checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
-    final result = await client.get<Map>(
+    final result = await _client.get<Map>(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -87,7 +87,7 @@ class ReactionsApi {
   ) async {
     checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
 
-    final result = await client.get(
+    final result = await _client.get(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
       queryParameters: {
@@ -102,7 +102,7 @@ class ReactionsApi {
   Future<PaginatedReactions> nextPaginatedFilter(
       Token token, String next) async {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
-    final result = await client.get(
+    final result = await _client.get(
       next,
       headers: {'Authorization': '$token'},
     );
@@ -116,7 +116,7 @@ class ReactionsApi {
         .toList(growable: false);
     final reactionId = updatedReaction.id;
     final data = updatedReaction.data;
-    return client.put(
+    return _client.put(
       Routes.buildReactionsUrl('$reactionId/'),
       headers: {'Authorization': '$token'},
       data: {

@@ -12,12 +12,8 @@ main() {
 
     // create key store to verify the signature
     final keyStore = JsonWebKeyStore()
-      ..addKey(JsonWebKey.fromJson({
-        'kty': 'oct',
-        'k':
-            // ignore: lines_longer_than_80_chars
-            base64Urlencode(secret),
-      }));
+      ..addKey(
+          JsonWebKey.fromJson({'kty': 'oct', 'k': base64Urlencode(secret)}));
 
     test('buildFrontendToken', () async {
       final expiresAt = DateTime(2021, 03, 08);
@@ -39,6 +35,28 @@ main() {
       expect(payloadJson,
           {'exp': isA<int>(), 'iat': isA<int>(), 'user_id': 'userId'});
       expect(payloadJson['user_id'], 'userId');
+    });
+
+    test('buildFeedToken', () async {
+      final feedToken = TokenHelper.buildFeedToken(secret, TokenAction.any);
+      final jwt = JsonWebToken.unverified(feedToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = feedToken.token.split('.');
+      final header = tokenParts[0];
+      final payload = tokenParts[1];
+      final headerdStr = b64urlEncRfc7515Decode(header);
+      final headerJson = json.decode(headerdStr);
+      expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
+      final payloadStr = b64urlEncRfc7515Decode(payload);
+      final payloadJson = json.decode(payloadStr);
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'feed',
+        'feed_id': '*',
+      });
     });
 
     test('buildFollowToken', () async {
@@ -201,6 +219,50 @@ main() {
       });
     });
 
+    test('buildAnalytics', () async {
+      final filesToken = TokenHelper.buildAnalytics(secret, TokenAction.any);
+      final jwt = JsonWebToken.unverified(filesToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = filesToken.token.split('.');
+      final header = tokenParts[0];
+      final payload = tokenParts[1];
+      final headerdStr = b64urlEncRfc7515Decode(header);
+      final headerJson = json.decode(headerdStr);
+      expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
+      final payloadStr = b64urlEncRfc7515Decode(payload);
+      final payloadJson = json.decode(payloadStr);
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'analytics',
+        'feed_id': '*',
+      });
+    });
+
+    test('buildAnalyticsRedirect', () async {
+      final filesToken =
+          TokenHelper.buildAnalyticsRedirect(secret, TokenAction.any);
+      final jwt = JsonWebToken.unverified(filesToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = filesToken.token.split('.');
+      final header = tokenParts[0];
+      final payload = tokenParts[1];
+      final headerdStr = b64urlEncRfc7515Decode(header);
+      final headerJson = json.decode(headerdStr);
+      expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
+      final payloadStr = b64urlEncRfc7515Decode(payload);
+      final payloadJson = json.decode(payloadStr);
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'redirect_and_track',
+        'feed_id': '*',
+      });
+    });
     test('buildFilesToken', () async {
       final filesToken = TokenHelper.buildFilesToken(secret, TokenAction.any);
       final jwt = JsonWebToken.unverified(filesToken.token);

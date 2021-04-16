@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:meta/meta.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';
@@ -42,13 +44,17 @@ class Feed {
   final FeedSubscriber? subscriber;
 
   /// Your API secret
+  @protected
   final String? secret;
+  @protected
   final Token? userToken;
 
   /// The feed id
+  @protected
   final FeedId feedId;
 
   ///The stream client this feed is constructed from
+  @protected
   final FeedApi feed;
 
   /// Subscribes to any changes in the feed, return a [Subscription]
@@ -168,16 +174,16 @@ class Feed {
   /// ```
   ///
   /// API docs: [following](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart)
-  Future<void> follow(
-    FlatFeed flatFeet, {
+  Future<Response> follow(
+    FlatFeed flatFeed, {
     int? activityCopyLimit,
-  }) {
+  }) async {
     //TODO: should return API response
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.write, feedId);
     final targetToken = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.read, flatFeet.feedId);
-    return feed.follow(token, targetToken, feedId, flatFeet.feedId,
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, flatFeed.feedId);
+    return feed.follow(token, targetToken, feedId, flatFeed.feedId,
         activityCopyLimit ?? Default.activityCopyLimit);
   }
 
