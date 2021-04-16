@@ -18,16 +18,15 @@ import 'package:stream_feed_dart/src/client/stream_client.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-///
+// ignore: public_member_api_docs
 class StreamClientImpl implements StreamClient {
-  ///
-  StreamClientImpl(
-    String apiKey, {
-    this.secret,
-    this.userToken,
-    StreamApi? api,
-    StreamHttpClientOptions? options,
-  })  : assert(
+  /// [StreamClientImpl] constructor
+  StreamClientImpl(String apiKey,
+      {this.secret,
+      this.userToken,
+      StreamHttpClientOptions? options,
+      StreamApi? api})
+      : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),

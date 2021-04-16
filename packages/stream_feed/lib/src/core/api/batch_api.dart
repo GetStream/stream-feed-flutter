@@ -11,7 +11,9 @@ import 'package:stream_feed_dart/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
+/// The http layer api for for anything related to Batch operations
 class BatchApi {
+  /// [CollectionsApi] constructor
   const BatchApi(this._client);
 
   final StreamHttpClient _client;

@@ -3,13 +3,21 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/user.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
+/// Stream allows you to store user information
+/// and embed them inside activities or use them for personalization.
+///
+/// When stored in activities, users are automatically enriched by Stream.
 class UsersClient {
-  ///Initialize a user session object
-  UsersClient(this._users, {this.userToken, this.secret});
+  ///Initialize a [UsersClient] session object
+  const UsersClient(this._users, {this.userToken, this.secret});
 
   ///User JWT token
   final Token? userToken;
+
+  ///The users client
   final UsersApi _users;
+
+  /// You API secret
   final String? secret;
 
   /// Create a new user in stream
@@ -62,7 +70,7 @@ class UsersClient {
   }
 
   /// Update the user
-  /// Usage:
+  /// # Usage:
   /// ```dart
   ///   await users.update('123', {
   ///    'name': 'Jane Doe',

@@ -2,7 +2,7 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/serializer.dart';
 import 'package:test/test.dart';
 
-main() {
+void main() {
   group('extension', () {
     test('nullProtected', () {
       expect({null: 'nullKey'}.nullProtected, {});

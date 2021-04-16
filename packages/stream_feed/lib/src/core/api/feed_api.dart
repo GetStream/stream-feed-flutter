@@ -9,13 +9,15 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
+/// The http layer api for CRUD operations on Feeds
 class FeedApi {
   // TODO: uppercase API?
-
+  /// [FeedApi] constructor
   const FeedApi(this._client);
 
   final StreamHttpClient _client;
 
+  /// Adds the given activities to the feed
   Future<List<Activity>> addActivities(
       Token token, FeedId feed, Iterable<Activity> activities) async {
     checkArgument(activities.isNotEmpty, 'No activities to add');
@@ -30,6 +32,7 @@ class FeedApi {
     return data;
   }
 
+  /// Adds the given [Activity] to the feed
   Future<Activity> addActivity(
       Token token, FeedId feed, Activity activity) async {
     final result = await _client.post<Map>(
@@ -41,6 +44,7 @@ class FeedApi {
     return data;
   }
 
+  /// Follows the given target feed
   Future<Response> follow(Token token, Token targetToken, FeedId sourceFeed,
       FeedId targetFeed, int activityCopyLimit) async {
     checkArgument(sourceFeed != targetFeed, "Feed can't follow itself");
@@ -61,6 +65,7 @@ class FeedApi {
     );
   }
 
+  ///Retrieve activities
   Future<Response<Map>> getActivities(
           Token token, FeedId feed, Map<String, Object?> options) =>
       _client.get<Map>(
@@ -69,6 +74,7 @@ class FeedApi {
         queryParameters: options,
       );
 
+  ///Retrieve activities with reaction enrichment
   Future<Response> getEnrichedActivities(
           //TODO; hmm I think we can type this
           Token token,
@@ -80,6 +86,7 @@ class FeedApi {
         queryParameters: options,
       );
 
+  /// List which feeds this feed is following
   Future<List<Follow>> getFollowed(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
@@ -101,6 +108,7 @@ class FeedApi {
     return data;
   }
 
+  ///List the followers of this feed
   Future<List<Follow>> getFollowers(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
@@ -122,6 +130,7 @@ class FeedApi {
     return data;
   }
 
+  ///Remove an Activity by referencing its foreign_id
   Future<Response> removeActivityByForeignId(
           Token token, FeedId feed, String foreignId) =>
       _client.delete(
@@ -130,12 +139,14 @@ class FeedApi {
         queryParameters: {'foreign_id': '1'},
       );
 
+  ///Removes the activity by activityId
   Future<Response> removeActivityById(Token token, FeedId feed, String id) =>
       _client.delete(
         Routes.buildFeedUrl(feed, id),
         headers: {'Authorization': '$token'},
       );
 
+  ///Unfollow the given feed
   Future<Response> unfollow(
           Token token, FeedId source, FeedId target, bool keepHistory) =>
       _client.delete(
@@ -144,6 +155,8 @@ class FeedApi {
         queryParameters: {'keep_history': keepHistory},
       );
 
+  ///Update Activities By ForeignId
+  ///Note: the keys of set and unset must not collide.
   Future<List<Activity>> updateActivitiesByForeignId(
       Token token, Iterable<ActivityUpdate> updates) async {
     checkArgument(updates.isNotEmpty, 'No updates');
@@ -165,6 +178,8 @@ class FeedApi {
     return data;
   }
 
+  ///Update Activities By Id
+  ///Note: the keys of set and unset must not collide.
   Future<List<Activity>> updateActivitiesById(
       Token token, Iterable<ActivityUpdate> updates) async {
     checkArgument(updates.isNotEmpty, 'No updates');
@@ -185,6 +200,8 @@ class FeedApi {
     return data;
   }
 
+  ///Update [Activity.foreignId] By ForeignId
+  ///Note: the keys of set and unset must not collide.
   Future<Activity> updateActivityByForeignId(
       Token token, ActivityUpdate update) async {
     final result = await _client.post<Map>(
@@ -196,6 +213,8 @@ class FeedApi {
     return data;
   }
 
+  ///Partial update by activity ID
+  /// Note: the keys of set and unset must not collide.
   Future<Activity> updateActivityById(
       Token token, ActivityUpdate update) async {
     checkNotNull(update.foreignId, 'No activity to update');
@@ -211,6 +230,8 @@ class FeedApi {
     return data;
   }
 
+  ///Updates an activity's [Activity.to] fields
+  ///Note: the keys of set and unset must not collide.
   Future<Response> updateActivityToTargets(
     Token token,
     FeedId feed,

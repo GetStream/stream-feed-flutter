@@ -4,11 +4,14 @@ import 'package:stream_feed_dart/src/core/models/user.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
+/// The http layer api for CRUD operation on Users
 class UsersApi {
+  /// [UsersApi] constructor
   const UsersApi(this._client);
 
   final StreamHttpClient _client;
 
+  /// Create a new user
   Future<User> add(
     Token token,
     String id,
@@ -26,6 +29,7 @@ class UsersApi {
     return User.fromJson(result.data as Map<String, dynamic>);
   }
 
+  /// Get the user data
   Future<User> get(Token token, String id,
       [bool withFollowCounts = true]) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
@@ -37,6 +41,7 @@ class UsersApi {
     return User.fromJson(result.data);
   }
 
+  ///Update the user
   Future<User> update(Token token, String id, Map<String, Object> data) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final updatedUser = User(id: id, data: data);
@@ -48,6 +53,7 @@ class UsersApi {
     return User.fromJson(result.data);
   }
 
+  ///Delete the user
   Future<void> delete(Token token, String id) {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     return _client.delete(

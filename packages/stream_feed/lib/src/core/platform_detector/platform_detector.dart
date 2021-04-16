@@ -3,7 +3,28 @@ import 'package:stream_feed_dart/src/core/platform_detector/platform_detector_st
     if (dart.library.io) 'platform_detector_io.dart';
 
 /// Possible platforms
-enum PlatformType { android, ios, web, macOS, windows, linux, fuchsia }
+enum PlatformType {
+  ///android platform
+  android,
+
+  ///ios platform
+  ios,
+
+  ///web platform
+  web,
+
+  ///macOS platform
+  macOS,
+
+  ///windows platform
+  windows,
+
+  ///linux platform
+  linux,
+
+  ///android platform
+  fuchsia
+}
 
 /// Utility class that provides information on the current platform
 class CurrentPlatform {

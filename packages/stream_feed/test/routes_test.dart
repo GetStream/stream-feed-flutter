@@ -1,7 +1,7 @@
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 import 'package:test/test.dart';
 
-main() {
+void main() {
   group('Routes', () {
     test('activitesUrl', () {
       expect(Routes.activitesUrl, 'activities');

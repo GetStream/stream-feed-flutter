@@ -11,12 +11,13 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 
-/// Manage api calls for specific feeds
+/// Manage api calls for specific feeds.
+///
 /// The feed object contains convenient functions
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  Feed(this.feedId, this.feed, {this.userToken, this.secret})
+  const Feed(this.feedId, this.feed, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -25,6 +26,9 @@ class Feed {
   /// Your API secret
   @protected
   final String? secret;
+
+  /// Your user token obtain via the dashboard.
+  /// Required if you are using the sdk client side
   @protected
   final Token? userToken;
 

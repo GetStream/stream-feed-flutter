@@ -3,10 +3,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'activity_update.g.dart';
 
-///
+/// For updating only parts of one or more activities by changing,
+/// adding, or removing fields.
 @JsonSerializable()
 class ActivityUpdate extends Equatable {
-  ///
+  /// [ActivityUpdate] constructor
   const ActivityUpdate({
     required this.set,
     required this.unset,
@@ -15,7 +16,7 @@ class ActivityUpdate extends Equatable {
     this.time,
   });
 
-  ///
+  /// ActivityUpdate withId
   factory ActivityUpdate.withId(
     String id,
     Map<String, Object> set,
@@ -27,7 +28,7 @@ class ActivityUpdate extends Equatable {
         unset: unset,
       );
 
-  ///
+  /// ActivityUpdate withForeignId
   factory ActivityUpdate.withForeignId(
     String foreignId,
     DateTime time,
@@ -45,22 +46,26 @@ class ActivityUpdate extends Equatable {
   factory ActivityUpdate.fromJson(Map<String, dynamic> json) =>
       _$ActivityUpdateFromJson(json);
 
-  ///
+  /// The target activity ID.
   @JsonKey(includeIfNull: false)
   final String? id;
 
-  ///
+  /// The target activity foreign ID (matched with time).
   @JsonKey(includeIfNull: false)
   final String? foreignId;
 
-  ///
+  ///	The target activity timestamp (matched with foreign_id).
   @JsonKey(includeIfNull: false)
   final DateTime? time;
 
-  ///
+  /// An object containing the set operations,
+  /// where keys are the target fields and the values are the values to be set.
+  /// Maximum 25 top level keys.
   final Map<String, Object> set;
 
+  /// A list of strings containing the fields to be removed from the activity.
   ///
+  ///  Maximum 25 keys.
   final List<String> unset;
 
   /// Serialize to json
