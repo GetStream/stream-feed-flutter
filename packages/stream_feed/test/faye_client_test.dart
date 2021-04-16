@@ -23,7 +23,7 @@ class MockWSChannel extends Mock implements WebSocketChannel {}
 
 class MockWSSink extends Mock implements WebSocketSink {}
 
-main() async {
+void main() async {
   test('FayeClient', () async {
     const apiKey = 'ay57s8swfnan';
     const appId = '110925';

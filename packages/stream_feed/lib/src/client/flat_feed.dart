@@ -1,4 +1,3 @@
-import 'package:faye_dart/faye_dart.dart';
 import 'package:stream_feed_dart/src/core/api/feed_api.dart';
 import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/models/activity.dart';

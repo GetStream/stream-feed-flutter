@@ -20,7 +20,6 @@ class BatchOperationsClient {
   ///
   /// API docs: [batch-activity-add](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-activity-add)
   Future<void> addToMany(Activity activity, Iterable<FeedId> feedIds) {
-    //TODO: why is this void vs Future<APIResponse> compared to js client
     final token = TokenHelper.buildFeedToken(secret, TokenAction.write);
     return _batch.addToMany(token, activity, feedIds);
   }
