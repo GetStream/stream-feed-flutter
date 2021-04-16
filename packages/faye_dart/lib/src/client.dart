@@ -7,10 +7,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
-import '../src/ws/web_socket_channel_stub.dart'
-    if (dart.library.html) '../src/ws/web_socket_channel_html.dart'
-    if (dart.library.io) '../src/ws/web_socket_channel_io.dart' as platform;
-
 import 'extensible.dart';
 
 part 'subscription.dart';
@@ -45,7 +41,6 @@ class FayeClient with Extensible {
   final _channels = <String, Channel>{};
   late WebSocketChannel? _webSocketChannel;
 
-  int _attemptsToReconnect = 0;
   String? _clientId;
 
   late Advice _advice = Advice(
@@ -64,29 +59,8 @@ class FayeClient with Extensible {
   /// The current state of the client in the form of stream
   Stream<FayeClientState> get stateStream => _stateController.stream;
 
-//
-//     private lazy var handshakeTimer = RepeatingTimer(timeInterval: .seconds(30), queue: webSocket.callbackQueue) { [weak self] in
-//         self?.ping()
-//     }
-  Timer? _healthCheckTimer;
-
-//
-//     /// Create a Faye client with a given `URLRequest`.
-//     ///
-//     /// - Parameters:
-//     ///     - urlRequest: an `URLRequest` with `URL`, custom headers and a timeout parameter.
-//     ///     - callbackQueue: a DispatchQueue for requests.
-//     public init(urlRequest: URLRequest,
-//                 callbackQueue: DispatchQueue = DispatchQueue(label: "io.getstream.Faye", qos: .userInitiated)) {
-//         var request = urlRequest
-//         request.setValue("faye", forHTTPHeaderField: "Sec-WebSocket-Protocol")
-//         webSocket = WebSocket(request: request)
-//         webSocket.callbackQueue = callbackQueue
-//         webSocket.delegate = self
-//     }
   StreamSubscription? _websocketSubscription;
 
-  DateTime? _lastEventAt;
   Completer<void>? _connectionCompleter;
   Completer<void>? _disconnectionCompleter;
 
@@ -97,34 +71,6 @@ class FayeClient with Extensible {
     this.healthCheckInterval = 10,
     this.maxAttemptsToReconnect = 5,
   });
-
-  //    if (_writeClosed) return;
-  //     _pingTimer?.cancel();
-  //     _pingInterval = interval;
-  //
-  //     if (interval == null) return;
-  //
-  //     _pingTimer = new Timer(interval, () {
-  //       if (_writeClosed) return;
-  //       _consumer.add(new _WebSocketPing());
-  //       _pingTimer = new Timer(interval, () {
-  //         _closeTimer?.cancel();
-  //         // No pong received.
-  //         _close(WebSocketStatus.goingAway);
-  //         _closeCode = _outCloseCode;
-  //         _closeReason = _outCloseReason;
-  //         _controller.close();
-  //       });
-  //     });
-
-  //public func connect() {
-//         guard !isConnected else {
-//             return
-//         }
-//
-//         log("Connecting WS...")
-//         self.webSocket.connect()
-//     }
 
   void _handshake() {
     if (_advice.reconnect == Advice.none) return;
@@ -275,48 +221,21 @@ class FayeClient with Extensible {
     }
   }
 
-  void _startHealthCheck() {
-    //TODO: never used
-    _healthCheckTimer?.cancel();
-
-    final duration = Duration(seconds: healthCheckInterval);
-    _healthCheckTimer = Timer(duration, () {
-      ping();
-      _healthCheckTimer = Timer(duration, () {
-        _healthCheckTimer?.cancel();
-        // No pong received.
-        disconnect();
-      });
-    });
-  }
-
-  //             isWebSocketConnected = false
-  //             log()
-  //             handshakeTimer.suspend()
-  //             clientId = nil
-  //
-  //             log("❌ WS Disconnect: \(reason), \(code)")
-  //
-  //             applyAdvice()
   void _onConnectionError(Object error, [StackTrace? stacktrace]) {
     // _isWebSocketConnected = false;
-    // // TODO : log
-    // // TODO : Pause handshakeTimer
+    // TODO : log
+    // TODO : Pause handshakeTimer
     // _clientId = null;
-    // // TODO : Log disconnected;
+    // TODO : Log disconnected;
     // _handleAdvice();
   }
 
-  //             isWebSocketConnected = false
-  //             log("❌ WS Disconnect with error: \(error)")
-  //             //handleError(error)
   void _onConnectionClosed() {
     Future.delayed(const Duration(seconds: 6), () {
       print(_webSocketChannel?.closeCode);
     });
-    // _isWebSocketConnected = false;
-    // // TODO: LogConnectionClosed;
-    // // Checking if we manually closed the connection
+    // TODO: LogConnectionClosed;
+    // Checking if we manually closed the connection
     if (_webSocketChannel?.closeCode == status.goingAway) {
       return;
     }
