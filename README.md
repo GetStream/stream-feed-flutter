@@ -193,48 +193,31 @@ set = {
   },
 };
 unset = ['daily_likes', 'popularity'];
-// ...by ID
-client.activityPartialUpdate({
-  id: '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4',
-  set: set,
-  unset: unset,
-});
-// ...or by combination of foreign ID and time
-client.activityPartialUpdate({
-  foreignID: 'product:123',
-  time: '2016-11-10T13:20:00.000000',
-  set: set,
-  unset: unset,
-});
 
-// ⚠️ server-side only!
-// Create redirect urls
-impression = {
-  content_list: ['tweet:1', 'tweet:2', 'tweet:3'],
-  user_data: 'tommaso',
-  location: 'email',
-  feed_id: 'user:global',
-};
-engagement = {
-  content: 'tweet:2',
-  label: 'click',
-  position: 1,
-  user_data: 'tommaso',
-  location: 'email',
-  feed_id: 'user:global',
-};
-events = [impression, engagement];
-redirectUrl = client.createRedirectUrl('http://google.com', 'user_id', events);
+// ...by ID
+final update = ActivityUpdate.withId( '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4', set, unset);
+await client.updateActivityById(update);
+// ...or by combination of foreign ID and time
+const timestamp = DateTime.now();
+const foreignID= 'product:123';
+  final update2 = ActivityUpdate.withForeignId(
+    foreignID,
+    timestamp,
+    set,
+    unset,
+  );
+await client.updateActivityById(update2);
+
 
 // update the 'to' fields on an existing activity
-// client.feed("user", "ken").function (foreign_id, timestamp, new_targets, added_targets, removed_targets)
+// client.flatFeed("user", "ken").function (foreign_id, timestamp, new_targets, added_targets, removed_targets)
 // new_targets, added_targets, and removed_targets are all arrays of feed IDs
 // either provide only the `new_targets` parameter (will replace all targets on the activity),
 // OR provide the added_targets and removed_targets parameters
 // NOTE - the updateActivityToTargets method is not intended to be used in a browser environment.
-client.feed('user', 'ken').updateActivityToTargets('foreign_id:1234', timestamp, ['feed:1234']);
-client.feed('user', 'ken').updateActivityToTargets('foreign_id:1234', timestamp, null, ['feed:1234']);
-client.feed('user', 'ken').updateActivityToTargets('foreign_id:1234', timestamp, null, null, ['feed:1234']);
+await client.flatFeed('user', 'ken').updateActivityToTargets('foreign_id:1234', timestamp, ['feed:1234']);
+await client.flatFeed('user', 'ken').updateActivityToTargets('foreign_id:1234', timestamp, null, ['feed:1234']);
+await client.flatFeed('user', 'ken').updateActivityToTargets('foreign_id:1234', timestamp, null, null, ['feed:1234']);
 ```
 
 ### Realtime (Faye)
@@ -242,23 +225,21 @@ client.feed('user', 'ken').updateActivityToTargets('foreign_id:1234', timestamp,
 Stream uses [Faye](http://faye.jcoglan.com) for realtime notifications. Below is quick guide to subscribing to feed changes
 
 ```dart
-const { connect } = require('getstream');
 
 // ⚠️ userToken is generated server-side (see previous section)
-const client = connect('YOUR_API_KEY', userToken, 'APP_ID');
-const user1 = client.feed('user', '1');
+final client = connect('YOUR_API_KEY', token: userToken,appId: 'APP_ID');
+final user1 = client.flatFeed('user', '1');
 
 // subscribe to the changes
-const subscription = user1.subscribe(function (data) {
-  console.log(data);
-});
+final subscription =
+        await userFeed.subscribe((message) => print(message));
 // now whenever something changes to the feed user 1
 // the callback will be called
 
 // To cancel a subscription you can call cancel on the
 // object returned from a subscribe call.
 // This will remove the listener from this channel.
-subscription.cancel();
+await subscription.cancel();
 ```
 
 Docs are available on [GetStream.io](http://getstream.io/docs/?language=js).
