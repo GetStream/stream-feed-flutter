@@ -1,5 +1,5 @@
 name: faye_dart
-description: A new Flutter package.
+description: Faye is a publish/subscribe messaging protocol that is built on the Bayeux protocol, a messaging system utilized for transporting asynchronous messages over HTTP.
 version: 0.0.1
 author:
 homepage:
