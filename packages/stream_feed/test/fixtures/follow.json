@@ -1,4 +1,4 @@
 {
-  "feed_id": "feedId",
-  "target_id": "targetId"
+  "source": "feedId",
+  "target": "targetId"
 }
