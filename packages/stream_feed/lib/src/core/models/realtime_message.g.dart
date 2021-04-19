@@ -12,7 +12,7 @@ RealtimeMessage _$RealtimeMessageFromJson(Map json) {
     deleted:
         (json['deleted'] as List<dynamic>).map((e) => e as String).toList(),
     deletedForeignIds:
-        ForeignIdTimePair.fromList(json['deleted_foreign_ids'] as List?) ?? [],
+        ForeignIdTimePair.fromList(json['deleted_foreign_ids'] as List?),
     newActivities: (json['new'] as List<dynamic>)
         .map((e) => Activity.fromJson((e as Map?)?.map(
               (k, e) => MapEntry(k as String, e),

@@ -40,7 +40,6 @@ class RealtimeMessage extends Equatable {
   @JsonKey(
     toJson: ForeignIdTimePair.toList,
     fromJson: ForeignIdTimePair.fromList,
-    defaultValue: <ForeignIdTimePair>[],
   )
   final List<ForeignIdTimePair> deletedForeignIds;
 
