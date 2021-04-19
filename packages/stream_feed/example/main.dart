@@ -196,7 +196,7 @@ Future<void> main() async {
   // list followers
   final followers = await userFeed.getFollowers(limit: 10, offset: 0);
   for (final follow in followers) {
-    print('${follow.feedId} -> ${follow.targetId}');
+    print('${follow.source} -> ${follow.target}');
   }
 
   // Retrieve last 10 feeds followed by user_feed_1

@@ -56,6 +56,19 @@ void main() {
           .called(1);
     });
 
+    test('follows', () {
+      final follows = <Follow>[
+        const Follow('timeline:1', 'user:1'),
+        const Follow('timeline:1', 'user:2'),
+        const Follow('timeline:1', 'user:3'),
+      ];
+      expect(follows.map((e) => e.toJson()), [
+        {'source': 'timeline:1', 'target': 'user:1'},
+        {'source': 'timeline:1', 'target': 'user:2'},
+        {'source': 'timeline:1', 'target': 'user:3'}
+      ]);
+    });
+
     test('getFollowed', () async {
       const limit = 5;
       const offset = 0;

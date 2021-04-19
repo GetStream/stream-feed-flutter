@@ -7,20 +7,21 @@ part 'follow.g.dart';
 @JsonSerializable()
 class Follow extends Equatable {
   ///
-  const Follow(this.feedId, this.targetId);
+  const Follow(
+      this.source, this.target); //TODO: change this to source and target
 
   /// Create a new instance from a json
   factory Follow.fromJson(Map<String, dynamic> json) => _$FollowFromJson(json);
 
   /// The combination of feed slug and user id separated by a colon
   ///For example: flat:1
-  final String? feedId;
+  final String? source;
 
   /// the id of the feed you want to follow
-  final String? targetId;
+  final String? target;
 
   @override
-  List<Object?> get props => [feedId, targetId];
+  List<Object?> get props => [source, target];
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$FollowToJson(this);
@@ -30,8 +31,8 @@ class Follow extends Equatable {
 @JsonSerializable()
 class UnFollow extends Follow {
   ///
-  const UnFollow(String? feedId, String? targetId, this.keepHistory)
-      : super(feedId, targetId);
+  const UnFollow(String? source, String? target, this.keepHistory)
+      : super(source, target);
 
   /// Create a new instance from a json
   factory UnFollow.fromJson(Map<String, dynamic> json) =>
@@ -39,7 +40,7 @@ class UnFollow extends Follow {
 
   ///
   factory UnFollow.fromFollow(Follow follow, bool? keepHistory) =>
-      UnFollow(follow.feedId, follow.targetId, keepHistory);
+      UnFollow(follow.source, follow.target, keepHistory);
 
   /// when provided the activities from target feed
   /// will not be kept in the feed.

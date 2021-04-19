@@ -36,143 +36,153 @@ If you want to use the API client directly on your web/mobile app you need to ge
 #### Server-side token generation
 
 ```dart
-import { connect } from 'getstream';
-// or if you are on commonjs
-const { connect } = require('getstream');
 
 // Instantiate a new client (server side)
-const client = connect('YOUR_API_KEY', 'API_KEY_SECRET');
+  const apiKey = 'gp6e8sxxzud6';
+  const secret =
+      '7j7exnksc4nxy399fdxvjqyqsqdahax3nfgtp27pumpc7sfm9um688pzpxjpjbf2';
+
+  // Instantiate a new client (server side)
+  var client = StreamClient.connect(apiKey, secret: secret);
 // Optionally supply the app identifier and an options object specifying the data center to use and timeout for requests (15s)
-const client = connect('YOUR_API_KEY', 'API_KEY_SECRET', 'APP_ID', { location: 'us-east', timeout: 15000 });
+client = StreamClient.connect(apiKey,
+      secret: secret,
+      appId: 'yourapid',
+      options: StreamHttpClientOptions(
+          location: Location.usEast, connectTimeout: Duration(seconds: 15)));
+
 // Create a token for user with id "the-user-id"
-const userToken = client.frontendToken('the-user-id');
+  final userToken = client.frontendToken('the-user-id');
 ```
 
-> :warning: Client checks if it's running in a browser environment with a secret and throws an error for a possible security issue of exposing your secret. If you are running backend code in Google Cloud or you know what you're doing, you can specify `browser: false` in `options` to skip this check.
+> :warning: for security reasons, you should not expose your client side only if you use Dart serverside..
 
-```dart
-const client = connect('YOUR_API_KEY', 'API_KEY_SECRET', 'APP_ID', { browser: false });
-```
 
 #### Client API init
 
 ```dart
-import { connect } from 'getstream';
-// or if you are on commonjs
-const { connect } = require('getstream');
-// Instantiate new client with a user token
-const client = connect('apikey', userToken, 'appid');
+ //Instantiate new client with a user token
+var client = StreamClient.connect(apiKey, token: Token('userToken'));
 ```
 
 #### Examples
 
 ```dart
-// Instantiate a feed object server side
-user1 = client.feed('user', '1');
+ // Instantiate a feed object server side
+var user1 = client.flatFeed('user', '1');
 
 // Get activities from 5 to 10 (slow pagination)
-user1.get({ limit: 5, offset: 5 });
+final activities = user1.getActivities(limit: 5, offset: 5);
 // Filter on an id less than a given UUID
-user1.get({ limit: 5, id_lt: 'e561de8f-00f1-11e4-b400-0cc47a024be0' });
+final filtered_activities = user1.getActivities(
+      limit: 5,
+      filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0')
 
 // All API calls are performed asynchronous and return a Promise object
-user1
-  .get({ limit: 5, id_lt: 'e561de8f-00f1-11e4-b400-0cc47a024be0' })
-  .then(function (body) {
-    /* on success */
-  })
-  .catch(function (reason) {
-    /* on failure, reason.error contains an explanation */
-  });
+  user1
+      .getActivities(
+          limit: 5,
+          filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0'))
+      .then((value) => /* on success */
+          print(value))
+      .onError((error,
+              stackTrace) => /* on failure, reason.error contains an explanation */
+          print(error));
 
 // Create a new activity
-activity = { actor: 1, verb: 'tweet', object: 1, foreign_id: 'tweet:1' };
-user1.addActivity(activity);
+final activity = Activity( actor: '1', verb: 'tweet', object: '1', foreignId: 'tweet:1' );
+final added_activity = await user1.addActivity(activity);
 // Create a bit more complex activity
-activity = {
-  actor: 1,
-  verb: 'run',
-  object: 1,
-  foreign_id: 'run:1',
-  course: { name: 'Golden Gate park', distance: 10 },
-  participants: ['Thierry', 'Tommaso'],
-  started_at: new Date(),
-};
-user1.addActivity(activity);
+final complex_activity = Activity(
+    actor: '1',
+    verb: 'run',
+    object: '1',
+    foreignId: 'run:1',
+    extraData: {
+      'course': {'name': 'Golden Gate park', 'distance': 10},
+      'participants': ['Thierry', 'Tommaso'],
+      'started_at': DateTime.now().toIso8601String(),
+    },
+  );
+final added_complex_activity = user1.addActivity(complex_activity);
 
 // Remove an activity by its id
-user1.removeActivity('e561de8f-00f1-11e4-b400-0cc47a024be0');
+await user1.removeActivityById('e561de8f-00f1-11e4-b400-0cc47a024be0');
 // or remove by the foreign id
-user1.removeActivity({ foreignId: 'tweet:1' });
+await user1.removeActivityByForeignId('tweet:1');
 
 // mark a notification feed as read
-notification1 = client.feed('notification', '1');
-params = { mark_read: true };
-notification1.get(params);
+  await notification1.getActivities(
+    marker: ActivityMarker().allRead(),
+  );
+
 
 // mark a notification feed as seen
-params = { mark_seen: true };
-notification1.get(params);
+await notification1.getActivities(
+    marker: ActivityMarker().allSeen(),
+);
 
 // Follow another feed
-user1.follow('flat', '42');
+await user1.follow(client.flatFeed('flat', '42'));
 
 // Stop following another feed
-user1.unfollow('flat', '42');
+await user1.unfollow(client.flatFeed('flat', '42'));
 
 // Stop following another feed while keeping previously published activities
 // from that feed
-user1.unfollow('flat', '42', { keepHistory: true });
+await user1.unfollow(client.flatFeed('flat', '42'), keepHistory: true);
 
-// Follow another feed without copying the history
-user1.follow('flat', '42', { limit: 0 });
+  // Follow another feed without copying the history
+  await user1.follow(client.flatFeed('flat', '42'), activityCopyLimit: 0);
 
 // List followers, following
-user1.followers({ limit: '10', offset: '10' });
-user1.following({ limit: '10', offset: '0' });
+  await user1.getFollowers(limit: 10, offset: 10);
+  await user1.getFollowed(limit: 10, offset: 0);
 
-user1.follow('flat', '42');
+
+ await user1.follow(client.flatFeed('flat', '42'));
 
 // adding multiple activities
-activities = [
-  { actor: 1, verb: 'tweet', object: 1 },
-  { actor: 2, verb: 'tweet', object: 3 },
-];
-user1.addActivities(activities);
+  const activities = [
+    Activity(actor: '1', verb: 'tweet', object: '1'),
+    Activity(actor: '2', verb: 'tweet', object: '3'),
+  ];
+  await user1.addActivities(activities);
 
-// specifying additional feeds to push the activity to using the to param
+ // specifying additional feeds to push the activity to using the to param
 // especially useful for notification style feeds
-to = ['user:2', 'user:3'];
-activity = {
-  to: to,
-  actor: 1,
-  verb: 'tweet',
-  object: 1,
-  foreign_id: 'tweet:1',
-};
-user1.addActivity(activity);
+  final to = FeedId.fromIds(['user:2', 'user:3']);
+  final activityTo = Activity(
+    to: to,
+    actor: '1',
+    verb: 'tweet',
+    object: '1',
+    foreignId: 'tweet:1',
+  );
+  await user1.addActivity(activityTo);
+
 
 // adding one activity to multiple feeds
-feeds = ['flat:1', 'flat:2', 'flat:3', 'flat:4'];
-activity = {
-  actor: 'User:2',
-  verb: 'pin',
-  object: 'Place:42',
-  target: 'Board:1',
-};
+  final feeds = FeedId.fromIds(['flat:1', 'flat:2', 'flat:3', 'flat:4']);
+  final activityTarget = Activity(
+    actor: 'User:2',
+    verb: 'pin',
+    object: 'Place:42',
+    target: 'Board:1',
+  );
 
 // ⚠️ server-side only!
-client.addToMany(activity, feeds);
+  await client.batch.addToMany(activityTarget, feeds!);
 
-// Batch create follow relations (let flat:1 follow user:1, user:2 and user:3 feeds in one single request)
-follows = [
-  { source: 'flat:1', target: 'user:1' },
-  { source: 'flat:1', target: 'user:2' },
-  { source: 'flat:1', target: 'user:3' },
-];
+  // Batch create follow relations (let flat:1 follow user:1, user:2 and user:3 feeds in one single request)
+  const follows = [
+    Follow('flat:1', 'user:1'),
+    Follow('flat:1', 'user:2'),
+    Follow('flat:1', 'user:3'),
+  ];
 
 // ⚠️ server-side only!
-client.followMany(follows);
+  await client.batch.followMany(follows);
 
 // Updating parts of an activity
 set = {
