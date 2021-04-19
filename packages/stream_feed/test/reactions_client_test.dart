@@ -59,7 +59,7 @@ void main() {
       const reactionId = 'reactionId';
       const targetFeeds = <FeedId>[];
       const data = {'text': 'modified post'};
-      final updatedReaction = Reaction(
+      const updatedReaction = Reaction(
         id: reactionId,
         data: data,
         targetFeeds: targetFeeds,
@@ -114,7 +114,7 @@ void main() {
       const parentId = 'parentId';
       const targetFeeds = <FeedId>[];
       const data = {'text': 'awesome post!'};
-      final reaction = Reaction(
+      const reaction = Reaction(
         kind: kind,
         parent: parentId,
         userId: userId,
@@ -150,7 +150,7 @@ void main() {
           targetFeeds: targetFeeds,
         )
       ];
-      final duration = Duration(minutes: 2).toString();
+      final duration = const Duration(minutes: 2).toString();
       final paginatedReactions = PaginatedReactions(
           'next', reactions, const EnrichedActivity(), duration);
       when(() => api.paginatedFilter(

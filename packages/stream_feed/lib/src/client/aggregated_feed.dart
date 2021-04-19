@@ -19,9 +19,19 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// - 'Julie and 14 others liked your photo'
 class AggregatedFeed extends Feed {
   /// Initialize a [AggregatedFeed] object
-  const AggregatedFeed(FeedId feedId, FeedApi feed,
-      {Token? userToken, String? secret})
-      : super(feedId, feed, userToken: userToken, secret: secret);
+  AggregatedFeed(
+    FeedId feedId,
+    FeedApi feed, {
+    Token? userToken,
+    String? secret,
+    FeedSubscriber? subscriber,
+  }) : super(
+          feedId,
+          feed,
+          userToken: userToken,
+          secret: secret,
+          subscriber: subscriber,
+        );
 
   /// Retrieve activities of type Aggregated feed
   Future<List<Group<Activity>>> getActivities({
