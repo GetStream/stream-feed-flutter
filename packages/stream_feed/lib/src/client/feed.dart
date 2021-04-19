@@ -59,6 +59,7 @@ class Feed {
   final FeedApi feed;
 
   /// Subscribes to any changes in the feed, return a [Subscription]
+  @experimental
   Future<Subscription> subscribe(
     void Function(RealtimeMessage? message) callback,
   ) {
