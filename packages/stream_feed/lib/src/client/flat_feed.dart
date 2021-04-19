@@ -18,8 +18,19 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// You can create new feed groups based on the flat type in the dashboard.
 class FlatFeed extends Feed {
   /// Initialize a feed object
-  FlatFeed(FeedId feedId, FeedApi feed, {Token? userToken, String? secret})
-      : super(feedId, feed, userToken: userToken, secret: secret);
+  FlatFeed(
+    FeedId feedId,
+    FeedApi feed, {
+    Token? userToken,
+    String? secret,
+    FeedSubscriber? subscriber,
+  }) : super(
+          feedId,
+          feed,
+          userToken: userToken,
+          secret: secret,
+          subscriber: subscriber,
+        );
 
   ///Retrieve activities
   ///# Example:

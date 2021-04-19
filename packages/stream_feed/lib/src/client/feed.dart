@@ -6,22 +6,40 @@ import 'package:stream_feed_dart/src/core/models/activity.dart';
 import 'package:stream_feed_dart/src/core/models/activity_update.dart';
 import 'package:stream_feed_dart/src/core/models/feed_id.dart';
 import 'package:stream_feed_dart/src/core/models/follow.dart';
+import 'package:stream_feed_dart/src/core/models/realtime_message.dart';
 import 'package:stream_feed_dart/src/core/util/default.dart';
 
 import 'package:stream_feed_dart/src/client/flat_feed.dart';
+import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:faye_dart/faye_dart.dart';
 
-/// Manage api calls for specific feeds.
 ///
+typedef MessageDataCallback = void Function(Map<String, dynamic>? data);
+
+///
+typedef FeedSubscriber = Future<Subscription> Function(
+  Token token,
+  FeedId feedId,
+  MessageDataCallback callback,
+);
+
 /// The feed object contains convenient functions
 /// such add activity, remove activity etc
 class Feed {
   ///Initialize a feed object
-  const Feed(this.feedId, this.feed, {this.userToken, this.secret})
-      : assert(
+  Feed(
+    this.feedId,
+    this.feed, {
+    this.userToken,
+    this.secret,
+    this.subscriber,
+  }) : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         );
+
+  final FeedSubscriber? subscriber;
 
   /// Your API secret
   @protected
@@ -39,6 +57,23 @@ class Feed {
   ///The stream client this feed is constructed from
   @protected
   final FeedApi feed;
+
+  /// Subscribes to any changes in the feed, return a [Subscription]
+  Future<Subscription> subscribe(
+    void Function(RealtimeMessage? message) callback,
+  ) {
+    checkNotNull(
+      subscriber,
+      'A subscriber must me provided in order to start listening to feed',
+    );
+    final token = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
+
+    return subscriber!(token, feedId, (data) {
+      final realtimeMessage = RealtimeMessage.fromJson(data!);
+      callback(realtimeMessage);
+    });
+  }
 
   /// Adds the given [Activity] to the feed
   /// parameters:

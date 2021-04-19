@@ -9,6 +9,7 @@ import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/users_api.dart';
 import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class MockHttpClientAdapter extends Mock implements HttpClientAdapter {}
 
@@ -41,3 +42,20 @@ class MockUsersApi extends Mock implements UsersApi {}
 class MockFeedApi extends Mock implements FeedApi {}
 
 class MockApi extends Mock implements StreamApi {}
+
+class Functions {
+  WebSocketChannel? connectFunc(
+    String url, {
+    Iterable<String>? protocols,
+    Duration? connectionTimeout,
+  }) =>
+      null;
+
+// void handleFunc(Event event) => null;
+}
+
+class MockFunctions extends Mock implements Functions {}
+
+class MockWSChannel extends Mock implements WebSocketChannel {}
+
+class MockWSSink extends Mock implements WebSocketSink {}

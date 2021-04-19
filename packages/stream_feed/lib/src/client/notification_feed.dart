@@ -11,6 +11,7 @@ import 'package:stream_feed_dart/src/core/util/default.dart';
 
 import 'package:stream_feed_dart/src/client/aggregated_feed.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:stream_feed_dart/src/client/feed.dart' show FeedSubscriber;
 
 /// Notification Feed Groups extend the "Aggregated Feed Group" concept
 /// with additional features that make them well suited to notification systems:
@@ -34,9 +35,19 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 /// You can create new Notification Feed Groups in the dashboard.
 class NotificationFeed extends AggregatedFeed {
   ///Initialize a [NotificationFeed] object
-  const NotificationFeed(FeedId feedId, FeedApi feed,
-      {Token? userToken, String? secret})
-      : super(feedId, feed, userToken: userToken, secret: secret);
+  NotificationFeed(
+    FeedId feedId,
+    FeedApi feed, {
+    Token? userToken,
+    String? secret,
+    FeedSubscriber? subscriber,
+  }) : super(
+          feedId,
+          feed,
+          userToken: userToken,
+          secret: secret,
+          subscriber: subscriber,
+        );
 
   /// Retrieve feed of type notifications
   /// # Example

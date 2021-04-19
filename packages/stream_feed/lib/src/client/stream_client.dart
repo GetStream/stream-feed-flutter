@@ -40,12 +40,14 @@ abstract class StreamClient {
     String apiKey, {
     Token? token,
     String? secret,
+    String? appId,
     StreamHttpClientOptions? options,
   }) =>
       StreamClientImpl(
         apiKey,
         userToken: token,
         secret: secret,
+        appId: appId,
         options: options,
       );
 
