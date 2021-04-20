@@ -5,6 +5,7 @@
   <a href="https://codecov.io/gh/GetStream/stream-feed-flutter"><img src="https://codecov.io/gh/GetStream/stream-feed-flutter/branch/master/graph/badge.svg?token=ht6M92zRXx" alt="codecov"></a>
 </p>
 
+![dart activity feed](./images/githubhero.png)
 
 [stream-dart](https://github.com/GetStream/stream-feed-flutter) is the official Dart client for [Stream](https://getstream.io/activity-feeds/), a web service for building scalable newsfeeds and activity streams.
 
