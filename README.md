@@ -227,7 +227,7 @@ Stream uses [Faye](http://faye.jcoglan.com) for realtime notifications. Below is
 ```dart
 
 // ⚠️ userToken is generated server-side (see previous section)
-final client = connect('YOUR_API_KEY', token: userToken,appId: 'APP_ID');
+final client = StreamClient.connect('YOUR_API_KEY', token: userToken,appId: 'APP_ID');
 final user1 = client.flatFeed('user', '1');
 
 // subscribe to the changes
