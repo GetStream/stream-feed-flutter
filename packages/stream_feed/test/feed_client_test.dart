@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/client/feed.dart';
-import 'package:stream_feed_dart/src/client/flat_feed.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/src/client/feed.dart';
+import 'package:stream_feed/src/client/flat_feed.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';

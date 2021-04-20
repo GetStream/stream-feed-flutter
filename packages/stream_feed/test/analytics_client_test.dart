@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/core/models/event.dart';
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/src/core/models/event.dart';
+import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';

@@ -1,4 +1,4 @@
-import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/models/feed_id.dart';
 
 class Routes {
   static const _addToManyPath = 'feed/add_to_many';

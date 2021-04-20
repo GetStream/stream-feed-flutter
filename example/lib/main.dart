@@ -3,7 +3,7 @@ import 'package:example/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 import 'home.dart';
 

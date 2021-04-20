@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:stream_feed_dart/src/core/models/activity.dart';
-import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/feed_id.dart';
 
-import 'package:stream_feed_dart/src/core/models/foreign_id_time_pair.dart';
+import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
 
 part 'realtime_message.g.dart';
 

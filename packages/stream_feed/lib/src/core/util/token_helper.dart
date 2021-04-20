@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:jose/jose.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/feed_id.dart';
 
 /// Actions permissions
 enum TokenAction {

@@ -1,4 +1,4 @@
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 main() async {
   const apiKey = 'gp6e8sxxzud6';

@@ -1,7 +1,7 @@
-import 'package:stream_feed_dart/src/core/api/collections_api.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
-import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:stream_feed/src/core/api/collections_api.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/collection_entry.dart';
+import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Collections enable you to store information to Stream.
 ///

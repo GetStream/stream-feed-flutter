@@ -1,4 +1,4 @@
-import 'package:stream_feed_dart/src/core/exceptions.dart';
+import 'package:stream_feed/src/core/exceptions.dart';
 import 'package:test/test.dart';
 
 void main() {

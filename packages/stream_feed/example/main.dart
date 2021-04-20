@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 Future<void> main() async {
   const apiKey = 'gp6e8sxxzud6';

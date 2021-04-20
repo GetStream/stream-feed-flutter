@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:stream_feed_dart/src/core/models/activity.dart';
-import 'package:stream_feed_dart/src/core/models/group.dart';
-import 'package:stream_feed_dart/src/core/models/paginated.dart';
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/group.dart';
+import 'package:stream_feed/src/core/models/paginated.dart';
+import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
 import 'utils.dart';
