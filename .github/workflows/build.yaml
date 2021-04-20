@@ -39,8 +39,8 @@ jobs:
       #   run: melos exec --depends-on="build_runner" --no-flutter -- "dart run build_runner build --delete-conflicting-outputs"
       
       # Uncomment once we have cleaned all the lints
-      # - name: Analyze
-      #   run: melos exec --ignore="marvel" -- "flutter analyze"
+      - name: Analyze
+        run: melos run analyze
 
       - name: Run tests
         run: melos run test
