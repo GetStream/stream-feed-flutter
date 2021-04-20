@@ -47,3 +47,11 @@ jobs:
 
       - name: Post Codecov report
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+      - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
+        with:
+          path: packages/stream_feed/coverage/lcov.info
+          min_coverage: 82  
+      - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
+        with:
+          path: packages/faye_dart/coverage/lcov.info
+          min_coverage: 27
