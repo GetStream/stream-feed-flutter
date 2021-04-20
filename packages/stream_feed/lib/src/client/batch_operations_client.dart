@@ -10,7 +10,7 @@ import 'package:stream_feed_dart/src/core/util/token_helper.dart';
 class BatchOperationsClient {
   BatchOperationsClient(this._batch, {required this.secret});
   final String secret;
-  final BatchApi _batch;
+  final BatchAPI _batch;
 
   /// Add one activity to many feeds
   ///

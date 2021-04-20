@@ -13,7 +13,7 @@ import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 ///Umbrella interface for all of our http layer apis
 abstract class StreamApi {
   /// getter for [BatchApi]
-  BatchApi get batch;
+  BatchAPI get batch;
 
   /// getter for [ReactionsApi]
   ReactionsApi get reactions;

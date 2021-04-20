@@ -25,7 +25,7 @@ class StreamApiImpl implements StreamApi {
   final StreamHttpClient _client;
 
   @override
-  BatchApi get batch => BatchApi(_client);
+  BatchAPI get batch => BatchAPI(_client);
 
   @override
   ReactionsApi get reactions => ReactionsApi(_client);
