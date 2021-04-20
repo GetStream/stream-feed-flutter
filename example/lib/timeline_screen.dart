@@ -27,8 +27,9 @@ class _TimelineScreenState extends State<TimelineScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _client = context.client;
     _loadActivities();
   }
 
