@@ -29,7 +29,7 @@ This package can be integrated into Flutter applications. Remember to not expose
 
 ### Usage
 
-### API client setup Node + Browser
+### API client setup Serverside + Clientside
 
 If you want to use the API client directly on your web/mobile app you need to generate a user token server-side and pass it.
 
