@@ -5,6 +5,10 @@ packages:
   - example/**
 
 scripts:
+  format:
+    run: flutter format --set-exit-if-changed .
+    description: |
+      Run `flutter format --set-exit-if-changed .` in all packages.
   analyze:
     run: |
       melos exec -c 1 -- \
