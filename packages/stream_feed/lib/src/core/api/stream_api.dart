@@ -12,25 +12,25 @@ import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 
 ///Umbrella interface for all of our http layer apis
 abstract class StreamApi {
-  /// getter for [BatchApi]
+  /// getter for [BatchAPI]
   BatchAPI get batch;
 
   /// getter for [ReactionsAPI]
   ReactionsAPI get reactions;
 
-  /// getter for [UsersApi]
-  UsersApi get users;
+  /// getter for [UsersAPI]
+  UsersAPI get users;
 
-  /// getter for [CollectionsApi]
+  /// getter for [CollectionsAPI]
   CollectionsAPI get collections;
 
-  /// getter for [FeedApi]
+  /// getter for [FeedAPI]
   FeedAPI get feed;
 
-  /// getter for [FilesApi]
+  /// getter for [FilesAPI]
   FilesAPI get files;
 
-  /// getter for [ImagesApi]
+  /// getter for [ImagesAPI]
   ImagesAPI get images;
 
   PersonalizationAPI get personalization;

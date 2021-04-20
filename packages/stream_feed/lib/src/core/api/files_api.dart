@@ -5,7 +5,7 @@ import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Files
 class FilesAPI {
-  /// [FilesApi] constructor
+  /// [FilesAPI] constructor
   const FilesAPI(this._client);
 
   final StreamHttpClient _client;
