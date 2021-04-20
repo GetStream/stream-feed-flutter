@@ -36,7 +36,7 @@ void main() {
     });
 
     test('openGraph', () async {
-      final mockApi = MockApi();
+      final mockApi = MockAPI();
       const token = Token('dummyToken');
       final client = StreamClientImpl('apiKey', userToken: token, api: mockApi);
 

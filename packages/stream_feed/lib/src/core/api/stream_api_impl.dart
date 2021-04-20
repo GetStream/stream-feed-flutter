@@ -14,7 +14,7 @@ import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
 import 'package:stream_feed_dart/src/core/api/stream_api.dart';
 import 'package:stream_feed_dart/src/core/api/users_api.dart';
 
-class StreamApiImpl implements StreamApi {
+class StreamApiImpl implements StreamAPI {
   /// [StreamApiImpl] constructor
   StreamApiImpl(
     String apiKey, {

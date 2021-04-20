@@ -41,7 +41,7 @@ class MockUsersApi extends Mock implements UsersAPI {}
 
 class MockFeedAPI extends Mock implements FeedAPI {}
 
-class MockApi extends Mock implements StreamApi {}
+class MockAPI extends Mock implements StreamAPI {}
 
 class Functions {
   WebSocketChannel? connectFunc(
