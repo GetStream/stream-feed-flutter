@@ -3,7 +3,7 @@
 >The official Dart client for Stream Activity Feeds, a service for building feed applications. This library can be used on any Dart project and on both mobile and web apps with Flutter.
 
 
-**Quick Links**
+**🔗 Quick Links**
 
 - [Register](https://getstream.io/activity-feeds/trial/) to get an API key for Stream Activity Feeds
 - [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/)
@@ -24,16 +24,16 @@ dependencies:
 
 You should then run `flutter packages get`
 
-## Example Project
+## 🔮 Example Project
 
 There is a detailed Flutter example project in the `example` folder. You can directly run and play on it. 
 
-## Setup API Client
+## 🛠 Setup API Client
 
 First you need to instantiate a feed client. The Feed client will manage API calls. You should only create the client once and re-use it across your application.
 
 ```dart
-final client = StreamClient("stream-feed-api-key");
+final client = StreamClient.connect("stream-feed-api-key",token:userToken);
 ```
 ## Contributing
 
