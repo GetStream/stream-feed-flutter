@@ -72,14 +72,14 @@ var client = StreamClient.connect(apiKey, token: Token('userToken'));
 var user1 = client.flatFeed('user', '1');
 
 // Get activities from 5 to 10 (slow pagination)
-final activities = user1.getActivities(limit: 5, offset: 5);
+final activities = await user1.getActivities(limit: 5, offset: 5);
 // Filter on an id less than a given UUID
-final filtered_activities = user1.getActivities(
+final filtered_activities = await user1.getActivities(
       limit: 5,
       filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0')
 
 // All API calls are performed asynchronous and return a Promise object
-  user1
+ await user1
       .getActivities(
           limit: 5,
           filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0'))
@@ -104,7 +104,7 @@ final complex_activity = Activity(
       'started_at': DateTime.now().toIso8601String(),
     },
   );
-final added_complex_activity = user1.addActivity(complex_activity);
+final added_complex_activity = await user1.addActivity(complex_activity);
 
 // Remove an activity by its id
 await user1.removeActivityById('e561de8f-00f1-11e4-b400-0cc47a024be0');
