@@ -33,7 +33,7 @@ abstract class StreamApi {
   /// getter for [ImagesApi]
   ImagesAPI get images;
 
-  PersonalizationApi get personalization;
+  PersonalizationAPI get personalization;
 
   /// retrieve for [OpenGraphData]
   Future<OpenGraphData> openGraph(Token token, String targetUrl);

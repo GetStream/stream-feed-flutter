@@ -46,7 +46,7 @@ class StreamApiImpl implements StreamApi {
   ImagesAPI get images => ImagesAPI(_client);
 
   @override
-  PersonalizationApi get personalization => PersonalizationApi(_client);
+  PersonalizationAPI get personalization => PersonalizationAPI(_client);
 
   @override
   Future<OpenGraphData> openGraph(Token token, String targetUrl) async {
