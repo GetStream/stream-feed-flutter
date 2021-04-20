@@ -29,7 +29,7 @@ class MockHttpClient extends Mock implements StreamHttpClient {}
 
 class MockAnalyticsAPI extends Mock implements AnalyticsAPI {}
 
-class MockCollectionsApi extends Mock implements CollectionsApi {}
+class MockCollectionsAPI extends Mock implements CollectionsAPI {}
 
 class MockFilesApi extends Mock implements FilesApi {}
 

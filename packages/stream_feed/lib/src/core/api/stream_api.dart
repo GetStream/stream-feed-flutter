@@ -22,7 +22,7 @@ abstract class StreamApi {
   UsersApi get users;
 
   /// getter for [CollectionsApi]
-  CollectionsApi get collections;
+  CollectionsAPI get collections;
 
   /// getter for [FeedApi]
   FeedAPI get feed;

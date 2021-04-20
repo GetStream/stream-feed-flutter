@@ -10,7 +10,7 @@ import 'mock.dart';
 
 void main() {
   group('CollectionsClient', () {
-    final api = MockCollectionsApi();
+    final api = MockCollectionsAPI();
 
     const secret = 'secret';
     const token = Token('dummyToken');

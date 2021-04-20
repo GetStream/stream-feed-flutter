@@ -6,9 +6,9 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Collections
-class CollectionsApi {
+class CollectionsAPI {
   /// [CollectionsApi] constructor
-  const CollectionsApi(this._client);
+  const CollectionsAPI(this._client);
 
   final StreamHttpClient _client;
 
