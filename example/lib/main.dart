@@ -76,16 +76,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: RaisedButton(
                           onPressed: () async {
-                            await ProgressDialogHelper.show(
-                              context,
-                              message: "Logging User...",
                             );
                             final streamUser = await client.users.add(
                               user.id,
                               user.data,
                               getOrCreate: true,
                             );
-                            await ProgressDialogHelper.hide();
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (_) => HomeScreen(

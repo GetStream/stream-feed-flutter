@@ -1,4 +1,3 @@
-import 'package:example/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 
@@ -45,9 +44,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (_) => AddActivityDialog(),
           );
           if (message != null) {
-            await ProgressDialogHelper.show(
-              context,
-              message: "Posting Activity...",
             );
             final activity = Activity(
               actor: user.id,
@@ -59,7 +55,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
             final userFeed = _client.flatFeed('user', user.id);
             await userFeed.addActivity(activity);
-            await ProgressDialogHelper.hide();
             _loadActivities();
           }
         },

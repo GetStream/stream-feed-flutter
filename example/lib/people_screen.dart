@@ -1,5 +1,4 @@
 import 'package:example/dummy_app_user.dart';
-import 'package:example/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
@@ -51,16 +50,12 @@ class _PeopleScreenState extends State<PeopleScreen> {
                   builder: (_) => followDialog,
                 );
                 if (result != null) {
-                  await ProgressDialogHelper.show(
-                    context,
-                    message: "Following User...",
                   );
                   final client = locator<StreamClient>();
                   final currentUserFeed =
                       client.flatFeed('timeline', widget.streamUser.id);
                   final selectedUserFeed = client.flatFeed('user', user.id);
                   await currentUserFeed.follow(selectedUserFeed);
-                  await ProgressDialogHelper.hide();
                 }
               },
               child: ListTile(
