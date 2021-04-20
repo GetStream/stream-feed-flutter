@@ -11,7 +11,7 @@
 
 ![dart activity feed](./images/githubhero.png)
 
-### 🛠 Installation
+## 🛠 Installation
 
 #### Install from pub
 
@@ -28,7 +28,7 @@ dependencies:
 
 This package can be integrated into Flutter applications. Remember to not expose the App Secret in your Flutter web apps, mobile apps, or other non-trusted environments like desktop apps.
 
-### 🔌 Usage
+## 🔌 Usage
 
 ### API client setup Serverside + Clientside
 
@@ -66,7 +66,7 @@ client = StreamClient.connect(apiKey,
 var client = StreamClient.connect(apiKey, token: Token('userToken'));
 ```
 
-#### 🔮 Examples
+### 🔮 Examples
 
 ```dart
  // Instantiate a feed object server side
@@ -245,7 +245,21 @@ await subscription.cancel();
 
 Docs are available on [GetStream.io](http://getstream.io/docs/?language=dart).
 
-#### Dart version requirements
+## Free for Makers
+
+Stream is free for most side and hobby projects. To qualify your project/company needs to have < 5 team members and < $10k in monthly revenue.
+For complete pricing details visit our [Feed Pricing Page](https://getstream.io/activity-feeds/pricing/)
+
+## Structure
+Stream Feed Dart is a monorepo built using [Melos](https://docs.page/invertase/melos). Individual packages can be found in the `packages` directory while configuration and top level commands can be found in `melos.yaml`. 
+
+To get started, run `bootstrap` after cloning the project. 
+
+```shell
+melos bootstrap
+```
+
+### Dart version requirements
 
 This API Client project requires Dart v2.12 at a minimum.
 
@@ -257,7 +271,7 @@ See extensive at [test documentation](test/README.md) for your changes.
 
 You can find generic API documentation enriched by code snippets from this package at http://getstream.io/docs/?language=dart
 
-### Copyright and License Information
+## Copyright and License Information
 
 Project is licensed under the [BSD 3-Clause](LICENSE).
 
