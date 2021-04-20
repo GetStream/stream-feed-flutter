@@ -31,7 +31,7 @@ abstract class StreamApi {
   FilesAPI get files;
 
   /// getter for [ImagesApi]
-  ImagesApi get images;
+  ImagesAPI get images;
 
   PersonalizationApi get personalization;
 

@@ -28,7 +28,7 @@ class ImageStorageClient {
   /// Your user token obtain via the dashboard.
   /// Required if you are using the sdk client side
   final Token? userToken;
-  final ImagesApi _images;
+  final ImagesAPI _images;
 
   /// Uploading an image
   /// input is a [MultipartFile]

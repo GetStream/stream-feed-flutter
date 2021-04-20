@@ -43,7 +43,7 @@ class StreamApiImpl implements StreamApi {
   FilesAPI get files => FilesAPI(_client);
 
   @override
-  ImagesApi get images => ImagesApi(_client);
+  ImagesAPI get images => ImagesAPI(_client);
 
   @override
   PersonalizationApi get personalization => PersonalizationApi(_client);

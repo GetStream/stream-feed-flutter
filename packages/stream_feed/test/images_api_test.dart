@@ -9,7 +9,7 @@ import 'mock.dart';
 
 void main() {
   final mockClient = MockHttpClient();
-  final imagesApi = ImagesApi(mockClient);
+  final imagesApi = ImagesAPI(mockClient);
 
   group('Images API', () {
     test('Upload', () async {
