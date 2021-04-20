@@ -1,20 +1,12 @@
 import 'package:example/dummy_app_user.dart';
-import 'package:example/progress_dialog.dart';
+import 'package:example/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 
 import 'home.dart';
 
-final locator = GetIt.instance;
-
 void main() async {
-  /// If you're running an application and need to access the binary messenger before `runApp()`
-  /// has been called (for example, during plugin initialization), then you need to explicitly
-  /// call the `WidgetsFlutterBinding.ensureInitialized()` first.
-  /// If you're running a test, you can call the `TestWidgetsFlutterBinding.ensureInitialized()`
-  /// as the first line in your test's `main()` method to initialize the binding.)
   WidgetsFlutterBinding.ensureInitialized();
 
   /// Forcing only portrait orientation
@@ -28,17 +20,23 @@ void main() async {
     secret: 'bksn37r6k7j5p75mmy6znts47j9f9pc49bmw3jjyd7rshg2enbcnq666d2ryfzs8',
   );
 
-  locator.registerSingleton<StreamClient>(client);
-
-  runApp(MyApp());
+  runApp(
+    MyApp(
+      client: client,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key key, @required this.client}) : super(key: key);
+  final StreamClient client;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Stream Feed Demo',
       home: LoginScreen(),
+      builder: (context, child) => ClientProvider(client: client, child: child),
     );
   }
 }
@@ -52,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final client = locator<StreamClient>();
+    final _client = context.client;
     return Scaffold(
       // backgroundColor: Colors.grey.shade100,
       body: Padding(
@@ -76,11 +74,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: RaisedButton(
                           onPressed: () async {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Loading User'),
+                              ),
                             );
-                            final streamUser = await client.users.add(
+                            final streamUser = await _client.users.add(
                               user.id,
                               user.data,
                               getOrCreate: true,
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('User Loaded'),
+                              ),
                             );
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(

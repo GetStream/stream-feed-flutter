@@ -1,8 +1,8 @@
+import 'package:example/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 
 import 'activity_item.dart';
-import 'main.dart';
 
 class TimelineScreen extends StatefulWidget {
   final User streamUser;
@@ -14,7 +14,7 @@ class TimelineScreen extends StatefulWidget {
 }
 
 class _TimelineScreenState extends State<TimelineScreen> {
-  final _client = locator<StreamClient>();
+  StreamClient _client;
   bool _isLoading = true;
   List<Activity> activities = <Activity>[];
 
