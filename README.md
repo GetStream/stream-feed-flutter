@@ -1,4 +1,4 @@
-frontendToken# Official Flutter packages for [Stream Feed](https://getstream.io/activity-feeds/)
+# Official Flutter packages for [Stream Activity Feeds](https://getstream.io/activity-feeds/)
 
 <p align="center">
   <a href="https://github.com/GetStream/stream-feed-flutter/actions?query=workflow%Build"><img alt="Build status" src="https://github.com/GetStream/stream-feed-flutter/workflows/Build/badge.svg"></a>
@@ -6,7 +6,7 @@ frontendToken# Official Flutter packages for [Stream Feed](https://getstream.io/
 </p>
 
 
-[stream-dart](https://github.com/GetStream/stream-dart) is the official Dart client for [Stream](https://getstream.io/), a web service for building scalable newsfeeds and activity streams.
+[stream-dart](https://github.com/GetStream/stream-feed-flutter) is the official Dart client for [Stream](https://getstream.io/activity-feeds/), a web service for building scalable newsfeeds and activity streams.
 
 You can sign up for a Stream account at https://getstream.io/get_started.
 
@@ -14,14 +14,14 @@ You can sign up for a Stream account at https://getstream.io/get_started.
 
 #### Install from pub
 
-Next step is to add stream_chat_flutter to your dependencies, to do that just open pubspec.yaml and add it inside the dependencies section.
+Next step is to add `stream_feed` to your dependencies, to do that just open pubspec.yaml and add it inside the dependencies section.
 
 ```yaml
 dependencies:
   flutter:
     sdk: flutter
 
-  stream_feed_dart: ^0.0.1
+  stream_feed: ^0.0.1
 ```
 #### Using with Flutter
 
@@ -242,7 +242,7 @@ final subscription =
 await subscription.cancel();
 ```
 
-Docs are available on [GetStream.io](http://getstream.io/docs/?language=js).
+Docs are available on [GetStream.io](http://getstream.io/docs/?language=dart).
 
 #### Dart version requirements
 
