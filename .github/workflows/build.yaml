@@ -35,10 +35,9 @@ jobs:
       - name: Check format
         run: melos run format
 
-      # - name: Generate (dart)
-      #   run: melos exec --depends-on="build_runner" --no-flutter -- "dart run build_runner build --delete-conflicting-outputs"
+      - name: Generate models
+        run: melos run generate
       
-      # Uncomment once we have cleaned all the lints
       - name: Analyze
         run: melos run analyze
 
