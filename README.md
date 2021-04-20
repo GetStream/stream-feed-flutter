@@ -1,17 +1,17 @@
 # Official Flutter packages for [Stream Activity Feeds](https://getstream.io/activity-feeds/)
 
+>The official Dart client for Stream Activity Feeds, a service for building activity feed applications. This library can be used on any Dart project and on both mobile and web apps with Flutter. You can sign up for a Stream account at https://getstream.io/get_started.
+
 <p align="center">
+ <a href="https://pub.dartlang.org/packages/stream_feed"><img alt="Pub" src="https://img.shields.io/pub/v/stream_feed.svg"></a>
   <a href="https://github.com/GetStream/stream-feed-flutter/actions?query=workflow%Build"><img alt="Build status" src="https://github.com/GetStream/stream-feed-flutter/workflows/Build/badge.svg"></a>
   <a href="https://codecov.io/gh/GetStream/stream-feed-flutter"><img src="https://codecov.io/gh/GetStream/stream-feed-flutter/branch/master/graph/badge.svg?token=ht6M92zRXx" alt="codecov"></a>
+   <a href="https://github.com/invertase/melos"><img alt="melos" src="https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square"></a>
 </p>
 
 ![dart activity feed](./images/githubhero.png)
 
-[stream-dart](https://github.com/GetStream/stream-feed-flutter) is the official Dart client for [Stream](https://getstream.io/activity-feeds/), a web service for building scalable newsfeeds and activity streams.
-
-You can sign up for a Stream account at https://getstream.io/get_started.
-
-### Installation
+### 🛠 Installation
 
 #### Install from pub
 
@@ -28,7 +28,7 @@ dependencies:
 
 This package can be integrated into Flutter applications. Remember to not expose the App Secret in your Flutter web apps, mobile apps, or other non-trusted environments like desktop apps.
 
-### Usage
+### 🔌 Usage
 
 ### API client setup Serverside + Clientside
 
@@ -66,7 +66,7 @@ client = StreamClient.connect(apiKey,
 var client = StreamClient.connect(apiKey, token: Token('userToken'));
 ```
 
-#### Examples
+#### 🔮 Examples
 
 ```dart
  // Instantiate a feed object server side
@@ -260,3 +260,10 @@ You can find generic API documentation enriched by code snippets from this packa
 ### Copyright and License Information
 
 Project is licensed under the [BSD 3-Clause](LICENSE).
+
+## We are hiring
+
+We've recently closed a [\$38 million Series B funding round](https://techcrunch.com/2021/03/04/stream-raises-38m-as-its-chat-and-activity-feed-apis-power-communications-for-1b-users/) and we keep actively growing.
+Our APIs are used by more than a billion end-users, and you'll have a chance to make a huge impact on the product within a team of the strongest engineers all over the world.
+
+Check out our current openings and apply via [Stream's website](https://getstream.io/team/#jobs).
