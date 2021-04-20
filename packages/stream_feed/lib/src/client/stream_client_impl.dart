@@ -180,7 +180,7 @@ class StreamClientImpl implements StreamClient {
   void _setupLogger() {
     logger.level = logLevel;
 
-    logHandlerFunction ??= _getDefaultLogHandler();
+    logHandlerFunction = _getDefaultLogHandler();
 
     logger.onRecord.listen(logHandlerFunction);
 
