@@ -15,8 +15,8 @@ abstract class StreamApi {
   /// getter for [BatchApi]
   BatchAPI get batch;
 
-  /// getter for [ReactionsApi]
-  ReactionsApi get reactions;
+  /// getter for [ReactionsAPI]
+  ReactionsAPI get reactions;
 
   /// getter for [UsersApi]
   UsersApi get users;

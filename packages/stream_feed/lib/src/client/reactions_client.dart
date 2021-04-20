@@ -24,7 +24,7 @@ class ReactionsClient {
   final Token? userToken;
 
   ///The reactions client
-  final ReactionsApi _reactions;
+  final ReactionsAPI _reactions;
 
   /// Your API secret. You can get it in your Stream Dashboard [here](https://dashboard.getstream.io/dashboard/v2/)
   final String? secret;

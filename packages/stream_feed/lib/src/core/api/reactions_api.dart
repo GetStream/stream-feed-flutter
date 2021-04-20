@@ -9,9 +9,9 @@ import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Reactions
-class ReactionsApi {
-  /// [ReactionsApi] constructor
-  const ReactionsApi(this._client);
+class ReactionsAPI {
+  /// [ReactionsAPI] constructor
+  const ReactionsAPI(this._client);
 
   final StreamHttpClient _client;
 
