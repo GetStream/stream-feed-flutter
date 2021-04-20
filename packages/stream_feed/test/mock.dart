@@ -31,7 +31,7 @@ class MockAnalyticsAPI extends Mock implements AnalyticsAPI {}
 
 class MockCollectionsAPI extends Mock implements CollectionsAPI {}
 
-class MockFilesApi extends Mock implements FilesApi {}
+class MockFilesAPI extends Mock implements FilesAPI {}
 
 class MockReactionsApi extends Mock implements ReactionsApi {}
 

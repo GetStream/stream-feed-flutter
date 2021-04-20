@@ -28,7 +28,7 @@ abstract class StreamApi {
   FeedAPI get feed;
 
   /// getter for [FilesApi]
-  FilesApi get files;
+  FilesAPI get files;
 
   /// getter for [ImagesApi]
   ImagesApi get images;

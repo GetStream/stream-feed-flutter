@@ -4,9 +4,9 @@ import 'package:stream_feed_dart/src/core/http/token.dart';
 import 'package:stream_feed_dart/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Files
-class FilesApi {
+class FilesAPI {
   /// [FilesApi] constructor
-  const FilesApi(this._client);
+  const FilesAPI(this._client);
 
   final StreamHttpClient _client;
 
