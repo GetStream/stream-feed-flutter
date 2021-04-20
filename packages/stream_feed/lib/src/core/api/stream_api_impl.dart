@@ -31,7 +31,7 @@ class StreamApiImpl implements StreamApi {
   ReactionsAPI get reactions => ReactionsAPI(_client);
 
   @override
-  UsersApi get users => UsersApi(_client);
+  UsersAPI get users => UsersAPI(_client);
 
   @override
   CollectionsAPI get collections => CollectionsAPI(_client);

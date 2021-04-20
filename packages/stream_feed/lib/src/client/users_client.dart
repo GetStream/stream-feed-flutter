@@ -15,7 +15,7 @@ class UsersClient {
   final Token? userToken;
 
   ///The users client
-  final UsersApi _users;
+  final UsersAPI _users;
 
   /// You API secret
   final String? secret;
