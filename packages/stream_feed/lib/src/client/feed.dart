@@ -56,7 +56,7 @@ class Feed {
 
   ///The stream client this feed is constructed from
   @protected
-  final FeedApi feed;
+  final FeedAPI feed;
 
   /// Subscribes to any changes in the feed, return a [Subscription]
   Future<Subscription> subscribe(

@@ -37,7 +37,7 @@ class StreamApiImpl implements StreamApi {
   CollectionsApi get collections => CollectionsApi(_client);
 
   @override
-  FeedApi get feed => FeedApi(_client);
+  FeedAPI get feed => FeedAPI(_client);
 
   @override
   FilesApi get files => FilesApi(_client);

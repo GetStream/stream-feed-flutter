@@ -15,7 +15,7 @@ import 'utils.dart';
 
 void main() {
   group('FlatFeed Client', () {
-    final api = MockFeedApi();
+    final api = MockFeedAPI();
     final feedId = FeedId('slug', 'userId');
     const token = Token('dummyToken');
     final client = FlatFeed(feedId, api, userToken: token);

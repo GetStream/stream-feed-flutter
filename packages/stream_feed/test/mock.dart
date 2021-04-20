@@ -39,7 +39,7 @@ class MockImagesApi extends Mock implements ImagesApi {}
 
 class MockUsersApi extends Mock implements UsersApi {}
 
-class MockFeedApi extends Mock implements FeedApi {}
+class MockFeedAPI extends Mock implements FeedAPI {}
 
 class MockApi extends Mock implements StreamApi {}
 

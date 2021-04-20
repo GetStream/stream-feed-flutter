@@ -20,7 +20,7 @@ class FlatFeed extends Feed {
   /// Initialize a feed object
   FlatFeed(
     FeedId feedId,
-    FeedApi feed, {
+    FeedAPI feed, {
     Token? userToken,
     String? secret,
     FeedSubscriber? subscriber,
