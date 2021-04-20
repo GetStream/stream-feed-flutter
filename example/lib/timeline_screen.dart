@@ -7,20 +7,20 @@ import 'activity_item.dart';
 class TimelineScreen extends StatefulWidget {
   final User streamUser;
 
-  const TimelineScreen({Key key, @required this.streamUser}) : super(key: key);
+  const TimelineScreen({Key? key, required this.streamUser}) : super(key: key);
 
   @override
   _TimelineScreenState createState() => _TimelineScreenState();
 }
 
 class _TimelineScreenState extends State<TimelineScreen> {
-  StreamClient _client;
+  late StreamClient _client;
   bool _isLoading = true;
   List<Activity> activities = <Activity>[];
 
   Future<void> _loadActivities({bool pullToRefresh = false}) async {
     if (!pullToRefresh) setState(() => _isLoading = true);
-    final userFeed = _client.flatFeed('timeline', widget.streamUser.id);
+    final userFeed = _client.flatFeed('timeline', widget.streamUser.id!);
     final data = await userFeed.getActivities();
     if (!pullToRefresh) _isLoading = false;
     setState(() => activities = data);

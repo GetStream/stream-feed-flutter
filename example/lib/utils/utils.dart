@@ -3,15 +3,15 @@ import 'package:stream_feed_dart/stream_feed.dart';
 
 class ClientProvider extends InheritedWidget {
   const ClientProvider({
-    Key key,
-    @required this.client,
-    @required Widget child,
+    Key? key,
+    required this.client,
+    required Widget child,
   })  : assert(child != null),
         super(key: key, child: child);
 
   final StreamClient client;
 
-  static ClientProvider of(BuildContext context) {
+  static ClientProvider? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<ClientProvider>();
   }
 
@@ -22,5 +22,5 @@ class ClientProvider extends InheritedWidget {
 }
 
 extension ProviderX on BuildContext {
-  StreamClient get client => ClientProvider.of(this).client;
+  StreamClient get client => ClientProvider.of(this)!.client;
 }

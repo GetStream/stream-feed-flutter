@@ -7,8 +7,8 @@ import 'add_activity_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
-    Key key,
-    @required this.streamUser,
+    Key? key,
+    required this.streamUser,
   }) : super(key: key);
   final User streamUser;
 
@@ -17,7 +17,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  StreamClient _client;
+  late StreamClient _client;
   bool _isLoading = true;
 
   List<Activity> activities = <Activity>[];
@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadActivities({bool pullToRefresh = false}) async {
     if (!pullToRefresh) setState(() => _isLoading = true);
 
-    final userFeed = _client.flatFeed('user', widget.streamUser.id);
+    final userFeed = _client.flatFeed('user', widget.streamUser.id!);
     final data = await userFeed.getActivities();
     if (!pullToRefresh) _isLoading = false;
     setState(() => activities = data);
@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 'tweet': message,
               },
             );
-            final userFeed = _client.flatFeed('user', user.id);
+            final userFeed = _client.flatFeed('user', user.id!);
             await userFeed.addActivity(activity);
 
             ScaffoldMessenger.of(context).showSnackBar(

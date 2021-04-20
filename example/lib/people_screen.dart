@@ -7,7 +7,7 @@ import 'package:stream_feed_dart/stream_feed.dart';
 class PeopleScreen extends StatefulWidget {
   final User streamUser;
 
-  const PeopleScreen({Key key, @required this.streamUser}) : super(key: key);
+  const PeopleScreen({Key? key, required this.streamUser}) : super(key: key);
 
   @override
   _PeopleScreenState createState() => _PeopleScreenState();
@@ -57,8 +57,8 @@ class _PeopleScreenState extends State<PeopleScreen> {
                   );
 
                   final currentUserFeed =
-                      _client.flatFeed('timeline', widget.streamUser.id);
-                  final selectedUserFeed = _client.flatFeed('user', user.id);
+                      _client.flatFeed('timeline', widget.streamUser.id!);
+                  final selectedUserFeed = _client.flatFeed('user', user.id!);
                   await currentUserFeed.follow(selectedUserFeed);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -69,10 +69,10 @@ class _PeopleScreenState extends State<PeopleScreen> {
               },
               child: ListTile(
                 leading: CircleAvatar(
-                  child: Text(user.name[0]),
+                  child: Text(user.name![0]),
                 ),
                 title: Text(
-                  user.name,
+                  user.name!,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w300,
