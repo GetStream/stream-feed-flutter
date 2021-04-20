@@ -6,7 +6,7 @@ import 'package:faye_dart/src/message.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
-
+import 'package:logging/logging.dart';
 import 'extensible.dart';
 
 part 'subscription.dart';
@@ -26,6 +26,13 @@ enum FayeClientState {
   connected,
   disconnected,
 }
+
+typedef LogHandlerFunction = void Function(LogRecord record);
+final _levelEmojiMapper = {
+  Level.INFO: 'ℹ️',
+  Level.WARNING: '⚠️',
+  Level.SEVERE: '🚨',
+};
 
 typedef VoidCallback = void Function();
 
@@ -70,7 +77,22 @@ class FayeClient with Extensible {
     this.logsEnabled = false,
     this.healthCheckInterval = 10,
     this.maxAttemptsToReconnect = 5,
-  });
+    Level logLevel = Level.WARNING,
+    LogHandlerFunction? logHandlerFunction,
+  }) : _logger = Logger.detached('🕒')..level = logLevel {
+    _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
+    _logger.info('instantiating a faye client');
+  }
+  final Logger _logger;
+
+  void _defaultLogHandler(LogRecord record) {
+    print(
+      '(${record.time}) '
+      '${_levelEmojiMapper[record.level] ?? record.level.name} '
+      '${record.loggerName} ${record.message}',
+    );
+    if (record.stackTrace != null) print(record.stackTrace);
+  }
 
   void _handshake() {
     if (_advice.reconnect == Advice.none) return;
@@ -78,7 +100,7 @@ class FayeClient with Extensible {
 
     state = FayeClientState.connecting;
 
-    // log initiating handshake
+    _logger.info("initiating handshake");
 
     _sendMessage(handshake_channel);
   }
@@ -97,16 +119,11 @@ class FayeClient with Extensible {
   Future<void> connect() async {
     if (state == FayeClientState.connected) return;
 
-    // TODO : Add logger
     _connectionCompleter = Completer();
     _webSocketChannel = WebSocketChannel.connect(
       Uri.parse(baseUrl),
       protocols: protocols,
     );
-    // _webSocketChannel = await platform.connectWebSocket(
-    //   baseUrl,
-    //   protocols: protocols,
-    // );
     _subscribeToWebsocket();
     _connectFaye();
     return _connectionCompleter!.future;
@@ -151,7 +168,7 @@ class FayeClient with Extensible {
         _advice = message.advice!;
       }
     } else {
-      // logError
+      _logger.severe("error in handling Connect Channel Response");
     }
     final interval = _advice.interval ~/ 1000;
     _cycleConnection(interval: Duration(seconds: interval));
@@ -163,7 +180,7 @@ class FayeClient with Extensible {
     final channel = _channels[subscription];
     if (message.successful == true) {
       final channels = [message.subscription]; //TODO: not used?
-      // this.info('Subscription acknowledged for ? to ?', this._dispatcher.clientId, channels);
+      _logger.info("Subscription acknowledged for ${_clientId} to ${channels}");
       channel!.subscription?._complete();
     } else {
       // logError
@@ -176,9 +193,11 @@ class FayeClient with Extensible {
   void _handleUnsubscribeChannelResponse(Message message) {
     if (message.successful == true) {
       final channels = [message.subscription]; //TODO: unused?
-      // this.info('Unsubscription acknowledged for ? to ?', this._dispatcher.clientId, channels);
+      _logger
+          .info("Unsubscription acknowledged for ${_clientId} to ${channels}");
     } else {
-      // logError
+      _logger.severe(
+          "received message not successful while handling Unsubscribe ChannelResponse: ${message.toString()}");
     }
   }
 
@@ -189,8 +208,8 @@ class FayeClient with Extensible {
       _websocketSubscription?.cancel();
       _disconnectionCompleter?.complete();
     } else {
-      // logError
       final error = message.error ?? 'Error disconnecting client';
+      _logger.severe(error);
       _disconnectionCompleter?.completeError(error);
     }
   }
@@ -215,18 +234,18 @@ class FayeClient with Extensible {
         if (message.advice != null) _handleAdvice(message.advice!);
         _channels.distributeMessage(message);
       } else {
-        // Faye received a message with no subscription for channel
-        // ${message.subscription}
+        _logger.severe(
+            "Faye received this message with no subscription for channel ${message.subscription}: ${message}");
       }
     }
   }
 
   void _onConnectionError(Object error, [StackTrace? stacktrace]) {
     // _isWebSocketConnected = false;
-    // TODO : log
+    _logger.severe("onConnectionError $error");
     // TODO : Pause handshakeTimer
     // _clientId = null;
-    // TODO : Log disconnected;
+    _logger.info("disconnected");
     // _handleAdvice();
   }
 
@@ -234,7 +253,7 @@ class FayeClient with Extensible {
     Future.delayed(const Duration(seconds: 6), () {
       print(_webSocketChannel?.closeCode);
     });
-    // TODO: LogConnectionClosed;
+    _logger.info("Log Connection Closed");
     // Checking if we manually closed the connection
     if (_webSocketChannel?.closeCode == status.goingAway) {
       return;
@@ -248,7 +267,7 @@ class FayeClient with Extensible {
 
   void ping() {
     // TODO : Log
-    // log("🏓 --->")
+    _logger.info("🏓 --->");
     _webSocketChannel?.sink.add(const _WebSocketPing());
   }
 
@@ -276,7 +295,7 @@ class FayeClient with Extensible {
       clientId: _clientId,
     );
     pipeThroughExtensions('outgoing', message, (message) {
-      print("sending message : $message");
+      _logger.info("sending message : $message");
       final data = jsonEncode(message);
       _webSocketChannel?.sink.add(data);
     });
@@ -326,29 +345,10 @@ class FayeClient with Extensible {
   Future<void> disconnect() async {
     if (state != FayeClientState.connected) return;
     state = FayeClientState.disconnected;
-    // this.info('Disconnecting ?', this._dispatcher.clientId);
+    _logger.info('Disconnecting $_clientId');
     _disconnectionCompleter = Completer();
     _sendMessage(disconnect_channel);
     return _disconnectionCompleter!.future;
-  }
-
-  void _log([
-    //TODO: never used
-    String title = '',
-    Object? item1,
-    Object? item2,
-    Object? item3,
-    String Function()? function,
-  ]) {
-    if (logsEnabled) {
-      print('''
-          🕸 $title,
-          Date : ${DateTime.now()},
-          ${item1 ?? ''},
-          ${item2 ?? ''},
-          ${item3 ?? ''},
-          ''');
-    }
   }
 }
 

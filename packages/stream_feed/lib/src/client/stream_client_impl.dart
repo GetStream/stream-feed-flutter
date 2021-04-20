@@ -19,6 +19,9 @@ import 'package:stream_feed_dart/src/client/users_client.dart';
 import 'package:stream_feed_dart/src/client/stream_client.dart';
 import 'package:stream_feed_dart/src/core/util/extension.dart';
 import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:logging/logging.dart';
+
+typedef _LogHandlerFunction = void Function(LogRecord record);
 
 // ignore: public_member_api_docs
 class StreamClientImpl implements StreamClient {
@@ -27,6 +30,7 @@ class StreamClientImpl implements StreamClient {
     this.apiKey, {
     this.secret,
     this.userToken,
+    this.logLevel = Level.WARNING,
     this.appId,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
     StreamApi? api,
@@ -35,8 +39,13 @@ class StreamClientImpl implements StreamClient {
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
-        _api = api ?? StreamApiImpl(apiKey, options: options);
-
+        _api = api ?? StreamApiImpl(apiKey, options: options) {
+    _setupLogger();
+    logger.info('instantiating new client');
+  }
+  late _LogHandlerFunction logHandlerFunction;
+  final Level logLevel;
+  final Logger logger = Logger.detached('📡');
   final String apiKey;
   final String? appId;
   final Token? userToken;
@@ -166,6 +175,34 @@ class StreamClientImpl implements StreamClient {
   Future<OpenGraphData> openGraph(String targetUrl) {
     final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
+  }
+
+  void _setupLogger() {
+    logger.level = logLevel;
+
+    logHandlerFunction ??= _getDefaultLogHandler();
+
+    logger.onRecord.listen(logHandlerFunction);
+
+    logger.info('logger setup');
+  }
+
+  _LogHandlerFunction _getDefaultLogHandler() {
+    final levelEmojiMapper = {
+      Level.INFO.name: 'ℹ️',
+      Level.WARNING.name: '⚠️',
+      Level.SEVERE.name: '🚨',
+    };
+    return (LogRecord record) {
+      print(
+        '(${record.time}) '
+        '${levelEmojiMapper[record.level.name] ?? record.level.name} '
+        '${record.loggerName} ${record.message}',
+      );
+      if (record.stackTrace != null) {
+        print(record.stackTrace);
+      }
+    };
   }
 }
 

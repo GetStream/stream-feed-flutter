@@ -12,7 +12,8 @@ dependencies:
   stream_channel: ^2.1.0
   rxdart: ^0.26.0
   equatable: ^2.0.0
-
+  logging: ^1.0.1
+  
 dev_dependencies:
   test: ^1.16.7
   mocktail: ^0.1.0
