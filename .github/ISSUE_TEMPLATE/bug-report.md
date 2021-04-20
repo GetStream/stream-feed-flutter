@@ -10,6 +10,8 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**What version of Flutter do you use?**
+
 **What package are you using? What version?**
 
 **What platform is it about?**
@@ -19,6 +21,8 @@ A clear and concise description of what the bug is.
 - [ ] Windows
 - [ ] MacOS
 - [ ] Linux
+
+**a copy of `flutter doctor --verbose`**
 
 **To Reproduce**
 Steps to reproduce the behavior:
