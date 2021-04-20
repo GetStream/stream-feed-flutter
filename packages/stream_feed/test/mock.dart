@@ -27,7 +27,7 @@ class MockDio extends Mock implements Dio {
 
 class MockHttpClient extends Mock implements StreamHttpClient {}
 
-class MockAnalyticsApi extends Mock implements AnalyticsApi {}
+class MockAnalyticsAPI extends Mock implements AnalyticsAPI {}
 
 class MockCollectionsApi extends Mock implements CollectionsApi {}
 
