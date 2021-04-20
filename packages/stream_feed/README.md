@@ -30,10 +30,10 @@ There is a detailed Flutter example project in the `example` folder. You can dir
 
 ## Setup API Client
 
-First you need to instantiate a chat client. The Chat client will manage API call, event handling and manage the websocket connection to Stream Chat servers. You should only create the client once and re-use it across your application.
+First you need to instantiate a feed client. The Feed client will manage API calls. You should only create the client once and re-use it across your application.
 
 ```dart
-final client = StreamClient("stream-chat-api-key");
+final client = StreamClient("stream-feed-api-key");
 ```
 ## Contributing
 
