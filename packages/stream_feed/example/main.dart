@@ -200,13 +200,13 @@ Future<void> main() async {
   }
 
   // Retrieve last 10 feeds followed by user_feed_1
-  var followed = await userFeed.getFollowed(limit: 10, offset: 0);
+  var followed = await userFeed.following(limit: 10, offset: 0);
 
   // Retrieve 10 feeds followed by user_feed_1 starting from the 11th
-  followed = await userFeed.getFollowed(limit: 10, offset: 10);
+  followed = await userFeed.following(limit: 10, offset: 10);
 
   // Check if user_feed_1 follows specific feeds
-  followed = await userFeed.getFollowed(limit: 2, offset: 0, feedIds: [
+  followed = await userFeed.following(limit: 2, offset: 0, feedIds: [
     FeedId.id('user:42'),
     FeedId.id('user:43'),
   ]);

@@ -81,10 +81,10 @@ void main() {
         const Follow('timeline:1', 'user:2'),
         const Follow('timeline:1', 'user:3'),
       ];
-      when(() => api.getFollowed(token, feed, limit, offset, feedIds))
+      when(() => api.following(token, feed, limit, offset, feedIds))
           .thenAnswer((_) async => follows);
-      await client.getFollowed(limit: limit, offset: offset, feedIds: feedIds);
-      verify(() => api.getFollowed(token, feed, limit, offset, feedIds))
+      await client.following(limit: limit, offset: offset, feedIds: feedIds);
+      verify(() => api.following(token, feed, limit, offset, feedIds))
           .called(1);
     });
 

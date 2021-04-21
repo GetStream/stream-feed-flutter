@@ -152,7 +152,7 @@ Future<void> main() async {
               ),
               statusCode: 200));
 
-      await feedApi.getFollowed(token, feed, limit, offset, feedIds);
+      await feedApi.following(token, feed, limit, offset, feedIds);
 
       verify(() => mockClient.get<Map>(
             Routes.buildFeedUrl(feed, 'following'),

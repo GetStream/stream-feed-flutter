@@ -87,7 +87,7 @@ class FeedApi {
       );
 
   /// List which feeds this feed is following
-  Future<List<Follow>> getFollowed(Token token, FeedId feed, int limit,
+  Future<List<Follow>> following(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
     checkArgument(offset >= 0, 'Offset should be a non-negative number');
