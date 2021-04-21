@@ -7,7 +7,7 @@ import 'dummy_app_user.dart';
 class ActivityCard extends StatelessWidget {
   final Activity activity;
 
-  const ActivityCard({Key key, @required this.activity}) : super(key: key);
+  const ActivityCard({Key? key, required this.activity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ActivityCard extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                child: Text(user.name[0]),
+                child: Text(user.name![0]),
               ),
               SizedBox(width: 16),
               Expanded(
@@ -29,14 +29,14 @@ class ActivityCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user.name,
+                      user.name!,
                       style: TextStyle(
                         fontSize: 18,
                       ),
                     ),
                     Text(
                       'Shared an update ${timeago.format(
-                        activity.time,
+                        activity.time!,
                         allowFromNow: true,
                       )}',
                       style: TextStyle(
@@ -50,7 +50,7 @@ class ActivityCard extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Text(
-            activity.extraData['tweet'],
+            activity.extraData!['tweet'] as String,
             style: TextStyle(
               fontSize: 24,
             ),
