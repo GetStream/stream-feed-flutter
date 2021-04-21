@@ -7,8 +7,7 @@ part 'follow.g.dart';
 @JsonSerializable()
 class Follow extends Equatable {
   ///
-  const Follow(
-      this.source, this.target); //TODO: change this to source and target
+  const Follow(this.source, this.target);
 
   /// Create a new instance from a json
   factory Follow.fromJson(Map<String, dynamic> json) => _$FollowFromJson(json);
