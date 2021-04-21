@@ -118,14 +118,14 @@ await user1.removeActivityById('e561de8f-00f1-11e4-b400-0cc47a024be0');
 await user1.removeActivityByForeignId('tweet:1');
 
 // mark a notification feed as read
-  await notification1.getActivities(
-    marker: ActivityMarker().allRead(),
-  );
+await notification1.getActivities(
+  marker: ActivityMarker().allRead(),
+);
 
 
 // mark a notification feed as seen
 await notification1.getActivities(
-    marker: ActivityMarker().allSeen(),
+  marker: ActivityMarker().allSeen(),
 );
 
 // Follow another feed
@@ -138,67 +138,67 @@ await user1.unfollow(client.flatFeed('flat', '42'));
 // from that feed
 await user1.unfollow(client.flatFeed('flat', '42'), keepHistory: true);
 
-  // Follow another feed without copying the history
-  await user1.follow(client.flatFeed('flat', '42'), activityCopyLimit: 0);
+// Follow another feed without copying the history
+await user1.follow(client.flatFeed('flat', '42'), activityCopyLimit: 0);
 
 // List followers, following
-  await user1.getFollowers(limit: 10, offset: 10);
-  await user1.getFollowed(limit: 10, offset: 0);
+await user1.getFollowers(limit: 10, offset: 10);
+await user1.getFollowed(limit: 10, offset: 0);
 
 
- await user1.follow(client.flatFeed('flat', '42'));
+await user1.follow(client.flatFeed('flat', '42'));
 
 // adding multiple activities
-  const activities = [
-    Activity(actor: '1', verb: 'tweet', object: '1'),
-    Activity(actor: '2', verb: 'tweet', object: '3'),
-  ];
-  await user1.addActivities(activities);
+const activities = [
+  Activity(actor: '1', verb: 'tweet', object: '1'),
+  Activity(actor: '2', verb: 'tweet', object: '3'),
+];
+await user1.addActivities(activities);
 
- // specifying additional feeds to push the activity to using the to param
+// specifying additional feeds to push the activity to using the to param
 // especially useful for notification style feeds
-  final to = FeedId.fromIds(['user:2', 'user:3']);
-  final activityTo = Activity(
-    to: to,
-    actor: '1',
-    verb: 'tweet',
-    object: '1',
-    foreignId: 'tweet:1',
-  );
-  await user1.addActivity(activityTo);
+final to = FeedId.fromIds(['user:2', 'user:3']);
+final activityTo = Activity(
+  to: to,
+  actor: '1',
+  verb: 'tweet',
+  object: '1',
+  foreignId: 'tweet:1',
+);
+await user1.addActivity(activityTo);
 
 
 // adding one activity to multiple feeds
-  final feeds = FeedId.fromIds(['flat:1', 'flat:2', 'flat:3', 'flat:4']);
-  final activityTarget = Activity(
-    actor: 'User:2',
-    verb: 'pin',
-    object: 'Place:42',
-    target: 'Board:1',
-  );
+final feeds = FeedId.fromIds(['flat:1', 'flat:2', 'flat:3', 'flat:4']);
+final activityTarget = Activity(
+  actor: 'User:2',
+  verb: 'pin',
+  object: 'Place:42',
+  target: 'Board:1',
+);
 
 // ⚠️ server-side only!
-  await client.batch.addToMany(activityTarget, feeds!);
+await client.batch.addToMany(activityTarget, feeds!);
 
-  // Batch create follow relations (let flat:1 follow user:1, user:2 and user:3 feeds in one single request)
-  const follows = [
-    Follow('flat:1', 'user:1'),
-    Follow('flat:1', 'user:2'),
-    Follow('flat:1', 'user:3'),
-  ];
+// Batch create follow relations (let flat:1 follow user:1, user:2 and user:3 feeds in one single request)
+const follows = [
+  Follow('flat:1', 'user:1'),
+  Follow('flat:1', 'user:2'),
+  Follow('flat:1', 'user:3'),
+];
 
 // ⚠️ server-side only!
-  await client.batch.followMany(follows);
+await client.batch.followMany(follows);
 
 // Updating parts of an activity
-set = {
+final set = {
   'product.price': 19.99,
   shares: {
     facebook: '...',
     twitter: '...',
   },
 };
-unset = ['daily_likes', 'popularity'];
+final unset = ['daily_likes', 'popularity'];
 
 // ...by ID
 final update = ActivityUpdate.withId( '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4', set, unset);
@@ -206,12 +206,12 @@ await client.updateActivityById(update);
 // ...or by combination of foreign ID and time
 const timestamp = DateTime.now();
 const foreignID= 'product:123';
-  final update2 = ActivityUpdate.withForeignId(
-    foreignID,
-    timestamp,
-    set,
-    unset,
-  );
+final update2 = ActivityUpdate.withForeignId(
+  foreignID,
+  timestamp,
+  set,
+  unset,
+);
 await client.updateActivityById(update2);
 
 
