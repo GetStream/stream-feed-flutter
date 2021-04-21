@@ -1,6 +1,7 @@
 import 'package:stream_feed/src/core/api/users_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/user.dart';
+import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Stream allows you to store user information
@@ -9,10 +10,13 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// When stored in activities, users are automatically enriched by Stream.
 class UsersClient {
   ///Initialize a [UsersClient] session object
-  const UsersClient(this._users, {this.userToken, this.secret});
+  const UsersClient(this._users, {this.userToken, this.secret, this.userId});
 
   ///User JWT token
   final Token? userToken;
+
+  ///User id
+  final String? userId;
 
   ///The users client
   final UsersApi _users;
@@ -52,6 +56,11 @@ class UsersClient {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
     return _users.delete(token, id);
+  }
+
+  Future<User> profile({bool? withFollowCounts}) async {
+    checkNotNull(userId, 'userId is not defined');
+    return get(userId!, withFollowCounts: withFollowCounts);
   }
 
   /// Get the user data

@@ -167,6 +167,9 @@ class StreamClientImpl implements StreamClient {
     final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
   }
+
+  UsersClient user(String userId) => UsersClient(_api.users,
+      userId: userId, userToken: userToken, secret: secret);
 }
 
 class _FeedSubscription {
