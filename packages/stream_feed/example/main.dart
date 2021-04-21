@@ -555,7 +555,7 @@ Future<void> main() async {
   ]);
 
   // Then create a user
-  await client.users.add('john-doe', {
+  await client.users.create('john-doe', {
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male',
@@ -577,14 +577,14 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   // create a new user, if the user already exist an error is returned
-  await client.users.add('john-doe', {
+  await client.users.create('john-doe', {
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male',
   });
 
   // get or create a new user, if the user already exist the user is returned
-  await client.users.add(
+  await client.users.create(
     'john-doe',
     {
       'name': 'John Doe',

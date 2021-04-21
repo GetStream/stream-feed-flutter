@@ -32,7 +32,7 @@ class UsersClient {
   /// });
   /// ```
   /// API docs: [adding-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#adding-users)
-  Future<User> add(
+  Future<User> create(
     String id,
     Map<String, Object> data, {
     bool? getOrCreate,

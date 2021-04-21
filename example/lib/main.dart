@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           content: Text('Loading User'),
                         ),
                       );
-                      final streamUser = await _client.users.add(
+                      final streamUser = await _client.users.create(
                         user.id!,
                         user.data!,
                         getOrCreate: true,

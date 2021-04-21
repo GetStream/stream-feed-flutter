@@ -22,7 +22,7 @@ void main() {
       };
       const user = User(id: id, data: data);
       when(() => api.add(token, id, data)).thenAnswer((_) async => user);
-      await client.add(id, data);
+      await client.create(id, data);
       verify(() => api.add(token, id, data)).called(1);
     });
 
