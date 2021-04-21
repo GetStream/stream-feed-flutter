@@ -105,13 +105,14 @@ class ImageStorageClient {
     return _images.get(token, url, options: params);
   }
 
+  ///Generate a thumbnail for a given image url
   Future<String?> thumbnail(String url, int w, int h,
-      {CropType? crop = CropType.center, ResizeType resize = ResizeType.clip}) {
-    return _process(url, {
-      'w': w,
-      'h': h,
-      'crop': crop,
-      'resize': resize,
-    });
-  }
+          {CropType? crop = CropType.center,
+          ResizeType resize = ResizeType.clip}) =>
+      _process(url, {
+        'w': w,
+        'h': h,
+        'crop': crop,
+        'resize': resize,
+      });
 }
