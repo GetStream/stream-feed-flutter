@@ -84,11 +84,8 @@ class ImageStorageClient {
   ///  const Crop(50, 50),
   ///);
   /// ```
-  Future<String?> getCropped(String url, Crop crop) {
-    final token =
-        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
-    return _images.get(token, url, options: crop.params);
-  }
+  Future<String?> getCropped(String url, Crop crop) =>
+      _process(url, crop.params);
 
   /// Resize an image using its URL. A new URL is then returned by the API.
   /// # Examples:
@@ -99,9 +96,22 @@ class ImageStorageClient {
   ///   const Resize(50, 50),
   /// );
   /// ```
-  Future<String?> getResized(String url, Resize resize) {
+  Future<String?> getResized(String url, Resize resize) =>
+      _process(url, resize.params);
+
+  Future<String?> _process(String url, Map<String, Object?> params) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
-    return _images.get(token, url, options: resize.params);
+    return _images.get(token, url, options: params);
+  }
+
+  Future<String?> thumbnail(String url, int w, int h,
+      {CropType? crop = CropType.center, ResizeType resize = ResizeType.clip}) {
+    return _process(url, {
+      'w': w,
+      'h': h,
+      'crop': crop,
+      'resize': resize,
+    });
   }
 }
