@@ -46,6 +46,12 @@ class UsersClient {
     return _users.add(token, id, data, getOrCreate ?? false);
   }
 
+  ///Get or Create a new user in stream
+  Future<User> getOrCreate(Map<String, Object> data) {
+    checkNotNull(userId, 'userId is not defined');
+    return create(userId!, data, getOrCreate: true);
+  }
+
   /// Delete the user
   /// Usage:
   ///```dart
