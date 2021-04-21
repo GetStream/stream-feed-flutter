@@ -49,6 +49,17 @@ class NotificationFeed extends AggregatedFeed {
           subscriber: subscriber,
         );
 
+  ///Retrieves one activity from a feed
+  Future<NotificationGroup<Activity>> getActivityDetail(
+      String activityId) async {
+    final activities = await getActivities(
+        limit: 1,
+        filter: Filter()
+            .idLessThanOrEqual(activityId)
+            .idGreaterThanOrEqual(activityId));
+    return activities.first;
+  }
+
   /// Retrieve feed of type notifications
   /// # Example
   /// Mark all activities in the feed as seen

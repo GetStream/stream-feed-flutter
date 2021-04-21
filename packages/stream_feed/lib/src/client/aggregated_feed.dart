@@ -33,6 +33,16 @@ class AggregatedFeed extends Feed {
           subscriber: subscriber,
         );
 
+  ///Retrieves one activity from a feed
+  Future<Group<Activity>> getActivityDetail(String activityId) async {
+    final activities = await getActivities(
+        limit: 1,
+        filter: Filter()
+            .idLessThanOrEqual(activityId)
+            .idGreaterThanOrEqual(activityId));
+    return activities.first;
+  }
+
   /// Retrieve activities of type Aggregated feed
   Future<List<Group<Activity>>> getActivities({
     int? limit,
