@@ -26,7 +26,7 @@ class CollectionEntry extends Equatable {
     this.createdAt,
     this.updatedAt,
   });
-
+//TODO ref()
   /// Create a new instance from a json
   factory CollectionEntry.fromJson(Map<String, dynamic> json) =>
       _$CollectionEntryFromJson(json);

@@ -180,7 +180,10 @@ class Feed {
     FlatFeed flatFeed, {
     int? activityCopyLimit,
   }) async {
-    //TODO: should return API response
+    //TODO: should return something like this (typescript)
+    //export type GetFollowAPIResponse = APIResponse & {
+//   results: { created_at: string; feed_id: string; target_id: string; updated_at: string }[];
+// };
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.write, feedId);
     final targetToken = userToken ??
