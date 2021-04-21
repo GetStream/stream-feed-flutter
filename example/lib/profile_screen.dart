@@ -1,36 +1,40 @@
-import 'package:example/progress_dialog.dart';
+import 'package:example/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 
 import 'activity_item.dart';
 import 'add_activity_dialog.dart';
-import 'main.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({
+    Key? key,
+    required this.streamUser,
+  }) : super(key: key);
   final User streamUser;
-
-  const ProfileScreen({Key key, @required this.streamUser}) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _client = locator<StreamClient>();
+  late StreamClient _client;
   bool _isLoading = true;
+
   List<Activity> activities = <Activity>[];
 
   Future<void> _loadActivities({bool pullToRefresh = false}) async {
     if (!pullToRefresh) setState(() => _isLoading = true);
-    final userFeed = _client.flatFeed('user', widget.streamUser.id);
+
+    final userFeed = _client.flatFeed('user', widget.streamUser.id!);
     final data = await userFeed.getActivities();
     if (!pullToRefresh) _isLoading = false;
     setState(() => activities = data);
   }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _client = context.client;
     _loadActivities();
   }
 
@@ -45,10 +49,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (_) => AddActivityDialog(),
           );
           if (message != null) {
-            await ProgressDialogHelper.show(
-              context,
-              message: "Posting Activity...",
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Posting Activity...'),
+              ),
             );
+
             final activity = Activity(
               actor: user.id,
               verb: 'tweet',
@@ -57,9 +63,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 'tweet': message,
               },
             );
-            final userFeed = _client.flatFeed('user', user.id);
+            final userFeed = _client.flatFeed('user', user.id!);
             await userFeed.addActivity(activity);
-            await ProgressDialogHelper.hide();
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Activity Posted...'),
+              ),
+            );
             _loadActivities();
           }
         },
