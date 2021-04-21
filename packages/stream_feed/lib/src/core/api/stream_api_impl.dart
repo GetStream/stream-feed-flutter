@@ -14,7 +14,7 @@ import 'package:stream_feed/src/core/api/reactions_api.dart';
 import 'package:stream_feed/src/core/api/stream_api.dart';
 import 'package:stream_feed/src/core/api/users_api.dart';
 
-class StreamApiImpl implements StreamApi {
+class StreamApiImpl implements StreamAPI {
   /// [StreamApiImpl] constructor
   StreamApiImpl(
     String apiKey, {
@@ -25,28 +25,28 @@ class StreamApiImpl implements StreamApi {
   final StreamHttpClient _client;
 
   @override
-  BatchApi get batch => BatchApi(_client);
+  BatchAPI get batch => BatchAPI(_client);
 
   @override
-  ReactionsApi get reactions => ReactionsApi(_client);
+  ReactionsAPI get reactions => ReactionsAPI(_client);
 
   @override
-  UsersApi get users => UsersApi(_client);
+  UsersAPI get users => UsersAPI(_client);
 
   @override
-  CollectionsApi get collections => CollectionsApi(_client);
+  CollectionsAPI get collections => CollectionsAPI(_client);
 
   @override
-  FeedApi get feed => FeedApi(_client);
+  FeedAPI get feed => FeedAPI(_client);
 
   @override
-  FilesApi get files => FilesApi(_client);
+  FilesAPI get files => FilesAPI(_client);
 
   @override
-  ImagesApi get images => ImagesApi(_client);
+  ImagesAPI get images => ImagesAPI(_client);
 
   @override
-  PersonalizationApi get personalization => PersonalizationApi(_client);
+  PersonalizationAPI get personalization => PersonalizationAPI(_client);
 
   @override
   Future<OpenGraphData> openGraph(Token token, String targetUrl) async {

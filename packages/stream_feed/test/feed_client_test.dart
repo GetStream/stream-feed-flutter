@@ -10,7 +10,7 @@ import 'mock.dart';
 
 void main() {
   group('Feed Client', () {
-    final api = MockFeedApi();
+    final api = MockFeedAPI();
     final feedId = FeedId('slug', 'userId');
     const token = Token('dummyToken');
     final client = Feed(feedId, api, userToken: token);

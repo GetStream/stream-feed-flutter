@@ -10,11 +10,11 @@ class AnalyticsClient {
   AnalyticsClient(
     String apiKey,
     Token token, {
-    AnalyticsApi? analytics,
+    AnalyticsAPI? analytics,
     StreamHttpClientOptions? options,
-  }) : _analytics = analytics ?? AnalyticsApi(apiKey, token, options: options);
+  }) : _analytics = analytics ?? AnalyticsAPI(apiKey, token, options: options);
 
-  final AnalyticsApi _analytics;
+  final AnalyticsAPI _analytics;
 
   ///
   UserData? userData;

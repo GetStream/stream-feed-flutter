@@ -15,7 +15,7 @@ class PersonalizationClient {
 
   final Token? userToken;
   final String? secret;
-  final PersonalizationApi personalization;
+  final PersonalizationAPI personalization;
 
   Future<Map> get(
     String resource, {

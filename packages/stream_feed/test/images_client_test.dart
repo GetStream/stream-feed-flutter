@@ -8,7 +8,7 @@ import 'mock.dart';
 
 void main() {
   group('ImagesStorageClient', () {
-    final api = MockImagesApi();
+    final api = MockImagesAPI();
     const token = Token('dummyToken');
     final client = ImageStorageClient(api, userToken: token);
 
