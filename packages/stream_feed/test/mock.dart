@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/core/api/analytics_api.dart';
-import 'package:stream_feed_dart/src/core/api/collections_api.dart';
-import 'package:stream_feed_dart/src/core/api/feed_api.dart';
-import 'package:stream_feed_dart/src/core/api/files_api.dart';
-import 'package:stream_feed_dart/src/core/api/images_api.dart';
-import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
-import 'package:stream_feed_dart/src/core/api/stream_api.dart';
-import 'package:stream_feed_dart/src/core/api/users_api.dart';
-import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
+import 'package:stream_feed/src/core/api/analytics_api.dart';
+import 'package:stream_feed/src/core/api/collections_api.dart';
+import 'package:stream_feed/src/core/api/feed_api.dart';
+import 'package:stream_feed/src/core/api/files_api.dart';
+import 'package:stream_feed/src/core/api/images_api.dart';
+import 'package:stream_feed/src/core/api/reactions_api.dart';
+import 'package:stream_feed/src/core/api/stream_api.dart';
+import 'package:stream_feed/src/core/api/users_api.dart';
+import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class MockHttpClientAdapter extends Mock implements HttpClientAdapter {}

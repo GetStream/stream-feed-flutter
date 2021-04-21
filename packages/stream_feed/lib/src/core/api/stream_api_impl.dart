@@ -1,18 +1,18 @@
-import 'package:stream_feed_dart/src/core/api/files_api.dart';
-import 'package:stream_feed_dart/src/core/api/images_api.dart';
-import 'package:stream_feed_dart/src/core/api/personalization_api.dart';
-import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/models/open_graph_data.dart';
-import 'package:stream_feed_dart/src/core/util/extension.dart';
-import 'package:stream_feed_dart/src/core/util/routes.dart';
+import 'package:stream_feed/src/core/api/files_api.dart';
+import 'package:stream_feed/src/core/api/images_api.dart';
+import 'package:stream_feed/src/core/api/personalization_api.dart';
+import 'package:stream_feed/src/core/http/stream_http_client.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/open_graph_data.dart';
+import 'package:stream_feed/src/core/util/extension.dart';
+import 'package:stream_feed/src/core/util/routes.dart';
 
-import 'package:stream_feed_dart/src/core/api/batch_api.dart';
-import 'package:stream_feed_dart/src/core/api/collections_api.dart';
-import 'package:stream_feed_dart/src/core/api/feed_api.dart';
-import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
-import 'package:stream_feed_dart/src/core/api/stream_api.dart';
-import 'package:stream_feed_dart/src/core/api/users_api.dart';
+import 'package:stream_feed/src/core/api/batch_api.dart';
+import 'package:stream_feed/src/core/api/collections_api.dart';
+import 'package:stream_feed/src/core/api/feed_api.dart';
+import 'package:stream_feed/src/core/api/reactions_api.dart';
+import 'package:stream_feed/src/core/api/stream_api.dart';
+import 'package:stream_feed/src/core/api/users_api.dart';
 
 class StreamApiImpl implements StreamAPI {
   /// [StreamApiImpl] constructor

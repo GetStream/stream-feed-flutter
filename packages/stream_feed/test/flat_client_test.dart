@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/client/flat_feed.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/models/activity.dart';
-import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
-import 'package:stream_feed_dart/src/core/models/enrichment_flags.dart';
-import 'package:stream_feed_dart/src/core/models/feed_id.dart';
-import 'package:stream_feed_dart/src/core/models/filter.dart';
-import 'package:stream_feed_dart/src/core/util/default.dart';
+import 'package:stream_feed/src/client/flat_feed.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/enriched_activity.dart';
+import 'package:stream_feed/src/core/models/enrichment_flags.dart';
+import 'package:stream_feed/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/models/filter.dart';
+import 'package:stream_feed/src/core/util/default.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';

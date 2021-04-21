@@ -1,14 +1,14 @@
-import 'package:stream_feed_dart/src/core/api/feed_api.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/models/activity.dart';
-import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
-import 'package:stream_feed_dart/src/core/models/enrichment_flags.dart';
-import 'package:stream_feed_dart/src/core/models/feed_id.dart';
-import 'package:stream_feed_dart/src/core/models/filter.dart';
-import 'package:stream_feed_dart/src/core/util/default.dart';
+import 'package:stream_feed/src/core/api/feed_api.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/enriched_activity.dart';
+import 'package:stream_feed/src/core/models/enrichment_flags.dart';
+import 'package:stream_feed/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/models/filter.dart';
+import 'package:stream_feed/src/core/util/default.dart';
 
-import 'package:stream_feed_dart/src/client/feed.dart';
-import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:stream_feed/src/client/feed.dart';
+import 'package:stream_feed/src/core/util/token_helper.dart';
 
 ///Flat is the default feed type -
 ///and the only feed type that you can follow.

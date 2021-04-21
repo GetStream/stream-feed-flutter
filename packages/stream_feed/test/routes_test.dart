@@ -1,4 +1,4 @@
-import 'package:stream_feed_dart/src/core/util/routes.dart';
+import 'package:stream_feed/src/core/util/routes.dart';
 import 'package:test/test.dart';
 
 void main() {

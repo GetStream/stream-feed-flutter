@@ -1,11 +1,11 @@
-import 'package:stream_feed_dart/src/core/api/batch_api.dart';
-import 'package:stream_feed_dart/src/core/models/activity.dart';
-import 'package:stream_feed_dart/src/core/models/enriched_activity.dart';
-import 'package:stream_feed_dart/src/core/models/feed_id.dart';
-import 'package:stream_feed_dart/src/core/models/follow.dart';
-import 'package:stream_feed_dart/src/core/models/foreign_id_time_pair.dart';
-import 'package:stream_feed_dart/src/core/util/default.dart';
-import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:stream_feed/src/core/api/batch_api.dart';
+import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/enriched_activity.dart';
+import 'package:stream_feed/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
+import 'package:stream_feed/src/core/util/default.dart';
+import 'package:stream_feed/src/core/util/token_helper.dart';
 
 class BatchOperationsClient {
   BatchOperationsClient(this._batch, {required this.secret});
@@ -19,7 +19,8 @@ class BatchOperationsClient {
   /// - [feedIds] : an Iterable of feed ids [FeedId]
   ///
   /// API docs: [batch-activity-add](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-activity-add)
-  Future<void> addToMany(Activity activity, Iterable<FeedId> feedIds) {
+  Future<void> addToMany(Activity activity, List<FeedId> feedIds) {
+    //TODO: why is this void vs Future<APIResponse> compared to js client
     final token = TokenHelper.buildFeedToken(secret, TokenAction.write);
     return _batch.addToMany(token, activity, feedIds);
   }

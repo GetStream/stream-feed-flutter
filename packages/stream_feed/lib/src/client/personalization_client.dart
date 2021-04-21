@@ -1,7 +1,7 @@
-import 'package:stream_feed_dart/src/core/api/personalization_api.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/util/extension.dart';
-import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:stream_feed/src/core/api/personalization_api.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/util/extension.dart';
+import 'package:stream_feed/src/core/util/token_helper.dart';
 
 class PersonalizationClient {
   const PersonalizationClient(

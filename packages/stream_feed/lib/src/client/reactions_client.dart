@@ -1,9 +1,9 @@
-import 'package:stream_feed_dart/src/core/api/reactions_api.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/index.dart';
-import 'package:stream_feed_dart/src/core/models/paginated.dart';
-import 'package:stream_feed_dart/src/core/util/default.dart';
-import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:stream_feed/src/core/api/reactions_api.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/index.dart';
+import 'package:stream_feed/src/core/models/paginated.dart';
+import 'package:stream_feed/src/core/util/default.dart';
+import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Reactions are a special kind of data that can be used
 /// to capture user interaction with specific activities.

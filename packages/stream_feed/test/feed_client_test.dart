@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/client/feed.dart';
-import 'package:stream_feed_dart/src/client/flat_feed.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/src/client/feed.dart';
+import 'package:stream_feed/src/client/flat_feed.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
@@ -56,6 +56,19 @@ void main() {
       // ignore: invalid_use_of_protected_member
       verify(() => api.unfollow(token, feedId, flatFeed.feedId, true))
           .called(1);
+    });
+
+    test('follows', () {
+      final follows = <Follow>[
+        const Follow('timeline:1', 'user:1'),
+        const Follow('timeline:1', 'user:2'),
+        const Follow('timeline:1', 'user:3'),
+      ];
+      expect(follows.map((e) => e.toJson()), [
+        {'source': 'timeline:1', 'target': 'user:1'},
+        {'source': 'timeline:1', 'target': 'user:2'},
+        {'source': 'timeline:1', 'target': 'user:3'}
+      ]);
     });
 
     test('getFollowed', () async {
