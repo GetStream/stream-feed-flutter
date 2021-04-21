@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 Future<void> main() async {
   const apiKey = 'gp6e8sxxzud6';
@@ -196,7 +196,7 @@ Future<void> main() async {
   // list followers
   final followers = await userFeed.getFollowers(limit: 10, offset: 0);
   for (final follow in followers) {
-    print('${follow.feedId} -> ${follow.targetId}');
+    print('${follow.source} -> ${follow.target}');
   }
 
   // Retrieve last 10 feeds followed by user_feed_1

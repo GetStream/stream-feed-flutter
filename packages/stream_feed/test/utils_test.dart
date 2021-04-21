@@ -1,5 +1,5 @@
-import 'package:stream_feed_dart/src/core/util/extension.dart';
-import 'package:stream_feed_dart/src/core/util/serializer.dart';
+import 'package:stream_feed/src/core/util/extension.dart';
+import 'package:stream_feed/src/core/util/serializer.dart';
 import 'package:test/test.dart';
 
 void main() {

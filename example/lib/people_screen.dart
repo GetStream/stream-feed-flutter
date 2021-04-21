@@ -2,7 +2,7 @@ import 'package:example/dummy_app_user.dart';
 import 'package:example/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 class PeopleScreen extends StatefulWidget {
   final User streamUser;

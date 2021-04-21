@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
-import 'package:stream_feed_dart/src/core/util/extension.dart';
-import 'package:stream_feed_dart/src/core/util/routes.dart';
+import 'package:stream_feed/src/core/http/stream_http_client.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/collection_entry.dart';
+import 'package:stream_feed/src/core/util/extension.dart';
+import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Collections
 class CollectionsApi {

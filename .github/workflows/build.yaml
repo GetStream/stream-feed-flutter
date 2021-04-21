@@ -33,14 +33,13 @@ jobs:
         run: melos bootstrap
 
       - name: Check format
-        run: flutter format --set-exit-if-changed .
+        run: melos run format
 
-      # - name: Generate (dart)
-      #   run: melos exec --depends-on="build_runner" --no-flutter -- "dart run build_runner build --delete-conflicting-outputs"
+      - name: Generate models
+        run: melos run generate
       
-      # Uncomment once we have cleaned all the lints
-      # - name: Analyze
-      #   run: melos exec --ignore="marvel" -- "flutter analyze"
+      - name: Analyze
+        run: melos run analyze
 
       - name: Run tests
         run: melos run test

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/core/api/collections_api.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/models/collection_entry.dart';
-import 'package:stream_feed_dart/src/core/util/routes.dart';
+import 'package:stream_feed/src/core/api/collections_api.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/collection_entry.dart';
+import 'package:stream_feed/src/core/util/routes.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';

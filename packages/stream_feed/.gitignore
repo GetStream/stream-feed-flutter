@@ -1,3 +1,5 @@
+# Ignoring generated files, as they pollute pull requests and can create merge conflicts
+
 # Miscellaneous
 *.class
 *.log

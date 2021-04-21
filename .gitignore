@@ -1,3 +1,4 @@
+*.g.dart
 # Miscellaneous
 *.class
 *.lock
