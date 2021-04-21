@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'package:stream_feed_dart/src/core/api/feed_api.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/models/activity.dart';
-import 'package:stream_feed_dart/src/core/models/activity_update.dart';
-import 'package:stream_feed_dart/src/core/models/feed_id.dart';
-import 'package:stream_feed_dart/src/core/models/follow.dart';
-import 'package:stream_feed_dart/src/core/models/realtime_message.dart';
-import 'package:stream_feed_dart/src/core/util/default.dart';
+import 'package:stream_feed/src/core/api/feed_api.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/activity_update.dart';
+import 'package:stream_feed/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/models/realtime_message.dart';
+import 'package:stream_feed/src/core/util/default.dart';
 
-import 'package:stream_feed_dart/src/client/flat_feed.dart';
-import 'package:stream_feed_dart/src/core/util/extension.dart';
-import 'package:stream_feed_dart/src/core/util/token_helper.dart';
+import 'package:stream_feed/src/client/flat_feed.dart';
+import 'package:stream_feed/src/core/util/extension.dart';
+import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:faye_dart/faye_dart.dart';
 
 ///
@@ -59,6 +59,7 @@ class Feed {
   final FeedApi feed;
 
   /// Subscribes to any changes in the feed, return a [Subscription]
+  @experimental
   Future<Subscription> subscribe(
     void Function(RealtimeMessage? message) callback,
   ) {

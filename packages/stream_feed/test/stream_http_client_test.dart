@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
+import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';

@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed_dart/src/core/http/stream_http_client.dart';
-import 'package:stream_feed_dart/src/core/http/token.dart';
-import 'package:stream_feed_dart/src/core/models/activity.dart';
-import 'package:stream_feed_dart/src/core/models/activity_update.dart';
-import 'package:stream_feed_dart/src/core/models/feed_id.dart';
-import 'package:stream_feed_dart/src/core/models/follow.dart';
-import 'package:stream_feed_dart/src/core/util/default.dart';
-import 'package:stream_feed_dart/src/core/util/extension.dart';
-import 'package:stream_feed_dart/src/core/util/routes.dart';
+import 'package:stream_feed/src/core/http/stream_http_client.dart';
+import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/activity_update.dart';
+import 'package:stream_feed/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/util/default.dart';
+import 'package:stream_feed/src/core/util/extension.dart';
+import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Feeds
 class FeedApi {

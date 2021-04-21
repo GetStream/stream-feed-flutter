@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:stream_feed_dart/src/core/util/extension.dart';
+import 'package:stream_feed/src/core/util/extension.dart';
 
 ///
 class ForeignIdTimePair extends Equatable {

@@ -1,6 +1,6 @@
-import 'package:stream_feed_dart/src/core/models/activity_marker.dart';
-import 'package:stream_feed_dart/src/core/models/enrichment_flags.dart';
-import 'package:stream_feed_dart/src/core/models/filter.dart';
+import 'package:stream_feed/src/core/models/activity_marker.dart';
+import 'package:stream_feed/src/core/models/enrichment_flags.dart';
+import 'package:stream_feed/src/core/models/filter.dart';
 
 ///Default values
 class Default {

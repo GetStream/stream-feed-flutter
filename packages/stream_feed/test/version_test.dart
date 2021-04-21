@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:stream_feed_dart/version.dart';
+import 'package:stream_feed/version.dart';
 import 'package:test/test.dart';
 
 import 'utils.dart';

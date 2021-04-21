@@ -1,8 +1,8 @@
-name: stream_feed_dart
-description: A new Flutter package.
+name: stream_feed
+description: Stream Feed official Dart SDK. Build your own feed experience using Dart and Flutter. 
 version: 0.0.1
-author:
-homepage:
+homepage: https://getstream.io/
+publish_to: none
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

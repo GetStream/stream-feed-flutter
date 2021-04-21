@@ -1,7 +1,7 @@
-import 'package:stream_feed_dart/src/client/stream_client.dart';
-import 'package:stream_feed_dart/src/core/models/feed_id.dart';
-import 'package:stream_feed_dart/src/core/models/realtime_message.dart';
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/src/client/stream_client.dart';
+import 'package:stream_feed/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/models/realtime_message.dart';
+import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
 void main() async {
@@ -35,7 +35,8 @@ void main() async {
     await Future.delayed(const Duration(seconds: 3));
 
     expect(realTimeMessage, isNotNull);
-    expect(realTimeMessage!.newActivities.first.id, activity.id);
+    expect(realTimeMessage!.newActivities.first.id,
+        activity.id); //TODO: this test is flaky
 
     addTearDown(subscription.cancel);
   });

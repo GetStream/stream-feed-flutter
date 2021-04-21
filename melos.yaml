@@ -1,14 +1,18 @@
-name: my_project
+name: stream_feed_flutter
 
 packages:
   - packages/**
   - example/**
 
 scripts:
+  format:
+    run: flutter format --set-exit-if-changed .
+    description: |
+      Run `flutter format --set-exit-if-changed .` in all packages.
   analyze:
     run: |
       melos exec -c 1 -- \
-        flutter analyze .
+        dart analyze --no-fatal-warnings .
     description: |
       Run `dart analyze` in all packages.
        - Note: you can also rely on your IDEs Dart Analysis / Issues window.

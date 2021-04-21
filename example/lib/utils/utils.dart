@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:stream_feed_dart/stream_feed.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 class ClientProvider extends InheritedWidget {
   const ClientProvider({
