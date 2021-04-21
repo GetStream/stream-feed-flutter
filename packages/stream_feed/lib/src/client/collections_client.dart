@@ -34,7 +34,7 @@ class CollectionsClient {
 
   /// Your API secret
   final String? secret;
-  final CollectionsApi _collections;
+  final CollectionsAPI _collections;
 
   /// Add item to collection
   ///

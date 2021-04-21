@@ -8,7 +8,7 @@ import 'mock.dart';
 
 void main() {
   group('FileStorageClient', () {
-    final api = MockFilesApi();
+    final api = MockFilesAPI();
     const token = Token('dummyToken');
     final client = FileStorageClient(api, userToken: token);
     test('upload', () async {

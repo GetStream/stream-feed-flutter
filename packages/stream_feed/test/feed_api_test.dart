@@ -16,7 +16,7 @@ import 'utils.dart';
 Future<void> main() async {
   group('Feed API', () {
     final mockClient = MockHttpClient();
-    final feedApi = FeedApi(mockClient);
+    final feedApi = FeedAPI(mockClient);
     test('Follow', () async {
       const token = Token('dummyToken');
       const targetToken = Token('dummyToken2');

@@ -4,9 +4,9 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Images
-class ImagesApi {
-  /// [ImagesApi] constructor
-  const ImagesApi(this._client);
+class ImagesAPI {
+  /// [ImagesAPI] constructor
+  const ImagesAPI(this._client);
 
   final StreamHttpClient _client;
 

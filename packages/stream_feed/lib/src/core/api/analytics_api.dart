@@ -7,9 +7,9 @@ import 'package:stream_feed/src/core/models/event.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 
 ///
-class AnalyticsApi {
+class AnalyticsAPI {
   ///
-  AnalyticsApi(
+  AnalyticsAPI(
     String apiKey,
     this._token, {
     StreamHttpClient? client,

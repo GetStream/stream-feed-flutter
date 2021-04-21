@@ -27,21 +27,21 @@ class MockDio extends Mock implements Dio {
 
 class MockHttpClient extends Mock implements StreamHttpClient {}
 
-class MockAnalyticsApi extends Mock implements AnalyticsApi {}
+class MockAnalyticsAPI extends Mock implements AnalyticsAPI {}
 
-class MockCollectionsApi extends Mock implements CollectionsApi {}
+class MockCollectionsAPI extends Mock implements CollectionsAPI {}
 
-class MockFilesApi extends Mock implements FilesApi {}
+class MockFilesAPI extends Mock implements FilesAPI {}
 
-class MockReactionsApi extends Mock implements ReactionsApi {}
+class MockReactionsAPI extends Mock implements ReactionsAPI {}
 
-class MockImagesApi extends Mock implements ImagesApi {}
+class MockImagesAPI extends Mock implements ImagesAPI {}
 
-class MockUsersApi extends Mock implements UsersApi {}
+class MockUsersAPI extends Mock implements UsersAPI {}
 
-class MockFeedApi extends Mock implements FeedApi {}
+class MockFeedAPI extends Mock implements FeedAPI {}
 
-class MockApi extends Mock implements StreamApi {}
+class MockAPI extends Mock implements StreamAPI {}
 
 class Functions {
   WebSocketChannel? connectFunc(

@@ -19,7 +19,7 @@ class UsersClient {
   final String? userId;
 
   ///The users client
-  final UsersApi _users;
+  final UsersAPI _users;
 
   /// You API secret
   final String? secret;

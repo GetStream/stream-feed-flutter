@@ -13,7 +13,7 @@ import 'mock.dart';
 
 void main() {
   group('ReactionsClient', () {
-    final api = MockReactionsApi();
+    final api = MockReactionsAPI();
     final dummyResponse = Response(
         data: {},
         requestOptions: RequestOptions(

@@ -10,10 +10,9 @@ import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Feeds
-class FeedApi {
-  // TODO: uppercase API?
-  /// [FeedApi] constructor
-  const FeedApi(this._client);
+class FeedAPI {
+  /// [FeedAPI] constructor
+  const FeedAPI(this._client);
 
   final StreamHttpClient _client;
 

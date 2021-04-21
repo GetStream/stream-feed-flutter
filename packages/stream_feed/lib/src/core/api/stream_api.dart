@@ -11,29 +11,29 @@ import 'package:stream_feed/src/core/api/images_api.dart';
 import 'package:stream_feed/src/core/api/reactions_api.dart';
 
 ///Umbrella interface for all of our http layer apis
-abstract class StreamApi {
-  /// getter for [BatchApi]
-  BatchApi get batch;
+abstract class StreamAPI {
+  /// getter for [BatchAPI]
+  BatchAPI get batch;
 
-  /// getter for [ReactionsApi]
-  ReactionsApi get reactions;
+  /// getter for [ReactionsAPI]
+  ReactionsAPI get reactions;
 
-  /// getter for [UsersApi]
-  UsersApi get users;
+  /// getter for [UsersAPI]
+  UsersAPI get users;
 
-  /// getter for [CollectionsApi]
-  CollectionsApi get collections;
+  /// getter for [CollectionsAPI]
+  CollectionsAPI get collections;
 
-  /// getter for [FeedApi]
-  FeedApi get feed;
+  /// getter for [FeedAPI]
+  FeedAPI get feed;
 
-  /// getter for [FilesApi]
-  FilesApi get files;
+  /// getter for [FilesAPI]
+  FilesAPI get files;
 
-  /// getter for [ImagesApi]
-  ImagesApi get images;
+  /// getter for [ImagesAPI]
+  ImagesAPI get images;
 
-  PersonalizationApi get personalization;
+  PersonalizationAPI get personalization;
 
   /// retrieve for [OpenGraphData]
   Future<OpenGraphData> openGraph(Token token, String targetUrl);

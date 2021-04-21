@@ -19,7 +19,7 @@ class FileStorageClient {
   /// Your user token obtain via the dashboard.
   /// Required if you are using the sdk client side
   final Token? userToken;
-  final FilesApi _files;
+  final FilesAPI _files;
 
   /// Upload a File instance or a readable stream of data
   /// Usage:

@@ -21,7 +21,7 @@ class AggregatedFeed extends Feed {
   /// Initialize a [AggregatedFeed] object
   AggregatedFeed(
     FeedId feedId,
-    FeedApi feed, {
+    FeedAPI feed, {
     Token? userToken,
     String? secret,
     FeedSubscriber? subscriber,

@@ -10,7 +10,7 @@ import 'mock.dart';
 
 void main() {
   group('CollectionsClient', () {
-    final api = MockCollectionsApi();
+    final api = MockCollectionsAPI();
 
     const secret = 'secret';
     const token = Token('dummyToken');
@@ -95,7 +95,7 @@ void main() {
       final clientWithSecret = CollectionsClient(api, secret: secret);
       when(() => api.deleteMany(token, collection, entryIds))
           .thenAnswer((_) async => Response(
-              data: {},
+              data: {}, //TODO: flaky
               requestOptions: RequestOptions(
                 path: '',
               ),

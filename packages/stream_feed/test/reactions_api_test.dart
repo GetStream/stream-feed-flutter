@@ -14,7 +14,7 @@ import 'utils.dart';
 Future<void> main() async {
   group('Reactions API', () {
     final mockClient = MockHttpClient();
-    final reactionsApi = ReactionsApi(mockClient);
+    final reactionsApi = ReactionsAPI(mockClient);
 
     test('Filter', () async {
       const token = Token('dummyToken');

@@ -9,7 +9,7 @@ import 'mock.dart';
 
 void main() {
   group('Users Client', () {
-    final api = MockUsersApi();
+    final api = MockUsersAPI();
 
     const token = Token('dummyToken');
     final client = UsersClient(api, userToken: token);
