@@ -16,7 +16,7 @@ import 'utils.dart';
 
 void main() {
   group('NotificationFeed Client', () {
-    final api = MockFeedApi();
+    final api = MockFeedAPI();
     final feedId = FeedId('slug', 'userId');
     const token = Token('dummyToken');
     final client = NotificationFeed(feedId, api, userToken: token);

@@ -12,9 +12,9 @@ import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for for anything related to Batch operations
-class BatchApi {
-  /// [CollectionsApi] constructor
-  const BatchApi(this._client);
+class BatchAPI {
+  /// [CollectionsAPI] constructor
+  const BatchAPI(this._client);
 
   final StreamHttpClient _client;
 

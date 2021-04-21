@@ -34,7 +34,7 @@ class StreamClientImpl implements StreamClient {
     this.logLevel = Level.WARNING,
     this.appId,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
-    StreamApi? api,
+    StreamAPI? api,
     StreamHttpClientOptions? options,
   })  : assert(
           userToken != null || secret != null,
@@ -50,7 +50,7 @@ class StreamClientImpl implements StreamClient {
   final String apiKey;
   final String? appId;
   final Token? userToken;
-  final StreamApi _api;
+  final StreamAPI _api;
   final String? secret;
   final String fayeUrl;
 

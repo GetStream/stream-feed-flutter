@@ -5,8 +5,8 @@ import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 
-class PersonalizationApi {
-  const PersonalizationApi(this.client);
+class PersonalizationAPI {
+  const PersonalizationAPI(this.client);
 
   final StreamHttpClient client;
 

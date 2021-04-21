@@ -15,7 +15,7 @@ void main() {
   final httpClient = MockHttpClient();
 
   group('trackImpressions', () {
-    final api = AnalyticsApi(apiKey, token, client: httpClient);
+    final api = AnalyticsAPI(apiKey, token, client: httpClient);
     final impression = Impression(
       contentList: const [
         {
@@ -68,7 +68,7 @@ void main() {
   });
 
   group('trackEngagements', () {
-    final api = AnalyticsApi(apiKey, token, client: httpClient);
+    final api = AnalyticsAPI(apiKey, token, client: httpClient);
     final engagement = Engagement(
       content: const {'foreign_id': 'tweet:34349698'},
       label: 'click',

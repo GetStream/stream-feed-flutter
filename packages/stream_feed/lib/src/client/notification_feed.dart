@@ -37,7 +37,7 @@ class NotificationFeed extends AggregatedFeed {
   ///Initialize a [NotificationFeed] object
   NotificationFeed(
     FeedId feedId,
-    FeedApi feed, {
+    FeedAPI feed, {
     Token? userToken,
     String? secret,
     FeedSubscriber? subscriber,

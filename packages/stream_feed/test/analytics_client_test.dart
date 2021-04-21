@@ -9,7 +9,7 @@ import 'mock.dart';
 void main() {
   const apiKey = 'dummyKey';
   const token = Token('dummyToken');
-  final api = MockAnalyticsApi();
+  final api = MockAnalyticsAPI();
 
   test('`setUser` should set user successfully', () {
     final client = AnalyticsClient(apiKey, token, analytics: api);
