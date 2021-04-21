@@ -5,7 +5,7 @@ import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Images
 class ImagesAPI {
-  /// [ImagesApi] constructor
+  /// [ImagesAPI] constructor
   const ImagesAPI(this._client);
 
   final StreamHttpClient _client;
