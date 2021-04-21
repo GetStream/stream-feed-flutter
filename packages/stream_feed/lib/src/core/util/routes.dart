@@ -17,6 +17,8 @@ class Routes {
   static const _filesPath = 'files';
   static const _imagesPath = 'images';
 
+  static const _statsFollowPath = 'stats/follow/';
+
   static String buildFeedUrl(FeedId feed, [String path = '']) =>
       '$_feedPath/${feed.slug}/${feed.userId}/$path';
 
@@ -51,4 +53,6 @@ class Routes {
   static String get unfollowManyUrl => _unfollowManyPath;
 
   static String get activitesUrl => _activitiesPath;
+
+  static String get statsFollowUrl => _statsFollowPath;
 }

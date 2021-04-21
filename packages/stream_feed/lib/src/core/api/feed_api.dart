@@ -5,6 +5,7 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/models/follow_stats_options.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
@@ -72,6 +73,11 @@ class FeedAPI {
         headers: {'Authorization': '$token'},
         queryParameters: options,
       );
+
+  Future<Response> followStats(Token token, FollowStatsOptions options) =>
+      _client.get(Routes.statsFollowUrl,
+          headers: {'Authorization': '$token'},
+          queryParameters: options.params);
 
   ///Retrieve activities with reaction enrichment
   Future<Response> getEnrichedActivities(
