@@ -201,14 +201,14 @@ class Feed {
   /// ```
   ///
   /// API docs: [reading-feed-followers](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-feed-followers)
-  Future<List<Follow>> getFollowers({
+  Future<List<Follow>> followers({
     Iterable<FeedId>? feedIds,
     int? limit,
     int? offset,
   }) {
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.read, feedId);
-    return feed.getFollowers(token, feedId, limit ?? Default.limit,
+    return feed.followers(token, feedId, limit ?? Default.limit,
         offset ?? Default.offset, feedIds ?? []);
   }
 

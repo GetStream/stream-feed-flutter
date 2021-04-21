@@ -194,7 +194,7 @@ Future<void> main() async {
   await timeline.unfollow(user, keepHistory: true);
 
   // list followers
-  final followers = await userFeed.getFollowers(limit: 10, offset: 0);
+  final followers = await userFeed.followers(limit: 10, offset: 0);
   for (final follow in followers) {
     print('${follow.source} -> ${follow.target}');
   }

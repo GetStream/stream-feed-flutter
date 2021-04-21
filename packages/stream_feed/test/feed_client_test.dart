@@ -98,10 +98,10 @@ void main() {
         const Follow('timeline:1', 'user:2'),
         const Follow('timeline:1', 'user:3'),
       ];
-      when(() => api.getFollowers(token, feed, limit, offset, feedIds))
+      when(() => api.followers(token, feed, limit, offset, feedIds))
           .thenAnswer((_) async => follows);
-      await client.getFollowers(limit: limit, offset: offset, feedIds: feedIds);
-      verify(() => api.getFollowers(token, feed, limit, offset, feedIds))
+      await client.followers(limit: limit, offset: offset, feedIds: feedIds);
+      verify(() => api.followers(token, feed, limit, offset, feedIds))
           .called(1);
     });
 
