@@ -95,7 +95,7 @@ void main() {
       final clientWithSecret = CollectionsClient(api, secret: secret);
       when(() => api.deleteMany(token, collection, entryIds))
           .thenAnswer((_) async => Response(
-              data: {},
+              data: {}, //TODO: flaky
               requestOptions: RequestOptions(
                 path: '',
               ),
