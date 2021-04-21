@@ -58,7 +58,8 @@ class UsersClient {
     return _users.delete(token, id);
   }
 
-  Future<User> profile({bool? withFollowCounts}) async {
+  ///  Get the user profile, it includes the follow counts by default
+  Future<User> profile({bool withFollowCounts = true}) async {
     checkNotNull(userId, 'userId is not defined');
     return get(userId!, withFollowCounts: withFollowCounts);
   }
