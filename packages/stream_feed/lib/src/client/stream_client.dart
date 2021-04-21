@@ -99,5 +99,5 @@ abstract class StreamClient {
   ///   'http://www.imdb.com/title/tt0117500/',
   /// );
   /// ```
-  Future<OpenGraphData> openGraph(String targetUrl);
+  Future<OpenGraphData> og(String targetUrl);
 }

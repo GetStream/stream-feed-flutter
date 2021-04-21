@@ -163,7 +163,7 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  Future<OpenGraphData> openGraph(String targetUrl) {
+  Future<OpenGraphData> og(String targetUrl) {
     final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
   }

@@ -651,7 +651,7 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  final urlPreview = await client.openGraph(
+  final urlPreview = await client.og(
     'http://www.imdb.com/title/tt0117500/',
   );
 }

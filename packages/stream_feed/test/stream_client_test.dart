@@ -46,7 +46,7 @@ void main() {
         (_) async =>
             OpenGraphData.fromJson(jsonFixture('open_graph_data.json')),
       );
-      await client.openGraph(targetUrl);
+      await client.og(targetUrl);
       verify(() => mockApi.openGraph(token, targetUrl)).called(1);
     });
   });
