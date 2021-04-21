@@ -1,34 +1,35 @@
+import 'package:example/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_dart/stream_feed.dart';
 
 import 'activity_item.dart';
-import 'main.dart';
 
 class TimelineScreen extends StatefulWidget {
   final User streamUser;
 
-  const TimelineScreen({Key key, @required this.streamUser}) : super(key: key);
+  const TimelineScreen({Key? key, required this.streamUser}) : super(key: key);
 
   @override
   _TimelineScreenState createState() => _TimelineScreenState();
 }
 
 class _TimelineScreenState extends State<TimelineScreen> {
-  final _client = locator<StreamClient>();
+  late StreamClient _client;
   bool _isLoading = true;
   List<Activity> activities = <Activity>[];
 
   Future<void> _loadActivities({bool pullToRefresh = false}) async {
     if (!pullToRefresh) setState(() => _isLoading = true);
-    final userFeed = _client.flatFeed('timeline', widget.streamUser.id);
+    final userFeed = _client.flatFeed('timeline', widget.streamUser.id!);
     final data = await userFeed.getActivities();
     if (!pullToRefresh) _isLoading = false;
     setState(() => activities = data);
   }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _client = context.client;
     _loadActivities();
   }
 

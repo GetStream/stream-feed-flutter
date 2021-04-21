@@ -1,41 +1,41 @@
 enum DummyAppUser {
   sahil,
-  amit,
-  ayush,
+  sacha,
+  nash,
 }
 
 /// Convenient class Extension on [DummyAppUser] enum
 extension DummyAppUserX on DummyAppUser {
   /// Convenient method Extension to generate an [id] from [DummyAppUser] enum
-  String get id => {
+  String? get id => {
         DummyAppUser.sahil: 'sahil-kumar',
-        DummyAppUser.amit: 'amit-kumar',
-        DummyAppUser.ayush: 'ayush-gupta',
+        DummyAppUser.sacha: 'sacha-arbonel',
+        DummyAppUser.nash: 'neevash-ramdial',
       }[this];
 
   /// Convenient method Extension to generate a [name] from [DummyAppUser] enum
-  String get name => {
+  String? get name => {
         DummyAppUser.sahil: 'Sahil Kumar',
-        DummyAppUser.amit: 'Amit Kumar',
-        DummyAppUser.ayush: 'Ayush P Gupta',
+        DummyAppUser.sacha: 'Sacha Arbonel',
+        DummyAppUser.nash: 'Neevash Ramdial',
       }[this];
 
   /// Convenient method Extension to generate [data] from [DummyAppUser] enum
-  Map<String, Object> get data => {
+  Map<String, Object>? get data => {
         DummyAppUser.sahil: {
           'first_name': 'Sahil',
           'last_name': 'Kumar',
           'full_name': 'Sahil Kumar',
         },
-        DummyAppUser.amit: {
-          'first_name': 'Amit',
-          'last_name': 'Kumar',
-          'full_name': 'Amit Kumar',
+        DummyAppUser.sacha: {
+          'first_name': 'Sacha',
+          'last_name': 'Arbonel',
+          'full_name': 'Sacha Arbonel',
         },
-        DummyAppUser.ayush: {
-          'first_name': 'Ayush',
-          'last_name': 'Gupta',
-          'full_name': 'Ayush P Gupta',
+        DummyAppUser.nash: {
+          'first_name': 'Neevash',
+          'last_name': 'Ramdial',
+          'full_name': 'Neevash Ramdial',
         },
       }[this];
 }

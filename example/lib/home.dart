@@ -7,7 +7,7 @@ import 'package:stream_feed_dart/stream_feed.dart';
 class HomeScreen extends StatefulWidget {
   final User streamUser;
 
-  const HomeScreen({Key key, @required this.streamUser}) : super(key: key);
+  const HomeScreen({Key? key, required this.streamUser}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
