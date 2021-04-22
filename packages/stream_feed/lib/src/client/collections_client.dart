@@ -210,7 +210,8 @@ class CollectionsClient {
   /// ]);
   /// ```
   /// API docs : [upsert](https://getstream.io/activity-feeds/docs/flutter-dart/collections_batch/?language=dart#upsert)
-  Future<void> upsert(String collection, Iterable<CollectionEntry> entries) {
+  Future<List<CollectionEntry>> upsert(
+      String collection, Iterable<CollectionEntry> entries) {
     final token = TokenHelper.buildCollectionsToken(secret!, TokenAction.write);
     return _collections.upsert(token, collection, entries);
   }

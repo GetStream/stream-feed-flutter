@@ -111,17 +111,24 @@ class CollectionsAPI {
   }
 
   ///Upsert one or more items within a collection.
-  Future<Response> upsert(
+  Future<List<CollectionEntry>> upsert(
       //TODO: Map<String, Iterable<CollectionEntry>>
       Token token,
       String collection,
       Iterable<CollectionEntry> entries) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
     checkArgument(entries.isNotEmpty, "Collection data can't be empty");
-    return _client.post(Routes.buildCollectionsUrl(), headers: {
-      'Authorization': '$token'
-    }, data: {
-      'data': {collection: entries}
-    });
+    final response = await _client.post<Map>(
+      Routes.buildCollectionsUrl(),
+      headers: {'Authorization': '$token'},
+      data: {
+        'data': {collection: entries}
+      },
+    );
+
+    final data = (response.data!['data'][collection] as List)
+        .map((e) => CollectionEntry.fromJson(e))
+        .toList(growable: false);
+    return data;
   }
 }

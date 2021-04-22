@@ -7,6 +7,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
+import 'utils.dart';
 
 void main() {
   group('CollectionsClient', () {
@@ -132,12 +133,7 @@ void main() {
           TokenHelper.buildCollectionsToken(secret, TokenAction.write);
       final clientWithSecret = CollectionsClient(api, secret: secret);
       when(() => api.upsert(token, collection, entries))
-          .thenAnswer((_) async => Response(
-              data: {},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
-              statusCode: 200));
+          .thenAnswer((_) async => entries);
       await clientWithSecret.upsert(collection, entries);
       verify(() => api.upsert(token, collection, entries)).called(1);
     });
