@@ -19,7 +19,7 @@ abstract class StreamAPI {
   ReactionsAPI get reactions;
 
   /// getter for [UsersAPI]
-  UsersAPI get users;
+  UserAPI get users;
 
   /// getter for [CollectionsAPI]
   CollectionsAPI get collections;

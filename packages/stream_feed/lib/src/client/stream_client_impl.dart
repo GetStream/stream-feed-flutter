@@ -15,7 +15,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 
-import 'package:stream_feed/src/client/users_client.dart';
+import 'package:stream_feed/src/client/user_client.dart';
 import 'package:stream_feed/src/client/stream_client.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
@@ -78,8 +78,8 @@ class StreamClientImpl implements StreamClient {
       ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
 
   @override
-  UsersClient user(String userId) =>
-      UsersClient(_api.users, userId, userToken: userToken, secret: secret);
+  UserClient user(String userId) =>
+      UserClient(_api.users, userId, userToken: userToken, secret: secret);
 
   @override
   FileStorageClient get files =>

@@ -10,7 +10,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 
 import 'package:stream_feed/src/client/reactions_client.dart';
-import 'package:stream_feed/src/client/users_client.dart';
+import 'package:stream_feed/src/client/user_client.dart';
 import 'package:stream_feed/src/client/stream_client_impl.dart';
 
 /// The client class that manages API calls and authentication
@@ -61,7 +61,7 @@ abstract class StreamClient {
   ReactionsClient get reactions;
 
   /// Convenient getter for [UsersClient]
-  UsersClient user(String userId);
+  UserClient user(String userId);
 
   /// Convenient getter for [FileStorageClient]
   FileStorageClient get files;

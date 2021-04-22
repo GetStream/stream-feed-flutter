@@ -8,9 +8,9 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// and embed them inside activities or use them for personalization.
 ///
 /// When stored in activities, users are automatically enriched by Stream.
-class UsersClient {
+class UserClient {
   ///Initialize a [UsersClient] session object
-  const UsersClient(this._users, this.userId, {this.userToken, this.secret});
+  const UserClient(this._users, this.userId, {this.userToken, this.secret});
 
   ///User JWT token
   final Token? userToken;
@@ -19,7 +19,7 @@ class UsersClient {
   final String userId;
 
   ///The users client
-  final UsersAPI _users;
+  final UserAPI _users;
 
   /// You API secret
   final String? secret;

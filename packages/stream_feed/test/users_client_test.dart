@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed/src/client/users_client.dart';
+import 'package:stream_feed/src/client/user_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/user.dart';
 import 'package:test/test.dart';
@@ -9,11 +9,11 @@ import 'mock.dart';
 
 void main() {
   group('Users Client', () {
-    final api = MockUsersAPI();
+    final api = MockUserAPI();
 
     const token = Token('dummyToken');
     const id = 'john-doe';
-    final client = UsersClient(api, id, userToken: token);
+    final client = UserClient(api, id, userToken: token);
     test('add', () async {
       const data = {
         'name': 'John Doe',
