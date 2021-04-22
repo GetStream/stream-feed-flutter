@@ -6,6 +6,7 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/models/follow_stats_options.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 
@@ -74,6 +75,15 @@ class Feed {
       final realtimeMessage = RealtimeMessage.fromJson(data!);
       callback(realtimeMessage);
     });
+  }
+
+  ///Retrieve the number of follower
+  ///and following feed stats of the current feed.
+  /// For each count, feed slugs can be provided to filter counts accordingly.
+  Future<Response> followStats(FollowStatsOptions options) {
+    final token = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
+    return feed.followStats(token, options);
   }
 
   /// Adds the given [Activity] to the feed

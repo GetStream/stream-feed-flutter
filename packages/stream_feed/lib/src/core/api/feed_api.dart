@@ -74,6 +74,9 @@ class FeedAPI {
         queryParameters: options,
       );
 
+  ///Retrieve the number of follower
+  ///and following feed stats of the current feed.
+  /// For each count, feed slugs can be provided to filter counts accordingly.
   Future<Response> followStats(Token token, FollowStatsOptions options) =>
       _client.get(Routes.statsFollowUrl,
           headers: {'Authorization': '$token'},
