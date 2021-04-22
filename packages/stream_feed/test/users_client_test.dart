@@ -12,9 +12,9 @@ void main() {
     final api = MockUsersAPI();
 
     const token = Token('dummyToken');
-    final client = UsersClient(api, userToken: token);
+    const id = 'john-doe';
+    final client = UsersClient(api, id, userToken: token);
     test('add', () async {
-      const id = 'john-doe';
       const data = {
         'name': 'John Doe',
         'occupation': 'Software Engineer',
@@ -22,7 +22,7 @@ void main() {
       };
       const user = User(id: id, data: data);
       when(() => api.add(token, id, data)).thenAnswer((_) async => user);
-      await client.create(id, data);
+      await client.create(data);
       verify(() => api.add(token, id, data)).called(1);
     });
 
@@ -34,7 +34,7 @@ void main() {
             path: '',
           ),
           statusCode: 200));
-      await client.delete(id);
+      await client.delete();
       verify(() => api.delete(token, id)).called(1);
     });
 
@@ -47,7 +47,7 @@ void main() {
       };
       const user = User(id: id, data: data);
       when(() => api.get(token, id)).thenAnswer((_) async => user);
-      await client.get(id);
+      await client.get();
 
       verify(() => api.get(token, id)).called(1);
     });
@@ -61,7 +61,7 @@ void main() {
       };
       const user = User(id: id, data: data);
       when(() => api.update(token, id, data)).thenAnswer((_) async => user);
-      await client.update(id, data);
+      await client.update(data);
       verify(() => api.update(token, id, data)).called(1);
     });
   });

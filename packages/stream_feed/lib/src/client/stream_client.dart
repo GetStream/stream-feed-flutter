@@ -61,7 +61,7 @@ abstract class StreamClient {
   ReactionsClient get reactions;
 
   /// Convenient getter for [UsersClient]
-  UsersClient get users;
+  UsersClient user(String userId);
 
   /// Convenient getter for [FileStorageClient]
   FileStorageClient get files;

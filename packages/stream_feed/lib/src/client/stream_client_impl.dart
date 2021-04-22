@@ -78,8 +78,8 @@ class StreamClientImpl implements StreamClient {
       ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
 
   @override
-  UsersClient get users =>
-      UsersClient(_api.users, userToken: userToken, secret: secret);
+  UsersClient user(String userId) =>
+      UsersClient(_api.users, userId, userToken: userToken, secret: secret);
 
   @override
   FileStorageClient get files =>
@@ -167,9 +167,6 @@ class StreamClientImpl implements StreamClient {
     final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
   }
-
-  UsersClient user(String userId) => UsersClient(_api.users,
-      userId: userId, userToken: userToken, secret: secret);
 }
 
 class _FeedSubscription {

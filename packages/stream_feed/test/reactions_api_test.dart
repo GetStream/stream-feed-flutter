@@ -241,8 +241,8 @@ Future<void> main() async {
               'data': data,
               'target_feeds': targetFeedIds.map((e) => e.toString()).toList()
             },
-          )).thenAnswer((_) async => Response(
-          data: {},
+          )).thenAnswer((_) async => Response<Map<String, dynamic>>(
+          data: jsonFixture('reaction.json'),
           requestOptions: RequestOptions(
             path: Routes.buildReactionsUrl('$reactionId/'),
           ),

@@ -31,7 +31,7 @@ void main() {
       expect(client.files, isNotNull);
       expect(client.images, isNotNull);
       expect(client.reactions, isNotNull);
-      expect(client.users, isNotNull);
+      expect(client.user(userId), isNotNull);
       expect(client.frontendToken(userId), isNotNull);
     });
 

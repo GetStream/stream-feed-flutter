@@ -555,7 +555,7 @@ Future<void> main() async {
   ]);
 
   // Then create a user
-  await client.users.create('john-doe', {
+  await client.user('john-doe').create({
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male',
@@ -577,15 +577,14 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   // create a new user, if the user already exist an error is returned
-  await client.users.create('john-doe', {
+  await client.user('john-doe').create({
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male',
   });
 
   // get or create a new user, if the user already exist the user is returned
-  await client.users.create(
-    'john-doe',
+  await client.user('john-doe').create(
     {
       'name': 'John Doe',
       'occupation': 'Software Engineer',
@@ -596,15 +595,15 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  await client.users.get('123');
+  await client.user('john-doe').get();
 
   /* -------------------------------------------------------- */
 
-  await client.users.delete('123');
+  await client.user('john-doe').delete();
 
   /* -------------------------------------------------------- */
 
-  await client.users.update('123', {
+  await client.user('john-doe').update({
     'name': 'Jane Doe',
     'occupation': 'Software Engineer',
     'gender': 'female',
