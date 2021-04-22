@@ -78,6 +78,26 @@ void main() {
       expect(
           toJson, {'followers': 'user:jessica', 'following': 'user:jessica'});
     });
+
+    test('toJson slugs', () {
+      final followStatsSlugs = FollowStats(
+          following: Following(
+            feed: FeedId.id('user:jessica'),
+            slugs: ['user', 'news'],
+          ),
+          followers: Followers(
+            feed: FeedId.id('user:jessica'),
+            slugs: ['timeline'],
+          ));
+
+      final toJson = followStatsSlugs.toJson();
+      expect(toJson, {
+        'followers': 'user:jessica',
+        'following': 'user:jessica',
+        'followers_slugs': 'timeline',
+        'following_slugs': 'user,news',
+      });
+    });
   });
   test('EnrichedActivity', () {
     final reaction1 = Reaction(

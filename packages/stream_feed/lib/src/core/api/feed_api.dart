@@ -6,7 +6,6 @@ import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
-import 'package:stream_feed/src/core/models/follow_stats_options.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
@@ -78,9 +77,10 @@ class FeedAPI {
   ///Retrieve the number of follower
   ///and following feed stats of the current feed.
   /// For each count, feed slugs can be provided to filter counts accordingly.
-  Future<FollowStats> followStats(Token token, FollowStatsOptions options) async {
+  Future<FollowStats> followStats(
+      Token token, Map<String, Object?> options) async {
     final response = await _client.get<Map>(Routes.statsFollowUrl,
-        headers: {'Authorization': '$token'}, queryParameters: options.params);
+        headers: {'Authorization': '$token'}, queryParameters: options);
     return FollowStats.fromJson(response.data!['results']);
   }
 
