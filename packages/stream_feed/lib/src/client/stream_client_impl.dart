@@ -22,7 +22,15 @@ import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:logging/logging.dart';
 
-typedef _LogHandlerFunction = void Function(LogRecord record);
+/// Handler function used for logging records. Function requires a single
+/// [LogRecord] as the only parameter.
+typedef LogHandlerFunction = void Function(LogRecord record);
+
+final _levelEmojiMapper = {
+  Level.INFO: 'ℹ️',
+  Level.WARNING: '⚠️',
+  Level.SEVERE: '🚨',
+};
 
 // ignore: public_member_api_docs
 class StreamClientImpl implements StreamClient {
@@ -31,28 +39,38 @@ class StreamClientImpl implements StreamClient {
     this.apiKey, {
     this.secret,
     this.userToken,
-    this.logLevel = Level.WARNING,
     this.appId,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
+    Level logLevel = Level.WARNING,
+    LogHandlerFunction? logHandlerFunction,
     StreamAPI? api,
     StreamHttpClientOptions? options,
   })  : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
-        _api = api ?? StreamApiImpl(apiKey, options: options) {
-    _setupLogger();
-    logger.info('instantiating new client');
+        _api = api ?? StreamApiImpl(apiKey, options: options),
+        _logger = Logger.detached('📜')..level = logLevel {
+    _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
+    _logger.info('instantiating new client');
   }
-  late _LogHandlerFunction logHandlerFunction;
-  final Level logLevel;
-  final Logger logger = Logger.detached('📡');
+
   final String apiKey;
   final String? appId;
   final Token? userToken;
   final StreamAPI _api;
   final String? secret;
   final String fayeUrl;
+  final Logger _logger;
+
+  void _defaultLogHandler(LogRecord record) {
+    print(
+      '(${record.time}) '
+      '${_levelEmojiMapper[record.level] ?? record.level.name} '
+      '${record.loggerName} ${record.message}',
+    );
+    if (record.stackTrace != null) print(record.stackTrace);
+  }
 
   late final _authExtension = <String, MessageHandler>{
     'outgoing': (message) {
@@ -176,34 +194,6 @@ class StreamClientImpl implements StreamClient {
   Future<OpenGraphData> openGraph(String targetUrl) {
     final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
-  }
-
-  void _setupLogger() {
-    logger.level = logLevel;
-
-    logHandlerFunction = _getDefaultLogHandler();
-
-    logger.onRecord.listen(logHandlerFunction);
-
-    logger.info('logger setup');
-  }
-
-  _LogHandlerFunction _getDefaultLogHandler() {
-    final levelEmojiMapper = {
-      Level.INFO.name: 'ℹ️',
-      Level.WARNING.name: '⚠️',
-      Level.SEVERE.name: '🚨',
-    };
-    return (LogRecord record) {
-      print(
-        '(${record.time}) '
-        '${levelEmojiMapper[record.level.name] ?? record.level.name} '
-        '${record.loggerName} ${record.message}',
-      );
-      if (record.stackTrace != null) {
-        print(record.stackTrace);
-      }
-    };
   }
 }
 

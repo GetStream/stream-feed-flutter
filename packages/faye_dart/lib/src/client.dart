@@ -27,7 +27,10 @@ enum FayeClientState {
   disconnected,
 }
 
+/// Handler function used for logging records. Function requires a single
+/// [LogRecord] as the only parameter.
 typedef LogHandlerFunction = void Function(LogRecord record);
+
 final _levelEmojiMapper = {
   Level.INFO: 'ℹ️',
   Level.WARNING: '⚠️',
@@ -83,6 +86,7 @@ class FayeClient with Extensible {
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
     _logger.info('instantiating a faye client');
   }
+
   final Logger _logger;
 
   void _defaultLogHandler(LogRecord record) {

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:faye_dart/faye_dart.dart';
+import 'package:faye_dart/src/client.dart' show Subscription;
 import 'package:faye_dart/src/event_emitter.dart';
 
 import 'message.dart';
