@@ -6,6 +6,7 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/follow_stats_options.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
 import 'package:stream_feed/src/core/util/default.dart';
@@ -80,7 +81,7 @@ class Feed {
   ///Retrieve the number of follower
   ///and following feed stats of the current feed.
   /// For each count, feed slugs can be provided to filter counts accordingly.
-  Future<Response> followStats(
+  Future<FollowStats> followStats(
       {List<String>? followingSlugs, List<String>? followerSlugs}) {
     final followStatsOptions = FollowStatsOptions(feedId,
         followingSlugs: followingSlugs, followerSlugs: followerSlugs);

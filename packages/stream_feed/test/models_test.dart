@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/follow_stats.dart';
+import 'package:stream_feed/src/core/models/followers.dart';
+import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/group.dart';
 import 'package:stream_feed/src/core/models/paginated.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -59,6 +62,15 @@ void main() {
       final feedIds = FeedId.toIds([FeedId('slug', 'userId')]);
       expect(feedIds, ['slug:userId']);
     });
+  });
+  test('FollowStats', () {
+    final followStatsJson = json.decode(fixture('follow_stats.json'));
+    final followStatsFromJson = FollowStats.fromJson(followStatsJson);
+    expect(
+        followStatsFromJson,
+        FollowStats(
+            following: Following(feed: FeedId.id('user:jessica'), count: 0),
+            followers: Followers(feed: FeedId.id('user:jessica'), count: 1)));
   });
   test('EnrichedActivity', () {
     final reaction1 = Reaction(
