@@ -66,7 +66,7 @@ void main() {
       );
 
       when(() => api.update(token, updatedReaction))
-          .thenAnswer((_) async => dummyResponse);
+          .thenAnswer((_) async => updatedReaction);
       await client.update(reactionId, data: data, targetFeeds: targetFeeds);
       verify(() => api.update(token, updatedReaction)).called(1);
     });

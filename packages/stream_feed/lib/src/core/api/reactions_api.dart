@@ -125,20 +125,26 @@ class ReactionsAPI {
   }
 
   /// update a reaction
-  Future<Response> update(Token token, Reaction updatedReaction) async {
+  Future<Reaction> update(Token token, Reaction updatedReaction) async {
     checkArgument(updatedReaction.id!.isNotEmpty, "Reaction id can't be empty");
-    final targetFeedIds = updatedReaction.targetFeeds!
-        .map((e) => e.toString())
-        .toList(growable: false);
+    final targetFeeds = updatedReaction.targetFeeds;
+    List<String>? targetFeedIds;
+    if (targetFeeds != null) {
+      targetFeedIds =
+          targetFeeds.map((e) => e.toString()).toList(growable: false);
+    }
+
     final reactionId = updatedReaction.id;
     final data = updatedReaction.data;
-    return _client.put(
+    final response = await _client.put<Map<String, dynamic>>(
       Routes.buildReactionsUrl('$reactionId/'),
       headers: {'Authorization': '$token'},
       data: {
         if (data != null && data.isNotEmpty) 'data': data,
-        if (targetFeedIds.isNotEmpty) 'target_feeds': targetFeedIds,
+        if (targetFeedIds!.isNotEmpty) 'target_feeds': targetFeedIds,
       },
     );
+
+    return Reaction.fromJson(response.data!);
   }
 }

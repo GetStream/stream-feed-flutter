@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/reactions_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
@@ -144,15 +145,15 @@ class ReactionsClient {
   ///   data: {'text': 'love it!'},
   /// );
   ///```
-  Future<void> update(
+  Future<Reaction> update(
     String? reactionId, {
     Map<String, Object>? data,
-    Iterable<FeedId>? targetFeeds,
+    List<FeedId>? targetFeeds,
   }) {
     final reaction = Reaction(
       id: reactionId,
       data: data,
-      targetFeeds: targetFeeds as List<FeedId>?,
+      targetFeeds: targetFeeds,
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
