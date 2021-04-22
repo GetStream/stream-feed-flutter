@@ -80,10 +80,13 @@ class Feed {
   ///Retrieve the number of follower
   ///and following feed stats of the current feed.
   /// For each count, feed slugs can be provided to filter counts accordingly.
-  Future<Response> followStats(FollowStatsOptions options) {
+  Future<Response> followStats(
+      {List<String>? followingSlugs, List<String>? followerSlugs}) {
+    final followStatsOptions = FollowStatsOptions(feedId,
+        followingSlugs: followingSlugs, followerSlugs: followerSlugs);
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
-    return feed.followStats(token, options);
+    return feed.followStats(token, followStatsOptions);
   }
 
   /// Adds the given [Activity] to the feed
