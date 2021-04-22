@@ -84,8 +84,8 @@ class Feed {
       {List<String>? followingSlugs, List<String>? followerSlugs}) {
     final followStatsOptions = FollowStatsOptions(feedId,
         followingSlugs: followingSlugs, followerSlugs: followerSlugs);
-    final token = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
+    final token =
+        userToken ?? TokenHelper.buildFollowToken(secret!, TokenAction.any);
     return feed.followStats(token, followStatsOptions);
   }
 
