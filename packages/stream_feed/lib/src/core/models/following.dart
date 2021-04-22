@@ -8,7 +8,7 @@ part 'following.g.dart';
 class Following extends Equatable {
   @JsonKey(fromJson: _fromId, toJson: FeedId.toId)
   final FeedId feed;
-  final int count;
+  final int? count;
   Following({required this.feed, required this.count});
 
   factory Following.fromJson(Map<String, dynamic> json) =>

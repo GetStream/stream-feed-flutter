@@ -63,14 +63,21 @@ void main() {
       expect(feedIds, ['slug:userId']);
     });
   });
-  test('FollowStats', () {
-    final followStatsJson = json.decode(fixture('follow_stats.json'));
-    final followStatsFromJson = FollowStats.fromJson(followStatsJson);
-    expect(
-        followStatsFromJson,
-        FollowStats(
-            following: Following(feed: FeedId.id('user:jessica'), count: 0),
-            followers: Followers(feed: FeedId.id('user:jessica'), count: 1)));
+  group('FollowStats', () {
+    final followStats = FollowStats(
+        following: Following(feed: FeedId.id('user:jessica'), count: 0),
+        followers: Followers(feed: FeedId.id('user:jessica'), count: 1));
+    test('fromJson', () {
+      final followStatsJson = json.decode(fixture('follow_stats.json'));
+      final followStatsFromJson = FollowStats.fromJson(followStatsJson);
+      expect(followStatsFromJson, followStats);
+    });
+
+    test('toJson simple', () {
+      final toJson = followStats.toJson();
+      expect(
+          toJson, {'followers': 'user:jessica', 'following': 'user:jessica'});
+    });
   });
   test('EnrichedActivity', () {
     final reaction1 = Reaction(
