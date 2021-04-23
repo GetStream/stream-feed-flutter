@@ -7,6 +7,7 @@ import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
+import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 
 import 'package:stream_feed/src/client/feed.dart';
@@ -117,7 +118,7 @@ class FlatFeed extends Feed {
     return data;
   }
 
-  Future<Response> personalizedFeed(
+  Future<PersonalizedFeed> personalizedFeed(
       {int? limit,
       int? offset,
       String? session,

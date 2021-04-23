@@ -6,6 +6,7 @@ import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
+import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
@@ -278,12 +279,13 @@ class FeedAPI {
     );
   }
 
-  Future<Response> personalizedFeed(
-      Token token, Map<String, dynamic>? options) {
-    return _client.get(
+  Future<PersonalizedFeed> personalizedFeed(
+      Token token, Map<String, dynamic>? options) async {
+    final response = await _client.get<Map<String, dynamic>>(
       'enrich/personalization/feed/',
       headers: {'Authorization': '$token'},
       queryParameters: options,
     );
+    return PersonalizedFeed.fromJson(response.data!);
   }
 }
