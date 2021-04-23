@@ -52,4 +52,12 @@ class FileStorageClient {
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.delete);
     return _files.delete(token, url);
   }
+
+   ///Explicitly refresh CDN urls for uploaded images on the Stream CDN (only needed for files on the Stream CDN).
+  ///Note that Stream CDN is not enabled by default, if in doubt please contact us.
+  Future<Response> refreshUrl(String targetUrl) {
+    final token =
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
+    return _files.refreshUrl(token, targetUrl);
+  }
 }

@@ -26,4 +26,10 @@ class FilesAPI {
         headers: {'Authorization': '$token'},
         queryParameters: {'url': targetUrl},
       );
+
+  Future<Response> refreshUrl(Token token, String targetUrl) => _client.post(
+        Routes.filesUrl,
+        headers: {'Authorization': '$token'},
+        data: {'url': targetUrl},
+      );
 }

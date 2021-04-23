@@ -16,6 +16,7 @@ class Routes {
   static const _enrichedFeedPath = 'enrich/$_feedPath';
   static const _filesPath = 'files';
   static const _imagesPath = 'images';
+  static const _refreshPath = 'refresh';
 
   static const _statsFollowPath = 'stats/follow/';
 
@@ -35,6 +36,9 @@ class Routes {
 
   static String buildReactionsUrl([String path = '']) =>
       '$_reactionsPath/$path';
+
+  static String buildRefreshCDNUrl([String? path = '']) =>
+      '$path/$_refreshPath/';
 
   static String buildUsersUrl([String path = '']) => '$_usersPath/$path';
 
