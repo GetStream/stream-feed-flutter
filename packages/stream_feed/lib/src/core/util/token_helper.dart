@@ -193,6 +193,9 @@ class TokenHelper {
   }
 }
 
+JsonWebToken jwtDecode(Token userToken) =>
+    JsonWebToken.unverified(userToken.token);
+
 ///Issues a Jwt issue signed with HS256
 String issueJwtHS256({
   required String secret,

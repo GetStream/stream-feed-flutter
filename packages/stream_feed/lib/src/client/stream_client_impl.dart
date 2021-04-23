@@ -35,7 +35,15 @@ class StreamClientImpl implements StreamClient {
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
-        _api = api ?? StreamApiImpl(apiKey, options: options);
+        _api = api ?? StreamApiImpl(apiKey, options: options) {
+    if (userToken != null) {
+      final jwtBody = jwtDecode(userToken!);
+      final userId = jwtBody.claims.getTyped('user_id');
+      if (userId != null) {
+        currentUser = user(userId);
+      }
+    }
+  }
 
   final String apiKey;
   final String? appId;
@@ -43,6 +51,7 @@ class StreamClientImpl implements StreamClient {
   final StreamAPI _api;
   final String? secret;
   final String fayeUrl;
+  late UserClient? currentUser;
 
   late final _authExtension = <String, MessageHandler>{
     'outgoing': (message) {
