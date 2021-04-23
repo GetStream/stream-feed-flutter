@@ -21,7 +21,7 @@ Future<void> main() async {
         'favorite_color': 'blue',
       });
 
-      when(() => mockClient.post<Map>(
+      when(() => mockClient.post<Map<String, dynamic>>(
             Routes.buildCollectionsUrl(entry.collection),
             headers: {'Authorization': '$token'},
             data: {
@@ -107,7 +107,7 @@ Future<void> main() async {
       const token = Token('dummyToken');
       const collection = 'food';
       const entryId = 'cheeseburger';
-      when(() => mockClient.get<Map>(
+      when(() => mockClient.get<Map<String, dynamic>>(
             Routes.buildCollectionsUrl('$collection/$entryId/'),
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
@@ -165,7 +165,7 @@ Future<void> main() async {
         'name': 'john',
         'favorite_color': 'blue',
       });
-      when(() => mockClient.put<Map>(
+      when(() => mockClient.put<Map<String, dynamic>>(
             Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
             headers: {'Authorization': '$token'},
             data: {

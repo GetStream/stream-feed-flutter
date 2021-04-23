@@ -31,22 +31,22 @@ class ReactionsAPI {
     }
     checkNotNull(reaction.kind, "Reaction kind can't be null");
     checkArgument(reaction.kind!.isNotEmpty, "Reaction kind can't be empty");
-    final result = await _client.post<Map>(
+    final result = await _client.post<Map<String, dynamic>>(
       Routes.buildReactionsUrl(),
       headers: {'Authorization': '$token'},
       data: reaction,
     );
-    return Reaction.fromJson(result.data as Map<String, dynamic>);
+    return Reaction.fromJson(result.data!);
   }
 
   /// Get reaction
   Future<Reaction> get(Token token, String id) async {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
-    final result = await _client.get<Map>(
+    final result = await _client.get<Map<String, dynamic>>(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
-    return Reaction.fromJson(result.data as Map<String, dynamic>);
+    return Reaction.fromJson(result.data!);
   }
 
   /// Delete reaction

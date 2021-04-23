@@ -84,7 +84,7 @@ Future<void> main() async {
         data: data,
         targetFeeds: targetFeedIds,
       );
-      when(() => mockClient.post<Map>(
+      when(() => mockClient.post<Map<String, dynamic>>(
             Routes.buildReactionsUrl(),
             headers: {'Authorization': '$token'},
             data: reaction,
@@ -111,7 +111,7 @@ Future<void> main() async {
       when(() => mockClient.get<Map>(
             Routes.buildReactionsUrl('$id/'),
             headers: {'Authorization': '$token'},
-          )).thenAnswer((_) async => Response(
+          )).thenAnswer((_) async => Response<Map<String, dynamic>>(
           data: jsonFixture('reaction.json'),
           requestOptions: RequestOptions(
             path: Routes.buildReactionsUrl('$id/'),

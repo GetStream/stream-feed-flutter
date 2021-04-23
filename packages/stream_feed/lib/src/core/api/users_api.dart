@@ -20,13 +20,13 @@ class UserAPI {
   ]) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final user = User(id: id, data: data);
-    final result = await _client.post<Map>(
+    final result = await _client.post<Map<String, dynamic>>(
       Routes.buildUsersUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {'get_or_create': getOrCreate},
       data: user,
     );
-    return User.fromJson(result.data as Map<String, dynamic>);
+    return User.fromJson(result.data!);
   }
 
   /// Get the user data

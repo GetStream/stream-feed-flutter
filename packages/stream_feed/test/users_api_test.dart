@@ -48,7 +48,7 @@ Future<void> main() async {
       };
       const user = User(id: id, data: data);
       const getOrCreate = false;
-      when(() => mockClient.post<Map>(
+      when(() => mockClient.post<Map<String, dynamic>>(
             Routes.buildUsersUrl(),
             headers: {'Authorization': '$token'},
             queryParameters: {'get_or_create': getOrCreate},
