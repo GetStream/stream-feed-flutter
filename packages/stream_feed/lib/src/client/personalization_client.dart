@@ -5,7 +5,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 
 class PersonalizationClient {
   const PersonalizationClient(
-    this.personalization, {
+    this._personalization, {
     this.userToken,
     this.secret,
   }) : assert(
@@ -15,7 +15,7 @@ class PersonalizationClient {
 
   final Token? userToken;
   final String? secret;
-  final PersonalizationAPI personalization;
+  final PersonalizationAPI _personalization;
 
   Future<Map> get(
     String resource, {
@@ -23,7 +23,7 @@ class PersonalizationClient {
   }) {
     final token = userToken ??
         TokenHelper.buildPersonalizationToken(secret!, TokenAction.read);
-    return personalization.get(token, resource, params);
+    return _personalization.get(token, resource, params);
   }
 
   //------------------------- Server side methods ----------------------------//
@@ -35,7 +35,7 @@ class PersonalizationClient {
     checkNotNull(secret, "You can't use this method client side");
     final token =
         TokenHelper.buildPersonalizationToken(secret!, TokenAction.write);
-    return personalization.post(token, resource, params, payload);
+    return _personalization.post(token, resource, params, payload);
   }
 
   Future<void> delete(
@@ -45,6 +45,6 @@ class PersonalizationClient {
     checkNotNull(secret, "You can't use this method client side");
     final token =
         TokenHelper.buildPersonalizationToken(secret!, TokenAction.delete);
-    return personalization.delete(token, resource, params);
+    return _personalization.delete(token, resource, params);
   }
 }
