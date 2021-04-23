@@ -5,22 +5,20 @@ import 'package:faye_dart/src/event_emitter.dart';
 import 'message.dart';
 import 'grammar.dart' as grammar;
 
-const handshake_channel = '/meta/handshake';
-const connect_channel = '/meta/connect';
-const disconnect_channel = '/meta/disconnect';
-const subscribe_channel = '/meta/subscribe';
-const unsubscribe_channel = '/meta/unsubscribe';
-
 const event_message = 'message';
 
 class Channel with EquatableMixin, EventEmitter<Message> {
   final String name;
-  Subscription? subscription;
-  Map<String, Object>? ext;
 
   Channel({
     required String name,
   }) : name = '/${name.slashTrimmed}';
+
+  static const String handshake = '/meta/handshake';
+  static const String connect = '/meta/connect';
+  static const String disconnect = '/meta/disconnect';
+  static const String subscribe = '/meta/subscribe';
+  static const String unsubscribe = '/meta/unsubscribe';
 
   void bind(String event, Listener<Message> listener) => on(event, listener);
 
@@ -78,18 +76,7 @@ class Channel with EquatableMixin, EventEmitter<Message> {
   }
 
   @override
-  bool operator ==(covariant Channel other) =>
-      identical(this, other) || identical(other.name, name);
-
-  @override
-  int get hashCode => runtimeType.hashCode ^ name.hashCode;
-
-  @override
-  List<Object?> get props => [
-        name,
-        subscription,
-        ext,
-      ];
+  List<Object?> get props => [name];
 }
 
 extension ChannelMapX on Map<String, Channel> {
@@ -98,7 +85,7 @@ extension ChannelMapX on Map<String, Channel> {
   void subscribe(Iterable<String> names, Subscription subscription) {
     for (final name in names) {
       final channel = this[name] ?? Channel(name: name);
-      this[name] = channel..subscription = subscription;
+      this[name] = channel;
       channel.bind(event_message, subscription);
     }
   }
