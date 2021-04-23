@@ -10,7 +10,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// When stored in activities, users are automatically enriched by Stream.
 class UserClient {
   ///Initialize a [UsersClient] session object
-  const UserClient(this._users, this.userId, {this.userToken, this.secret});
+  const UserClient(this._user, this.userId, {this.userToken, this.secret});
 
   ///User JWT token
   final Token? userToken;
@@ -19,7 +19,7 @@ class UserClient {
   final String userId;
 
   ///The users client
-  final UserAPI _users;
+  final UserAPI _user;
 
   /// You API secret
   final String? secret;
@@ -29,7 +29,7 @@ class UserClient {
   /// Usage
   ///
   /// ```dart
-  /// await users.add('john-doe', {
+  /// await user('john-doe').add( {
   ///   'name': 'John Doe',
   ///   'occupation': 'Software Engineer',
   ///   'gender': 'male',
@@ -42,7 +42,7 @@ class UserClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
-    return _users.add(token, userId, data, getOrCreate ?? false);
+    return _user.add(token, userId, data, getOrCreate ?? false);
   }
 
   ///Get or Create a new user in stream
@@ -52,13 +52,13 @@ class UserClient {
   /// Delete the user
   /// Usage:
   ///```dart
-  ///await users.delete('123');
+  ///await user('123').delete();
   ///```
   ///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
   Future<void> delete() {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
-    return _users.delete(token, userId);
+    return _user.delete(token, userId);
   }
 
   ///  Get the user profile, it includes the follow counts by default
@@ -70,7 +70,7 @@ class UserClient {
   /// Get the user data
   /// Usage
   /// ```dart
-  /// await users.get('123');
+  /// await user('123').get();
   /// ```
   /// API docs: [retrieving-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#retrieving-users)
   Future<User> get({
@@ -78,13 +78,13 @@ class UserClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
-    return _users.get(token, userId, withFollowCounts ?? true);
+    return _user.get(token, userId, withFollowCounts ?? true);
   }
 
   /// Update the user
   /// # Usage:
   /// ```dart
-  ///   await users.update('123', {
+  ///   await user('123').update({
   ///    'name': 'Jane Doe',
   ///    'occupation': 'Software Engineer',
   ///    'gender': 'female',
@@ -94,6 +94,6 @@ class UserClient {
   Future<User> update(Map<String, Object> data) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
-    return _users.update(token, userId, data);
+    return _user.update(token, userId, data);
   }
 }
