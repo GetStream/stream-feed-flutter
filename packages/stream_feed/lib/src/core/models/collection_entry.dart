@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 part 'collection_entry.g.dart';
 
@@ -26,7 +27,7 @@ class CollectionEntry extends Equatable {
     this.createdAt,
     this.updatedAt,
   });
-//TODO ref()
+
   /// Create a new instance from a json
   factory CollectionEntry.fromJson(Map<String, dynamic> json) =>
       _$CollectionEntryFromJson(json);
@@ -48,6 +49,8 @@ class CollectionEntry extends Equatable {
 
   /// When the collection object was last updated.
   final DateTime? updatedAt;
+
+  String get ref => createCollectionReference(collection, id);
 
   @override
   List<Object?> get props => [
