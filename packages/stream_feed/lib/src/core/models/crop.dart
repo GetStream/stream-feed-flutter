@@ -16,7 +16,7 @@ enum CropType {
   center,
 }
 
-extension _CropX on CropType {
+extension CropX on CropType {
   String? get name => {
         CropType.top: 'top',
         CropType.bottom: 'bottom',

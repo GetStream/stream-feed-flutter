@@ -13,7 +13,7 @@ enum ResizeType {
   fill,
 }
 
-extension _ResizeX on ResizeType {
+extension ResizeX on ResizeType {
   String get name => {
         ResizeType.clip: 'clip',
         ResizeType.crop: 'crop',

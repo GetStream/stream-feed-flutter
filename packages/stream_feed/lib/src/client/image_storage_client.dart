@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/images_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
+import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Image and files have separate clients
@@ -106,13 +107,6 @@ class ImageStorageClient {
   }
 
   ///Generate a thumbnail for a given image url
-  Future<String?> thumbnail(String url, int w, int h,
-          {CropType? crop = CropType.center,
-          ResizeType resize = ResizeType.clip}) =>
-      _process(url, {
-        'w': w,
-        'h': h,
-        'crop': crop,
-        'resize': resize,
-      });
+  Future<String?> thumbnail(String url, Thumbnail thumbnail) =>
+      _process(url, thumbnail.params);
 }
