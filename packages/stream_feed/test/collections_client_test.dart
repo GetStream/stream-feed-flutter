@@ -7,7 +7,6 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
-import 'utils.dart';
 
 void main() {
   group('CollectionsClient', () {

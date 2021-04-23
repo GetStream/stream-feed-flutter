@@ -7,13 +7,13 @@ part 'follow_stats.g.dart';
 
 @JsonSerializable()
 class FollowStats extends Equatable {
-  final Following following;
-  final Followers followers;
-  FollowStats({required this.following, required this.followers});
+  const FollowStats({required this.following, required this.followers});
 
   /// Create a new instance from a json
   factory FollowStats.fromJson(Map<String, dynamic> json) =>
       _$FollowStatsFromJson(json);
+  final Following following;
+  final Followers followers;
 
   /// Serialize to json
   Map<String, dynamic> toJson() => {

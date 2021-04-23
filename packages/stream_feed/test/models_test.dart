@@ -83,11 +83,11 @@ void main() {
       final followStatsSlugs = FollowStats(
           following: Following(
             feed: FeedId.id('user:jessica'),
-            slugs: ['user', 'news'],
+            slugs: const ['user', 'news'],
           ),
           followers: Followers(
             feed: FeedId.id('user:jessica'),
-            slugs: ['timeline'],
+            slugs: const ['timeline'],
           ));
 
       final toJson = followStatsSlugs.toJson();

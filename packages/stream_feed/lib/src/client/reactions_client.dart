@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/reactions_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
