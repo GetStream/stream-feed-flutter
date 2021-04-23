@@ -3,6 +3,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 /// Stream allows you to store user information
 /// and embed them inside activities or use them for personalization.
@@ -23,6 +24,8 @@ class UserClient {
 
   /// You API secret
   final String? secret;
+
+  String get ref => createUserReference(userId);
 
   /// Create a new user in stream
   ///
