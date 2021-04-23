@@ -6,6 +6,7 @@ import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/group.dart';
 import 'package:stream_feed/src/core/models/paginated.dart';
+import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -62,6 +63,14 @@ void main() {
       final feedIds = FeedId.toIds([FeedId('slug', 'userId')]);
       expect(feedIds, ['slug:userId']);
     });
+  });
+
+  test('Thumbnail', () {
+    final thumbnail = Thumbnail(2, 3,
+        resizeType: ResizeType.clip,
+        cropTypes: [CropType.center, CropType.bottom]);
+    expect(thumbnail.params,
+        {'resize': 'clip', 'crop': 'center,bottom', 'w': 2, 'h': 3});
   });
   group('FollowStats', () {
     final followStats = FollowStats(
