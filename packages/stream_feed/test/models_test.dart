@@ -5,7 +5,8 @@ import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/group.dart';
-import 'package:stream_feed/src/core/models/paginated.dart';
+import 'package:stream_feed/src/core/models/paginated_reactions.dart';
+import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
@@ -348,6 +349,26 @@ void main() {
     });
   });
 
+  test('PersonalizedFeed', () {
+    final json = {
+      "limit": 25,
+      "offset": 0,
+      "version": "user_1_1619210635",
+      "next": "",
+      "results": [],
+      "duration": "419.81ms"
+    };
+    final personalizedFeed = PersonalizedFeed.fromJson(json);
+    expect(
+        personalizedFeed,
+        PersonalizedFeed(
+            limit: 25,
+            offset: 0,
+            version: "user_1_1619210635",
+            next: "",
+            results: [],
+            duration: "419.81ms"));
+  });
   test('PaginatedReactions', () {
     final reaction1 = Reaction(
         id: 'test',

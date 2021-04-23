@@ -20,6 +20,8 @@ import 'package:stream_feed/src/client/stream_client.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+// const _undefined = Object();
+
 // ignore: public_member_api_docs
 class StreamClientImpl implements StreamClient {
   /// [StreamClientImpl] constructor
@@ -53,7 +55,7 @@ class StreamClientImpl implements StreamClient {
   final StreamAPI _api;
   final String? secret;
   final String fayeUrl;
-  late UserClient? currentUser;
+   UserClient? currentUser;
 
   late final _authExtension = <String, MessageHandler>{
     'outgoing': (message) {

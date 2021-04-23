@@ -4,7 +4,7 @@ import 'package:stream_feed/src/client/reactions_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/lookup_attribute.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
-import 'package:stream_feed/src/core/models/paginated.dart';
+import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/reaction.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';

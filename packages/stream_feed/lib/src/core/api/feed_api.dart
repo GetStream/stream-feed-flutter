@@ -277,4 +277,13 @@ class FeedAPI {
       },
     );
   }
+
+  Future<Response> personalizedFeed(
+      Token token, Map<String, dynamic>? options) {
+    return _client.get(
+      'enrich/personalization/feed/',
+      headers: {'Authorization': '$token'},
+      queryParameters: options,
+    );
+  }
 }

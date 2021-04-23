@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/activity_marker.dart';
 import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
@@ -101,7 +103,7 @@ class FlatFeed extends Feed {
   }) async {
     final options = {
       'limit': limit ?? Default.limit,
-      'offset': offset ?? Default.offset,
+      'offset': offset ?? Default.offset, //TODO:add session everywhere
       ...filter?.params ?? Default.filter.params,
       ...Default.marker.params,
       if (ranking != null) 'ranking': ranking,
@@ -113,5 +115,25 @@ class FlatFeed extends Feed {
         .map((e) => EnrichedActivity.fromJson(e))
         .toList(growable: false);
     return data;
+  }
+
+  Future<Response> personalizedFeed(
+      {int? limit,
+      int? offset,
+      String? session,
+      Filter? filter,
+      ActivityMarker? marker,
+      EnrichmentFlags? flags,
+      String? ranking}) async {
+    final options = {
+      'limit': limit ?? Default.limit,
+      'offset': offset ?? Default.offset, //TODO:add session everywhere
+      ...filter?.params ?? Default.filter.params,
+      ...marker?.params ?? Default.marker.params,
+      if (ranking != null) 'ranking': ranking,
+    };
+    final token = userToken ??
+        TokenHelper.buildPersonalizationToken(secret!, TokenAction.any);
+    return feed.personalizedFeed(token, options);
   }
 }
