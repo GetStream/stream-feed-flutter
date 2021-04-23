@@ -51,6 +51,7 @@ class FlatFeed extends Feed {
   Future<List<Activity>> getActivities({
     int? limit,
     int? offset,
+    String? session,
     Filter? filter,
     String? ranking,
   }) async {
@@ -93,6 +94,7 @@ class FlatFeed extends Feed {
   Future<List<EnrichedActivity>> getEnrichedActivities({
     int? limit,
     int? offset,
+    String? session,
     Filter? filter,
     EnrichmentFlags? flags,
     String? ranking, //TODO: no way to parameterized marker?

@@ -73,6 +73,7 @@ class NotificationFeed extends AggregatedFeed {
   Future<List<NotificationGroup<Activity>>> getActivities({
     int? limit,
     int? offset,
+    String? session,
     Filter? filter,
     ActivityMarker? marker,
   }) async {
@@ -97,6 +98,7 @@ class NotificationFeed extends AggregatedFeed {
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
     int? offset,
+    String? session,
     Filter? filter,
     ActivityMarker? marker,
     EnrichmentFlags? flags,

@@ -230,6 +230,7 @@ class Feed {
     Iterable<FeedId>? feedIds,
     int? limit,
     int? offset,
+    String? session,
   }) {
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.read, feedId);
@@ -262,6 +263,7 @@ class Feed {
     Iterable<FeedId>? feedIds,
     int? limit,
     int? offset,
+    String? session,
   }) {
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.read, feedId);
