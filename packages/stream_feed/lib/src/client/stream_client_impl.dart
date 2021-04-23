@@ -126,8 +126,12 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  AggregatedFeed aggregatedFeed(String slug, String userId) {
-    final id = FeedId(slug, userId);
+  AggregatedFeed aggregatedFeed(String slug, [String? userId]) {
+    if (userToken == null) {
+      checkNotNull(userId,
+          'userId should not be null because you instantiated client with a secret');
+    }
+    final id = FeedId(slug, userId!);
     return AggregatedFeed(
       id,
       _api.feed,
@@ -138,8 +142,13 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  FlatFeed flatFeed(String slug, String userId) {
-    final id = FeedId(slug, userId);
+  FlatFeed flatFeed(String slug, [String? userId]) {
+    if (userToken == null) {
+      checkNotNull(userId,
+          'userId should not be null because you instantiated client with a secret');
+    }
+    final id =
+        FeedId(slug, currentUser != null ? currentUser!.userId : userId!);
     return FlatFeed(
       id,
       _api.feed,
@@ -150,8 +159,13 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  NotificationFeed notificationFeed(String slug, String userId) {
-    final id = FeedId(slug, userId);
+  NotificationFeed notificationFeed(String slug, [String? userId]) {
+    if (userToken == null) {
+      checkNotNull(userId,
+          'userId should not be null because you instantiated client with a secret');
+    }
+    final id =
+        FeedId(slug, currentUser != null ? currentUser!.userId : userId!);
     return NotificationFeed(
       id,
       _api.feed,

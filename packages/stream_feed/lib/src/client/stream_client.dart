@@ -70,13 +70,13 @@ abstract class StreamClient {
   ImageStorageClient get images;
 
   /// Convenient getter for [FlatFeed]
-  FlatFeed flatFeed(String slug, String userId);
+  FlatFeed flatFeed(String slug, [String userId]);
 
   /// Convenient getter for [AggregatedFeed]
-  AggregatedFeed aggregatedFeed(String slug, String userId);
+  AggregatedFeed aggregatedFeed(String slug, [String userId]);
 
   /// Convenient getter for [NotificationFeed]
-  NotificationFeed notificationFeed(String slug, String userId);
+  NotificationFeed notificationFeed(String slug, [String userId]);
 
   /// Generate a JWT tokens that include the [userId] as payload
   /// and that are signed using your Stream API Secret.
