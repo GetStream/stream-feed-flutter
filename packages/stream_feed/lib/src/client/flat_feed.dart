@@ -133,7 +133,9 @@ class FlatFeed extends Feed {
       if (ranking != null) 'ranking': ranking,
     };
     final token = userToken ??
-        TokenHelper.buildPersonalizationToken(secret!, TokenAction.any);
+        TokenHelper.buildPersonalizationToken(secret!, TokenAction.any,
+            userId: feedId.userId);
+
     return feed.personalizedFeed(token, options);
   }
 }

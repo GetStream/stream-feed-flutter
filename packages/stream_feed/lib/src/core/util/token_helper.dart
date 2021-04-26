@@ -122,8 +122,10 @@ class TokenHelper {
           secret, TokenResource.follower, action, feed?.claim ?? '*');
 
   /// build Personalization Token
-  static Token buildPersonalizationToken(String secret, TokenAction action) =>
-      _buildBackendToken(secret, TokenResource.personalization, action, '*');
+  static Token buildPersonalizationToken(String secret, TokenAction action,
+          {String? userId}) =>
+      _buildBackendToken(secret, TokenResource.any, action, '*',
+          userId: userId);
 
   /// build Reaction Token
   static Token buildReactionToken(String secret, TokenAction action) =>

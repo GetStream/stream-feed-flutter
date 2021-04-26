@@ -243,8 +243,9 @@ void main() {
     });
 
     test('buildPersonalizationToken', () async {
-      final filesToken =
-          TokenHelper.buildPersonalizationToken(secret, TokenAction.any);
+      final filesToken = TokenHelper.buildPersonalizationToken(
+          secret, TokenAction.any,
+          userId: '*');
       final jwt = JsonWebToken.unverified(filesToken.token);
       final verified = await jwt.verify(keyStore);
       expect(verified, true);
@@ -260,7 +261,7 @@ void main() {
         'exp': isA<int>(),
         'iat': isA<int>(),
         'action': '*',
-        'resource': 'personalization',
+        'resource': '*',
         'feed_id': '*',
         'user_id': '*'
       });
