@@ -100,4 +100,6 @@ abstract class StreamClient {
   /// );
   /// ```
   Future<OpenGraphData> og(String targetUrl);
+
+  UserClient? currentUser;
 }

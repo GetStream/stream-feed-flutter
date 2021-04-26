@@ -20,8 +20,6 @@ import 'package:stream_feed/src/client/stream_client.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
-// const _undefined = Object();
-
 // ignore: public_member_api_docs
 class StreamClientImpl implements StreamClient {
   /// [StreamClientImpl] constructor
@@ -53,7 +51,6 @@ class StreamClientImpl implements StreamClient {
   final StreamAPI _api;
   final String? secret;
   final String fayeUrl;
-  UserClient? currentUser;
 
   late final _authExtension = <String, MessageHandler>{
     'outgoing': (message) {
@@ -88,9 +85,17 @@ class StreamClientImpl implements StreamClient {
   ReactionsClient get reactions =>
       ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
 
+//
   @override
-  UserClient user(String userId) =>
-      UserClient(_api.users, userId, userToken: userToken, secret: secret);
+  UserClient user(String userId) {
+    if (currentUser == null) {
+      currentUser =
+          UserClient(_api.users, userId, userToken: userToken, secret: secret);
+      return currentUser!;
+    } else {
+      return currentUser!;
+    }
+  }
 
   @override
   FileStorageClient get files =>
@@ -192,6 +197,9 @@ class StreamClientImpl implements StreamClient {
     final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
   }
+
+  @override
+   UserClient? currentUser;
 }
 
 class _FeedSubscription {
