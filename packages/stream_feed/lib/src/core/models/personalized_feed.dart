@@ -1,19 +1,20 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/paginated.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 part 'personalized_feed.g.dart';
 
 /// Paginated [Activity]
 @JsonSerializable(createToJson: true)
-class PersonalizedFeed extends Paginated<Activity> {
+class PersonalizedFeed extends Paginated<EnrichedActivity> {
   /// [PaginatedReactions] constructor
   const PersonalizedFeed({
     required this.version,
     required this.offset,
     required this.limit,
     String? next,
-    List<Activity>?
+    List<EnrichedActivity>?
         results, //TODO: hmm I think it should be na enriched activity
     String? duration,
   }) : super(next, results, duration);
