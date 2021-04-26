@@ -20,6 +20,16 @@ void main() {
       verify(() => api.upload(token, multipartFile)).called(1);
     });
 
+    test('refreshUrl', () async {
+      const targetUrl = 'targetUrl';
+
+      when(() => api.refreshUrl(token, targetUrl))
+          .thenAnswer((invocation) async => targetUrl);
+
+      expect(await client.refreshUrl(targetUrl), targetUrl);
+      verify(() => api.refreshUrl(token, targetUrl)).called(1);
+    });
+
     test('delete', () async {
       const targetUrl = 'targetUrl';
       when(() => api.delete(token, targetUrl)).thenAnswer((_) async => Response(

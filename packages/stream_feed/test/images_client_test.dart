@@ -20,6 +20,17 @@ void main() {
       expect(await client.get(url), 'whatever');
       verify(() => api.get(token, url)).called(1);
     });
+
+    test('refreshUrl', () async {
+      const targetUrl = 'targetUrl';
+
+      when(() => api.refreshUrl(token, targetUrl))
+          .thenAnswer((invocation) async => targetUrl);
+
+      expect(await client.refreshUrl(targetUrl), targetUrl);
+      verify(() => api.refreshUrl(token, targetUrl)).called(1);
+    });
+
     test('upload', () async {
       final multipartFile = MultipartFile(Stream.value([]), 2);
       when(() => api.upload(token, multipartFile))
