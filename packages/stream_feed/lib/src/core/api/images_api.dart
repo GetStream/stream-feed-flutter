@@ -44,9 +44,9 @@ class ImagesAPI {
     return result.data['file'];
   }
 
-  Future<Response> refreshUrl(Token token, String targetUrl) => _client.post(
-        Routes.filesUrl,
-        headers: {'Authorization': '$token'},
-        data: {'url': targetUrl},
-      );
+  Future<String?> refreshUrl(Token token, String targetUrl) async {
+    final result = await _client.post(Routes.imagesUrl,
+        headers: {'Authorization': '$token'}, data: {'url': targetUrl});
+    return result.data['url'];
+  }
 }
