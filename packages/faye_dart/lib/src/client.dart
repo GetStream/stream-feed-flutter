@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:faye_dart/faye_dart.dart';
 import 'package:faye_dart/src/channel.dart';
 import 'package:faye_dart/src/message.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:logging/logging.dart';
 import 'extensible.dart';
 import 'dart:math' as math;
 
-part 'subscription.dart';
+import 'package:faye_dart/src/subscription.dart';
 
 enum FayeClientState {
   unconnected,
@@ -29,7 +29,7 @@ final _levelEmojiMapper = {
   Level.SEVERE: '🚨',
 };
 
-typedef VoidCallback = void Function();
+typedef VoidCallback<T> = T Function();
 typedef MessageCallback = void Function(Message message);
 
 const defaultConnectionTimeout = 60;
@@ -41,7 +41,7 @@ class FayeClient with Extensible {
     String baseUrl, {
     Iterable<String>? protocols,
     this.retry = 5,
-    Level logLevel = Level.ALL,
+    Level logLevel = Level.WARNING,
     LogHandlerFunction? logHandlerFunction,
   }) : _logger = Logger.detached('🕒')..level = logLevel {
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
@@ -56,7 +56,7 @@ class FayeClient with Extensible {
 
   final int retry;
   final _channels = <String, Channel>{};
-  late WebSocketChannel _webSocketChannel;
+  late final WebSocketChannel _webSocketChannel;
 
   var _advice = Advice(
     reconnect: Advice.retry,
@@ -64,19 +64,22 @@ class FayeClient with Extensible {
     timeout: 1000 * defaultConnectionTimeout,
   );
 
-  final _stateController = BehaviorSubject.seeded(FayeClientState.unconnected);
+  var _fayeClientState = FayeClientState.unconnected;
 
-  set _state(FayeClientState state) => _stateController.add(state);
+  final _stateController = StreamController<FayeClientState>.broadcast();
+
+  set _state(FayeClientState state) {
+    _fayeClientState = state;
+    _stateController.add(state);
+  }
 
   /// The current state of the client
-  FayeClientState get state => _stateController.value!;
+  FayeClientState get state => _fayeClientState;
 
   /// The current state of the client in the form of stream
   Stream<FayeClientState> get stateStream => _stateController.stream;
 
   StreamSubscription? _websocketSubscription;
-
-  int _messageId = 0;
 
   bool _connectRequest = false;
 
@@ -208,7 +211,7 @@ class FayeClient with Extensible {
     _state = FayeClientState.disconnected;
 
     _logger.info('Disconnecting $_clientId');
-    final _disconnectionCompleter = Completer();
+    final _disconnectionCompleter = Completer<void>();
 
     _sendMessage(
       Message(
@@ -221,7 +224,8 @@ class FayeClient with Extensible {
           _websocketSubscription?.cancel();
           _disconnectionCompleter.complete();
         } else {
-          _disconnectionCompleter.completeError(response.error!);
+          final error = FayeClientError.parse(response.error);
+          _disconnectionCompleter.completeError(error);
         }
       },
     );
@@ -241,16 +245,18 @@ class FayeClient with Extensible {
     Callback? callback,
     bool force = false,
   }) async {
+    final _subscriptionCompleter = Completer<Subscription>();
+
     final subscription = Subscription(this, channel, callback: callback);
     final hasSubscribe = _channels.contains(channel);
 
     if (hasSubscribe && !force) {
-      _channels.subscribe([channel], subscription);
-      subscription._complete();
+      _channels.subscribe(channel, subscription);
+      _subscriptionCompleter.complete(subscription);
     } else {
       connect(callback: () {
         _logger.info('Client $_clientId attempting to subscribe to $channel');
-        if (!force) _channels.subscribe([channel], subscription);
+        if (!force) _channels.subscribe(channel, subscription);
         _sendMessage(
           Message(
             Channel.subscribe,
@@ -259,21 +265,22 @@ class FayeClient with Extensible {
           ),
           onResponse: (response) {
             if (response.successful == false) {
-              subscription._completeError(response.error!);
               _channels.unsubscribe(channel, subscription);
+              final error = FayeClientError.parse(response.error);
+              _subscriptionCompleter.completeError(error);
               return;
             }
 
-            final channels = [response.subscription];
+            final _channel = response.subscription;
             _logger.info(
-              'Subscription acknowledged for $channels to $_clientId',
+              'Subscription acknowledged for $_channel to $_clientId',
             );
-            subscription._complete();
+            _subscriptionCompleter.complete(subscription);
           },
         );
       });
     }
-    return subscription._future;
+    return _subscriptionCompleter.future;
   }
 
   void unsubscribe(String channel, Subscription subscription) {
@@ -291,14 +298,45 @@ class FayeClient with Extensible {
         onResponse: (response) {
           if (response.successful == false) return;
 
-          final channels = [response.subscription];
+          final _channel = response.subscription;
           _logger.info(
-            'Unsubscription acknowledged for $_clientId from $channels',
+            'Unsubscription acknowledged for $_clientId from $_channel',
           );
         },
       );
     });
   }
+
+  Future<void> publish(
+    String channel, {
+    required Map<String, Object?> data,
+  }) {
+    final _publishCompleter = Completer<void>();
+
+    connect(callback: () {
+      _logger.info(
+        'Client $_clientId queueing published message to $channel: $data',
+      );
+      _sendMessage(
+        Message(
+          channel,
+          data: data,
+          clientId: _clientId,
+        ),
+        onResponse: (response) {
+          if (response.successful == true) {
+            _publishCompleter.complete();
+          } else {
+            final error = FayeClientError.parse(response.error);
+            _publishCompleter.completeError(error);
+          }
+        },
+      );
+    });
+    return _publishCompleter.future;
+  }
+
+  int _messageId = 0;
 
   String _generateMessageId() {
     _messageId += 1;

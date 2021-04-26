@@ -5,8 +5,8 @@ import 'package:test/test.dart';
 main() {
   group('Channel', () {
     test('event listener', () {
-      var _name = "name";
-      final channel = Channel(name: _name);
+      var name = "name";
+      final channel = Channel(name);
 
       final logs = [];
       var listener = (data) {
@@ -19,7 +19,7 @@ main() {
       var message = Message("bayeuxChannel");
       channel.emit('event', message);
       expect(logs, [message]);
-      expect(channel.name, "/$_name");
+      expect(channel.name, name);
       channel.removeListener('event', listener);
       expect(channel.hasListeners(event), false);
     });
@@ -35,8 +35,8 @@ main() {
     });
 
     test('subscription', () {
-      var _name = "name";
-      final channel = Channel(name: _name);
+      var name = "name";
+      final channel = Channel(name);
 
       final logs = [];
       var listener = (data) {
@@ -49,7 +49,7 @@ main() {
       var message = Message("bayeuxChannel");
       channel.trigger('event', message);
       expect(logs, [message]);
-      expect(channel.name, "/$_name");
+      expect(channel.name, name);
       channel.unbind('event', listener);
       expect(channel.hasListeners(event), false);
     });

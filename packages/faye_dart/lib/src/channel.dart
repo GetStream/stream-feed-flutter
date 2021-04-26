@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:faye_dart/src/client.dart' show Subscription;
+import 'subscription.dart';
 import 'package:faye_dart/src/event_emitter.dart';
 
 import 'message.dart';
@@ -10,9 +10,7 @@ const event_message = 'message';
 class Channel with EquatableMixin, EventEmitter<Message> {
   final String name;
 
-  Channel({
-    required String name,
-  }) : name = '/${name.slashTrimmed}';
+  Channel(this.name);
 
   static const String handshake = '/meta/handshake';
   static const String connect = '/meta/connect';
@@ -82,12 +80,9 @@ class Channel with EquatableMixin, EventEmitter<Message> {
 extension ChannelMapX on Map<String, Channel> {
   bool contains(String name) => keys.contains(name);
 
-  void subscribe(Iterable<String> names, Subscription subscription) {
-    for (final name in names) {
-      final channel = this[name] ?? Channel(name: name);
-      this[name] = channel;
-      channel.bind(event_message, subscription);
-    }
+  void subscribe(String name, Subscription subscription) {
+    final channel = putIfAbsent(name, () => Channel(name));
+    channel.bind(event_message, subscription);
   }
 
   bool unsubscribe(String name, Subscription subscription) {
@@ -107,12 +102,5 @@ extension ChannelMapX on Map<String, Channel> {
     for (final channel in channels) {
       this[channel]?.trigger(event_message, message);
     }
-  }
-}
-
-extension StringX on String {
-  /// Removes `/` char from the string.
-  String get slashTrimmed {
-    return this.replaceAll(r'/', '').trim();
   }
 }
