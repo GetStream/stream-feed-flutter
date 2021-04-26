@@ -77,11 +77,11 @@ class UserClient {
   /// ```
   /// API docs: [retrieving-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#retrieving-users)
   Future<User> get({
-    bool? withFollowCounts,
+    bool? withFollowCounts = false,
   }) {
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
-    return _user.get(token, userId, withFollowCounts ?? true);
+    return _user.get(token, userId, withFollowCounts!);
   }
 
   /// Update the user

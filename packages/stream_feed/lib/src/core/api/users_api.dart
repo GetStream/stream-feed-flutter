@@ -31,7 +31,7 @@ class UserAPI {
 
   /// Get the user data
   Future<User> get(Token token, String id,
-      [bool withFollowCounts = true]) async {
+      [bool withFollowCounts = false]) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final result = await _client.get(
       Routes.buildUsersUrl('$id/'),

@@ -54,6 +54,20 @@ void main() {
       verify(() => api.delete(token, id)).called(1);
     });
 
+    test('profile', () async {
+      const id = 'john-doe';
+      const data = {
+        'name': 'John Doe',
+        'occupation': 'Software Engineer',
+        'gender': 'male',
+      };
+      const user = User(id: id, data: data);
+      when(() => api.get(token, id, true)).thenAnswer((_) async => user);
+      await client.profile();
+
+      verify(() => api.get(token, id, true)).called(1);
+    });
+
     test('get', () async {
       const id = 'john-doe';
       const data = {
