@@ -54,10 +54,10 @@ void main() {
           ),
         );
 
-        final resp = await client.trackImpression(updatedImpression);
+        await client.trackImpression(updatedImpression);
 
-        expect(resp, isNotNull);
-        expect(resp.statusCode, 200);
+        // expect(resp, isNotNull);
+        // expect(resp.statusCode, 200);
 
         verify(() => api.trackImpressions(token, [updatedImpression]))
             .called(1);

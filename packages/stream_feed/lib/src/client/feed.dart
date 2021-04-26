@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
@@ -202,7 +201,7 @@ class Feed {
   /// ```
   ///
   /// API docs: [following](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart)
-  Future<Response> follow(
+  Future<void> follow(
     FlatFeed flatFeed, {
     int? activityCopyLimit,
   }) async {
@@ -214,7 +213,7 @@ class Feed {
         TokenHelper.buildFollowToken(secret!, TokenAction.write, feedId);
     final targetToken = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, flatFeed.feedId);
-    return feed.follow(token, targetToken, feedId, flatFeed.feedId,
+    await feed.follow(token, targetToken, feedId, flatFeed.feedId,
         activityCopyLimit ?? Default.activityCopyLimit);
   }
 

@@ -54,15 +54,15 @@ class AnalyticsClient {
   ///     feedId: FeedId("flat", "tommaso"),
   ///     location: "profile_page");
   /// ```
-  Future<Response> trackImpression(Impression impression) =>
+  Future<void> trackImpression(Impression impression) =>
       trackImpressions([impression]);
 
   /// Send [Impression]s events
-  Future<Response> trackImpressions(List<Impression> impressions) {
+  Future<void> trackImpressions(List<Impression> impressions) async {
     final impressionDataList = _validateAndNormalizeUserData(impressions);
     final token =
         userToken ?? TokenHelper.buildAnalytics(secret!, TokenAction.write);
-    return _analytics.trackImpressions(token, impressionDataList);
+    await _analytics.trackImpressions(token, impressionDataList);
   }
 
   /// Send [Engagegement] event
