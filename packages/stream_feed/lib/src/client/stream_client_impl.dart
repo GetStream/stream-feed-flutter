@@ -55,7 +55,7 @@ class StreamClientImpl implements StreamClient {
   final StreamAPI _api;
   final String? secret;
   final String fayeUrl;
-   UserClient? currentUser;
+  UserClient? currentUser;
 
   late final _authExtension = <String, MessageHandler>{
     'outgoing': (message) {
