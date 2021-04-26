@@ -10,6 +10,10 @@ void main() {
       expect(Routes.activityUpdateUrl, 'activity');
     });
 
+    test('statsFollowUrl', () {
+      expect(Routes.statsFollowUrl, 'stats/follow/');
+    });
+
     group('buildRefreshCDNUrl', () {
       test('files', () {
         expect(Routes.buildRefreshCDNUrl('files'), 'files/refresh/');
