@@ -66,6 +66,15 @@ class AnalyticsClient {
   }
 
   /// Send [Engagegement] event
+  /// ```dart
+  /// final analytics = AnalyticsClient(apiKey,
+  ///     userToken: token);
+  /// await analytics.trackEngagement(Engagement(
+  ///     content: {"foreign_id": "tweet:34349698"},
+  ///     label: "click",
+  ///     userData: UserData("test", "test"),
+  ///     feedId: FeedId("user", "thierry")));
+  /// ```
   Future<void> trackEngagement(Engagement engagement) =>
       trackEngagements([engagement]);
 
