@@ -1,5 +1,5 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 import 'package:stream_feed/src/client/stream_client_impl.dart';
@@ -37,7 +37,8 @@ void main() {
 
     test('openGraph', () async {
       final mockApi = MockAPI();
-      const token = Token('dummyToken');
+      // const token = Token('dummyToken');
+      final token = TokenHelper.buildOpenGraphToken('secret');
       final client = StreamClientImpl('apiKey', userToken: token, api: mockApi);
 
       const targetUrl = 'targetUrl';

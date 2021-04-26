@@ -43,8 +43,6 @@ class StreamClientImpl implements StreamClient {
       final userId = jwtBody.claims.getTyped('user_id');
       if (userId != null) {
         currentUser = user(userId);
-      } else {
-        throw Exception('malformed token (should contain user_id in claims)');
       }
     }
   }
