@@ -322,6 +322,10 @@ void main() {
         data: const {'test': 'test'},
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'));
+
+    test('ref', () {
+      expect(entry.ref, 'SO:test:test');
+    });
     test('fromJson', () {
       final entryJson = json.decode(fixture('collection_entry.json'));
       final entryFromJson = CollectionEntry.fromJson(entryJson);
