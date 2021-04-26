@@ -22,7 +22,7 @@ void main() {
     const token = Token('dummyToken');
     final client = NotificationFeed(feedId, api, userToken: token);
 
-     test('getActivityDetail', () async {
+    test('getActivityDetail', () async {
       const limit = 1;
       const activityId = 'e561de8f-00f1-11e4-b400-0cc47a024be0';
       final filter = Filter()
