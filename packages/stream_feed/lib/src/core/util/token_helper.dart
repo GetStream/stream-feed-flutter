@@ -103,6 +103,15 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.feed, action, feed?.claim ?? '*');
 
+  /// build Feed Token
+  static Token buildAnalyticsToken(
+    String secret,
+    TokenAction action, [
+    FeedId? feed,
+  ]) =>
+      _buildBackendToken(
+          secret, TokenResource.analytics, action, feed?.claim ?? '*');
+
   /// build Follow Token
   static Token buildFollowToken(
     String secret,

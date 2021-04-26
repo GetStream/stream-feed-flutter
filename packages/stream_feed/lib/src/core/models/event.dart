@@ -74,7 +74,7 @@ class Event extends Equatable {
   final List<Feature>? features;
 
   /// (optional) the feed the user is looking at
-  @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
+  @JsonKey(includeIfNull: false, toJson: FeedId.toId, fromJson: FeedId.fromId)
   final FeedId? feedId;
 
   /// (optional) the location of the content in your app.
@@ -118,7 +118,7 @@ class Engagement extends Event {
   const Engagement({
     required this.content,
     required this.label,
-    required this.score,
+    this.score,
     this.boost,
     List<Feature>? features,
     FeedId? feedId,
@@ -139,14 +139,14 @@ class Engagement extends Event {
       _$EngagementFromJson(json);
 
   /// the ID of the content that the user clicked
-  final Map<String, Object> content;
+  final Map<String, Object> content; //TODO: content
 
   /// The type of event (i.e. click, share, search, etc.)
   final String label;
 
   /// score between 0 and 100 indicating the importance of this event
   /// IE. a like is typically a more significant indicator than a click
-  final int score;
+  final int? score;
 
   /// An integer that multiplies the score of the interaction (eg. 2 or -1)
   @JsonKey(includeIfNull: false)
@@ -222,7 +222,7 @@ class Impression extends Event {
 
   /// The list of content the user is looking at.
   /// Either a list of IDs or objects.
-  final List<Map<String, Object>> contentList;
+  final List<Map<String, Object>> contentList; //TODO:List<Content>
 
   ///
   @JsonKey(includeIfNull: false)

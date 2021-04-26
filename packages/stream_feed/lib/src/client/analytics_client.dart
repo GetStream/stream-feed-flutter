@@ -3,18 +3,26 @@ import 'package:stream_feed/src/core/api/analytics_api.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/event.dart';
+import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Send out analytic events to the Stream service.
 class AnalyticsClient {
-  ///
+  /// [AnalyticsClient] constructor
   AnalyticsClient(
-    String apiKey,
-    Token token, {
+    String apiKey, {
+    this.secret,
+    this.userToken,
     AnalyticsAPI? analytics,
     StreamHttpClientOptions? options,
-  }) : _analytics = analytics ?? AnalyticsAPI(apiKey, token, options: options);
+  })  : assert(
+          userToken != null || secret != null,
+          'At least a secret or userToken must be provided',
+        ),
+        _analytics = analytics ?? AnalyticsAPI(apiKey, options: options);
 
   final AnalyticsAPI _analytics;
+  final String? secret;
+  final Token? userToken;
 
   ///
   UserData? userData;
@@ -36,22 +44,36 @@ class AnalyticsClient {
       }).toList(growable: false);
 
   /// Send a new [Impression] event.
+  /// ```dart
+  ///  final analytics = AnalyticsClient(apiKey, secret: secret);
+  /// await analytics.trackImpression(Impression(
+  ///     contentList: [
+  ///       {"foreign_id": "tweet:34349698"}
+  ///     ],
+  ///     userData: UserData("test", "test"),
+  ///     feedId: FeedId("flat", "tommaso"),
+  ///     location: "profile_page");
+  /// ```
   Future<Response> trackImpression(Impression impression) =>
       trackImpressions([impression]);
 
   /// Send [Impression]s events
   Future<Response> trackImpressions(List<Impression> impressions) {
     final impressionDataList = _validateAndNormalizeUserData(impressions);
-    return _analytics.trackImpressions(impressionDataList);
+    final token =
+        userToken ?? TokenHelper.buildAnalytics(secret!, TokenAction.write);
+    return _analytics.trackImpressions(token, impressionDataList);
   }
 
   /// Send [Engagegement] event
-  Future<Response> trackEngagement(Engagement engagement) =>
+  Future<void> trackEngagement(Engagement engagement) =>
       trackEngagements([engagement]);
 
   /// Send [Engagegement]s event
-  Future<Response> trackEngagements(List<Engagement> engagements) {
+  Future<void> trackEngagements(List<Engagement> engagements) {
     final engagementDataList = _validateAndNormalizeUserData(engagements);
-    return _analytics.trackEngagements(engagementDataList);
+    final token =
+        userToken ?? TokenHelper.buildAnalytics(secret!, TokenAction.write);
+    return _analytics.trackEngagements(token, engagementDataList);
   }
 }

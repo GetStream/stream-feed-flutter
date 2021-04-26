@@ -12,7 +12,7 @@ void main() {
   final api = MockAnalyticsAPI();
 
   test('`setUser` should set user successfully', () {
-    final client = AnalyticsClient(apiKey, token, analytics: api);
+    final client = AnalyticsClient(apiKey, userToken: token, analytics: api);
     expect(client.userData, isNull);
     const userId = 'testId';
     const alias = 'testAlias';
@@ -23,7 +23,7 @@ void main() {
   });
 
   group('trackImpression', () {
-    final client = AnalyticsClient(apiKey, token, analytics: api);
+    final client = AnalyticsClient(apiKey, userToken: token, analytics: api);
     final impression = Impression(
       contentList: const [
         {
@@ -48,7 +48,7 @@ void main() {
       () async {
         const userData = UserData('testId', 'testAlias');
         final updatedImpression = impression.copyWith(userData: userData);
-        when(() => api.trackImpressions([updatedImpression])).thenAnswer(
+        when(() => api.trackImpressions(token, [updatedImpression])).thenAnswer(
           (_) async => Response(
             requestOptions: RequestOptions(path: ''),
             statusCode: 200,
@@ -60,13 +60,14 @@ void main() {
         expect(resp, isNotNull);
         expect(resp.statusCode, 200);
 
-        verify(() => api.trackImpressions([updatedImpression])).called(1);
+        verify(() => api.trackImpressions(token, [updatedImpression]))
+            .called(1);
       },
     );
   });
 
   group('trackEngagement', () {
-    final client = AnalyticsClient(apiKey, token, analytics: api);
+    final client = AnalyticsClient(apiKey, userToken: token, analytics: api);
     final engagement = Engagement(
       content: const {'foreign_id': 'tweet:34349698'},
       label: 'click',
@@ -88,19 +89,17 @@ void main() {
       () async {
         const userData = UserData('testId', 'testAlias');
         final updatedEngagement = engagement.copyWith(userData: userData);
-        when(() => api.trackEngagements([updatedEngagement])).thenAnswer(
+        when(() => api.trackEngagements(token, [updatedEngagement])).thenAnswer(
           (_) async => Response(
             requestOptions: RequestOptions(path: ''),
             statusCode: 200,
           ),
         );
 
-        final resp = await client.trackEngagement(updatedEngagement);
+        await client.trackEngagement(updatedEngagement);
 
-        expect(resp, isNotNull);
-        expect(resp.statusCode, 200);
-
-        verify(() => api.trackEngagements([updatedEngagement])).called(1);
+        verify(() => api.trackEngagements(token, [updatedEngagement]))
+            .called(1);
       },
     );
   });
