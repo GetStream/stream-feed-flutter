@@ -242,6 +242,30 @@ void main() {
       });
     });
 
+    test('buildPersonalizationToken', () async {
+      final filesToken =
+          TokenHelper.buildPersonalizationToken(secret, TokenAction.any);
+      final jwt = JsonWebToken.unverified(filesToken.token);
+      final verified = await jwt.verify(keyStore);
+      expect(verified, true);
+      final tokenParts = filesToken.token.split('.');
+      final header = tokenParts[0];
+      final payload = tokenParts[1];
+      final headerdStr = b64urlEncRfc7515Decode(header);
+      final headerJson = json.decode(headerdStr);
+      expect(headerJson, {'alg': 'HS256', 'typ': 'JWT'});
+      final payloadStr = b64urlEncRfc7515Decode(payload);
+      final payloadJson = json.decode(payloadStr);
+      expect(payloadJson, {
+        'exp': isA<int>(),
+        'iat': isA<int>(),
+        'action': '*',
+        'resource': 'personalization',
+        'feed_id': '*',
+        'user_id': '*'
+      });
+    });
+
     test('buildAnalyticsRedirect', () async {
       final filesToken =
           TokenHelper.buildAnalyticsRedirect(secret, TokenAction.any);

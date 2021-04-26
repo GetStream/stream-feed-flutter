@@ -83,7 +83,7 @@ extension TokenResourceX on TokenResource {
         TokenResource.feedTargets: 'feed_targets',
         TokenResource.follower: 'follower',
         TokenResource.openGraph: 'url',
-        TokenResource.personalization: 'ppersonalization',
+        TokenResource.personalization: 'personalization',
         TokenResource.reactions: 'reactions',
         TokenResource.users: 'users',
       }[this];
