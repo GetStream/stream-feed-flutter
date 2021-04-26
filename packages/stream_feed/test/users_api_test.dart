@@ -16,7 +16,7 @@ Future<void> main() async {
     test('Get', () async {
       const token = Token('dummyToken');
       const id = 'id';
-      const withFollowCounts = true;
+      const withFollowCounts = false;
       when(() => mockClient.get(
             Routes.buildUsersUrl('$id/'),
             headers: {'Authorization': '$token'},

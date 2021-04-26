@@ -66,14 +66,6 @@ void main() {
     });
   });
 
-  test('Thumbnail', () {
-    final thumbnail = Thumbnail(2, 3,
-        resizeType: ResizeType.clip,
-        cropTypes: [CropType.center, CropType.bottom]);
-    expect(thumbnail.params,
-        {'resize': 'clip', 'crop': 'center,bottom', 'w': 2, 'h': 3});
-  });
-
   test('Followers', () {
     final followers = Followers(feed: FeedId.id('user:jessica'));
     expect(Followers.fromJson(const {'feed': 'user:jessica'}), followers);
@@ -645,6 +637,27 @@ void main() {
     test('Height should be a positive number', () {
       expect(
           () => Resize(10, -1),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Height should be a positive number')));
+    });
+  });
+
+  group('Thumbnail', () {
+    test('params', () {
+      const resize = Thumbnail(10, 10);
+      expect(resize.params,
+          {'resize': 'clip', 'crop': 'center', 'w': 10, 'h': 10});
+    });
+    test('Width should be a positive number', () {
+      expect(
+          () => Thumbnail(-1, 10),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Width should be a positive number')));
+    });
+
+    test('Height should be a positive number', () {
+      expect(
+          () => Thumbnail(10, -1),
           throwsA(predicate<AssertionError>(
               (e) => e.message == 'Height should be a positive number')));
     });

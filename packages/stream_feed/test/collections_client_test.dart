@@ -94,7 +94,7 @@ void main() {
           TokenHelper.buildCollectionsToken(secret, TokenAction.delete);
       final clientWithSecret = CollectionsClient(api, secret: secret);
       when(() => api.deleteMany(token, collection, entryIds))
-          .thenAnswer((_) async => Response(
+          .thenAnswer((_) async => Response<Map>(
               data: {}, //TODO: flaky
               requestOptions: RequestOptions(
                 path: '',

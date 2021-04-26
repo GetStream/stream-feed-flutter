@@ -4,7 +4,7 @@ import 'package:stream_feed/src/core/models/resize.dart';
 /// Resize an image based on supplied [_width],[_height] and eventually [cropTypes],[resizeType]
 class Thumbnail {
   /// [Thumbnail] constructor
-  Thumbnail(this._width, this._height,
+  const Thumbnail(this._width, this._height,
       {this.resizeType = ResizeType.clip,
       this.cropTypes = const [CropType.center]})
       : assert(_width > 0, 'Width should be a positive number'),
