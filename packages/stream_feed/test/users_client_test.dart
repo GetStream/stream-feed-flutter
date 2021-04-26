@@ -18,6 +18,18 @@ void main() {
     test('ref', () {
       expect(client.ref, 'SU:john-doe');
     });
+
+    test('getOrCreate', () async {
+      const data = {
+        'name': 'John Doe',
+        'occupation': 'Software Engineer',
+        'gender': 'male',
+      };
+      const user = User(id: id, data: data);
+      when(() => api.add(token, id, data, true)).thenAnswer((_) async => user);
+      await client.getOrCreate(data);
+      verify(() => api.add(token, id, data, true)).called(1);
+    });
     test('add', () async {
       const data = {
         'name': 'John Doe',
