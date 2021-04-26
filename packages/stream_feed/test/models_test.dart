@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/event.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
@@ -352,6 +353,61 @@ void main() {
         'created_at': '2001-09-11T00:01:02.000',
         'updated_at': '2001-09-11T00:01:02.000'
       });
+    });
+  });
+  test('Content', () {
+    final content = Content(foreignId: FeedId.fromId("tweet:34349698"));
+    expect(content.toJson(), {'foreign_id': 'tweet:34349698'});
+  });
+
+  group('Engagement', () {
+    final engagement = Engagement(
+        content: Content(foreignId: FeedId.id("tweet:34349698")),
+        label: "click",
+        userData: UserData("test", "test"),
+        feedId: FeedId("user", "thierry"));
+    final json = {
+      'user_data': {'id': 'test', 'alias': 'test'},
+      'feed_id': 'user:thierry',
+      'content': {'foreign_id': 'tweet:34349698'},
+      'label': 'click',
+      'score': null
+    };
+    test('fromJson', () {
+      final engagementFromJson = Engagement.fromJson(json);
+      expect(engagementFromJson, engagement);
+    });
+
+    test('toJson', () {
+      expect(engagement.toJson(), json);
+    });
+  });
+
+  group('Impression', () {
+    final impression = Impression(
+        contentList: [
+          Content(
+            foreignId: FeedId.fromId("tweet:34349698"),
+          )
+        ],
+        userData: UserData("test", "test"),
+        feedId: FeedId("flat", "tommaso"),
+        location: "profile_page");
+    final json = {
+      'user_data': {'id': 'test', 'alias': 'test'},
+      'feed_id': 'flat:tommaso',
+      'location': 'profile_page',
+      'content_list': [
+        {'foreign_id': 'tweet:34349698'}
+      ]
+    };
+    test('fromJson', () {
+      final impressionFromJson = Impression.fromJson(json);
+      expect(impressionFromJson, impression);
+    });
+
+    test('toJson', () {
+      expect(impression.toJson(), json);
     });
   });
 

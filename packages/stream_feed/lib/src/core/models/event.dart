@@ -139,7 +139,7 @@ class Engagement extends Event {
       _$EngagementFromJson(json);
 
   /// the ID of the content that the user clicked
-  final Map<String, Object> content; //TODO: content
+  final Content content; //TODO: content
 
   /// The type of event (i.e. click, share, search, etc.)
   final String label;
@@ -162,7 +162,7 @@ class Engagement extends Event {
   ///
   @override
   Engagement copyWith({
-    Map<String, Object>? content,
+    Content? content,
     String? label,
     int? score,
     int? boost,
@@ -222,7 +222,7 @@ class Impression extends Event {
 
   /// The list of content the user is looking at.
   /// Either a list of IDs or objects.
-  final List<Map<String, Object>> contentList; //TODO:List<Content>
+  final List<Content> contentList; //TODO:List<Content>
 
   ///
   @JsonKey(includeIfNull: false)
@@ -234,7 +234,7 @@ class Impression extends Event {
   ///
   @override
   Impression copyWith({
-    List<Map<String, Object>>? contentList,
+    List<Content>? contentList,
     List<Feature>? features,
     FeedId? feedId,
     String? location,
@@ -255,4 +255,22 @@ class Impression extends Event {
   /// Serialize to json
   @override
   Map<String, dynamic> toJson() => _$ImpressionToJson(this);
+}
+
+@JsonSerializable()
+class Content extends Equatable {
+  @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
+  final FeedId? foreignId;
+  @JsonKey(includeIfNull: false)
+  final Map<String, Object>? data;
+  Content({required this.foreignId, this.data});
+  @override
+  List<Object?> get props => [foreignId, data];
+
+  /// Create a new instance from a json
+  factory Content.fromJson(Map<String, dynamic> json) =>
+      _$ContentFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ContentToJson(this);
 }
