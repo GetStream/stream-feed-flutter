@@ -14,6 +14,10 @@ void main() {
     const token = Token('dummyToken');
     const id = 'john-doe';
     final client = UserClient(api, id, userToken: token);
+
+    test('ref', () {
+      expect(client.ref, 'SU:john-doe');
+    });
     test('add', () async {
       const data = {
         'name': 'John Doe',
