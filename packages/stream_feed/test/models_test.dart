@@ -73,6 +73,16 @@ void main() {
     expect(thumbnail.params,
         {'resize': 'clip', 'crop': 'center,bottom', 'w': 2, 'h': 3});
   });
+
+  test('Followers', () {
+    final followers = Followers(feed: FeedId.id('user:jessica'));
+    expect(Followers.fromJson(const {'feed': 'user:jessica'}), followers);
+  });
+
+  test('Followings', () {
+    final followers = Following(feed: FeedId.id('user:jessica'));
+    expect(Following.fromJson(const {'feed': 'user:jessica'}), followers);
+  });
   group('FollowStats', () {
     final followStats = FollowStats(
         following: Following(feed: FeedId.id('user:jessica'), count: 0),
