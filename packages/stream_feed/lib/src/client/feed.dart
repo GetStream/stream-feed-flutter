@@ -68,7 +68,7 @@ class Feed {
   ) {
     checkNotNull(
       subscriber,
-      'A subscriber must me provided in order to start listening to feed',
+      'A subscriber must me provided in order to start listening to a feed',
     );
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
@@ -82,6 +82,10 @@ class Feed {
   ///Retrieve the number of follower
   ///and following feed stats of the current feed.
   /// For each count, feed slugs can be provided to filter counts accordingly.
+  /// Example:
+  /// ```dart
+  /// await client.feed.followStats(followerSlugs:['user', 'news'], followingSlugs:['timeline']);
+  /// ```
   Future<FollowStats> followStats(
       {List<String>? followingSlugs, List<String>? followerSlugs}) {
     final options = FollowStats(

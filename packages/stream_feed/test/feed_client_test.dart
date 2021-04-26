@@ -3,10 +3,14 @@ import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/follow_stats.dart';
+import 'package:stream_feed/src/core/models/followers.dart';
+import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
+import 'utils.dart';
 
 void main() {
   group('Feed Client', () {
@@ -69,6 +73,25 @@ void main() {
         {'source': 'timeline:1', 'target': 'user:2'},
         {'source': 'timeline:1', 'target': 'user:3'}
       ]);
+    });
+
+    test('followStats', () async {
+      const followingSlugs = ['timeline'];
+      const followerSlugs = ['user', 'news'];
+      final options = FollowStats(
+          following: Following(
+            feed: feedId,
+            slugs: followingSlugs,
+          ),
+          followers: Followers(
+            feed: feedId,
+            slugs: followerSlugs,
+          ));
+      when(() => api.followStats(token, options.toJson())).thenAnswer(
+          (_) async => FollowStats.fromJson(jsonFixture('follow_stats.json')));
+      await client.followStats(
+          followerSlugs: ['user', 'news'], followingSlugs: ['timeline']);
+      verify(() => api.followStats(token, options.toJson())).called(1);
     });
 
     test('getFollowed', () async {
