@@ -3,6 +3,7 @@ import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
+import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
@@ -122,6 +123,12 @@ class Feed {
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.write, feedId);
     return feed.addActivity(token, feedId, activity);
+  }
+
+  Future<EnrichedActivity> addEnrichedActivity(EnrichedActivity activity) {
+    final token = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.write, feedId);
+    return feed.addEnrichedActivity(token, feedId, activity);
   }
 
   /// Adds the given activities to the feed

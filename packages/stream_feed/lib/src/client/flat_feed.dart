@@ -44,6 +44,16 @@ class FlatFeed extends Feed {
     return activities.first;
   }
 
+    ///Retrieves one activity from a feed
+  Future<EnrichedActivity> getEnrichedActivityDetail(String activityId) async {
+    final activities = await getEnrichedActivities(
+        limit: 1,
+        filter: Filter()
+            .idLessThanOrEqual(activityId)
+            .idGreaterThanOrEqual(activityId));
+    return activities.first;
+  }
+
   ///Retrieve activities
   ///# Example:
   /// Read Jack's timeline

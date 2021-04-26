@@ -69,7 +69,7 @@ class CollectionsClient {
     Map<String, Object> data, {
     String? entryId,
     String? userId,
-  }) {
+  }) {//TODO: infer userID or put it in class constructor
     final entry = CollectionEntry(
       id: entryId,
       collection: collection,

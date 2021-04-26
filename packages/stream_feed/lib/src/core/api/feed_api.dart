@@ -3,6 +3,7 @@ import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
+import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
@@ -42,6 +43,18 @@ class FeedAPI {
       data: activity,
     );
     final data = Activity.fromJson(result.data as Map<String, dynamic>?);
+    return data;
+  }
+
+  Future<EnrichedActivity> addEnrichedActivity(
+      Token token, FeedId feed, EnrichedActivity activity) async {
+    final result = await _client.post<Map>(
+      Routes.buildFeedUrl(feed),
+      headers: {'Authorization': '$token'},
+      data: activity,
+    );
+    final data =
+        EnrichedActivity.fromJson(result.data as Map<String, dynamic>?);
     return data;
   }
 

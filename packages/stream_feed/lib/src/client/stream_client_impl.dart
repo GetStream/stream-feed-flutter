@@ -134,7 +134,7 @@ class StreamClientImpl implements StreamClient {
 
   @override
   AggregatedFeed aggregatedFeed(String slug, [String? userId]) {
-    if (userToken == null) {
+    if ((userToken == null) | (currentUser == null)) {
       checkNotNull(userId,
           'userId should not be null because you instantiated client with a secret');
     }
@@ -150,10 +150,10 @@ class StreamClientImpl implements StreamClient {
 
   @override
   FlatFeed flatFeed(String slug, [String? userId]) {
-    if (userToken == null) {
-      checkNotNull(userId,
-          'userId should not be null because you instantiated client with a secret');
-    }
+    // if ((userToken == null) | (currentUser == null)) {
+    //   checkNotNull(userId,
+    //       'userId should not be null because you instantiated client with a secret');
+    // }
     final id =
         FeedId(slug, currentUser != null ? currentUser!.userId : userId!);
     return FlatFeed(
@@ -199,7 +199,7 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-   UserClient? currentUser;
+  UserClient? currentUser;
 }
 
 class _FeedSubscription {
