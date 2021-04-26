@@ -357,12 +357,12 @@ void main() {
 
   test('PersonalizedFeed', () {
     final json = {
-      "limit": 25,
-      "offset": 0,
-      "version": "user_1_1619210635",
-      "next": "",
-      "results": [],
-      "duration": "419.81ms"
+      'limit': 25,
+      'offset': 0,
+      'version': 'user_1_1619210635',
+      'next': '',
+      'results': [],
+      'duration': '419.81ms'
     };
     final personalizedFeed = PersonalizedFeed.fromJson(json);
     expect(
@@ -370,10 +370,10 @@ void main() {
         PersonalizedFeed(
             limit: 25,
             offset: 0,
-            version: "user_1_1619210635",
-            next: "",
+            version: 'user_1_1619210635',
+            next: '',
             results: [],
-            duration: "419.81ms"));
+            duration: '419.81ms'));
   });
   test('PaginatedReactions', () {
     final reaction1 = Reaction(

@@ -21,7 +21,7 @@ void main() {
       final frontendToken = TokenHelper.buildFrontendToken(secret, 'userId',
           expiresAt: expiresAt);
       final jwt = JsonWebToken.unverified(frontendToken.token);
-      expect(jwt.claims.getTyped("user_id"), 'userId');
+      expect(jwt.claims.getTyped('user_id'), 'userId');
       final verified = await jwt.verify(keyStore);
       expect(verified, true);
       final tokenParts = frontendToken.token.split('.');
