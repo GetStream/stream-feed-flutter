@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 Future<void> main() async {
@@ -619,12 +620,7 @@ Future<void> main() async {
   );
   await client.images.upload(multipartFile);
 
-  final file = File('...');
-  multipartFile = await MultipartFile.fromFile(
-    file.path,
-    filename: 'my-file',
-  );
-  await client.files.upload(multipartFile);
+  await client.files.upload(AttachmentFile(path: '...'));
 
   /* -------------------------------------------------------- */
 

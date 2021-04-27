@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:file/memory.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/client/file_storage_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
@@ -10,14 +12,24 @@ void main() {
   group('FileStorageClient', () {
     final api = MockFilesAPI();
     const token = Token('dummyToken');
-    final client = FileStorageClient(api, userToken: token);
-    test('upload', () async {
-      final multipartFile = MultipartFile(Stream.value([]), 2);
-      when(() => api.upload(token, multipartFile))
-          .thenAnswer((invocation) async => 'whatever');
+    final mockFs = MockFileSystem();
+    final mockFile = MockFile();
 
-      expect(await client.upload(multipartFile), 'whatever');
-      verify(() => api.upload(token, multipartFile)).called(1);
+    final client = FileStorageClient(api, userToken: token, fs: mockFs);
+    test('upload', () async {
+      const path = '.metadata';
+
+      const attachment = AttachmentFile(path: path);
+
+      when(() => mockFs.file(attachment.path)).thenReturn(mockFile);
+      when(() => mockFile.path).thenReturn(path);
+      
+      final multipart = await MultipartFile.fromFile(path);
+      when(() => api.upload(token, multipart))
+          .thenAnswer((invocation) async => 'whateverurl');
+
+      await client.upload(attachment);
+      verify(() => api.upload(token, multipart)).called(1);
     });
 
     test('refreshUrl', () async {

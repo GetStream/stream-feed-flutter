@@ -1,13 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:file/file.dart';
+import 'package:file/local.dart';
 import 'package:stream_feed/src/core/api/files_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 /// This API endpoint allows you to upload files
 /// and to process your images (eg. create image thumbnails).
 class FileStorageClient {
   /// Initialize a FileStorageClient object
-  FileStorageClient(this._files, {this.userToken, this.secret})
+  FileStorageClient(this._files,
+      {this.userToken, this.secret, this.fs = const LocalFileSystem()})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -15,6 +20,8 @@ class FileStorageClient {
 
   /// Your API secret
   final String? secret;
+
+  final FileSystem fs;
 
   /// Your user token obtain via the dashboard.
   /// Required if you are using the sdk client side
@@ -32,10 +39,13 @@ class FileStorageClient {
   /// await files.upload(multipartFile);
   /// ```
   /// API docs: [upload](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#upload)
-  Future<String?> upload(MultipartFile file) {
+  Future<String?> upload(AttachmentFile attachment) async {
+    final file = fs.file(attachment.path);
+    final multipartFromFile = await MultipartFile.fromFile(file.path);
+
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
-    return _files.upload(token, file);
+    return _files.upload(token, multipartFromFile);
   }
 
   /// Delete a file using the url returned by the APIs
