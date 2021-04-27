@@ -261,7 +261,7 @@ void main() {
         'exp': isA<int>(),
         'iat': isA<int>(),
         'action': '*',
-        'resource': '*',
+        'resource': 'personalization',
         'feed_id': '*',
         'user_id': '*'
       });
