@@ -12,6 +12,27 @@ void main() {
   final filesApi = FilesAPI(mockClient);
 
   group('Files API', () {
+    test('RefreshUrl', () async {
+      const token = Token('dummyToken');
+      const targetUrl = 'targetUrl';
+      when(() => mockClient.post(
+            Routes.filesUrl,
+            data: {'url': targetUrl},
+            headers: {'Authorization': '$token'},
+          )).thenAnswer((_) async => Response(
+          data: {'url': targetUrl},
+          requestOptions: RequestOptions(
+            path: Routes.filesUrl,
+          ),
+          statusCode: 200));
+
+      await filesApi.refreshUrl(token, targetUrl);
+      verify(() => mockClient.post(
+            Routes.filesUrl,
+            data: {'url': targetUrl},
+            headers: {'Authorization': '$token'},
+          )).called(1);
+    });
     test('Upload', () async {
       const token = Token('dummyToken');
 

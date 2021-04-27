@@ -12,6 +12,28 @@ void main() {
   final imagesApi = ImagesAPI(mockClient);
 
   group('Images API', () {
+    test('RefreshUrl', () async {
+      const token = Token('dummyToken');
+      const targetUrl = 'targetUrl';
+      when(() => mockClient.post(
+            Routes.imagesUrl,
+            data: {'url': targetUrl},
+            headers: {'Authorization': '$token'},
+          )).thenAnswer((_) async => Response(
+          data: {'url': targetUrl},
+          requestOptions: RequestOptions(
+            path: Routes.imagesUrl,
+          ),
+          statusCode: 200));
+
+      await imagesApi.refreshUrl(token, targetUrl);
+      verify(() => mockClient.post(
+            Routes.imagesUrl,
+            data: {'url': targetUrl},
+            headers: {'Authorization': '$token'},
+          )).called(1);
+    });
+
     test('Upload', () async {
       const token = Token('dummyToken');
 
