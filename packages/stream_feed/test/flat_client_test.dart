@@ -7,6 +7,7 @@ import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
+import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:test/test.dart';
 
@@ -19,6 +20,34 @@ void main() {
     final feedId = FeedId('slug', 'userId');
     const token = Token('dummyToken');
     final client = FlatFeed(feedId, api, userToken: token);
+
+    test('personalizedFeed', () async {
+      final limit = Default.limit;
+      const offset = Default.offset;
+      final marker = Default.marker;
+      final filter = Default.filter;
+      final flags = EnrichmentFlags().withOwnReactions();
+      const ranking = 'popularity';
+      final options = {
+        'limit': limit,
+        'offset': offset, //TODO:add session everywhere
+        ...filter.params,
+        ...marker.params,
+        'ranking': ranking,
+      };
+
+      when(() => api.personalizedFeed(token, options)).thenAnswer((_) async =>
+          PersonalizedFeed(limit: limit, offset: offset, version: "whatever"));
+      await client.personalizedFeed(
+          limit: limit,
+          offset: offset,
+          marker: marker,
+          filter: filter,
+          ranking: ranking,
+          flags: flags);
+
+      verify(() => api.personalizedFeed(token, options)).called(1);
+    });
 
     test('getActivityDetail', () async {
       const limit = 1;

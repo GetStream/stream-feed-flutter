@@ -281,7 +281,7 @@ class FeedAPI {
   }
 
   Future<PersonalizedFeed> personalizedFeed(
-      Token token, Map<String, dynamic>? options) async {
+      Token token, Map<String, dynamic> options) async {
     final response = await _client.get(
       'enrich/personalization/feed/',
       headers: {'Authorization': '$token'},
