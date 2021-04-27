@@ -37,8 +37,8 @@ void main() {
 
     test('openGraph', () async {
       final mockApi = MockAPI();
-      // const token = Token('dummyToken');
-      final token = TokenHelper.buildOpenGraphToken('secret');
+      when(() => mockApi.users).thenReturn(MockUserAPI());
+      final token = TokenHelper.buildFrontendToken('secret', 'userId');
       final client = StreamClientImpl('apiKey', userToken: token, api: mockApi);
 
       const targetUrl = 'targetUrl';
