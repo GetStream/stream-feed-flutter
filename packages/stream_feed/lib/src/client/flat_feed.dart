@@ -44,7 +44,7 @@ class FlatFeed extends Feed {
     return activities.first;
   }
 
-    ///Retrieves one activity from a feed
+  ///Retrieves one activity from a feed
   Future<EnrichedActivity> getEnrichedActivityDetail(String activityId) async {
     final activities = await getEnrichedActivities(
         limit: 1,
@@ -143,7 +143,7 @@ class FlatFeed extends Feed {
       if (ranking != null) 'ranking': ranking,
     };
     final token = userToken ??
-        TokenHelper.buildPersonalizationToken(secret!, TokenAction.any,
+        TokenHelper.buildAnyToken(secret!, TokenAction.any,
             userId: feedId.userId);
 
     return feed.personalizedFeed(token, options);
