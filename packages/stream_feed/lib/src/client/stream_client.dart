@@ -105,5 +105,5 @@ abstract class StreamClient {
   UserClient? get currentUser;
 
   ///
-  Future<User> connectUser(Map<String, Object> data);
+  Future<void> setUserData(Map<String, Object> data);
 }
