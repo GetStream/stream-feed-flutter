@@ -14,8 +14,7 @@ class PersonalizedFeed extends Paginated<EnrichedActivity> {
     required this.offset,
     required this.limit,
     String? next,
-    List<EnrichedActivity>?
-        results, 
+    List<EnrichedActivity>? results,
     String? duration,
   }) : super(next, results, duration);
 
