@@ -356,16 +356,16 @@ void main() {
     });
   });
   test('Content', () {
-    final content = Content(foreignId: FeedId.fromId("tweet:34349698"));
+    final content = Content(foreignId: FeedId.fromId('tweet:34349698'));
     expect(content.toJson(), {'foreign_id': 'tweet:34349698'});
   });
 
   group('Engagement', () {
     final engagement = Engagement(
-        content: Content(foreignId: FeedId.id("tweet:34349698")),
-        label: "click",
-        userData: UserData("test", "test"),
-        feedId: FeedId("user", "thierry"));
+        content: Content(foreignId: FeedId.id('tweet:34349698')),
+        label: 'click',
+        userData: UserData('test', 'test'),
+        feedId: FeedId('user', 'thierry'));
     final json = {
       'user_data': {'id': 'test', 'alias': 'test'},
       'feed_id': 'user:thierry',
@@ -387,12 +387,12 @@ void main() {
     final impression = Impression(
         contentList: [
           Content(
-            foreignId: FeedId.fromId("tweet:34349698"),
+            foreignId: FeedId.fromId('tweet:34349698'),
           )
         ],
-        userData: UserData("test", "test"),
-        feedId: FeedId("flat", "tommaso"),
-        location: "profile_page");
+        userData: UserData('test', 'test'),
+        feedId: FeedId('flat', 'tommaso'),
+        location: 'profile_page');
     final json = {
       'user_data': {'id': 'test', 'alias': 'test'},
       'feed_id': 'flat:tommaso',

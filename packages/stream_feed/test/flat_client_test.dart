@@ -37,7 +37,7 @@ void main() {
       };
 
       when(() => api.personalizedFeed(token, options)).thenAnswer((_) async =>
-          PersonalizedFeed(limit: limit, offset: offset, version: "whatever"));
+          PersonalizedFeed(limit: limit, offset: offset, version: 'whatever'));
       await client.personalizedFeed(
           limit: limit,
           offset: offset,
