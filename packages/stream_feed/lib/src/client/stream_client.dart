@@ -101,5 +101,9 @@ abstract class StreamClient {
   /// ```
   Future<OpenGraphData> og(String targetUrl);
 
-  UserClient? currentUser;
+  ///
+  UserClient? get currentUser;
+
+  ///
+  Future<User> connectUser(Map<String, Object> data);
 }

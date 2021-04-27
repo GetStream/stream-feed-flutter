@@ -12,7 +12,7 @@ import 'utils.dart';
 Future<void> main() async {
   group('Users API', () {
     final mockClient = MockHttpClient();
-    final usersApi = UserAPI(mockClient);
+    final usersApi = UsersAPI(mockClient);
     test('Get', () async {
       const token = Token('dummyToken');
       const id = 'id';

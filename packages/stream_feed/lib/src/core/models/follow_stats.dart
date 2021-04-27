@@ -24,6 +24,7 @@ class FollowStats extends Equatable {
         if (following.slugs != null && following.slugs!.isNotEmpty)
           'following_slugs': following.slugs!.join(','),
       };
+
   @override
   List<Object?> get props => [followers, following];
 }

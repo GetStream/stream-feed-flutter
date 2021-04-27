@@ -263,7 +263,9 @@ class Content extends Equatable {
   final FeedId? foreignId;
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? data;
+
   Content({required this.foreignId, this.data});
+
   @override
   List<Object?> get props => [foreignId, data];
 

@@ -37,7 +37,7 @@ class MockReactionsAPI extends Mock implements ReactionsAPI {}
 
 class MockImagesAPI extends Mock implements ImagesAPI {}
 
-class MockUserAPI extends Mock implements UserAPI {}
+class MockUserAPI extends Mock implements UsersAPI {}
 
 class MockFeedAPI extends Mock implements FeedAPI {}
 

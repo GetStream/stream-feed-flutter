@@ -20,6 +20,7 @@ class Following extends Equatable {
   Map<String, dynamic> toJson() => _$FollowingToJson(this);
 
   static FeedId _fromId(String id) => FeedId.id(id);
+
   @override
   List<Object?> get props => [feed, count];
 }

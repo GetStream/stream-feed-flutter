@@ -20,7 +20,7 @@ class UserClient {
   final String userId;
 
   ///The users client
-  final UserAPI _user;
+  final UsersAPI _user;
 
   /// You API secret
   final String? secret;
@@ -65,10 +65,8 @@ class UserClient {
   }
 
   ///  Get the user profile, it includes the follow counts by default
-  Future<User> profile({bool withFollowCounts = true}) async {
-    checkNotNull(userId, 'userId is not defined');
-    return get(withFollowCounts: withFollowCounts);
-  }
+  Future<User> profile({bool withFollowCounts = true}) =>
+      get(withFollowCounts: withFollowCounts);
 
   /// Get the user data
   /// Usage
