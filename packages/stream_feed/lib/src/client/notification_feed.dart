@@ -50,6 +50,7 @@ class NotificationFeed extends AggregatedFeed {
         );
 
   ///Retrieves one activity from a feed
+  @override
   Future<NotificationGroup<Activity>> getActivityDetail(
       String activityId) async {
     final activities = await getActivities(
