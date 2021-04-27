@@ -49,6 +49,39 @@ void main() {
       verify(() => api.personalizedFeed(token, options)).called(1);
     });
 
+    test('getEnrichedActivity', () async {
+      const limit = 1;
+      const activityId = 'e561de8f-00f1-11e4-b400-0cc47a024be0';
+      final filter = Filter()
+          .idLessThanOrEqual(activityId)
+          .idGreaterThanOrEqual(activityId);
+      const ranking = 'popularity';
+      final options = {
+        'limit': limit,
+        'offset': Default.offset, //TODO:add session everywhere
+        ...filter.params,
+        ...Default.marker.params,
+      };
+
+      final rawActivities = [jsonFixture('enriched_activity.json')];
+      when(() => api.getEnrichedActivities(token, feedId, options))
+          .thenAnswer((_) async => Response(
+              data: {'results': rawActivities},
+              requestOptions: RequestOptions(
+                path: '',
+              ),
+              statusCode: 200));
+      final activities = await client.getEnrichedActivityDetail(activityId);
+
+      expect(
+          activities,
+          rawActivities
+              .map((e) => EnrichedActivity.fromJson(e))
+              .toList(growable: false)
+              .first);
+      verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
+    });
+
     test('getActivityDetail', () async {
       const limit = 1;
       const activityId = 'e561de8f-00f1-11e4-b400-0cc47a024be0';
