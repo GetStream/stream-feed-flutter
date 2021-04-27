@@ -46,18 +46,6 @@ class FeedAPI {
     return data;
   }
 
-  Future<EnrichedActivity> addEnrichedActivity(
-      Token token, FeedId feed, EnrichedActivity activity) async {
-    final result = await _client.post<Map>(
-      Routes.buildFeedUrl(feed),
-      headers: {'Authorization': '$token'},
-      data: activity,
-    );
-    final data =
-        EnrichedActivity.fromJson(result.data as Map<String, dynamic>?);
-    return data;
-  }
-
   /// Follows the given target feed
   Future<Response> follow(Token token, Token targetToken, FeedId sourceFeed,
       FeedId targetFeed, int activityCopyLimit) async {

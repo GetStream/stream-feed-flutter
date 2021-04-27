@@ -125,12 +125,6 @@ class Feed {
     return feed.addActivity(token, feedId, activity);
   }
 
-  Future<EnrichedActivity> addEnrichedActivity(EnrichedActivity activity) {
-    final token = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.write, feedId);
-    return feed.addEnrichedActivity(token, feedId, activity);
-  }
-
   /// Adds the given activities to the feed
   ///
   /// Usage :
