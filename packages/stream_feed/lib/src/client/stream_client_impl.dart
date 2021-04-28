@@ -1,4 +1,5 @@
 import 'package:faye_dart/faye_dart.dart';
+
 import 'package:stream_feed/src/client/aggregated_feed.dart';
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/client/flat_feed.dart';
@@ -19,6 +20,17 @@ import 'package:stream_feed/src/client/user_client.dart';
 import 'package:stream_feed/src/client/stream_client.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
+import 'package:logging/logging.dart';
+
+/// Handler function used for logging records. Function requires a single
+/// [LogRecord] as the only parameter.
+typedef LogHandlerFunction = void Function(LogRecord record);
+
+final _levelEmojiMapper = {
+  Level.INFO: 'ℹ️',
+  Level.WARNING: '⚠️',
+  Level.SEVERE: '🚨',
+};
 
 // ignore: public_member_api_docs
 class StreamClientImpl implements StreamClient {
@@ -29,23 +41,29 @@ class StreamClientImpl implements StreamClient {
     this.userToken,
     this.appId,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
+    Level logLevel = Level.WARNING,
+    LogHandlerFunction? logHandlerFunction,
     StreamAPI? api,
     StreamHttpClientOptions? options,
   })  : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
-        _api = api ?? StreamApiImpl(apiKey, options: options) {
-    if (userToken != null) {
-      final jwtBody = jwtDecode(userToken!);
-      final userId = jwtBody.claims.getTyped('user_id');
-      assert(
-        userId != null,
-        'Invalid `userToken`, It should contain `user_id`',
-      );
-      _currentUser = user(userId);
-    }
-  }
+        _api = api ?? StreamApiImpl(apiKey, options: options),
+        _logger = Logger.detached('📜')..level = logLevel {
+        _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
+        _logger.info('instantiating new client'){
+        
+          if (userToken != null) {
+            final jwtBody = jwtDecode(userToken!);
+            final userId = jwtBody.claims.getTyped('user_id');
+            assert(
+              userId != null,
+              'Invalid `userToken`, It should contain `user_id`',
+            );
+            _currentUser = user(userId);
+          }
+        }
 
   final String apiKey;
   final String? appId;
@@ -53,6 +71,16 @@ class StreamClientImpl implements StreamClient {
   final StreamAPI _api;
   final String? secret;
   final String fayeUrl;
+  final Logger _logger;
+
+  void _defaultLogHandler(LogRecord record) {
+    print(
+      '(${record.time}) '
+      '${_levelEmojiMapper[record.level] ?? record.level.name} '
+      '${record.loggerName} ${record.message}',
+    );
+    if (record.stackTrace != null) print(record.stackTrace);
+  }
 
   UserClient? _currentUser;
 
