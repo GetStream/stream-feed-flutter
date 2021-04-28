@@ -44,37 +44,37 @@ If you want to use the API client directly on your web/mobile app you need to ge
 ```dart
 
 // Instantiate a new client (server side)
-  const apiKey = 'gp6e8sxxzud6';
-  const secret =
-      '7j7exnksc4nxy399fdxvjqyqsqdahax3nfgtp27pumpc7sfm9um688pzpxjpjbf2';
+const apiKey = 'my-API-key';
+const secret = 'my-API-secret';
 
-  // Instantiate a new client (server side)
-  var client = StreamClient.connect(apiKey, secret: secret);
+// Instantiate a new client (server side)
+var client = StreamClient.connect(apiKey, secret: secret);
+
 // Optionally supply the app identifier and an options object specifying the data center to use and timeout for requests (15s)
 client = StreamClient.connect(apiKey,
       secret: secret,
-      appId: 'yourapid',
+      appId: 'yourappid',
       options: StreamHttpClientOptions(
           location: Location.usEast, connectTimeout: Duration(seconds: 15)));
 
 // Create a token for user with id "the-user-id"
-  final userToken = client.frontendToken('the-user-id');
+final userToken = client.frontendToken('the-user-id');
 ```
 
-> :warning: for security reasons, you should not expose your client side only if you use Dart serverside..
+> :warning: for security, you must never expose your API secret or generated client side token, and it's highly recommended to use `exp` claim in client side token.
 
 
 #### Client API init
 
 ```dart
- //Instantiate new client with a user token
+// Instantiate new client with a user token
 var client = StreamClient.connect(apiKey, token: Token('userToken'));
 ```
 
 ### 🔮 Examples
 
 ```dart
- // Instantiate a feed object server side
+// Instantiate a feed object server side
 var user1 = client.flatFeed('user', '1');
 
 // Get activities from 5 to 10 (slow pagination)
@@ -85,15 +85,15 @@ final filtered_activities = await user1.getActivities(
       filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0')
 
 // All API calls are performed asynchronous and return a Promise object
- await user1
-      .getActivities(
-          limit: 5,
-          filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0'))
-      .then((value) => /* on success */
-          print(value))
-      .onError((error,
+await user1
+    .getActivities(
+        limit: 5,
+        filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0'))
+    .then((value) => /* on success */
+        print(value))
+    .onError((error,
               stackTrace) => /* on failure, reason.error contains an explanation */
-          print(error));
+        print(error));
 
 // Create a new activity
 final activity = Activity( actor: '1', verb: 'tweet', object: '1', foreignId: 'tweet:1' );
@@ -237,8 +237,7 @@ final client = StreamClient.connect('YOUR_API_KEY', token: userToken,appId: 'APP
 final user1 = client.flatFeed('user', '1');
 
 // subscribe to the changes
-final subscription =
-        await userFeed.subscribe((message) => print(message));
+final subscription = await userFeed.subscribe((message) => print(message));
 // now whenever something changes to the feed user 1
 // the callback will be called
 
@@ -256,9 +255,9 @@ Stream is free for most side and hobby projects. To qualify your project/company
 For complete pricing details visit our [Feed Pricing Page](https://getstream.io/activity-feeds/pricing/)
 
 ## Structure
-Stream Feed Dart is a monorepo built using [Melos](https://docs.page/invertase/melos). Individual packages can be found in the `packages` directory while configuration and top level commands can be found in `melos.yaml`. 
+Stream Feed Dart is a monorepo built using [Melos](https://docs.page/invertase/melos). Individual packages can be found in the `packages` directory while configuration and top level commands can be found in `melos.yaml`.
 
-To get started, run `bootstrap` after cloning the project. 
+To get started, run `bootstrap` after cloning the project.
 
 ```shell
 melos bootstrap
