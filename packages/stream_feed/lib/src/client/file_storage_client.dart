@@ -36,10 +36,10 @@ class FileStorageClient {
   /// await files.upload(multipartFile);
   /// ```
   /// API docs: [upload](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#upload)
-  Future<String?> upload(AttachmentFile attachment) async {
+  Future<String?> upload(AttachmentFile file) async {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
-    return _files.upload(token, attachment);
+    return _files.upload(token, file);
   }
 
   /// Delete a file using the url returned by the APIs

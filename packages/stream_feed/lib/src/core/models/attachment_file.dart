@@ -66,7 +66,7 @@ class AttachmentFile extends Equatable {
   /// Serialize to json
   Map<String, dynamic> toJson() => _$AttachmentFileToJson(this);
 
-  ///
+  /// Converts this into a [MultipartFile]
   Future<MultipartFile> toMultipartFile() async {
     final filename = path?.split('/').last ?? name;
     final mimeType = filename?.mimeType;
