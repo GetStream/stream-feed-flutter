@@ -17,35 +17,39 @@ main() {
   });
 
   group('Message', () {
+    final data = {
+      "id": "test",
+      "group": "test",
+      "activities": [
+        {
+          "id": "test",
+          "actor": "test",
+          "verb": "test",
+          "object": "test",
+          "foreign_id": "test",
+          "target": "test",
+          "time": "2001-09-11T00:01:02.000",
+          "origin": "test",
+          "to": ["slug:id"],
+          "score": 1.0,
+          "analytics": {"test": "test"},
+          "extra_context": {"test": "test"},
+          "test": "test"
+        }
+      ],
+      "actor_count": 1,
+      "created_at": "2001-09-11T00:01:02.000",
+      "updated_at": "2001-09-11T00:01:02.000"
+    };
+    final json = {'channel': 'bayeuxChannel', 'data': data};
+
+    final message = Message("bayeuxChannel", data: data);
     test('fromJson', () {
-      var data = {
-        "id": "test",
-        "group": "test",
-        "activities": [
-          {
-            "id": "test",
-            "actor": "test",
-            "verb": "test",
-            "object": "test",
-            "foreign_id": "test",
-            "target": "test",
-            "time": "2001-09-11T00:01:02.000",
-            "origin": "test",
-            "to": ["slug:id"],
-            "score": 1.0,
-            "analytics": {"test": "test"},
-            "extra_context": {"test": "test"},
-            "test": "test"
-          }
-        ],
-        "actor_count": 1,
-        "created_at": "2001-09-11T00:01:02.000",
-        "updated_at": "2001-09-11T00:01:02.000"
-      };
-      final message = Message.fromJson(
-        {'channel': 'bayeuxChannel', 'data': data},
-      );
-      expect(message, Message("bayeuxChannel", data: data));
+      expect(Message.fromJson(json), message);
+    });
+
+    test('toJson', () {
+      expect(message.toJson(), json);
     });
   });
 }
