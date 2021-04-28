@@ -6,9 +6,7 @@ Future<void> main() async {
   final env = Platform.environment;
   final secret = env['secret'];
   final apiKey = env['apiKey'];
-  // '7j7exnksc4nxy399fdxvjqyqsqdahax3nfgtp27pumpc7sfm9um688pzpxjpjbf2';
-// gp6e8sxxzud6
-  var client = StreamClient.connect(apiKey!, secret: secret);
+  var client = StreamClient.connect(apiKey!, secret: secret); //Token(token!)
   final chris = client.flatFeed('user', 'chris');
 
 // Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
@@ -28,4 +26,13 @@ Future<void> main() async {
 
 // Remove an Activity by referencing it's Foreign Id:
   await chris.removeActivityByForeignId('picture:10');
+
+  // Instantiate a feed using feed group 'user' and user id '1'
+  var user1 = client.flatFeed('user', '1');
+
+// Create an activity object
+  const activity = Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
+
+// Add an activity to the feed
+  await user1.addActivity(activity);
 }
