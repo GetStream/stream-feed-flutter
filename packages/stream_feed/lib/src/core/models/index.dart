@@ -1,6 +1,7 @@
 export 'activity.dart';
 export 'activity_marker.dart';
 export 'activity_update.dart';
+export 'attachment_file.dart';
 export 'collection_entry.dart';
 export 'crop.dart';
 export 'enriched_activity.dart';

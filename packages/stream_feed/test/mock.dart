@@ -59,3 +59,5 @@ class MockFunctions extends Mock implements Functions {}
 class MockWSChannel extends Mock implements WebSocketChannel {}
 
 class MockWSSink extends Mock implements WebSocketSink {}
+
+class MultipartFileFake extends Fake implements MultipartFile {}
