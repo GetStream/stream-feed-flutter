@@ -31,8 +31,36 @@ Future<void> main() async {
   var user1 = client.flatFeed('user', '1');
 
 // Create an activity object
-  const activity = Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
+  var activity = Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
 
 // Add an activity to the feed
   await user1.addActivity(activity);
+
+// Instantiate a feed for feed group 'user', user id '1'
+// and a security token generated server side
+  final userFeed = client.flatFeed('user', '1');
+
+// Create a bit more complex activity
+  activity =
+      Activity(actor: 'User:1', verb: 'run', object: 'Exercise:42', extraData: {
+    'course': const {'name': 'Golden Gate park', 'distance': 10},
+    'participants': const ['Thierry', 'Tommaso'],
+    'started_at': DateTime.now().toIso8601String(),
+    'foreign_id': 'run:1',
+    'location': const {
+      'type': 'point',
+      'coordinates': [37.769722, -122.476944]
+    }
+  });
+
+  await user1.addActivity(activity);
+
+  // Get 5 activities with id less than the given UUID (Faster - Recommended!)
+  var response = await userFeed.getActivities(
+      limit: 5,
+      filter: Filter().idLessThan("e561de8f-00f1-11e4-b400-0cc47a024be0"));
+// Get activities from 5 to 10 (Pagination-based - Slower)
+  response = await userFeed.getActivities(offset: 0, limit: 5);
+// Get activities sorted by rank (Ranked Feeds Enabled):
+  // response = await userFeed.getActivities(limit: 5, ranking: "popularity");
 }
