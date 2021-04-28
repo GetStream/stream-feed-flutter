@@ -34,7 +34,7 @@ Future<void> main() async {
   var activity = Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
 
 // Add an activity to the feed
-  await user1.addActivity(activity);
+  final pinActivity = await user1.addActivity(activity);
 
 // Instantiate a feed for feed group 'user', user id '1'
 // and a security token generated server side
@@ -63,4 +63,10 @@ Future<void> main() async {
   response = await userFeed.getActivities(offset: 0, limit: 5);
 // Get activities sorted by rank (Ranked Feeds Enabled):
   // response = await userFeed.getActivities(limit: 5, ranking: "popularity");
+
+  // Remove an activity by its id
+  await user1.removeActivityById(pinActivity.id!);
+
+// Remove activities foreign_id 'run:1'
+  await user1.removeActivityByForeignId('run:1');
 }
