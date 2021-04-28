@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/event.dart';
@@ -898,6 +899,43 @@ void main() {
       'audios': [
         {'audio': 'test', 'url': 'test', 'secure_url': 'test', 'type': 'test'}
       ]
+    });
+  });
+
+  group('AttachmentFile', () {
+    const path = 'testPath';
+    const name = 'testFile';
+    final bytes = Uint8List.fromList([]);
+    const size = 0;
+
+    test('should throw if `path` or `bytes` is not provided', () {
+      expect(() => AttachmentFile(), throwsA(isA<AssertionError>()));
+    });
+
+    test('toJson', () {
+      final attachmentFile = AttachmentFile(
+        path: path,
+        name: name,
+        bytes: bytes,
+        size: size,
+      );
+
+      expect(attachmentFile.toJson(), {
+        'path': 'testPath',
+        'name': 'testFile',
+        'bytes': '',
+        'size': 0,
+      });
+    });
+
+    test('fromJson', () {
+      final file = json.decode(fixture('attachment_file.json'));
+      final attachmentFile = AttachmentFile.fromJson(file);
+
+      expect(attachmentFile.path, path);
+      expect(attachmentFile.name, name);
+      expect(attachmentFile.bytes, bytes);
+      expect(attachmentFile.size, size);
     });
   });
 }

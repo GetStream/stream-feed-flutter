@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:file/file.dart';
-import 'package:file/memory.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/core/api/analytics_api.dart';
 import 'package:stream_feed/src/core/api/collections_api.dart';
@@ -45,22 +43,6 @@ class MockFeedAPI extends Mock implements FeedAPI {}
 
 class MockAPI extends Mock implements StreamAPI {}
 
-class MockFileSystem extends Mock implements MemoryFileSystem {
-  // @override
-  // File file(dynamic path) {
-  //   return MockFile();
-  // }
-}
-
-class MockFile extends Mock implements File {}
-//   @override
-//   Future<RandomAccessFile> open({FileMode mode: FileMode.read}) async {
-//     return MockRandomAccessFile();
-//   }
-// }
-
-// class MockRandomAccessFile extends Mock implements RandomAccessFile {}
-
 class Functions {
   WebSocketChannel? connectFunc(
     String url, {
@@ -77,3 +59,5 @@ class MockFunctions extends Mock implements Functions {}
 class MockWSChannel extends Mock implements WebSocketChannel {}
 
 class MockWSSink extends Mock implements WebSocketSink {}
+
+class MultipartFileFake extends Fake implements MultipartFile {}

@@ -613,12 +613,13 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   final image = File('...');
-  var multipartFile = await MultipartFile.fromFile(
-    image.path,
-    filename: 'my-photo',
-    contentType: MediaType('image', 'jpeg'),
+  final attachmentFile = AttachmentFile(
+    path: image.path,
+    name: 'my-photo',
+    // required only for web
+    bytes: image.readAsBytesSync(),
   );
-  await client.images.upload(multipartFile);
+  await client.images.upload(attachmentFile);
 
   await client.files.upload(AttachmentFile(path: '...'));
 

@@ -1,6 +1,13 @@
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart' show MultipartFile;
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stream_feed/src/core/platform_detector/platform_detector.dart'
+    show CurrentPlatform;
+import 'package:stream_feed/src/core/util/extension.dart';
+import 'package:stream_feed/stream_feed.dart';
+
 part 'attachment_file.g.dart';
 
 Uint8List? _fromString(String? bytes) {
@@ -15,11 +22,21 @@ String? _toString(Uint8List? bytes) {
 
 /// The class that contains the information about an attachment file
 @JsonSerializable()
-class AttachmentFile {
+class AttachmentFile extends Equatable {
   /// Creates a new [AttachmentFile] instance.
-  const AttachmentFile({
-    required this.path,
-  });
+  AttachmentFile({
+    this.path,
+    this.name,
+    this.bytes,
+    this.size,
+  })  : assert(
+          path != null || bytes != null,
+          'Either path or bytes should be != null',
+        ),
+        assert(
+          !CurrentPlatform.isWeb || bytes != null,
+          'File by path is not supported in web, Please provide bytes',
+        );
 
   /// Create a new instance from a json
   factory AttachmentFile.fromJson(Map<String, dynamic> json) =>
@@ -30,11 +47,48 @@ class AttachmentFile {
   /// ```
   /// final File myFile = File(platformFile.path);
   /// ```
-  final String path;
+  final String? path;
+
+  /// File name including its extension.
+  final String? name;
+
+  /// Byte data for this file. Particularly useful if you want to manipulate
+  /// its data or easily upload to somewhere else.
+  @JsonKey(toJson: _toString, fromJson: _fromString)
+  final Uint8List? bytes;
+
+  /// The file size in bytes.
+  final int? size;
 
   /// File extension for this file.
-  // String? get mediaType => name?.split('.').last;
+  String? get extension => name?.split('.').last;
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$AttachmentFileToJson(this);
+
+  ///
+  Future<MultipartFile> toMultipartFile() async {
+    final filename = path?.split('/').last ?? name;
+    final mimeType = filename?.mimeType;
+
+    late MultipartFile multiPartFile;
+
+    if (CurrentPlatform.isWeb) {
+      multiPartFile = MultipartFile.fromBytes(
+        bytes!,
+        filename: filename,
+        contentType: mimeType,
+      );
+    } else {
+      multiPartFile = await MultipartFile.fromFile(
+        path!,
+        filename: filename,
+        contentType: mimeType,
+      );
+    }
+    return multiPartFile;
+  }
+
+  @override
+  List<Object?> get props => [path, name, bytes, size];
 }

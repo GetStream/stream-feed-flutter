@@ -1,6 +1,3 @@
-import 'package:dio/dio.dart';
-import 'package:file/file.dart';
-import 'package:file/local.dart';
 import 'package:stream_feed/src/core/api/files_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/attachment_file.dart';
@@ -11,17 +8,17 @@ import 'package:stream_feed/stream_feed.dart';
 /// and to process your images (eg. create image thumbnails).
 class FileStorageClient {
   /// Initialize a FileStorageClient object
-  FileStorageClient(this._files,
-      {this.userToken, this.secret, this.fs = const LocalFileSystem()})
-      : assert(
+  FileStorageClient(
+    this._files, {
+    this.userToken,
+    this.secret,
+  }) : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         );
 
   /// Your API secret
   final String? secret;
-
-  final FileSystem fs;
 
   /// Your user token obtain via the dashboard.
   /// Required if you are using the sdk client side
@@ -40,12 +37,9 @@ class FileStorageClient {
   /// ```
   /// API docs: [upload](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#upload)
   Future<String?> upload(AttachmentFile attachment) async {
-    final file = fs.file(attachment.path);
-    final multipartFromFile = await MultipartFile.fromFile(file.path);
-
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
-    return _files.upload(token, multipartFromFile);
+    return _files.upload(token, attachment);
   }
 
   /// Delete a file using the url returned by the APIs
@@ -63,8 +57,8 @@ class FileStorageClient {
     return _files.delete(token, url);
   }
 
-  ///Explicitly refresh CDN urls for uploaded images on the Stream CDN (only needed for files on the Stream CDN).
-  ///Note that Stream CDN is not enabled by default, if in doubt please contact us.
+  /// Explicitly refresh CDN urls for uploaded images on the Stream CDN (only needed for files on the Stream CDN).
+  /// Note that Stream CDN is not enabled by default, if in doubt please contact us.
   Future<String?> refreshUrl(String targetUrl) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);

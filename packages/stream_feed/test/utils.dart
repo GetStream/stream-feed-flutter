@@ -6,6 +6,11 @@ String fixture(String name) {
   return File('$dir/test/fixtures/$name').readAsStringSync();
 }
 
+File assetFile(String name) {
+  final dir = currentDirectory.path;
+  return File('$dir/test/assets/$name');
+}
+
 Map<String, dynamic> jsonFixture(String name) => json.decode(fixture(name));
 
 // https://github.com/flutter/flutter/issues/20907

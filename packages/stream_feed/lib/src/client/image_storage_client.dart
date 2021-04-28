@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/images_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
@@ -45,7 +44,7 @@ class ImageStorageClient {
   /// await client.images.upload(multipartFile);
   /// ```
   /// API docs: https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?q=Image
-  Future<String?> upload(MultipartFile image) {
+  Future<String?> upload(AttachmentFile image) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return _images.upload(token, image);
@@ -110,8 +109,8 @@ class ImageStorageClient {
   Future<String?> thumbnail(String url, Thumbnail thumbnail) =>
       _process(url, thumbnail.params);
 
-  ///Explicitly refresh CDN urls for uploaded images on the Stream CDN (only needed for files on the Stream CDN).
-  ///Note that Stream CDN is not enabled by default, if in doubt please contact us.
+  /// Explicitly refresh CDN urls for uploaded images on the Stream CDN (only needed for files on the Stream CDN).
+  /// Note that Stream CDN is not enabled by default, if in doubt please contact us.
   Future<String?> refreshUrl(String targetUrl) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);

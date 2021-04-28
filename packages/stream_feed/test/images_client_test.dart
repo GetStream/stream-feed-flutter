@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/client/image_storage_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
@@ -32,12 +33,16 @@ void main() {
     });
 
     test('upload', () async {
-      final multipartFile = MultipartFile(Stream.value([]), 2);
-      when(() => api.upload(token, multipartFile))
-          .thenAnswer((invocation) async => 'whatever');
+      final attachment = AttachmentFile(path: 'dummyPath');
 
-      expect(await client.upload(multipartFile), 'whatever');
-      verify(() => api.upload(token, multipartFile)).called(1);
+      const fileUrl = 'dummyFileUrl';
+      when(() => api.upload(token, attachment))
+          .thenAnswer((_) async => fileUrl);
+
+      final res = await client.upload(attachment);
+      expect(res, fileUrl);
+
+      verify(() => api.upload(token, attachment)).called(1);
     });
 
     test('delete', () async {
