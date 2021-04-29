@@ -87,7 +87,7 @@ Future<void> main() async {
 // })
 
 //Batching Partial Updates TODO
-final now = DateTime.now();
+  final now = DateTime.now();
   final first_activity = Activity(
     actor: '1',
     verb: 'add',
@@ -100,12 +100,27 @@ final now = DateTime.now();
   final firstActivityAdded = await user1.addActivity(first_activity);
 
   final second_activity = Activity(
-      actor: '1',
-      verb: 'add',
-      object: '1',
-      foreignId: 'activity_2',
-      time: now);
+      actor: '1', verb: 'add', object: '1', foreignId: 'activity_2', time: now);
 
   final secondActivityAdded = await user1.addActivity(second_activity);
-  
+
+  //Following Feeds
+  // timeline:timeline_feed_1 follows user:user_42:
+  final timelineFeed1 = client.flatFeed('timeline', 'timeline_feed_1');
+  final user42feed = client.flatFeed('user', 'user_42');
+  await timelineFeed1.follow(user42feed);
+
+// Follow feed without copying the activities:
+  await timelineFeed1.follow(user42feed, activityCopyLimit: 0);
+
+  //Unfollowing feeds
+  // Stop following feed user_42 - purging history:
+  await timelineFeed1.unfollow(user42feed);
+
+// Stop following feed user_42 but keep history of activities:
+  await timelineFeed1.unfollow(user42feed, keepHistory: true);
+
+//Reading Feed Followers
+  // List followers
+  await user1.followers(limit: 10, offset: 10);
 }
