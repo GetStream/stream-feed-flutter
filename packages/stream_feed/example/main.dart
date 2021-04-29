@@ -134,4 +134,18 @@ Future<void> main() async {
       .followStats(followerSlugs: ['timeline'], followingSlugs: ['market']);
 //Realtime
   final token = client.frontendToken('test-user-1');
+
+//Use Case: Mentions
+  // Add the activity to Eric's feed and to Jessica's notification feed
+  activity = Activity(
+    actor: 'user:Eric',
+    extraData: {
+      'message': "@Jessica check out getstream.io it's awesome!",
+    },
+    verb: 'tweet',
+    object: 'tweet:id',
+    to: [FeedId.id('notification:Jessica')],
+  );
+
+  await user1.addActivity(activity);
 }
