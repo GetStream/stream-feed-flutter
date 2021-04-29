@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:stream_feed/stream_feed.dart';
+import 'package:test/test.dart';
 
 Future<void> main() async {
   final env = Platform.environment;
@@ -84,4 +85,27 @@ Future<void> main() async {
 //     ...
 //   ]
 // })
+
+//Batching Partial Updates TODO
+final now = DateTime.now();
+  final first_activity = Activity(
+    actor: '1',
+    verb: 'add',
+    object: '1',
+    foreignId: 'activity_1',
+    time: DateTime.now(),
+  );
+
+// Add activity to activity feed:
+  final firstActivityAdded = await user1.addActivity(first_activity);
+
+  final second_activity = Activity(
+      actor: '1',
+      verb: 'add',
+      object: '1',
+      foreignId: 'activity_2',
+      time: now);
+
+  final secondActivityAdded = await user1.addActivity(second_activity);
+  
 }
