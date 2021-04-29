@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:stream_feed/stream_feed.dart';
-import 'package:test/test.dart';
 
 Future<void> main() async {
   final env = Platform.environment;
@@ -133,4 +132,6 @@ Future<void> main() async {
   await client
       .flatFeed('user', 'me')
       .followStats(followerSlugs: ['timeline'], followingSlugs: ['market']);
+//Realtime
+  final token = client.frontendToken('test-user-1');
 }
