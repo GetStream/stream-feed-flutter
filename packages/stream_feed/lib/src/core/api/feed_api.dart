@@ -228,7 +228,7 @@ class FeedAPI {
   /// Note: the keys of set and unset must not collide.
   Future<Activity> updateActivityById(
       Token token, ActivityUpdate update) async {
-    checkNotNull(update.foreignId, 'No activity to update');
+    checkNotNull(update.id, 'No activity to update');
     checkNotNull(update.time, 'Missing timestamp');
     checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
         'No activity properties to set or unset');
