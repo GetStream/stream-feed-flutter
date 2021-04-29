@@ -97,6 +97,7 @@ class FayeClient with Extensible, TimeoutHelper {
   }
 
   void _initWebSocketChannel() {
+    _manuallyClosed = false;
     _logger.info("Initiating connection with $baseUrl");
     _webSocketChannel ??= WebSocketChannel.connect(
       Uri.parse(baseUrl),
