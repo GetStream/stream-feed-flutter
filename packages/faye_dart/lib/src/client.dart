@@ -12,6 +12,8 @@ import 'dart:math' as math;
 
 import 'package:faye_dart/src/subscription.dart';
 
+import 'timeout_helper.dart';
+
 enum FayeClientState {
   unconnected,
   connecting,
@@ -36,27 +38,24 @@ const defaultConnectionTimeout = 60;
 const defaultConnectionInterval = 0;
 const bayeuxVersion = '1.0';
 
-class FayeClient with Extensible {
+class FayeClient with Extensible, TimeoutHelper {
   FayeClient(
-    String baseUrl, {
-    Iterable<String>? protocols,
+    this.baseUrl, {
+    this.protocols,
     this.retry = 5,
-    Level logLevel = Level.WARNING,
+    Level logLevel = Level.ALL,
     LogHandlerFunction? logHandlerFunction,
   }) : _logger = Logger.detached('🕒')..level = logLevel {
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
-    _webSocketChannel = WebSocketChannel.connect(
-      Uri.parse(baseUrl),
-      protocols: protocols,
-    );
-    _subscribeToWebsocket();
   }
+
+  final String baseUrl;
+  final Iterable<String>? protocols;
 
   String? _clientId;
 
   final int retry;
   final _channels = <String, Channel>{};
-  late final WebSocketChannel _webSocketChannel;
 
   var _advice = Advice(
     reconnect: Advice.retry,
@@ -79,6 +78,7 @@ class FayeClient with Extensible {
   /// The current state of the client in the form of stream
   Stream<FayeClientState> get stateStream => _stateController.stream;
 
+  WebSocketChannel? _webSocketChannel;
   StreamSubscription? _websocketSubscription;
 
   bool _connectRequest = false;
@@ -96,11 +96,31 @@ class FayeClient with Extensible {
     if (record.stackTrace != null) print(record.stackTrace);
   }
 
+  void _initWebSocketChannel() {
+    _logger.info("Initiating connection with $baseUrl");
+    _webSocketChannel ??= WebSocketChannel.connect(
+      Uri.parse(baseUrl),
+      protocols: protocols,
+    );
+    _subscribeToWebsocket();
+  }
+
+  void _closeWebSocketChannel() {
+    _logger.info('Cancelling all timeouts');
+    cancelAllTimeout();
+
+    _logger.info("Closing connection for $baseUrl");
+    _webSocketChannel?.sink.close(status.goingAway);
+    _websocketSubscription?.cancel();
+    _webSocketChannel = null;
+  }
+
   void _subscribeToWebsocket() {
+    _logger.info('Started listening to $baseUrl');
     if (_websocketSubscription != null) {
       _unsubscribeFromWebsocket();
     }
-    _websocketSubscription = _webSocketChannel.stream.listen(
+    _websocketSubscription = _webSocketChannel?.stream.listen(
       _onDataReceived,
       onError: _onConnectionError,
       onDone: _onConnectionClosed,
@@ -108,6 +128,7 @@ class FayeClient with Extensible {
   }
 
   void _unsubscribeFromWebsocket() {
+    _logger.info('Stopped listening to $baseUrl');
     if (_websocketSubscription != null) {
       _websocketSubscription!.cancel();
       _websocketSubscription = null;
@@ -129,21 +150,19 @@ class FayeClient with Extensible {
   }
 
   void _onConnectionError(Object error, [StackTrace? stacktrace]) {
-    // _isWebSocketConnected = false;
-    _logger.severe("onConnectionError $error");
-    // TODO : Pause handshakeTimer
-    // _clientId = null;
-    _logger.info("disconnected");
-    // _handleAdvice();
+    _logger.severe('Error occurred', error, stacktrace);
+    _closeWebSocketChannel();
+    _initWebSocketChannel();
   }
 
+  bool _manuallyClosed = false;
+
   void _onConnectionClosed() {
-    _logger.info("Log Connection Closed");
+    _closeWebSocketChannel();
+
     // Checking if we manually closed the connection
-    if (_webSocketChannel.closeCode == status.goingAway) {
-      return;
-    }
-    // _handleAdvice();
+    if (_manuallyClosed) return;
+    _initWebSocketChannel();
   }
 
   void handshake({VoidCallback? callback}) {
@@ -152,7 +171,9 @@ class FayeClient with Extensible {
 
     _state = FayeClientState.connecting;
 
-    _logger.info("initiating handshake");
+    _initWebSocketChannel();
+
+    _logger.info("Initiating handshake with $baseUrl");
 
     _sendMessage(
       Message(
@@ -170,7 +191,7 @@ class FayeClient with Extensible {
           callback?.call();
         } else {
           _logger.info('Handshake unsuccessful');
-          Future.delayed(
+          setTimeout(
             Duration(seconds: retry),
             () => handshake(callback: callback),
           );
@@ -220,8 +241,8 @@ class FayeClient with Extensible {
       ),
       onResponse: (response) {
         if (response.successful == true) {
-          _webSocketChannel.sink.close(status.goingAway);
-          _websocketSubscription?.cancel();
+          _manuallyClosed = true;
+          _closeWebSocketChannel();
           _disconnectionCompleter.complete();
         } else {
           final error = FayeClientError.parse(response.error);
@@ -351,7 +372,7 @@ class FayeClient with Extensible {
       _logger.info("sending message : $message");
       if (onResponse != null) _responseCallbacks[id] = onResponse;
       final data = jsonEncode(message);
-      _webSocketChannel.sink.add(data);
+      _webSocketChannel?.sink.add(data);
     });
   }
 
@@ -393,6 +414,6 @@ class FayeClient with Extensible {
       _connectRequest = false;
       _logger.info('Closed connection for $_clientId');
     }
-    Future.delayed(Duration(milliseconds: _advice.interval), () => connect());
+    setTimeout(Duration(milliseconds: _advice.interval), () => connect());
   }
 }
