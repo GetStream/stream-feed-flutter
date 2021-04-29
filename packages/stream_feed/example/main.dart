@@ -123,4 +123,14 @@ Future<void> main() async {
 //Reading Feed Followers
   // List followers
   await user1.followers(limit: 10, offset: 10);
+
+  // get follower and following stats of the feed
+  await client.flatFeed('user', 'me').followStats();
+
+// get follower and following stats of the feed but also filter with given slugs
+// count by how many timelines follow me
+// count by how many markets are followed
+  await client
+      .flatFeed('user', 'me')
+      .followStats(followerSlugs: ['timeline'], followingSlugs: ['market']);
 }
