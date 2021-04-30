@@ -51,19 +51,19 @@ class StreamClientImpl implements StreamClient {
         ),
         _api = api ?? StreamApiImpl(apiKey, options: options),
         _logger = Logger.detached('📜')..level = logLevel {
-        _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
-        _logger.info('instantiating new client'){
-        
-          if (userToken != null) {
-            final jwtBody = jwtDecode(userToken!);
-            final userId = jwtBody.claims.getTyped('user_id');
-            assert(
-              userId != null,
-              'Invalid `userToken`, It should contain `user_id`',
-            );
-            _currentUser = user(userId);
-          }
-        }
+    _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
+    _logger.info('instantiating new client');
+
+    if (userToken != null) {
+      final jwtBody = jwtDecode(userToken!);
+      final userId = jwtBody.claims.getTyped('user_id');
+      assert(
+        userId != null,
+        'Invalid `userToken`, It should contain `user_id`',
+      );
+      _currentUser = user(userId);
+    }
+  }
 
   final String apiKey;
   final String? appId;
