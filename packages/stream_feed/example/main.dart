@@ -234,6 +234,12 @@ Future<void> main() async {
 //retrieving users
   await client.user('john-doe').get();
 
+  await client.user('john-doe').update({
+    'name': 'Jane Doe',
+    'occupation': 'Software Engineer',
+    'gender': 'female'
+  });
+
   //removing users
   await client.user('john-doe').delete();
 }
