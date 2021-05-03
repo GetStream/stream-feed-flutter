@@ -19,10 +19,11 @@ class PersonalizationClient {
 
   Future<Map> get(
     String resource, {
-    Map<String, Object>? params,
+    Map<String, dynamic>? params,
   }) {
     final token = userToken ??
-        TokenHelper.buildPersonalizationToken(secret!, TokenAction.read);
+        TokenHelper.buildPersonalizationToken(secret!, TokenAction.any,
+            userId: '*');
     return _personalization.get(token, resource, params);
   }
 

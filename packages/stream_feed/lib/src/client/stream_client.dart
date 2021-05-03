@@ -5,6 +5,7 @@ import 'package:stream_feed/src/client/batch_operations_client.dart';
 import 'package:stream_feed/src/client/collections_client.dart';
 import 'package:stream_feed/src/client/file_storage_client.dart';
 import 'package:stream_feed/src/client/image_storage_client.dart';
+import 'package:stream_feed/src/client/personalization_client.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
@@ -62,6 +63,9 @@ abstract class StreamClient {
 
   /// Convenient getter for [UsersClient]
   UserClient user(String userId);
+
+  /// Convenient getter for [PersonalizationClient]
+  PersonalizationClient get personalization;
 
   /// Convenient getter for [FileStorageClient]
   FileStorageClient get files;

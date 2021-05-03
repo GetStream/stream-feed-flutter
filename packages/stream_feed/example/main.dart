@@ -5,10 +5,10 @@ import 'package:stream_feed/stream_feed.dart';
 Future<void> main() async {
   final env = Platform.environment;
   final secret = env['secret'];
-  final token = env['token'];
   final apiKey = env['apiKey'];
-  var client = StreamClient.connect(apiKey!, secret: secret); //Token(token!)
-  final chris = client.flatFeed('user', 'chris');
+  var clientWithSecret =
+      StreamClient.connect(apiKey!, secret: secret); //Token(token!)
+  final chris = clientWithSecret.flatFeed('user', 'chris');
 
 // Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
   final addedPicture = await chris.addActivity(Activity(
@@ -19,7 +19,7 @@ Future<void> main() async {
       extraData: {'message': 'Beautiful bird!'}));
 
 // Create a following relationship between Jack's "timeline" feed and Chris' "user" feed:
-  final jack = client.flatFeed('timeline', 'jack');
+  final jack = clientWithSecret.flatFeed('timeline', 'jack');
   await jack.follow(chris);
 
 // Read Jack's timeline and Chris' post appears in the feed:
@@ -29,7 +29,7 @@ Future<void> main() async {
   await chris.removeActivityByForeignId('picture:10');
 
   // Instantiate a feed using feed group 'user' and user id '1'
-  final user1 = client.flatFeed('user', '1');
+  final user1 = clientWithSecret.flatFeed('user', '1');
 
 // Create an activity object
   var activity = Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
@@ -106,8 +106,9 @@ Future<void> main() async {
 
   //Following Feeds
   // timeline:timeline_feed_1 follows user:user_42:
-  final timelineFeed1 = client.flatFeed('timeline', 'timeline_feed_1');
-  final user42feed = client.flatFeed('user', 'user_42');
+  final timelineFeed1 =
+      clientWithSecret.flatFeed('timeline', 'timeline_feed_1');
+  final user42feed = clientWithSecret.flatFeed('user', 'user_42');
   await timelineFeed1.follow(user42feed);
 
 // Follow feed without copying the activities:
@@ -125,16 +126,16 @@ Future<void> main() async {
   await user1.followers(limit: 10, offset: 10);
 
   // get follower and following stats of the feed
-  await client.flatFeed('user', 'me').followStats();
+  await clientWithSecret.flatFeed('user', 'me').followStats();
 
 // get follower and following stats of the feed but also filter with given slugs
 // count by how many timelines follow me
 // count by how many markets are followed
-  await client
+  await clientWithSecret
       .flatFeed('user', 'me')
       .followStats(followerSlugs: ['timeline'], followingSlugs: ['market']);
 //Realtime
-  final frontendToken = client.frontendToken('john-doe');
+  final frontendToken = clientWithSecret.frontendToken('john-doe');
 
 //Use Case: Mentions
   // Add the activity to Eric's feed and to Jessica's notification feed
@@ -157,22 +158,22 @@ Future<void> main() async {
   // );//will throw an error if entry-id already exists
 
 // if you don't have an id on your side, just use null as the ID and Stream will generate a unique ID
-  final entry = await client.collections
+  final entry = await clientWithSecret.collections
       .add('food', {'name': 'Cheese Burger', 'rating': '4 stars'});
-  await client.collections.get('food', entry.id!);
-  await client.collections.update(
+  await clientWithSecret.collections.get('food', entry.id!);
+  await clientWithSecret.collections.update(
       entry.copyWith(data: {'name': 'Cheese Burger', 'rating': '1 star'}));
-  await client.collections.delete('food', entry.id!);
+  await clientWithSecret.collections.delete('food', entry.id!);
 
   // first we add our object to the food collection
-  final cheeseBurger = await client.collections.add('food', {
+  final cheeseBurger = await clientWithSecret.collections.add('food', {
     'name': 'Cheese Burger',
     'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
   });
 
 // the object returned by .add can be embedded directly inside of an activity
   await user1.addActivity(Activity(
-    actor: client.currentUser!.ref,
+    actor: clientWithSecret.currentUser!.ref,
     verb: 'grill',
     object: cheeseBurger.ref,
   ));
@@ -181,35 +182,36 @@ Future<void> main() async {
   await user1.getEnrichedActivities();
 
 // we can then update the object and Stream will propagate the change to all activities
-  await client.collections.update(cheeseBurger.copyWith(data: {
+  await clientWithSecret.collections.update(cheeseBurger.copyWith(data: {
     'name': 'Amazing Cheese Burger',
     'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
   }));
 
   // First create a collection entry with upsert api
-  await client.collections.upsert('food', [
+  await clientWithSecret.collections.upsert('food', [
     CollectionEntry(id: 'cheese-burger', data: {'name': 'Cheese Burger'}),
   ]);
 
 // Then create a user
-  await client.user('john-doe').getOrCreate({
+  await clientWithSecret.user('john-doe').getOrCreate({
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male',
   });
 
 // Since we know their IDs we can create references to both without reading from APIs
-  final cheeseBurgerRef = client.collections.entry('food', 'cheese-burger').ref;
-  final johnDoeRef = client.user('john-doe').ref;
+  final cheeseBurgerRef =
+      clientWithSecret.collections.entry('food', 'cheese-burger').ref;
+  final johnDoeRef = clientWithSecret.user('john-doe').ref;
 
 // And then add an activity with these references
-  await client.flatFeed('user', 'john').addActivity(Activity(
+  await clientWithSecret.flatFeed('user', 'john').addActivity(Activity(
         actor: johnDoeRef,
         verb: 'eat',
         object: cheeseBurgerRef,
       ));
 
-  client = StreamClient.connect(apiKey, token: frontendToken);
+  final client = StreamClient.connect(apiKey, token: frontendToken);
 // ensure the user data is stored on Stream
   await client.setUserData({
     'name': 'John Doe',
@@ -242,4 +244,19 @@ Future<void> main() async {
 
   //removing users
   await client.user('john-doe').delete();
+
+  // Read the personalized feed for a given user
+  var params = {'user_id': 'john-doe', 'feed_slug': 'timeline'};
+
+  clientWithSecret.personalization.get('personalized_feed', params: params);
+
+//Our data science team will typically tell you which endpoint to use
+  params = {
+    'user_id': 'john-doe',
+    'source_feed_slug': 'timeline',
+    'target_feed_slug': 'user'
+  };
+
+  // await client.personalization
+  //     .get('discovery_feed', params: params);
 }

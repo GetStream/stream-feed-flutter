@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:stream_feed/src/client/stream_client.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
@@ -6,13 +8,12 @@ import 'package:test/test.dart';
 
 void main() async {
   test('FayeClient', () async {
-    const apiKey = 'ay57s8swfnan';
-    const appId = '110925';
+    final env = Platform.environment;
+    final secret = env['secret'];
+    final appId = env['appId'];
+    final apiKey = env['apiKey'];
 
-    final client = StreamClient.connect(apiKey,
-        secret:
-            'ajencvb6gfrbzvt2975kk3563j3vg86fhrswjsbk32zzgjcgtfn3293er4tk9bf4',
-        appId: appId);
+    final client = StreamClient.connect(apiKey!, secret: secret, appId: appId);
     const userId = '1';
     const slug = 'reward';
     final userFeed = client.flatFeed(slug, userId);

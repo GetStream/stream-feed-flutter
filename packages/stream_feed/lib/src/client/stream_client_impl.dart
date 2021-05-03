@@ -7,6 +7,7 @@ import 'package:stream_feed/src/client/batch_operations_client.dart';
 import 'package:stream_feed/src/client/collections_client.dart';
 import 'package:stream_feed/src/client/file_storage_client.dart';
 import 'package:stream_feed/src/client/image_storage_client.dart';
+import 'package:stream_feed/src/client/personalization_client.dart';
 import 'package:stream_feed/src/client/reactions_client.dart';
 import 'package:stream_feed/src/core/api/stream_api.dart';
 import 'package:stream_feed/src/core/api/stream_api_impl.dart';
@@ -88,6 +89,11 @@ class StreamClientImpl implements StreamClient {
   @override
   ReactionsClient get reactions =>
       ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
+
+  @override
+  PersonalizationClient get personalization =>
+      PersonalizationClient(_api.personalization,
+          userToken: userToken, secret: secret);
 
   @override
   UserClient user(String userId) {
