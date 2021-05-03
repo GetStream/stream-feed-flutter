@@ -159,4 +159,5 @@ Future<void> main() async {
   await client.collections
       .add('food', {'name': 'Cheese Burger', 'rating': '4 stars'});
   await client.collections.get('food', 'cheese-burger');
+  await client.collections.delete('food', 'cheese-burger');
 }
