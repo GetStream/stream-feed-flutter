@@ -156,8 +156,10 @@ Future<void> main() async {
   // );//will throw an error if entry-id already exists
 
 // if you don't have an id on your side, just use null as the ID and Stream will generate a unique ID
-  await client.collections
+  final entry = await client.collections
       .add('food', {'name': 'Cheese Burger', 'rating': '4 stars'});
-  await client.collections.get('food', 'cheese-burger');
-  await client.collections.delete('food', 'cheese-burger');
+  await client.collections.get('food', entry.id!);
+  await client.collections
+      .update('food', entry.id, {'name': 'Cheese Burger', 'rating': '1 star'});
+  await client.collections.delete('food', entry.id!);
 }
