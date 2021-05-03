@@ -218,11 +218,11 @@ Future<void> main() async {
   });
 
   // create a new user, if the user already exist an error is returned
-  await client.user('john-doe').create({
-    'name': 'John Doe',
-    'occupation': 'Software Engineer',
-    'gender': 'male'
-  });
+  // await client.user('john-doe').create({
+  //   'name': 'John Doe',
+  //   'occupation': 'Software Engineer',
+  //   'gender': 'male'
+  // });
 
 // get or create a new user, if the user already exist the user is returned
   await client.user('john-doe').getOrCreate({
@@ -230,4 +230,7 @@ Future<void> main() async {
     'occupation': 'Software Engineer',
     'gender': 'male'
   });
+
+//retrieving users
+  await client.user('john-doe').get();
 }
