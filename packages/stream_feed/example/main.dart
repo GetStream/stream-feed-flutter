@@ -233,4 +233,7 @@ Future<void> main() async {
 
 //retrieving users
   await client.user('john-doe').get();
+
+  //removing users
+  await client.user('john-doe').delete();
 }
