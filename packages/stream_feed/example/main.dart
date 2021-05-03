@@ -207,4 +207,11 @@ Future<void> main() async {
         verb: 'eat',
         object: cheeseBurgerRef,
       ));
+
+// ensure the user data is stored on Stream
+  await client.setUserData({
+    'name': 'John Doe',
+    'occupation': 'Software Engineer',
+    'gender': 'male'
+  });
 }
