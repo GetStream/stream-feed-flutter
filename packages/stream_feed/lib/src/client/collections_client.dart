@@ -36,6 +36,9 @@ class CollectionsClient {
   final String? secret;
   final CollectionsAPI _collections;
 
+  CollectionEntry entry(String collection, String entryId) =>
+      CollectionEntry(collection: collection, id: entryId);
+
   /// Add item to collection
   ///
   /// Usage:

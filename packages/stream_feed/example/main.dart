@@ -184,4 +184,27 @@ Future<void> main() async {
     'name': 'Amazing Cheese Burger',
     'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
   }));
+
+  // First create a collection entry with upsert api
+  await client.collections.upsert('food', [
+    CollectionEntry(id: 'cheese-burger', data: {'name': 'Cheese Burger'}),
+  ]);
+
+// Then create a user
+  await client.user('john-doe').getOrCreate({
+    'name': 'John Doe',
+    'occupation': 'Software Engineer',
+    'gender': 'male',
+  });
+
+// Since we know their IDs we can create references to both without reading from APIs
+  final cheeseBurgerRef = client.collections.entry('food', 'cheese-burger').ref;
+  final johnDoeRef = client.user('john-doe').ref;
+
+// And then add an activity with these references
+  await client.flatFeed('user', 'john').addActivity(Activity(
+        actor: johnDoeRef,
+        verb: 'eat',
+        object: cheeseBurgerRef,
+      ));
 }
