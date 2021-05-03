@@ -5,8 +5,9 @@ import 'package:stream_feed/stream_feed.dart';
 Future<void> main() async {
   final env = Platform.environment;
   final secret = env['secret'];
+  final token = env['token'];
   final apiKey = env['apiKey'];
-  final client = StreamClient.connect(apiKey!, secret: secret); //Token(token!)
+  var client = StreamClient.connect(apiKey!, secret: secret); //Token(token!)
   final chris = client.flatFeed('user', 'chris');
 
 // Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
@@ -133,7 +134,7 @@ Future<void> main() async {
       .flatFeed('user', 'me')
       .followStats(followerSlugs: ['timeline'], followingSlugs: ['market']);
 //Realtime
-  final token = client.frontendToken('test-user-1');
+  final frontendToken = client.frontendToken('john-doe');
 
 //Use Case: Mentions
   // Add the activity to Eric's feed and to Jessica's notification feed
@@ -208,8 +209,23 @@ Future<void> main() async {
         object: cheeseBurgerRef,
       ));
 
+  client = StreamClient.connect(apiKey, token: frontendToken);
 // ensure the user data is stored on Stream
   await client.setUserData({
+    'name': 'John Doe',
+    'occupation': 'Software Engineer',
+    'gender': 'male'
+  });
+
+  // create a new user, if the user already exist an error is returned
+  await client.user('john-doe').create({
+    'name': 'John Doe',
+    'occupation': 'Software Engineer',
+    'gender': 'male'
+  });
+
+// get or create a new user, if the user already exist the user is returned
+  await client.user('john-doe').getOrCreate({
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male'
