@@ -134,19 +134,12 @@ class CollectionsClient {
   ///
   /// API docs : [updating-collections](https://getstream.io/activity-feeds/docs/flutter-dart/collections_introduction/?language=dart#updating-collections)
   Future<CollectionEntry> update(
-    String? collection,
-    String? entryId,
-    Map<String, Object> data, {
+    CollectionEntry entryCopy, {
     String? userId,
   }) {
-    final entry = CollectionEntry(
-      id: entryId,
-      collection: collection,
-      data: data,
-    );
     final token = userToken ??
         TokenHelper.buildCollectionsToken(secret!, TokenAction.write);
-    return _collections.update(token, userId, entry);
+    return _collections.update(token, userId, entryCopy);
   }
 
   //Serverside methods

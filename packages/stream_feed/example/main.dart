@@ -159,7 +159,29 @@ Future<void> main() async {
   final entry = await client.collections
       .add('food', {'name': 'Cheese Burger', 'rating': '4 stars'});
   await client.collections.get('food', entry.id!);
-  await client.collections
-      .update('food', entry.id, {'name': 'Cheese Burger', 'rating': '1 star'});
+  await client.collections.update(
+      entry.copyWith(data: {'name': 'Cheese Burger', 'rating': '1 star'}));
   await client.collections.delete('food', entry.id!);
+
+  // first we add our object to the food collection
+  final cheeseBurger = await client.collections.add('food', {
+    'name': 'Cheese Burger',
+    'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
+  });
+
+// the object returned by .add can be embedded directly inside of an activity
+  await user1.addActivity(Activity(
+    actor: client.currentUser!.ref,
+    verb: 'grill',
+    object: cheeseBurger.ref,
+  ));
+
+// if we now read the feed, the activity we just added will include the entire full object
+  await user1.getEnrichedActivities();
+
+// we can then update the object and Stream will propagate the change to all activities
+  await client.collections.update(cheeseBurger.copyWith(data: {
+    'name': 'Amazing Cheese Burger',
+    'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
+  }));
 }

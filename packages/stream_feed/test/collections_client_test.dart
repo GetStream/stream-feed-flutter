@@ -76,9 +76,7 @@ void main() {
       when(() => api.update(token, userId, entry))
           .thenAnswer((_) async => entry);
       final updatedCollection = await client.update(
-        collection,
-        entryId,
-        data,
+        entry,
         userId: userId,
       );
       expect(updatedCollection, entry);
