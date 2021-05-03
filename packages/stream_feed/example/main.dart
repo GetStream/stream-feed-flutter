@@ -149,13 +149,14 @@ Future<void> main() async {
 
   await user1.addActivity(activity);
 //Adding Collections
-  await client.collections.add(
-    'food',
-    {'name': 'Cheese Burger', 'rating': '4 stars'},
-    entryId: 'cheese-burger',
-  );
+  // await client.collections.add(
+  //   'food',
+  //   {'name': 'Cheese Burger', 'rating': '4 stars'},
+  //   entryId: 'cheese-burger',
+  // );//will throw an error if entry-id already exists
 
 // if you don't have an id on your side, just use null as the ID and Stream will generate a unique ID
   await client.collections
-      .add('food', {'name': "Cheese Burger", 'rating': '4 stars'});
+      .add('food', {'name': 'Cheese Burger', 'rating': '4 stars'});
+  await client.collections.get('food', 'cheese-burger');
 }
