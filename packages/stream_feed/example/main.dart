@@ -259,4 +259,6 @@ Future<void> main() async {
 
   // await client.personalization
   //     .get('discovery_feed', params: params);
+
+  final preview = await client.og('http://www.imdb.com/title/tt0117500/');
 }
