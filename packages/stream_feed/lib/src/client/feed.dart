@@ -263,7 +263,7 @@ class Feed {
   ///
   /// API docs: [reading-followed-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-followed-feeds)
   Future<List<Follow>> following({
-    Iterable<FeedId>? feedIds,
+    Iterable<FeedId>? filter,
     int? limit,
     int? offset,
     String? session,
@@ -271,7 +271,7 @@ class Feed {
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.read, feedId);
     return feed.following(token, feedId, limit ?? Default.limit,
-        offset ?? Default.offset, feedIds ?? []);
+        offset ?? Default.offset, filter ?? []);
   }
 
   /// Unfollow the given feed

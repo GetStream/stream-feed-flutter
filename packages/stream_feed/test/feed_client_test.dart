@@ -106,7 +106,7 @@ void main() {
       ];
       when(() => api.following(token, feed, limit, offset, feedIds))
           .thenAnswer((_) async => follows);
-      await client.following(limit: limit, offset: offset, feedIds: feedIds);
+      await client.following(limit: limit, offset: offset, filter: feedIds);
       verify(() => api.following(token, feed, limit, offset, feedIds))
           .called(1);
     });

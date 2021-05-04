@@ -151,6 +151,17 @@ Future<void> main() async {
 //Reading Feed Followers
   // List followers
   await user1.followers(limit: 10, offset: 10);
+  // Retrieve last 10 feeds followed by user_feed_1
+  await user1.following(offset: 0, limit: 10);
+
+// Retrieve 10 feeds followed by user_feed_1 starting from the 11th
+  await user1.following(offset: 10, limit: 10);
+
+// Check if user1 follows specific feeds
+  await user1.following(
+      offset: 0,
+      limit: 2,
+      filter: [FeedId.id('user:42'), FeedId.id('user:43')]);
 
   // get follower and following stats of the feed
   await clientWithSecret.flatFeed('user', 'me').followStats();
