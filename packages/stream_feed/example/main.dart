@@ -260,5 +260,17 @@ Future<void> main() async {
   // await client.personalization
   //     .get('discovery_feed', params: params);
 
+  const imageURI = 'test/assets/test_image.jpeg';
+
+  // uploading an image from the filesystem
+  final imageUrl = await client.images.upload(AttachmentFile(path: imageURI));
+
+  await client.images.delete(imageUrl!);
+
+  const fileURI = 'test/assets/example.pdf';
+  // uploading a file from the filesystem
+  final fileUrl = await client.files.upload(AttachmentFile(path: fileURI));
+  await client.files.delete(fileUrl!);
+
   final preview = await client.og('http://www.imdb.com/title/tt0117500/');
 }
