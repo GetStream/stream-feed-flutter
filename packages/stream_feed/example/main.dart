@@ -71,23 +71,26 @@ Future<void> main() async {
   // partial update by activity ID
   await user1.updateActivityById(id: exercise.id!, set: {
     'course.distance': 12,
-    'shares': {'facebook': '...', 'twitter': '...'},
+    'shares': {
+      'facebook': '...',
+      'twitter': '...',
+    },
   }, unset: [
     'location',
     'participants'
   ]);
 
 // partial update by foreign ID
-// client.activityPartialUpdate({
-//   foreign_id: 'product:123',
-//   time: '2016-11-10T13:20:00.000000',
+// user1.updateActivityByForeignId(
+//   foreignId: 'product:123',
+//   time: DateTime.parse(('2016-11-10T13:20:00.000000'),
 //   set: {
 //     ...
 //   },
 //   unset: [
 //     ...
 //   ]
-// })
+// );
 
 //Batching Partial Updates TODO
   final now = DateTime.now();
