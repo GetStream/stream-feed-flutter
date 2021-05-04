@@ -259,6 +259,27 @@ Future<void> main() async {
 
   // await client.personalization
   //     .get('discovery_feed', params: params);
+  final analytics = StreamAnalytics(apiKey, secret: secret);
+  await analytics.trackEngagement(
+    Engagement(
+      // the label for the engagement, ie click, retweet etc.
+      label: 'click',
+      content: Content(
+          // the ID of the content that the user clicked
+          foreignId: FeedId.id('tweet:34349698')),
+      // score between 0 and 100 indicating the importance of this event
+      // IE. a like is typically a more significant indicator than a click
+      score: 2,
+
+      // (optional) the position in a list of activities
+      position: 3,
+      userData: UserData('test', 'test'),
+      // (optional) the feed the user is looking at
+      feedId: FeedId('user', 'thierry'),
+      // (optional) the location in your app. ie email, profile page etc
+      location: 'profile_page',
+    ),
+  );
 
   const imageURI = 'test/assets/test_image.jpeg';
 

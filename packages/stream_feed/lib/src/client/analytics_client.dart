@@ -5,9 +5,9 @@ import 'package:stream_feed/src/core/models/event.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Send out analytic events to the Stream service.
-class AnalyticsClient {
+class StreamAnalytics {
   /// [AnalyticsClient] constructor
-  AnalyticsClient(
+  StreamAnalytics(
     String apiKey, {
     this.secret,
     this.userToken,

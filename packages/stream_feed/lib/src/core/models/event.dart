@@ -69,7 +69,7 @@ class Event extends Equatable {
   ///
   final UserData? userData;
 
-  ///
+  /// Features
   @JsonKey(includeIfNull: false)
   final List<Feature>? features;
 
@@ -139,6 +139,7 @@ class Engagement extends Event {
       _$EngagementFromJson(json);
 
   /// the ID of the content that the user clicked
+  /// Activity ID
   final Content content; //TODO: content
 
   /// The type of event (i.e. click, share, search, etc.)
@@ -257,13 +258,21 @@ class Impression extends Event {
   Map<String, dynamic> toJson() => _$ImpressionToJson(this);
 }
 
+/// The purpose of Stream Analytics is to track every event which you think is a good
+///  indicator of a user being interested in a certain bit of content.
+///  The Content  object is designed to collect custom data related to the
+///  content you want to track using Stream Analytics.<br/>
+
+/// ForeignId is a mandatory field. If not set you will get a RuntimeException.
 @JsonSerializable()
 class Content extends Equatable {
+  /// Add a "foreign_id" to the Content.
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
   final FeedId? foreignId;
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? data;
 
+//TODO: attribute: https://github.com/GetStream/stream-analytics-android/blob/62f624f6da5ded03bd4d10d9b169c8c6ddd59984/stream-analytics/src/main/java/io/getstream/analytics/beans/ContentAttribute.java#L39
   Content({required this.foreignId, this.data});
 
   @override
