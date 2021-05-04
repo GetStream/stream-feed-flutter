@@ -622,10 +622,10 @@ void main() {
 
     test('withForeignId', () {
       final activityUpdateWithForeignId = ActivityUpdate.withForeignId(
-          'id',
-          DateTime.parse('2001-09-11T00:01:02.000'),
-          const {'hey': 'hey'},
-          const ['test']);
+          foreignId: 'id',
+          time: DateTime.parse('2001-09-11T00:01:02.000'),
+          set: const {'hey': 'hey'},
+          unset: const ['test']);
       expect(
           activityUpdateWithForeignId,
           ActivityUpdate(
@@ -635,8 +635,8 @@ void main() {
               unset: const ['test']));
     });
     test('withId', () {
-      final activityUpdateWithId =
-          ActivityUpdate.withId('id', const {'hey': 'hey'}, const ['test']);
+      final activityUpdateWithId = ActivityUpdate.withId(
+          id: 'id', set: const {'hey': 'hey'}, unset: const ['test']);
       expect(activityUpdateWithId,
           const ActivityUpdate(id: 'id', set: {'hey': 'hey'}, unset: ['test']));
     });

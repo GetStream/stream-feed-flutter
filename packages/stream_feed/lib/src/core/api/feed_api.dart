@@ -175,7 +175,7 @@ class FeedAPI {
     for (final update in updates) {
       checkNotNull(update.foreignId, 'No activity to update');
       checkNotNull(update.time, 'Missing timestamp');
-      checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+      checkArgument(update.set!.isNotEmpty || update.unset!.isNotEmpty,
           'No activity properties to set or unset');
     }
     final result = await _client.post<Map>(
@@ -197,7 +197,7 @@ class FeedAPI {
     checkArgument(updates.length <= 100, 'Maximum length is 100');
     for (final update in updates) {
       checkNotNull(update.id, 'No activity to update');
-      checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+      checkArgument(update.set!.isNotEmpty || update.unset!.isNotEmpty,
           'No activity properties to set or unset');
     }
     final result = await _client.post<Map>(
@@ -229,8 +229,8 @@ class FeedAPI {
   Future<Activity> updateActivityById(
       Token token, ActivityUpdate update) async {
     checkNotNull(update.id, 'No activity to update');
-    checkNotNull(update.time, 'Missing timestamp');
-    checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+    // checkNotNull(update.time, 'Missing timestamp');
+    checkArgument(update.set!.isNotEmpty || update.unset!.isNotEmpty,
         'No activity properties to set or unset');
     final result = await _client.post<Map>(
       Routes.activityUpdateUrl,
@@ -252,7 +252,7 @@ class FeedAPI {
     Iterable<FeedId> replace = const [],
   }) async {
     checkNotNull(update.id, 'No activity to update');
-    checkArgument(update.set.isNotEmpty || update.unset.isNotEmpty,
+    checkArgument(update.set!.isNotEmpty || update.unset!.isNotEmpty,
         'No activity properties to set or unset');
     checkNotNull(
         update.foreignId, 'Activity is required to have foreign ID attribute');

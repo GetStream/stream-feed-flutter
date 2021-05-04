@@ -69,10 +69,13 @@ Future<void> main() async {
   await user1.removeActivityByForeignId('run:1');
 
   // partial update by activity ID
-  // await user1.updateActivityById(ActivityUpdate(id:pinActivity.id!, set:{
-  //   // 'product.price': 19.99,
-  //   'shares': {'facebook': '...', 'twitter': '...'},
-  // }));
+  await user1.updateActivityById(id: exercise.id!, set: {
+    'course.distance': 12,
+    'shares': {'facebook': '...', 'twitter': '...'},
+  }, unset: [
+    'location',
+    'participants'
+  ]);
 
 // partial update by foreign ID
 // client.activityPartialUpdate({
@@ -260,6 +263,7 @@ Future<void> main() async {
   // await client.personalization
   //     .get('discovery_feed', params: params);
   final analytics = StreamAnalytics(apiKey, secret: secret);
+  analytics.setUser(id: 'id', alias: 'alias');
   await analytics.trackEngagement(
     Engagement(
       // the label for the engagement, ie click, retweet etc.
@@ -273,11 +277,29 @@ Future<void> main() async {
       // (optional) the position in a list of activities
       position: 3,
       boost: 2,
-      userData: const UserData('test', 'test'),
+
       // (optional) the feed the user is looking at
       feedId: FeedId('user', 'thierry'),
       // (optional) the location in your app. ie email, profile page etc
       location: 'profile_page',
+    ),
+  );
+
+  await analytics.trackImpression(
+    Impression(
+      feedId: FeedId('timeline', 'tom'),
+      location: 'profile_page',
+      contentList: [
+        Content(
+          data: const {
+            'foreign_id': 'post:42',
+            'actor': {'id': 'user:2353540'},
+            'verb': 'share',
+            'object': {'id': 'song:34349698'},
+          },
+          foreignId: FeedId.id('post:42'),
+        )
+      ],
     ),
   );
 

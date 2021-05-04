@@ -370,7 +370,9 @@ class Feed {
   /// final update = ActivityUpdate.withId(id, set, unset);
   /// await userFeed.updateActivityById(update);
   ///  ```
-  Future<Activity> updateActivityById(ActivityUpdate update) {
+  Future<Activity> updateActivityById(
+      {required String id, Map<String, Object>? set, List<String>? unset}) {
+    final update = ActivityUpdate.withId(id: id, set: set, unset: unset);
     final token =
         userToken ?? TokenHelper.buildActivityToken(secret!, TokenAction.write);
     return feed.updateActivityById(token, update);
@@ -390,7 +392,13 @@ class Feed {
   ///```dart
   ///await userFeed.updateActivityByForeignId(update);
   ///```
-  Future<Activity> updateActivityByForeignId(ActivityUpdate update) {
+  Future<Activity> updateActivityByForeignId(
+      {required String foreignId,
+      required DateTime time,
+      Map<String, Object>? set,
+      List<String>? unset}) {
+    final update = ActivityUpdate.withForeignId(
+        foreignId: foreignId, time: time, set: set, unset: unset);
     final token =
         userToken ?? TokenHelper.buildActivityToken(secret!, TokenAction.write);
 
