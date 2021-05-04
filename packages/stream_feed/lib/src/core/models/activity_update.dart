@@ -60,11 +60,13 @@ class ActivityUpdate extends Equatable {
   /// An object containing the set operations,
   /// where keys are the target fields and the values are the values to be set.
   /// Maximum 25 top level keys.
+  @JsonKey(includeIfNull: false)
   final Map<String, Object>? set;
 
   /// A list of strings containing the fields to be removed from the activity.
   ///
   ///  Maximum 25 keys.
+  @JsonKey(includeIfNull: false)
   final List<String>? unset;
 
   /// Serialize to json

@@ -36,7 +36,6 @@ Future<void> main() async {
 
 // Add an activity to the feed
   final pinActivity = await user1.addActivity(activity);
-  print('HEY ${pinActivity.id}');
 
 // Create a bit more complex activity
   activity =
@@ -68,6 +67,28 @@ Future<void> main() async {
 // Remove activities foreign_id 'run:1'
   await user1.removeActivityByForeignId('run:1');
 
+  final now = DateTime.now();
+
+  activity = Activity(
+      actor: "1",
+      verb: "like",
+      object: "3",
+      time: now,
+      foreignId: "like:3",
+      extraData: {
+        'popularity': 100,
+      });
+
+// first time the activity is added
+  final like = await user1.addActivity(activity);
+
+// send the update to the APIs
+  user1.updateActivityById(id: like.id!,
+      // update the popularity value for the activity
+      set: {
+        'popularity': 10,
+      });
+
   // partial update by activity ID
   await user1.updateActivityById(id: exercise.id!, set: {
     'course.distance': 12,
@@ -93,7 +114,7 @@ Future<void> main() async {
 // );
 
 //Batching Partial Updates TODO
-  final now = DateTime.now();
+  // final now = DateTime.now();
   final first_activity = Activity(
     actor: '1',
     verb: 'add',
