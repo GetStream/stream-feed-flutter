@@ -265,11 +265,24 @@ Future<void> main() async {
   // uploading an image from the filesystem
   final imageUrl = await client.images.upload(AttachmentFile(path: imageURI));
 
-  await client.images.delete(imageUrl!);
+  await client.images.getCropped(
+    imageUrl!,
+    const Crop(50, 50),
+  );
+
+  await client.images.getResized(
+    imageUrl,
+    const Resize(50, 50),
+  );
+
+// deleting an image using the url returned by the APIs
+  await client.images.delete(imageUrl);
 
   const fileURI = 'test/assets/example.pdf';
   // uploading a file from the filesystem
   final fileUrl = await client.files.upload(AttachmentFile(path: fileURI));
+
+// deleting a file using the url returned by the APIs
   await client.files.delete(fileUrl!);
 
   final preview = await client.og('http://www.imdb.com/title/tt0117500/');
