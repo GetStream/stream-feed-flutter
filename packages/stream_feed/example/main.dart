@@ -237,6 +237,13 @@ Future<void> main() async {
   clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
         flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
       );
+
+// adds a comment reaction to the activity and notifies Thierry's notification feed
+  clientWithSecret.reactions.add(
+      'comment', '5de5e4ba-add2-11eb-8529-0242ac130003',
+      data: {'text': "@thierry great post!"},
+      userId: 'userId',
+      targetFeeds: [FeedId.id('notification:thierry')]);
   await clientWithSecret.reactions.delete(comment.id!);
 //Adding Collections
   // await client.collections.add(
