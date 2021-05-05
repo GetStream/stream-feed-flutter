@@ -12,11 +12,13 @@ import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template aggregatedFeed}
 /// Aggregated feeds are helpful if you want to group activities.
 ///
 /// Here are some examples of what you can achieve using aggregated feeds:
 /// - 'Eric followed 10 people'
 /// - 'Julie and 14 others liked your photo'
+/// {@endtemplate}
 class AggregatedFeed extends Feed {
   /// Initialize a [AggregatedFeed] object
   AggregatedFeed(

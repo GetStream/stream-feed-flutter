@@ -55,31 +55,51 @@ abstract class StreamClient {
   /// Convenient getter for [BatchOperationsClient]
   BatchOperationsClient get batch;
 
-  /// Convenient getter for [CollectionsClient]
+  /// Convenient getter for [CollectionsClient]:
+  ///
+  /// {@macro collections}
   CollectionsClient get collections;
 
-  /// Convenient getter for [ReactionsClient]
+  /// Convenient getter for [ReactionsClient]:
+  ///
+  /// {@macro reactions}
   ReactionsClient get reactions;
 
-  /// Convenient getter for [UsersClient]
+  /// Convenient getter for [UsersClient]:
+  ///
+  /// {@macro user}
   UserClient user(String userId);
 
-  /// Convenient getter for [PersonalizationClient]
+  /// Convenient getter for [PersonalizationClient]:
+  ///
+  /// {@macro personalization}
   PersonalizationClient get personalization;
 
-  /// Convenient getter for [FileStorageClient]
+  /// Convenient getter for [FileStorageClient]:
+  ///
+  /// {@macro filesandimages}
+  ///
+  /// {@macro files}
   FileStorageClient get files;
 
-  /// Convenient getter for [ImageStorageClient]
+  /// Convenient getter for [ImageStorageClient]:
+  ///
+  /// {@macro filesandimages}
   ImageStorageClient get images;
 
-  /// Convenient getter for [FlatFeed]
+  /// Convenient getter for [FlatFeed]:
+  ///
+  /// {@macro flatFeed}
   FlatFeed flatFeed(String slug, [String? userId]);
 
-  /// Convenient getter for [AggregatedFeed]
+  /// Convenient getter for [AggregatedFeed]:
+  ///
+  /// {@macro aggregatedFeed}
   AggregatedFeed aggregatedFeed(String slug, [String? userId]);
 
-  /// Convenient getter for [NotificationFeed]
+  /// Convenient getter for [NotificationFeed]:
+  ///
+  /// {@macro aggregatedFeed}
   NotificationFeed notificationFeed(String slug, [String? userId]);
 
   /// Generate a JWT tokens that include the [userId] as payload
@@ -99,7 +119,7 @@ abstract class StreamClient {
   ///
   ///For example:
   ///```dart
-  /// final urlPreview = await client.openGraph(
+  /// final urlPreview = await client.og(
   ///   'http://www.imdb.com/title/tt0117500/',
   /// );
   /// ```

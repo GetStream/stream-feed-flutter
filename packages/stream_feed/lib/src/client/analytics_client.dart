@@ -4,9 +4,21 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/event.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template analytics}
 /// Send out analytic events to the Stream service.
+/// We recommend tracking every event for each user. This allows you to
+/// gain a better understanding of that user's interests.
+/// Common examples include:
+/// - Clicking on a link
+/// - Liking or commenting
+/// - Sharing an activity
+/// - Viewing another user's profile page
+/// - Searching for a certain user/content/topic/etc.
+/// {@endtemplate}
 class StreamAnalytics {
-  /// [AnalyticsClient] constructor
+  /// [StreamAnalytics] constructor:
+  ///
+  /// {@macro analytics}
   StreamAnalytics(
     String apiKey, {
     this.secret,

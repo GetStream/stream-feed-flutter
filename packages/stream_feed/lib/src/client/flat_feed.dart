@@ -12,12 +12,14 @@ import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template flatFeed}
 ///Flat is the default feed type -
 ///and the only feed type that you can follow.
 ///
 ///It's not possible to follow either aggregated or notification feeds.
 ///
 /// You can create new feed groups based on the flat type in the dashboard.
+/// {@endtemplate}
 class FlatFeed extends Feed {
   /// Initialize a feed object
   FlatFeed(

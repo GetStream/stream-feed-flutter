@@ -3,6 +3,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/collection_entry.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template collections}
 /// Collections enable you to store information to Stream.
 ///
 /// This allows you to use it inside your feeds,
@@ -20,6 +21,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 ///
 /// Collection endpoints can be used both client-side
 /// and server-side except the batch methods that are only available server-side
+/// {@endtemplate}
 class CollectionsClient {
   ///Initialize a CollectionsClient object
   CollectionsClient(this._collections, {this.userToken, this.secret})

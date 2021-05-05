@@ -6,6 +6,7 @@ import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template reactions}
 /// Reactions are a special kind of data that can be used
 /// to capture user interaction with specific activities.
 ///
@@ -13,6 +14,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 ///
 /// Reactions are automatically returned to feeds' activities at read time
 /// when the reactions parameters are used.
+/// {@endtemplate}
 class ReactionsClient {
   ///Initialize a reaction client
   ReactionsClient(this._reactions, {this.userToken, this.secret, this.userId})

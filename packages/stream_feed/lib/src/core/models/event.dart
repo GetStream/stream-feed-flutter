@@ -122,6 +122,8 @@ class Engagement extends Event {
     this.boost,
     List<Feature>? features,
     FeedId? feedId,
+
+    /// the location in your app. ie email, profile page etc
     String? location,
     int? position,
     this.trackedAt,

@@ -3,6 +3,40 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template personalization}
+/// Personalization is a powerful feature.
+/// It enables you to leverage machine learning
+/// to optimize what's shown in the feed.
+/// The 5 most common use cases are:
+/// {@image <image alt='' src='https://getstream.imgix.net/images/docs/personalization5cases@2x.png?cs=strip&auto=format,compress?auto=compress,auto&fit=clip&h=600&w=800'>}
+/// Famous examples of discovery feeds are: Instagram's explore section,
+/// and Pinterest's main feed. Edge rank is used by Facebook and LinkedIn.
+/// Stream uses 3 data sources for personalization:
+/// 1. Feeds & Follows
+/// The best way to understand how feeds and follows work is
+/// to try our 5-minute interactive tutorial.
+/// 2. Analytics
+
+/// The purpose of analytics is to track which activities a user is looking at
+///  and what they are engaging with. Basically, you want to track everything
+/// that indicates a user's interest in something.
+/// Common examples include:
+/// -  Clicking on a link
+/// -  Likes or comments
+/// -  Sharing an activity
+/// -  Viewing another user's profile page
+/// -  Search terms
+///
+/// The events and data you want to track are often different
+///  than what you traditionally track in Google Analytics or Mixpanel.
+/// Stream's analytics is designed to run alongside
+/// your existing analytics solution.
+///
+/// 3. Collections
+/// Collections enable you to sync information to Stream
+/// that's not captured by analytics or feeds. Common examples
+/// include user profiles and product information.
+/// {@endtemplate}
 class PersonalizationClient {
   const PersonalizationClient(
     this._personalization, {
@@ -17,6 +51,8 @@ class PersonalizationClient {
   final String? secret;
   final PersonalizationAPI _personalization;
 
+  /// Read the personalized feed for a given user
+  /// Our data science team will typically tell you which endpoint to use
   Future<Map> get(
     String resource, {
     Map<String, dynamic>? params,

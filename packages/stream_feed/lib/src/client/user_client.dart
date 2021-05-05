@@ -4,10 +4,12 @@ import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:stream_feed/stream_feed.dart';
 
+/// {@template user}
 /// Stream allows you to store user information
 /// and embed them inside activities or use them for personalization.
 ///
 /// When stored in activities, users are automatically enriched by Stream.
+/// {@endtemplate}
 class UserClient {
   ///Initialize a [UsersClient] session object
   const UserClient(this._user, this.userId, {this.userToken, this.secret});
