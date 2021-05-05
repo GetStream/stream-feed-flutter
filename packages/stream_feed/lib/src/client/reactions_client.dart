@@ -159,7 +159,7 @@ class ReactionsClient {
   /// );
   ///```
   Future<Reaction> update(
-    String? reactionId, {
+    String reactionId, {
     Map<String, Object>? data,
     List<FeedId>? targetFeeds,
   }) {
