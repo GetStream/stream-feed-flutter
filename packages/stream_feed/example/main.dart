@@ -6,6 +6,7 @@ Future<void> main() async {
   final env = Platform.environment;
   final secret = env['secret'];
   final apiKey = env['apiKey'];
+  final appId = env['appId'];
   var clientWithSecret =
       StreamClient.connect(apiKey!, secret: secret); //Token(token!)
   final chris = clientWithSecret.flatFeed('user', 'chris');
@@ -60,6 +61,23 @@ Future<void> main() async {
   response = await user1.getActivities(offset: 0, limit: 5);
 // Get activities sorted by rank (Ranked Feeds Enabled):
   // response = await userFeed.getActivities(limit: 5, ranking: "popularity");//must be enabled
+
+// Server-side
+  var client = StreamClient.connect(
+    apiKey,
+    secret: secret,
+    appId: appId,
+    options: StreamHttpClientOptions(location: Location.usEast),
+  );
+
+  final userToken = client.frontendToken('user.id');
+
+// Client-side
+  client = StreamClient.connect(
+    apiKey,
+    token: userToken,
+    appId: appId,
+  );
 
   // Remove an activity by its id
   await user1.removeActivityById(addedPicture.id!);
@@ -310,7 +328,7 @@ Future<void> main() async {
         object: cheeseBurgerRef,
       ));
 
-  final client = StreamClient.connect(apiKey, token: frontendToken);
+  client = StreamClient.connect(apiKey, token: frontendToken);
 // ensure the user data is stored on Stream
   await client.setUserData({
     'name': 'John Doe',
