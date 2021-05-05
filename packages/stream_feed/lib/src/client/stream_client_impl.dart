@@ -144,7 +144,8 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  AggregatedFeed aggregatedFeed(String slug, [String? userId]) {
+  AggregatedFeed aggregatedFeed(String slug,
+      [String? userId, Token? userToken]) {
     if (userId != null) {
       //override currentUser if supplied
       _currentUser = user(userId);
@@ -154,14 +155,14 @@ class StreamClientImpl implements StreamClient {
     return AggregatedFeed(
       id,
       _api.feed,
-      userToken: userToken,
+      userToken: userToken ?? this.userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
   }
 
   @override
-  FlatFeed flatFeed(String slug, [String? userId]) {
+  FlatFeed flatFeed(String slug, [String? userId, Token? userToken]) {
     if (userId != null) {
       //override currentUser if supplied
       _currentUser = user(userId);
@@ -171,14 +172,15 @@ class StreamClientImpl implements StreamClient {
     return FlatFeed(
       id,
       _api.feed,
-      userToken: userToken,
+      userToken: userToken ?? this.userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
   }
 
   @override
-  NotificationFeed notificationFeed(String slug, [String? userId]) {
+  NotificationFeed notificationFeed(String slug,
+      [String? userId, Token? userToken]) {
     if (userId != null) {
       //override currentUser if supplied
       _currentUser = user(userId);
@@ -188,7 +190,7 @@ class StreamClientImpl implements StreamClient {
     return NotificationFeed(
       id,
       _api.feed,
-      userToken: userToken,
+      userToken: userToken ?? this.userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
