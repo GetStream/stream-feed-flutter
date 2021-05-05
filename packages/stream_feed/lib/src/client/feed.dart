@@ -160,8 +160,6 @@ class Feed {
   /// ```
   /// API docs: [removing-activities](https://getstream.io/activity-feeds/docs/flutter-dart/adding_activities/?language=dart#removing-activities)
   Future<void> removeActivityById(String id) {
-    //TODO: named removeActivity in js
-    //TODO: should return response
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.delete, feedId);
     return feed.removeActivityById(token, feedId, id);

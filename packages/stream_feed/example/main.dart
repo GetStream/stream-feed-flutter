@@ -190,16 +190,23 @@ Future<void> main() async {
   final tweet = await user1.addActivity(activity);
 
   // add a like reaction to the activity with id activityId
-  await clientWithSecret.reactions.add('like', tweet.id!);
+  await clientWithSecret.reactions.add('like', tweet.id!, userId: 'userId');
 
 // adds a comment reaction to the activity with id activityId
-  await clientWithSecret.reactions
-      .add('comment', tweet.id!, data: {'text': 'awesome post!'});
+  await clientWithSecret.reactions.add('comment', tweet.id!,
+      data: {'text': 'awesome post!'}, userId: 'userId');
 
 // for server side auth, userId is required
   await clientWithSecret.reactions.add('comment', tweet.id!,
       data: {'text': 'awesome post!'}, userId: 'userId');
 
+// first let's read current user's timeline feed and pick one activity
+  final activities =
+      await clientWithSecret.flatFeed('user', '1').getActivities();
+
+// then let's add a like reaction to that activity
+  await clientWithSecret.reactions
+      .add('like', activities.first.id!, userId: 'userId');
 //Adding Collections
   // await client.collections.add(
   //   'food',
