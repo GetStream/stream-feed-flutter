@@ -229,21 +229,25 @@ Future<void> main() async {
   //     .update(comment.id!, data: {'text': 'love it!'});
 
 // read bob's timeline and include most recent reactions to all activities and their total count
-  clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
+  await clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
         flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
       );
 
 // read bob's timeline and include most recent reactions to all activities and her own reactions
-  clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
+  await clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
         flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
       );
 
 // adds a comment reaction to the activity and notifies Thierry's notification feed
-  clientWithSecret.reactions.add(
+  await clientWithSecret.reactions.add(
       'comment', '5de5e4ba-add2-11eb-8529-0242ac130003',
       data: {'text': "@thierry great post!"},
       userId: 'userId',
       targetFeeds: [FeedId.id('notification:thierry')]);
+
+  // adds a like to the previously created comment
+  await clientWithSecret.reactions
+      .addChild('like', comment.id!, userId: 'userId');
   await clientWithSecret.reactions.delete(comment.id!);
 //Adding Collections
   // await client.collections.add(
@@ -343,7 +347,8 @@ Future<void> main() async {
   // Read the personalized feed for a given user
   var params = {'user_id': 'john-doe', 'feed_slug': 'timeline'};
 
-  clientWithSecret.personalization.get('personalized_feed', params: params);
+  await clientWithSecret.personalization
+      .get('personalized_feed', params: params);
 
 //Our data science team will typically tell you which endpoint to use
   params = {
