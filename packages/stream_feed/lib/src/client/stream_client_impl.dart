@@ -88,7 +88,7 @@ class StreamClientImpl implements StreamClient {
 
   @override
   ReactionsClient get reactions => ReactionsClient(_api.reactions,
-      userToken: userToken, secret: secret, userId: currentUser!.userId);
+      userToken: userToken, secret: secret, userId: currentUser?.userId);
 
   @override
   PersonalizationClient get personalization =>

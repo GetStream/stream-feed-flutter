@@ -207,6 +207,23 @@ Future<void> main() async {
 // then let's add a like reaction to that activity
   await clientWithSecret.reactions
       .add('like', activities.first.id!, userId: 'userId');
+
+// retrieve all kind of reactions for an activity
+  await clientWithSecret.reactions.filter(
+      LookupAttribute.activityId, '5de5e4ba-add2-11eb-8529-0242ac130003');
+
+// retrieve first 10 likes for an activity
+  await clientWithSecret.reactions.filter(
+      LookupAttribute.activityId, '5de5e4ba-add2-11eb-8529-0242ac130003',
+      kind: 'like', limit: 10);
+
+// retrieve the next 10 likes using the id_lt param
+  await clientWithSecret.reactions.filter(
+    LookupAttribute.activityId,
+    '5de5e4ba-add2-11eb-8529-0242ac130003',
+    kind: 'like',
+    filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0'),
+  );
 //Adding Collections
   // await client.collections.add(
   //   'food',

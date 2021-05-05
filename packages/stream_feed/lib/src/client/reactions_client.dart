@@ -193,6 +193,7 @@ class ReactionsClient {
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
+    //TODO: check if it is a valid UUID with package uuid isValidUUID
     Filter? filter,
     int? limit,
     String? kind,
