@@ -39,7 +39,7 @@ void main() {
       when(() => api.add(token, reaction)).thenAnswer((_) async => reaction);
 
       expect(
-          await client.add(kind, activityId, userId,
+          await client.add(kind, activityId,
               data: data, targetFeeds: targetFeeds),
           reaction);
       verify(() => api.add(token, reaction)).called(1);
@@ -124,8 +124,8 @@ void main() {
       when(() => api.add(token, reaction)).thenAnswer((_) async => reaction);
 
       expect(
-          await client.addChild(kind, parentId, userId,
-              data: data, targetFeeds: targetFeeds),
+          await client.addChild(kind, parentId,
+              userId: userId, data: data, targetFeeds: targetFeeds),
           reaction);
       verify(() => api.add(token, reaction)).called(1);
     });

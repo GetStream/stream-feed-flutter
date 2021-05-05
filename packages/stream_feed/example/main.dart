@@ -187,7 +187,19 @@ Future<void> main() async {
     to: [FeedId.id('notification:Jessica')],
   );
 
-  await user1.addActivity(activity);
+  final tweet = await user1.addActivity(activity);
+
+  // add a like reaction to the activity with id activityId
+  await clientWithSecret.reactions.add('like', tweet.id!);
+
+// adds a comment reaction to the activity with id activityId
+  await clientWithSecret.reactions
+      .add('comment', tweet.id!, data: {'text': 'awesome post!'});
+
+// for server side auth, userId is required
+  await clientWithSecret.reactions.add('comment', tweet.id!,
+      data: {'text': 'awesome post!'}, userId: 'userId');
+
 //Adding Collections
   // await client.collections.add(
   //   'food',

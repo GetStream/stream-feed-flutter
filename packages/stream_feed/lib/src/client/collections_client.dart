@@ -145,7 +145,7 @@ class CollectionsClient {
     return _collections.update(token, userId, entryCopy);
   }
 
-  //Serverside methods
+  //------------------------- Server side methods ----------------------------//
 
   /// Remove all objects by id from the collection.
   ///

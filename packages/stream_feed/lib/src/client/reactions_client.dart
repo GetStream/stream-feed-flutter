@@ -3,6 +3,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/util/default.dart';
+import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Reactions are a special kind of data that can be used
@@ -14,7 +15,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// when the reactions parameters are used.
 class ReactionsClient {
   ///Initialize a reaction client
-  ReactionsClient(this._reactions, {this.userToken, this.secret})
+  ReactionsClient(this._reactions, {this.userToken, this.secret, this.userId})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -22,6 +23,9 @@ class ReactionsClient {
 
   ///User JWT Token
   final Token? userToken;
+
+  /// User ID
+  final String? userId;
 
   ///The reactions client
   final ReactionsAPI _reactions;
@@ -58,15 +62,19 @@ class ReactionsClient {
   /// API docs: [adding-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#adding-reactions)
   Future<Reaction> add(
     String kind,
-    String activityId,
-    String userId, {
+    String activityId, {
+    String? userId,
     Map<String, Object>? data,
     Iterable<FeedId>? targetFeeds,
   }) {
+    checkArgument(secret != null && userId == null, '''
+        You are using the client serverside (secret provided)
+         please provide a userId''');
+
     final reaction = Reaction(
       kind: kind,
       activityId: activityId,
-      userId: userId,
+      userId: userId ?? this.userId,
       data: data,
       targetFeeds: targetFeeds as List<FeedId>?,
     );
@@ -89,15 +97,18 @@ class ReactionsClient {
   /// API docs: [reactions_add_child](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_add_child/?language=dart)
   Future<Reaction> addChild(
     String kind,
-    String parentId,
-    String userId, {
+    String parentId, {
+    String? userId,
     Map<String, Object>? data,
     Iterable<FeedId>? targetFeeds,
   }) {
+    checkArgument(secret != null && userId == null, '''
+        You are using the client serverside (secret provided)
+         please provide a userId''');
     final reaction = Reaction(
       kind: kind,
       parent: parentId,
-      userId: userId,
+      userId: userId ?? this.userId,
       data: data,
       targetFeeds: targetFeeds as List<FeedId>?,
     );
@@ -189,7 +200,7 @@ class ReactionsClient {
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
 
-  //Server side functions
+  //------------------------- Server side methods ----------------------------//
   ///paginated reactions and filter them
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,

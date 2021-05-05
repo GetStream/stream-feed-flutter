@@ -87,8 +87,8 @@ class StreamClientImpl implements StreamClient {
       CollectionsClient(_api.collections, userToken: userToken, secret: secret);
 
   @override
-  ReactionsClient get reactions =>
-      ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
+  ReactionsClient get reactions => ReactionsClient(_api.reactions,
+      userToken: userToken, secret: secret, userId: currentUser!.userId);
 
   @override
   PersonalizationClient get personalization =>
