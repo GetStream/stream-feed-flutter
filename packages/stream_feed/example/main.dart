@@ -228,6 +228,15 @@ Future<void> main() async {
   // await clientWithSecret.reactions
   //     .update(comment.id!, data: {'text': 'love it!'});
 
+// read bob's timeline and include most recent reactions to all activities and their total count
+  clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
+        flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
+      );
+
+// read bob's timeline and include most recent reactions to all activities and her own reactions
+  clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
+        flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
+      );
   await clientWithSecret.reactions.delete(comment.id!);
 //Adding Collections
   // await client.collections.add(
