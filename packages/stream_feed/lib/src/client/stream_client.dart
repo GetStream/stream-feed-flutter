@@ -43,6 +43,7 @@ abstract class StreamClient {
     String? secret,
     String? appId,
     StreamHttpClientOptions? options,
+    bool? clientSide
   }) =>
       StreamClientImpl(
         apiKey,
@@ -50,6 +51,7 @@ abstract class StreamClient {
         secret: secret,
         appId: appId,
         options: options,
+        clientSide: clientSide
       );
 
   /// Convenient getter for [BatchOperationsClient]

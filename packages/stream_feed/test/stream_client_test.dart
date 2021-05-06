@@ -19,6 +19,20 @@ void main() {
       );
     });
 
+    test('throws an AssertionError if secret provided alone', () {
+      expect(
+        () => StreamClient.connect('apiKey', secret: 'secret'),
+        throwsA(
+          predicate<AssertionError>(
+              (e) => e.message == 'you should not use a secret clientside'),
+        ),
+      );
+    });
+
+    test("don't throw if secret provided with clientSide false", () {
+      StreamClient.connect('apiKey', secret: 'secret', clientSide: false);
+    });
+
     test('getters', () async {
       const secret = 'secret';
       const userId = 'userId';
