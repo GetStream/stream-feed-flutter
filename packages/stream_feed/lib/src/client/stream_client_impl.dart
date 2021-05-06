@@ -172,7 +172,11 @@ class StreamClientImpl implements StreamClient {
 
   String _getUserId([String? userId]) {
     var _userId = userId;
-    assert(_isUserConnected || _userId != null, '');
+    assert(
+      _isUserConnected || _userId != null,
+      'Provide a `userId` if you are using it server-side '
+      'or call `setUser` before creating feeds',
+    );
     return _userId ??= currentUser!.userId;
   }
 
@@ -182,7 +186,7 @@ class StreamClientImpl implements StreamClient {
     return AggregatedFeed(
       id,
       _api.feed,
-      userToken: userToken ?? this.userToken,
+      userToken: userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
@@ -194,7 +198,7 @@ class StreamClientImpl implements StreamClient {
     return FlatFeed(
       id,
       _api.feed,
-      userToken: userToken ?? this.userToken,
+      userToken: userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
@@ -206,7 +210,7 @@ class StreamClientImpl implements StreamClient {
     return NotificationFeed(
       id,
       _api.feed,
-      userToken: userToken ?? this.userToken,
+      userToken: userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
@@ -217,7 +221,10 @@ class StreamClientImpl implements StreamClient {
     String userId, {
     DateTime? expiresAt,
   }) {
-    checkNotNull(secret, "You can't use the frontendToken method client side");
+    checkNotNull(
+      secret,
+      "You can't use the `frontendToken` method client side",
+    );
     return TokenHelper.buildFrontendToken(secret!, userId,
         expiresAt: expiresAt);
   }
