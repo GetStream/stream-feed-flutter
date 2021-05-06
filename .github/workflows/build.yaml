@@ -26,6 +26,15 @@ jobs:
 
       - name: Add pub cache to PATH
         run: echo "PUB_CACHE="$HOME/.pub-cache"" >> $GITHUB_ENV
+        
+      - name: Add feed secret to env
+        run: echo "secret="${{ secrets.SECRET }}"" >> $GITHUB_ENV
+      
+      - name: Add feed appId to env
+        run: echo "appId="${{ secrets.APPID }}"" >> $GITHUB_ENV
+        
+      - name: Add feed apiKey to env
+        run: echo "apiKey="${{ secrets.APIKEY }}"" >> $GITHUB_ENV
 
       - run: dart pub global activate melos
 
