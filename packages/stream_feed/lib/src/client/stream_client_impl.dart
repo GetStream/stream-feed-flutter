@@ -83,6 +83,7 @@ class StreamClientImpl implements StreamClient {
   }
 
   UserClient? _currentUser;
+  bool _isUserConnected = false;
 
   late final _authExtension = <String, MessageHandler>{
     'outgoing': (message) {
@@ -118,17 +119,8 @@ class StreamClientImpl implements StreamClient {
       ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
 
   @override
-  UserClient user(String userId) {
-    if (currentUser == null) {
-      _currentUser =
-          UserClient(_api.users, userId, userToken: userToken, secret: secret);
-    } else if (currentUser!.userId != userId) {
-      _currentUser =
-          UserClient(_api.users, userId, userToken: userToken, secret: secret);
-    }
-
-    return currentUser!;
-  }
+  UserClient user(String userId) =>
+      UserClient(_api.users, userId, userToken: userToken, secret: secret);
 
   @override
   FileStorageClient get files =>
@@ -164,14 +156,15 @@ class StreamClientImpl implements StreamClient {
     return subscription;
   }
 
+  String _getUserId([String? userId]) {
+    var _userId = userId;
+    assert(_isUserConnected || _userId != null, '');
+    return _userId ??= currentUser!.userId;
+  }
+
   @override
   AggregatedFeed aggregatedFeed(String slug, [String? userId]) {
-    if (userId != null) {
-      //override currentUser if supplied
-      _currentUser = user(userId);
-    }
-
-    final id = FeedId(slug, currentUser!.userId);
+    final id = FeedId(slug, _getUserId(userId));
     return AggregatedFeed(
       id,
       _api.feed,
@@ -183,12 +176,7 @@ class StreamClientImpl implements StreamClient {
 
   @override
   FlatFeed flatFeed(String slug, [String? userId]) {
-    if (userId != null) {
-      //override currentUser if supplied
-      _currentUser = user(userId);
-    }
-
-    final id = FeedId(slug, currentUser!.userId);
+    final id = FeedId(slug, _getUserId(userId));
     return FlatFeed(
       id,
       _api.feed,
@@ -200,12 +188,7 @@ class StreamClientImpl implements StreamClient {
 
   @override
   NotificationFeed notificationFeed(String slug, [String? userId]) {
-    if (userId != null) {
-      //override currentUser if supplied
-      _currentUser = user(userId);
-    }
-
-    final id = FeedId(slug, currentUser!.userId);
+    final id = FeedId(slug, _getUserId(userId));
     return NotificationFeed(
       id,
       _api.feed,
@@ -235,7 +218,7 @@ class StreamClientImpl implements StreamClient {
   UserClient? get currentUser => _currentUser;
 
   @override
-  Future<void> setUserData(Map<String, Object> data) async {
+  Future<void> setUser(Map<String, Object> data) async {
     checkArgument(
       secret == null,
       'This method can only be used client-side using a user token',
@@ -244,6 +227,7 @@ class StreamClientImpl implements StreamClient {
     final body = <String, Object>{...data}..remove('id');
     final userObject = await _currentUser!.getOrCreate(body);
     _currentUser = user(userObject.id!);
+    _isUserConnected = true;
   }
 }
 
