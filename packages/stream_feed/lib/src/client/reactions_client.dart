@@ -69,9 +69,12 @@ class ReactionsClient {
     Map<String, Object>? data,
     Iterable<FeedId>? targetFeeds,
   }) {
-    checkArgument(secret != null && userId?.isNotEmpty == true, '''
+    // print(userId == null && secret != null);
+    if (userId == null && secret != null) {
+      throw ArgumentError('''
         You are using the client serverside (secret provided)
          please provide a userId''');
+    }
 
     final reaction = Reaction(
       kind: kind,
@@ -104,9 +107,14 @@ class ReactionsClient {
     Map<String, Object>? data,
     Iterable<FeedId>? targetFeeds,
   }) {
-    checkArgument(secret != null && userId?.isNotEmpty == true, '''
+    if (userId == null && secret != null) {
+      throw ArgumentError('''
         You are using the client serverside (secret provided)
          please provide a userId''');
+    }
+    // checkArgument(secret != null && userId?.isNotEmpty == true, '''
+    //     You are using the client serverside (secret provided)
+    //      please provide a userId''');
 
     final reaction = Reaction(
       kind: kind,

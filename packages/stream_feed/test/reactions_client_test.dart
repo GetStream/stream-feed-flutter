@@ -14,6 +14,7 @@ import 'mock.dart';
 void main() {
   group('ReactionsClient', () {
     final api = MockReactionsAPI();
+    const userId = 'john-doe';
     final dummyResponse = Response(
         data: {},
         requestOptions: RequestOptions(
@@ -22,11 +23,11 @@ void main() {
         statusCode: 200);
 
     const token = Token('dummyToken');
-    final client = ReactionsClient(api, userToken: token);
+    final client = ReactionsClient(api, userToken: token, userId: userId);
     test('add', () async {
       const kind = 'like';
       const activityId = 'activityId';
-      const userId = 'john-doe';
+
       const targetFeeds = <FeedId>[];
       const data = {'text': 'awesome post!'};
       const reaction = Reaction(
