@@ -239,7 +239,7 @@ class StreamClientImpl implements StreamClient {
   UserClient? get currentUser => _currentUser;
 
   @override
-  Future<void> setUser(Map<String, Object> data) async {
+  Future<User> setUser(Map<String, Object> data) async {
     checkArgument(
       secret == null,
       'This method can only be used client-side using a user token',
@@ -249,6 +249,7 @@ class StreamClientImpl implements StreamClient {
     final userObject = await _currentUser!.getOrCreate(body);
     _currentUser = user(userObject.id!);
     _isUserConnected = true;
+    return userObject;
   }
 }
 
