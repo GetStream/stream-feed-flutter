@@ -153,7 +153,6 @@ class StreamClientImpl implements StreamClient {
       token: token.toString(),
       userId: notificationChannel,
     );
-    await _faye.connect();
     final subscription = await _faye.subscribe(
       '/$notificationChannel',
       callback: callback,
