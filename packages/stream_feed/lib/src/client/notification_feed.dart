@@ -49,6 +49,18 @@ class NotificationFeed extends AggregatedFeed {
           subscriber: subscriber,
         );
 
+  ///Retrieves one activity from a feed
+  @override
+  Future<NotificationGroup<Activity>> getActivityDetail(
+      String activityId) async {
+    final activities = await getActivities(
+        limit: 1,
+        filter: Filter()
+            .idLessThanOrEqual(activityId)
+            .idGreaterThanOrEqual(activityId));
+    return activities.first;
+  }
+
   /// Retrieve feed of type notifications
   /// # Example
   /// Mark all activities in the feed as seen
@@ -62,6 +74,7 @@ class NotificationFeed extends AggregatedFeed {
   Future<List<NotificationGroup<Activity>>> getActivities({
     int? limit,
     int? offset,
+    String? session,
     Filter? filter,
     ActivityMarker? marker,
   }) async {
@@ -86,6 +99,7 @@ class NotificationFeed extends AggregatedFeed {
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
     int? offset,
+    String? session,
     Filter? filter,
     ActivityMarker? marker,
     EnrichmentFlags? flags,

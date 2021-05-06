@@ -18,7 +18,7 @@ class EnrichableField extends Equatable {
     if (obj is String) {
       return EnrichableField(obj);
     }
-    return EnrichableField(obj as Map<String, Object>?);
+    return EnrichableField(obj as Map<String, dynamic>?);
   }
 
   /// Serialize [EnrichableField]

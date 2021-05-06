@@ -76,7 +76,7 @@ class Activity extends Equatable {
   /// 	message: "@Jessica check out getstream.io it's awesome!",
   /// 	verb: 'tweet',
   /// 	object: 'tweet:id',
-  /// 	to: ['notification:Jessica'],
+  /// 	to: [FeedId.id('notification:Jessica')],
   /// );
   /// final response = await user_feed_1.addActivity(activity)
   /// ```

@@ -21,7 +21,7 @@ Future<void> main() async {
         'favorite_color': 'blue',
       });
 
-      when(() => mockClient.post<Map>(
+      when(() => mockClient.post<Map<String, dynamic>>(
             Routes.buildCollectionsUrl(entry.collection),
             headers: {'Authorization': '$token'},
             data: {
@@ -84,7 +84,7 @@ Future<void> main() async {
               'collection_name': collection,
               'ids': entryIds.join(','),
             },
-          )).thenAnswer((_) async => Response(
+          )).thenAnswer((_) async => Response<Map>(
           data: {},
           requestOptions: RequestOptions(
             path: Routes.buildCollectionsUrl(),
@@ -107,7 +107,7 @@ Future<void> main() async {
       const token = Token('dummyToken');
       const collection = 'food';
       const entryId = 'cheeseburger';
-      when(() => mockClient.get<Map>(
+      when(() => mockClient.get<Map<String, dynamic>>(
             Routes.buildCollectionsUrl('$collection/$entryId/'),
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
@@ -165,7 +165,7 @@ Future<void> main() async {
         'name': 'john',
         'favorite_color': 'blue',
       });
-      when(() => mockClient.put<Map>(
+      when(() => mockClient.put<Map<String, dynamic>>(
             Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
             headers: {'Authorization': '$token'},
             data: {
@@ -201,18 +201,21 @@ Future<void> main() async {
           'favorite_color': 'blue',
         })
       ];
+      final rawEntries = [jsonFixture('collection_entry.json')];
       when(() => mockClient.post(
             Routes.buildCollectionsUrl(),
             headers: {'Authorization': '$token'},
             data: {
               'data': {collection: entries}
             },
-          )).thenAnswer((_) async => Response(
-          data: {},
-          requestOptions: RequestOptions(
-            path: Routes.buildCollectionsUrl(),
-          ),
-          statusCode: 200));
+          )).thenAnswer((_) async => Response<Map>(
+              data: {
+                'data': {collection: rawEntries}
+              },
+              requestOptions: RequestOptions(
+                path: Routes.buildCollectionsUrl(),
+              ),
+              statusCode: 200));
 
       await collectionsApi.upsert(token, collection, entries);
 

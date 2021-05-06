@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Images
@@ -11,10 +12,11 @@ class ImagesAPI {
   final StreamHttpClient _client;
 
   /// Uploading an image
-  Future<String?> upload(Token token, MultipartFile image) async {
+  Future<String?> upload(Token token, AttachmentFile image) async {
+    final multiPartFile = await image.toMultipartFile();
     final result = await _client.postFile<Map>(
       Routes.imagesUrl,
-      image,
+      multiPartFile,
       headers: {'Authorization': '$token'},
     );
     return result.data!['file'];
@@ -42,5 +44,11 @@ class ImagesAPI {
       },
     );
     return result.data['file'];
+  }
+
+  Future<String?> refreshUrl(Token token, String targetUrl) async {
+    final result = await _client.post(Routes.imagesUrl,
+        headers: {'Authorization': '$token'}, data: {'url': targetUrl});
+    return result.data['url'];
   }
 }

@@ -10,37 +10,35 @@ import 'package:stream_feed/src/core/util/extension.dart';
 class AnalyticsAPI {
   ///
   AnalyticsAPI(
-    String apiKey,
-    this._token, {
+    String apiKey, {
     StreamHttpClient? client,
     StreamHttpClientOptions? options,
   }) : _client = client ?? StreamHttpClient(apiKey, options: options);
 
-  final Token _token;
   final StreamHttpClient _client;
 
   ///
-  Future<Response> trackImpressions(List<Impression> impressions) {
+  Future<Response> trackImpressions(Token token, List<Impression> impressions) {
     for (final impression in impressions) {
       checkNotNull(impression.userData, 'Missing UserData');
     }
     return _client.post(
       'impression',
       serviceName: 'analytics',
-      headers: {'Authorization': '$_token'},
+      headers: {'Authorization': '$token'},
       data: json.encode(impressions),
     );
   }
 
   ///
-  Future<Response> trackEngagements(List<Engagement> engagements) {
+  Future<Response> trackEngagements(Token token, List<Engagement> engagements) {
     for (final engagement in engagements) {
       checkNotNull(engagement.userData, 'Missing UserData');
     }
     return _client.post(
       'engagement',
       serviceName: 'analytics',
-      headers: {'Authorization': '$_token'},
+      headers: {'Authorization': '$token'},
       data: json.encode({'content_list': engagements}),
     );
   }

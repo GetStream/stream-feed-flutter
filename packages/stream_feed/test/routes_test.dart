@@ -9,6 +9,20 @@ void main() {
     test('activity', () {
       expect(Routes.activityUpdateUrl, 'activity');
     });
+
+    test('statsFollowUrl', () {
+      expect(Routes.statsFollowUrl, 'stats/follow/');
+    });
+
+    group('buildRefreshCDNUrl', () {
+      test('files', () {
+        expect(Routes.buildRefreshCDNUrl('files'), 'files/refresh/');
+      });
+
+      test('images ', () {
+        expect(Routes.buildRefreshCDNUrl('images'), 'images/refresh/');
+      });
+    });
     test('addToManyUrl', () {
       expect(Routes.addToManyUrl, 'feed/add_to_many');
     });

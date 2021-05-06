@@ -1,7 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/images_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
+import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Image and files have separate clients
@@ -44,7 +44,7 @@ class ImageStorageClient {
   /// await client.images.upload(multipartFile);
   /// ```
   /// API docs: https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?q=Image
-  Future<String?> upload(MultipartFile image) {
+  Future<String?> upload(AttachmentFile image) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return _images.upload(token, image);
@@ -84,11 +84,8 @@ class ImageStorageClient {
   ///  const Crop(50, 50),
   ///);
   /// ```
-  Future<String?> getCropped(String url, Crop crop) {
-    final token =
-        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
-    return _images.get(token, url, options: crop.params);
-  }
+  Future<String?> getCropped(String url, Crop crop) =>
+      _process(url, crop.params);
 
   /// Resize an image using its URL. A new URL is then returned by the API.
   /// # Examples:
@@ -99,9 +96,24 @@ class ImageStorageClient {
   ///   const Resize(50, 50),
   /// );
   /// ```
-  Future<String?> getResized(String url, Resize resize) {
+  Future<String?> getResized(String url, Resize resize) =>
+      _process(url, resize.params);
+
+  Future<String?> _process(String url, Map<String, Object?> params) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
-    return _images.get(token, url, options: resize.params);
+    return _images.get(token, url, options: params);
+  }
+
+  ///Generate a thumbnail for a given image url
+  Future<String?> thumbnail(String url, Thumbnail thumbnail) =>
+      _process(url, thumbnail.params);
+
+  /// Explicitly refresh CDN urls for uploaded images on the Stream CDN (only needed for files on the Stream CDN).
+  /// Note that Stream CDN is not enabled by default, if in doubt please contact us.
+  Future<String?> refreshUrl(String targetUrl) {
+    final token =
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
+    return _images.refreshUrl(token, targetUrl);
   }
 }

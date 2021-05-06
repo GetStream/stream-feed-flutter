@@ -74,7 +74,7 @@ class Event extends Equatable {
   final List<Feature>? features;
 
   /// (optional) the feed the user is looking at
-  @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
+  @JsonKey(includeIfNull: false, toJson: FeedId.toId, fromJson: FeedId.fromId)
   final FeedId? feedId;
 
   /// (optional) the location of the content in your app.
@@ -118,7 +118,7 @@ class Engagement extends Event {
   const Engagement({
     required this.content,
     required this.label,
-    required this.score,
+    this.score,
     this.boost,
     List<Feature>? features,
     FeedId? feedId,
@@ -139,14 +139,14 @@ class Engagement extends Event {
       _$EngagementFromJson(json);
 
   /// the ID of the content that the user clicked
-  final Map<String, Object> content;
+  final Content content; //TODO: content
 
   /// The type of event (i.e. click, share, search, etc.)
   final String label;
 
   /// score between 0 and 100 indicating the importance of this event
   /// IE. a like is typically a more significant indicator than a click
-  final int score;
+  final int? score;
 
   /// An integer that multiplies the score of the interaction (eg. 2 or -1)
   @JsonKey(includeIfNull: false)
@@ -162,7 +162,7 @@ class Engagement extends Event {
   ///
   @override
   Engagement copyWith({
-    Map<String, Object>? content,
+    Content? content,
     String? label,
     int? score,
     int? boost,
@@ -222,7 +222,7 @@ class Impression extends Event {
 
   /// The list of content the user is looking at.
   /// Either a list of IDs or objects.
-  final List<Map<String, Object>> contentList;
+  final List<Content> contentList; //TODO:List<Content>
 
   ///
   @JsonKey(includeIfNull: false)
@@ -234,7 +234,7 @@ class Impression extends Event {
   ///
   @override
   Impression copyWith({
-    List<Map<String, Object>>? contentList,
+    List<Content>? contentList,
     List<Feature>? features,
     FeedId? feedId,
     String? location,
@@ -255,4 +255,24 @@ class Impression extends Event {
   /// Serialize to json
   @override
   Map<String, dynamic> toJson() => _$ImpressionToJson(this);
+}
+
+@JsonSerializable()
+class Content extends Equatable {
+  @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
+  final FeedId? foreignId;
+  @JsonKey(includeIfNull: false)
+  final Map<String, Object>? data;
+
+  Content({required this.foreignId, this.data});
+
+  @override
+  List<Object?> get props => [foreignId, data];
+
+  /// Create a new instance from a json
+  factory Content.fromJson(Map<String, dynamic> json) =>
+      _$ContentFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$ContentToJson(this);
 }

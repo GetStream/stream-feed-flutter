@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 Future<void> main() async {
@@ -194,19 +195,19 @@ Future<void> main() async {
   await timeline.unfollow(user, keepHistory: true);
 
   // list followers
-  final followers = await userFeed.getFollowers(limit: 10, offset: 0);
+  final followers = await userFeed.followers(limit: 10, offset: 0);
   for (final follow in followers) {
     print('${follow.source} -> ${follow.target}');
   }
 
   // Retrieve last 10 feeds followed by user_feed_1
-  var followed = await userFeed.getFollowed(limit: 10, offset: 0);
+  var followed = await userFeed.following(limit: 10, offset: 0);
 
   // Retrieve 10 feeds followed by user_feed_1 starting from the 11th
-  followed = await userFeed.getFollowed(limit: 10, offset: 10);
+  followed = await userFeed.following(limit: 10, offset: 10);
 
   // Check if user_feed_1 follows specific feeds
-  followed = await userFeed.getFollowed(limit: 2, offset: 0, feedIds: [
+  followed = await userFeed.following(limit: 2, offset: 0, feedIds: [
     FeedId.id('user:42'),
     FeedId.id('user:43'),
   ]);
@@ -555,7 +556,7 @@ Future<void> main() async {
   ]);
 
   // Then create a user
-  await client.users.add('john-doe', {
+  await client.user('john-doe').create({
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male',
@@ -577,15 +578,14 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   // create a new user, if the user already exist an error is returned
-  await client.users.add('john-doe', {
+  await client.user('john-doe').create({
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male',
   });
 
   // get or create a new user, if the user already exist the user is returned
-  await client.users.add(
-    'john-doe',
+  await client.user('john-doe').create(
     {
       'name': 'John Doe',
       'occupation': 'Software Engineer',
@@ -596,15 +596,15 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  await client.users.get('123');
+  await client.user('john-doe').get();
 
   /* -------------------------------------------------------- */
 
-  await client.users.delete('123');
+  await client.user('john-doe').delete();
 
   /* -------------------------------------------------------- */
 
-  await client.users.update('123', {
+  await client.user('john-doe').update({
     'name': 'Jane Doe',
     'occupation': 'Software Engineer',
     'gender': 'female',
@@ -613,19 +613,15 @@ Future<void> main() async {
   /* -------------------------------------------------------- */
 
   final image = File('...');
-  var multipartFile = await MultipartFile.fromFile(
-    image.path,
-    filename: 'my-photo',
-    contentType: MediaType('image', 'jpeg'),
+  final attachmentFile = AttachmentFile(
+    path: image.path,
+    name: 'my-photo',
+    // required only for web
+    bytes: image.readAsBytesSync(),
   );
-  await client.images.upload(multipartFile);
+  await client.images.upload(attachmentFile);
 
-  final file = File('...');
-  multipartFile = await MultipartFile.fromFile(
-    file.path,
-    filename: 'my-file',
-  );
-  await client.files.upload(multipartFile);
+  await client.files.upload(AttachmentFile(path: '...'));
 
   /* -------------------------------------------------------- */
 
@@ -651,7 +647,7 @@ Future<void> main() async {
 
   /* -------------------------------------------------------- */
 
-  final urlPreview = await client.openGraph(
+  final urlPreview = await client.og(
     'http://www.imdb.com/title/tt0117500/',
   );
 }

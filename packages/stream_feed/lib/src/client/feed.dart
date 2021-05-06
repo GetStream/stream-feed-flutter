@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
@@ -6,6 +5,9 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/models/follow_stats.dart';
+import 'package:stream_feed/src/core/models/followers.dart';
+import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 
@@ -65,7 +67,7 @@ class Feed {
   ) {
     checkNotNull(
       subscriber,
-      'A subscriber must me provided in order to start listening to feed',
+      'A subscriber must me provided in order to start listening to a feed',
     );
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
@@ -74,6 +76,29 @@ class Feed {
       final realtimeMessage = RealtimeMessage.fromJson(data!);
       callback(realtimeMessage);
     });
+  }
+
+  ///Retrieve the number of follower
+  ///and following feed stats of the current feed.
+  /// For each count, feed slugs can be provided to filter counts accordingly.
+  /// Example:
+  /// ```dart
+  /// await client.feed.followStats(followerSlugs:['user', 'news'], followingSlugs:['timeline']);
+  /// ```
+  Future<FollowStats> followStats(
+      {List<String>? followingSlugs, List<String>? followerSlugs}) {
+    final options = FollowStats(
+        following: Following(
+          feed: feedId,
+          slugs: followingSlugs,
+        ),
+        followers: Followers(
+          feed: feedId,
+          slugs: followerSlugs,
+        ));
+    final token =
+        userToken ?? TokenHelper.buildFollowToken(secret!, TokenAction.any);
+    return feed.followStats(token, options.toJson());
   }
 
   /// Adds the given [Activity] to the feed
@@ -176,16 +201,19 @@ class Feed {
   /// ```
   ///
   /// API docs: [following](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart)
-  Future<Response> follow(
+  Future<void> follow(
     FlatFeed flatFeed, {
     int? activityCopyLimit,
   }) async {
-    //TODO: should return API response
+    //TODO: should return something like this (typescript)
+    //export type GetFollowAPIResponse = APIResponse & {
+//   results: { created_at: string; feed_id: string; target_id: string; updated_at: string }[];
+// };
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.write, feedId);
     final targetToken = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, flatFeed.feedId);
-    return feed.follow(token, targetToken, feedId, flatFeed.feedId,
+    await feed.follow(token, targetToken, feedId, flatFeed.feedId,
         activityCopyLimit ?? Default.activityCopyLimit);
   }
 
@@ -201,14 +229,15 @@ class Feed {
   /// ```
   ///
   /// API docs: [reading-feed-followers](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-feed-followers)
-  Future<List<Follow>> getFollowers({
+  Future<List<Follow>> followers({
     Iterable<FeedId>? feedIds,
     int? limit,
     int? offset,
+    String? session,
   }) {
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.read, feedId);
-    return feed.getFollowers(token, feedId, limit ?? Default.limit,
+    return feed.followers(token, feedId, limit ?? Default.limit,
         offset ?? Default.offset, feedIds ?? []);
   }
 
@@ -233,14 +262,15 @@ class Feed {
   ///```
   ///
   /// API docs: [reading-followed-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-followed-feeds)
-  Future<List<Follow>> getFollowed({
+  Future<List<Follow>> following({
     Iterable<FeedId>? feedIds,
     int? limit,
     int? offset,
+    String? session,
   }) {
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.read, feedId);
-    return feed.getFollowed(token, feedId, limit ?? Default.limit,
+    return feed.following(token, feedId, limit ?? Default.limit,
         offset ?? Default.offset, feedIds ?? []);
   }
 

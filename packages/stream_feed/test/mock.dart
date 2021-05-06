@@ -37,7 +37,7 @@ class MockReactionsAPI extends Mock implements ReactionsAPI {}
 
 class MockImagesAPI extends Mock implements ImagesAPI {}
 
-class MockUsersAPI extends Mock implements UsersAPI {}
+class MockUserAPI extends Mock implements UsersAPI {}
 
 class MockFeedAPI extends Mock implements FeedAPI {}
 
@@ -59,3 +59,5 @@ class MockFunctions extends Mock implements Functions {}
 class MockWSChannel extends Mock implements WebSocketChannel {}
 
 class MockWSSink extends Mock implements WebSocketSink {}
+
+class MultipartFileFake extends Fake implements MultipartFile {}

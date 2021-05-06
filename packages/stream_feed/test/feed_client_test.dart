@@ -3,10 +3,14 @@ import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/follow_stats.dart';
+import 'package:stream_feed/src/core/models/followers.dart';
+import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
+import 'utils.dart';
 
 void main() {
   group('Feed Client', () {
@@ -71,6 +75,25 @@ void main() {
       ]);
     });
 
+    test('followStats', () async {
+      const followingSlugs = ['timeline'];
+      const followerSlugs = ['user', 'news'];
+      final options = FollowStats(
+          following: Following(
+            feed: feedId,
+            slugs: followingSlugs,
+          ),
+          followers: Followers(
+            feed: feedId,
+            slugs: followerSlugs,
+          ));
+      when(() => api.followStats(token, options.toJson())).thenAnswer(
+          (_) async => FollowStats.fromJson(jsonFixture('follow_stats.json')));
+      await client.followStats(
+          followerSlugs: ['user', 'news'], followingSlugs: ['timeline']);
+      verify(() => api.followStats(token, options.toJson())).called(1);
+    });
+
     test('getFollowed', () async {
       const limit = 5;
       const offset = 0;
@@ -81,10 +104,10 @@ void main() {
         const Follow('timeline:1', 'user:2'),
         const Follow('timeline:1', 'user:3'),
       ];
-      when(() => api.getFollowed(token, feed, limit, offset, feedIds))
+      when(() => api.following(token, feed, limit, offset, feedIds))
           .thenAnswer((_) async => follows);
-      await client.getFollowed(limit: limit, offset: offset, feedIds: feedIds);
-      verify(() => api.getFollowed(token, feed, limit, offset, feedIds))
+      await client.following(limit: limit, offset: offset, feedIds: feedIds);
+      verify(() => api.following(token, feed, limit, offset, feedIds))
           .called(1);
     });
 
@@ -98,10 +121,10 @@ void main() {
         const Follow('timeline:1', 'user:2'),
         const Follow('timeline:1', 'user:3'),
       ];
-      when(() => api.getFollowers(token, feed, limit, offset, feedIds))
+      when(() => api.followers(token, feed, limit, offset, feedIds))
           .thenAnswer((_) async => follows);
-      await client.getFollowers(limit: limit, offset: offset, feedIds: feedIds);
-      verify(() => api.getFollowers(token, feed, limit, offset, feedIds))
+      await client.followers(limit: limit, offset: offset, feedIds: feedIds);
+      verify(() => api.followers(token, feed, limit, offset, feedIds))
           .called(1);
     });
 

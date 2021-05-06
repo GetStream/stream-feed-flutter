@@ -83,7 +83,7 @@ extension TokenResourceX on TokenResource {
         TokenResource.feedTargets: 'feed_targets',
         TokenResource.follower: 'follower',
         TokenResource.openGraph: 'url',
-        TokenResource.personalization: 'ppersonalization',
+        TokenResource.personalization: 'personalization',
         TokenResource.reactions: 'reactions',
         TokenResource.users: 'users',
       }[this];
@@ -103,6 +103,15 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.feed, action, feed?.claim ?? '*');
 
+  /// build Feed Token
+  static Token buildAnalyticsToken(
+    String secret,
+    TokenAction action, [
+    FeedId? feed,
+  ]) =>
+      _buildBackendToken(
+          secret, TokenResource.analytics, action, feed?.claim ?? '*');
+
   /// build Follow Token
   static Token buildFollowToken(
     String secret,
@@ -113,8 +122,16 @@ class TokenHelper {
           secret, TokenResource.follower, action, feed?.claim ?? '*');
 
   /// build Personalization Token
-  static Token buildPersonalizationToken(String secret, TokenAction action) =>
-      _buildBackendToken(secret, TokenResource.personalization, action, '*');
+  static Token buildAnyToken(String secret, TokenAction action,
+          {String? userId}) =>
+      _buildBackendToken(secret, TokenResource.any, action, '*',
+          userId: userId);
+
+  /// build Personalization Token
+  static Token buildPersonalizationToken(String secret, TokenAction action,
+          {String? userId}) =>
+      _buildBackendToken(secret, TokenResource.personalization, action, '*',
+          userId: userId);
 
   /// build Reaction Token
   static Token buildReactionToken(String secret, TokenAction action) =>
@@ -192,6 +209,9 @@ class TokenHelper {
     return Token(issueJwtHS256(secret: secret, claims: claims));
   }
 }
+
+JsonWebToken jwtDecode(Token userToken) =>
+    JsonWebToken.unverified(userToken.token);
 
 ///Issues a Jwt issue signed with HS256
 String issueJwtHS256({

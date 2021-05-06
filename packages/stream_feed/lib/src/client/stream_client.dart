@@ -10,7 +10,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 
 import 'package:stream_feed/src/client/reactions_client.dart';
-import 'package:stream_feed/src/client/users_client.dart';
+import 'package:stream_feed/src/client/user_client.dart';
 import 'package:stream_feed/src/client/stream_client_impl.dart';
 
 /// The client class that manages API calls and authentication
@@ -61,7 +61,7 @@ abstract class StreamClient {
   ReactionsClient get reactions;
 
   /// Convenient getter for [UsersClient]
-  UsersClient get users;
+  UserClient user(String userId);
 
   /// Convenient getter for [FileStorageClient]
   FileStorageClient get files;
@@ -70,13 +70,13 @@ abstract class StreamClient {
   ImageStorageClient get images;
 
   /// Convenient getter for [FlatFeed]
-  FlatFeed flatFeed(String slug, String userId);
+  FlatFeed flatFeed(String slug, [String? userId]);
 
   /// Convenient getter for [AggregatedFeed]
-  AggregatedFeed aggregatedFeed(String slug, String userId);
+  AggregatedFeed aggregatedFeed(String slug, [String? userId]);
 
   /// Convenient getter for [NotificationFeed]
-  NotificationFeed notificationFeed(String slug, String userId);
+  NotificationFeed notificationFeed(String slug, [String? userId]);
 
   /// Generate a JWT tokens that include the [userId] as payload
   /// and that are signed using your Stream API Secret.
@@ -99,5 +99,11 @@ abstract class StreamClient {
   ///   'http://www.imdb.com/title/tt0117500/',
   /// );
   /// ```
-  Future<OpenGraphData> openGraph(String targetUrl);
+  Future<OpenGraphData> og(String targetUrl);
+
+  ///
+  UserClient? get currentUser;
+
+  ///
+  Future<void> setUser(Map<String, Object> data);
 }

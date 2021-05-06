@@ -5,6 +5,8 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/models/follow_stats.dart';
+import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
@@ -73,6 +75,16 @@ class FeedAPI {
         queryParameters: options,
       );
 
+  ///Retrieve the number of follower
+  ///and following feed stats of the current feed.
+  /// For each count, feed slugs can be provided to filter counts accordingly.
+  Future<FollowStats> followStats(
+      Token token, Map<String, Object?> options) async {
+    final response = await _client.get<Map>(Routes.statsFollowUrl,
+        headers: {'Authorization': '$token'}, queryParameters: options);
+    return FollowStats.fromJson(response.data!['results']);
+  }
+
   ///Retrieve activities with reaction enrichment
   Future<Response> getEnrichedActivities(
           //TODO; hmm I think we can type this
@@ -86,7 +98,7 @@ class FeedAPI {
       );
 
   /// List which feeds this feed is following
-  Future<List<Follow>> getFollowed(Token token, FeedId feed, int limit,
+  Future<List<Follow>> following(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
     checkArgument(offset >= 0, 'Offset should be a non-negative number');
@@ -108,7 +120,7 @@ class FeedAPI {
   }
 
   ///List the followers of this feed
-  Future<List<Follow>> getFollowers(Token token, FeedId feed, int limit,
+  Future<List<Follow>> followers(Token token, FeedId feed, int limit,
       int offset, Iterable<FeedId> feedIds) async {
     checkArgument(limit >= 0, 'Limit should be a non-negative number');
     checkArgument(offset >= 0, 'Offset should be a non-negative number');
@@ -265,5 +277,15 @@ class FeedAPI {
         'new_targets': replace.map((it) => it.toString()).toList(),
       },
     );
+  }
+
+  Future<PersonalizedFeed> personalizedFeed(
+      Token token, Map<String, dynamic> options) async {
+    final response = await _client.get(
+      Routes.personalizedFeedUrl,
+      headers: {'Authorization': '$token'},
+      queryParameters: options,
+    );
+    return PersonalizedFeed.fromJson(response.data!);
   }
 }

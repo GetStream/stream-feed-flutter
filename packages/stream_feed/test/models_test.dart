@@ -1,8 +1,15 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/event.dart';
+import 'package:stream_feed/src/core/models/follow_stats.dart';
+import 'package:stream_feed/src/core/models/followers.dart';
+import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/group.dart';
-import 'package:stream_feed/src/core/models/paginated.dart';
+import 'package:stream_feed/src/core/models/paginated_reactions.dart';
+import 'package:stream_feed/src/core/models/personalized_feed.dart';
+import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -58,6 +65,52 @@ void main() {
     test('feedIds', () {
       final feedIds = FeedId.toIds([FeedId('slug', 'userId')]);
       expect(feedIds, ['slug:userId']);
+    });
+  });
+
+  test('Followers', () {
+    final followers = Followers(feed: FeedId.id('user:jessica'));
+    expect(Followers.fromJson(const {'feed': 'user:jessica'}), followers);
+  });
+
+  test('Followings', () {
+    final followers = Following(feed: FeedId.id('user:jessica'));
+    expect(Following.fromJson(const {'feed': 'user:jessica'}), followers);
+  });
+  group('FollowStats', () {
+    final followStats = FollowStats(
+        following: Following(feed: FeedId.id('user:jessica'), count: 0),
+        followers: Followers(feed: FeedId.id('user:jessica'), count: 1));
+    test('fromJson', () {
+      final followStatsJson = json.decode(fixture('follow_stats.json'));
+      final followStatsFromJson = FollowStats.fromJson(followStatsJson);
+      expect(followStatsFromJson, followStats);
+    });
+
+    test('toJson simple', () {
+      final toJson = followStats.toJson();
+      expect(
+          toJson, {'followers': 'user:jessica', 'following': 'user:jessica'});
+    });
+
+    test('toJson slugs', () {
+      final followStatsSlugs = FollowStats(
+          following: Following(
+            feed: FeedId.id('user:jessica'),
+            slugs: const ['user', 'news'],
+          ),
+          followers: Followers(
+            feed: FeedId.id('user:jessica'),
+            slugs: const ['timeline'],
+          ));
+
+      final toJson = followStatsSlugs.toJson();
+      expect(toJson, {
+        'followers': 'user:jessica',
+        'following': 'user:jessica',
+        'followers_slugs': 'timeline',
+        'following_slugs': 'user,news',
+      });
     });
   });
   test('EnrichedActivity', () {
@@ -271,6 +324,10 @@ void main() {
         data: const {'test': 'test'},
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'));
+
+    test('ref', () {
+      expect(entry.ref, 'SO:test:test');
+    });
     test('fromJson', () {
       final entryJson = json.decode(fixture('collection_entry.json'));
       final entryFromJson = CollectionEntry.fromJson(entryJson);
@@ -299,7 +356,82 @@ void main() {
       });
     });
   });
+  test('Content', () {
+    final content = Content(foreignId: FeedId.fromId('tweet:34349698'));
+    expect(content.toJson(), {'foreign_id': 'tweet:34349698'});
+  });
 
+  group('Engagement', () {
+    final engagement = Engagement(
+        content: Content(foreignId: FeedId.id('tweet:34349698')),
+        label: 'click',
+        userData: UserData('test', 'test'),
+        feedId: FeedId('user', 'thierry'));
+    final json = {
+      'user_data': {'id': 'test', 'alias': 'test'},
+      'feed_id': 'user:thierry',
+      'content': {'foreign_id': 'tweet:34349698'},
+      'label': 'click',
+      'score': null
+    };
+    test('fromJson', () {
+      final engagementFromJson = Engagement.fromJson(json);
+      expect(engagementFromJson, engagement);
+    });
+
+    test('toJson', () {
+      expect(engagement.toJson(), json);
+    });
+  });
+
+  group('Impression', () {
+    final impression = Impression(
+        contentList: [
+          Content(
+            foreignId: FeedId.fromId('tweet:34349698'),
+          )
+        ],
+        userData: UserData('test', 'test'),
+        feedId: FeedId('flat', 'tommaso'),
+        location: 'profile_page');
+    final json = {
+      'user_data': {'id': 'test', 'alias': 'test'},
+      'feed_id': 'flat:tommaso',
+      'location': 'profile_page',
+      'content_list': [
+        {'foreign_id': 'tweet:34349698'}
+      ]
+    };
+    test('fromJson', () {
+      final impressionFromJson = Impression.fromJson(json);
+      expect(impressionFromJson, impression);
+    });
+
+    test('toJson', () {
+      expect(impression.toJson(), json);
+    });
+  });
+
+  test('PersonalizedFeed', () {
+    final json = {
+      'limit': 25,
+      'offset': 0,
+      'version': 'user_1_1619210635',
+      'next': '',
+      'results': [],
+      'duration': '419.81ms'
+    };
+    final personalizedFeed = PersonalizedFeed.fromJson(json);
+    expect(
+        personalizedFeed,
+        PersonalizedFeed(
+            limit: 25,
+            offset: 0,
+            version: 'user_1_1619210635',
+            next: '',
+            results: [],
+            duration: '419.81ms'));
+  });
   test('PaginatedReactions', () {
     final reaction1 = Reaction(
         id: 'test',
@@ -571,6 +703,27 @@ void main() {
     });
   });
 
+  group('Thumbnail', () {
+    test('params', () {
+      const resize = Thumbnail(10, 10);
+      expect(resize.params,
+          {'resize': 'clip', 'crop': 'center', 'w': 10, 'h': 10});
+    });
+    test('Width should be a positive number', () {
+      expect(
+          () => Thumbnail(-1, 10),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Width should be a positive number')));
+    });
+
+    test('Height should be a positive number', () {
+      expect(
+          () => Thumbnail(10, -1),
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'Height should be a positive number')));
+    });
+  });
+
   group('Reaction', () {
     final reaction2 = Reaction(
         id: 'test',
@@ -746,6 +899,43 @@ void main() {
       'audios': [
         {'audio': 'test', 'url': 'test', 'secure_url': 'test', 'type': 'test'}
       ]
+    });
+  });
+
+  group('AttachmentFile', () {
+    const path = 'testPath';
+    const name = 'testFile';
+    final bytes = Uint8List.fromList([]);
+    const size = 0;
+
+    test('should throw if `path` or `bytes` is not provided', () {
+      expect(() => AttachmentFile(), throwsA(isA<AssertionError>()));
+    });
+
+    test('toJson', () {
+      final attachmentFile = AttachmentFile(
+        path: path,
+        name: name,
+        bytes: bytes,
+        size: size,
+      );
+
+      expect(attachmentFile.toJson(), {
+        'path': 'testPath',
+        'name': 'testFile',
+        'bytes': '',
+        'size': 0,
+      });
+    });
+
+    test('fromJson', () {
+      final file = json.decode(fixture('attachment_file.json'));
+      final attachmentFile = AttachmentFile.fromJson(file);
+
+      expect(attachmentFile.path, path);
+      expect(attachmentFile.name, name);
+      expect(attachmentFile.bytes, bytes);
+      expect(attachmentFile.size, size);
     });
   });
 }

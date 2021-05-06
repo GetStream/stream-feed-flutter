@@ -70,11 +70,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           content: Text('Loading User'),
                         ),
                       );
-                      final streamUser = await _client.users.add(
-                        user.id!,
-                        user.data!,
-                        getOrCreate: true,
-                      );
+                      final streamUser = await _client.user(user.id!).create(
+                            user.data!,
+                            getOrCreate: true,
+                          );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('User Loaded'),

@@ -23,7 +23,7 @@ class CollectionsAPI {
     checkArgument(
         entry.collection!.isNotEmpty, "Collection name can't be empty");
     checkNotNull(entry.data, "Collection data can't be null");
-    final result = await _client.post<Map>(
+    final result = await _client.post<Map<String, dynamic>>(
       Routes.buildCollectionsUrl(entry.collection),
       headers: {'Authorization': '$token'},
       data: {
@@ -32,7 +32,7 @@ class CollectionsAPI {
         if (entry.id != null) 'id': entry.id,
       },
     );
-    return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
+    return CollectionEntry.fromJson(result.data!);
   }
 
   /// Delete entry from collection
@@ -67,11 +67,11 @@ class CollectionsAPI {
       Token token, String collection, String entryId) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
     checkArgument(entryId.isNotEmpty, "Collection id can't be empty");
-    final result = await _client.get<Map>(
+    final result = await _client.get<Map<String, dynamic>>(
       Routes.buildCollectionsUrl('$collection/$entryId/'),
       headers: {'Authorization': '$token'},
     );
-    return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
+    return CollectionEntry.fromJson(result.data!);
   }
 
   /// Select all objects with ids from the collection.
@@ -99,7 +99,7 @@ class CollectionsAPI {
     checkNotNull(entry.collection, "Collection name can't be null");
     checkArgument(
         entry.collection!.isNotEmpty, "Collection name can't be empty");
-    final result = await _client.put<Map>(
+    final result = await _client.put<Map<String, dynamic>>(
       Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
       headers: {'Authorization': '$token'},
       data: {
@@ -107,21 +107,28 @@ class CollectionsAPI {
         if (userId != null) 'user_id': userId,
       },
     );
-    return CollectionEntry.fromJson(result.data as Map<String, dynamic>);
+    return CollectionEntry.fromJson(result.data!);
   }
 
   ///Upsert one or more items within a collection.
-  Future<Response> upsert(
+  Future<List<CollectionEntry>> upsert(
       //TODO: Map<String, Iterable<CollectionEntry>>
       Token token,
       String collection,
       Iterable<CollectionEntry> entries) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
     checkArgument(entries.isNotEmpty, "Collection data can't be empty");
-    return _client.post(Routes.buildCollectionsUrl(), headers: {
-      'Authorization': '$token'
-    }, data: {
-      'data': {collection: entries}
-    });
+    final response = await _client.post<Map>(
+      Routes.buildCollectionsUrl(),
+      headers: {'Authorization': '$token'},
+      data: {
+        'data': {collection: entries}
+      },
+    );
+
+    final data = (response.data!['data'][collection] as List)
+        .map((e) => CollectionEntry.fromJson(e))
+        .toList(growable: false);
+    return data;
   }
 }

@@ -16,7 +16,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 
-import 'package:stream_feed/src/client/users_client.dart';
+import 'package:stream_feed/src/client/user_client.dart';
 import 'package:stream_feed/src/client/stream_client.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
@@ -53,6 +53,16 @@ class StreamClientImpl implements StreamClient {
         _logger = Logger.detached('📜')..level = logLevel {
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
     _logger.info('instantiating new client');
+
+    if (userToken != null) {
+      final jwtBody = jwtDecode(userToken!);
+      final userId = jwtBody.claims.getTyped('user_id');
+      assert(
+        userId != null,
+        'Invalid `userToken`, It should contain `user_id`',
+      );
+      _currentUser = user(userId);
+    }
   }
 
   final String apiKey;
@@ -71,6 +81,9 @@ class StreamClientImpl implements StreamClient {
     );
     if (record.stackTrace != null) print(record.stackTrace);
   }
+
+  UserClient? _currentUser;
+  bool _isUserConnected = false;
 
   late final _authExtension = <String, MessageHandler>{
     'outgoing': (message) {
@@ -106,8 +119,8 @@ class StreamClientImpl implements StreamClient {
       ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
 
   @override
-  UsersClient get users =>
-      UsersClient(_api.users, userToken: userToken, secret: secret);
+  UserClient user(String userId) =>
+      UserClient(_api.users, userId, userToken: userToken, secret: secret);
 
   @override
   FileStorageClient get files =>
@@ -143,9 +156,15 @@ class StreamClientImpl implements StreamClient {
     return subscription;
   }
 
+  String _getUserId([String? userId]) {
+    var _userId = userId;
+    assert(_isUserConnected || _userId != null, '');
+    return _userId ??= currentUser!.userId;
+  }
+
   @override
-  AggregatedFeed aggregatedFeed(String slug, String userId) {
-    final id = FeedId(slug, userId);
+  AggregatedFeed aggregatedFeed(String slug, [String? userId]) {
+    final id = FeedId(slug, _getUserId(userId));
     return AggregatedFeed(
       id,
       _api.feed,
@@ -156,8 +175,8 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  FlatFeed flatFeed(String slug, String userId) {
-    final id = FeedId(slug, userId);
+  FlatFeed flatFeed(String slug, [String? userId]) {
+    final id = FeedId(slug, _getUserId(userId));
     return FlatFeed(
       id,
       _api.feed,
@@ -168,8 +187,8 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  NotificationFeed notificationFeed(String slug, String userId) {
-    final id = FeedId(slug, userId);
+  NotificationFeed notificationFeed(String slug, [String? userId]) {
+    final id = FeedId(slug, _getUserId(userId));
     return NotificationFeed(
       id,
       _api.feed,
@@ -190,9 +209,25 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  Future<OpenGraphData> openGraph(String targetUrl) {
+  Future<OpenGraphData> og(String targetUrl) {
     final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
+  }
+
+  @override
+  UserClient? get currentUser => _currentUser;
+
+  @override
+  Future<void> setUser(Map<String, Object> data) async {
+    checkArgument(
+      secret == null,
+      'This method can only be used client-side using a user token',
+    );
+
+    final body = <String, Object>{...data}..remove('id');
+    final userObject = await _currentUser!.getOrCreate(body);
+    _currentUser = user(userObject.id!);
+    _isUserConnected = true;
   }
 }
 

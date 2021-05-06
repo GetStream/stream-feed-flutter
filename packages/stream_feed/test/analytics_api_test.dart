@@ -15,21 +15,20 @@ void main() {
   final httpClient = MockHttpClient();
 
   group('trackImpressions', () {
-    final api = AnalyticsAPI(apiKey, token, client: httpClient);
+    final api = AnalyticsAPI(apiKey, client: httpClient);
     final impression = Impression(
-      contentList: const [
-        {
-          'foreign_id': 'post:42',
+      contentList: [
+        Content(foreignId: FeedId.fromId('post:42'), data: {
           'actor': {'id': 'user:2353540'},
           'verb': 'share',
           'object': {'id': 'song:34349698'},
-        }
+        })
       ],
       feedId: FeedId('timeline', 'tom'),
     );
     test('should throw if userData is not present', () {
       expect(
-        () => api.trackImpressions([impression]),
+        () => api.trackImpressions(token, [impression]),
         throwsArgumentError,
       );
     });
@@ -52,7 +51,7 @@ void main() {
           ),
         );
 
-        final res = await api.trackImpressions([updatedImpression]);
+        final res = await api.trackImpressions(token, [updatedImpression]);
 
         expect(res, isNotNull);
         expect(res.statusCode, 200);
@@ -68,9 +67,9 @@ void main() {
   });
 
   group('trackEngagements', () {
-    final api = AnalyticsAPI(apiKey, token, client: httpClient);
+    final api = AnalyticsAPI(apiKey, client: httpClient);
     final engagement = Engagement(
-      content: const {'foreign_id': 'tweet:34349698'},
+      content: Content(foreignId: FeedId.fromId('tweet:34349698')),
       label: 'click',
       score: 2,
       position: 3,
@@ -79,7 +78,7 @@ void main() {
     );
     test('should throw if userData is not present', () {
       expect(
-        () => api.trackEngagements([engagement]),
+        () => api.trackEngagements(token, [engagement]),
         throwsArgumentError,
       );
     });
@@ -104,7 +103,7 @@ void main() {
           ),
         );
 
-        final res = await api.trackEngagements([updatedEngagement]);
+        final res = await api.trackEngagements(token, [updatedEngagement]);
 
         expect(res, isNotNull);
         expect(res.statusCode, 200);

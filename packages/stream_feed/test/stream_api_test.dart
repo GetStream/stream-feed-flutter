@@ -20,6 +20,7 @@ void main() {
     expect(streamApi.images, isNotNull);
     expect(streamApi.reactions, isNotNull);
     expect(streamApi.users, isNotNull);
+    expect(streamApi.personalization, isNotNull);
     const token = Token('token');
     const targetUrl = 'targetUrl';
     when(() => mockClient.get(

@@ -1,37 +1,75 @@
 import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/images_api.dart';
+import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:test/test.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 import 'package:mocktail/mocktail.dart';
 
+import 'matcher.dart';
 import 'mock.dart';
+import 'utils.dart';
 
 void main() {
   final mockClient = MockHttpClient();
   final imagesApi = ImagesAPI(mockClient);
 
+  setUpAll(() {
+    registerFallbackValue<MultipartFile>(MultipartFileFake());
+  });
+
   group('Images API', () {
-    test('Upload', () async {
+    test('RefreshUrl', () async {
       const token = Token('dummyToken');
-
-      final multipartFile = MultipartFile.fromString('file');
-
-      when(() => mockClient.postFile<Map>(
+      const targetUrl = 'targetUrl';
+      when(() => mockClient.post(
             Routes.imagesUrl,
-            multipartFile,
+            data: {'url': targetUrl},
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response(
-          data: {'file': ''},
+          data: {'url': targetUrl},
           requestOptions: RequestOptions(
             path: Routes.imagesUrl,
           ),
           statusCode: 200));
 
-      await imagesApi.upload(token, multipartFile);
+      await imagesApi.refreshUrl(token, targetUrl);
+      verify(() => mockClient.post(
+            Routes.imagesUrl,
+            data: {'url': targetUrl},
+            headers: {'Authorization': '$token'},
+          )).called(1);
+    });
+
+    test('Upload', () async {
+      const token = Token('dummyToken');
+
+      final file = assetFile('test_image.jpeg');
+      final attachmentFile = AttachmentFile(
+        path: file.path,
+        bytes: file.readAsBytesSync(),
+      );
+      final multipartFile = await attachmentFile.toMultipartFile();
+
+      const fileUrl = 'dummyFileUrl';
+      when(() => mockClient.postFile<Map>(
+            Routes.imagesUrl,
+            any(that: isSameMultipartFileAs(multipartFile)),
+            headers: {'Authorization': '$token'},
+          )).thenAnswer((_) async => Response(
+            data: {'file': fileUrl},
+            requestOptions: RequestOptions(
+              path: Routes.imagesUrl,
+            ),
+            statusCode: 200,
+          ));
+
+      final res = await imagesApi.upload(token, attachmentFile);
+      expect(res, fileUrl);
+
       verify(() => mockClient.postFile<Map>(
             Routes.imagesUrl,
-            multipartFile,
+            any(that: isSameMultipartFileAs(multipartFile)),
             headers: {'Authorization': '$token'},
           )).called(1);
     });

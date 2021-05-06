@@ -3,7 +3,7 @@ import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/lookup_attribute.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
-import 'package:stream_feed/src/core/models/paginated.dart';
+import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/reaction.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
@@ -31,22 +31,22 @@ class ReactionsAPI {
     }
     checkNotNull(reaction.kind, "Reaction kind can't be null");
     checkArgument(reaction.kind!.isNotEmpty, "Reaction kind can't be empty");
-    final result = await _client.post<Map>(
+    final result = await _client.post<Map<String, dynamic>>(
       Routes.buildReactionsUrl(),
       headers: {'Authorization': '$token'},
       data: reaction,
     );
-    return Reaction.fromJson(result.data as Map<String, dynamic>);
+    return Reaction.fromJson(result.data!);
   }
 
   /// Get reaction
   Future<Reaction> get(Token token, String id) async {
     checkArgument(id.isNotEmpty, "Reaction id can't be empty");
-    final result = await _client.get<Map>(
+    final result = await _client.get<Map<String, dynamic>>(
       Routes.buildReactionsUrl('$id/'),
       headers: {'Authorization': '$token'},
     );
-    return Reaction.fromJson(result.data as Map<String, dynamic>);
+    return Reaction.fromJson(result.data!);
   }
 
   /// Delete reaction
@@ -113,7 +113,7 @@ class ReactionsAPI {
     return PaginatedReactions.fromJson(result.data);
   }
 
-  /// Next reation pagination returned by [PaginatedReactions].next
+  /// Next reaction pagination returned by [PaginatedReactions].next
   Future<PaginatedReactions> nextPaginatedFilter(
       Token token, String next) async {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
@@ -125,20 +125,23 @@ class ReactionsAPI {
   }
 
   /// update a reaction
-  Future<Response> update(Token token, Reaction updatedReaction) async {
+  Future<Reaction> update(Token token, Reaction updatedReaction) async {
     checkArgument(updatedReaction.id!.isNotEmpty, "Reaction id can't be empty");
-    final targetFeedIds = updatedReaction.targetFeeds!
-        .map((e) => e.toString())
+    final targetFeedIds = updatedReaction.targetFeeds
+        ?.map((e) => e.toString())
         .toList(growable: false);
+
     final reactionId = updatedReaction.id;
     final data = updatedReaction.data;
-    return _client.put(
+    final response = await _client.put<Map<String, dynamic>>(
       Routes.buildReactionsUrl('$reactionId/'),
       headers: {'Authorization': '$token'},
       data: {
         if (data != null && data.isNotEmpty) 'data': data,
-        if (targetFeedIds.isNotEmpty) 'target_feeds': targetFeedIds,
+        if (targetFeedIds?.isNotEmpty == true) 'target_feeds': targetFeedIds,
       },
     );
+
+    return Reaction.fromJson(response.data!);
   }
 }
