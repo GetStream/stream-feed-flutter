@@ -13,7 +13,8 @@ void main() async {
     final appId = env['appId'];
     final apiKey = env['apiKey'];
 
-    final client = StreamClient.connect(apiKey!, secret: secret, appId: appId);
+    final client = StreamClient.connect(apiKey!,
+        secret: secret, appId: appId, clientSide: false);
     const userId = '1';
     const slug = 'reward';
     final userFeed = client.flatFeed(slug, userId);
