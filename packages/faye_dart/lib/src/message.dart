@@ -1,23 +1,9 @@
-import 'dart:math' as math;
-
 import 'package:equatable/equatable.dart';
 
-import 'channel.dart';
-
-int _messageId = 0; //TODO: weird, uuid instead?
-
-abstract class _MessageObject {
-  static String get id {
-    _messageId += 1;
-    if (_messageId >= math.pow(2, 32)) _messageId = 0;
-    return _messageId.toRadixString(36);
-  }
-}
-
 class Message with EquatableMixin {
-  final String? clientId;
+  String? id;
   final String channel;
-  final String id;
+  String? clientId;
   String? connectionType;
   String? version;
   String? minimumVersion;
@@ -25,33 +11,28 @@ class Message with EquatableMixin {
   Advice? advice;
   bool? successful;
   String? subscription;
-  Map<String, Object>? ext;
   Map<String, dynamic>? data;
+  Map<String, Object>? ext;
   String? error;
 
   Message(
-    String bayeuxChannel, {
-    Channel? channel,
-    Map<String, Object>? data,
+    this.channel, {
     this.clientId,
-  })  : id = _MessageObject.id,
-        channel = bayeuxChannel,
-        data = data {
-    if (bayeuxChannel == handshake_channel) {
-      version = '1.0';
-      minimumVersion = '1.0';
-      supportedConnectionTypes = ['websocket'];
-    } else if (bayeuxChannel == connect_channel) {
-      connectionType = 'websocket';
-    } else if (bayeuxChannel == subscribe_channel ||
-        bayeuxChannel == unsubscribe_channel) {
-      subscription = channel?.name;
-      ext = channel?.ext;
-    }
-  }
+    this.version,
+    this.minimumVersion,
+    this.connectionType,
+    this.supportedConnectionTypes,
+    this.advice,
+    this.successful,
+    this.subscription,
+    this.ext,
+    this.data,
+    this.error,
+  });
 
   Map<String, Object?> toJson() {
     final result = <String, Object?>{};
+    if (id != null) result['id'] = id;
     if (clientId != null) result['clientId'] = clientId;
     if (data != null) result['data'] = data;
     result['channel'] = channel;
@@ -68,37 +49,36 @@ class Message with EquatableMixin {
     return result;
   }
 
-  @override
-  toString() => "${toJson()}";
-
   factory Message.fromJson(Map<String, Object?> json) {
-    final channel = json['channel'] as String;
-    final clientId = json['clientId'] as String?;
-    final message = Message(channel, clientId: clientId)
-      ..version = json['version'] as String?
-      ..minimumVersion = json['minimumVersion'] as String?
-      ..supportedConnectionTypes = (json['supportedConnectionTypes'] as List?)
+    final advice = json['advice'] as Map<String, dynamic>?;
+    final message = Message(
+      json['channel'] as String,
+      clientId: json['clientId'] as String?,
+      connectionType: json['connectionType'] as String?,
+      version: json['version'] as String?,
+      minimumVersion: json['minimumVersion'] as String?,
+      supportedConnectionTypes: (json['supportedConnectionTypes'] as List?)
           ?.map((e) => e as String)
-          .toList()
-      ..successful = json['successful'] as bool?
-      ..subscription = json['subscription'] as String?
-      ..data = json['data'] as Map<String, dynamic>?
-      ..ext = json['ext'] as Map<String, Object>?
-      ..error = json['error'] as String?;
-
-    final advice = json['advice'];
-    if (advice != null) {
-      message..advice = Advice.fromJson(advice as Map<String, Object?>);
-    }
+          .toList(),
+      advice: advice == null ? null : Advice.fromJson(advice),
+      successful: json['successful'] as bool?,
+      subscription: json['subscription'] as String?,
+      ext: json['ext'] as Map<String, Object>?,
+      data: json['data'] as Map<String, dynamic>?,
+      error: json['error'] as String?,
+    )..id = json['id'] as String?;
     return message;
   }
 
   @override
-  List<Object?> get props => [clientId, channel, data]; //, id
+  List<Object?> get props => [id, channel, clientId];
+
+  @override
+  toString() => '${toJson()}';
 }
 
 class Advice extends Equatable {
-  Advice({
+  const Advice({
     required this.reconnect,
     required this.interval,
     this.timeout,
@@ -118,10 +98,10 @@ class Advice extends Equatable {
         timeout: json["timeout"] == null ? null : json["timeout"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, Object?> toJson() => {
         "reconnect": reconnect,
         "interval": interval,
-        "timeout": timeout == null ? null : timeout,
+        "timeout": timeout,
       };
 
   @override
