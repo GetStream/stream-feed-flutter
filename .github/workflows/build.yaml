@@ -28,13 +28,13 @@ jobs:
         run: echo "PUB_CACHE="$HOME/.pub-cache"" >> $GITHUB_ENV
         
       - name: Add feed secret to env
-        run: echo secrets.SECRET >> $secret
+        run: echo "secret="${{ secrets.SECRET }}"" >> $GITHUB_ENV
       
       - name: Add feed appId to env
-        run: echo secrets.APPID >> $appId
+        run: echo "appId="${{ secrets.APPID }}"" >> $GITHUB_ENV
         
       - name: Add feed apiKey to env
-        run: echo secrets.APIKEY >> $apiKey
+        run: echo "apiKey="${{ secrets.APIKEY }}"" >> $GITHUB_ENV
 
       - run: dart pub global activate melos
 
