@@ -6,6 +6,9 @@ class Routes {
   static const _unfollowManyPath = 'unfollow_many';
   static const _activitiesPath = 'activities';
   static const _personalizationPath = 'personalization';
+  static const _enrichPersonalizationPath = 'enrich/personalization';
+  static const _personalizationFeedPath =
+      '$_enrichPersonalizationPath/$_feedPath';
   static const _enrichActivitiesPath = 'enrich/$_activitiesPath';
   static const _activityUpdatePath = 'activity';
   static const _reactionsPath = 'reaction';
@@ -49,6 +52,8 @@ class Routes {
   static String get openGraphUrl => _openGraphPath;
 
   static String get activityUpdateUrl => _activityUpdatePath;
+
+  static String get personalizedFeedUrl => _personalizationFeedPath;
 
   static String get addToManyUrl => _addToManyPath;
 

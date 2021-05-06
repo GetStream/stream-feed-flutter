@@ -113,7 +113,7 @@ class ReactionsAPI {
     return PaginatedReactions.fromJson(result.data);
   }
 
-  /// Next reation pagination returned by [PaginatedReactions].next
+  /// Next reaction pagination returned by [PaginatedReactions].next
   Future<PaginatedReactions> nextPaginatedFilter(
       Token token, String next) async {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
@@ -127,12 +127,9 @@ class ReactionsAPI {
   /// update a reaction
   Future<Reaction> update(Token token, Reaction updatedReaction) async {
     checkArgument(updatedReaction.id!.isNotEmpty, "Reaction id can't be empty");
-    final targetFeeds = updatedReaction.targetFeeds;
-    List<String>? targetFeedIds;
-    if (targetFeeds != null) {
-      targetFeedIds =
-          targetFeeds.map((e) => e.toString()).toList(growable: false);
-    }
+    final targetFeedIds = updatedReaction.targetFeeds
+        ?.map((e) => e.toString())
+        .toList(growable: false);
 
     final reactionId = updatedReaction.id;
     final data = updatedReaction.data;
@@ -141,7 +138,7 @@ class ReactionsAPI {
       headers: {'Authorization': '$token'},
       data: {
         if (data != null && data.isNotEmpty) 'data': data,
-        if (targetFeedIds!.isNotEmpty) 'target_feeds': targetFeedIds,
+        if (targetFeedIds?.isNotEmpty == true) 'target_feeds': targetFeedIds,
       },
     );
 

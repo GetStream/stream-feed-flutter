@@ -75,6 +75,7 @@ class FlatFeed extends Feed {
       ...filter?.params ?? Default.filter.params,
       ...Default.marker.params,
       if (ranking != null) 'ranking': ranking,
+      if (session != null) 'session': session,
     };
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
@@ -119,6 +120,7 @@ class FlatFeed extends Feed {
       ...filter?.params ?? Default.filter.params,
       ...Default.marker.params,
       if (ranking != null) 'ranking': ranking,
+      if (session != null) 'session': session,
     };
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
@@ -129,20 +131,22 @@ class FlatFeed extends Feed {
     return data;
   }
 
-  Future<PersonalizedFeed> personalizedFeed(
-      {int? limit,
-      int? offset,
-      String? session,
-      Filter? filter,
-      ActivityMarker? marker,
-      EnrichmentFlags? flags,
-      String? ranking}) async {
+  Future<PersonalizedFeed> personalizedFeed({
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    ActivityMarker? marker,
+    EnrichmentFlags? flags,
+    String? ranking,
+  }) async {
     final options = {
       'limit': limit ?? Default.limit,
-      'offset': offset ?? Default.offset, //TODO:add session everywhere
+      'offset': offset ?? Default.offset,
       ...filter?.params ?? Default.filter.params,
       ...marker?.params ?? Default.marker.params,
       if (ranking != null) 'ranking': ranking,
+      if (session != null) 'session': session,
     };
     final token = userToken ??
         TokenHelper.buildAnyToken(secret!, TokenAction.any,
