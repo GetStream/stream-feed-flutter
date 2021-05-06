@@ -3,7 +3,6 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/util/default.dart';
-import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// {@template reactions}
@@ -17,7 +16,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// {@endtemplate}
 class ReactionsClient {
   ///Initialize a reaction client
-  ReactionsClient(this._reactions, {this.userToken, this.secret, this.userId})
+  ReactionsClient(this._reactions, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -25,9 +24,6 @@ class ReactionsClient {
 
   ///User JWT Token
   final Token? userToken;
-
-  /// User ID
-  final String? userId;
 
   ///The reactions client
   final ReactionsAPI _reactions;
@@ -67,21 +63,14 @@ class ReactionsClient {
     String activityId, {
     String? userId,
     Map<String, Object>? data,
-    Iterable<FeedId>? targetFeeds,
+    List<FeedId>? targetFeeds,
   }) {
-    // print(userId == null && secret != null);
-    if (userId == null && secret != null) {
-      throw ArgumentError('''
-        You are using the client serverside (secret provided)
-         please provide a userId''');
-    }
-
     final reaction = Reaction(
       kind: kind,
       activityId: activityId,
-      userId: userId ?? this.userId,
+      userId: userId,
       data: data,
-      targetFeeds: targetFeeds as List<FeedId>?,
+      targetFeeds: targetFeeds,
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
@@ -105,23 +94,14 @@ class ReactionsClient {
     String parentId, {
     String? userId,
     Map<String, Object>? data,
-    Iterable<FeedId>? targetFeeds,
+    List<FeedId>? targetFeeds,
   }) {
-    if (userId == null && secret != null) {
-      throw ArgumentError('''
-        You are using the client serverside (secret provided)
-         please provide a userId''');
-    }
-    // checkArgument(secret != null && userId?.isNotEmpty == true, '''
-    //     You are using the client serverside (secret provided)
-    //      please provide a userId''');
-
     final reaction = Reaction(
       kind: kind,
       parent: parentId,
-      userId: userId ?? this.userId,
+      userId: userId,
       data: data,
-      targetFeeds: targetFeeds as List<FeedId>?,
+      targetFeeds: targetFeeds,
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);

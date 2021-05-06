@@ -37,12 +37,14 @@ abstract class StreamClient {
   /// ```dart
   /// var client = connect('YOUR_API_KEY',token: Token('userToken'));
   /// ```
-  factory StreamClient.connect(String apiKey,
-          {Token? token,
-          String? secret,
-          String? appId,
-          StreamHttpClientOptions? options,
-          bool? clientSide}) =>
+  factory StreamClient.connect(
+    String apiKey, {
+    Token? token,
+    String? secret,
+    String? appId,
+    StreamHttpClientOptions? options,
+    bool? clientSide,
+  }) =>
       StreamClientImpl(apiKey,
           userToken: token,
           secret: secret,

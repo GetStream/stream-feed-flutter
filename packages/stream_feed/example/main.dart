@@ -7,19 +7,26 @@ Future<void> main() async {
   final secret = env['secret'];
   final apiKey = env['apiKey'];
   final appId = env['appId'];
-  var clientWithSecret =
-      StreamClient.connect(apiKey!, secret: secret); //Token(token!)
+  final clientWithSecret = StreamClient.connect(
+    apiKey,
+    secret: secret,
+    clientSide: false,
+  );
+
   final chris = clientWithSecret.flatFeed('user', 'chris');
 
-// Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
-  final addedPicture = await chris.addActivity(Activity(
+  // Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
+  final addedPicture = await chris.addActivity(
+    const Activity(
       actor: 'chris',
       verb: 'add',
       object: 'picture:10',
       foreignId: 'picture:10',
-      extraData: {'message': 'Beautiful bird!'}));
+      extraData: {'message': 'Beautiful bird!'},
+    ),
+  );
 
-// Create a following relationship between Jack's "timeline" feed and Chris' "user" feed:
+  // Create a following relationship between Jack's "timeline" feed and Chris' "user" feed:
   final jack = clientWithSecret.flatFeed('timeline', 'jack');
   await jack.follow(chris);
 
@@ -55,8 +62,10 @@ Future<void> main() async {
 
   // Get 5 activities with id less than the given UUID (Faster - Recommended!)
   var response = await user1.getActivities(
-      limit: 5,
-      filter: Filter().idLessThan("e561de8f-00f1-11e4-b400-0cc47a024be0"));
+    limit: 5,
+    filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0'),
+  );
+
 // Get activities from 5 to 10 (Pagination-based - Slower)
   response = await user1.getActivities(offset: 0, limit: 5);
 // Get activities sorted by rank (Ranked Feeds Enabled):
@@ -67,6 +76,7 @@ Future<void> main() async {
     apiKey,
     secret: secret,
     appId: appId,
+    clientSide: false,
     options: StreamHttpClientOptions(location: Location.usEast),
   );
 
@@ -290,7 +300,7 @@ Future<void> main() async {
 
 // the object returned by .add can be embedded directly inside of an activity
   await user1.addActivity(Activity(
-    actor: clientWithSecret.currentUser!.ref,
+    actor: createUserReference('userId'),
     verb: 'grill',
     object: cheeseBurger.ref,
   ));
@@ -330,7 +340,7 @@ Future<void> main() async {
 
   client = StreamClient.connect(apiKey, token: frontendToken);
 // ensure the user data is stored on Stream
-  await client.setUserData({
+  await client.setUser({
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male'
@@ -365,8 +375,8 @@ Future<void> main() async {
   // Read the personalized feed for a given user
   var params = {'user_id': 'john-doe', 'feed_slug': 'timeline'};
 
-  await clientWithSecret.personalization
-      .get('personalized_feed', params: params);
+  // await clientWithSecret.personalization
+  //     .get('personalized_feed', params: params);
 
 //Our data science team will typically tell you which endpoint to use
   params = {

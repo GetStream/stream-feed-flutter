@@ -16,14 +16,15 @@ void main() {
     final api = MockReactionsAPI();
     const userId = 'john-doe';
     final dummyResponse = Response(
-        data: {},
-        requestOptions: RequestOptions(
-          path: '',
-        ),
-        statusCode: 200);
+      data: {},
+      requestOptions: RequestOptions(
+        path: '',
+      ),
+      statusCode: 200,
+    );
 
     const token = Token('dummyToken');
-    final client = ReactionsClient(api, userToken: token, userId: userId);
+    final client = ReactionsClient(api, userToken: token);
     test('add', () async {
       const kind = 'like';
       const activityId = 'activityId';
@@ -39,10 +40,14 @@ void main() {
       );
       when(() => api.add(token, reaction)).thenAnswer((_) async => reaction);
 
-      expect(
-          await client.add(kind, activityId,
-              data: data, targetFeeds: targetFeeds),
-          reaction);
+      final result = await client.add(
+        kind,
+        activityId,
+        data: data,
+        userId: userId,
+        targetFeeds: targetFeeds,
+      );
+      expect(result, reaction);
       verify(() => api.add(token, reaction)).called(1);
     });
 

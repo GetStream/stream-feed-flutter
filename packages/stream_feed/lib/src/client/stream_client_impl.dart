@@ -51,8 +51,12 @@ class StreamClientImpl implements StreamClient {
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
-        assert(userToken != null || secret != null && clientSide == false,
-            'you should not use a secret clientside'),
+        assert(
+          userToken != null || secret != null && clientSide == false,
+          'You are publicly sharing your App Secret. '
+          'Do not expose the App Secret in browsers, '
+          '`native` mobile apps, or other non-trusted environments.',
+        ),
         _api = api ?? StreamApiImpl(apiKey, options: options),
         _logger = Logger.detached('📜')..level = logLevel {
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
@@ -120,8 +124,8 @@ class StreamClientImpl implements StreamClient {
       CollectionsClient(_api.collections, userToken: userToken, secret: secret);
 
   @override
-  ReactionsClient get reactions => ReactionsClient(_api.reactions,
-      userToken: userToken, secret: secret, userId: currentUser?.userId);
+  ReactionsClient get reactions =>
+      ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
 
   @override
   PersonalizationClient get personalization =>

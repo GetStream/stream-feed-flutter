@@ -24,8 +24,11 @@ void main() {
         expect(
           () => StreamClient.connect('apiKey', secret: 'secret'),
           throwsA(
-            predicate<AssertionError>(
-                (e) => e.message == 'you should not use a secret clientside'),
+            predicate<AssertionError>((e) =>
+                e.message ==
+                'You are publicly sharing your App Secret. '
+                    'Do not expose the App Secret in browsers, '
+                    '`native` mobile apps, or other non-trusted environments.'),
           ),
         );
       });
