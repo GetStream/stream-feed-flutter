@@ -9,20 +9,44 @@ import 'utils.dart';
 
 void main() {
   group('StreamClientImpl', () {
-    test('throws an AssertionError when no secret provided', () {
-      expect(
-        () => StreamClient.connect('apiKey'),
-        throwsA(
-          predicate<AssertionError>((e) =>
-              e.message == 'At least a secret or userToken must be provided'),
-        ),
-      );
-    });
+    group('throw', () {
+      test('throws an AssertionError when no secret provided', () {
+        expect(
+          () => StreamClient.connect('apiKey'),
+          throwsA(
+            predicate<AssertionError>((e) =>
+                e.message == 'At least a secret or userToken must be provided'),
+          ),
+        );
+      });
 
+      test('throws an AssertionError if secret provided alone', () {
+        expect(
+          () => StreamClient.connect('apiKey', secret: 'secret'),
+          throwsA(
+            predicate<AssertionError>((e) =>
+                e.message ==
+                'You are publicly sharing your App Secret. '
+                    'Do not expose the App Secret in browsers, '
+                    '`native` mobile apps, or other non-trusted environments.'),
+          ),
+        );
+      });
+
+      test("don't throw if secret provided with clientSide false", () {
+        StreamClient.connect('apiKey', secret: 'secret', clientSide: false);
+      });
+
+      test("don't throw if token provided ", () {
+        StreamClient.connect('apiKey',
+            token: TokenHelper.buildFrontendToken('secret', 'userId'));
+      });
+    });
     test('getters', () async {
       const secret = 'secret';
       const userId = 'userId';
-      final client = StreamClientImpl('apiKey', secret: secret);
+      final client =
+          StreamClientImpl('apiKey', secret: secret, clientSide: false);
       expect(client.collections, isNotNull);
       expect(client.batch, isNotNull);
       expect(client.aggregatedFeed('slug', 'userId'), isNotNull);

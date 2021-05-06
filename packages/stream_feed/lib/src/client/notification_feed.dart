@@ -13,6 +13,7 @@ import 'package:stream_feed/src/client/aggregated_feed.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:stream_feed/src/client/feed.dart' show FeedSubscriber;
 
+/// {@template notificationFeed}
 /// Notification Feed Groups extend the "Aggregated Feed Group" concept
 /// with additional features that make them well suited to notification systems:
 ///
@@ -33,6 +34,7 @@ import 'package:stream_feed/src/client/feed.dart' show FeedSubscriber;
 /// when you click on it.
 ///
 /// You can create new Notification Feed Groups in the dashboard.
+/// {@endtemplate}
 class NotificationFeed extends AggregatedFeed {
   ///Initialize a [NotificationFeed] object
   NotificationFeed(

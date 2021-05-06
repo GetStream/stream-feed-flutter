@@ -5,6 +5,7 @@ import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template reactions}
 /// Reactions are a special kind of data that can be used
 /// to capture user interaction with specific activities.
 ///
@@ -12,6 +13,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 ///
 /// Reactions are automatically returned to feeds' activities at read time
 /// when the reactions parameters are used.
+/// {@endtemplate}
 class ReactionsClient {
   ///Initialize a reaction client
   ReactionsClient(this._reactions, {this.userToken, this.secret})
@@ -58,17 +60,17 @@ class ReactionsClient {
   /// API docs: [adding-reactions](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_introduction/?language=dart#adding-reactions)
   Future<Reaction> add(
     String kind,
-    String activityId,
-    String userId, {
+    String activityId, {
+    String? userId,
     Map<String, Object>? data,
-    Iterable<FeedId>? targetFeeds,
+    List<FeedId>? targetFeeds,
   }) {
     final reaction = Reaction(
       kind: kind,
       activityId: activityId,
       userId: userId,
       data: data,
-      targetFeeds: targetFeeds as List<FeedId>?,
+      targetFeeds: targetFeeds,
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
@@ -89,17 +91,17 @@ class ReactionsClient {
   /// API docs: [reactions_add_child](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_add_child/?language=dart)
   Future<Reaction> addChild(
     String kind,
-    String parentId,
-    String userId, {
+    String parentId, {
+    String? userId,
     Map<String, Object>? data,
-    Iterable<FeedId>? targetFeeds,
+    List<FeedId>? targetFeeds,
   }) {
     final reaction = Reaction(
       kind: kind,
       parent: parentId,
       userId: userId,
       data: data,
-      targetFeeds: targetFeeds as List<FeedId>?,
+      targetFeeds: targetFeeds,
     );
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.write);
@@ -145,7 +147,7 @@ class ReactionsClient {
   /// );
   ///```
   Future<Reaction> update(
-    String? reactionId, {
+    String reactionId, {
     Map<String, Object>? data,
     List<FeedId>? targetFeeds,
   }) {
@@ -179,6 +181,7 @@ class ReactionsClient {
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
+    //TODO: check if it is a valid UUID with package uuid isValidUUID
     Filter? filter,
     int? limit,
     String? kind,
@@ -189,7 +192,7 @@ class ReactionsClient {
         filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
   }
 
-  //Server side functions
+  //------------------------- Server side methods ----------------------------//
   ///paginated reactions and filter them
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,

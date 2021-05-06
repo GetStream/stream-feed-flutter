@@ -8,6 +8,7 @@ import 'package:stream_feed/src/client/batch_operations_client.dart';
 import 'package:stream_feed/src/client/collections_client.dart';
 import 'package:stream_feed/src/client/file_storage_client.dart';
 import 'package:stream_feed/src/client/image_storage_client.dart';
+import 'package:stream_feed/src/client/personalization_client.dart';
 import 'package:stream_feed/src/client/reactions_client.dart';
 import 'package:stream_feed/src/core/api/stream_api.dart';
 import 'package:stream_feed/src/core/api/stream_api_impl.dart';
@@ -40,6 +41,7 @@ class StreamClientImpl implements StreamClient {
     this.secret,
     this.userToken,
     this.appId,
+    this.clientSide = true,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
     Level logLevel = Level.WARNING,
     LogHandlerFunction? logHandlerFunction,
@@ -48,6 +50,12 @@ class StreamClientImpl implements StreamClient {
   })  : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
+        ),
+        assert(
+          userToken != null || secret != null && clientSide == false,
+          'You are publicly sharing your App Secret. '
+          'Do not expose the App Secret in browsers, '
+          '`native` mobile apps, or other non-trusted environments.',
         ),
         _api = api ?? StreamApiImpl(apiKey, options: options),
         _logger = Logger.detached('📜')..level = logLevel {
@@ -65,6 +73,7 @@ class StreamClientImpl implements StreamClient {
     }
   }
 
+  final bool? clientSide;
   final String apiKey;
   final String? appId;
   final Token? userToken;
@@ -119,6 +128,11 @@ class StreamClientImpl implements StreamClient {
       ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
 
   @override
+  PersonalizationClient get personalization =>
+      PersonalizationClient(_api.personalization,
+          userToken: userToken, secret: secret);
+
+  @override
   UserClient user(String userId) =>
       UserClient(_api.users, userId, userToken: userToken, secret: secret);
 
@@ -158,7 +172,11 @@ class StreamClientImpl implements StreamClient {
 
   String _getUserId([String? userId]) {
     var _userId = userId;
-    assert(_isUserConnected || _userId != null, '');
+    assert(
+      _isUserConnected || _userId != null,
+      'Provide a `userId` if you are using it server-side '
+      'or call `setUser` before creating feeds',
+    );
     return _userId ??= currentUser!.userId;
   }
 
@@ -203,7 +221,10 @@ class StreamClientImpl implements StreamClient {
     String userId, {
     DateTime? expiresAt,
   }) {
-    checkNotNull(secret, "You can't use the frontendToken method client side");
+    checkNotNull(
+      secret,
+      "You can't use the `frontendToken` method client side",
+    );
     return TokenHelper.buildFrontendToken(secret!, userId,
         expiresAt: expiresAt);
   }

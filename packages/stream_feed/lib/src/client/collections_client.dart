@@ -3,6 +3,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/collection_entry.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template collections}
 /// Collections enable you to store information to Stream.
 ///
 /// This allows you to use it inside your feeds,
@@ -20,6 +21,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 ///
 /// Collection endpoints can be used both client-side
 /// and server-side except the batch methods that are only available server-side
+/// {@endtemplate}
 class CollectionsClient {
   ///Initialize a CollectionsClient object
   CollectionsClient(this._collections, {this.userToken, this.secret})
@@ -35,6 +37,9 @@ class CollectionsClient {
   /// Your API secret
   final String? secret;
   final CollectionsAPI _collections;
+
+  CollectionEntry entry(String collection, String entryId) =>
+      CollectionEntry(collection: collection, id: entryId);
 
   /// Add item to collection
   ///
@@ -134,22 +139,15 @@ class CollectionsClient {
   ///
   /// API docs : [updating-collections](https://getstream.io/activity-feeds/docs/flutter-dart/collections_introduction/?language=dart#updating-collections)
   Future<CollectionEntry> update(
-    String? collection,
-    String? entryId,
-    Map<String, Object> data, {
+    CollectionEntry entryCopy, {
     String? userId,
   }) {
-    final entry = CollectionEntry(
-      id: entryId,
-      collection: collection,
-      data: data,
-    );
     final token = userToken ??
         TokenHelper.buildCollectionsToken(secret!, TokenAction.write);
-    return _collections.update(token, userId, entry);
+    return _collections.update(token, userId, entryCopy);
   }
 
-  //Serverside methods
+  //------------------------- Server side methods ----------------------------//
 
   /// Remove all objects by id from the collection.
   ///

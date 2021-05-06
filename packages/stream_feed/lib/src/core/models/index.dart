@@ -6,7 +6,7 @@ export 'collection_entry.dart';
 export 'crop.dart';
 export 'enriched_activity.dart';
 export 'enrichment_flags.dart';
-export 'event.dart' show Impression, Engagement;
+export 'event.dart' show Impression, Engagement, UserData, Content;
 export 'feed_id.dart';
 export 'filter.dart';
 export 'follow.dart';

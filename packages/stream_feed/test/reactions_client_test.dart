@@ -14,19 +14,21 @@ import 'mock.dart';
 void main() {
   group('ReactionsClient', () {
     final api = MockReactionsAPI();
+    const userId = 'john-doe';
     final dummyResponse = Response(
-        data: {},
-        requestOptions: RequestOptions(
-          path: '',
-        ),
-        statusCode: 200);
+      data: {},
+      requestOptions: RequestOptions(
+        path: '',
+      ),
+      statusCode: 200,
+    );
 
     const token = Token('dummyToken');
     final client = ReactionsClient(api, userToken: token);
     test('add', () async {
       const kind = 'like';
       const activityId = 'activityId';
-      const userId = 'john-doe';
+
       const targetFeeds = <FeedId>[];
       const data = {'text': 'awesome post!'};
       const reaction = Reaction(
@@ -38,10 +40,14 @@ void main() {
       );
       when(() => api.add(token, reaction)).thenAnswer((_) async => reaction);
 
-      expect(
-          await client.add(kind, activityId, userId,
-              data: data, targetFeeds: targetFeeds),
-          reaction);
+      final result = await client.add(
+        kind,
+        activityId,
+        data: data,
+        userId: userId,
+        targetFeeds: targetFeeds,
+      );
+      expect(result, reaction);
       verify(() => api.add(token, reaction)).called(1);
     });
 
@@ -124,8 +130,8 @@ void main() {
       when(() => api.add(token, reaction)).thenAnswer((_) async => reaction);
 
       expect(
-          await client.addChild(kind, parentId, userId,
-              data: data, targetFeeds: targetFeeds),
+          await client.addChild(kind, parentId,
+              userId: userId, data: data, targetFeeds: targetFeeds),
           reaction);
       verify(() => api.add(token, reaction)).called(1);
     });

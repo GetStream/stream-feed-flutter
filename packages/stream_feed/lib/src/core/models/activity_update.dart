@@ -17,11 +17,11 @@ class ActivityUpdate extends Equatable {
   });
 
   /// ActivityUpdate withId
-  factory ActivityUpdate.withId(
-    String id,
-    Map<String, Object> set,
-    List<String> unset,
-  ) =>
+  factory ActivityUpdate.withId({
+    required String id,
+    Map<String, Object>? set,
+    List<String>? unset,
+  }) =>
       ActivityUpdate(
         id: id,
         set: set,
@@ -29,12 +29,12 @@ class ActivityUpdate extends Equatable {
       );
 
   /// ActivityUpdate withForeignId
-  factory ActivityUpdate.withForeignId(
-    String foreignId,
-    DateTime time,
-    Map<String, Object> set,
-    List<String> unset,
-  ) =>
+  factory ActivityUpdate.withForeignId({
+    required String foreignId,
+    required DateTime time,
+    Map<String, Object>? set,
+    List<String>? unset,
+  }) =>
       ActivityUpdate(
         foreignId: foreignId,
         time: time,
@@ -61,12 +61,14 @@ class ActivityUpdate extends Equatable {
   /// An object containing the set operations,
   /// where keys are the target fields and the values are the values to be set.
   /// Maximum 25 top level keys.
-  final Map<String, Object> set;
+  @JsonKey(includeIfNull: false)
+  final Map<String, Object>? set;
 
   /// A list of strings containing the fields to be removed from the activity.
   ///
   ///  Maximum 25 keys.
-  final List<String> unset;
+  @JsonKey(includeIfNull: false)
+  final List<String>? unset;
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$ActivityUpdateToJson(this);

@@ -12,7 +12,7 @@ void main() {
   final api = MockAnalyticsAPI();
 
   test('`setUser` should set user successfully', () {
-    final client = AnalyticsClient(apiKey, userToken: token, analytics: api);
+    final client = StreamAnalytics(apiKey, userToken: token, analytics: api);
     expect(client.userData, isNull);
     const userId = 'testId';
     const alias = 'testAlias';
@@ -23,7 +23,7 @@ void main() {
   });
 
   group('trackImpression', () {
-    final client = AnalyticsClient(apiKey, userToken: token, analytics: api);
+    final client = StreamAnalytics(apiKey, userToken: token, analytics: api);
     final impression = Impression(
       contentList: <Content>[
         Content(foreignId: FeedId.id('post:42'), data: {
@@ -66,7 +66,7 @@ void main() {
   });
 
   group('trackEngagement', () {
-    final client = AnalyticsClient(apiKey, userToken: token, analytics: api);
+    final client = StreamAnalytics(apiKey, userToken: token, analytics: api);
     final engagement = Engagement(
       content: Content(foreignId: FeedId.id('tweet:34349698')),
       label: 'click',

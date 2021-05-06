@@ -3,6 +3,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/client/image_storage_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/attachment_file.dart';
+import 'package:stream_feed/src/core/models/crop.dart';
+import 'package:stream_feed/src/core/models/resize.dart';
 import 'package:test/test.dart';
 
 import 'mock.dart';
@@ -20,6 +22,26 @@ void main() {
 
       expect(await client.get(url), 'whatever');
       verify(() => api.get(token, url)).called(1);
+    });
+
+    test('getCropped', () async {
+      const url = 'url';
+      final crop = Crop(50, 50);
+      when(() => api.get(token, url, options: crop.params))
+          .thenAnswer((invocation) async => 'whatever');
+
+      expect(await client.getCropped(url, crop), 'whatever');
+      verify(() => api.get(token, url, options: crop.params)).called(1);
+    });
+
+    test('getResized', () async {
+      const url = 'url';
+      final resize = Resize(50, 50);
+      when(() => api.get(token, url, options: resize.params))
+          .thenAnswer((invocation) async => 'whatever');
+
+      expect(await client.getResized(url, resize), 'whatever');
+      verify(() => api.get(token, url, options: resize.params)).called(1);
     });
 
     test('refreshUrl', () async {
