@@ -613,46 +613,86 @@ void main() {
   });
 
   group('ActivityUpdate', () {
-    final activityUpdate = ActivityUpdate(
-        id: 'test',
+    group('withForeignId', () {
+      final foreignIdActivity = ActivityUpdate.withForeignId(
         foreignId: 'test',
         time: DateTime.parse('2001-09-11T00:01:02.000'),
         set: const {'hey': 'hey'},
-        unset: const ['test']);
+        unset: const ['test'],
+      );
 
-    test('withForeignId', () {
-      final activityUpdateWithForeignId = ActivityUpdate.withForeignId(
-          'id',
-          DateTime.parse('2001-09-11T00:01:02.000'),
-          const {'hey': 'hey'},
-          const ['test']);
-      expect(
+      test('fromJson', () {
+        final activityUpdateJson =
+            json.decode(fixture('activity_update_with_foreign_id.json'));
+        final activityUpdateFromJson =
+            ActivityUpdate.fromJson(activityUpdateJson);
+        expect(activityUpdateFromJson, foreignIdActivity);
+      });
+
+      test('toJson', () {
+        expect(foreignIdActivity.toJson(), {
+          'foreign_id': 'test',
+          'time': '2001-09-11T00:01:02.000',
+          'set': {'hey': 'hey'},
+          'unset': ['test']
+        });
+      });
+
+      test('equality', () {
+        final activityUpdateWithForeignId = ActivityUpdate.withForeignId(
+          foreignId: 'id',
+          time: DateTime.parse('2001-09-11T00:01:02.000'),
+          set: const {'hey': 'hey'},
+          unset: const ['test'],
+        );
+        expect(
           activityUpdateWithForeignId,
-          ActivityUpdate(
-              foreignId: 'id',
-              time: DateTime.parse('2001-09-11T00:01:02.000'),
-              set: const {'hey': 'hey'},
-              unset: const ['test']));
+          ActivityUpdate.withForeignId(
+            foreignId: 'id',
+            time: DateTime.parse('2001-09-11T00:01:02.000'),
+            set: const {'hey': 'hey'},
+            unset: const ['test'],
+          ),
+        );
+      });
     });
-    test('withId', () {
-      final activityUpdateWithId =
-          ActivityUpdate.withId('id', const {'hey': 'hey'}, const ['test']);
-      expect(activityUpdateWithId,
-          const ActivityUpdate(id: 'id', set: {'hey': 'hey'}, unset: ['test']));
-    });
-    test('fromJson', () {
-      final activityUpdateJson = json.decode(fixture('activity_update.json'));
-      final activityUpdateFromJson =
-          ActivityUpdate.fromJson(activityUpdateJson);
-      expect(activityUpdateFromJson, activityUpdate);
-    });
-    test('toJson', () {
-      expect(activityUpdate.toJson(), {
-        'id': 'test',
-        'foreign_id': 'test',
-        'time': '2001-09-11T00:01:02.000',
-        'set': {'hey': 'hey'},
-        'unset': ['test']
+
+    group('withId', () {
+      final idActivity = ActivityUpdate.withId(
+        id: 'test',
+        set: const {'hey': 'hey'},
+        unset: const ['test'],
+      );
+
+      test('fromJson', () {
+        final activityUpdateJson =
+            json.decode(fixture('activity_update_with_id.json'));
+        final activityUpdateFromJson =
+            ActivityUpdate.fromJson(activityUpdateJson);
+        expect(activityUpdateFromJson, idActivity);
+      });
+
+      test('toJson', () {
+        expect(idActivity.toJson(), {
+          'id': 'test',
+          'set': {'hey': 'hey'},
+          'unset': ['test']
+        });
+      });
+      test('equality', () {
+        final activityUpdateWithId = ActivityUpdate.withId(
+          id: 'id',
+          set: const {'hey': 'hey'},
+          unset: const ['test'],
+        );
+        expect(
+          activityUpdateWithId,
+          ActivityUpdate.withId(
+            id: 'id',
+            set: const {'hey': 'hey'},
+            unset: const ['test'],
+          ),
+        );
       });
     });
   });

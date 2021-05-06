@@ -54,11 +54,11 @@ void main() {
     test('unfollow', () async {
       final flatFeed = FlatFeed(feedId, api, userToken: token);
       // ignore: invalid_use_of_protected_member
-      when(() => api.unfollow(token, feedId, flatFeed.feedId, true))
+      when(() => api.unfollow(token, feedId, feedId, keepHistory: true))
           .thenAnswer((_) async => dummyResponse);
       await client.unfollow(flatFeed, keepHistory: true);
       // ignore: invalid_use_of_protected_member
-      verify(() => api.unfollow(token, feedId, flatFeed.feedId, true))
+      verify(() => api.unfollow(token, feedId, feedId, keepHistory: true))
           .called(1);
     });
 
@@ -106,7 +106,7 @@ void main() {
       ];
       when(() => api.following(token, feed, limit, offset, feedIds))
           .thenAnswer((_) async => follows);
-      await client.following(limit: limit, offset: offset, feedIds: feedIds);
+      await client.following(limit: limit, offset: offset, filter: feedIds);
       verify(() => api.following(token, feed, limit, offset, feedIds))
           .called(1);
     });
@@ -139,12 +139,13 @@ void main() {
         }
       };
 
-      final update = ActivityUpdate.withId(id, set, unset);
+      final update = ActivityUpdate.withId(id: id, set: set, unset: unset);
       const actitivity =
           Activity(actor: 'actor', verb: 'verb', object: 'object');
       when(() => api.updateActivityById(token, update))
           .thenAnswer((_) async => actitivity);
-      await client.updateActivityById(update);
+      await client.updateActivityById(
+          id: update.id!, set: update.set, unset: update.unset);
       verify(() => api.updateActivityById(token, update)).called(1);
     });
 
@@ -159,7 +160,7 @@ void main() {
         }
       };
 
-      final updates = [ActivityUpdate.withId(id, set, unset)];
+      final updates = [ActivityUpdate.withId(id: id, set: set, unset: unset)];
       const actitivities = [
         Activity(actor: 'actor', verb: 'verb', object: 'object')
       ];
@@ -180,7 +181,7 @@ void main() {
         }
       };
 
-      final updates = [ActivityUpdate.withId(id, set, unset)];
+      final updates = [ActivityUpdate.withId(id: id, set: set, unset: unset)];
       const actitivities = [
         Activity(actor: 'actor', verb: 'verb', object: 'object')
       ];
@@ -201,12 +202,20 @@ void main() {
         }
       };
 
-      final update = ActivityUpdate.withId(id, set, unset);
+      final update = ActivityUpdate.withForeignId(
+          foreignId: id,
+          set: set,
+          unset: unset,
+          time: DateTime.parse('2001-09-11T00:01:02.000'));
       const actitivity =
           Activity(actor: 'actor', verb: 'verb', object: 'object');
       when(() => api.updateActivityByForeignId(token, update))
           .thenAnswer((_) async => actitivity);
-      await client.updateActivityByForeignId(update);
+      await client.updateActivityByForeignId(
+          time: DateTime.parse('2001-09-11T00:01:02.000'),
+          foreignId: update.foreignId!,
+          set: update.set,
+          unset: update.unset);
       verify(() => api.updateActivityByForeignId(token, update)).called(1);
     });
 
@@ -221,7 +230,7 @@ void main() {
         }
       };
 
-      final update = ActivityUpdate.withId(id, set, unset);
+      final update = ActivityUpdate.withId(id: id, set: set, unset: unset);
       // const actitivity =
       //     Activity(actor: 'actor', verb: 'verb', object: 'object');
       final add = <FeedId>[];
@@ -262,7 +271,7 @@ void main() {
         }
       };
 
-      final update = ActivityUpdate.withId(id, set, unset);
+      final update = ActivityUpdate.withId(id: id, set: set, unset: unset);
       final newTargets = <FeedId>[];
       final feed = FeedId('slug', 'userId');
       when(() => api.updateActivityToTargets(token, feed, update,

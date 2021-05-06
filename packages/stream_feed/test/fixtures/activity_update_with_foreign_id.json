@@ -1,0 +1,10 @@
+{
+  "foreign_id": "test",
+  "time": "2001-09-11T00:01:02.000",
+  "set": {
+    "hey": "hey"
+  },
+  "unset": [
+    "test"
+  ]
+}

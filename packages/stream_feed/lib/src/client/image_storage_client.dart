@@ -4,6 +4,7 @@ import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template filesandimages}
 /// Image and files have separate clients
 /// (e.g. images can be resized, whereas files cannot).
 ///
@@ -14,6 +15,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// In order to avoid resource enumeration attacks,
 /// a unique signature is added.
 /// Manipulating the returned URL will likely result in HTTP errors.
+/// {@endtemplate}
 class ImageStorageClient {
   ///Initialize a [ImageStorageClient] object
   ImageStorageClient(this._images, {this.userToken, this.secret})

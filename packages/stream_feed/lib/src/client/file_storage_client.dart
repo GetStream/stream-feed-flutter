@@ -4,8 +4,9 @@ import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-/// This API endpoint allows you to upload files
-/// and to process your images (eg. create image thumbnails).
+/// {@template files}
+/// This API endpoint allows you to upload files and delete them
+/// {@endtemplate}
 class FileStorageClient {
   /// Initialize a FileStorageClient object
   FileStorageClient(
