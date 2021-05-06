@@ -33,13 +33,12 @@ class StreamClientImpl implements StreamClient {
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
     StreamAPI? api,
     StreamHttpClientOptions? options,
-  })  : assert(secret != null && clientSide == false,
-            'you should not use a secret clientside'),
-        // _clientSide = clientSide,
-        assert(
+  })  : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         ),
+        assert(userToken != null || secret != null && clientSide == false,
+            'you should not use a secret clientside'),
         _api = api ?? StreamApiImpl(apiKey, options: options) {
     if (userToken != null) {
       final jwtBody = jwtDecode(userToken!);
