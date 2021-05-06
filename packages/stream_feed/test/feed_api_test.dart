@@ -345,7 +345,7 @@ Future<void> main() async {
           ),
           statusCode: 200));
 
-      await feedApi.unfollow(token, source, target, keepHistory);
+      await feedApi.unfollow(token, source, target, keepHistory: keepHistory);
 
       verify(() => mockClient.delete(
             Routes.buildFeedUrl(source, 'following/$target'),
@@ -369,12 +369,12 @@ Future<void> main() async {
         }
       };
       final updates = [
-        ActivityUpdate(
-            id: id,
-            foreignId: 'foreignId',
-            set: set,
-            unset: unset,
-            time: DateTime.now())
+        ActivityUpdate.withForeignId(
+          foreignId: 'foreignId',
+          set: set,
+          unset: unset,
+          time: DateTime.now(),
+        )
       ];
 
       when(() => mockClient.post<Map>(
@@ -414,12 +414,11 @@ Future<void> main() async {
         }
       };
       final updates = [
-        ActivityUpdate(
-            id: id,
-            foreignId: 'foreignId',
-            set: set,
-            unset: unset,
-            time: DateTime.now())
+        ActivityUpdate.withId(
+          id: id,
+          set: set,
+          unset: unset,
+        )
       ];
 
       when(() => mockClient.post<Map>(
@@ -458,12 +457,12 @@ Future<void> main() async {
           'twitter': '...',
         }
       };
-      final update = ActivityUpdate(
-          id: id,
-          foreignId: 'foreignId',
-          set: set,
-          unset: unset,
-          time: DateTime.now());
+      final update = ActivityUpdate.withForeignId(
+        foreignId: 'foreignId',
+        set: set,
+        unset: unset,
+        time: DateTime.now(),
+      );
 
       when(() => mockClient.post<Map>(
             Routes.activityUpdateUrl,
@@ -499,12 +498,11 @@ Future<void> main() async {
           'twitter': '...',
         }
       };
-      final update = ActivityUpdate(
-          id: id,
-          foreignId: 'foreignId',
-          set: set,
-          unset: unset,
-          time: DateTime.now());
+      final update = ActivityUpdate.withId(
+        id: id,
+        set: set,
+        unset: unset,
+      );
 
       when(() => mockClient.post<Map>(
             Routes.activityUpdateUrl,
@@ -536,8 +534,6 @@ Future<void> main() async {
 
       final unset = ['daily_likes', 'popularity'];
 
-      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
-
       final set = {
         'product.price': 19.99,
         'shares': {
@@ -545,12 +541,12 @@ Future<void> main() async {
           'twitter': '...',
         }
       };
-      final update = ActivityUpdate(
-          id: id,
-          foreignId: 'foreignId',
-          set: set,
-          unset: unset,
-          time: DateTime.now());
+      final update = ActivityUpdate.withForeignId(
+        foreignId: 'foreignId',
+        set: set,
+        unset: unset,
+        time: DateTime.now(),
+      );
 
       when(() => mockClient.post(
             Routes.activityUpdateUrl,

@@ -5,23 +5,27 @@ import 'package:stream_feed/src/core/models/following.dart';
 
 part 'follow_stats.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class FollowStats extends Equatable {
-  const FollowStats({required this.following, required this.followers});
+  const FollowStats({
+    required this.following,
+    required this.followers,
+  });
 
   /// Create a new instance from a json
   factory FollowStats.fromJson(Map<String, dynamic> json) =>
       _$FollowStatsFromJson(json);
+
   final Following following;
   final Followers followers;
 
   /// Serialize to json
-  Map<String, dynamic> toJson() => {
+  Map<String, Object> toJson() => {
         'followers': followers.feed.toString(),
         'following': following.feed.toString(),
-        if (followers.slugs != null && followers.slugs!.isNotEmpty)
+        if (followers.slugs?.isNotEmpty == true)
           'followers_slugs': followers.slugs!.join(','),
-        if (following.slugs != null && following.slugs!.isNotEmpty)
+        if (following.slugs?.isNotEmpty == true)
           'following_slugs': following.slugs!.join(','),
       };
 

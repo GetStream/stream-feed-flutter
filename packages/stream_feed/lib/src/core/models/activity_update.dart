@@ -9,18 +9,19 @@ part 'activity_update.g.dart';
 class ActivityUpdate extends Equatable {
   /// [ActivityUpdate] constructor
   const ActivityUpdate({
-    this.set,
-    this.unset,
+    required this.set,
+    required this.unset,
     this.id,
     this.foreignId,
     this.time,
   });
 
   /// ActivityUpdate withId
-  factory ActivityUpdate.withId(
-          {required String id,
-          Map<String, Object>? set,
-          List<String>? unset}) =>
+  factory ActivityUpdate.withId({
+    required String id,
+    Map<String, Object>? set,
+    List<String>? unset,
+  }) =>
       ActivityUpdate(
         id: id,
         set: set,
