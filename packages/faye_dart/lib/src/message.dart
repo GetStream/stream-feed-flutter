@@ -98,10 +98,10 @@ class Advice extends Equatable {
         timeout: json["timeout"] == null ? null : json["timeout"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, Object?> toJson() => {
         "reconnect": reconnect,
         "interval": interval,
-        "timeout": timeout == null ? null : timeout,
+        "timeout": timeout,
       };
 
   @override

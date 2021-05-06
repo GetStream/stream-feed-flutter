@@ -13,6 +13,7 @@ import 'dart:math' as math;
 import 'package:faye_dart/src/subscription.dart';
 
 import 'timeout_helper.dart';
+import 'package:meta/meta.dart';
 
 enum FayeClientState {
   unconnected,
@@ -24,6 +25,14 @@ enum FayeClientState {
 /// Handler function used for logging records. Function requires a single
 /// [LogRecord] as the only parameter.
 typedef LogHandlerFunction = void Function(LogRecord record);
+
+/// Typedef used for connecting to a websocket. Method returns a
+/// [WebSocketChannel] and accepts a connection [url] and an optional
+/// [Iterable] of [protocols].
+typedef WebSocketChannelProvider = WebSocketChannel Function(
+  Uri uri, {
+  Iterable<String>? protocols,
+});
 
 final _levelEmojiMapper = {
   Level.INFO: 'ℹ️',
@@ -43,6 +52,7 @@ class FayeClient with Extensible, TimeoutHelper {
     this.baseUrl, {
     this.protocols,
     this.retry = 5,
+    this.webSocketChannelProvider,
     Level logLevel = Level.ALL,
     LogHandlerFunction? logHandlerFunction,
   }) : _logger = Logger.detached('🕒')..level = logLevel {
@@ -81,6 +91,11 @@ class FayeClient with Extensible, TimeoutHelper {
   WebSocketChannel? _webSocketChannel;
   StreamSubscription? _websocketSubscription;
 
+  /// Connection function
+  /// Used only for testing purpose
+  @visibleForTesting
+  final WebSocketChannelProvider? webSocketChannelProvider;
+
   bool _connectRequestInProgress = false;
 
   final _responseCallbacks = <String, MessageCallback>{};
@@ -102,10 +117,10 @@ class FayeClient with Extensible, TimeoutHelper {
     if (_webSocketChannel != null) {
       _closeWebSocketChannel();
     }
-    _webSocketChannel = WebSocketChannel.connect(
-      Uri.parse(baseUrl),
-      protocols: protocols,
-    );
+    final uri = Uri.parse(baseUrl);
+    _webSocketChannel =
+        webSocketChannelProvider?.call(uri, protocols: protocols) ??
+            WebSocketChannel.connect(uri, protocols: protocols);
     _subscribeToWebsocket();
   }
 

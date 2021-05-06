@@ -6,8 +6,7 @@ main() {
     final json = {'interval': 2, 'reconnect': '', 'timeout': 2};
     final advice = Advice(interval: 2, reconnect: '', timeout: 2);
     test('fromJson', () {
-      final adviceFromJson = Advice.fromJson(
-          json); //Advice(interval: 2, reconnect: '', timeout: 2);
+      final adviceFromJson = Advice.fromJson(json);
       expect(adviceFromJson, advice);
     });
 
@@ -41,9 +40,17 @@ main() {
       "created_at": "2001-09-11T00:01:02.000",
       "updated_at": "2001-09-11T00:01:02.000"
     };
-    final json = {'channel': 'bayeuxChannel', 'data': data};
+    final json = {
+      'channel': 'bayeuxChannel',
+      'data': data,
+      'supportedConnectionTypes': ['websocket']
+    };
 
-    final message = Message("bayeuxChannel", data: data);
+    final message = Message(
+      "bayeuxChannel",
+      data: data,
+      supportedConnectionTypes: ['websocket'],
+    );
     test('fromJson', () {
       expect(Message.fromJson(json), message);
     });
