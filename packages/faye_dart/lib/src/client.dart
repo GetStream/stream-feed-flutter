@@ -81,7 +81,7 @@ class FayeClient with Extensible, TimeoutHelper {
   WebSocketChannel? _webSocketChannel;
   StreamSubscription? _websocketSubscription;
 
-  bool _connectRequest = false;
+  bool _connectRequestInProgress = false;
 
   final _responseCallbacks = <String, MessageCallback>{};
 
@@ -99,7 +99,10 @@ class FayeClient with Extensible, TimeoutHelper {
   void _initWebSocketChannel() {
     _manuallyClosed = false;
     _logger.info("Initiating connection with $baseUrl");
-    _webSocketChannel ??= WebSocketChannel.connect(
+    if (_webSocketChannel != null) {
+      _closeWebSocketChannel();
+    }
+    _webSocketChannel = WebSocketChannel.connect(
       Uri.parse(baseUrl),
       protocols: protocols,
     );
@@ -110,10 +113,12 @@ class FayeClient with Extensible, TimeoutHelper {
     _logger.info('Cancelling all timeouts');
     cancelAllTimeout();
 
-    _logger.info("Closing connection for $baseUrl");
-    _webSocketChannel?.sink.close(status.goingAway);
-    _websocketSubscription?.cancel();
-    _webSocketChannel = null;
+    if (_webSocketChannel != null) {
+      _logger.info("Closing connection for $baseUrl");
+      _unsubscribeFromWebsocket();
+      _webSocketChannel?.sink.close(status.goingAway);
+      _webSocketChannel = null;
+    }
   }
 
   void _subscribeToWebsocket() {
@@ -213,8 +218,8 @@ class FayeClient with Extensible, TimeoutHelper {
     callback?.call();
     if (state != FayeClientState.connected) return;
 
-    if (_connectRequest) return;
-    _connectRequest = true;
+    if (_connectRequestInProgress) return;
+    _connectRequestInProgress = true;
 
     _logger.info('Initiating connection for $_clientId');
 
@@ -411,8 +416,8 @@ class FayeClient with Extensible, TimeoutHelper {
   }
 
   void _cycleConnection() {
-    if (_connectRequest) {
-      _connectRequest = false;
+    if (_connectRequestInProgress) {
+      _connectRequestInProgress = false;
       _logger.info('Closed connection for $_clientId');
     }
     setTimeout(Duration(milliseconds: _advice.interval), () => connect());
