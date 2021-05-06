@@ -63,6 +63,12 @@ void main() {
       verify(() => api.get(token, collection, entryId)).called(1);
     });
 
+    test('entry', () {
+      const entryId = 'entryId';
+      const collection = 'collection';
+      final entry = client.entry(collection, entryId);
+      expect(entry, CollectionEntry(collection: collection, id: entryId));
+    });
     test('update', () async {
       const collection = 'users';
       const entryId = '123';
