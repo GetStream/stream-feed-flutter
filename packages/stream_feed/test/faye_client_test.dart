@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:stream_feed/src/client/stream_client.dart';
-import 'package:stream_feed/src/client/stream_client_impl.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
 import 'package:stream_feed/stream_feed.dart';

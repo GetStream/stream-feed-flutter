@@ -15,9 +15,9 @@ class UsersAPI {
   Future<User> add(
     Token token,
     String id,
-    Map<String, Object> data, [
+    Map<String, Object> data, {
     bool getOrCreate = false,
-  ]) async {
+  }) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final user = User(id: id, data: data);
     final result = await _client.post<Map<String, dynamic>>(
@@ -30,8 +30,11 @@ class UsersAPI {
   }
 
   /// Get the user data
-  Future<User> get(Token token, String id,
-      [bool withFollowCounts = false]) async {
+  Future<User> get(
+    Token token,
+    String id, {
+    bool withFollowCounts = false,
+  }) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final result = await _client.get(
       Routes.buildUsersUrl('$id/'),

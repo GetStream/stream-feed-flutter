@@ -11,7 +11,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 
 import 'package:stream_feed/src/client/reactions_client.dart';
-import 'package:stream_feed/src/client/user_client.dart';
+import 'package:stream_feed/src/client/stream_user.dart';
 import 'package:stream_feed/src/client/stream_client_impl.dart';
 
 /// Different sides on which you can run this [StreamClient] on
@@ -79,7 +79,7 @@ abstract class StreamClient {
   /// Convenient getter for [UsersClient]:
   ///
   /// {@macro user}
-  UserClient user(String userId);
+  StreamUser user(String userId);
 
   /// Convenient getter for [PersonalizationClient]:
   ///
@@ -137,8 +137,8 @@ abstract class StreamClient {
   Future<OpenGraphData> og(String targetUrl);
 
   ///
-  UserClient? get currentUser;
+  StreamUser? get currentUser;
 
   ///
-  Future<User> setUser(Map<String, Object> data);
+  Future<StreamUser> setUser(Map<String, Object> data);
 }

@@ -1,13 +1,13 @@
-import 'package:example/dummy_app_user.dart';
-import 'package:example/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'app_user.dart';
+import 'extension.dart';
 
 class PeopleScreen extends StatefulWidget {
-  final User streamUser;
+  final StreamUser currentUser;
 
-  const PeopleScreen({Key? key, required this.streamUser}) : super(key: key);
+  const PeopleScreen({Key? key, required this.currentUser}) : super(key: key);
 
   @override
   _PeopleScreenState createState() => _PeopleScreenState();
@@ -16,8 +16,8 @@ class PeopleScreen extends StatefulWidget {
 class _PeopleScreenState extends State<PeopleScreen> {
   @override
   Widget build(BuildContext context) {
-    final users = List<DummyAppUser>.from(DummyAppUser.values)
-      ..removeWhere((it) => it.id == widget.streamUser.id);
+    final users = List.from(appUsers)
+      ..removeWhere((it) => it.id == widget.currentUser.id);
     final _client = context.client;
 
     final followDialog = CupertinoAlertDialog(
@@ -50,29 +50,22 @@ class _PeopleScreenState extends State<PeopleScreen> {
                   builder: (_) => followDialog,
                 );
                 if (result != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Following User...'),
-                    ),
-                  );
+                  context.showSnackBar('Following User...');
 
                   final currentUserFeed =
-                      _client.flatFeed('timeline', widget.streamUser.id!);
-                  final selectedUserFeed = _client.flatFeed('user', user.id!);
+                      _client.flatFeed('timeline', widget.currentUser.id);
+                  final selectedUserFeed = _client.flatFeed('user', user.id);
                   await currentUserFeed.follow(selectedUserFeed);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Followed User'),
-                    ),
-                  );
+
+                  context.showSnackBar('Followed User');
                 }
               },
               child: ListTile(
                 leading: CircleAvatar(
-                  child: Text(user.name![0]),
+                  child: Text(user.name[0]),
                 ),
                 title: Text(
-                  user.name!,
+                  user.name,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w300,
