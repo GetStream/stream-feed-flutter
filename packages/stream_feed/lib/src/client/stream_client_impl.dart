@@ -181,7 +181,11 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  AggregatedFeed aggregatedFeed(String slug, [String? userId, Token? userToken]) {
+  AggregatedFeed aggregatedFeed(
+    String slug, [
+    String? userId,
+    Token? userToken,
+  ]) {
     final id = FeedId(slug, _getUserId(userId));
     return AggregatedFeed(
       id,
@@ -193,19 +197,27 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  FlatFeed flatFeed(String slug, [String? userId, Token? userToken]) {
+  FlatFeed flatFeed(
+    String slug, [
+    String? userId,
+    Token? userToken,
+  ]) {
     final id = FeedId(slug, _getUserId(userId));
     return FlatFeed(
       id,
       _api.feed,
-      userToken: usertOken ?? this.userToken,
+      userToken: userToken ?? this.userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
   }
 
   @override
-  NotificationFeed notificationFeed(String slug, [String? userId, Token? userToken]) {
+  NotificationFeed notificationFeed(
+    String slug, [
+    String? userId,
+    Token? userToken,
+  ]) {
     final id = FeedId(slug, _getUserId(userId));
     return NotificationFeed(
       id,
