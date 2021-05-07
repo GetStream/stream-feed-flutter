@@ -28,7 +28,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  stream_feed: ^0.0.1
+  stream_feed: ^[latest-version]
 ```
 #### Using with Flutter
 
