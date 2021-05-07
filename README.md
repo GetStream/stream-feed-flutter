@@ -9,7 +9,7 @@
    <a href="https://github.com/invertase/melos"><img alt="melos" src="https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square"></a>
 </p>
 
-![dart activity feed](./images/flutter_feeds_alpha_720.png)
+![dart activity feed](./images/flutter_feeds_alpha.png)
 
 **🔗 Quick Links**
 
