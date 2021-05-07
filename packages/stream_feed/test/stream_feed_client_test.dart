@@ -82,7 +82,8 @@ void main() {
       );
 
       test("don't throw if secret provided while running on server-side", () {
-        StreamFeedClient.connect('apiKey', secret: 'secret', runner: Runner.server);
+        StreamFeedClient.connect('apiKey',
+            secret: 'secret', runner: Runner.server);
       });
 
       test("don't throw if token provided while running on client-side", () {
@@ -113,7 +114,8 @@ void main() {
       final mockApi = MockAPI();
       when(() => mockApi.users).thenReturn(MockUserAPI());
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client = StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
+      final client =
+          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
 
       const targetUrl = 'targetUrl';
 
