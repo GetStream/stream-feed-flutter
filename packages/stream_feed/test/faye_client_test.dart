@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:stream_feed/src/client/stream_client.dart';
+import 'package:stream_feed/src/client/stream_feed_client.dart';
+import 'package:stream_feed/src/client/stream_feed_client_impl.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -13,8 +14,13 @@ void main() async {
     final appId = env['appId'];
     final apiKey = env['apiKey'];
 
-    final client = StreamClient.connect(apiKey!,
-        secret: secret, appId: appId, clientSide: false);
+    final client = StreamFeedClient.connect(
+      apiKey!,
+      secret: secret,
+      appId: appId,
+      runner: Runner.server,
+    );
+
     const userId = '1';
     const slug = 'reward';
     final userFeed = client.flatFeed(slug, userId);

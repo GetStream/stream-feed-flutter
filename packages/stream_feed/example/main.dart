@@ -10,7 +10,7 @@ Future<void> main() async {
   final clientWithSecret = StreamClient.connect(
     apiKey,
     secret: secret,
-    clientSide: false,
+    runner: Runner.server,
   );
 
   final chris = clientWithSecret.flatFeed('user', 'chris');
@@ -76,7 +76,7 @@ Future<void> main() async {
     apiKey,
     secret: secret,
     appId: appId,
-    clientSide: false,
+    runner: Runner.server,
     options: StreamHttpClientOptions(location: Location.usEast),
   );
 

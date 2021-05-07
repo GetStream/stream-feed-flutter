@@ -18,7 +18,7 @@ import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 
 import 'package:stream_feed/src/client/user_client.dart';
-import 'package:stream_feed/src/client/stream_client.dart';
+import 'package:stream_feed/src/client/stream_feed_client.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:logging/logging.dart';
@@ -34,31 +34,23 @@ final _levelEmojiMapper = {
 };
 
 // ignore: public_member_api_docs
-class StreamClientImpl implements StreamClient {
-  /// [StreamClientImpl] constructor
-  StreamClientImpl(
+class StreamFeedClientImpl implements StreamFeedClient {
+  /// [StreamFeedClientImpl] constructor
+  StreamFeedClientImpl(
     this.apiKey, {
     this.secret,
     this.userToken,
     this.appId,
-    this.clientSide = true,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
+    this.runner = Runner.client,
     Level logLevel = Level.WARNING,
     LogHandlerFunction? logHandlerFunction,
     StreamAPI? api,
     StreamHttpClientOptions? options,
-  })  : assert(
-          userToken != null || secret != null,
-          'At least a secret or userToken must be provided',
-        ),
-        assert(
-          userToken != null || secret != null && clientSide == false,
-          'You are publicly sharing your App Secret. '
-          'Do not expose the App Secret in browsers, '
-          '`native` mobile apps, or other non-trusted environments.',
-        ),
-        _api = api ?? StreamApiImpl(apiKey, options: options),
-        _logger = Logger.detached('📜')..level = logLevel {
+  }) {
+    assert(_ensureCredentials(), '');
+    _api = api ?? StreamApiImpl(apiKey, options: options);
+    _logger = Logger.detached('📜')..level = logLevel;
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
     _logger.info('instantiating new client');
 
@@ -73,14 +65,47 @@ class StreamClientImpl implements StreamClient {
     }
   }
 
-  final bool? clientSide;
+  bool _ensureCredentials() {
+    assert(() {
+      if (secret == null && userToken == null) {
+        throw AssertionError('At least a secret or userToken must be provided');
+      }
+      switch (runner) {
+        case Runner.server:
+          if (secret == null) {
+            throw AssertionError(
+              '`secret` must be provided while running on server-side',
+            );
+          }
+          break;
+        case Runner.client:
+          if (userToken == null) {
+            throw AssertionError(
+              '`userToken` must be provided while running on client-side',
+            );
+          }
+          if (secret != null) {
+            throw AssertionError(
+              'You are publicly sharing your App Secret. '
+              'Do not expose the App Secret in `browsers`, '
+              '`native` mobile apps, or other non-trusted environments. ',
+            );
+          }
+          break;
+      }
+      return true;
+    }(), '');
+    return true;
+  }
+
   final String apiKey;
   final String? appId;
   final Token? userToken;
-  final StreamAPI _api;
   final String? secret;
   final String fayeUrl;
-  final Logger _logger;
+  final Runner runner;
+  late final StreamAPI _api;
+  late final Logger _logger;
 
   void _defaultLogHandler(LogRecord record) {
     print(
@@ -115,7 +140,10 @@ class StreamClientImpl implements StreamClient {
 
   @override
   BatchOperationsClient get batch {
-    checkNotNull(secret, "You can't use batch operations client side");
+    assert(
+      runner == Runner.server,
+      "You can't use batch operations client side",
+    );
     return BatchOperationsClient(_api.batch, secret: secret!);
   }
 
@@ -181,36 +209,48 @@ class StreamClientImpl implements StreamClient {
   }
 
   @override
-  AggregatedFeed aggregatedFeed(String slug, [String? userId]) {
+  AggregatedFeed aggregatedFeed(
+    String slug, [
+    String? userId,
+    Token? userToken,
+  ]) {
     final id = FeedId(slug, _getUserId(userId));
     return AggregatedFeed(
       id,
       _api.feed,
-      userToken: userToken,
+      userToken: userToken ?? this.userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
   }
 
   @override
-  FlatFeed flatFeed(String slug, [String? userId]) {
+  FlatFeed flatFeed(
+    String slug, [
+    String? userId,
+    Token? userToken,
+  ]) {
     final id = FeedId(slug, _getUserId(userId));
     return FlatFeed(
       id,
       _api.feed,
-      userToken: userToken,
+      userToken: userToken ?? this.userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
   }
 
   @override
-  NotificationFeed notificationFeed(String slug, [String? userId]) {
+  NotificationFeed notificationFeed(
+    String slug, [
+    String? userId,
+    Token? userToken,
+  ]) {
     final id = FeedId(slug, _getUserId(userId));
     return NotificationFeed(
       id,
       _api.feed,
-      userToken: userToken,
+      userToken: userToken ?? this.userToken,
       secret: secret,
       subscriber: _feedSubscriber,
     );
@@ -221,8 +261,8 @@ class StreamClientImpl implements StreamClient {
     String userId, {
     DateTime? expiresAt,
   }) {
-    checkNotNull(
-      secret,
+    assert(
+      runner == Runner.server,
       "You can't use the `frontendToken` method client side",
     );
     return TokenHelper.buildFrontendToken(secret!, userId,
@@ -239,16 +279,16 @@ class StreamClientImpl implements StreamClient {
   UserClient? get currentUser => _currentUser;
 
   @override
-  Future<void> setUser(Map<String, Object> data) async {
-    checkArgument(
-      secret == null,
+  Future<User> setUser(Map<String, Object> data) async {
+    assert(
+      runner == Runner.client,
       'This method can only be used client-side using a user token',
     );
-
     final body = <String, Object>{...data}..remove('id');
     final userObject = await _currentUser!.getOrCreate(body);
     _currentUser = user(userObject.id!);
     _isUserConnected = true;
+    return userObject;
   }
 }
 
