@@ -33,7 +33,7 @@ There is a detailed Flutter example project in the `example` folder. You can dir
 First you need to instantiate a feed client. The Feed client will manage API calls. You should only create the client once and re-use it across your application.
 
 ```dart
-final client = StreamClient.connect("stream-feed-api-key",token:userToken);
+final client = StreamFeedClient.connect("stream-feed-api-key",token:userToken);
 ```
 ## Contributing
 
