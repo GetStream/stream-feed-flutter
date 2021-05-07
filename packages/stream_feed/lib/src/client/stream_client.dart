@@ -14,6 +14,15 @@ import 'package:stream_feed/src/client/reactions_client.dart';
 import 'package:stream_feed/src/client/user_client.dart';
 import 'package:stream_feed/src/client/stream_client_impl.dart';
 
+/// Different sides on which you can run this [StreamClient] on
+enum Runner {
+  /// Marks the [StreamClient] that it is currently running on server-side
+  server,
+
+  /// Marks the [StreamClient] that it is currently running on client-side
+  client,
+}
+
 /// The client class that manages API calls and authentication
 /// To instantiate the client you need an API key and secret.
 /// You can find the key and secret on the dashboard.
@@ -43,14 +52,16 @@ abstract class StreamClient {
     String? secret,
     String? appId,
     StreamHttpClientOptions? options,
-    bool? clientSide,
+    Runner runner = Runner.client,
   }) =>
-      StreamClientImpl(apiKey,
-          userToken: token,
-          secret: secret,
-          appId: appId,
-          options: options,
-          clientSide: clientSide);
+      StreamClientImpl(
+        apiKey,
+        userToken: token,
+        secret: secret,
+        appId: appId,
+        options: options,
+        runner: runner,
+      );
 
   /// Convenient getter for [BatchOperationsClient]
   BatchOperationsClient get batch;
