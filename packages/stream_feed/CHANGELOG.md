@@ -1,3 +1,3 @@
-## 0.0.1: 07/05/2021
+## 0.1.0: 07/05/2021
 
-- first alpha version
+- first beta version
