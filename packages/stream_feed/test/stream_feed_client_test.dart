@@ -8,7 +8,7 @@ import 'mock.dart';
 import 'utils.dart';
 
 void main() {
-  group('StreamClientImpl', () {
+  group('StreamFeedClientImpl', () {
     group('throw', () {
       test('throws an AssertionError when no secret or token provided', () {
         expect(

@@ -7,7 +7,7 @@ Future<void> main() async {
   final secret = env['secret'];
   final apiKey = env['apiKey'];
   final appId = env['appId'];
-  final clientWithSecret = StreamClient.connect(
+  final clientWithSecret = StreamFeedClient.connect(
     apiKey,
     secret: secret,
     runner: Runner.server,
@@ -72,7 +72,7 @@ Future<void> main() async {
   // response = await userFeed.getActivities(limit: 5, ranking: "popularity");//must be enabled
 
 // Server-side
-  var client = StreamClient.connect(
+  var client = StreamFeedClient.connect(
     apiKey,
     secret: secret,
     appId: appId,
@@ -83,7 +83,7 @@ Future<void> main() async {
   final userToken = client.frontendToken('user.id');
 
 // Client-side
-  client = StreamClient.connect(
+  client = StreamFeedClient.connect(
     apiKey,
     token: userToken,
     appId: appId,
@@ -338,7 +338,7 @@ Future<void> main() async {
         object: cheeseBurgerRef,
       ));
 
-  client = StreamClient.connect(apiKey, token: frontendToken);
+  client = StreamFeedClient.connect(apiKey, token: frontendToken);
 // ensure the user data is stored on Stream
   await client.setUser({
     'name': 'John Doe',
