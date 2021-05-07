@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'dummy_app_user.dart';
+import 'app_user.dart';
 
 class ActivityCard extends StatelessWidget {
   final Activity activity;
@@ -11,8 +11,8 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user =
-        DummyAppUser.values.firstWhere((it) => it.id == activity.actor);
+    final user = appUsers
+        .firstWhere((it) => createUserReference(it.id) == activity.actor);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
       child: Column(
@@ -21,7 +21,7 @@ class ActivityCard extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                child: Text(user.name![0]),
+                child: Text(user.name[0]),
               ),
               SizedBox(width: 16),
               Expanded(
@@ -29,7 +29,7 @@ class ActivityCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user.name!,
+                      user.name,
                       style: TextStyle(
                         fontSize: 18,
                       ),

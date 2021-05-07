@@ -17,7 +17,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 
-import 'package:stream_feed/src/client/user_client.dart';
+import 'package:stream_feed/src/client/stream_user.dart';
 import 'package:stream_feed/src/client/stream_feed_client.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
@@ -116,8 +116,9 @@ class StreamFeedClientImpl implements StreamFeedClient {
     if (record.stackTrace != null) print(record.stackTrace);
   }
 
-  UserClient? _currentUser;
-  bool _isUserConnected = false;
+  StreamUser? _currentUser;
+
+  bool get _userConnected => _currentUser?.createdAt != null;
 
   late final _authExtension = <String, MessageHandler>{
     'outgoing': (message) {
@@ -161,8 +162,8 @@ class StreamFeedClientImpl implements StreamFeedClient {
           userToken: userToken, secret: secret);
 
   @override
-  UserClient user(String userId) =>
-      UserClient(_api.users, userId, userToken: userToken, secret: secret);
+  StreamUser user(String userId) =>
+      StreamUser(_api.users, userId, userToken: userToken, secret: secret);
 
   @override
   FileStorageClient get files =>
@@ -199,13 +200,12 @@ class StreamFeedClientImpl implements StreamFeedClient {
   }
 
   String _getUserId([String? userId]) {
-    var _userId = userId;
     assert(
-      _isUserConnected || _userId != null,
+      _userConnected || userId != null,
       'Provide a `userId` if you are using it server-side '
       'or call `setUser` before creating feeds',
     );
-    return _userId ??= currentUser!.userId;
+    return userId ??= currentUser!.id;
   }
 
   @override
@@ -276,19 +276,17 @@ class StreamFeedClientImpl implements StreamFeedClient {
   }
 
   @override
-  UserClient? get currentUser => _currentUser;
+  StreamUser? get currentUser => _currentUser;
 
   @override
-  Future<User> setUser(Map<String, Object> data) async {
+  Future<StreamUser> setUser(Map<String, Object> data) async {
     assert(
       runner == Runner.client,
       'This method can only be used client-side using a user token',
     );
     final body = <String, Object>{...data}..remove('id');
-    final userObject = await _currentUser!.getOrCreate(body);
-    _currentUser = user(userObject.id!);
-    _isUserConnected = true;
-    return userObject;
+    await _currentUser!.getOrCreate(body);
+    return _currentUser!;
   }
 }
 
