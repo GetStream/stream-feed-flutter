@@ -10,7 +10,7 @@ import 'utils.dart';
 void main() {
   group('StreamClientImpl', () {
     group('throw', () {
-      test('throws an AssertionError when no secret provided', () {
+      test('throws an AssertionError when no secret or token provided', () {
         expect(
           () => StreamClient.connect('apiKey'),
           throwsA(
@@ -20,33 +20,83 @@ void main() {
         );
       });
 
-      test('throws an AssertionError if secret provided alone', () {
-        expect(
-          () => StreamClient.connect('apiKey', secret: 'secret'),
-          throwsA(
-            predicate<AssertionError>((e) =>
-                e.message ==
-                'You are publicly sharing your App Secret. '
-                    'Do not expose the App Secret in browsers, '
-                    '`native` mobile apps, or other non-trusted environments.'),
-          ),
+      test(
+        'throws an AssertionError if token is not provided '
+        'while running on client-side',
+        () {
+          expect(
+            () => StreamClient.connect('apiKey', secret: 'secret'),
+            throwsA(
+              predicate<AssertionError>(
+                (e) =>
+                    e.message ==
+                    '`userToken` must be provided while running on client-side',
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'throws an AssertionError if secret is not provided '
+        'while running on server-side',
+        () {
+          expect(
+            () => StreamClient.connect(
+              'apiKey',
+              token: TokenHelper.buildFrontendToken('secret', 'userId'),
+              runner: Runner.server,
+            ),
+            throwsA(
+              predicate<AssertionError>(
+                (e) =>
+                    e.message ==
+                    '`secret` must be provided while running on server-side',
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'throws an AssertionError if secret is provided '
+        'while running on client-side',
+        () {
+          expect(
+            () => StreamClient.connect(
+              'apiKey',
+              secret: 'secret',
+              token: TokenHelper.buildFrontendToken('secret', 'userId'),
+            ),
+            throwsA(
+              predicate<AssertionError>(
+                (e) =>
+                    e.message ==
+                    'You are publicly sharing your App Secret. '
+                        'Do not expose the App Secret in `browsers`, '
+                        '`native` mobile apps, or other non-trusted environments. ',
+              ),
+            ),
+          );
+        },
+      );
+
+      test("don't throw if secret provided while running on server-side", () {
+        StreamClient.connect('apiKey', secret: 'secret', runner: Runner.server);
+      });
+
+      test("don't throw if token provided while running on client-side", () {
+        StreamClient.connect(
+          'apiKey',
+          token: TokenHelper.buildFrontendToken('secret', 'userId'),
         );
-      });
-
-      test("don't throw if secret provided with clientSide false", () {
-        StreamClient.connect('apiKey', secret: 'secret', clientSide: false);
-      });
-
-      test("don't throw if token provided ", () {
-        StreamClient.connect('apiKey',
-            token: TokenHelper.buildFrontendToken('secret', 'userId'));
       });
     });
     test('getters', () async {
       const secret = 'secret';
       const userId = 'userId';
       final client =
-          StreamClientImpl('apiKey', secret: secret, clientSide: false);
+          StreamClientImpl('apiKey', secret: secret, runner: Runner.server);
       expect(client.collections, isNotNull);
       expect(client.batch, isNotNull);
       expect(client.aggregatedFeed('slug', 'userId'), isNotNull);
