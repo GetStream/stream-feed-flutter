@@ -8,8 +8,9 @@
   <a href="https://codecov.io/gh/GetStream/stream-feed-flutter"><img src="https://codecov.io/gh/GetStream/stream-feed-flutter/branch/master/graph/badge.svg?token=ht6M92zRXx" alt="codecov"></a>
    <a href="https://github.com/invertase/melos"><img alt="melos" src="https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square"></a>
 </p>
-
-![dart activity feed](./images/flutter_feeds_alpha_720.png)
+<p align="center">
+<img src="./images/flutter_feeds_alpha.png" alt="Stream Feed Activity Feed cover image" />
+</p>
 
 **🔗 Quick Links**
 
