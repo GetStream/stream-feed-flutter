@@ -1,2 +1,2 @@
 export 'analytics_client.dart';
-export 'stream_client.dart';
+export 'stream_feed_client.dart';

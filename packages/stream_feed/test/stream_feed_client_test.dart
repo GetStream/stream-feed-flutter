@@ -2,7 +2,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
-import 'package:stream_feed/src/client/stream_client_impl.dart';
+import 'package:stream_feed/src/client/stream_feed_client_impl.dart';
 
 import 'mock.dart';
 import 'utils.dart';
@@ -12,7 +12,7 @@ void main() {
     group('throw', () {
       test('throws an AssertionError when no secret or token provided', () {
         expect(
-          () => StreamClient.connect('apiKey'),
+          () => StreamFeedClient.connect('apiKey'),
           throwsA(
             predicate<AssertionError>((e) =>
                 e.message == 'At least a secret or userToken must be provided'),
@@ -25,7 +25,7 @@ void main() {
         'while running on client-side',
         () {
           expect(
-            () => StreamClient.connect('apiKey', secret: 'secret'),
+            () => StreamFeedClient.connect('apiKey', secret: 'secret'),
             throwsA(
               predicate<AssertionError>(
                 (e) =>
@@ -42,7 +42,7 @@ void main() {
         'while running on server-side',
         () {
           expect(
-            () => StreamClient.connect(
+            () => StreamFeedClient.connect(
               'apiKey',
               token: TokenHelper.buildFrontendToken('secret', 'userId'),
               runner: Runner.server,
@@ -63,7 +63,7 @@ void main() {
         'while running on client-side',
         () {
           expect(
-            () => StreamClient.connect(
+            () => StreamFeedClient.connect(
               'apiKey',
               secret: 'secret',
               token: TokenHelper.buildFrontendToken('secret', 'userId'),
@@ -82,11 +82,12 @@ void main() {
       );
 
       test("don't throw if secret provided while running on server-side", () {
-        StreamClient.connect('apiKey', secret: 'secret', runner: Runner.server);
+        StreamFeedClient.connect('apiKey',
+            secret: 'secret', runner: Runner.server);
       });
 
       test("don't throw if token provided while running on client-side", () {
-        StreamClient.connect(
+        StreamFeedClient.connect(
           'apiKey',
           token: TokenHelper.buildFrontendToken('secret', 'userId'),
         );
@@ -96,7 +97,7 @@ void main() {
       const secret = 'secret';
       const userId = 'userId';
       final client =
-          StreamClientImpl('apiKey', secret: secret, runner: Runner.server);
+          StreamFeedClientImpl('apiKey', secret: secret, runner: Runner.server);
       expect(client.collections, isNotNull);
       expect(client.batch, isNotNull);
       expect(client.aggregatedFeed('slug', 'userId'), isNotNull);
@@ -113,7 +114,8 @@ void main() {
       final mockApi = MockAPI();
       when(() => mockApi.users).thenReturn(MockUserAPI());
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client = StreamClientImpl('apiKey', userToken: token, api: mockApi);
+      final client =
+          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
 
       const targetUrl = 'targetUrl';
 

@@ -9,7 +9,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   final _key = String.fromEnvironment('key');
   final _secret = String.fromEnvironment('secret');
-  final client = StreamClient.connect(_key, secret: _secret);
+  final client = StreamFeedClient.connect(_key, secret: _secret);
   runApp(
     MyApp(
       client: client,
@@ -19,7 +19,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key, required this.client}) : super(key: key);
-  final StreamClient client;
+  final StreamFeedClient client;
 
   @override
   Widget build(BuildContext context) {
