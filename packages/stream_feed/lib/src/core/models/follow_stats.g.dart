@@ -14,9 +14,3 @@ FollowStats _$FollowStatsFromJson(Map json) {
         Followers.fromJson(Map<String, dynamic>.from(json['followers'] as Map)),
   );
 }
-
-Map<String, dynamic> _$FollowStatsToJson(FollowStats instance) =>
-    <String, dynamic>{
-      'following': instance.following.toJson(),
-      'followers': instance.followers.toJson(),
-    };

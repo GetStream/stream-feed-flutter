@@ -284,6 +284,5 @@ class Content extends Equatable {
   factory Content.fromJson(Map<String, dynamic> json) =>
       _$ContentFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$ContentToJson(this);
 }
