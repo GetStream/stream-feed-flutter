@@ -12,26 +12,26 @@ import 'package:stream_feed/src/core/index.dart';
 
 import 'package:stream_feed/src/client/reactions_client.dart';
 import 'package:stream_feed/src/client/user_client.dart';
-import 'package:stream_feed/src/client/stream_client_impl.dart';
+import 'package:stream_feed/src/client/stream_feed_client_impl.dart';
 
-/// Different sides on which you can run this [StreamClient] on
+/// Different sides on which you can run this [StreamFeedClient] on
 enum Runner {
-  /// Marks the [StreamClient] that it is currently running on server-side
+  /// Marks the [StreamFeedClient] that it is currently running on server-side
   server,
 
-  /// Marks the [StreamClient] that it is currently running on client-side
+  /// Marks the [StreamFeedClient] that it is currently running on client-side
   client,
 }
 
 /// The client class that manages API calls and authentication
 /// To instantiate the client you need an API key and secret.
 /// You can find the key and secret on the dashboard.
-abstract class StreamClient {
+abstract class StreamFeedClient {
   /// If you want to use the API client directly on your web/mobile app
   /// you need to generate a user token server-side and pass it.
   ///
   ///
-  /// - Instantiate a new client (server side) with [StreamClient.connect]
+  /// - Instantiate a new client (server side) with [StreamFeedClient.connect]
   /// using your api [secret] parameter and [apiKey]
   /// ```dart
   /// var client = connect('YOUR_API_KEY',secret: 'API_KEY_SECRET');
@@ -41,12 +41,12 @@ abstract class StreamClient {
   /// var userToken = client.frontendToken('the-user-id');
   /// ```
   /// - if you are using the SDK client side, get a userToken in your dashboard
-  /// and pass it to [StreamClient.connect] using the [token] parameter
+  /// and pass it to [StreamFeedClient.connect] using the [token] parameter
   /// and [apiKey]
   /// ```dart
   /// var client = connect('YOUR_API_KEY',token: Token('userToken'));
   /// ```
-  factory StreamClient.connect(
+  factory StreamFeedClient.connect(
     String apiKey, {
     Token? token,
     String? secret,
@@ -54,7 +54,7 @@ abstract class StreamClient {
     StreamHttpClientOptions? options,
     Runner runner = Runner.client,
   }) =>
-      StreamClientImpl(
+      StreamFeedClientImpl(
         apiKey,
         userToken: token,
         secret: secret,

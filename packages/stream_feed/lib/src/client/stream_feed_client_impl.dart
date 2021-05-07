@@ -18,7 +18,7 @@ import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 
 import 'package:stream_feed/src/client/user_client.dart';
-import 'package:stream_feed/src/client/stream_client.dart';
+import 'package:stream_feed/src/client/stream_feed_client.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:logging/logging.dart';
@@ -34,9 +34,9 @@ final _levelEmojiMapper = {
 };
 
 // ignore: public_member_api_docs
-class StreamClientImpl implements StreamClient {
-  /// [StreamClientImpl] constructor
-  StreamClientImpl(
+class StreamFeedClientImpl implements StreamFeedClient {
+  /// [StreamFeedClientImpl] constructor
+  StreamFeedClientImpl(
     this.apiKey, {
     this.secret,
     this.userToken,

@@ -8,7 +8,7 @@ class ClientProvider extends InheritedWidget {
     required Widget child,
   }) : super(key: key, child: child);
 
-  final StreamClient client;
+  final StreamFeedClient client;
 
   static ClientProvider? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<ClientProvider>();
@@ -21,5 +21,5 @@ class ClientProvider extends InheritedWidget {
 }
 
 extension ProviderX on BuildContext {
-  StreamClient get client => ClientProvider.of(this)!.client;
+  StreamFeedClient get client => ClientProvider.of(this)!.client;
 }
