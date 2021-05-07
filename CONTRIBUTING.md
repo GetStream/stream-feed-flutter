@@ -26,7 +26,7 @@ You can include the output of `flutter doctor --verbose` when filing an issue.
 
 Stream's Flutter code is kept in a single mono-repository consisting of multiple packages. Source code for each package can be found under the top-level  `/packages` directory. 
 
-![Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/Screen_Shot_2021-03-31_at_4.13.52_PM.png](Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/Screen_Shot_2021-03-31_at_4.13.52_PM.png)
+![screenshot](./images/Screen_Shot_2021-03-31_at_4.13.52_PM.png)
 
 ### Project Structure 🧱
 
@@ -88,11 +88,11 @@ Before filing bugs, take a look at our existing backlog. For common bugs, there 
 
 To quickly narrow down the amount of tickets on Github, try filtering based on the label that best suites our bug.
 
-![Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/Screen_Shot_2021-04-14_at_10.55.00_AM.png](Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/Screen_Shot_2021-04-14_at_10.55.00_AM.png)
+![screenshot](./images/Screen_Shot_2021-04-14_at_10.55.00_AM.png)
 
 Didn't find an existing issue? That's okay, you can file a new bug using one of our pre-made issue templates. 
 
-![Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/Screen_Shot_2021-04-14_at_10.56.17_AM.png](Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/Screen_Shot_2021-04-14_at_10.56.17_AM.png)
+![screenshot](./images/Screen_Shot_2021-04-14_at_10.56.17_AM.png)
 
 Make sure to provide as much information as possible when filing bug reports. A good issue should have steps to reproduce, information on your development environment and expected behavior. 
 
@@ -108,7 +108,7 @@ To file a feature request, select the "Discussions" tab on our GitHub repo or [v
 
 Screenshots, sketches and sample code are all welcomed!
 
-![Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/Screen_Shot_2021-04-14_at_11.08.48_AM.png](Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/Screen_Shot_2021-04-14_at_11.08.48_AM.png)
+![screenshot](./images/Screen_Shot_2021-04-14_at_11.08.48_AM.png)
 
 Here are some common questions you can answer when filing a feature request:
 
@@ -126,7 +126,7 @@ Add any other context or screenshots about the feature request here.
 
 ## Pull Request 🎉
 
-![Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/its-coding-time.jpeg](Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/its-coding-time.jpeg)
+![its-coding-time](./images/its-coding-time.jpeg)
 
 Thank you for taking the time to submit a patch and contribute to our codebase, you rock!  
 
@@ -173,7 +173,7 @@ Develop is merged into master after the team performs various automated and QA t
 
 # Styleguides 💅
 
-![Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/d1d0f6c27141606521bfa6171bfe2a84.png](Stream's%20Contribution%20Guide%20637bb8b4473343818aa46116f6204b41/d1d0f6c27141606521bfa6171bfe2a84.png)
+![there are two types of people](./images/d1d0f6c27141606521bfa6171bfe2a84.png)
 
 We use style guides and lint checks to keep our code consistent and maintain best practices. Our team uses Dart's built-in analyzer for linting and enforcing code styles. The full list of analyzer rules can be found below.
 
