@@ -9,7 +9,7 @@
    <a href="https://github.com/invertase/melos"><img alt="melos" src="https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square"></a>
 </p>
 <p align="center">
-<img src="./images/flutter_feeds_alpha.png" alt="Stream Feed Activity Feed cover image" />
+<img src="./images/flutter_feeds_beta_1.png" alt="Stream Feed Activity Feed cover image" />
 </p>
 
 **🔗 Quick Links**
@@ -28,7 +28,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  stream_feed: ^0.0.1
+  stream_feed: ^[latest-version]
 ```
 #### Using with Flutter
 
