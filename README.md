@@ -15,7 +15,8 @@
 **🔗 Quick Links**
 
 - [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
-- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/)
+- [Tutorial](https://getstream.io/activity-feed/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
+- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/) to jumpstart your design with notifications and social feeds
 
 ## 🛠 Installation
 
