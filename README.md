@@ -14,7 +14,7 @@
 
 **🔗 Quick Links**
 
-- [Register](https://getstream.io/activity-feeds/trial/) to get an API key for Stream Activity Feeds
+- [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
 - [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/)
 
 ## 🛠 Installation
