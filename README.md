@@ -275,7 +275,7 @@ See the [github action configuration](.github/workflows/build.yaml) for details 
 
 See extensive at [test documentation](test/README.md) for your changes.
 
-You can find generic API documentation enriched by code snippets from this package at http://getstream.io/docs/?language=dart
+You can find generic API documentation enriched by code snippets from this package at https://getstream.io/activity-feeds/docs/flutter-dart/?language=dart
 
 ## Copyright and License Information
 
