@@ -230,7 +230,7 @@ await client.flatFeed('user', 'ken').updateActivityToTargets('foreign_id:1234', 
 
 ### Realtime (Faye)
 
-Stream uses [Faye](http://faye.jcoglan.com) for realtime notifications. Below is quick guide to subscribing to feed changes
+Stream uses [Faye](https://faye.jcoglan.com) for realtime notifications. Below is quick guide to subscribing to feed changes
 
 ```dart
 
