@@ -128,6 +128,7 @@ void main() {
   test('EnrichedActivity issue 61', () {
     final enrichedActivity = EnrichedActivity.fromJson(
         jsonFixture('enriched_activity_issue61.json'));
+    expect(enrichedActivity.latestReactions, isNotNull);
   });
   test('EnrichedActivity', () {
     final reaction1 = Reaction(
