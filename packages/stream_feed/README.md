@@ -42,14 +42,19 @@ const apiKey = 'my-API-key';
 const secret = 'my-API-secret';
 
 // Instantiate a new client (server side)
-var client = StreamFeedClient.connect(apiKey, secret: secret);
+var client = StreamFeedClient.connect(apiKey, secret: secret, runner: Runner.server);
 
 // Optionally supply the app identifier and an options object specifying the data center to use and timeout for requests (15s)
 client = StreamFeedClient.connect(apiKey,
-      secret: secret,
-      appId: 'yourappid',
-      options: StreamHttpClientOptions(
-          location: Location.usEast, connectTimeout: Duration(seconds: 15)));
+  secret: secret,
+  runner: Runner.server,
+  appId: 'yourappid',
+  runner: Runner.server,
+  options: StreamHttpClientOptions(
+    location: Location.usEast,
+    connectTimeout: Duration(seconds: 15),
+  ),
+);
 
 // Create a token for user with id "the-user-id"
 final userToken = client.frontendToken('the-user-id');
