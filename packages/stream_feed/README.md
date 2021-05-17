@@ -1,7 +1,8 @@
 # Official Dart Client for [Stream Activity Feeds](https://getstream.io/activity-feeds/)
 
->The official Dart client for Stream Activity Feeds, a service for building feed applications. This library can be used on any Dart project and on both mobile and web apps with Flutter.
-
+> The official Dart client for Stream Activity Feeds
+> a service for building feed applications. This library can be used on any Dart project 
+> and on both mobile and web apps with Flutter.
 
 **🔗 Quick Links**
 
@@ -41,14 +42,19 @@ const apiKey = 'my-API-key';
 const secret = 'my-API-secret';
 
 // Instantiate a new client (server side)
-var client = StreamFeedClient.connect(apiKey, secret: secret);
+var client = StreamFeedClient.connect(apiKey, secret: secret, runner: Runner.server);
 
 // Optionally supply the app identifier and an options object specifying the data center to use and timeout for requests (15s)
 client = StreamFeedClient.connect(apiKey,
-      secret: secret,
-      appId: 'yourappid',
-      options: StreamHttpClientOptions(
-          location: Location.usEast, connectTimeout: Duration(seconds: 15)));
+  secret: secret,
+  runner: Runner.server,
+  appId: 'yourappid',
+  runner: Runner.server,
+  options: StreamHttpClientOptions(
+    location: Location.usEast,
+    connectTimeout: Duration(seconds: 15),
+  ),
+);
 
 // Create a token for user with id "the-user-id"
 final userToken = client.frontendToken('the-user-id');
