@@ -5,8 +5,9 @@
 
 **🔗 Quick Links**
 
-- [Register](https://getstream.io/activity-feed/sdk/flutter/tutorial/) to get an API key for Stream Activity Feeds
-- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/)
+- [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
+- [Tutorial](https://getstream.io/activity-feed/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
+- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/) to jumpstart your design with notifications and social feeds
 
 ## 🛠 Installation
 
@@ -239,7 +240,7 @@ final subscription = await userFeed.subscribe((message) => print(message));
 await subscription.cancel();
 ```
 
-Docs are available on [GetStream.io](http://getstream.io/docs/?language=dart).
+Docs are available on [GetStream.io](https://getstream.io/activity-feeds/docs/flutter-dart/?language=dart).
 
 ## 🔮 Example Project
 

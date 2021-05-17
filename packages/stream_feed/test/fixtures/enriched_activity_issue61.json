@@ -1,0 +1,83 @@
+{
+    "actor": {
+      "created_at": "2021-04-13T22:53:19.670051Z",
+      "updated_at": "2021-04-13T22:53:19.670051Z",
+      "id": "eTHVBnEm0FQB2HeaRKVlEfVf58B3personal",
+      "data": {
+        "gender": "Male",
+        "name": "Rickey Lee",
+        "photo": "https://firebasestorage.googleapis.com/v0/b/fire-snab.appspot.com/o/profile-image-placeholder.png?alt=media&token=b17598bb-a510-4167-8354-ab75642ba89e"
+      }
+    },
+    "foreign_id": "",
+    "id": "d442580f-b4c3-11eb-8d9e-128a130028af",
+    "latest_reactions": {
+      "like": [
+        {
+          "created_at": "2021-05-14T14:51:13.998272Z",
+          "updated_at": "2021-05-14T14:51:13.998272Z",
+          "id": "c3b3be8a-ab90-42a9-b659-c46db1dab261",
+          "user_id": "eTHVBnEm0FQB2HeaRKVlEfVf58B3personal",
+          "user": {
+            "created_at": "2021-04-13T22:53:19.670051Z",
+            "updated_at": "2021-04-13T22:53:19.670051Z",
+            "id": "eTHVBnEm0FQB2HeaRKVlEfVf58B3personal",
+            "data": {
+              "gender": "Male",
+              "name": "Rickey Lee",
+              "photo": "https://firebasestorage.googleapis.com/v0/b/fire-snab.appspot.com/o/profile-image-placeholder.png?alt=media&token=b17598bb-a510-4167-8354-ab75642ba89e"
+            }
+          },
+          "kind": "like",
+          "activity_id": "d442580f-b4c3-11eb-8d9e-128a130028af",
+          "data": {},
+          "parent": "",
+          "latest_children": {},
+          "children_counts": {}
+        }
+      ]
+    },
+    "latest_reactions_extra": {
+      "like": {
+        "next": ""
+      }
+    },
+    "message": "@Jessica check out getstream.io it's awesome!",
+    "object": "tweet:id",
+    "origin": null,
+    "own_reactions": {
+      "like": [
+        {
+          "created_at": "2021-05-14T14:51:13.998272Z",
+          "updated_at": "2021-05-14T14:51:13.998272Z",
+          "id": "c3b3be8a-ab90-42a9-b659-c46db1dab261",
+          "user_id": "eTHVBnEm0FQB2HeaRKVlEfVf58B3personal",
+          "user": {
+            "created_at": "2021-04-13T22:53:19.670051Z",
+            "updated_at": "2021-04-13T22:53:19.670051Z",
+            "id": "eTHVBnEm0FQB2HeaRKVlEfVf58B3personal",
+            "data": {
+              "gender": "Male",
+              "name": "Rickey Lee",
+              "photo": "https://firebasestorage.googleapis.com/v0/b/fire-snab.appspot.com/o/profile-image-placeholder.png?alt=media&token=b17598bb-a510-4167-8354-ab75642ba89e"
+            }
+          },
+          "kind": "like",
+          "activity_id": "d442580f-b4c3-11eb-8d9e-128a130028af",
+          "data": {},
+          "parent": "",
+          "latest_children": {},
+          "children_counts": {}
+        }
+      ]
+    },
+    "reaction_counts": {
+      "like": 1
+    },
+    "target": "",
+    "time": "2021-05-14T14:51:13.767221",
+    "to": [
+      "notification:Jessica"
+    ],
+    "verb": "tweet"
+  }
