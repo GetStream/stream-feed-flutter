@@ -1,12 +1,14 @@
 # Official Dart Client for [Stream Activity Feeds](https://getstream.io/activity-feeds/)
 
->The official Dart client for Stream Activity Feeds, a service for building feed applications. This library can be used on any Dart project and on both mobile and web apps with Flutter.
-
+> The official Dart client for Stream Activity Feeds
+> a service for building feed applications. This library can be used on any Dart project 
+> and on both mobile and web apps with Flutter.
 
 **🔗 Quick Links**
 
-- [Register](https://getstream.io/activity-feed/sdk/flutter/tutorial/) to get an API key for Stream Activity Feeds
-- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/)
+- [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
+- [Tutorial](https://getstream.io/activity-feed/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
+- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/) to jumpstart your design with notifications and social feeds
 
 ## 🛠 Installation
 
@@ -40,14 +42,19 @@ const apiKey = 'my-API-key';
 const secret = 'my-API-secret';
 
 // Instantiate a new client (server side)
-var client = StreamFeedClient.connect(apiKey, secret: secret);
+var client = StreamFeedClient.connect(apiKey, secret: secret, runner: Runner.server);
 
 // Optionally supply the app identifier and an options object specifying the data center to use and timeout for requests (15s)
 client = StreamFeedClient.connect(apiKey,
-      secret: secret,
-      appId: 'yourappid',
-      options: StreamHttpClientOptions(
-          location: Location.usEast, connectTimeout: Duration(seconds: 15)));
+  secret: secret,
+  runner: Runner.server,
+  appId: 'yourappid',
+  runner: Runner.server,
+  options: StreamHttpClientOptions(
+    location: Location.usEast,
+    connectTimeout: Duration(seconds: 15),
+  ),
+);
 
 // Create a token for user with id "the-user-id"
 final userToken = client.frontendToken('the-user-id');
@@ -239,7 +246,7 @@ final subscription = await userFeed.subscribe((message) => print(message));
 await subscription.cancel();
 ```
 
-Docs are available on [GetStream.io](http://getstream.io/docs/?language=dart).
+Docs are available on [GetStream.io](https://getstream.io/activity-feeds/docs/flutter-dart/?language=dart).
 
 ## 🔮 Example Project
 

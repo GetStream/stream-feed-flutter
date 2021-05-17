@@ -158,6 +158,7 @@ void main() {
         'offset': offset,
         ...filter.params,
         ...Default.marker.params,
+        ...flags.params,
         'ranking': ranking,
       };
 

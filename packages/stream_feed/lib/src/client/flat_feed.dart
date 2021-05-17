@@ -119,6 +119,7 @@ class FlatFeed extends Feed {
       'offset': offset ?? Default.offset, //TODO:add session everywhere
       ...filter?.params ?? Default.filter.params,
       ...Default.marker.params,
+      if (flags != null) ...flags.params,
       if (ranking != null) 'ranking': ranking,
       if (session != null) 'session': session,
     };

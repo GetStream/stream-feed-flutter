@@ -14,8 +14,9 @@
 
 **🔗 Quick Links**
 
-- [Register](https://getstream.io/activity-feeds/trial/) to get an API key for Stream Activity Feeds
-- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/)
+- [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
+- [Tutorial](https://getstream.io/activity-feed/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
+- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/) to jumpstart your design with notifications and social feeds
 
 ## 🛠 Installation
 
@@ -229,7 +230,7 @@ await client.flatFeed('user', 'ken').updateActivityToTargets('foreign_id:1234', 
 
 ### Realtime (Faye)
 
-Stream uses [Faye](http://faye.jcoglan.com) for realtime notifications. Below is quick guide to subscribing to feed changes
+Stream uses [Faye](https://faye.jcoglan.com) for realtime notifications. Below is quick guide to subscribing to feed changes
 
 ```dart
 
@@ -274,7 +275,7 @@ See the [github action configuration](.github/workflows/build.yaml) for details 
 
 See extensive at [test documentation](test/README.md) for your changes.
 
-You can find generic API documentation enriched by code snippets from this package at http://getstream.io/docs/?language=dart
+You can find generic API documentation enriched by code snippets from this package at https://getstream.io/activity-feeds/docs/flutter-dart/?language=dart
 
 ## Copyright and License Information
 
