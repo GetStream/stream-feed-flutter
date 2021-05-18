@@ -60,5 +60,13 @@ void main() {
       );
       await screenMatchesGolden(tester, 'categories');
     });
+
+    testGoldens('gear', (tester) async {
+      await tester.pumpWidgetBuilder(
+        Center(child: StreamSvgIcon.gear()),
+        surfaceSize: const Size(50, 50),
+      );
+      await screenMatchesGolden(tester, 'gear');
+    });
   });
 }
