@@ -135,7 +135,7 @@ class StreamSvgIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final key = Key('StreamSvgIcon-$assetName');
     return SvgPicture.asset(
-      'lib/svgs/$assetName',
+      'lib/svgs/$assetName', //TODO: allow to load via url for ReactionIcon
       package: 'stream_feed_flutter',
       key: key,
       width: width,
