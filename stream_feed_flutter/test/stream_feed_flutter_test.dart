@@ -1,16 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
-import 'package:test/test.dart';
 
 void main() {
-  group('A group of tests', () {
-    Awesome awesome;
-
-    setUp(() {
-      awesome = Awesome();
-    });
-
-    test('First Test', () {
-      expect(awesome.isAwesome, isTrue);
+  group('Icons', () {
+    testGoldens('StreamSvgIcon loveActive', (tester) async {
+      await tester.pumpWidgetBuilder(
+        Center(child: StreamSvgIcon.loveActive()),
+        surfaceSize: const Size(50, 50),
+      );
+      await screenMatchesGolden(tester, 'love_active_icon');
     });
   });
 }
