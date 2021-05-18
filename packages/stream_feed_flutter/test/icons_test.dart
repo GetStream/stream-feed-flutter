@@ -26,7 +26,7 @@ void main() {
         Center(child: StreamSvgIcon.repost()),
         surfaceSize: const Size(50, 50),
       );
-      await screenMatchesGolden(tester, 'repost');
+      await screenMatchesGolden(tester, 'repost_icon');
     });
 
     testGoldens('reply', (tester) async {
@@ -34,7 +34,7 @@ void main() {
         Center(child: StreamSvgIcon.reply()),
         surfaceSize: const Size(50, 50),
       );
-      await screenMatchesGolden(tester, 'reply');
+      await screenMatchesGolden(tester, 'reply_icon');
     });
 
     testGoldens('share', (tester) async {
@@ -42,7 +42,7 @@ void main() {
         Center(child: StreamSvgIcon.share()),
         surfaceSize: const Size(50, 50),
       );
-      await screenMatchesGolden(tester, 'share');
+      await screenMatchesGolden(tester, 'share_icon');
     });
 
     testGoldens('post', (tester) async {
@@ -50,7 +50,7 @@ void main() {
         Center(child: StreamSvgIcon.post()),
         surfaceSize: const Size(50, 50),
       );
-      await screenMatchesGolden(tester, 'post');
+      await screenMatchesGolden(tester, 'post_icon');
     });
 
     testGoldens('categories', (tester) async {
@@ -58,7 +58,7 @@ void main() {
         Center(child: StreamSvgIcon.categories()),
         surfaceSize: const Size(50, 50),
       );
-      await screenMatchesGolden(tester, 'categories');
+      await screenMatchesGolden(tester, 'categories_icon');
     });
 
     testGoldens('gear', (tester) async {
@@ -66,7 +66,15 @@ void main() {
         Center(child: StreamSvgIcon.gear()),
         surfaceSize: const Size(50, 50),
       );
-      await screenMatchesGolden(tester, 'gear');
+      await screenMatchesGolden(tester, 'gear_icon');
+    });
+
+    testGoldens('avatar', (tester) async {
+      await tester.pumpWidgetBuilder(
+        Center(child: StreamSvgIcon.avatar()),
+        surfaceSize: const Size(50, 50),
+      );
+      await screenMatchesGolden(tester, 'avatar_icon');
     });
   });
 }
