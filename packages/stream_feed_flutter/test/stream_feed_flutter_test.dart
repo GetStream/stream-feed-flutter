@@ -13,7 +13,6 @@ void main() {
       await screenMatchesGolden(tester, 'love_active_icon');
     });
 
-
     testGoldens('StreamSvgIcon loveInactive', (tester) async {
       await tester.pumpWidgetBuilder(
         Center(child: StreamSvgIcon.loveInactive()),
