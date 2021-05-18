@@ -52,5 +52,13 @@ void main() {
       );
       await screenMatchesGolden(tester, 'post');
     });
+
+    testGoldens('categories', (tester) async {
+      await tester.pumpWidgetBuilder(
+        Center(child: StreamSvgIcon.categories()),
+        surfaceSize: const Size(50, 50),
+      );
+      await screenMatchesGolden(tester, 'categories');
+    });
   });
 }
