@@ -48,6 +48,18 @@ class StreamSvgIcon extends StatelessWidget {
         height: size,
       );
 
+  /// [StreamSvgIcon] type
+  factory StreamSvgIcon.repost({
+    double? size,
+    Color? color,
+  }) =>
+      StreamSvgIcon(
+        assetName: 'repost.svg',
+        color: color,
+        width: size,
+        height: size,
+      );
+
   @override
   Widget build(BuildContext context) {
     final key = Key('StreamSvgIcon-$assetName');
