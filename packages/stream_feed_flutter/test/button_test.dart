@@ -7,16 +7,27 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 void main() {
   group('Button', () {
     testGoldens('button', (tester) async {
+      final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
+        ..addScenario(
+            'Button primary',
+            Button(
+              label: 'Follow',
+              onPressed: () {},
+              type: ButtonType.primary,
+            ))
+        ..addScenario(
+            'Button faded',
+            Button(
+              label: 'Following',
+              onPressed: () {},
+              type: ButtonType.faded,
+            ));
+
       await tester.pumpWidgetBuilder(
-        Center(
-          child: Button(
-            label: 'Follow',
-            onPressed: () {},
-          ),
-        ),
-        surfaceSize: const Size(100, 75),
+        builder.build(),
+        surfaceSize: const Size(200, 150),
       );
-      await screenMatchesGolden(tester, 'button');
+      await screenMatchesGolden(tester, 'buttons_grid');
     });
   });
 }
