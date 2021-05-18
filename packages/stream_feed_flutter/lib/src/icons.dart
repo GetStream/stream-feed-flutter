@@ -6,14 +6,14 @@ class StreamSvgIcon extends StatelessWidget {
   /// Constructor for creating a [StreamSvgIcon]
   const StreamSvgIcon({
     Key? key,
-    this.assetName,
+    required this.assetName,
     this.color,
     this.width = 24,
     this.height = 24,
   }) : super(key: key);
 
   /// Name of icon asset
-  final String? assetName;
+  final String assetName;
 
   /// Width of icon
   final double? width;
