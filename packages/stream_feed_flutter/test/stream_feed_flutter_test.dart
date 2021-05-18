@@ -29,12 +29,20 @@ void main() {
       await screenMatchesGolden(tester, 'repost');
     });
 
-        testGoldens('reply', (tester) async {
+    testGoldens('reply', (tester) async {
       await tester.pumpWidgetBuilder(
         Center(child: StreamSvgIcon.reply()),
         surfaceSize: const Size(50, 50),
       );
       await screenMatchesGolden(tester, 'reply');
+    });
+
+    testGoldens('share', (tester) async {
+      await tester.pumpWidgetBuilder(
+        Center(child: StreamSvgIcon.share()),
+        surfaceSize: const Size(50, 50),
+      );
+      await screenMatchesGolden(tester, 'share');
     });
   });
 }
