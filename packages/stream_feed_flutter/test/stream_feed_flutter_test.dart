@@ -44,5 +44,13 @@ void main() {
       );
       await screenMatchesGolden(tester, 'share');
     });
+
+    testGoldens('post', (tester) async {
+      await tester.pumpWidgetBuilder(
+        Center(child: StreamSvgIcon.post()),
+        surfaceSize: const Size(50, 50),
+      );
+      await screenMatchesGolden(tester, 'post');
+    });
   });
 }
