@@ -612,11 +612,19 @@ void main() {
       "created_at": "2021-05-14T19:58:27.274792063Z",
       "updated_at": "2021-05-14T19:58:27.274792063Z"
     };
-    const follow = Follow('timeline:feedId', 'user:userId');
+    final follow = Follow(
+        feedId: 'timeline:feedId',
+        targetId: 'user:userId',
+        createdAt: DateTime.parse("2021-05-14T19:58:27.274792063Z"),
+        updatedAt: DateTime.parse("2021-05-14T19:58:27.274792063Z"));
 
     expect(follow, Follow.fromJson(followJson));
-    expect(follow.toJson(),
-        {'feed_id': 'timeline:feedId', 'target_id': 'user:userId'});
+    expect(follow.toJson(), {
+      'feed_id': 'timeline:feedId',
+      'target_id': 'user:userId',
+      'created_at': '2021-05-14T19:58:27.274792Z',
+      'updated_at': '2021-05-14T19:58:27.274792Z'
+    });
   });
 
   test('FollowRelation', () {
@@ -636,7 +644,7 @@ void main() {
       expect(unfollowFromFollow, unfollow);
     });
     test('fromJson', () {
-      final unfollowJson = json.decode(fixture('unfollow.json'));
+      final unfollowJson = json.decode(fixture('unfollow_relation.json'));
       expect(unfollow, UnFollowRelation.fromJson(unfollowJson));
     });
 
