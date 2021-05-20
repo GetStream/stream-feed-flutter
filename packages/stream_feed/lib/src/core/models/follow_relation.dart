@@ -7,7 +7,7 @@ part 'follow_relation.g.dart';
 @JsonSerializable()
 class FollowRelation extends Equatable {
   ///
-  const FollowRelation(this.source, this.target);
+  const FollowRelation({required this.source, required this.target});
 
   /// Create a new instance from a json
   factory FollowRelation.fromJson(Map<String, dynamic> json) =>
