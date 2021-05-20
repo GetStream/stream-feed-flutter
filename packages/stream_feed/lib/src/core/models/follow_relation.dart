@@ -32,7 +32,7 @@ class FollowRelation extends Equatable {
 class UnFollowRelation extends FollowRelation {
   ///
   const UnFollowRelation(String? source, String? target, this.keepHistory)
-      : super(source, target);
+      : super(source: source, target: target);
 
   /// Create a new instance from a json
   factory UnFollowRelation.fromJson(Map<String, dynamic> json) =>

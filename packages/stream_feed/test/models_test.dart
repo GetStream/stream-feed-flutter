@@ -628,7 +628,7 @@ void main() {
   });
 
   test('FollowRelation', () {
-    const follow = FollowRelation('feedId', 'targetId');
+    const follow = FollowRelation(source: 'feedId', target: 'targetId');
     final followJson =
         json.decode('{"source": "feedId", "target": "targetId"}');
 
@@ -639,7 +639,7 @@ void main() {
     const unfollow = UnFollowRelation('feedId', 'targetId', true);
 
     test('fromFollow', () {
-      const follow = FollowRelation('feedId', 'targetId');
+      const follow = FollowRelation(source: 'feedId', target: 'targetId');
       final unfollowFromFollow = UnFollowRelation.fromFollow(follow, true);
       expect(unfollowFromFollow, unfollow);
     });

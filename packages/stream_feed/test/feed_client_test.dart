@@ -65,9 +65,9 @@ void main() {
 
     test('follows', () {
       final follows = <FollowRelation>[
-        const FollowRelation('timeline:1', 'user:1'),
-        const FollowRelation('timeline:1', 'user:2'),
-        const FollowRelation('timeline:1', 'user:3'),
+        const FollowRelation(source: 'timeline:1', target: 'user:1'),
+        const FollowRelation(source: 'timeline:1', target: 'user:2'),
+        const FollowRelation(source: 'timeline:1', target: 'user:3'),
       ];
       expect(follows.map((e) => e.toJson()), [
         {'source': 'timeline:1', 'target': 'user:1'},

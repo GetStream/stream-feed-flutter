@@ -8,8 +8,8 @@ part of 'follow_relation.dart';
 
 FollowRelation _$FollowRelationFromJson(Map json) {
   return FollowRelation(
-    json['source'] as String?,
-    json['target'] as String?,
+    source: json['source'] as String?,
+    target: json['target'] as String?,
   );
 }
 
