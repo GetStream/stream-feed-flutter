@@ -3,6 +3,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/follow_relation.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
@@ -63,10 +64,10 @@ void main() {
     });
 
     test('follows', () {
-      final follows = <Follow>[
-        const Follow('timeline:1', 'user:1'),
-        const Follow('timeline:1', 'user:2'),
-        const Follow('timeline:1', 'user:3'),
+      final follows = <FollowRelation>[
+        const FollowRelation('timeline:1', 'user:1'),
+        const FollowRelation('timeline:1', 'user:2'),
+        const FollowRelation('timeline:1', 'user:3'),
       ];
       expect(follows.map((e) => e.toJson()), [
         {'source': 'timeline:1', 'target': 'user:1'},
