@@ -605,7 +605,7 @@ void main() {
     });
   });
 
-    test('Follow', () {
+  test('Follow', () {
     final followJson = {
       "feed_id": "timeline:feedId",
       "target_id": "user:userId",
@@ -615,10 +615,8 @@ void main() {
     const follow = Follow('timeline:feedId', 'user:userId');
 
     expect(follow, Follow.fromJson(followJson));
-    expect(follow.toJson(), {
-      'feed_id': 'timeline:feedId',
-      'target_id': 'user:userId'
-    });
+    expect(follow.toJson(),
+        {'feed_id': 'timeline:feedId', 'target_id': 'user:userId'});
   });
 
   test('FollowRelation', () {
