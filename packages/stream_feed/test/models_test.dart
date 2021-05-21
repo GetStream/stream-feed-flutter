@@ -636,7 +636,8 @@ void main() {
     expect(follow.toJson(), {'source': 'feedId', 'target': 'targetId'});
   });
   group('Unfollow', () {
-    const unfollow = UnFollowRelation('feedId', 'targetId', true);
+    const unfollow = UnFollowRelation(
+        source: 'feedId', target: 'targetId', keepHistory: true);
 
     test('fromFollow', () {
       const follow = FollowRelation(source: 'feedId', target: 'targetId');

@@ -15,10 +15,10 @@ class FollowRelation extends Equatable {
 
   /// The combination of feed slug and user id separated by a colon
   ///For example: flat:1
-  final String? source;
+  final String source;
 
   /// the id of the feed you want to follow
-  final String? target;
+  final String target;
 
   @override
   List<Object?> get props => [source, target];
@@ -31,7 +31,8 @@ class FollowRelation extends Equatable {
 @JsonSerializable()
 class UnFollowRelation extends FollowRelation {
   ///
-  const UnFollowRelation(String? source, String? target, this.keepHistory)
+  const UnFollowRelation(
+      {required String source, required String target, this.keepHistory})
       : super(source: source, target: target);
 
   /// Create a new instance from a json
@@ -41,7 +42,10 @@ class UnFollowRelation extends FollowRelation {
   ///
   factory UnFollowRelation.fromFollow(
           FollowRelation follow, bool? keepHistory) =>
-      UnFollowRelation(follow.source, follow.target, keepHistory);
+      UnFollowRelation(
+          source: follow.source,
+          target: follow.target,
+          keepHistory: keepHistory);
 
   /// when provided the activities from target feed
   /// will not be kept in the feed.

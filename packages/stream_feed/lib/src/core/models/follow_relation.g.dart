@@ -8,8 +8,8 @@ part of 'follow_relation.dart';
 
 FollowRelation _$FollowRelationFromJson(Map json) {
   return FollowRelation(
-    source: json['source'] as String?,
-    target: json['target'] as String?,
+    source: json['source'] as String,
+    target: json['target'] as String,
   );
 }
 
@@ -21,9 +21,9 @@ Map<String, dynamic> _$FollowRelationToJson(FollowRelation instance) =>
 
 UnFollowRelation _$UnFollowRelationFromJson(Map json) {
   return UnFollowRelation(
-    json['source'] as String?,
-    json['target'] as String?,
-    json['keep_history'] as bool?,
+    source: json['source'] as String,
+    target: json['target'] as String,
+    keepHistory: json['keep_history'] as bool?,
   );
 }
 
