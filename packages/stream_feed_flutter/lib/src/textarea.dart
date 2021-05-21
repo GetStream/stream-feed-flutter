@@ -9,6 +9,7 @@ class TextArea extends StatefulWidget {
       this.keyboardType = TextInputType.multiline,
       this.inputTextStyle,
       this.hintTextStyle,
+      required this.onChanged,
       this.hintText});
 
   /// The text controller of the TextField
@@ -31,6 +32,8 @@ class TextArea extends StatefulWidget {
   final TextStyle? inputTextStyle;
 
   final TextStyle? hintTextStyle;
+
+  final void Function(String) onChanged;
 
   @override
   _TextAreaState createState() => _TextAreaState();
@@ -56,10 +59,9 @@ class _TextAreaState extends State<TextArea> {
       maxHeight: widget.maxHeight,
       child: TextField(
         key: Key('messageInputText'),
-
         minLines: null,
         maxLines: null,
-        // onSubmitted: (_) => sendMessage(),
+        onChanged: (value) => widget.onChanged(value),
         keyboardType: widget.keyboardType,
         controller: textEditingController,
         focusNode: _focusNode,
@@ -70,7 +72,6 @@ class _TextAreaState extends State<TextArea> {
             hintStyle: widget.hintTextStyle,
             border: InputBorder.none,
             hintText: widget.hintText),
-
         textCapitalization: TextCapitalization.sentences,
       ),
     );

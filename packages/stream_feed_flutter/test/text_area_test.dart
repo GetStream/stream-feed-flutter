@@ -17,6 +17,7 @@ void main() {
       fontSize: 12.0,
       textBaseline: TextBaseline.alphabetic,
     );
+    var _value = '';
 
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
@@ -26,14 +27,18 @@ void main() {
           hintText: 'Placeholder',
           hintTextStyle: hintStyle,
           inputTextStyle: inputTextStyle,
+          onChanged: (String value) {
+            _value = value;
+          },
         ),
       ),
     ));
-    expect(find.byType(TextField), findsOneWidget);
-    expect(find.byKey(const Key('messageInputText')), findsOneWidget);
-    await tester.enterText(find.byType(TextField), 'blah blah');
-    expect(textController.text, 'blah blah');
-    final inputText = tester.widget<EditableText>(find.text('blah blah'));
+
+    final textFieldWidget = find.byType(TextField);
+    await tester.enterText(textFieldWidget, 'Soup');
+    await tester.pump();
+    expect(_value, 'Soup');
+    final inputText = tester.widget<EditableText>(find.text('Soup'));
     expect(inputText.style, inputTextStyle);
     expect(focusNode.hasPrimaryFocus, isTrue);
     final hintText = tester.widget<Text>(find.text('Placeholder'));
