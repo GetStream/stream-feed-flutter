@@ -184,9 +184,9 @@ await client.batch.addToMany(activityTarget, feeds!);
 
 // Batch create follow relations (let flat:1 follow user:1, user:2 and user:3 feeds in one single request)
 const follows = [
-  FollowRelation('flat:1', 'user:1'),
-  FollowRelation('flat:1', 'user:2'),
-  FollowRelation('flat:1', 'user:3'),
+  FollowRelation(source: 'flat:1', target: 'user:1'),
+  FollowRelation(source:'flat:1', target: 'user:2'),
+  FollowRelation(source:'flat:1', target: 'user:3'),
 ];
 
 // ⚠️ server-side only!
