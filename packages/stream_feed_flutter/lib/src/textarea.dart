@@ -59,8 +59,6 @@ class _TextAreaState extends State<TextArea> {
       maxHeight: widget.maxHeight,
       child: TextField(
         key: Key('messageInputText'),
-        minLines: null,
-        maxLines: null,
         onSubmitted: (value) => widget.onSubmitted(value),
         keyboardType: widget.keyboardType,
         controller: textEditingController,
