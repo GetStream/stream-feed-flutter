@@ -27,7 +27,7 @@ void main() {
           hintText: 'Placeholder',
           hintTextStyle: hintStyle,
           inputTextStyle: inputTextStyle,
-          onChanged: (String value) {
+          onSubmitted: (String value) {
             _value = value;
           },
         ),
@@ -36,11 +36,13 @@ void main() {
 
     final textFieldWidget = find.byType(TextField);
     await tester.enterText(textFieldWidget, 'Soup');
+    expect(focusNode.hasPrimaryFocus, isTrue);
+    await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pump();
     expect(_value, 'Soup');
     final inputText = tester.widget<EditableText>(find.text('Soup'));
     expect(inputText.style, inputTextStyle);
-    expect(focusNode.hasPrimaryFocus, isTrue);
+    expect(focusNode.hasPrimaryFocus, isFalse);
     final hintText = tester.widget<Text>(find.text('Placeholder'));
     expect(hintText.style, hintStyle);
   });
