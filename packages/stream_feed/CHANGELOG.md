@@ -1,4 +1,4 @@
-## 0.2.3: 21/05/2021
+## 0.2.0: 21/05/2021
 
 - fix: Follow model
 - new: FollowRelation 
