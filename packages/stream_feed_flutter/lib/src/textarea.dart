@@ -8,6 +8,7 @@ class TextArea extends StatefulWidget {
       this.autofocus = false,
       this.keyboardType = TextInputType.multiline,
       this.inputTextStyle,
+      this.hintTextStyle,
       this.hintText});
 
   /// The text controller of the TextField
@@ -28,6 +29,8 @@ class TextArea extends StatefulWidget {
   final String? hintText;
 
   final TextStyle? inputTextStyle;
+
+  final TextStyle? hintTextStyle;
 
   @override
   _TextAreaState createState() => _TextAreaState();
@@ -64,7 +67,9 @@ class _TextAreaState extends State<TextArea> {
         autofocus: widget.autofocus,
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
-            border: InputBorder.none, hintText: widget.hintText),
+            hintStyle: widget.hintTextStyle,
+            border: InputBorder.none,
+            hintText: widget.hintText),
 
         textCapitalization: TextCapitalization.sentences,
       ),
