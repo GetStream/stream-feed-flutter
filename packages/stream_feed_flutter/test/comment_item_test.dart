@@ -13,6 +13,8 @@ main() {
     final avatar = find.byType(Avatar);
 
     final username = find.text('Rosemary');
+    final momentAgo = find.text('a moment ago');
+    expect(momentAgo, findsOneWidget);
     expect(avatar, findsOneWidget);
     expect(username, findsOneWidget);
   });
