@@ -8,12 +8,16 @@ class CommentField extends StatelessWidget {
     return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Avatar(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Avatar(),
+            ),
             TextArea(onSubmitted: (value) {}),
           ],
         ),
-        Button(label: 'Post', onPressed: () {}, type: ButtonType.primary)
+        Button(label: 'Post', onPressed: () {}, type: ButtonType.faded)
       ],
     );
   }

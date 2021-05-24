@@ -55,22 +55,26 @@ class _TextAreaState extends State<TextArea> {
 
   @override
   Widget build(BuildContext context) {
-    return LimitedBox(
-      maxHeight: widget.maxHeight,
-      child: TextField(
-        key: Key('messageInputText'),
-        onSubmitted: (value) => widget.onSubmitted(value),
-        keyboardType: widget.keyboardType,
-        controller: textEditingController,
-        focusNode: _focusNode,
-        style: widget.inputTextStyle,
-        autofocus: widget.autofocus,
-        textAlignVertical: TextAlignVertical.center,
-        decoration: InputDecoration(
-            hintStyle: widget.hintTextStyle,
-            border: InputBorder.none,
-            hintText: widget.hintText),
-        textCapitalization: TextCapitalization.sentences,
+    return Expanded(
+      child: LimitedBox(
+        maxHeight: widget.maxHeight,
+        child: TextField(
+          key: Key('messageInputText'),
+          onSubmitted: (value) => widget.onSubmitted(value),
+          maxLines: null,
+          keyboardType: widget.keyboardType,
+          controller: textEditingController,
+          focusNode: _focusNode,
+          style: widget.inputTextStyle,
+          autofocus: widget.autofocus,
+          textAlignVertical: TextAlignVertical.center,
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0),
+              hintStyle: widget.hintTextStyle,
+              border: InputBorder.none,
+              hintText: widget.hintText),
+          textCapitalization: TextCapitalization.sentences,
+        ),
       ),
     );
   }

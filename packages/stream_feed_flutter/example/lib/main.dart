@@ -30,9 +30,9 @@ class MyHomePage extends StatelessWidget {
         title: Text("widget.title!"),
       ),
       body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[CommentField()]),
+        child: Card(
+          child: CommentField(),
+        ),
       ),
     );
   }

@@ -12,14 +12,14 @@ class Avatar extends StatelessWidget {
         ? ClipOval(
             child: Image.network(
               user!.data!['profile_image'] as String,
-              width: 30,
-              height: 30,
+              width: 48,
+              height: 48,
               fit: BoxFit.cover,
             ),
           )
         : ClipOval(
             child: StreamSvgIcon.avatar(
-            size: 30,
+            size: 48,
           ));
   }
 }
