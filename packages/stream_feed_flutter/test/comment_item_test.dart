@@ -17,5 +17,14 @@ main() {
     expect(momentAgo, findsOneWidget);
     expect(avatar, findsOneWidget);
     expect(username, findsOneWidget);
+    final richtexts = tester.widgetList<RichText>(find.byType(RichText));
+    var children = <String>[];
+
+    richtexts.toList()[2].text.visitChildren((span) {
+      children.add(span.toPlainText());
+      return true;
+    });
+    expect(
+        children, ['Snowboarding is awesome!', ' #snowboarding', ' #winter']);
   });
 }
