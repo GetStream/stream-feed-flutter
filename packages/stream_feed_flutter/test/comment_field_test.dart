@@ -9,7 +9,10 @@ import 'mock.dart';
 
 void main() {
   testWidgets('CommentField', (WidgetTester tester) async {
+    final key = GlobalKey();
     final mockClient = MockStreamFeedClient();
+    final mockReactions = MockReactions();
+    when(() => mockClient.reactions).thenReturn(mockReactions);
     const activityId = 'activityId';
     const kind = 'comment';
     const textInput = 'Soup';
@@ -18,13 +21,18 @@ void main() {
       activityId: activityId,
       data: {'text': textInput},
     );
-    when(() => mockClient.reactions.add(kind, activityId))
-        .thenAnswer((_) async => reaction);
+
+    when(() => mockReactions.add(
+          kind,
+          activityId,
+          data: {'text': textInput},
+        )).thenAnswer((_) async => reaction);
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
       body: StreamFeedCore(
         client: mockClient,
         child: CommentField(
+          key: key,
           activity: EnrichedActivity(id: activityId),
         ),
       ),
@@ -40,8 +48,12 @@ void main() {
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pump();
     tester.widget<EditableText>(find.text(textInput));
-    // await tester.tap(button);
 
-    // verify(() => mockClient.reactions.add(kind, activityId)).called(1);
+    final commentFieldState = key.currentState! as CommentFieldState;
+    expect(commentFieldState.text, textInput);
+
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+    verify(() => mockClient.reactions.add(kind, activityId)).called(1);
   });
 }

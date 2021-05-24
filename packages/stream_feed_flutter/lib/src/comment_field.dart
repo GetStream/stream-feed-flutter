@@ -7,13 +7,14 @@ class CommentField extends StatefulWidget {
   final EnrichedActivity activity;
   final List<FeedId>? targetFeeds;
 
-  CommentField({required this.activity, this.targetFeeds});
+  CommentField({Key? key, required this.activity, this.targetFeeds})
+      : super(key: key);
 
   @override
-  _CommentFieldState createState() => _CommentFieldState();
+  CommentFieldState createState() => CommentFieldState();
 }
 
-class _CommentFieldState extends State<CommentField> {
+class CommentFieldState extends State<CommentField> {
   late String text;
 
   @override

@@ -83,16 +83,16 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   /// The current user
   UserClient? get user => client.currentUser;
 
-  Future<Reaction> onAddReaction({
+  Future<void> onAddReaction({
     Map<String, Object>? data,
     required String kind,
     required EnrichedActivity activity,
     List<FeedId>? targetFeeds,
   }) async {
-    final reaction = await client.reactions
+    await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
     //TODO: trackAnalytics
-    return reaction;
+    // return reaction;
   }
 
   @override
