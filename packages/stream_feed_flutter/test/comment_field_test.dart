@@ -53,7 +53,6 @@ void main() {
     expect(commentFieldState.text, textInput);
 
     await tester.tap(button);
-    await tester.pumpAndSettle();
     verify(() => mockClient.reactions.add(kind, activityId)).called(1);
   });
 }
