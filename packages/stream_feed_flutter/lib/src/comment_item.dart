@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class CommentItem extends StatelessWidget {
+  final User user;
+  final Reaction reaction;
+  CommentItem({required this.user, required this.reaction});
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
     final hashtags = ['snowboarding', 'winter'];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -27,7 +30,7 @@ class CommentItem extends StatelessWidget {
                   padding: const EdgeInsets.all(2.0),
                   child: Row(
                     children: [
-                      Text('Rosemary',
+                      Text(user.data!['name'] as String,
                           style: TextStyle(
                               color: Color(0xff0ba8e0),
                               fontWeight: FontWeight.w700,
@@ -36,7 +39,7 @@ class CommentItem extends StatelessWidget {
                         width: 4.0,
                       ),
                       Text(
-                        timeago.format(now),
+                        timeago.format(reaction.createdAt!),
                         style: TextStyle(
                             color: Color(0xff7a8287),
                             fontWeight: FontWeight.w400,
@@ -51,7 +54,7 @@ class CommentItem extends StatelessWidget {
                   child: RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                        text: 'Snowboarding is awesome!',
+                        text: reaction.data!['text'] as String,
                         style: TextStyle(
                             color: Color(0xff7a8287),
                             fontWeight: FontWeight.w600,
