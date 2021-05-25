@@ -3,6 +3,7 @@ import 'package:stream_feed_flutter/src/comment_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 main() {
   testWidgets('CommentItem', (tester) async {
@@ -41,4 +42,53 @@ main() {
     expect(
         children, ['Snowboarding is awesome!', ' #snowboarding', ' #winter']);
   });
+
+  test('TagDetector', () {
+    final detector = TagDetector();
+    final result = detector
+        .parseText('Snowboarding is awesome! #snowboarding #winter @sacha');
+    expect(result, [
+      {'hashtag': null, 'mention': null, 'normalText': 'Snowboarding'},
+      {'hashtag': null, 'mention': null, 'normalText': 'is'},
+      {'hashtag': null, 'mention': null, 'normalText': 'awesome'},
+      {'hashtag': ' #snowboarding', 'mention': null, 'normalText': null},
+      {'hashtag': ' #winter', 'mention': null, 'normalText': null},
+      {'hashtag': null, 'mention': ' @sacha', 'normalText': null}
+    ]);
+  });
+}
+
+enum Tag { mention, hashtag, normalText }
+
+extension TagX on Tag {
+  String toRegEx() => <Tag, String>{
+        Tag.mention: '(?<mention>(^|\s)(@[a-z\d-]+))',
+        Tag.hashtag: '(?<hashtag>(^|\s)(#[a-z\d-]+))',
+        Tag.normalText: '(?<normalText>([\$a-zA-Zａ-ｚＡ-Ｚ]+))'
+      }[this]!;
+}
+
+class TaggedText {
+  final Tag tag;
+  final String text;
+
+  TaggedText({required this.tag, required this.text});
+}
+
+class TagDetector {
+  final RegExp regExp = RegExp(
+      r'(?<hashtag>(^|\s)(#[a-z\d-]+))|(?<mention>(^|\s)(@[a-z\d-]+))|(?<normalText>([$a-zA-Zａ-ｚＡ-Ｚ]+))');
+  TagDetector();
+
+  List<Map<String, String?>> parseText(String text) {
+    final tags = regExp.allMatches(text).toList();
+    final result = tags
+        .map((tag) => {
+              'hashtag': tag.namedGroup(tag.groupNames.toList()[0]),
+              'mention': tag.namedGroup(tag.groupNames.toList()[1]),
+              'normalText': tag.namedGroup(tag.groupNames.toList()[2]),
+            })
+        .toList();
+    return result;
+  }
 }
