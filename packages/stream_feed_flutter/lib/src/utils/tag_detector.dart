@@ -1,13 +1,18 @@
-
 import 'package:equatable/equatable.dart';
 
 enum Tag { hashtag, mention, normalText }
+
+const _letters = 'a-zA-Zａ-ｚＡ-Ｚ';
+const _symbols = '\.·・ー_,!\(\)';
+
+const _numbers = '0-9０-９';
+const _text = _symbols + _numbers + _letters;
 
 extension TagX on Tag {
   String toRegEx() => <Tag, String>{
         Tag.hashtag: r'(?<hashtag>(^|\s)(#[a-z\d-]+))',
         Tag.mention: r'(?<mention>(^|\s)(@[a-z\d-]+))',
-        Tag.normalText: r'(?<normalText>([$a-zA-Zａ-ｚＡ-Ｚ]+))'
+        Tag.normalText: '(?<normalText>([$_text]+))'
       }[this]!;
 }
 

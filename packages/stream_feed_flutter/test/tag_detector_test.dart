@@ -10,7 +10,7 @@ main() {
     expect(result, [
       TaggedText(tag: Tag.normalText, text: 'Snowboarding'),
       TaggedText(tag: Tag.normalText, text: 'is'),
-      TaggedText(tag: Tag.normalText, text: 'awesome'),
+      TaggedText(tag: Tag.normalText, text: 'awesome!'),
       TaggedText(tag: Tag.hashtag, text: ' #snowboarding'),
       TaggedText(tag: Tag.hashtag, text: ' #winter'),
       TaggedText(tag: Tag.mention, text: ' @sacha')
