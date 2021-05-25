@@ -4,10 +4,19 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'utils/extensions.dart';
 
+typedef OnClickMention = void Function(String? mention);
+typedef OnClickHashtag = void Function(String? hashtag);
+
 class CommentItem extends StatelessWidget {
   final User user;
   final Reaction reaction;
-  CommentItem({required this.user, required this.reaction});
+  final OnClickMention onClickMention;
+  final OnClickHashtag onClickHashtag;
+  CommentItem(
+      {required this.user,
+      required this.reaction,
+      required this.onClickMention,
+      required this.onClickHashtag});
   @override
   Widget build(BuildContext context) {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
@@ -53,13 +62,37 @@ class CommentItem extends StatelessWidget {
                 ),
                 Padding(
                     padding: const EdgeInsets.all(2.0),
-                    child:
-                        RichText(text: TextSpan(children: taggedText.spans())))
+                    child: Wrap(
+                      children: taggedText.map((it) => handleTag(it)).toList(),
+                    ))
               ],
             ),
           ),
         )
       ],
     );
+  }
+
+  Widget handleTag(TaggedText tagged) {
+    switch (tagged.tag) {
+      case Tag.normalText:
+        return Text("${tagged.text!} ", style: tagged.tag.style());
+      case Tag.hashtag:
+        return InkWell(
+          onTap: () {
+            onClickHashtag(tagged.text);
+          },
+          child: Text(tagged.text!, style: tagged.tag.style()),
+        );
+      case Tag.mention:
+        return InkWell(
+          onTap: () {
+            onClickMention(tagged.text);
+          },
+          child: Text(tagged.text!, style: tagged.tag.style()),
+        );
+      default:
+        return Text(tagged.text!, style: tagged.tag.style());
+    }
   }
 }

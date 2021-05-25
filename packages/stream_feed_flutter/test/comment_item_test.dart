@@ -21,35 +21,42 @@ main() {
             'text': 'Snowboarding is awesome! #snowboarding #winter @sacha',
           },
         ),
+        onClickMention: (String? mention) {
+          print(mention);
+        },
+        onClickHashtag: (String? hashtag) {
+          print(hashtag);
+        },
       ),
     )));
 
     final avatar = find.byType(Avatar);
 
-    final username = find.text('Rosemary');
-    final momentAgo = find.text('a moment ago');
-    expect(momentAgo, findsOneWidget);
     expect(avatar, findsOneWidget);
-    expect(username, findsOneWidget);
-    final richtexts = tester.widgetList<RichText>(find.byType(RichText));
-    var children = <String>[];
-    var childrenStyles = <TextStyle?>[];
+    final richtexts = tester.widgetList<Text>(find.byType(Text));
 
-    richtexts.toList()[2].text.visitChildren((span) {
-      children.add(span.toPlainText());
-      childrenStyles.add(span.style);
-      return true;
-    });
-    expect(children, [
-      'Snowboarding',
-      'is',
-      'awesome!',
-      ' #snowboarding',
-      ' #winter',
-      ' @sacha'
+    expect(richtexts.toList().map((e) => e.data), [
+      "Rosemary",
+      "a moment ago",
+      "Snowboarding ",
+      "is ",
+      "awesome! ",
+      " #snowboarding",
+      " #winter",
+      " @sacha",
     ]);
-
-    expect(childrenStyles, [
+    expect(richtexts.toList().map((e) => e.style), [
+      TextStyle(
+          inherit: true,
+          color: Color(0xff0ba8e0),
+          fontSize: 14.0,
+          fontWeight: FontWeight.w700),
+      TextStyle(
+          inherit: true,
+          color: Color(0xff7a8287),
+          fontSize: 14.0,
+          fontWeight: FontWeight.w400,
+          height: 1.5),
       TextStyle(
           inherit: true,
           color: Color(0xff095482),
