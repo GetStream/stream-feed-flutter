@@ -3,9 +3,13 @@ import 'package:stream_feed_flutter/src/comment_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 main() {
   testWidgets('CommentItem', (tester) async {
+    var pressedHashtags = <String?>[];
+    var pressedMentions = <String?>[];
+
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
       body: CommentItem(
@@ -22,10 +26,10 @@ main() {
           },
         ),
         onClickMention: (String? mention) {
-          print(mention);
+          pressedMentions.add(mention);
         },
         onClickHashtag: (String? hashtag) {
-          print(hashtag);
+          pressedHashtags.add(hashtag);
         },
       ),
     )));
@@ -36,14 +40,14 @@ main() {
     final richtexts = tester.widgetList<Text>(find.byType(Text));
 
     expect(richtexts.toList().map((e) => e.data), [
-      "Rosemary",
-      "a moment ago",
-      "Snowboarding ",
-      "is ",
-      "awesome! ",
-      " #snowboarding",
-      " #winter",
-      " @sacha",
+      'Rosemary',
+      'a moment ago',
+      'Snowboarding ',
+      'is ',
+      'awesome! ',
+      ' #snowboarding',
+      ' #winter',
+      ' @sacha',
     ]);
     expect(richtexts.toList().map((e) => e.style), [
       TextStyle(
@@ -88,5 +92,10 @@ main() {
           fontSize: 14.0,
           fontWeight: FontWeight.w600)
     ]);
+
+    await tester.tap(find.widgetWithText(InkWell, ' #winter'));
+    await tester.tap(find.widgetWithText(InkWell, ' @sacha'));
+    expect(pressedHashtags, [' #winter']);
+    expect(pressedMentions, [' @sacha']);
   });
 }
