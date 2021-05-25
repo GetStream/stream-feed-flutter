@@ -3,7 +3,6 @@ import 'package:stream_feed_flutter/src/comment_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 main() {
   testWidgets('CommentItem', (tester) async {
@@ -19,7 +18,7 @@ main() {
           createdAt: DateTime.now(),
           kind: 'comment',
           data: {
-            'text': 'Snowboarding is awesome!',
+            'text': 'Snowboarding is awesome! #snowboarding #winter @sacha',
           },
         ),
       ),
@@ -41,24 +40,45 @@ main() {
       childrenStyles.add(span.style);
       return true;
     });
-    expect(
-        children, ['Snowboarding is awesome!', ' #snowboarding', ' #winter']);
+    expect(children, [
+      'Snowboarding',
+      'is',
+      'awesome!',
+      ' #snowboarding',
+      ' #winter',
+      ' @sacha'
+    ]);
 
     expect(childrenStyles, [
       TextStyle(
           inherit: true,
+          color: Color(0xff095482),
+          fontSize: 14.0,
+          fontWeight: FontWeight.w600),
+      TextStyle(
+          inherit: true,
+          color: Color(0xff095482),
+          fontSize: 14.0,
+          fontWeight: FontWeight.w600),
+      TextStyle(
+          inherit: true,
+          color: Color(0xff095482),
+          fontSize: 14.0,
+          fontWeight: FontWeight.w600),
+      TextStyle(
+          inherit: true,
           color: Color(0xff7a8287),
-          fontSize: 14,
+          fontSize: 14.0,
+          fontWeight: FontWeight.w600),
+      TextStyle(
+          inherit: true,
+          color: Color(0xff7a8287),
+          fontSize: 14.0,
           fontWeight: FontWeight.w600),
       TextStyle(
           inherit: true,
           color: Color(0xff095482),
-          fontSize: 14,
-          fontWeight: FontWeight.w600),
-      TextStyle(
-          inherit: true,
-          color: Color(0xff095482),
-          fontSize: 14,
+          fontSize: 14.0,
           fontWeight: FontWeight.w600)
     ]);
   });

@@ -9,7 +9,9 @@ class CommentItem extends StatelessWidget {
   CommentItem({required this.user, required this.reaction});
   @override
   Widget build(BuildContext context) {
-    final hashtags = ['snowboarding', 'winter'];
+    // final hashtags = ['snowboarding', 'winter'];
+    final detector = TagDetector();
+    final taggedText = detector.parseText(reaction.data!['text'] as String);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -50,25 +52,9 @@ class CommentItem extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: RichText(
-                      text: TextSpan(children: [
-                    TextSpan(
-                        text: reaction.data!['text'] as String,
-                        style: TextStyle(
-                            color: Color(0xff7a8287),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14)),
-                    ...hashtags
-                        .map((hashtag) => TextSpan(
-                            text: ' #$hashtag',
-                            style: TextStyle(
-                                color: Color(0xff095482),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14)))
-                        .toList()
-                  ])),
-                )
+                    padding: const EdgeInsets.all(2.0),
+                    child:
+                        RichText(text: TextSpan(children: taggedText.spans())))
               ],
             ),
           ),
