@@ -63,7 +63,13 @@ class CommentItem extends StatelessWidget {
                 Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: Wrap(
-                      children: taggedText.map((it) => handleTag(it)).toList(),
+                      children: taggedText
+                          .map((it) => _InteractiveText(
+                                tagged: it,
+                                onClickHashtag: onClickHashtag,
+                                onClickMention: onClickMention,
+                              ))
+                          .toList(),
                     ))
               ],
             ),
@@ -72,11 +78,22 @@ class CommentItem extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget handleTag(TaggedText tagged) {
+class _InteractiveText extends StatelessWidget {
+  final OnClickMention onClickMention;
+  final OnClickHashtag onClickHashtag;
+  TaggedText tagged;
+  _InteractiveText(
+      {required this.tagged,
+      required this.onClickHashtag,
+      required this.onClickMention});
+
+  @override
+  Widget build(BuildContext context) {
     switch (tagged.tag) {
       case Tag.normalText:
-        return Text("${tagged.text!} ", style: tagged.tag.style());
+        return Text('${tagged.text!} ', style: tagged.tag.style());
       case Tag.hashtag:
         return InkWell(
           onTap: () {
