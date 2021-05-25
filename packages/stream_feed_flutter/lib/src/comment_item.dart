@@ -27,12 +27,7 @@ class CommentItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Avatar(
-            size: 25,
-          ),
-        ),
+        Padding(padding: const EdgeInsets.all(8.0), child: Avatar(user: user)),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
