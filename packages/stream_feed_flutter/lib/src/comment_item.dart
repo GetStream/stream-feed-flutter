@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'utils/extensions.dart';
 
 class CommentItem extends StatelessWidget {
   final User user;
@@ -9,8 +10,7 @@ class CommentItem extends StatelessWidget {
   CommentItem({required this.user, required this.reaction});
   @override
   Widget build(BuildContext context) {
-    // final hashtags = ['snowboarding', 'winter'];
-    final detector = TagDetector();
+    final detector = TagDetector(); //TODO: move this higher in the widget tree
     final taggedText = detector.parseText(reaction.data!['text'] as String);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
