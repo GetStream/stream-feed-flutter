@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:equatable/equatable.dart';
 
 main() {
   testWidgets('CommentItem', (tester) async {
@@ -49,12 +50,12 @@ main() {
         .parseText('Snowboarding is awesome! #snowboarding #winter @sacha');
 
     expect(result, [
-      {'hashtag': null, 'mention': null, 'normalText': 'Snowboarding'},
-      {'hashtag': null, 'mention': null, 'normalText': 'is'},
-      {'hashtag': null, 'mention': null, 'normalText': 'awesome'},
-      {'hashtag': ' #snowboarding', 'mention': null, 'normalText': null},
-      {'hashtag': ' #winter', 'mention': null, 'normalText': null},
-      {'hashtag': null, 'mention': ' @sacha', 'normalText': null}
+      TaggedText(tag: Tag.normalText, text: 'Snowboarding'),
+      TaggedText(tag: Tag.normalText, text: 'is'),
+      TaggedText(tag: Tag.normalText, text: 'awesome'),
+      TaggedText(tag: Tag.hashtag, text: ' #snowboarding'),
+      TaggedText(tag: Tag.hashtag, text: ' #winter'),
+      TaggedText(tag: Tag.mention, text: ' @sacha')
     ]);
   });
 }
@@ -69,11 +70,19 @@ extension TagX on Tag {
       }[this]!;
 }
 
-class TaggedText {
+class TaggedText extends Equatable {
   final Tag tag;
-  final String text;
+  final String? text;
 
   TaggedText({required this.tag, required this.text});
+
+  factory TaggedText.fromMap(Map<Tag, String?> map) {
+    final entry = map.entries.first;
+    return TaggedText(tag: entry.key, text: entry.value);
+  }
+
+  @override
+  List<Object?> get props => [tag, text];
 }
 
 class TagDetector {
@@ -81,14 +90,14 @@ class TagDetector {
       RegExp(Tag.values.map((tag) => tag.toRegEx()).join('|'));
   TagDetector();
 
-  List<Map<String, String?>> parseText(String text) {
+  List<TaggedText> parseText(String text) {
     final tags = regExp.allMatches(text).toList();
     final result = tags
-        .map((tag) => {
-              'hashtag': tag.namedGroup(tag.groupNames.toList()[0]),
-              'mention': tag.namedGroup(tag.groupNames.toList()[1]),
-              'normalText': tag.namedGroup(tag.groupNames.toList()[2]),
-            })
+        .map((tag) => TaggedText.fromMap({
+              Tag.hashtag: tag.namedGroup(tag.groupNames.toList()[0]),
+              Tag.mention: tag.namedGroup(tag.groupNames.toList()[1]),
+              Tag.normalText: tag.namedGroup(tag.groupNames.toList()[2]),
+            }..removeWhere((key, value) => value == null)))
         .toList();
     return result;
   }
