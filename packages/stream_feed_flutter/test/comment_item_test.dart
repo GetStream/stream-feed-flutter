@@ -19,7 +19,7 @@ main() {
           createdAt: DateTime.now(),
           kind: 'comment',
           data: {
-            'text': 'Snowboarding is awesome!', // #snowboarding #winter
+            'text': 'Snowboarding is awesome!',
           },
         ),
       ),
@@ -34,14 +34,32 @@ main() {
     expect(username, findsOneWidget);
     final richtexts = tester.widgetList<RichText>(find.byType(RichText));
     var children = <String>[];
+    var childrenStyles = <TextStyle?>[];
 
     richtexts.toList()[2].text.visitChildren((span) {
       children.add(span.toPlainText());
+      childrenStyles.add(span.style);
       return true;
     });
     expect(
         children, ['Snowboarding is awesome!', ' #snowboarding', ' #winter']);
+
+    expect(childrenStyles, [
+      TextStyle(
+          inherit: true,
+          color: Color(0xff7a8287),
+          fontSize: 14,
+          fontWeight: FontWeight.w600),
+      TextStyle(
+          inherit: true,
+          color: Color(0xff095482),
+          fontSize: 14,
+          fontWeight: FontWeight.w600),
+      TextStyle(
+          inherit: true,
+          color: Color(0xff095482),
+          fontSize: 14,
+          fontWeight: FontWeight.w600)
+    ]);
   });
-
-
 }
