@@ -95,7 +95,7 @@ main() {
 
     await tester.tap(find.widgetWithText(InkWell, ' #winter'));
     await tester.tap(find.widgetWithText(InkWell, ' @sacha'));
-    expect(pressedHashtags, [' #winter']);
-    expect(pressedMentions, [' @sacha']);
+    expect(pressedHashtags, ['winter']);
+    expect(pressedMentions, ['sacha']);
   });
 }

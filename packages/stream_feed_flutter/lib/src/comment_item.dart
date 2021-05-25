@@ -12,11 +12,14 @@ class CommentItem extends StatelessWidget {
   final Reaction reaction;
   final OnClickMention onClickMention;
   final OnClickHashtag onClickHashtag;
-  CommentItem(
-      {required this.user,
-      required this.reaction,
-      required this.onClickMention,
-      required this.onClickHashtag});
+
+  const CommentItem({
+    required this.user,
+    required this.reaction,
+    required this.onClickMention,
+    required this.onClickHashtag,
+  });
+
   @override
   Widget build(BuildContext context) {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
@@ -83,11 +86,12 @@ class CommentItem extends StatelessWidget {
 class _InteractiveText extends StatelessWidget {
   final OnClickMention onClickMention;
   final OnClickHashtag onClickHashtag;
-  TaggedText tagged;
-  _InteractiveText(
-      {required this.tagged,
-      required this.onClickHashtag,
-      required this.onClickMention});
+  final TaggedText tagged;
+  const _InteractiveText({
+    required this.tagged,
+    required this.onClickHashtag,
+    required this.onClickMention,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -97,14 +101,14 @@ class _InteractiveText extends StatelessWidget {
       case Tag.hashtag:
         return InkWell(
           onTap: () {
-            onClickHashtag(tagged.text);
+            onClickHashtag(tagged.text?.trim().replaceFirst('#', ''));
           },
           child: Text(tagged.text!, style: tagged.tag.style()),
         );
       case Tag.mention:
         return InkWell(
           onTap: () {
-            onClickMention(tagged.text);
+            onClickMention(tagged.text?.trim().replaceFirst('@', ''));
           },
           child: Text(tagged.text!, style: tagged.tag.style()),
         );
