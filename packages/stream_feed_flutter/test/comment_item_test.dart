@@ -47,6 +47,7 @@ main() {
     final detector = TagDetector();
     final result = detector
         .parseText('Snowboarding is awesome! #snowboarding #winter @sacha');
+
     expect(result, [
       {'hashtag': null, 'mention': null, 'normalText': 'Snowboarding'},
       {'hashtag': null, 'mention': null, 'normalText': 'is'},
@@ -58,13 +59,13 @@ main() {
   });
 }
 
-enum Tag { mention, hashtag, normalText }
+enum Tag { hashtag, mention, normalText }
 
 extension TagX on Tag {
   String toRegEx() => <Tag, String>{
-        Tag.mention: '(?<mention>(^|\s)(@[a-z\d-]+))',
-        Tag.hashtag: '(?<hashtag>(^|\s)(#[a-z\d-]+))',
-        Tag.normalText: '(?<normalText>([\$a-zA-Zａ-ｚＡ-Ｚ]+))'
+        Tag.hashtag: r'(?<hashtag>(^|\s)(#[a-z\d-]+))',
+        Tag.mention: r'(?<mention>(^|\s)(@[a-z\d-]+))',
+        Tag.normalText: r'(?<normalText>([$a-zA-Zａ-ｚＡ-Ｚ]+))'
       }[this]!;
 }
 
@@ -76,8 +77,8 @@ class TaggedText {
 }
 
 class TagDetector {
-  final RegExp regExp = RegExp(
-      r'(?<hashtag>(^|\s)(#[a-z\d-]+))|(?<mention>(^|\s)(@[a-z\d-]+))|(?<normalText>([$a-zA-Zａ-ｚＡ-Ｚ]+))');
+  final RegExp regExp =
+      RegExp(Tag.values.map((tag) => tag.toRegEx()).join('|'));
   TagDetector();
 
   List<Map<String, String?>> parseText(String text) {
