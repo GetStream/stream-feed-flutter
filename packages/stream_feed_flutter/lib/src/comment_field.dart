@@ -14,7 +14,7 @@ class CommentField extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Avatar(),
             ),
-            TextArea(onSubmitted: (value) {}),
+            Expanded(child: TextArea(onSubmitted: (value) {})),
           ],
         ),
         Button(label: 'Post', onPressed: () {}, type: ButtonType.faded)
