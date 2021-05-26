@@ -4,26 +4,28 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'utils/extensions.dart';
 
-typedef OnClickMention = void Function(String? mention);
-typedef OnClickHashtag = void Function(String? hashtag);
+typedef OnMentionTap = void Function(String? mention);
+typedef OnHashtagTap = void Function(String? hashtag);
 
 class CommentItem extends StatelessWidget {
-  final User user;
+  final User? user;
   final Reaction reaction;
-  final OnClickMention onClickMention;
-  final OnClickHashtag onClickHashtag;
+  final OnMentionTap? onMentionTap;
+  final OnHashtagTap? onHashtagTap;
 
   const CommentItem({
-    required this.user,
     required this.reaction,
-    required this.onClickMention,
-    required this.onClickHashtag,
+    this.user,
+    this.onMentionTap,
+    this.onHashtagTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
-    final taggedText = detector.parseText(reaction.data!['text'] as String);
+    final taggedText = reaction.data?['text'] != null
+        ? detector.parseText(reaction.data!['text'] as String)
+        : <TaggedText?>[];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -39,22 +41,17 @@ class CommentItem extends StatelessWidget {
                   padding: const EdgeInsets.all(2.0),
                   child: Row(
                     children: [
-                      Text(user.data!['name'] as String,
-                          style: TextStyle(
-                              color: Color(0xff0ba8e0),
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14)),
-                      SizedBox(
-                        width: 4.0,
-                      ),
-                      Text(
-                        timeago.format(reaction.createdAt!),
-                        style: TextStyle(
-                            color: Color(0xff7a8287),
-                            fontWeight: FontWeight.w400,
-                            height: 1.5,
-                            fontSize: 14),
-                      ),
+                      ...displayUsername(user),
+                      reaction.createdAt != null
+                          ? Text(
+                              timeago.format(reaction.createdAt!),
+                              style: TextStyle(
+                                  color: Color(0xff7a8287),
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.5,
+                                  fontSize: 14),
+                            )
+                          : Container(),
                     ],
                   ),
                 ),
@@ -64,8 +61,8 @@ class CommentItem extends StatelessWidget {
                       children: taggedText
                           .map((it) => _InteractiveText(
                                 tagged: it,
-                                onClickHashtag: onClickHashtag,
-                                onClickMention: onClickMention,
+                                onHashtagTap: onHashtagTap,
+                                onMentionTap: onMentionTap,
                               ))
                           .toList(),
                     ))
@@ -76,39 +73,59 @@ class CommentItem extends StatelessWidget {
       ],
     );
   }
+
+  List<Widget> displayUsername(User? user) {
+    return user?.data?['name'] != null
+        ? [
+            Text(user!.data?['name'] as String,
+                style: TextStyle(
+                    color: Color(0xff0ba8e0),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14)),
+            // : Container(),
+            SizedBox(
+              width: 4.0,
+            ),
+          ]
+        : [Container()];
+  }
 }
 
 class _InteractiveText extends StatelessWidget {
-  final OnClickMention onClickMention;
-  final OnClickHashtag onClickHashtag;
-  final TaggedText tagged;
+  final OnMentionTap? onMentionTap;
+  final OnHashtagTap? onHashtagTap;
+  final TaggedText? tagged;
   const _InteractiveText({
-    required this.tagged,
-    required this.onClickHashtag,
-    required this.onClickMention,
+    this.tagged,
+    this.onHashtagTap,
+    this.onMentionTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    switch (tagged.tag) {
-      case Tag.normalText:
-        return Text('${tagged.text!} ', style: tagged.tag.style());
-      case Tag.hashtag:
-        return InkWell(
-          onTap: () {
-            onClickHashtag(tagged.text?.trim().replaceFirst('#', ''));
-          },
-          child: Text(tagged.text!, style: tagged.tag.style()),
-        );
-      case Tag.mention:
-        return InkWell(
-          onTap: () {
-            onClickMention(tagged.text?.trim().replaceFirst('@', ''));
-          },
-          child: Text(tagged.text!, style: tagged.tag.style()),
-        );
-      default:
-        return Text(tagged.text!, style: tagged.tag.style());
+    if (tagged != null) {
+      switch (tagged!.tag) {
+        case Tag.normalText:
+          return Text('${tagged!.text!} ', style: tagged!.tag.style());
+        case Tag.hashtag:
+          return InkWell(
+            onTap: () {
+              onMentionTap?.call(tagged!.text?.trim().replaceFirst('#', ''));
+            },
+            child: Text(tagged!.text!, style: tagged!.tag.style()),
+          );
+        case Tag.mention:
+          return InkWell(
+            onTap: () {
+              onMentionTap?.call(tagged!.text?.trim().replaceFirst('@', ''));
+            },
+            child: Text(tagged!.text!, style: tagged!.tag.style()),
+          );
+        default:
+          return Text(tagged!.text!, style: tagged!.tag.style());
+      }
+    } else {
+      return Container();
     }
   }
 }

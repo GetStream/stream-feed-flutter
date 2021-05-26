@@ -46,10 +46,10 @@ class MyHomePage extends StatelessWidget {
                     'Woohoo Snowboarding is awesome! #snowboarding #winter @sacha',
               },
             ),
-            onClickMention: (String? mention) {
+            onMentionTap: (String? mention) {
               print(mention);
             },
-            onClickHashtag: (String? hashtag) {
+            onHashtagTap: (String? hashtag) {
               print(hashtag);
             },
           ),

@@ -26,7 +26,7 @@ class TagDetector {
   static String buildRegex() =>
       Tag.values.map((tag) => tag.toRegEx()).join('|');
 
-  List<TaggedText> parseText(String text) {
+  List<TaggedText?> parseText(String text) {
     final tags = regExp.allMatches(text).toList();
     final result = tags
         .map((tag) => TaggedText.fromMap({

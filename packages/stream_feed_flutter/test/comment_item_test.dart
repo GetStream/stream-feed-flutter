@@ -27,10 +27,10 @@ main() {
               'text': 'Snowboarding is awesome! #snowboarding #winter @sacha',
             },
           ),
-          onClickMention: (String? mention) {
+          onMentionTap: (String? mention) {
             pressedMentions.add(mention);
           },
-          onClickHashtag: (String? hashtag) {
+          onHashtagTap: (String? hashtag) {
             pressedHashtags.add(hashtag);
           },
         ),
