@@ -89,7 +89,7 @@ class Image extends Equatable {
     this.height,
     this.type,
     this.alt,
-  });
+  }); //TODO: rename this to OG Image
 
   /// Create a new instance from a json
   factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
