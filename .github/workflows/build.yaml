@@ -60,17 +60,9 @@ jobs:
 
       - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
-          path: packages/stream_feed_flutter/coverage/lcov.info
-          min_coverage: 70  
-      - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
-        with:
           path: packages/stream_feed/coverage/lcov.info
           min_coverage: 82  
       - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
           path: packages/faye_dart/coverage/lcov.info
           min_coverage: 49
-      - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
-        with:
-          path: packages/stream_feed_flutter_core/coverage/lcov.info
-          min_coverage: 70
