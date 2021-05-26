@@ -30,11 +30,13 @@ class CommentFieldState extends State<CommentField> {
               padding: const EdgeInsets.all(8.0),
               child: Avatar(),
             ),
-            TextArea(onSubmitted: (value) {
-              setState(() {
-                text = value;
-              });
-            }),
+            Expanded(
+              child: TextArea(onSubmitted: (value) {
+                setState(() {
+                  text = value;
+                });
+              }),
+            ),
           ],
         ),
         Button(
