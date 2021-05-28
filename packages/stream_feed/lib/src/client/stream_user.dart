@@ -36,10 +36,10 @@ class StreamUser with EquatableMixin {
   /// Create a stream user ref
   String get ref => createUserReference(id);
 
-  Map<String, Object>? _data;
+  Map<String, Object?>? _data;
 
   /// User additional data.
-  Map<String, Object>? get data => _data;
+  Map<String, Object?>? get data => _data;
 
   DateTime? _createdAt;
 
@@ -74,7 +74,7 @@ class StreamUser with EquatableMixin {
   /// Usage
   ///
   /// ```dart
-  /// await user('john-doe').add( {
+  /// await user('john-doe').create( {
   ///   'name': 'John Doe',
   ///   'occupation': 'Software Engineer',
   ///   'gender': 'male',
@@ -82,7 +82,7 @@ class StreamUser with EquatableMixin {
   /// ```
   /// API docs: [adding-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#adding-users)
   Future<StreamUser> create(
-    Map<String, Object> data, {
+    Map<String, Object?> data, {
     bool getOrCreate = false,
   }) async {
     final token =
@@ -93,7 +93,7 @@ class StreamUser with EquatableMixin {
   }
 
   ///Get or Create a new user in stream
-  Future<StreamUser> getOrCreate(Map<String, Object> data) =>
+  Future<StreamUser> getOrCreate(Map<String, Object?> data) =>
       create(data, getOrCreate: true);
 
   /// Delete the user
@@ -139,7 +139,7 @@ class StreamUser with EquatableMixin {
   ///  });
   /// ```
   /// API docs: [updating-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#updating-users)
-  Future<StreamUser> update(Map<String, Object> data) async {
+  Future<StreamUser> update(Map<String, Object?> data) async {
     final token =
         _userToken ?? TokenHelper.buildUsersToken(_secret!, TokenAction.write);
     final user = await _users.update(token, id, data);
