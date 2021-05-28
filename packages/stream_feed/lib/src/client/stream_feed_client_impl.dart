@@ -140,6 +140,20 @@ class StreamFeedClientImpl implements StreamFeedClient {
   late final _subscriptions = <String, _FeedSubscription>{};
 
   @override
+  StreamUser? get currentUser => _currentUser;
+
+  @override
+  Future<StreamUser> setUser(Map<String, Object> data) async {
+    assert(
+      runner == Runner.client,
+      'This method can only be used client-side using a user token',
+    );
+    final body = <String, Object>{...data}..remove('id');
+    await _currentUser!.getOrCreate(body);
+    return _currentUser!;
+  }
+
+  @override
   BatchOperationsClient get batch {
     assert(
       runner == Runner.server,
@@ -276,17 +290,47 @@ class StreamFeedClientImpl implements StreamFeedClient {
   }
 
   @override
-  StreamUser? get currentUser => _currentUser;
+  Future<User> createUser(
+    String id,
+    Map<String, Object?> data, {
+    bool getOrCreate = false,
+  }) {
+    if (runner == Runner.client) {
+      _logger.warning('We advice using `client.createUser` only server-side');
+    }
+    final token =
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
+    return _api.users.add(token, id, data, getOrCreate: getOrCreate);
+  }
 
   @override
-  Future<StreamUser> setUser(Map<String, Object> data) async {
-    assert(
-      runner == Runner.client,
-      'This method can only be used client-side using a user token',
-    );
-    final body = <String, Object>{...data}..remove('id');
-    await _currentUser!.getOrCreate(body);
-    return _currentUser!;
+  Future<User> getUser(String id, {bool withFollowCounts = false}) {
+    if (runner == Runner.client) {
+      _logger.warning('We advice using `client.getUser` only server-side');
+    }
+    final token =
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
+    return _api.users.get(token, id, withFollowCounts: withFollowCounts);
+  }
+
+  @override
+  Future<User> updateUser(String id, Map<String, Object?> data) {
+    if (runner == Runner.client) {
+      _logger.warning('We advice using `client.updateUser` only server-side');
+    }
+    final token =
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
+    return _api.users.update(token, id, data);
+  }
+
+  @override
+  Future<void> deleteUser(String id) {
+    if (runner == Runner.client) {
+      _logger.warning('We advice using `client.deleteUser` only server-side');
+    }
+    final token =
+        userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
+    return _api.users.delete(token, id);
   }
 }
 

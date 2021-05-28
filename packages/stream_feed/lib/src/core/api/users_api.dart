@@ -15,7 +15,7 @@ class UsersAPI {
   Future<User> add(
     Token token,
     String id,
-    Map<String, Object> data, {
+    Map<String, Object?> data, {
     bool getOrCreate = false,
   }) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
@@ -45,7 +45,7 @@ class UsersAPI {
   }
 
   ///Update the user
-  Future<User> update(Token token, String id, Map<String, Object> data) async {
+  Future<User> update(Token token, String id, Map<String, Object?> data) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final updatedUser = User(id: id, data: data);
     final result = await _client.put(
