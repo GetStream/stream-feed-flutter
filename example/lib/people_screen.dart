@@ -16,7 +16,7 @@ class PeopleScreen extends StatefulWidget {
 class _PeopleScreenState extends State<PeopleScreen> {
   @override
   Widget build(BuildContext context) {
-    final users = List.from(appUsers)
+    final users = List<AppUser>.from(appUsers)
       ..removeWhere((it) => it.id == widget.currentUser.id);
     final _client = context.client;
 
