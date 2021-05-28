@@ -149,8 +149,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
       'This method can only be used client-side using a user token',
     );
     final body = <String, Object>{...data}..remove('id');
-    await _currentUser!.getOrCreate(body);
-    return _currentUser!;
+    return _currentUser!.getOrCreate(body);
   }
 
   @override
