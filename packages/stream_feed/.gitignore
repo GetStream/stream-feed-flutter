@@ -1,5 +1,3 @@
-# Ignoring generated files, as they pollute pull requests and can create merge conflicts
-
 # Miscellaneous
 *.class
 *.log
@@ -73,11 +71,3 @@ build/
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
-follow_stats.dart
-collections.dart
-reactions.dart
-personalized_feed.dart
-track_engagement.dart
-track_impression.dart
-users.dart
-file_upload.dart

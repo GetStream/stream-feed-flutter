@@ -14,7 +14,7 @@ class TimelineScreen extends StatefulWidget {
 }
 
 class _TimelineScreenState extends State<TimelineScreen> {
-  late StreamClient _client;
+  late StreamFeedClient _client;
   bool _isLoading = true;
   List<Activity> activities = <Activity>[];
 

@@ -8,13 +8,15 @@
   <a href="https://codecov.io/gh/GetStream/stream-feed-flutter"><img src="https://codecov.io/gh/GetStream/stream-feed-flutter/branch/master/graph/badge.svg?token=ht6M92zRXx" alt="codecov"></a>
    <a href="https://github.com/invertase/melos"><img alt="melos" src="https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square"></a>
 </p>
-
-![dart activity feed](./images/githubhero.png)
+<p align="center">
+<img src="./images/flutter_feeds_beta_1.png" alt="Stream Feed Activity Feed cover image" />
+</p>
 
 **🔗 Quick Links**
 
-- [Register](https://getstream.io/activity-feeds/trial/) to get an API key for Stream Activity Feeds
-- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/)
+- [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
+- [Tutorial](https://getstream.io/activity-feed/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
+- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/) to jumpstart your design with notifications and social feeds
 
 ## 🛠 Installation
 
@@ -27,7 +29,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  stream_feed: ^0.0.1
+  stream_feed: ^[latest-version]
 ```
 #### Using with Flutter
 
@@ -48,10 +50,10 @@ const apiKey = 'my-API-key';
 const secret = 'my-API-secret';
 
 // Instantiate a new client (server side)
-var client = StreamClient.connect(apiKey, secret: secret);
+var client = StreamFeedClient.connect(apiKey, secret: secret);
 
 // Optionally supply the app identifier and an options object specifying the data center to use and timeout for requests (15s)
-client = StreamClient.connect(apiKey,
+client = StreamFeedClient.connect(apiKey,
       secret: secret,
       appId: 'yourappid',
       options: StreamHttpClientOptions(
@@ -68,7 +70,7 @@ final userToken = client.frontendToken('the-user-id');
 
 ```dart
 // Instantiate new client with a user token
-var client = StreamClient.connect(apiKey, token: Token('userToken'));
+var client = StreamFeedClient.connect(apiKey, token: Token('userToken'));
 ```
 
 ### 🔮 Examples
@@ -228,12 +230,12 @@ await client.flatFeed('user', 'ken').updateActivityToTargets('foreign_id:1234', 
 
 ### Realtime (Faye)
 
-Stream uses [Faye](http://faye.jcoglan.com) for realtime notifications. Below is quick guide to subscribing to feed changes
+Stream uses [Faye](https://faye.jcoglan.com) for realtime notifications. Below is quick guide to subscribing to feed changes
 
 ```dart
 
 // ⚠️ userToken is generated server-side (see previous section)
-final client = StreamClient.connect('YOUR_API_KEY', token: userToken,appId: 'APP_ID');
+final client = StreamFeedClient.connect('YOUR_API_KEY', token: userToken,appId: 'APP_ID');
 final user1 = client.flatFeed('user', '1');
 
 // subscribe to the changes
@@ -273,7 +275,7 @@ See the [github action configuration](.github/workflows/build.yaml) for details 
 
 See extensive at [test documentation](test/README.md) for your changes.
 
-You can find generic API documentation enriched by code snippets from this package at http://getstream.io/docs/?language=dart
+You can find generic API documentation enriched by code snippets from this package at https://getstream.io/activity-feeds/docs/flutter-dart/?language=dart
 
 ## Copyright and License Information
 

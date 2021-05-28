@@ -36,16 +36,14 @@ jobs:
       - name: Add feed apiKey to env
         run: echo "apiKey="${{ secrets.APIKEY }}"" >> $GITHUB_ENV
 
-      - run: dart pub global activate melos
+      - name: Activate melos
+        run: dart pub global activate melos
 
       - name: Install dependencies
         run: melos bootstrap
 
       - name: Check format
         run: melos run format
-
-      - name: Generate models
-        run: melos run generate
       
       - name: Analyze
         run: melos run analyze
@@ -53,8 +51,13 @@ jobs:
       - name: Run tests
         run: melos run test
 
+      - name: Pub dry run
+        if: github.ref == 'refs/heads/master'
+        run: melos run dryrun
+            
       - name: Post Codecov report
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
       - uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
           path: packages/stream_feed/coverage/lcov.info

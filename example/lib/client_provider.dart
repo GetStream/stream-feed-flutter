@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stream_feed/stream_feed.dart';
 
@@ -9,7 +8,7 @@ class ClientProvider extends InheritedWidget {
     required Widget child,
   }) : super(key: key, child: child);
 
-  final StreamClient client;
+  final StreamFeedClient client;
 
   static ClientProvider of(BuildContext context) {
     final client = context.dependOnInheritedWidgetOfExactType<ClientProvider>();

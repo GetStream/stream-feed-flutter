@@ -18,6 +18,17 @@ import 'utils.dart';
 
 void main() {
   group('EnrichmentFlags', () {
+    test('combination', () {
+      final flags = EnrichmentFlags()
+          .withReactionCounts()
+          .withOwnReactions()
+          .withRecentReactions();
+      expect(flags.params, {
+        'with_reaction_counts': true,
+        'with_own_reactions': true,
+        'with_recent_reactions': true
+      });
+    });
     test('withOwnChildren', () {
       final withOwnChildren = EnrichmentFlags().withOwnChildren();
       expect(withOwnChildren.params, {'with_own_children': true});
@@ -113,6 +124,14 @@ void main() {
         'following_slugs': 'user,news',
       });
     });
+  });
+
+  test('EnrichedActivity issue 61', () {
+    final enrichedActivity = EnrichedActivity.fromJson(
+        jsonFixture('enriched_activity_issue61.json'));
+    expect(enrichedActivity.latestReactions, isNotNull);
+    expect(enrichedActivity.ownReactions, isNotNull);
+    expect(enrichedActivity.reactionCounts, isNotNull);
   });
   test('EnrichedActivity', () {
     final reaction1 = Reaction(
