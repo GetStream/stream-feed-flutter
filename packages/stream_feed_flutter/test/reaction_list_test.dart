@@ -10,31 +10,32 @@ main() {
       var pressedHashtags = <String?>[];
       var pressedMentions = <String?>[];
       var pressedReactions = <Reaction?>[];
-
+      var pressedUsers = <User?>[];
+      final reactions = [
+        Reaction(
+          createdAt: DateTime.now(),
+          kind: 'comment',
+          data: {
+            'text':
+                'Woohoo Snowboarding is awesome! #snowboarding #winter @sacha',
+          },
+        ),
+        Reaction(
+          createdAt: DateTime.now(),
+          kind: 'comment',
+          data: {
+            'text': 'Ikr! #vacations #winter @sahil',
+          },
+        ),
+      ];
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
         body: ReactionList(
-          onReactionTap: (reaction) => pressedReactions.add(reaction),
-          onMentionTap: (mention) => pressedMentions.add(mention),
-          onHashtagTap: (hashtag) => pressedHashtags.add(hashtag),
-          reactions: [
-            Reaction(
-              createdAt: DateTime.now(),
-              kind: 'comment',
-              data: {
-                'text':
-                    'Woohoo Snowboarding is awesome! #snowboarding #winter @sacha',
-              },
-            ),
-            Reaction(
-              createdAt: DateTime.now(),
-              kind: 'comment',
-              data: {
-                'text': 'Ikr! #vacations #winter @sahil',
-              },
-            ),
-          ],
-        ),
+            onUserTap: (user) => pressedUsers.add(user),
+            onReactionTap: (reaction) => pressedReactions.add(reaction),
+            onMentionTap: (mention) => pressedMentions.add(mention),
+            onHashtagTap: (hashtag) => pressedHashtags.add(hashtag),
+            reactions: reactions),
       )));
 
       final avatar = find.byType(Avatar);
@@ -62,8 +63,14 @@ main() {
       await tester.tap(find.widgetWithText(InkWell, ' @sacha').first);
       await tester.tap(find.widgetWithText(InkWell, ' #vacations').first);
       await tester.tap(find.widgetWithText(InkWell, ' @sahil').first);
+      final firstReaction = find.byType(InkWell).first;
+      final firstReactionUser = find.byType(Avatar).first;
+      await tester.tap(firstReaction);
+      await tester.tap(firstReactionUser);
       expect(pressedHashtags, ['winter', 'vacations']);
       expect(pressedMentions, ['sacha', 'sahil']);
+      expect(pressedReactions, [reactions.first]);
+      expect(pressedUsers, [reactions.first.user]);
     });
   });
 }
