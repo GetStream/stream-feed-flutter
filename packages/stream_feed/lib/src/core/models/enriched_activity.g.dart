@@ -28,7 +28,7 @@ EnrichedActivity _$EnrichedActivityFromJson(Map json) {
       (k, e) => MapEntry(k as String, e as Object),
     ),
     reactionCounts: (json['reaction_counts'] as Map?)?.map(
-      (k, e) => MapEntry(k as String, e as Object),
+      (k, e) => MapEntry(k as String, e as int),
     ),
     ownReactions: (json['own_reactions'] as Map?)?.map(
       (k, e) => MapEntry(

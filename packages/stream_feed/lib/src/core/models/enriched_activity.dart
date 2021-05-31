@@ -123,7 +123,7 @@ class EnrichedActivity extends Equatable {
 
   /// Include reaction counts to activities.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
-  final Map<String, Object>? reactionCounts;
+  final Map<String, int>? reactionCounts;
 
   /// Include reactions added by current user to all activities.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
