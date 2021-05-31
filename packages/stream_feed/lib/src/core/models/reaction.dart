@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed/src/core/util/serializer.dart';
 
 import 'package:stream_feed/src/core/models/feed_id.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 part 'reaction.g.dart';
 
@@ -67,7 +68,7 @@ class Reaction extends Equatable {
 
   /// User of the reaction
   @JsonKey(includeIfNull: false)
-  final Map<String, Object>? user;
+  final User? user;
 
   /// Extra Data of the target Feed
   @JsonKey(includeIfNull: false)
@@ -112,7 +113,7 @@ class Reaction extends Equatable {
     DateTime? createdAt,
     DateTime? updatedAt,
     List<FeedId>? targetFeeds,
-    Map<String, Object>? user,
+    User? user,
     Map<String, Object>? targetFeedsExtraData,
     Map<String, Object>? data,
     Map<String, List<Reaction>>? latestChildren,
