@@ -299,7 +299,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
     }
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
-    return _api.users.add(token, id, data, getOrCreate: getOrCreate);
+    return _api.users.create(token, id, data, getOrCreate: getOrCreate);
   }
 
   @override

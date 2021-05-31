@@ -12,7 +12,7 @@ class UsersAPI {
   final StreamHttpClient _client;
 
   /// Create a new user
-  Future<User> add(
+  Future<User> create(
     Token token,
     String id,
     Map<String, Object?> data, {
