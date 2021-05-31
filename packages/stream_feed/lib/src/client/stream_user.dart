@@ -87,7 +87,7 @@ class StreamUser with EquatableMixin {
   }) async {
     final token =
         _userToken ?? TokenHelper.buildUsersToken(_secret!, TokenAction.write);
-    final user = await _users.add(token, id, data, getOrCreate: getOrCreate);
+    final user = await _users.create(token, id, data, getOrCreate: getOrCreate);
     _enrichUser(user);
     return this;
   }

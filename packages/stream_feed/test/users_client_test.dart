@@ -26,10 +26,10 @@ void main() {
         'gender': 'male',
       };
       const user = User(id: id, data: data);
-      when(() => api.add(token, id, data, getOrCreate: true))
+      when(() => api.create(token, id, data, getOrCreate: true))
           .thenAnswer((_) async => user);
       await client.getOrCreate(data);
-      verify(() => api.add(token, id, data, getOrCreate: true)).called(1);
+      verify(() => api.create(token, id, data, getOrCreate: true)).called(1);
     });
     test('add', () async {
       const data = {
@@ -38,9 +38,9 @@ void main() {
         'gender': 'male',
       };
       const user = User(id: id, data: data);
-      when(() => api.add(token, id, data)).thenAnswer((_) async => user);
+      when(() => api.create(token, id, data)).thenAnswer((_) async => user);
       await client.create(data);
-      verify(() => api.add(token, id, data)).called(1);
+      verify(() => api.create(token, id, data)).called(1);
     });
 
     test('delete', () async {
