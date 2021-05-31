@@ -30,31 +30,21 @@ class MyHomePage extends StatelessWidget {
         title: Text("widget.title!"),
       ),
       body: Center(
-        child: Card(
-          child: CommentItem(
-            user: User(data: {
-              'name': 'Rosemary',
-              'subtitle': 'likes playing fresbee in the park',
-              'profile_image':
-                  'https://randomuser.me/api/portraits/women/20.jpg',
-            }),
-            reaction: Reaction(
-              createdAt: DateTime.now(),
-              kind: 'comment',
-              data: {
-                'text':
-                    'Woohoo Snowboarding is awesome! #snowboarding #winter @sacha',
-              },
-            ),
-            onMentionTap: (String? mention) {
-              print(mention);
-            },
-            onHashtagTap: (String? hashtag) {
-              print(hashtag);
+          child: ReactionList(
+        onReactionTap: (reaction) => print(reaction),
+        onMentionTap: (mention) => print("mention $mention"),
+        onHashtagTap: (hashtag) => print("hashtag $hashtag"),
+        reactions: [
+          Reaction(
+            createdAt: DateTime.now(),
+            kind: 'comment',
+            data: {
+              'text':
+                  'Woohoo Snowboarding is awesome! #snowboarding #winter @sacha',
             },
           ),
-        ),
-      ),
+        ],
+      )),
     );
   }
 }

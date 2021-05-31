@@ -30,7 +30,7 @@ class ReactionList extends StatelessWidget {
                 onReactionTap?.call(reactions[idx]);
               },
               child: CommentItem(
-                // user: getUser(reactions[idx].userId),//TODO: we probably need an EnrichedReaction here to get user instead of Reaction
+                user: reactions[idx].user,
                 reaction: reactions[idx],
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,
