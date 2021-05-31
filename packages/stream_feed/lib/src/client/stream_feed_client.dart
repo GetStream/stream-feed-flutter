@@ -11,7 +11,7 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 
 import 'package:stream_feed/src/client/reactions_client.dart';
-import 'package:stream_feed/src/client/user_client.dart';
+import 'package:stream_feed/src/client/stream_user.dart';
 import 'package:stream_feed/src/client/stream_feed_client_impl.dart';
 
 /// Different sides on which you can run this [StreamFeedClient] on
@@ -63,6 +63,12 @@ abstract class StreamFeedClient {
         runner: runner,
       );
 
+  /// Returns the currentUser assigned to [StreamFeedClient]
+  StreamUser? get currentUser;
+
+  /// Set data for the [currentUser] assigned to [StreamFeedClient]
+  Future<StreamUser> setUser(Map<String, Object> data);
+
   /// Convenient getter for [BatchOperationsClient]
   BatchOperationsClient get batch;
 
@@ -79,7 +85,7 @@ abstract class StreamFeedClient {
   /// Convenient getter for [UsersClient]:
   ///
   /// {@macro user}
-  UserClient user(String userId);
+  StreamUser user(String userId);
 
   /// Convenient getter for [PersonalizationClient]:
   ///
@@ -136,9 +142,49 @@ abstract class StreamFeedClient {
   /// ```
   Future<OpenGraphData> og(String targetUrl);
 
+  /// Create a new user in stream
   ///
-  UserClient? get currentUser;
+  /// Usage
+  ///
+  /// ```dart
+  /// await createUser('john-doe', {
+  ///   'name': 'John Doe',
+  ///   'occupation': 'Software Engineer',
+  ///   'gender': 'male',
+  /// });
+  /// ```
+  /// API docs: [adding-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#adding-users)
+  Future<User> createUser(
+    String id,
+    Map<String, Object?> data, {
+    bool getOrCreate = false,
+  });
 
-  ///
-  Future<User> setUser(Map<String, Object> data);
+  /// Get the user data
+  /// Usage
+  /// ```dart
+  /// await getUser('123');
+  /// ```
+  /// API docs: [retrieving-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#retrieving-users)
+  Future<User> getUser(String id, {bool withFollowCounts = false});
+
+  /// Update the user
+  /// # Usage:
+  /// ```dart
+  ///   await updateUser('123', {
+  ///    'name': 'Jane Doe',
+  ///    'occupation': 'Software Engineer',
+  ///    'gender': 'female',
+  ///  });
+  /// ```
+  /// API docs: [updating-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#updating-users)
+  Future<User> updateUser(String id, Map<String, Object?> data);
+
+  /// Delete the user
+  /// Usage:
+  ///```dart
+  ///await deleteUser('123');
+  ///```
+  ///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
+  Future<void> deleteUser(String id);
 }
