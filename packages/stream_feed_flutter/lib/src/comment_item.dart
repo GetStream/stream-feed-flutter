@@ -12,13 +12,12 @@ class CommentItem extends StatelessWidget {
   final OnHashtagTap? onHashtagTap;
   final OnUserTap? onUserTap;
 
-  const CommentItem({
-    required this.reaction,
-    this.user,
-    this.onMentionTap,
-    this.onHashtagTap,
-    this.onUserTap
-  });
+  const CommentItem(
+      {required this.reaction,
+      this.user,
+      this.onMentionTap,
+      this.onHashtagTap,
+      this.onUserTap});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,9 @@ class CommentItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Padding(padding: const EdgeInsets.all(8.0), child: Avatar(user: user, onUserTap: onUserTap)),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Avatar(user: user, onUserTap: onUserTap)),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
