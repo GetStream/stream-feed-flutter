@@ -32,10 +32,17 @@ class MyHomePage extends StatelessWidget {
       body: Center(
           child: ReactionList(
         onReactionTap: (reaction) => print(reaction),
+        onUserTap: (user) => print(user),
         onMentionTap: (mention) => print("mention $mention"),
         onHashtagTap: (hashtag) => print("hashtag $hashtag"),
         reactions: [
           Reaction(
+            user: User(
+              data: {
+                'name': 'Sloan Humfrey',
+                'profile_image': 'https://picsum.photos/id/237/200/300',
+              },
+            ),
             createdAt: DateTime.now(),
             kind: 'comment',
             data: {

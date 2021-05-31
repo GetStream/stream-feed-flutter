@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'utils/extensions.dart';
-
-typedef OnMentionTap = void Function(String? mention);
-typedef OnHashtagTap = void Function(String? hashtag);
 
 class CommentItem extends StatelessWidget {
   final User? user;
   final Reaction reaction;
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
+  final OnUserTap? onUserTap;
 
   const CommentItem({
     required this.reaction,
     this.user,
     this.onMentionTap,
     this.onHashtagTap,
+    this.onUserTap
   });
 
   @override
@@ -29,7 +29,7 @@ class CommentItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Padding(padding: const EdgeInsets.all(8.0), child: Avatar(user: user)),
+        Padding(padding: const EdgeInsets.all(8.0), child: Avatar(user: user, onUserTap: onUserTap)),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

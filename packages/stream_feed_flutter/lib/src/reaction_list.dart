@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'comment_item.dart';
-
-typedef OnReactionTap = void Function(Reaction? reaction);
 
 class ReactionList extends StatelessWidget {
   final List<Reaction> reactions;
@@ -10,6 +9,7 @@ class ReactionList extends StatelessWidget {
   final OnReactionTap? onReactionTap;
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;
+  final OnUserTap? onUserTap;
 
   const ReactionList({
     Key? key,
@@ -18,6 +18,7 @@ class ReactionList extends StatelessWidget {
     this.onReactionTap,
     this.onHashtagTap,
     this.onMentionTap,
+    this.onUserTap,
   }) : super(key: key);
 
   @override
@@ -30,11 +31,11 @@ class ReactionList extends StatelessWidget {
                 onReactionTap?.call(reactions[idx]);
               },
               child: CommentItem(
-                user: reactions[idx].user,
-                reaction: reactions[idx],
-                onHashtagTap: onHashtagTap,
-                onMentionTap: onMentionTap,
-              ),
+                  user: reactions[idx].user,
+                  reaction: reactions[idx],
+                  onHashtagTap: onHashtagTap,
+                  onMentionTap: onMentionTap,
+                  onUserTap: onUserTap),
             ));
   }
 
