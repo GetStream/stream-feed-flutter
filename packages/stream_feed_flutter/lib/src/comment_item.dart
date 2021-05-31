@@ -110,7 +110,7 @@ class _InteractiveText extends StatelessWidget {
         case Tag.hashtag:
           return InkWell(
             onTap: () {
-              onMentionTap?.call(tagged!.text?.trim().replaceFirst('#', ''));
+              onHashtagTap?.call(tagged!.text?.trim().replaceFirst('#', ''));
             },
             child: Text(tagged!.text!, style: tagged!.tag.style()),
           );
