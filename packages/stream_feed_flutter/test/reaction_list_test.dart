@@ -60,10 +60,10 @@ main() {
 
       await tester.tap(find.widgetWithText(InkWell, ' #winter').first);
       await tester.tap(find.widgetWithText(InkWell, ' @sacha').first);
-       await tester.tap(find.widgetWithText(InkWell, ' #vacations').first);
+      await tester.tap(find.widgetWithText(InkWell, ' #vacations').first);
       await tester.tap(find.widgetWithText(InkWell, ' @sahil').first);
-      expect(pressedHashtags, ['winter','vacations']);
-      expect(pressedMentions, ['sacha','sahil']);
+      expect(pressedHashtags, ['winter', 'vacations']);
+      expect(pressedMentions, ['sacha', 'sahil']);
     });
   });
 }
