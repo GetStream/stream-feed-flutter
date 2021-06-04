@@ -7,8 +7,15 @@ class CommentField extends StatefulWidget {
   final EnrichedActivity activity;
   final List<FeedId>? targetFeeds;
 
-  CommentField({Key? key, required this.activity, this.targetFeeds})
-      : super(key: key);
+  ///The feed group part of the feed
+  final String feedGroup;
+
+  CommentField({
+    Key? key,
+    required this.activity,
+    this.targetFeeds,
+    required this.feedGroup,
+  }) : super(key: key);
 
   @override
   CommentFieldState createState() => CommentFieldState();
@@ -46,7 +53,8 @@ class CommentFieldState extends State<CommentField> {
                   kind: 'comment',
                   activity: widget.activity,
                   data: {'text': text},
-                  targetFeeds: widget.targetFeeds);
+                  targetFeeds: widget.targetFeeds,
+                  feedGroup: widget.feedGroup);
             },
             type: ButtonType.faded)
       ],

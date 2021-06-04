@@ -33,6 +33,7 @@ void main() {
         client: mockClient,
         child: CommentField(
           key: key,
+          feedGroup: 'whatever',
           activity: EnrichedActivity(id: activityId),
         ),
       ),

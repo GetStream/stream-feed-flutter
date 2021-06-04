@@ -36,17 +36,28 @@ class StreamFeedCore extends StatefulWidget {
   ///
   /// [StreamFeedCore] is a stateful widget which reacts to system events and
   /// updates Stream's connection status accordingly.
-  const StreamFeedCore({
-    Key? key,
-    required this.client,
-    required this.child,
-    // this.onBackgroundEventReceived,
-    // this.backgroundKeepAlive = const Duration(minutes: 1),
-  }) : super(key: key);
+  const StreamFeedCore(
+      {Key? key,
+      required this.client,
+      required this.child,
+      this.trackAnalytics = false,
+      // required this.feedGroup,
+      this.analyticsLocation,
+      this.analyticsClient})
+      : super(key: key);
 
-  /// Instance of Stream Chat Client containing information about the current
+  /// Instance of Stream Feed Client containing information about the current
   /// application.
   final StreamFeedClient client;
+
+  final StreamAnalytics? analyticsClient;
+
+  ///wether or not you want to track analytics in your app (can be useful for customised feeds via ML)
+  final bool trackAnalytics;
+
+  /// The location that should be used for analytics when liking in the feed,
+  /// this is only useful when you have analytics enabled for your app.
+  final String? analyticsLocation;
 
   /// Widget descendant.
   final Widget child;
@@ -56,16 +67,16 @@ class StreamFeedCore extends StatefulWidget {
 
   /// Use this method to get the current [StreamFeedCoreState] instance
   static StreamFeedCoreState of(BuildContext context) {
-    StreamFeedCoreState? StreamFeedState;
+    StreamFeedCoreState? streamFeedState;
 
-    StreamFeedState = context.findAncestorStateOfType<StreamFeedCoreState>();
+    streamFeedState = context.findAncestorStateOfType<StreamFeedCoreState>();
 
     assert(
-      StreamFeedState != null,
+      streamFeedState != null,
       'You must have a StreamFeed widget at the top of your widget tree',
     );
 
-    return StreamFeedState!;
+    return streamFeedState!;
   }
 }
 
@@ -83,16 +94,35 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   /// The current user
   UserClient? get user => client.currentUser;
 
-  Future<void> onAddReaction({
-    Map<String, Object>? data,
-    required String kind,
-    required EnrichedActivity activity,
-    List<FeedId>? targetFeeds,
-  }) async {
+  StreamAnalytics? get analyticsClient => widget.analyticsClient;
+
+  Future<void> onAddReaction(
+      {Map<String, Object>? data,
+      required String kind,
+      required EnrichedActivity activity,
+      List<FeedId>? targetFeeds,
+      required String feedGroup}) async {
     await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
-    //TODO: trackAnalytics
+    await trackAnalytics(label: kind, activity: activity, feedGroup: feedGroup);
     // return reaction;
+  }
+
+  Future<void> onRemoveReaction(
+      {required String kind,
+      required Activity activity,
+      required String id}) async {
+    await client.reactions.delete(id);
+  }
+
+  Future<void> trackAnalytics(
+      {required String label,
+      required EnrichedActivity activity,
+      required String feedGroup}) async {
+    await analyticsClient!.trackEngagement(Engagement(
+        content: Content(foreignId: FeedId.fromId(activity.foreignId)),
+        label: label,
+        feedId: FeedId.fromId(feedGroup)));
   }
 
   @override
