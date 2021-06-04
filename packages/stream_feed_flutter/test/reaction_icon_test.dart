@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
-// import 'package:test/test.dart';
 
 void main() {
   group('ReactionIcon', () {
@@ -20,12 +19,14 @@ void main() {
       await screenMatchesGolden(tester, 'repost');
     });
 
-    testWidgets("repost on tap", (tester) async {
+    testWidgets('onTap', (tester) async {
+      var tapped = 0;
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
         body: ReactionIcon(
           icon: StreamSvgIcon.repost(),
           count: 23,
+          onTap: () => tapped++,
         ),
       )));
 
@@ -34,6 +35,9 @@ void main() {
       final count = find.text('23');
       expect(count, findsOneWidget);
       expect(activeIcon.assetName, StreamSvgIcon.repost().assetName);
+
+      await tester.tap(find.byType(InkWell));
+      expect(tapped, 1);
     });
   });
 }
