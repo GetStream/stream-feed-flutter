@@ -3,6 +3,7 @@ import 'package:stream_feed_flutter/src/reaction_icon.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ReactionToggleIcon extends StatelessWidget {
+  //TODO stateful with already reacted
   final List<Reaction>? ownReactions;
   final Widget activeIcon;
   final Widget inactiveIcon;
@@ -56,7 +57,6 @@ class ReactionToggleIcon extends StatelessWidget {
             activity: activity,
             id: myReactions.last.id!,
             feedGroup: feedGroup)
-            
         : await streamFeed.onAddReaction(
             kind: kind,
             activity: activity,
