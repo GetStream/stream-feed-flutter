@@ -8,11 +8,13 @@ class ReactionToggleIcon extends StatelessWidget {
   final Widget inactiveIcon;
   final String kind;
   final int? count;
+  final VoidCallback? onTap;
 
   ReactionToggleIcon({
     required this.activeIcon,
     required this.inactiveIcon,
     required this.kind,
+    this.onTap,
     this.ownReactions,
     this.count,
   });
@@ -23,6 +25,10 @@ class ReactionToggleIcon extends StatelessWidget {
         ? activeIcon
         : inactiveIcon;
 
-    return ReactionIcon(icon: icon, count: count);
+    return ReactionIcon(
+      icon: icon,
+      count: count,
+      onTap: onTap,
+    );
   }
 }
