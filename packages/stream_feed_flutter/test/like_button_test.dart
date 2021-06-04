@@ -8,6 +8,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
       body: LikeButton(
+        activity: EnrichedActivity(),//TODO: put actual fields in this, notes: look into checks in llc reactions
+        // .add and .delete
         reaction: Reaction(kind: 'like', childrenCounts: {
           'like': 3
         }, ownChildren: {

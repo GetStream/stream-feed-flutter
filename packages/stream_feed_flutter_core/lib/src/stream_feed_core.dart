@@ -105,14 +105,16 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
     await trackAnalytics(label: kind, activity: activity, feedGroup: feedGroup);
-    // return reaction;
   }
 
   Future<void> onRemoveReaction(
       {required String kind,
-      required Activity activity,
-      required String id}) async {
+      required EnrichedActivity activity,
+      required String id,
+      required String feedGroup}) async {
     await client.reactions.delete(id);
+    await trackAnalytics(
+        label: 'un$kind', activity: activity, feedGroup: feedGroup);
   }
 
   Future<void> trackAnalytics(

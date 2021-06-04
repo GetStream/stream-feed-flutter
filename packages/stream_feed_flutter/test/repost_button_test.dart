@@ -7,6 +7,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
       body: RepostButton(
+        activity: EnrichedActivity(),//TODO: put actual fields in this, notes: look into checks in llc reactions
+        // .add and .delete
         reaction: Reaction(kind: 'repost', childrenCounts: {
           'repost': 3
         }, ownChildren: {

@@ -13,6 +13,8 @@ void main() {
         ..addScenario(
             'without own reactions',
             ReactionToggleIcon(
+              activity: EnrichedActivity(),//TODO: put actual fields in this, notes: look into checks in llc reactions
+        // .add and .delete
                 kind: 'like',
                 count: 1300,
                 inactiveIcon: StreamSvgIcon.loveInactive(),
@@ -20,6 +22,8 @@ void main() {
         ..addScenario(
             'with own reactions',
             ReactionToggleIcon(
+              activity: EnrichedActivity(),//TODO: put actual fields in this, notes: look into checks in llc reactions
+        // .add and .delete
                 kind: 'like',
                 count: 1300,
                 ownReactions: [Reaction(kind: 'like')],
