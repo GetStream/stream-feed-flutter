@@ -144,7 +144,12 @@ Future<void> main() async {
           )).thenAnswer((_) async => Response(
               data: {
                 'results': [
-                  {'feed_id': 'feedId', 'target_id': 'targetId'}
+                  {
+                    'feed_id': 'feedId',
+                    'target_id': 'targetId',
+                    'created_at': '2021-05-14T19:58:27.274792063Z',
+                    'updated_at': '2021-05-14T19:58:27.274792063Z'
+                  }
                 ]
               },
               requestOptions: RequestOptions(

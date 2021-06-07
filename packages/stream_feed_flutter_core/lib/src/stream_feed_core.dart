@@ -40,8 +40,6 @@ class StreamFeedCore extends StatefulWidget {
     Key? key,
     required this.client,
     required this.child,
-    // this.onBackgroundEventReceived,
-    // this.backgroundKeepAlive = const Duration(minutes: 1),
   }) : super(key: key);
 
   /// Instance of Stream Chat Client containing information about the current
@@ -50,15 +48,6 @@ class StreamFeedCore extends StatefulWidget {
 
   /// Widget descendant.
   final Widget child;
-
-  /// The amount of time that will pass before disconnecting the client in
-  /// the background
-  // final Duration backgroundKeepAlive;
-
-  /// Handler called whenever the [client] receives a new [Event] while the app
-  /// is in background. Can be used to display various notifications depending
-  /// upon the [Event.type]
-  // final EventHandler? onBackgroundEventReceived;
 
   @override
   StreamFeedCoreState createState() => StreamFeedCoreState();
@@ -90,10 +79,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   Widget build(BuildContext context) => widget.child;
 
   /// The current user
-  UserClient? get user => client.currentUser;
-
-  /// The current user as a stream
-  // Stream<User?> get userStream => client.state.userStream;
+  StreamUser? get user => client.currentUser;
 
   @override
   void initState() {
@@ -102,37 +88,6 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }
 
   StreamSubscription? _eventSubscription;
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // if (user != null) {
-    //   if (state == AppLifecycleState.paused) {
-    //     if (widget.onBackgroundEventReceived == null) {
-    //       client.disconnect();
-    //       return;
-    //     }
-    //     _eventSubscription = client.on().listen(
-    //           widget.onBackgroundEventReceived,
-    //         );
-
-    //     void onTimerComplete() {
-    //       _eventSubscription?.cancel();
-    //       client.disconnect();
-    //     }
-
-    //     _disconnectTimer = Timer(widget.backgroundKeepAlive, onTimerComplete);
-    //   } else if (state == AppLifecycleState.resumed) {
-    //     if (_disconnectTimer?.isActive == true) {
-    //       _eventSubscription?.cancel();
-    //       _disconnectTimer?.cancel();
-    //     } else {
-    //       if (client.wsConnectionStatus == ConnectionStatus.disconnected) {
-    //         client.connect();
-    //       }
-    //     }
-    //   }
-    // }
-  }
 
   @override
   void dispose() {
