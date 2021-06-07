@@ -12,37 +12,35 @@ void main() {
       final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
         ..addScenario(
             'without own reactions',
-            Expanded(
-              child: ReactionToggleIcon(
-                  activity:
-                      EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
-                  // .add and .delete
-                  kind: 'like',
-                  count: 1300,
-                  ownReactions: [Reaction(kind: 'like')],
-                  inactiveIcon: StreamSvgIcon.loveInactive(),
-                  activeIcon: StreamSvgIcon.loveInactive()),
-            ))
+            ReactionToggleIcon(
+                activity:
+                    EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
+                // .add and .delete
+                kind: 'like',
+                count: 1300,
+                // ownReactions: [Reaction(kind: 'like')],
+                inactiveIcon: StreamSvgIcon.loveInactive(),
+                activeIcon: StreamSvgIcon.loveInactive()))
         ..addScenario(
             'with own reactions',
-            Expanded(
-              child: ReactionToggleIcon(
-                  activity: EnrichedActivity(ownReactions: {
-                    'like': [Reaction()]
-                  }), //TODO: put actual fields in this, notes: look into checks in llc reactions
-                  // .add and .delete
-                  kind: 'like',
-                  count: 1300,
-                  ownReactions: [Reaction(kind: 'like')],
-                  inactiveIcon: StreamSvgIcon.loveInactive(),
-                  activeIcon: StreamSvgIcon.loveActive()),
-            ));
+            ReactionToggleIcon(
+                activity: EnrichedActivity(ownReactions: {
+                  'like': [Reaction()]
+                }), //TODO: put actual fields in this, notes: look into checks in llc reactions
+                // .add and .delete
+                kind: 'like',
+                count: 1300,
+                ownReactions: [Reaction(kind: 'like')],
+                inactiveIcon: StreamSvgIcon.loveInactive(),
+                activeIcon: StreamSvgIcon.loveActive()));
 
       await tester.pumpWidgetBuilder(
         builder.build(),
         surfaceSize: const Size(250, 100),
       );
       await screenMatchesGolden(tester, 'reaction_toggle_icon_grid');
+
+      // await tester.tap(find.byType(ReactionIcon));
     });
   });
 }

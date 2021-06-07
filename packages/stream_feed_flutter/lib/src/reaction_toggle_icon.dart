@@ -31,14 +31,14 @@ class ReactionToggleIcon extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final hasReactions = ownReactions != null;
-    final myReactions = ownReactions!.filterByKind(kind);
-    final alreadyReacted = hasReactions && myReactions.isNotEmpty;
+    final myReactions = ownReactions?.filterByKind(kind);
+    final alreadyReacted =
+        ownReactions != null && myReactions?.isNotEmpty != null;
     final displayedIcon = alreadyReacted ? activeIcon : inactiveIcon;
 
     return ReactionIcon(
       icon: displayedIcon,
-      count: count ?? 0,
+      count: count,
       onTap: () async {
         onTap?.call ??
             await onToggleReaction(context, alreadyReacted, myReactions);
@@ -48,14 +48,14 @@ class ReactionToggleIcon extends StatelessWidget {
 
 //TODO: clean this up
   Future<void> onToggleReaction(BuildContext context, bool alreadyReacted,
-      List<Reaction> myReactions) async {
+      List<Reaction>? myReactions) async {
     final streamFeed = StreamFeedCore.of(context);
 
     alreadyReacted
         ? await streamFeed.onRemoveReaction(
             kind: kind,
             activity: activity,
-            id: myReactions.last.id!,
+            id: myReactions!.last.id!,
             feedGroup: feedGroup)
         : await streamFeed.onAddReaction(
             kind: kind,
