@@ -59,6 +59,7 @@ class CommentItem extends StatelessWidget {
                 Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: Wrap(
+                      //TODO: move to Text.rich(WidgetSpans)
                       children: taggedText
                           .map((it) => _InteractiveText(
                                 tagged: it,

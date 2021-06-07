@@ -27,6 +27,7 @@ class ReactionList extends StatelessWidget {
         reverse: reverse ?? false,
         itemCount: reactions.length,
         itemBuilder: (context, idx) => InkWell(
+              //TODO; hmm maybe move this in CommentItem
               onTap: () {
                 onReactionTap?.call(reactions[idx]);
               },
