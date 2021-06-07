@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ReactionIcon extends StatelessWidget {
-  ReactionIcon({this.count, required this.icon, this.onTap});
+  const ReactionIcon({Key? key, this.count, required this.icon, this.onTap})
+      : super(key: key);
   final int? count;
   final Widget icon;
   final VoidCallback? onTap;
