@@ -1,4 +1,4 @@
-import 'package:example/utils/utils.dart';
+import 'extension.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
@@ -8,9 +8,10 @@ import 'add_activity_dialog.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     Key? key,
-    required this.streamUser,
+    required this.currentUser,
   }) : super(key: key);
-  final User streamUser;
+
+  final StreamUser currentUser;
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -25,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadActivities({bool pullToRefresh = false}) async {
     if (!pullToRefresh) setState(() => _isLoading = true);
 
-    final userFeed = _client.flatFeed('user', widget.streamUser.id!);
+    final userFeed = _client.flatFeed('user', widget.currentUser.id);
     final data = await userFeed.getActivities();
     if (!pullToRefresh) _isLoading = false;
     setState(() => activities = data);
@@ -40,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = widget.streamUser;
+    final user = widget.currentUser;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -49,28 +50,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (_) => AddActivityDialog(),
           );
           if (message != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Posting Activity...'),
-              ),
-            );
+            context.showSnackBar('Posting Activity...');
 
             final activity = Activity(
-              actor: user.id,
+              actor: user.ref,
               verb: 'tweet',
               object: '1',
-              extraData: {
-                'tweet': message,
-              },
+              extraData: {'tweet': message},
             );
-            final userFeed = _client.flatFeed('user', user.id!);
+
+            final userFeed = _client.flatFeed('timeline', user.id);
             await userFeed.addActivity(activity);
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Activity Posted...'),
-              ),
-            );
+            context.showSnackBar('Activity Posted...');
             _loadActivities();
           }
         },

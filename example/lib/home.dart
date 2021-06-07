@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 class HomeScreen extends StatefulWidget {
-  final User streamUser;
+  final StreamUser currentUser;
 
-  const HomeScreen({Key? key, required this.streamUser}) : super(key: key);
+  const HomeScreen({Key? key, required this.currentUser}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -31,9 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          TimelineScreen(streamUser: widget.streamUser),
-          ProfileScreen(streamUser: widget.streamUser),
-          PeopleScreen(streamUser: widget.streamUser),
+          TimelineScreen(currentUser: widget.currentUser),
+          ProfileScreen(currentUser: widget.currentUser),
+          PeopleScreen(currentUser: widget.currentUser),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
