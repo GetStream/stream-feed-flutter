@@ -14,8 +14,8 @@ class LikeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactionToggleIcon(
       activity: activity,
-      count: reaction?.childrenCounts?['like'] ??
-          activity.reactionCounts?['like'],
+      count:
+          reaction?.childrenCounts?['like'] ?? activity.reactionCounts?['like'],
       ownReactions:
           reaction?.ownChildren?['like'] ?? activity.ownReactions?['like'],
       activeIcon: StreamSvgIcon.loveActive(),
