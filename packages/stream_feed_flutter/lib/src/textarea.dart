@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TextArea extends StatefulWidget {
-  TextArea(
-      {this.textEditingController,
+  const TextArea(
+      {Key? key,
+      this.textEditingController,
       this.maxHeight = 150,
       this.focusNode,
       this.autofocus = false,
@@ -10,7 +11,8 @@ class TextArea extends StatefulWidget {
       this.inputTextStyle,
       this.hintTextStyle,
       required this.onSubmitted,
-      this.hintText});
+      this.hintText})
+      : super(key: key);
 
   /// The text controller of the TextField
   final TextEditingController? textEditingController;
@@ -29,10 +31,13 @@ class TextArea extends StatefulWidget {
 
   final String? hintText;
 
+  /// The text input style
   final TextStyle? inputTextStyle;
 
+  /// The hint text style
   final TextStyle? hintTextStyle;
 
+  ///  Callback called when the user indicates that they are done editing the text in the field.
   final void Function(String) onSubmitted;
 
   @override
