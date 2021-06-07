@@ -4,4 +4,5 @@ import 'package:mocktail/mocktail.dart';
 class MockReactions extends Mock implements ReactionsClient {}
 
 class MockStreamAnalytics extends Mock implements StreamAnalytics {}
+
 class MockStreamFeedClient extends Mock implements StreamFeedClient {}
