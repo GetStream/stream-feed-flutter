@@ -12,8 +12,11 @@ void main() {
     final key = GlobalKey();
     final mockClient = MockStreamFeedClient();
     final mockReactions = MockReactions();
+    final mockStreamAnalytics = MockStreamAnalytics();
     when(() => mockClient.reactions).thenReturn(mockReactions);
+    const foreignId = 'like:300';
     const activityId = 'activityId';
+    const feedGroup = 'whatever:300';
     const kind = 'comment';
     const textInput = 'Soup';
     const reaction = Reaction(
@@ -21,20 +24,31 @@ void main() {
       activityId: activityId,
       data: {'text': textInput},
     );
+    final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+    const label = kind;
+    final engagement = Engagement(
+        content: Content(foreignId: FeedId.fromId(activity.foreignId)),
+        label: label,
+        feedId: FeedId.fromId(feedGroup));
 
     when(() => mockReactions.add(
           kind,
           activityId,
           data: {'text': textInput},
         )).thenAnswer((_) async => reaction);
+
+    when(() => mockStreamAnalytics.trackEngagement(engagement))
+        .thenAnswer((_) async => Future.value());
+
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
       body: StreamFeedCore(
+        analyticsClient: mockStreamAnalytics,
         client: mockClient,
         child: CommentField(
           key: key,
-          feedGroup: 'whatever',
-          activity: EnrichedActivity(id: activityId),
+          feedGroup: feedGroup,
+          activity: activity,
         ),
       ),
     )));
@@ -55,5 +69,6 @@ void main() {
 
     await tester.tap(button);
     verify(() => mockClient.reactions.add(kind, activityId)).called(1);
+    verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
   });
 }
