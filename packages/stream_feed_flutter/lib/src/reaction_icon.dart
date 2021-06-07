@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ReactionIcon extends StatelessWidget {
-  ReactionIcon({required this.count, required this.icon});
+  const ReactionIcon({required this.count, required this.icon});
+
+  /// The number of likes or reposts this ReactionIcon will display
   final int count;
+
+  ///The reaction icon you want to display
   final Widget icon;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [icon, SizedBox(width: 6), Text('$count')],
+      children: [icon, const SizedBox(width: 6), Text('$count')],
     );
   }
 }
