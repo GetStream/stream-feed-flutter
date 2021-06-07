@@ -5,7 +5,7 @@ class ReactionIcon extends StatelessWidget {
       : super(key: key);
 
   /// The number of likes or reposts this ReactionIcon will display
-  final int count;
+  final int? count;
 
   ///The reaction icon you want to display
   final Widget icon;
@@ -14,7 +14,11 @@ class ReactionIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [icon, const SizedBox(width: 6), Text('$count')],
+      children: [
+        icon,
+        const SizedBox(width: 6),
+        if (count != null) Text('$count')
+      ],
     );
   }
 }
