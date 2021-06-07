@@ -38,7 +38,7 @@ class ReactionToggleIcon extends StatelessWidget {
 
     return ReactionIcon(
       icon: displayedIcon,
-      count: count,
+      count: count ?? 0,
       onTap: () async {
         onTap?.call ??
             await onToggleReaction(context, alreadyReacted, myReactions);
