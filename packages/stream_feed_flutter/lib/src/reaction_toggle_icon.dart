@@ -62,10 +62,12 @@ class ReactionToggleIcon extends StatelessWidget {
             activity: activity,
             data: data,
             feedGroup: feedGroup,
-            targetFeeds: [
-                FeedId.id(
-                    '$feedGroup:$userId'), //'$feedGroup:${userId ?? streamFeed.user?.id}') fixed in master
-                if (targetFeeds != null) ...targetFeeds!
-              ]);
+            // targetFeeds: [
+            //     if (userId != null)
+            //       FeedId.id(
+            //           '$feedGroup:$userId'), //'$feedGroup:${userId ?? streamFeed.user?.id}') fixed in master
+            //     if (targetFeeds != null) ...targetFeeds!
+            //   ]
+              );
   }
 }
