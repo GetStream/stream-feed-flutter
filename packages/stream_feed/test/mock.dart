@@ -40,6 +40,11 @@ class MockUserAPI extends Mock implements UsersAPI {}
 
 class MockFeedAPI extends Mock implements FeedAPI {}
 
-class MockAPI extends Mock implements StreamAPI {}
+class MockAPI extends Mock implements StreamAPI {
+  MockUserAPI? _mockUserAPI;
+
+  @override
+  UsersAPI get users => _mockUserAPI ??= MockUserAPI();
+}
 
 class MultipartFileFake extends Fake implements MultipartFile {}

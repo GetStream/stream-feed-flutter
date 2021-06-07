@@ -7,6 +7,7 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/models/follow_relation.dart';
 import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
@@ -31,8 +32,8 @@ class BatchAPI {
     );
   }
 
-  Future<Response> followMany(
-      Token token, int activityCopyLimit, Iterable<Follow> follows) async {
+  Future<Response> followMany(Token token, int activityCopyLimit,
+      Iterable<FollowRelation> follows) async {
     checkArgument(
         activityCopyLimit >= 0, 'Activity copy limit must be non negative');
 
@@ -46,7 +47,7 @@ class BatchAPI {
   }
 
   Future<Response> unfollowMany(
-      Token token, Iterable<UnFollow> unfollows) async {
+      Token token, Iterable<UnFollowRelation> unfollows) async {
     checkArgument(unfollows.isNotEmpty, 'No feeds to unfollow');
     return _client.post(
       Routes.unfollowManyUrl,
