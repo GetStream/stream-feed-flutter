@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ReactionIcon extends StatelessWidget {
-  const ReactionIcon({Key? key, this.count, required this.icon, this.onTap})
+  const ReactionIcon({Key? key, this.count = 0, required this.icon, this.onTap})
       : super(key: key);
-  final int? count;
+  final int count;
   final Widget icon;
   final VoidCallback? onTap;
 
@@ -11,14 +11,12 @@ class ReactionIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          icon,
-          SizedBox(width: 6),
-          count != null ? Text('$count') : Container()
-        ],
-      ),
+      child: count == 0
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [icon, SizedBox(width: 6), Text('$count')],
+            )
+          : icon,
     );
   }
 }
