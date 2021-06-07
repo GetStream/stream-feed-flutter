@@ -1,7 +1,6 @@
 name: example
 description: A new Flutter application.
 
-
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
@@ -11,10 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.2
+  timeago: ^3.0.2
   stream_feed:
     path: ../packages/stream_feed
-  timeago: ^3.0.2
-  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:

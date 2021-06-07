@@ -27,7 +27,7 @@ class User extends Equatable {
   final String? id;
 
   /// User additional data.
-  final Map<String, Object>? data;
+  final Map<String, Object?>? data;
 
   /// When the user was created.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
