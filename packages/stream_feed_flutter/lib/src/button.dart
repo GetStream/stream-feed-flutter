@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 enum ButtonType { faded, info, primary }
 
 class Button extends StatelessWidget {
+    /// The text that appears on the button
   final String label;
+  /// The callback called when you press the button
   final VoidCallback onPressed;
+  ///If it is a gradient or normal button
   final ButtonType type;
-  Button({required this.label, required this.onPressed, required this.type});
+  Button({
+    Key? key,
+    required this.label,
+    required this.onPressed,
+    required this.type,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     switch (type) {
