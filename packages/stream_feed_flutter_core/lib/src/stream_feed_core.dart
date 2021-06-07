@@ -79,7 +79,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   Widget build(BuildContext context) => widget.child;
 
   /// The current user
-  UserClient? get user => client.currentUser;
+  StreamUser? get user => client.currentUser;
 
   @override
   void initState() {
