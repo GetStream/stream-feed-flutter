@@ -11,7 +11,7 @@ class Button extends StatelessWidget {
 
   ///If it is a gradient or normal button
   final ButtonType type;
-  Button({
+  const Button({
     Key? key,
     required this.label,
     required this.onPressed,
