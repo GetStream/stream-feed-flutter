@@ -14,7 +14,7 @@ void main() {
     const kind = 'like';
     const count = 1300;
     final inactiveIcon = StreamSvgIcon.loveInactive();
-    final activeIcon = StreamSvgIcon.loveInactive();
+    final activeIcon = StreamSvgIcon.loveActive();
     const foreignId = 'like:300';
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
