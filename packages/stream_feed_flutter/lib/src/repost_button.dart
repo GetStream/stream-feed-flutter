@@ -31,6 +31,7 @@ class RepostButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactionButton(
       activity: activity,
+      reaction: reaction,
       activeIcon: activeIcon ?? StreamSvgIcon.repost(color: Colors.blue),
       inactiveIcon: inactiveIcon ?? StreamSvgIcon.repost(color: Colors.grey),
       kind: 'repost',

@@ -33,6 +33,7 @@ class LikeButton extends StatelessWidget {
       activity: activity,
       activeIcon: activeIcon ?? StreamSvgIcon.loveActive(),
       inactiveIcon: inactiveIcon ?? StreamSvgIcon.loveInactive(),
+      reaction: reaction,
       kind: 'like',
       onTap: onTap,
     );
