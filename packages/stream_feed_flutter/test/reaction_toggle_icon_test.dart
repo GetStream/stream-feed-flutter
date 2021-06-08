@@ -19,21 +19,20 @@ void main() {
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
     final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
-    const reaction = Reaction(kind: kind, activityId: activityId);
+    const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
     const userId = 'user:300';
     final withoutOwnReactions = ReactionToggleIcon(
-        activity:
-            activity,
+        activity: activity,
         kind: kind,
         count: count,
         feedGroup: feedGroup,
         inactiveIcon: inactiveIcon,
         activeIcon: activeIcon);
     final withOwnReactions = ReactionToggleIcon(
-        activity:
-            activity, 
+        activity: activity,
         kind: kind,
         count: count,
+        feedGroup: feedGroup,
         ownReactions: [reaction],
         inactiveIcon: inactiveIcon,
         activeIcon: activeIcon);
@@ -51,7 +50,8 @@ void main() {
             feedId: FeedId.fromId(feedGroup));
 
         when(() => mockReactions.add(
-              kind, activityId,
+              kind,
+              activityId,
             )).thenAnswer((_) async => reaction);
 
         when(() => mockStreamAnalytics.trackEngagement(engagement))
@@ -68,8 +68,41 @@ void main() {
         expect(reactionIcon, findsOneWidget);
         await tester.tap(reactionIcon);
         verify(() => mockClient.reactions.add(
-              kind, activityId,
+              kind,
+              activityId,
             )).called(1);
+        verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+      });
+
+      testWidgets('withOwnReactions: onRemoveReaction', (tester) async {
+        final mockClient = MockStreamFeedClient();
+        final mockReactions = MockReactions();
+        final mockStreamAnalytics = MockStreamAnalytics();
+        when(() => mockClient.reactions).thenReturn(mockReactions);
+
+        const label = kind;
+        final engagement = Engagement(
+            content: Content(foreignId: FeedId.fromId(activity.foreignId)),
+            label: 'un$label',
+            feedId: FeedId.fromId(feedGroup));
+
+        when(() => mockReactions.delete(reaction.id!))
+            .thenAnswer((_) async => reaction);
+
+        when(() => mockStreamAnalytics.trackEngagement(engagement))
+            .thenAnswer((_) async => Future.value());
+
+        await tester.pumpWidget(MaterialApp(
+            home: Scaffold(
+          body: StreamFeedCore(
+              analyticsClient: mockStreamAnalytics,
+              client: mockClient,
+              child: withOwnReactions),
+        )));
+        final reactionIcon = find.byType(ReactionToggleIcon);
+        expect(reactionIcon, findsOneWidget);
+        await tester.tap(reactionIcon);
+        verify(() => mockClient.reactions.delete(reaction.id!)).called(1);
         verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
       });
     });
