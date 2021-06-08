@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+import 'package:stream_feed_flutter/src/icons.dart';
+import 'package:stream_feed_flutter/src/reaction_button.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class LikeButton extends StatelessWidget {
-  LikeButton({this.reaction, required this.activity});
+  LikeButton({
+    this.reaction,
+    required this.activity,
+    this.onTap,
+    this.activeIcon,
+    this.inactiveIcon,
+  });
 
   ///The reaction received from stream that should be liked when pressing the LikeButton.
   final Reaction? reaction;
@@ -10,17 +18,23 @@ class LikeButton extends StatelessWidget {
   /// The activity received from stream that should be liked when pressing the LikeButton.
   final EnrichedActivity activity;
 
+  ///If you want to override on tap for some reasons
+  final VoidCallback? onTap;
+
+  ///If you want to override the activeIcon
+  final Widget? activeIcon;
+
+  ///If you want to override the inactiveIcon
+  final Widget? inactiveIcon;
+
   @override
   Widget build(BuildContext context) {
-    return ReactionToggleIcon(
+    return ReactionButton(
       activity: activity,
-      count:
-          reaction?.childrenCounts?['like'] ?? activity.reactionCounts?['like'],
-      ownReactions:
-          reaction?.ownChildren?['like'] ?? activity.ownReactions?['like'],
-      activeIcon: StreamSvgIcon.loveActive(),
-      inactiveIcon: StreamSvgIcon.loveInactive(),
+      activeIcon: activeIcon ?? StreamSvgIcon.loveActive(),
+      inactiveIcon: inactiveIcon ?? StreamSvgIcon.loveInactive(),
       kind: 'like',
+      onTap: onTap,
     );
   }
 }
