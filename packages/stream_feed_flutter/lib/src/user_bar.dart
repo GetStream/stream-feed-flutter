@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/human_reable_timestamp.dart';
 import 'package:stream_feed_flutter/src/typedefs.dart';
+import 'package:stream_feed_flutter/src/utils/display.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class UserBar extends StatelessWidget {
   final User? user;
@@ -41,7 +42,7 @@ class UserBar extends StatelessWidget {
                 ...displayUsername(user),
                 if (afterUsername != null) afterUsername!,
                 subtitle ??
-                    ReactedBy(
+                    _ReactedBy(
                         icon: icon,
                         handle: user?.data?[handleJsonKey] as String),
               ],
@@ -56,26 +57,15 @@ class UserBar extends StatelessWidget {
     );
   }
 
-  List<Widget> displayUsername(User? user) => handleDisplay(user, nameJsonKey);
-
-  List<Widget> handleDisplay(User? user, String jsonKey) {
-    return user?.data?[jsonKey] != null
-        ? [
-            Text(user!.data?[jsonKey] as String,
-                style: TextStyle(
-                    color: Color(0xff0ba8e0),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14)),
-            SizedBox(
-              width: 4.0,
-            ),
-          ]
-        : [Offstage()];
-  }
+  List<Widget> displayUsername(User? user) => handleDisplay(
+      user?.data,
+      nameJsonKey,
+      TextStyle(
+          color: Color(0xff0ba8e0), fontWeight: FontWeight.w700, fontSize: 14));
 }
 
-class ReactedBy extends StatelessWidget {
-  const ReactedBy({
+class _ReactedBy extends StatelessWidget {
+  const _ReactedBy({
     Key? key,
     required this.icon,
     required this.handle,
@@ -94,29 +84,9 @@ class ReactedBy extends StatelessWidget {
             SizedBox(
               width: 4.0,
             ),
-            Text('by'),
+            Text('by'), //TODO: padding
             Text(handle) //TODO: padding
           ],
         ));
-  }
-}
-
-class HumanReadableTimestamp extends StatelessWidget {
-  const HumanReadableTimestamp({Key? key, this.timestamp}) : super(key: key);
-
-  /// If you want to override reaction time
-  final DateTime? timestamp;
-  @override
-  Widget build(BuildContext context) {
-    return timestamp != null
-        ? Text(
-            timeago.format(timestamp!),
-            style: TextStyle(
-                color: Color(0xff7a8287),
-                fontWeight: FontWeight.w400,
-                height: 1.5,
-                fontSize: 14),
-          )
-        : Offstage();
   }
 }

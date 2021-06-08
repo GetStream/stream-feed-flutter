@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/human_reable_timestamp.dart';
 import 'package:stream_feed_flutter/src/typedefs.dart';
+import 'package:stream_feed_flutter/src/utils/display.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'utils/extensions.dart';
 
 class CommentItem extends StatelessWidget {
@@ -11,20 +12,23 @@ class CommentItem extends StatelessWidget {
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
   final OnUserTap? onUserTap;
+  final String nameJsonKey;
+  final String commentJsonKey;
 
-  const CommentItem({
-    required this.reaction,
-    this.user,
-    this.onMentionTap,
-    this.onHashtagTap,
-    this.onUserTap,
-  });
+  const CommentItem(
+      {required this.reaction,
+      this.user,
+      this.onMentionTap,
+      this.onHashtagTap,
+      this.onUserTap,
+      this.nameJsonKey = 'name',
+      this.commentJsonKey = 'text'});
 
   @override
   Widget build(BuildContext context) {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
-    final taggedText = reaction.data?['text'] != null
-        ? detector.parseText(reaction.data!['text'] as String)
+    final taggedText = reaction.data?[commentJsonKey] != null
+        ? detector.parseText(reaction.data![commentJsonKey] as String)
         : <TaggedText?>[];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -44,16 +48,7 @@ class CommentItem extends StatelessWidget {
                   child: Row(
                     children: [
                       ...displayUsername(user),
-                      reaction.createdAt != null
-                          ? Text(
-                              timeago.format(reaction.createdAt!),
-                              style: TextStyle(
-                                  color: Color(0xff7a8287),
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.5,
-                                  fontSize: 14),
-                            )
-                          : Offstage(),
+                      HumanReadableTimestamp(timestamp: reaction.createdAt)
                     ],
                   ),
                 ),
@@ -77,20 +72,11 @@ class CommentItem extends StatelessWidget {
     );
   }
 
-  List<Widget> displayUsername(User? user) {
-    return user?.data?['name'] != null
-        ? [
-            Text(user!.data?['name'] as String,
-                style: TextStyle(
-                    color: Color(0xff0ba8e0),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14)),
-            SizedBox(
-              width: 4.0,
-            ),
-          ]
-        : [Offstage()];
-  }
+  List<Widget> displayUsername(User? user) => handleDisplay(
+      user?.data,
+      nameJsonKey,
+      TextStyle(
+          color: Color(0xff0ba8e0), fontWeight: FontWeight.w700, fontSize: 14));
 }
 
 class _InteractiveText extends StatelessWidget {
