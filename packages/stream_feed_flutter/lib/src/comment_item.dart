@@ -12,12 +12,13 @@ class CommentItem extends StatelessWidget {
   final OnHashtagTap? onHashtagTap;
   final OnUserTap? onUserTap;
 
-  const CommentItem(
-      {required this.reaction,
-      this.user,
-      this.onMentionTap,
-      this.onHashtagTap,
-      this.onUserTap});
+  const CommentItem({
+    required this.reaction,
+    this.user,
+    this.onMentionTap,
+    this.onHashtagTap,
+    this.onUserTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class CommentItem extends StatelessWidget {
                                   height: 1.5,
                                   fontSize: 14),
                             )
-                          : Container(),
+                          : Offstage(),
                     ],
                   ),
                 ),
@@ -84,12 +85,11 @@ class CommentItem extends StatelessWidget {
                     color: Color(0xff0ba8e0),
                     fontWeight: FontWeight.w700,
                     fontSize: 14)),
-            // : Container(),
             SizedBox(
               width: 4.0,
             ),
           ]
-        : [Container()];
+        : [Offstage()];
   }
 }
 
@@ -127,7 +127,7 @@ class _InteractiveText extends StatelessWidget {
           return Text(tagged!.text!, style: tagged!.tag.style());
       }
     } else {
-      return Container();
+      return Offstage();
     }
   }
 }
