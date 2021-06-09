@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/human_reable_timestamp.dart';
+import 'package:stream_feed_flutter/src/human_readable_timestamp.dart';
 import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/display.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
