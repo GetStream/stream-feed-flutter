@@ -4,7 +4,6 @@ import 'package:stream_feed_flutter/src/comment_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 main() {
   testWidgets('CommentItem', (tester) async {

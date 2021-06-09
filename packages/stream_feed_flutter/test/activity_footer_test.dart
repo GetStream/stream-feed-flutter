@@ -3,7 +3,7 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 main() {
-  testGoldens('repost golden', (tester) async {
+  testGoldens('activity footer', (tester) async {
     await tester.pumpWidgetBuilder(
       Center(
         child: Padding(

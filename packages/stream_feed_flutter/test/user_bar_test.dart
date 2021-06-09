@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 void main() {
-  testWidgets('User', (tester) async {
+  testWidgets('UserBar', (tester) async {
     await mockNetworkImages(() async {
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(

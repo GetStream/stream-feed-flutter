@@ -8,19 +8,21 @@ class ActivityContent extends StatelessWidget {
   final EnrichedActivity activity;
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
+  final String commentJsonKey;
 
-  const ActivityContent({
-    required this.activity,
-    this.onMentionTap,
-    this.onHashtagTap,
-  });
+  const ActivityContent(
+      {required this.activity,
+      this.onMentionTap,
+      this.onHashtagTap,
+      this.commentJsonKey = 'text'});
 
   @override
   Widget build(BuildContext context) {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final activityObject = activity.object;
     final taggedText = activityObject != null
-        ? detector.parseText(activityObject as String)
+        ? detector.parseText((EnrichableField.serialize(activityObject)
+            as Map<String, Object?>)[commentJsonKey] as String)
         : <TaggedText?>[];
     return Column(
       children: [
