@@ -35,7 +35,10 @@ class CommentItem extends StatelessWidget {
       children: [
         Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Avatar(user: user, onUserTap: onUserTap)),
+            child: Avatar(
+              user: user,
+              onUserTap: onUserTap,
+            )),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -48,7 +51,8 @@ class CommentItem extends StatelessWidget {
                   child: Row(
                     children: [
                       ...displayUsername(user),
-                      HumanReadableTimestamp(timestamp: reaction.createdAt)
+                      if (reaction.createdAt != null)
+                        HumanReadableTimestamp(timestamp: reaction.createdAt!)
                     ],
                   ),
                 ),
@@ -76,7 +80,10 @@ class CommentItem extends StatelessWidget {
       user?.data,
       nameJsonKey,
       TextStyle(
-          color: Color(0xff0ba8e0), fontWeight: FontWeight.w700, fontSize: 14));
+        color: Color(0xff0ba8e0),
+        fontWeight: FontWeight.w700,
+        fontSize: 14,
+      ));
 }
 
 class _InteractiveText extends StatelessWidget {
