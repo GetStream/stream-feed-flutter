@@ -35,7 +35,7 @@ class CommentFieldState extends State<CommentField> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Avatar(),
+              child: Avatar(), //TODO: onUserTap
             ),
             Expanded(
               child: TextArea(onSubmitted: (value) {
@@ -47,14 +47,16 @@ class CommentFieldState extends State<CommentField> {
           ],
         ),
         Button(
+            //TODO; add way to customize button
             label: 'Post',
             onPressed: () async {
               await streamFeed.onAddReaction(
-                  kind: 'comment',
-                  activity: widget.activity,
-                  data: {'text': text},
-                  targetFeeds: widget.targetFeeds,
-                  feedGroup: widget.feedGroup);
+                kind: 'comment',
+                activity: widget.activity,
+                data: {'text': text},
+                targetFeeds: widget.targetFeeds,
+                feedGroup: widget.feedGroup,
+              );
             },
             type: ButtonType.faded)
       ],

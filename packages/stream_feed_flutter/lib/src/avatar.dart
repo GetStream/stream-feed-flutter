@@ -23,7 +23,8 @@ class Avatar extends StatelessWidget {
                     ImageChunkEvent? loadingProgress) {
                   if (loadingProgress == null) return child;
                   return Center(
-                    child: CircularProgressIndicator(//TODO: provide a way to customize progress indicator
+                    child: CircularProgressIndicator(
+                      //TODO: provide a way to customize progress indicator
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
                               loadingProgress.expectedTotalBytes!
@@ -38,9 +39,8 @@ class Avatar extends StatelessWidget {
             )
           : ClipOval(
               child: StreamSvgIcon.avatar(
-              //TODO: provide a way to cusomize default avatar
-              size: size,
-            )),
+                  //TODO: provide a way to cusomize default avatar
+                  size: size)),
     );
   }
 }
