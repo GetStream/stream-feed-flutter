@@ -125,25 +125,85 @@ void main() {
       });
     });
   });
-  test('RealtimeMessage', () {
-    RealtimeMessage.fromJson({
-      'deleted': [],
-      'deleted_foreign_ids': [],
-      'feed': 'reward:1',
-      'new': [
-        {
-          'actor': 'reward:1',
-          'foreign_id': null,
-          'id': 'f3de8328-be2d-11eb-bb18-128a130028af',
-          'message': "@Jessica check out getstream.io it's so dang awesome.",
-          'object': 'tweet:id',
-          'origin': null,
-          'target': null,
-          'time': '2021-05-26T14:23:33.918391',
-          'to': ['notification:jessica'],
-          'verb': 'tweet'
-        }
-      ]
+  group('RealtimeMessage', () {
+    test('fromJson', () {
+      final fromJson = RealtimeMessage.fromJson({
+        'deleted': [],
+        'deleted_foreign_ids': [],
+        'feed': 'reward:1',
+        'new': [
+          {
+            'actor': 'reward:1',
+            'foreign_id': null,
+            'id': 'f3de8328-be2d-11eb-bb18-128a130028af',
+            'message': "@Jessica check out getstream.io it's so dang awesome.",
+            'object': 'tweet:id',
+            'origin': null,
+            'target': null,
+            'time': '2021-05-26T14:23:33.918391',
+            'to': ['notification:jessica'],
+            'verb': 'tweet'
+          }
+        ]
+      });
+
+      expect(
+          fromJson,
+          RealtimeMessage(
+              deleted: [],
+              deletedForeignIds: [],
+              feed: FeedId.fromId('reward:1'),
+              newActivities: [
+                EnrichedActivity(
+                    actor: EnrichableField('reward:1'),
+                    id: 'f3de8328-be2d-11eb-bb18-128a130028af',
+                    extraData: {
+                      'message':
+                          "@Jessica check out getstream.io it's so dang awesome.",
+                    },
+                    origin: EnrichableField(null),
+                    target: EnrichableField(null),
+                    object: EnrichableField('tweet:id'),
+                    time: DateTime.parse('2021-05-26T14:23:33.918391'),
+                    to: ['notification:jessica'],
+                    verb: 'tweet')
+              ]));
+    });
+
+    test('issue-89', () {
+      RealtimeMessage.fromJson({
+        'deleted': [],
+        'deleted_foreign_ids': [],
+        'feed': 'task:32db0f46-3593-4e14-aa57-f05af4887260',
+        'new': [
+          {
+            "actor": {
+              "created_at": "2021-04-13T22:53:19.670051Z",
+              "updated_at": "2021-04-13T22:53:19.670051Z",
+              "id": "eTHVBnEm0FQB2HeaRKVlEfVf58B3personal",
+              "data": {
+                "gender": "Male",
+                "name": "Rickey Lee",
+                "photo":
+                    "https://firebasestorage.googleapis.com/v0/b/fire-snab.appspot.com/o/profile-image-placeholder.png?alt=media&token=b17598bb-a510-4167-8354-ab75642ba89e"
+              }
+            },
+            "createdTask": {
+              "id": "32db0f46-3593-4e14-aa57-f05af4887260",
+              "title": "KeyPack",
+              "isFinished": true
+            },
+            "foreign_id": null,
+            "group": "updated_2021-06-09",
+            "id": "cff95542-c979-11eb-8080-80005abdd229",
+            "object": "task_situation_updated to true",
+            "origin": null,
+            "target": null,
+            "time": "2021-06-09T23:24:18.238189",
+            "verb": "updated"
+          }
+        ]
+      });
     });
   });
   test('EnrichedActivity issue 61', () {

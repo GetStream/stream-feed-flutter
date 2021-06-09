@@ -14,7 +14,7 @@ RealtimeMessage _$RealtimeMessageFromJson(Map json) {
     deletedForeignIds:
         ForeignIdTimePair.fromList(json['deleted_foreign_ids'] as List?),
     newActivities: (json['new'] as List<dynamic>)
-        .map((e) => Activity.fromJson((e as Map?)?.map(
+        .map((e) => EnrichedActivity.fromJson((e as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
             )))
         .toList(),
