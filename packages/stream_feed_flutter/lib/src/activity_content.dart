@@ -22,7 +22,7 @@ class ActivityContent extends StatelessWidget {
     final activityObject = activity.object;
     final taggedText = activityObject != null
         ? detector.parseText((EnrichableField.serialize(activityObject)
-            as Map<String, Object?>)[commentJsonKey] as String)
+            as Map<String, Object?>)[commentJsonKey] as String) //TODO: ugly
         : <TaggedText?>[];
     return Column(
       children: [
