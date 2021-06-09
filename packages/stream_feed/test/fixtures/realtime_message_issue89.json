@@ -1,0 +1,32 @@
+{
+    "deleted": [],
+    "deleted_foreign_ids": [],
+    "feed": "task: 32db0f46-3593-4e14-aa57-f05af4887260",
+    "new": [
+        {
+            "actor": {
+                "created_at": "2021-04-13T22:53:19.670051Z",
+                "updated_at": "2021-04-13T22:53:19.670051Z",
+                "id": "eTHVBnEm0FQB2HeaRKVlEfVf58B3personal",
+                "data": {
+                    "gender": "Male",
+                    "name": "Rickey Lee",
+                    "photo": "https://firebasestorage.googleapis.com/v0/b/fire-snab.appspot.com/o/profile-image-placeholder.png?alt=media&token=b17598bb-a510-4167-8354-ab75642ba89e"
+                }
+            },
+            "createdTask": {
+                "id": "32db0f46-3593-4e14-aa57-f05af4887260",
+                "title": "KeyPack",
+                "isFinished": true
+            },
+            "foreign_id": null,
+            "group": "updated_2021-06-09",
+            "id": "cff95542-c979-11eb-8080-80005abdd229",
+            "object": "task_situation_updated to true",
+            "origin": null,
+            "target": null,
+            "time": "2021-06-09T23:24:18.238189",
+            "verb": "updated"
+        }
+    ]
+}
