@@ -3,8 +3,8 @@ import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/src/user_bar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-class ActvityHeader extends StatelessWidget {
-  const ActvityHeader(
+class ActivityHeader extends StatelessWidget {
+  const ActivityHeader(
       {Key? key,
       required this.activity,
       this.onUserTap,
@@ -17,6 +17,7 @@ class ActvityHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UserBar(
+        user: EnrichableField.serialize(activity.actor) as User,
         onUserTap: onUserTap,
         timestamp: activity.time!,
         kind: activityKind); //TODO: display what instead of null timestamp?
