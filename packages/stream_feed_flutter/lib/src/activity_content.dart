@@ -40,10 +40,7 @@ class ActivityContent extends StatelessWidget {
               .toList(),
         ),
         //TODO: handle Video + Audio + Gallery
-        if (og != null)
-          StreamFeedCard(
-            og: og!,
-          )
+        if (og != null) StreamFeedCard(og: og!)
       ],
     );
   }
