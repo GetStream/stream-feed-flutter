@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/card.dart';
+import 'package:stream_feed_flutter/src/interactive_text.dart';
 import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -32,7 +33,7 @@ class ActivityContent extends StatelessWidget {
         Wrap(
           //TODO: move to Text.rich(WidgetSpans)
           children: taggedText
-              .map((it) => _InteractiveText(
+              .map((it) => InteractiveText(
                     tagged: it,
                     onHashtagTap: onHashtagTap,
                     onMentionTap: onMentionTap,
@@ -46,41 +47,3 @@ class ActivityContent extends StatelessWidget {
   }
 }
 
-class _InteractiveText extends StatelessWidget {
-  final OnMentionTap? onMentionTap;
-  final OnHashtagTap? onHashtagTap;
-  final TaggedText? tagged;
-  const _InteractiveText({
-    this.tagged,
-    this.onHashtagTap,
-    this.onMentionTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (tagged != null) {
-      switch (tagged!.tag) {
-        case Tag.normalText:
-          return Text('${tagged!.text!} ', style: tagged!.tag.style());
-        case Tag.hashtag:
-          return InkWell(
-            onTap: () {
-              onHashtagTap?.call(tagged!.text?.trim().replaceFirst('#', ''));
-            },
-            child: Text(tagged!.text!, style: tagged!.tag.style()),
-          );
-        case Tag.mention:
-          return InkWell(
-            onTap: () {
-              onMentionTap?.call(tagged!.text?.trim().replaceFirst('@', ''));
-            },
-            child: Text(tagged!.text!, style: tagged!.tag.style()),
-          );
-        default:
-          return Text(tagged!.text!, style: tagged!.tag.style());
-      }
-    } else {
-      return Offstage();
-    }
-  }
-}
