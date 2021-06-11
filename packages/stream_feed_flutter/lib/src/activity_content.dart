@@ -4,7 +4,6 @@ import 'package:stream_feed_flutter/src/interactive_text.dart';
 import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'utils/extensions.dart';
 
 class ActivityContent extends StatelessWidget {
   final EnrichedActivity activity;
@@ -46,4 +45,3 @@ class ActivityContent extends StatelessWidget {
     );
   }
 }
-
