@@ -14,7 +14,7 @@ class StreamFeedActivity extends StatelessWidget {
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
   final OnUserTap? onUserTap;
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(
