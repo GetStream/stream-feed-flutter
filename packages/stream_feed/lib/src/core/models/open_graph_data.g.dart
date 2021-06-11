@@ -17,13 +17,13 @@ OpenGraphData _$OpenGraphDataFromJson(Map json) {
     determiner: json['determiner'] as String?,
     locale: json['locale'] as String?,
     images: (json['images'] as List<dynamic>?)
-        ?.map((e) => Image.fromJson(Map<String, dynamic>.from(e as Map)))
+        ?.map((e) => OgImage.fromJson(Map<String, dynamic>.from(e as Map)))
         .toList(),
     videos: (json['videos'] as List<dynamic>?)
-        ?.map((e) => Video.fromJson(Map<String, dynamic>.from(e as Map)))
+        ?.map((e) => OgVideo.fromJson(Map<String, dynamic>.from(e as Map)))
         .toList(),
     audios: (json['audios'] as List<dynamic>?)
-        ?.map((e) => Audio.fromJson(Map<String, dynamic>.from(e as Map)))
+        ?.map((e) => OgAudio.fromJson(Map<String, dynamic>.from(e as Map)))
         .toList(),
   );
 }
@@ -43,8 +43,8 @@ Map<String, dynamic> _$OpenGraphDataToJson(OpenGraphData instance) =>
       'audios': instance.audios?.map((e) => e.toJson()).toList(),
     };
 
-Image _$ImageFromJson(Map json) {
-  return Image(
+OgImage _$OgImageFromJson(Map json) {
+  return OgImage(
     image: json['image'] as String?,
     url: json['url'] as String?,
     secureUrl: json['secure_url'] as String?,
@@ -55,7 +55,7 @@ Image _$ImageFromJson(Map json) {
   );
 }
 
-Map<String, dynamic> _$ImageToJson(Image instance) => <String, dynamic>{
+Map<String, dynamic> _$OgImageToJson(OgImage instance) => <String, dynamic>{
       'image': instance.image,
       'url': instance.url,
       'secure_url': instance.secureUrl,
@@ -65,8 +65,8 @@ Map<String, dynamic> _$ImageToJson(Image instance) => <String, dynamic>{
       'alt': instance.alt,
     };
 
-Video _$VideoFromJson(Map json) {
-  return Video(
+OgVideo _$OgVideoFromJson(Map json) {
+  return OgVideo(
     image: json['image'] as String?,
     url: json['url'] as String?,
     secureUrl: json['secure_url'] as String?,
@@ -77,7 +77,7 @@ Video _$VideoFromJson(Map json) {
   );
 }
 
-Map<String, dynamic> _$VideoToJson(Video instance) => <String, dynamic>{
+Map<String, dynamic> _$OgVideoToJson(OgVideo instance) => <String, dynamic>{
       'image': instance.image,
       'url': instance.url,
       'secure_url': instance.secureUrl,
@@ -87,8 +87,8 @@ Map<String, dynamic> _$VideoToJson(Video instance) => <String, dynamic>{
       'alt': instance.alt,
     };
 
-Audio _$AudioFromJson(Map json) {
-  return Audio(
+OgAudio _$OgAudioFromJson(Map json) {
+  return OgAudio(
     audio: json['audio'] as String?,
     url: json['url'] as String?,
     secureUrl: json['secure_url'] as String?,
@@ -96,7 +96,7 @@ Audio _$AudioFromJson(Map json) {
   );
 }
 
-Map<String, dynamic> _$AudioToJson(Audio instance) => <String, dynamic>{
+Map<String, dynamic> _$OgAudioToJson(OgAudio instance) => <String, dynamic>{
       'audio': instance.audio,
       'url': instance.url,
       'secure_url': instance.secureUrl,
