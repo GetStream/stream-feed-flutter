@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/card.dart';
 import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -9,11 +10,13 @@ class ActivityContent extends StatelessWidget {
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
   final String commentJsonKey;
+  final OpenGraphData? og;
 
   const ActivityContent(
       {required this.activity,
       this.onMentionTap,
       this.onHashtagTap,
+      this.og, //attachments
       this.commentJsonKey = 'text'});
 
   @override
@@ -35,8 +38,12 @@ class ActivityContent extends StatelessWidget {
                     onMentionTap: onMentionTap,
                   ))
               .toList(),
-        )
-        //TODO: handle Card + Video + Audio + Gallery
+        ),
+        //TODO: handle Video + Audio + Gallery
+        if (og != null)
+          StreamFeedCard(
+            og: og!,
+          )
       ],
     );
   }
