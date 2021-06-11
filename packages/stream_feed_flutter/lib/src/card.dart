@@ -9,7 +9,6 @@ class StreamFeedCard extends StatelessWidget {
   final OpenGraphData og;
   final String? imageURL;
   final String? description;
-  final List<String>? images;
   final String? url;
   final String? title;
   const StreamFeedCard({
@@ -18,7 +17,6 @@ class StreamFeedCard extends StatelessWidget {
     this.alt,
     this.image,
     // this.nolink,
-    this.images,
     this.description,
     this.title,
     this.url,
@@ -28,7 +26,8 @@ class StreamFeedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _url = og.url!;
-    final image = images?.first ?? imageURL;
+    final firstOgImage = og.images?.first;
+    final image = firstOgImage?.secureUrl ?? firstOgImage?.url ?? imageURL;
     return InkWell(
         onTap: () async {
           await canLaunch(_url)
