@@ -92,7 +92,7 @@ class OgImage extends Equatable {
   }); //TODO: rename this to OG Image
 
   /// Create a new instance from a json
-  factory OgImage.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
+  factory OgImage.fromJson(Map<String, dynamic> json) => _$OgImageFromJson(json);
 
   /// Value of the image OG field.
   final String? image;
@@ -127,7 +127,7 @@ class OgImage extends Equatable {
       ];
 
   /// Serialize to json
-  Map<String, dynamic> toJson() => _$ImageToJson(this);
+  Map<String, dynamic> toJson() => _$OgImageToJson(this);
 }
 
 /// OG Video object
@@ -145,7 +145,7 @@ class OgVideo extends Equatable {
   });
 
   /// Create a new instance from a json
-  factory OgVideo.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
+  factory OgVideo.fromJson(Map<String, dynamic> json) => _$OgVideoFromJson(json);
 
   /// Value of the image OG field.
   final String? image;
@@ -180,7 +180,7 @@ class OgVideo extends Equatable {
       ];
 
   /// Serialize to json
-  Map<String, dynamic> toJson() => _$VideoToJson(this);
+  Map<String, dynamic> toJson() => _$OgVideoToJson(this);
 }
 
 /// OG Audio object
@@ -195,10 +195,10 @@ class OgAudio extends Equatable {
   });
 
   /// Create a new instance from a json
-  factory OgAudio.fromJson(Map<String, dynamic> json) => _$AudioFromJson(json);
+  factory OgAudio.fromJson(Map<String, dynamic> json) => _$OgAudioFromJson(json);
 
   /// Serialize to json the [Audio] object
-  Map<String, dynamic> toJson() => _$AudioToJson(this);
+  Map<String, dynamic> toJson() => _$OgAudioToJson(this);
 
   /// Value of the audio OG field.
   final String? audio;
