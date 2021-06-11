@@ -15,11 +15,14 @@ main() {
         ),
       )));
 
-      final image = find.byType(InkWell);
-      expect(image, findsOneWidget);
+      final inkwell = find.byType(InkWell);
+      expect(inkwell, findsOneWidget);
 
       final card = find.byType(Card);
       expect(card, findsOneWidget);
+
+      final image = find.byType(Image);
+      expect(image, findsOneWidget);
     });
   });
 }
