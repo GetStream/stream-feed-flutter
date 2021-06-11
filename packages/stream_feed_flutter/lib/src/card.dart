@@ -38,7 +38,8 @@ class StreamFeedCard extends StatelessWidget {
           child: Image.network(
             //TODO: replace with cached network image
             image!, //TODO: handle empty state
-            semanticLabel: firstOgImage?.alt ?? alt ?? title ?? description ?? '',
+            semanticLabel:
+                firstOgImage?.alt ?? alt ?? title ?? description ?? '',
             loadingBuilder: (BuildContext context, Widget child,
                 ImageChunkEvent? loadingProgress) {
               if (loadingProgress == null) return child;
