@@ -125,7 +125,38 @@ void main() {
       });
     });
   });
+  group('RealtimeMessage', () {
+    test('fromJson', () {
+      final fromJson =
+          RealtimeMessage.fromJson(jsonFixture('realtime_message.json'));
 
+      expect(
+          fromJson,
+          RealtimeMessage(
+              deleted: [],
+              deletedForeignIds: [],
+              feed: FeedId.fromId('reward:1'),
+              newActivities: [
+                EnrichedActivity(
+                    actor: EnrichableField('reward:1'),
+                    id: 'f3de8328-be2d-11eb-bb18-128a130028af',
+                    extraData: {
+                      'message':
+                          "@Jessica check out getstream.io it's so dang awesome.",
+                    },
+                    origin: EnrichableField(null),
+                    target: EnrichableField(null),
+                    object: EnrichableField('tweet:id'),
+                    time: DateTime.parse('2021-05-26T14:23:33.918391'),
+                    to: ['notification:jessica'],
+                    verb: 'tweet')
+              ]));
+    });
+
+    test('issue-89', () {
+      RealtimeMessage.fromJson(jsonFixture('realtime_message_issue89.json'));
+    });
+  });
   test('EnrichedActivity issue 61', () {
     final enrichedActivity = EnrichedActivity.fromJson(
         jsonFixture('enriched_activity_issue61.json'));

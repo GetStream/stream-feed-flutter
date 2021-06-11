@@ -9,7 +9,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   final _key = String.fromEnvironment('key');
   final _user_token = String.fromEnvironment('user_token');
-  final client = StreamFeedClient.connect(_key, userToken: _user_token);
+  final client = StreamFeedClient.connect(_key, token: Token(_user_token));
   runApp(
     MyApp(
       client: client,
