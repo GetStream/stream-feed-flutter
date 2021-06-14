@@ -10,8 +10,7 @@ class FlatFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: StreamFeedCore.of(context)
-            .getEnrichedActivities(feedGroup: feedGroup),
+        future: StreamFeedCore.of(context).getEnrichedActivities(feedGroup: feedGroup),
         builder: (BuildContext context,
             AsyncSnapshot<List<EnrichedActivity>> snapshot) {
           if (snapshot.hasData) {
