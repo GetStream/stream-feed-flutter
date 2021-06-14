@@ -2,7 +2,6 @@
 
 - fix: RealTime message serialization issue
 RealtimeMessage newActivities field now of type `List<EnrichedActivity>` instead of `List<Activity>`
-- Convert UserClient into a StreamUser for easier user management
 
 ## 0.2.1: 26/05/2021
 
