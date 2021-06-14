@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/event.dart';
+import 'package:stream_feed/src/core/models/follow_relation.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
@@ -124,7 +125,38 @@ void main() {
       });
     });
   });
+  group('RealtimeMessage', () {
+    test('fromJson', () {
+      final fromJson =
+          RealtimeMessage.fromJson(jsonFixture('realtime_message.json'));
 
+      expect(
+          fromJson,
+          RealtimeMessage(
+              deleted: [],
+              deletedForeignIds: [],
+              feed: FeedId.fromId('reward:1'),
+              newActivities: [
+                EnrichedActivity(
+                    actor: EnrichableField('reward:1'),
+                    id: 'f3de8328-be2d-11eb-bb18-128a130028af',
+                    extraData: {
+                      'message':
+                          "@Jessica check out getstream.io it's so dang awesome.",
+                    },
+                    origin: EnrichableField(null),
+                    target: EnrichableField(null),
+                    object: EnrichableField('tweet:id'),
+                    time: DateTime.parse('2021-05-26T14:23:33.918391'),
+                    to: ['notification:jessica'],
+                    verb: 'tweet')
+              ]));
+    });
+
+    test('issue-89', () {
+      RealtimeMessage.fromJson(jsonFixture('realtime_message_issue89.json'));
+    });
+  });
   test('EnrichedActivity issue 61', () {
     final enrichedActivity = EnrichedActivity.fromJson(
         jsonFixture('enriched_activity_issue61.json'));
@@ -608,24 +640,47 @@ void main() {
   });
 
   test('Follow', () {
-    const follow = Follow('feedId', 'targetId');
+    final followJson = {
+      "feed_id": "timeline:feedId",
+      "target_id": "user:userId",
+      "created_at": "2021-05-14T19:58:27.274792063Z",
+      "updated_at": "2021-05-14T19:58:27.274792063Z"
+    };
+    final follow = Follow(
+        feedId: 'timeline:feedId',
+        targetId: 'user:userId',
+        createdAt: DateTime.parse("2021-05-14T19:58:27.274792063Z"),
+        updatedAt: DateTime.parse("2021-05-14T19:58:27.274792063Z"));
+
+    expect(follow, Follow.fromJson(followJson));
+    expect(follow.toJson(), {
+      'feed_id': 'timeline:feedId',
+      'target_id': 'user:userId',
+      'created_at': '2021-05-14T19:58:27.274792Z',
+      'updated_at': '2021-05-14T19:58:27.274792Z'
+    });
+  });
+
+  test('FollowRelation', () {
+    const follow = FollowRelation(source: 'feedId', target: 'targetId');
     final followJson =
         json.decode('{"source": "feedId", "target": "targetId"}');
 
-    expect(follow, Follow.fromJson(followJson));
+    expect(follow, FollowRelation.fromJson(followJson));
     expect(follow.toJson(), {'source': 'feedId', 'target': 'targetId'});
   });
   group('Unfollow', () {
-    const unfollow = UnFollow('feedId', 'targetId', true);
+    const unfollow = UnFollowRelation(
+        source: 'feedId', target: 'targetId', keepHistory: true);
 
     test('fromFollow', () {
-      const follow = Follow('feedId', 'targetId');
-      final unfollowFromFollow = UnFollow.fromFollow(follow, true);
+      const follow = FollowRelation(source: 'feedId', target: 'targetId');
+      final unfollowFromFollow = UnFollowRelation.fromFollow(follow, true);
       expect(unfollowFromFollow, unfollow);
     });
     test('fromJson', () {
-      final unfollowJson = json.decode(fixture('unfollow.json'));
-      expect(unfollow, UnFollow.fromJson(unfollowJson));
+      final unfollowJson = json.decode(fixture('unfollow_relation.json'));
+      expect(unfollow, UnFollowRelation.fromJson(unfollowJson));
     });
 
     test('toJson', () {
