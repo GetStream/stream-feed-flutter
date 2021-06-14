@@ -1,3 +1,8 @@
+## 0.2.2: 14/06/2021
+
+- fix: RealTime message serialization issue
+RealtimeMessage newActivities field now of type `List<EnrichedActivity>` instead of `List<Activity>`
+
 ## 0.2.1: 26/05/2021
 
 - fix: missing model exports
