@@ -4,19 +4,18 @@ import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 class FlatFeed extends StatelessWidget {
-  const FlatFeed({Key? key, required this.slug}) : super(key: key);
-  final String slug;
+  const FlatFeed({Key? key, required this.feedGroup}) : super(key: key);
+  final String feedGroup;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: StreamFeedCore.of(context).getEnrichedActivities(slug: slug),
+        future: StreamFeedCore.of(context)
+            .getEnrichedActivities(feedGroup: feedGroup),
         builder: (BuildContext context,
             AsyncSnapshot<List<EnrichedActivity>> snapshot) {
           if (snapshot.hasData) {
-            return FlatFeedInner(
-              activities: snapshot.data!,
-            );
+            return FlatFeedInner(activities: snapshot.data!);
           } else if (snapshot.hasError) {
             return ErrorStateWidget();
           } else {
