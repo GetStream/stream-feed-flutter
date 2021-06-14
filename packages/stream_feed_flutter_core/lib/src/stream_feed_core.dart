@@ -127,6 +127,18 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         feedId: FeedId.fromId(feedGroup)));
   }
 
+  Future<List<EnrichedActivity>> getEnrichedActivities({
+    required String slug,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
+    String? userId,
+  }) async =>
+      await client.flatFeed(slug, userId).getEnrichedActivities();
+
   @override
   void initState() {
     super.initState();
