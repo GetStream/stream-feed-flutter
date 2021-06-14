@@ -20,7 +20,6 @@ class FlatFeedInner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      // reverse: reverse ?? false,
       itemCount: activities.length,
       itemBuilder: (context, idx) => StreamFeedActivity(
         activity: activities[idx],
