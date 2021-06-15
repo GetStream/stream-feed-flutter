@@ -9,6 +9,8 @@ export 'src/reaction_list.dart';
 export 'src/comment_field.dart';
 export 'src/comment_item.dart';
 export 'src/utils/tag_detector.dart';
-export 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+export 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
+    hide FlatFeed;
 export 'src/repost_button.dart';
 export 'src/activity_footer.dart';
+export 'src/flat_feed.dart';

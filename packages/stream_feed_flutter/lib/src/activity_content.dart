@@ -9,7 +9,7 @@ class ActivityContent extends StatelessWidget {
   final EnrichedActivity activity;
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
-  final String commentJsonKey;
+  // final String commentJsonKey;
   final OpenGraphData? og;
 
   const ActivityContent(
@@ -17,15 +17,17 @@ class ActivityContent extends StatelessWidget {
       this.onMentionTap,
       this.onHashtagTap,
       this.og, //attachments
-      this.commentJsonKey = 'text'});
+      // this.commentJsonKey = 'text'
+      
+      });
 
   @override
   Widget build(BuildContext context) {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final activityObject = activity.object;
     final taggedText = activityObject != null
-        ? detector.parseText((EnrichableField.serialize(activityObject)
-            as Map<String, Object?>)[commentJsonKey] as String) //TODO: ugly
+        ? detector.parseText(EnrichableField.serialize(activityObject)
+            as String) //TODO: ugly
         : <TaggedText?>[];
     return Column(
       children: [

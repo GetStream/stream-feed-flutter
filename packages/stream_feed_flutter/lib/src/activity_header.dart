@@ -16,8 +16,11 @@ class ActivityHeader extends StatelessWidget {
   final String activityKind;
   @override
   Widget build(BuildContext context) {
+    final serializedActor = EnrichableField.serialize(activity.actor);//TODO: ugly
+    final user =
+        User.fromJson(serializedActor as Map<String, dynamic>); //TODO: ugly
     return UserBar(
-        user: EnrichableField.serialize(activity.actor) as User,
+        user: user,
         onUserTap: onUserTap,
         timestamp: activity.time!,
         kind: activityKind); //TODO: display what instead of null timestamp?

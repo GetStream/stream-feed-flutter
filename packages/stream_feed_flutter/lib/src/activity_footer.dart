@@ -9,7 +9,7 @@ class ActivityFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         RepostButton(activity: activity),
         LikeButton(activity: activity),

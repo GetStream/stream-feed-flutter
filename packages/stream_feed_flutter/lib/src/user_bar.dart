@@ -51,9 +51,12 @@ class UserBar extends StatelessWidget {
                             ReactionByIcon(
                               kind: kind,
                             ),
-                        handleOrUsername:
+                        handleOrUsername: //TODO: handle no handle or name
                             user?.data?[handleJsonKey] as String? ??
-                                user?.data?[nameJsonKey] as String),
+                                user?.data?[nameJsonKey] as String
+                        //"rosemary"
+
+                        ),
               ],
             ),
           ),

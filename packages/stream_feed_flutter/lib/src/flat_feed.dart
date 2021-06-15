@@ -15,8 +15,10 @@ class FlatFeed extends StatelessWidget {
         builder: (BuildContext context,
             AsyncSnapshot<List<EnrichedActivity>> snapshot) {
           if (snapshot.hasData) {
+            print(snapshot.data);
             return FlatFeedInner(activities: snapshot.data!);
           } else if (snapshot.hasError) {
+            print(snapshot.error);
             return ErrorStateWidget();
           } else {
             return ProgressStateWidget();
