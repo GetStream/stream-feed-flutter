@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ButtonType { faded, info, primary }
+enum ButtonType { faded, info, primary } //TODO: info button
 
 class Button extends StatelessWidget {
   final String label;
