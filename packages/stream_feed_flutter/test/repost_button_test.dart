@@ -29,6 +29,5 @@ void main() {
       expect(count, findsOneWidget);
       expect(activeIcon.color, Colors.blue);
     });
-    
   });
 }

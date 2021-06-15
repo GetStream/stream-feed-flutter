@@ -16,7 +16,8 @@ class ActivityHeader extends StatelessWidget {
   final String activityKind;
   @override
   Widget build(BuildContext context) {
-    final serializedActor = EnrichableField.serialize(activity.actor);//TODO: ugly
+    final serializedActor =
+        EnrichableField.serialize(activity.actor); //TODO: ugly
     final user =
         User.fromJson(serializedActor as Map<String, dynamic>); //TODO: ugly
     return UserBar(

@@ -3,7 +3,6 @@ import 'package:stream_feed_flutter/src/reaction_icon.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ReactionToggleIcon extends StatefulWidget {
-  
   final List<Reaction>? ownReactions;
   final Widget activeIcon;
   final Widget inactiveIcon;
