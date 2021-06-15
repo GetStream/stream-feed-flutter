@@ -4,7 +4,16 @@ import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 class FlatFeed extends StatelessWidget {
-  const FlatFeed({Key? key, required this.feedGroup}) : super(key: key);
+  const FlatFeed({
+    Key? key,
+    required this.feedGroup,
+    this.onHashtagTap,
+    this.onMentionTap,
+    this.onUserTap,
+  }) : super(key: key);
+  final OnHashtagTap? onHashtagTap;
+  final OnMentionTap? onMentionTap;
+  final OnUserTap? onUserTap;
   final String feedGroup;
 
   @override
@@ -17,8 +26,11 @@ class FlatFeed extends StatelessWidget {
           if (snapshot.hasData) {
             print(snapshot.data);
             return FlatFeedInner(
-                activities:
-                    snapshot.data!); //TODO: no activity to display widget
+              activities: snapshot.data!, //TODO: no activity to display widget
+              onHashtagTap: onHashtagTap,
+              onMentionTap: onMentionTap,
+              onUserTap: onUserTap,
+            );
           } else if (snapshot.hasError) {
             print(snapshot.error);
             return ErrorStateWidget();
