@@ -8,12 +8,15 @@ class ActivityFooter extends StatelessWidget {
   final EnrichedActivity activity;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        RepostButton(activity: activity),
-        LikeButton(activity: activity),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          RepostButton(activity: activity),
+          LikeButton(activity: activity),
+        ],
+      ),
     );
   }
 }
