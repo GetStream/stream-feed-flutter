@@ -21,12 +21,9 @@ class ActivityContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ogRaw = activity.extraData!['attachments']
-        as Map<String, dynamic>; //TODO: handle case null
-    final og = OpenGraphData.fromJson(ogRaw);
-    print(og);
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final activityObject = activity.object;
+    final attachments = activity.extraData?['attachments'];
     final taggedText = activityObject != null
         ? detector.parseText(
             EnrichableField.serialize(activityObject) as String) //TODO: ugly
@@ -44,7 +41,9 @@ class ActivityContent extends StatelessWidget {
               .toList(),
         ),
         //TODO: handle Video + Audio + Gallery
-        StreamFeedCard(og: og)
+        if (attachments != null)
+          StreamFeedCard(
+              og: OpenGraphData.fromJson(attachments as Map<String, dynamic>))
       ],
     );
   }
