@@ -9,15 +9,17 @@ class ReactionIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isPositive = count?.isNegative;
     return InkWell(
-      onTap: onTap,
-      child: isPositive != null
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [icon, SizedBox(width: 6), Text('$count')],
-            )
-          : icon,
-    );
+        onTap: onTap,
+        child: count != null && count! > 0
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  icon,
+                  SizedBox(width: 6),
+                  Center(child: Text('$count'))
+                ],
+              )
+            : icon);
   }
 }
