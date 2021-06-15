@@ -16,7 +16,9 @@ class FlatFeed extends StatelessWidget {
             AsyncSnapshot<List<EnrichedActivity>> snapshot) {
           if (snapshot.hasData) {
             print(snapshot.data);
-            return FlatFeedInner(activities: snapshot.data!);
+            return FlatFeedInner(
+                activities:
+                    snapshot.data!); //TODO: no activity to display widget
           } else if (snapshot.hasError) {
             print(snapshot.error);
             return ErrorStateWidget();
