@@ -10,17 +10,21 @@ class ActivityContent extends StatelessWidget {
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
 
-  final OpenGraphData? og;
+  // final OpenGraphData? og;
 
   const ActivityContent({
     required this.activity,
     this.onMentionTap,
     this.onHashtagTap,
-    this.og, //attachments
+    // this.og, //
   });
 
   @override
   Widget build(BuildContext context) {
+    final ogRaw = activity.extraData!['attachments']
+        as Map<String, dynamic>; //TODO: handle case null
+    final og = OpenGraphData.fromJson(ogRaw);
+    print(og);
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final activityObject = activity.object;
     final taggedText = activityObject != null
@@ -40,7 +44,7 @@ class ActivityContent extends StatelessWidget {
               .toList(),
         ),
         //TODO: handle Video + Audio + Gallery
-        if (og != null) StreamFeedCard(og: og!)
+        Expanded(child: StreamFeedCard(og: og))
       ],
     );
   }

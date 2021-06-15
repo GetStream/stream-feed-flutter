@@ -24,11 +24,13 @@ class StreamFeedActivity extends StatelessWidget {
           activity: activity,
           onUserTap: onUserTap,
         ),
-        ActivityContent(
-          //TODO: builders
-          activity: activity,
-          onHashtagTap: onHashtagTap,
-          onMentionTap: onMentionTap,
+        Expanded(
+          child: ActivityContent(
+            //TODO: builders
+            activity: activity,
+            onHashtagTap: onHashtagTap,
+            onMentionTap: onMentionTap,
+          ),
         ),
         ActivityFooter(
             //TODO: builders

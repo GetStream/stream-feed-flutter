@@ -27,10 +27,13 @@ class StreamFeedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final _url = og.url!;
     final firstOgImage = og.images?.first;
-    final image = firstOgImage?.secureUrl ?? firstOgImage?.url ?? imageURL;
+    final image = firstOgImage?.secureUrl ??
+        firstOgImage?.url ??
+        firstOgImage?.image ??
+        imageURL;
     return InkWell(
         onTap: () async {
-          await canLaunch(_url)//TODO: provide a callback
+          await canLaunch(_url) //TODO: provide a callback
               ? await launch(_url)
               : throw 'Could not launch $_url';
         },

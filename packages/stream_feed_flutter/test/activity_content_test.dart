@@ -11,12 +11,27 @@ void main() {
     await mockNetworkImages(() async {
       var pressedHashtags = <String?>[];
       var pressedMentions = <String?>[];
-      final _url = 'http://example.com/';
+      // final _url = 'http://example.com/';
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
         body: ActivityContent(
-          og: OpenGraphData(url: _url, images: [OgImage(secureUrl: _url)]),
+          // og: OpenGraphData(url: _url, images: [OgImage(secureUrl: _url)]),
           activity: EnrichedActivity(
+            extraData: {
+              'attachments': OpenGraphData(
+                  title:
+                      "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+                  url:
+                      'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+                  description:
+                      'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+                  images: [
+                    OgImage(
+                      image:
+                          'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+                    )
+                  ]).toJson(),
+            },
             actor: EnrichableField(
               User(
                 data: {
@@ -26,8 +41,7 @@ void main() {
                 },
               ),
             ),
-            object: EnrichableField(
-                {'text': 'I just missed my train 😤 #angry @sahil'}),
+            object: EnrichableField('I just missed my train 😤 #angry @sahil'),
           ),
           onMentionTap: (String? mention) {
             pressedMentions.add(mention);
