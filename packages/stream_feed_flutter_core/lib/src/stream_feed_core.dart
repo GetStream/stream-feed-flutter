@@ -96,15 +96,15 @@ class StreamFeedCoreState extends State<StreamFeedCore>
 
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
 
-  Future<void> onAddReaction(
+  Future<Reaction> onAddReaction(
       {Map<String, Object>? data,
       required String kind,
       required EnrichedActivity activity,
       List<FeedId>? targetFeeds,
       required String feedGroup}) async {
-    await client.reactions
+    return await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
-    await trackAnalytics(label: kind, activity: activity, feedGroup: feedGroup);
+    // await trackAnalytics(label: kind, activity: activity, feedGroup: feedGroup);
   }
 
   Future<void> onRemoveReaction(
@@ -113,8 +113,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required String id,
       required String feedGroup}) async {
     await client.reactions.delete(id);
-    await trackAnalytics(
-        label: 'un$kind', activity: activity, feedGroup: feedGroup);
+    // await trackAnalytics(
+    //     label: 'un$kind', activity: activity, feedGroup: feedGroup);
   }
 
   Future<void> trackAnalytics(

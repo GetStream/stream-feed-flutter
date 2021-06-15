@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/reaction_icon.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class ReactionToggleIcon extends StatelessWidget {
-  //TODO stateful with already reacted
+class ReactionToggleIcon extends StatefulWidget {
+  
   final List<Reaction>? ownReactions;
   final Widget activeIcon;
   final Widget inactiveIcon;
@@ -29,45 +29,62 @@ class ReactionToggleIcon extends StatelessWidget {
     this.count,
     this.userId,
   });
+
+  @override
+  State<ReactionToggleIcon> createState() => _ReactionToggleIconState();
+}
+
+class _ReactionToggleIconState extends State<ReactionToggleIcon> {
+  late bool alreadyReacted;
+  late List<Reaction?>? reactionsKind;
+  late String? idToRemove;
+
+  @override
+  void initState() {
+    super.initState();
+    reactionsKind = widget.ownReactions?.filterByKind(widget.kind);
+    alreadyReacted = reactionsKind?.isNotEmpty != null;
+    idToRemove = reactionsKind?.last?.id;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final reactionsKind = ownReactions?.filterByKind(kind);
-    final alreadyReacted = reactionsKind?.isNotEmpty != null;
-    final displayedIcon = alreadyReacted ? activeIcon : inactiveIcon;
+    final displayedIcon =
+        alreadyReacted ? widget.activeIcon : widget.inactiveIcon;
 
     return ReactionIcon(
       icon: displayedIcon,
-      count: count,
+      count: widget.count, //TODO: handle count
       onTap: () async {
-        onTap?.call ??
-            await onToggleReaction(context, alreadyReacted,
-                idToRemove: reactionsKind?.last?.id);
+        widget.onTap?.call ?? await onToggleReaction();
       },
     );
   }
 
-//TODO: clean this up
-  Future<void> onToggleReaction(BuildContext context, bool alreadyReacted,
-      {String? idToRemove}) async {
-    final streamFeed = StreamFeedCore.of(context);
+  Future<void> onToggleReaction() async {
+    alreadyReacted ? await removeReaction() : await addReaction();
+  }
 
-    alreadyReacted
-        ? await streamFeed.onRemoveReaction(
-            kind: kind,
-            activity: activity,
-            id: idToRemove!,
-            feedGroup: feedGroup)
-        : await streamFeed.onAddReaction(
-            kind: kind,
-            activity: activity,
-            data: data,
-            feedGroup: feedGroup,
-            // targetFeeds: [
-            //     if (userId != null)
-            //       FeedId.id(
-            //           '$feedGroup:$userId'), //'$feedGroup:${userId ?? streamFeed.user?.id}') fixed in master
-            //     if (targetFeeds != null) ...targetFeeds!
-            //   ]
-          );
+  Future<void> addReaction() async {
+    final reaction = await StreamFeedCore.of(context).onAddReaction(
+        kind: widget.kind,
+        activity: widget.activity,
+        data: widget.data,
+        feedGroup: widget.feedGroup);
+    setState(() {
+      alreadyReacted = !alreadyReacted;
+      idToRemove = reaction.id!;
+    });
+  }
+
+  Future<void> removeReaction() async {
+    await StreamFeedCore.of(context).onRemoveReaction(
+        kind: widget.kind,
+        activity: widget.activity,
+        id: idToRemove!,
+        feedGroup: widget.feedGroup);
+    setState(() {
+      alreadyReacted = !alreadyReacted;
+    });
   }
 }

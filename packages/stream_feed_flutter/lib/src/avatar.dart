@@ -12,6 +12,7 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      //TODO: fix border radius
       onTap: () {
         onUserTap?.call(user);
       },
