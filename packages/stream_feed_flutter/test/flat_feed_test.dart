@@ -80,7 +80,7 @@ void main() {
                       'subtitle': 'likes playing fresbee in the park',
                       'profile_image':
                           'https://randomuser.me/api/portraits/women/20.jpg',
-                    }),
+                    }).toJson(),
                   ),
                 ),
                 EnrichedActivity(
@@ -92,7 +92,7 @@ void main() {
                       'subtitle': 'likes playing fresbee in the park',
                       'profile_image':
                           'https://randomuser.me/api/portraits/women/20.jpg',
-                    }),
+                    }).toJson(),
                   ),
                 ),
               ]),
