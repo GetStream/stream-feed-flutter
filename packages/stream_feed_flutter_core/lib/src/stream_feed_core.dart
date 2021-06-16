@@ -102,9 +102,10 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required EnrichedActivity activity,
       List<FeedId>? targetFeeds,
       required String feedGroup}) async {
-    return await client.reactions
+    final reaction = await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
-    // await trackAnalytics(label: kind, activity: activity, feedGroup: feedGroup);
+    await trackAnalytics(label: kind, activity: activity, feedGroup: feedGroup);
+    return reaction;
   }
 
   Future<void> onRemoveReaction(
@@ -113,8 +114,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required String id,
       required String feedGroup}) async {
     await client.reactions.delete(id);
-    // await trackAnalytics(
-    //     label: 'un$kind', activity: activity, feedGroup: feedGroup);
+    await trackAnalytics(
+        label: 'un$kind', activity: activity, feedGroup: feedGroup);
   }
 
   Future<void> trackAnalytics(
