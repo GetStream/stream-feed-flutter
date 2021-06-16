@@ -32,33 +32,66 @@ class StreamFeedCard extends StatelessWidget {
         firstOgImage?.image ??
         imageURL;
     return InkWell(
-        onTap: () async {
-          await canLaunch(_url) //TODO: provide a callback
-              ? await launch(_url)
-              : throw 'Could not launch $_url';
-        },
+      onTap: () async {
+        await canLaunch(_url) //TODO: provide a callback
+            ? await launch(_url)
+            : throw 'Could not launch $_url';
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Card(
-          child: Image.network(
-            //TODO: replace with cached network image
-            image!, //TODO: handle empty state
-            semanticLabel:
-                firstOgImage?.alt ?? alt ?? title ?? description ?? '',
-            loadingBuilder: (BuildContext context, Widget child,
-                ImageChunkEvent? loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: CircularProgressIndicator(
-                  //TODO: provide a way to customize progress indicator
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
-                ),
-              );
-            },
-
-            fit: BoxFit.cover,
-          ),
-        ));
+          color: Colors.grey[50],
+          child: Row(children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4.0),
+              child: Image.network(image!,
+                  height: 100.0,
+                  width: 100.0,
+                  semanticLabel:
+                      firstOgImage?.alt ?? alt ?? title ?? description ?? '',
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    //TODO: provide a way to customize progress indicator
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              }, fit: BoxFit.fill),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        og.title!, //TODO: handle null
+                        style: TextStyle(
+                          color: Color(0xff007aff),
+                          fontSize: 14,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        og.description!, //TODO: handle null
+                        style: TextStyle(
+                          color: Color(0xff364047),
+                          fontSize: 13,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ]),
+              ),
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 }
