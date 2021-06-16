@@ -42,8 +42,10 @@ void main() {
       expect(image, findsOneWidget);
 
       await tester.tap(inkwell);
-      expect(logs,
-          ['canLaunch', 'launch']); //TODO: hmm find a better way to do this
+      expect(logs, [
+        'canLaunch',
+        'launch'
+      ]); //TODO: hmm there might be a better way to do this
     });
   });
 

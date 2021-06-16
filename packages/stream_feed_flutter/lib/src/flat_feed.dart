@@ -11,6 +11,7 @@ class FlatFeed extends StatelessWidget {
     this.onMentionTap,
     this.onUserTap,
   }) : super(key: key);
+
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;
   final OnUserTap? onUserTap;
@@ -18,7 +19,7 @@ class FlatFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder(//TODO: put this in core with a builder List<EnrichedActivity>
         future: StreamFeedCore.of(context)
             .getEnrichedActivities(feedGroup: feedGroup),
         builder: (BuildContext context,
