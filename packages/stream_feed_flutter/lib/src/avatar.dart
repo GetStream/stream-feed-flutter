@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/circular_progress_indicator.dart';
 import 'package:stream_feed_flutter/src/icons.dart';
 import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
@@ -20,19 +21,15 @@ class Avatar extends StatelessWidget {
           ? ClipOval(
               child: Image.network(
                 user!.data!['profile_image'] as String,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: CircularProgressIndicator(
-                      //TODO: provide a way to customize progress indicator
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-                },
+                loadingBuilder: (
+                  BuildContext context,
+                  Widget child,
+                  ImageChunkEvent? loadingProgress,
+                ) =>
+                    StreamCircularProgressIndicator(
+                  loadingProgress: loadingProgress,
+                  child: child,
+                ),
                 width: size,
                 height: size,
                 fit: BoxFit.cover,

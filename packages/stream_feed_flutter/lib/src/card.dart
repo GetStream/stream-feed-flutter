@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/circular_progress_indicator.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,29 +46,23 @@ class StreamFeedCard extends StatelessWidget {
           child: Row(children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(4.0),
-              child: Image.network(image!,
-                  height: 100.0,
-                  width: 100.0,
-                  semanticLabel:
-                      firstOgImage?.alt ?? alt ?? title ?? description ?? '',
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  height: 100.0,
-                  width: 100.0,
-                  color: Color(0xFFE9EEF1),
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      //TODO: provide a way to customize progress indicator
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  ),
-                );
-              }, fit: BoxFit.fill),
+              child: Image.network(
+                image!,
+                height: 100.0,
+                width: 100.0,
+                semanticLabel:
+                    firstOgImage?.alt ?? alt ?? title ?? description ?? '',
+                loadingBuilder: (
+                  BuildContext context,
+                  Widget child,
+                  ImageChunkEvent? loadingProgress,
+                ) =>
+                    StreamCircularProgressIndicator(
+                  loadingProgress: loadingProgress,
+                  child: child,
+                ),
+                fit: BoxFit.fill,
+              ),
             ),
             Expanded(
               child: Padding(
@@ -101,3 +96,4 @@ class StreamFeedCard extends StatelessWidget {
     );
   }
 }
+
