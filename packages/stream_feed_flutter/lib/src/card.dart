@@ -32,6 +32,7 @@ class StreamFeedCard extends StatelessWidget {
         firstOgImage?.image ??
         imageURL;
     return InkWell(
+      borderRadius: BorderRadius.all(Radius.circular(4.0)),
       onTap: () async {
         await canLaunch(_url) //TODO: provide a callback
             ? await launch(_url)
