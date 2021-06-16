@@ -53,13 +53,18 @@ class StreamFeedCard extends StatelessWidget {
                   loadingBuilder: (BuildContext context, Widget child,
                       ImageChunkEvent? loadingProgress) {
                 if (loadingProgress == null) return child;
-                return Center(
-                  child: CircularProgressIndicator(
-                    //TODO: provide a way to customize progress indicator
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
+                return Container(
+                  height: 100.0,
+                  width: 100.0,
+                  color: Color(0xFFE9EEF1),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      //TODO: provide a way to customize progress indicator
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
                   ),
                 );
               }, fit: BoxFit.fill),
