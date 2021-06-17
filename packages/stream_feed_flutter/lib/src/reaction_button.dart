@@ -3,13 +3,15 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ReactionButton extends StatelessWidget {
-  ReactionButton(
-      {this.reaction,
-      required this.activity,
-      this.onTap,
-      required this.kind,
-      required this.activeIcon,
-      required this.inactiveIcon});
+  ReactionButton({
+    required this.activity,
+    required this.kind,
+    required this.activeIcon,
+    required this.inactiveIcon,
+    this.reaction,
+    this.onTap,
+    this.data,
+  });
 
   ///The reaction received from stream that should be liked when pressing the LikeButton.
   final Reaction? reaction;
@@ -28,6 +30,8 @@ class ReactionButton extends StatelessWidget {
   /// The button to display if the user didn't reacted yet
   final Widget inactiveIcon;
 
+  final Map<String, Object>? data;
+
   @override
   Widget build(BuildContext context) {
     return ReactionToggleIcon(
@@ -39,6 +43,7 @@ class ReactionButton extends StatelessWidget {
       inactiveIcon: inactiveIcon,
       kind: kind,
       onTap: onTap,
+      data: data,
     );
   }
 }

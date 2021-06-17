@@ -21,9 +21,10 @@ class ActivityHeader extends StatelessWidget {
     final user =
         User.fromJson(serializedActor as Map<String, dynamic>); //TODO: ugly
     return UserBar(
-        user: user,
-        onUserTap: onUserTap,
-        timestamp: activity.time!,
-        kind: activityKind); //TODO: display what instead of null timestamp?
+      user: user,
+      onUserTap: onUserTap,
+      timestamp: activity.time!,
+      kind: activityKind,
+    ); //TODO: display what instead of null timestamp?
   }
 }

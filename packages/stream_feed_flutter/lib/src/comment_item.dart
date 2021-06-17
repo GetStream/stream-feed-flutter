@@ -34,7 +34,6 @@ class CommentItem extends StatelessWidget {
         ? detector.parseText(reaction.data![commentJsonKey] as String)
         : <TaggedText?>[];
     return InkWell(
-      //TODO; hmm maybe move this in CommentItem
       onTap: () {
         onReactionTap?.call(reaction);
       },

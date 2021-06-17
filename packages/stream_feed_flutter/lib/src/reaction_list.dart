@@ -28,9 +28,9 @@ class ReactionList extends StatelessWidget {
       reverse: reverse ?? false,
       itemCount: reactions.length,
       itemBuilder: (context, idx) => CommentItem(
-        onReactionTap: onReactionTap,
         user: reactions[idx].user,
         reaction: reactions[idx],
+        onReactionTap: onReactionTap,
         onHashtagTap: onHashtagTap,
         onMentionTap: onMentionTap,
         onUserTap: onUserTap,
