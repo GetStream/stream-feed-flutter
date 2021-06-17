@@ -62,36 +62,12 @@ main() {
             fontSize: 14.0,
             fontWeight: FontWeight.w400,
             height: 1.5),
-        TextStyle(
-            inherit: true,
-            color: Color(0xff095482),
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600),
-        TextStyle(
-            inherit: true,
-            color: Color(0xff095482),
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600),
-        TextStyle(
-            inherit: true,
-            color: Color(0xff095482),
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600),
-        TextStyle(
-            inherit: true,
-            color: Color(0xff7a8287),
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600),
-        TextStyle(
-            inherit: true,
-            color: Color(0xff7a8287),
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600),
-        TextStyle(
-            inherit: true,
-            color: Color(0xff095482),
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600)
+        TextStyle(inherit: true, color: Color(0xff000000), fontSize: 14.0),
+        TextStyle(inherit: true, color: Color(0xff000000), fontSize: 14.0),
+        TextStyle(inherit: true, color: Color(0xff000000), fontSize: 14.0),
+        TextStyle(inherit: true, color: Color(0xff0076ff), fontSize: 14.0),
+        TextStyle(inherit: true, color: Color(0xff0076ff), fontSize: 14.0),
+        TextStyle(inherit: true, color: Color(0xff0076ff), fontSize: 14.0)
       ]);
 
       await tester.tap(find.widgetWithText(InkWell, ' #winter'));
