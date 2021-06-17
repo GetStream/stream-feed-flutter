@@ -53,7 +53,7 @@ class CommentFieldState extends State<CommentField> {
               await streamFeed.onAddReaction(
                 kind: 'comment',
                 activity: widget.activity,
-                data: {'text': text},//TODO: key
+                data: {'text': text}, //TODO: key
                 targetFeeds: widget.targetFeeds,
                 feedGroup: widget.feedGroup,
               );
