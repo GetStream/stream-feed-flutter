@@ -24,17 +24,19 @@ void main() {
   });
   testWidgets('Card', (tester) async {
     await mockNetworkImages(() async {
-      final _url = 'http://example.com/';
+      final title =
+          "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'";
+      final description =
+          'Why choose one when you can wear both? These energizing pairings stand out from the crowd';
+
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
         body: StreamFeedCard(
           og: OpenGraphData(
-              title:
-                  "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+              title: title,
               url:
                   'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
-              description:
-                  'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+              description: description,
               images: [
                 OgImage(
                   image:
@@ -58,6 +60,9 @@ void main() {
         'canLaunch',
         'launch'
       ]); //TODO: hmm there might be a better way to do this
+
+      final richtexts = tester.widgetList<Text>(find.byType(Text));
+      expect(richtexts.toList().map((e) => e.data), [title, description]);
     });
   });
 
