@@ -5,15 +5,18 @@ import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 class StreamFeedActivity extends StatelessWidget {
-  const StreamFeedActivity(
-      {required this.activity,
-      this.onHashtagTap,
-      this.onMentionTap,
-      this.onUserTap});
+  const StreamFeedActivity({
+    required this.activity,
+    this.onHashtagTap,
+    this.onMentionTap,
+    this.onUserTap,
+    this.footer,
+  });
   final EnrichedActivity activity;
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
   final OnUserTap? onUserTap;
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +33,10 @@ class StreamFeedActivity extends StatelessWidget {
           onHashtagTap: onHashtagTap,
           onMentionTap: onMentionTap,
         ),
-        ActivityFooter(
-            //TODO: builders
-            activity: activity)
+        footer ??
+            ActivityFooter(
+                //TODO: builders
+                activity: activity)
       ],
     );
   }
