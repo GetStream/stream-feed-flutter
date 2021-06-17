@@ -28,10 +28,10 @@ extension TagX on Tag {
             fontSize: 14,
             fontWeight: FontWeight.w600),
         Tag.mention: TextStyle(
-            inherit: true,
-            color: Color(0xff095482),
-            fontSize: 14,
-            fontWeight: FontWeight.w600),
+          inherit: true,
+          color: Color(0xff0076ff),
+          fontSize: 14,
+        ),
         Tag.normalText: TextStyle(
             inherit: true,
             color: Color(0xff095482),
