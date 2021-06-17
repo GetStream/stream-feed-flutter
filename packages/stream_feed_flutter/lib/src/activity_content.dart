@@ -10,13 +10,10 @@ class ActivityContent extends StatelessWidget {
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
 
-  // final OpenGraphData? og;
-
   const ActivityContent({
     required this.activity,
     this.onMentionTap,
     this.onHashtagTap,
-    // this.og, //
   });
 
   @override
