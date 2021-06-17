@@ -30,6 +30,7 @@ class FlatFeed extends StatelessWidget {
           if (snapshot.hasData) {
             print(snapshot.data);
             return FlatFeedInner(
+              feedGroup: feedGroup,
               activities: snapshot.data!, //TODO: no activity to display widget
               onHashtagTap: onHashtagTap,
               onMentionTap: onMentionTap,
@@ -47,14 +48,15 @@ class FlatFeed extends StatelessWidget {
 }
 
 class FlatFeedInner extends StatelessWidget {
-  const FlatFeedInner({
-    Key? key,
-    required this.activities,
-    this.onHashtagTap,
-    this.onMentionTap,
-    this.onUserTap,
-    this.activityFooterBuilder,
-  }) : super(key: key);
+  const FlatFeedInner(
+      {Key? key,
+      required this.activities,
+      this.onHashtagTap,
+      this.onMentionTap,
+      this.onUserTap,
+      this.activityFooterBuilder,
+      required this.feedGroup})
+      : super(key: key);
 
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;
@@ -62,12 +64,16 @@ class FlatFeedInner extends StatelessWidget {
   final List<EnrichedActivity> activities;
   final ActivityFooterBuilder? activityFooterBuilder;
 
+  ///The feed group part of the feed
+  final String feedGroup;
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: activities.length,
       itemBuilder: (context, idx) => StreamFeedActivity(
         activity: activities[idx],
+        feedGroup: feedGroup,
         onHashtagTap: onHashtagTap,
         onMentionTap: onMentionTap,
         onUserTap: onUserTap,

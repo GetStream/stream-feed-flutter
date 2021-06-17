@@ -14,17 +14,20 @@ void main() {
           home: Scaffold(
             body: StreamFeedActivity(
               activity: EnrichedActivity(
-                time: DateTime.now(),
-                actor: EnrichableField(
-                  User(data: {
-                    'name': 'Rosemary',
-                    'handle': '@rosemary',
-                    'subtitle': 'likes playing fresbee in the park',
-                    'profile_image':
-                        'https://randomuser.me/api/portraits/women/20.jpg',
-                  }).toJson(),
-                ),
-              ),
+                  time: DateTime.now(),
+                  actor: EnrichableField(
+                    User(data: {
+                      'name': 'Rosemary',
+                      'handle': '@rosemary',
+                      'subtitle': 'likes playing fresbee in the park',
+                      'profile_image':
+                          'https://randomuser.me/api/portraits/women/20.jpg',
+                    }).toJson(),
+                  ),
+                  extraData: {
+                    'image':
+                        'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+                  }),
             ),
           ),
         ),

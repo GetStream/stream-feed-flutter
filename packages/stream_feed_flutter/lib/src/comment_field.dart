@@ -4,7 +4,7 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class CommentField extends StatefulWidget {
-  final EnrichedActivity activity;
+  final EnrichedActivity? activity;
   final List<FeedId>? targetFeeds;
 
   ///The feed group part of the feed
@@ -12,9 +12,9 @@ class CommentField extends StatefulWidget {
 
   CommentField({
     Key? key,
-    required this.activity,
-    this.targetFeeds,
     required this.feedGroup,
+    this.activity,
+    this.targetFeeds,
   }) : super(key: key);
 
   @override
@@ -50,13 +50,16 @@ class CommentFieldState extends State<CommentField> {
             //TODO; add way to customize button
             label: 'Post',
             onPressed: () async {
-              await streamFeed.onAddReaction(
-                kind: 'comment',
-                activity: widget.activity,
-                data: {'text': text}, //TODO: key
-                targetFeeds: widget.targetFeeds,
-                feedGroup: widget.feedGroup,
-              );
+              widget.activity != null
+                  ? await streamFeed.onAddReaction(
+                      kind: 'comment',
+                      activity: widget.activity!,
+                      data: {'text': text}, //TODO: key
+                      targetFeeds: widget.targetFeeds,
+                      feedGroup: widget.feedGroup,
+                    )
+                  : await streamFeed.onAddActivity(
+                      feedGroup: widget.feedGroup, data: {'text': text});
             },
             type: ButtonType.faded)
       ],

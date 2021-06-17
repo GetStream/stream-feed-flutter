@@ -7,6 +7,7 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 class StreamFeedActivity extends StatelessWidget {
   const StreamFeedActivity(
       {required this.activity,
+      required this.feedGroup,
       this.onHashtagTap,
       this.onMentionTap,
       this.onUserTap,
@@ -18,12 +19,13 @@ class StreamFeedActivity extends StatelessWidget {
   final OnUserTap? onUserTap;
   final OnActivityTap? onActivityTap;
   final ActivityFooterBuilder? activityFooterBuilder;
+  final String feedGroup;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        onActivityTap?.call(context,activity);
+        onActivityTap?.call(context, activity);
       },
       child: Column(
         children: [
@@ -39,7 +41,10 @@ class StreamFeedActivity extends StatelessWidget {
             onMentionTap: onMentionTap,
           ),
           activityFooterBuilder?.call(context, activity) ??
-              ActivityFooter(activity: activity)
+              ActivityFooter(
+                activity: activity,
+                feedGroup: feedGroup,
+              )
         ],
       ),
     );
