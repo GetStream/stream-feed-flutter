@@ -24,21 +24,17 @@ class ReactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        reverse: reverse ?? false,
-        itemCount: reactions.length,
-        itemBuilder: (context, idx) => InkWell(
-              //TODO; hmm maybe move this in CommentItem
-              onTap: () {
-                onReactionTap?.call(reactions[idx]);
-              },
-              child: CommentItem(
-                user: reactions[idx].user,
-                reaction: reactions[idx],
-                onHashtagTap: onHashtagTap,
-                onMentionTap: onMentionTap,
-                onUserTap: onUserTap,
-              ),
-            ));
+      reverse: reverse ?? false,
+      itemCount: reactions.length,
+      itemBuilder: (context, idx) => CommentItem(
+        onReactionTap: onReactionTap,
+        user: reactions[idx].user,
+        reaction: reactions[idx],
+        onHashtagTap: onHashtagTap,
+        onMentionTap: onMentionTap,
+        onUserTap: onUserTap,
+      ),
+    );
   }
 
   // getUser(String? userId) {}

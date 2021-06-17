@@ -5,7 +5,6 @@ import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/display.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'utils/extensions.dart';
 
 class CommentItem extends StatelessWidget {
   final User? user;
@@ -15,15 +14,18 @@ class CommentItem extends StatelessWidget {
   final OnUserTap? onUserTap;
   final String nameJsonKey;
   final String commentJsonKey;
+  final OnReactionTap? onReactionTap;
 
-  const CommentItem(
-      {required this.reaction,
-      this.user,
-      this.onMentionTap,
-      this.onHashtagTap,
-      this.onUserTap,
-      this.nameJsonKey = 'name',
-      this.commentJsonKey = 'text'});
+  const CommentItem({
+    required this.reaction,
+    this.user,
+    this.onMentionTap,
+    this.onHashtagTap,
+    this.onUserTap,
+    this.nameJsonKey = 'name',
+    this.commentJsonKey = 'text',
+    this.onReactionTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,49 +33,55 @@ class CommentItem extends StatelessWidget {
     final taggedText = reaction.data?[commentJsonKey] != null
         ? detector.parseText(reaction.data![commentJsonKey] as String)
         : <TaggedText?>[];
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Avatar(
-              user: user,
-              onUserTap: onUserTap,
-            )),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    children: [
-                      ...displayUsername(user),
-                      if (reaction.createdAt != null)
-                        HumanReadableTimestamp(timestamp: reaction.createdAt!)
-                    ],
-                  ),
-                ),
-                Padding(
+    return InkWell(
+      //TODO; hmm maybe move this in CommentItem
+      onTap: () {
+        onReactionTap?.call(reaction);
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Avatar(
+                user: user,
+                onUserTap: onUserTap,
+              )),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
                     padding: const EdgeInsets.all(2.0),
-                    child: Wrap(
-                      //TODO: move to Text.rich(WidgetSpans)
-                      children: taggedText
-                          .map((it) => InteractiveText(
-                                tagged: it,
-                                onHashtagTap: onHashtagTap,
-                                onMentionTap: onMentionTap,
-                              ))
-                          .toList(),
-                    ))
-              ],
+                    child: Row(
+                      children: [
+                        ...displayUsername(user),
+                        if (reaction.createdAt != null)
+                          HumanReadableTimestamp(timestamp: reaction.createdAt!)
+                      ],
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Wrap(
+                        //TODO: move to Text.rich(WidgetSpans)
+                        children: taggedText
+                            .map((it) => InteractiveText(
+                                  tagged: it,
+                                  onHashtagTap: onHashtagTap,
+                                  onMentionTap: onMentionTap,
+                                ))
+                            .toList(),
+                      ))
+                ],
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 
