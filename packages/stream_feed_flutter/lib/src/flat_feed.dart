@@ -10,12 +10,14 @@ class FlatFeed extends StatelessWidget {
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
+    this.activityFooterBuilder,
   }) : super(key: key);
 
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;
   final OnUserTap? onUserTap;
   final String feedGroup;
+  final ActivityFooterBuilder? activityFooterBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class FlatFeed extends StatelessWidget {
               onHashtagTap: onHashtagTap,
               onMentionTap: onMentionTap,
               onUserTap: onUserTap,
+              activityFooterBuilder: activityFooterBuilder,
             );
           } else if (snapshot.hasError) {
             print(snapshot.error);
@@ -50,12 +53,14 @@ class FlatFeedInner extends StatelessWidget {
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
+    this.activityFooterBuilder,
   }) : super(key: key);
 
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;
   final OnUserTap? onUserTap;
   final List<EnrichedActivity> activities;
+  final ActivityFooterBuilder? activityFooterBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +71,7 @@ class FlatFeedInner extends StatelessWidget {
         onHashtagTap: onHashtagTap,
         onMentionTap: onMentionTap,
         onUserTap: onUserTap,
+        activityFooterBuilder: activityFooterBuilder,
       ),
     );
   }

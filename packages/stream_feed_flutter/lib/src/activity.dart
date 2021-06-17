@@ -10,13 +10,13 @@ class StreamFeedActivity extends StatelessWidget {
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
-    this.footer,
+    this.activityFooterBuilder,
   });
   final EnrichedActivity activity;
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
   final OnUserTap? onUserTap;
-  final Widget? footer;
+  final ActivityFooterBuilder? activityFooterBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +33,8 @@ class StreamFeedActivity extends StatelessWidget {
           onHashtagTap: onHashtagTap,
           onMentionTap: onMentionTap,
         ),
-        footer ??
+        activityFooterBuilder?.call(context, activity) ??
             ActivityFooter(
-                //TODO: builders
                 activity: activity)
       ],
     );
