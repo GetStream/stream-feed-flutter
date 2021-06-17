@@ -24,6 +24,7 @@ class ReactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      //TODO: extract this into core
       reverse: reverse ?? false,
       itemCount: reactions.length,
       itemBuilder: (context, idx) => CommentItem(
