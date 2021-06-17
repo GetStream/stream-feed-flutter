@@ -6,6 +6,7 @@ typedef OnHashtagTap = void Function(String? hashtag);
 
 typedef OnReactionTap = void Function(Reaction? reaction);
 typedef OnUserTap = void Function(User? user);
+typedef OnActivityTap = void Function(BuildContext context,EnrichedActivity? user);
 
 typedef ActivityFooterBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
