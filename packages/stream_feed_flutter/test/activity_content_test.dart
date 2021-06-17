@@ -16,11 +16,9 @@ void main() {
 
       var pressedHashtags = <String?>[];
       var pressedMentions = <String?>[];
-      // final _url = 'http://example.com/';
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
         body: ActivityContent(
-          // og: OpenGraphData(url: _url, images: [OgImage(secureUrl: _url)]),
           activity: EnrichedActivity(
             extraData: {
               'attachments': OpenGraphData(
