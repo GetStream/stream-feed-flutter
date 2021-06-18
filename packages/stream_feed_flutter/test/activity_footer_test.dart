@@ -22,7 +22,7 @@ main() {
           ),
         ),
       ),
-      surfaceSize: const Size(150, 150),
+      surfaceSize: const Size(200, 200),
     );
     await screenMatchesGolden(tester, 'activity_footer');
   });
