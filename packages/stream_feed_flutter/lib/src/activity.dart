@@ -7,7 +7,7 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 class StreamFeedActivity extends StatelessWidget {
   const StreamFeedActivity(
       {required this.activity,
-       this.feedGroup = 'user',
+      this.feedGroup = 'user',
       this.onHashtagTap,
       this.onMentionTap,
       this.onUserTap,

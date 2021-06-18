@@ -70,7 +70,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: FlatFeedInner( activities: [
+              body: FlatFeedInner(activities: [
                 EnrichedActivity(
                   time: DateTime.now(),
                   actor: EnrichableField(
