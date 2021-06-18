@@ -70,8 +70,8 @@ main() {
         TextStyle(inherit: true, color: Color(0xff0076ff), fontSize: 14.0)
       ]);
 
-      await tester.tap(find.widgetWithText(InkWell, ' #winter'));
-      await tester.tap(find.widgetWithText(InkWell, ' @sacha'));
+      await tester.tap(find.widgetWithText(InkWell, ' #winter').first);
+      await tester.tap(find.widgetWithText(InkWell, ' @sacha').first);
       expect(pressedHashtags, ['winter']);
       expect(pressedMentions, ['sacha']);
     });
