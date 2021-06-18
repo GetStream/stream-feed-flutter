@@ -48,15 +48,15 @@ class FlatFeed extends StatelessWidget {
 }
 
 class FlatFeedInner extends StatelessWidget {
-  const FlatFeedInner(
-      {Key? key,
-      required this.activities,
-      this.onHashtagTap,
-      this.onMentionTap,
-      this.onUserTap,
-      this.activityFooterBuilder,
-      required this.feedGroup})
-      : super(key: key);
+  const FlatFeedInner({
+    Key? key,
+    required this.activities,
+    this.onHashtagTap,
+    this.onMentionTap,
+    this.onUserTap,
+    this.activityFooterBuilder,
+    this.feedGroup = 'user',
+  }) : super(key: key);
 
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;

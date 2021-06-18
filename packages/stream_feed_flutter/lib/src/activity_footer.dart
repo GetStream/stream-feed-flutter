@@ -7,7 +7,7 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ActivityFooter extends StatelessWidget {
-  const ActivityFooter({required this.activity, required this.feedGroup});
+  const ActivityFooter({required this.activity,  this.feedGroup = 'user'});
   final EnrichedActivity activity;
   final String feedGroup;
 
