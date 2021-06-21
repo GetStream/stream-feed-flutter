@@ -41,7 +41,7 @@ class CommentFieldState extends State<CommentField> {
               child: TextArea(onSubmitted: (value) {
                 setState(() {
                   text = value;
-                });
+                });//TODO: value notifier
               }),
             ),
           ],
