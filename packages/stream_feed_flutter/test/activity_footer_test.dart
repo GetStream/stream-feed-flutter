@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-import 'package:stream_feed_flutter/src/widgets/activity/activity_footer.dart';
+import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 main() {

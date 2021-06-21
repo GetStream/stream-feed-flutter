@@ -1,8 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/widgets/activity/activity_content.dart';
-import 'package:stream_feed_flutter/src/widgets/activity/activity_header.dart';
+import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
+import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';

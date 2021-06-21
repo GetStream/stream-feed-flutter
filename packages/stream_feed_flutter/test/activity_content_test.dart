@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stream_feed_flutter/src/widgets/activity/activity_content.dart';
+import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/og/card.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';

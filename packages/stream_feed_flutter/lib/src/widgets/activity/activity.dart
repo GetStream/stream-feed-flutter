@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
-import 'package:stream_feed_flutter/src/widgets/activity/activity_content.dart';
-import 'package:stream_feed_flutter/src/widgets/activity/activity_footer.dart';
-import 'package:stream_feed_flutter/src/widgets/activity/activity_header.dart';
+import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
+import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
+import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class StreamFeedActivity extends StatelessWidget {
