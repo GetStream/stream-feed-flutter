@@ -34,12 +34,12 @@ class AlertDialogComment extends StatelessWidget {
 }
 
 class CommentView extends StatelessWidget {
-  const CommentView(
-      {Key? key,
-      required this.activity,
-      required this.feedGroup,
-      required this.textEditingController})
-      : super(key: key);
+  const CommentView({
+    Key? key,
+    required this.activity,
+    required this.feedGroup,
+    required this.textEditingController,
+  }) : super(key: key);
 
   final EnrichedActivity? activity;
   final String feedGroup;
@@ -56,10 +56,11 @@ class CommentView extends StatelessWidget {
             //TODO: "in response to" activity.to
           ],
           CommentField(
-              textEditingController: textEditingController,
-              activity: activity,
-              enableButton: false,
-              feedGroup: feedGroup)
+            textEditingController: textEditingController,
+            activity: activity,
+            enableButton: false,
+            feedGroup: feedGroup,
+          )
         ],
       ),
     );
@@ -67,13 +68,13 @@ class CommentView extends StatelessWidget {
 }
 
 class AlertDialogActions extends StatelessWidget {
-  const AlertDialogActions(
-      {Key? key,
-      this.activity,
-      this.targetFeeds,
-      required this.feedGroup,
-      required this.textEditingController})
-      : super(key: key);
+  const AlertDialogActions({
+    Key? key,
+    this.activity,
+    this.targetFeeds,
+    required this.feedGroup,
+    required this.textEditingController,
+  }) : super(key: key);
   final EnrichedActivity? activity;
   final List<FeedId>? targetFeeds;
   final String feedGroup;

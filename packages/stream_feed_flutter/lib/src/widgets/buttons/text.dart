@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 
 enum ButtonType { faded, info, primary } //TODO: info button
 
-class StyledTextButton extends StatelessWidget {//TODO: hmm probably replace this with elevatedButton
+class StyledTextButton extends StatelessWidget {
+  //TODO: hmm probably replace this with elevatedButton
   final String label;
   final VoidCallback onPressed;
   final ButtonType type;
-  StyledTextButton({required this.label, required this.onPressed, required this.type});
+  StyledTextButton({
+    required this.label,
+    required this.onPressed,
+    required this.type,
+  });
   @override
   Widget build(BuildContext context) {
     switch (type) {

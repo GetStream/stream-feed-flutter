@@ -6,14 +6,15 @@ import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class StreamFeedActivity extends StatelessWidget {
-  const StreamFeedActivity(
-      {required this.activity,
-      this.feedGroup = 'user',
-      this.onHashtagTap,
-      this.onMentionTap,
-      this.onUserTap,
-      this.activityFooterBuilder,
-      this.onActivityTap});
+  const StreamFeedActivity({
+    required this.activity,
+    this.feedGroup = 'user',
+    this.onHashtagTap,
+    this.onMentionTap,
+    this.onUserTap,
+    this.activityFooterBuilder,
+    this.onActivityTap,
+  });
   final EnrichedActivity activity;
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;

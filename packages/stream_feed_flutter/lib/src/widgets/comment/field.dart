@@ -14,14 +14,14 @@ class CommentField extends StatelessWidget {
   ///The feed group part of the feed
   final String feedGroup;
 
-  CommentField(
-      {Key? key,
-      required this.feedGroup,
-      this.activity,
-      this.targetFeeds,
-      required this.textEditingController,
-      this.enableButton = true})
-      : super(key: key);
+  CommentField({
+    Key? key,
+    required this.feedGroup,
+    this.activity,
+    this.targetFeeds,
+    required this.textEditingController,
+    this.enableButton = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

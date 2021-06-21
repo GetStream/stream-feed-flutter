@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class HumanReadableTimestamp extends StatelessWidget {
-  const HumanReadableTimestamp({Key? key, required this.timestamp})
-      : super(key: key);
+  const HumanReadableTimestamp({
+    Key? key,
+    required this.timestamp,
+  }) : super(key: key);
 
   /// If you want to override reaction time
   final DateTime timestamp;

@@ -1,16 +1,15 @@
-
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class PostButton extends StatelessWidget {
-  const PostButton(
-      {Key? key,
-      required this.feedGroup,
-      required this.activity,
-      this.iconSize = 14})
-      : super(key: key);
+  const PostButton({
+    Key? key,
+    required this.feedGroup,
+    required this.activity,
+    this.iconSize = 14,
+  }) : super(key: key);
   final String feedGroup;
   final EnrichedActivity activity;
   final double iconSize;

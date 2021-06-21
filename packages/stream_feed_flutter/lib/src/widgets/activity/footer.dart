@@ -3,7 +3,10 @@ import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ActivityFooter extends StatelessWidget {
-  const ActivityFooter({required this.activity, this.feedGroup = 'user'});
+  const ActivityFooter({
+    required this.activity,
+    this.feedGroup = 'user',
+  });
   final EnrichedActivity activity;
   final String feedGroup;
 
