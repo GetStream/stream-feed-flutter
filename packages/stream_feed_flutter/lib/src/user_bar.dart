@@ -15,6 +15,7 @@ class UserBar extends StatelessWidget {
   final String nameJsonKey;
   final DateTime timestamp;
   final String kind;
+  final bool showSubtitle;
 
   const UserBar({
     required this.timestamp,
@@ -26,6 +27,7 @@ class UserBar extends StatelessWidget {
     this.handleJsonKey = 'handle',
     this.nameJsonKey = 'name',
     this.subtitle,
+    this.showSubtitle = true,
   });
 
   @override
@@ -45,18 +47,19 @@ class UserBar extends StatelessWidget {
               children: [
                 ...displayUsername(user),
                 if (afterUsername != null) afterUsername!,
-                subtitle ??
-                    ReactedBy(
-                        icon: reactionIcon ??
-                            ReactionByIcon(
-                              kind: kind,
-                            ),
-                        handleOrUsername: //TODO: handle no handle or name
-                            user?.data?[handleJsonKey] as String? ??
-                                user?.data?[nameJsonKey] as String
-                        //"rosemary"
+                if (showSubtitle)
+                  subtitle ??
+                      ReactedBy(
+                          icon: reactionIcon ??
+                              ReactionByIcon(
+                                kind: kind,
+                              ),
+                          handleOrUsername: //TODO: handle no handle or name
+                              user?.data?[handleJsonKey] as String? ??
+                                  user?.data?[nameJsonKey] as String
+                          //"rosemary"
 
-                        ),
+                          ),
               ],
             ),
           ),
