@@ -8,8 +8,8 @@ class StreamSvgIcon extends StatelessWidget {
     Key? key,
     this.assetName,
     this.color,
-    this.width = 24,
-    this.height = 24,
+    this.width = 14,
+    this.height = 14,
   }) : super(key: key);
 
   /// Name of icon asset
