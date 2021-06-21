@@ -9,7 +9,7 @@ class TextArea extends StatefulWidget {
       this.keyboardType = TextInputType.multiline,
       this.inputTextStyle,
       this.hintTextStyle,
-       this.onSubmitted,
+      this.onSubmitted,
       this.hintText});
 
   /// The text controller of the TextField
