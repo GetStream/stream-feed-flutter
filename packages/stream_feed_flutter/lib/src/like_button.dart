@@ -33,6 +33,9 @@ class LikeButton extends StatelessWidget {
       activity: activity,
       activeIcon: activeIcon ?? StreamSvgIcon.loveActive(),
       inactiveIcon: inactiveIcon ?? StreamSvgIcon.loveInactive(),
+      hoverColor: Colors.red.shade100,
+
+      ///TODO: third state hover on desktop
       reaction: reaction,
       kind: 'like',
       onTap: onTap,
