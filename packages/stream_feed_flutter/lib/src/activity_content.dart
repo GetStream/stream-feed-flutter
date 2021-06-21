@@ -31,6 +31,7 @@ class ActivityContent extends StatelessWidget {
           //TODO: move to Text.rich(WidgetSpans)
           children: taggedText
               .map((it) => InteractiveText(
+                    //TODO: not interactive in case of a response
                     tagged: it,
                     onHashtagTap: onHashtagTap,
                     onMentionTap: onMentionTap,
