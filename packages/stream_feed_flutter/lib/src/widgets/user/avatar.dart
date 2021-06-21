@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
-    hide Image;
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class Avatar extends StatelessWidget {
   final User? user;
