@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'extensions.dart';
 
-enum Tag { hashtag, mention, normalText }
+enum Tag { hashtag, mention, normalText }//TODO: url
 
 class TaggedText extends Equatable {
   final Tag tag;
