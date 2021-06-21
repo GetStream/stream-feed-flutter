@@ -28,7 +28,7 @@ class InteractiveText extends StatelessWidget {
             child: Text(tagged!.text!, style: tagged!.tag.style()),
           );
         case Tag.mention:
-          return InkWell(
+          return InkWell(//onTap show user profile menu (showDialog?) + tag style animation: https://api.flutter.dev/flutter/widgets/DefaultTextStyleTransition-class.html
             onTap: () {
               onMentionTap?.call(tagged!.text?.trim().replaceFirst('@', ''));
             },
