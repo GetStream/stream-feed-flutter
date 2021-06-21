@@ -114,8 +114,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       String? userId}) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
-      verb: 'tweet', //TODO: check in react sdk what's is expected here
-      object: '1', //TODO: check in react sdk what's is expected here
+      verb: 'post', //TODO: check in react sdk what's is expected here
+      object: '1', //hmm: apparently data["text"].trim()
       extraData: data,
     );
     return await client.flatFeed(feedGroup, userId).addActivity(activity);

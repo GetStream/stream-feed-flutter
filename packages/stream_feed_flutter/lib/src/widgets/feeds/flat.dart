@@ -5,6 +5,7 @@ import 'package:stream_feed_flutter/src/widgets/states/states.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class FlatFeed extends StatelessWidget {
+  //TODO: put this in core with a builder List<EnrichedActivity>
   const FlatFeed({
     Key? key,
     required this.feedGroup,
@@ -23,7 +24,6 @@ class FlatFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        //TODO: put this in core with a builder List<EnrichedActivity>
         future: StreamFeedCore.of(context)
             .getEnrichedActivities(feedGroup: feedGroup),
         builder: (BuildContext context,

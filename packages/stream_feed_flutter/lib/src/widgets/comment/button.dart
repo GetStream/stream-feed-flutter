@@ -38,11 +38,10 @@ class PostCommentButton extends StatelessWidget {
                   targetFeeds: targetFeeds,
                   feedGroup: feedGroup,
                 )
-              : await streamFeed
-                  .onAddActivity(feedGroup: feedGroup, data: {'text': text});
+              : await streamFeed.onAddActivity(
+                  feedGroup: feedGroup, data: {'text': text.trim()});
         },
-        child: const Text(
-          'Post', //Respond //TODO: i18n
-        ));
+        child: const Text('Post' //Respond //TODO: i18n
+            ));
   }
 }

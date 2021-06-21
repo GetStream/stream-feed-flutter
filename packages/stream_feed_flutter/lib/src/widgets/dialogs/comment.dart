@@ -21,14 +21,16 @@ class AlertDialogComment extends StatelessWidget {
     return AlertDialog(
       actions: [
         AlertDialogActions(
-            activity: activity,
-            feedGroup: feedGroup,
-            textEditingController: textEditingController),
-      ],
-      content: CommentView(
           activity: activity,
           feedGroup: feedGroup,
-          textEditingController: textEditingController),
+          textEditingController: textEditingController,
+        ),
+      ],
+      content: CommentView(
+        activity: activity,
+        feedGroup: feedGroup,
+        textEditingController: textEditingController,
+      ),
     );
   }
 }
