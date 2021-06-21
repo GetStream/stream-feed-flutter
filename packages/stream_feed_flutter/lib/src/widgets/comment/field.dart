@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/text.dart';
+import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/textarea.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class CommentField extends StatefulWidget {
+class CommentField extends StatelessWidget {
   final EnrichedActivity? activity;
   final List<FeedId>? targetFeeds;
+  final TextEditingController textEditingController;
+  final bool enableButton;
 
   ///The feed group part of the feed
   final String feedGroup;
 
-  CommentField({
-    Key? key,
-    required this.feedGroup,
-    this.activity,
-    this.targetFeeds,
-  }) : super(key: key);
-
-  @override
-  CommentFieldState createState() => CommentFieldState();
-}
-
-class CommentFieldState extends State<CommentField> {
-  late String text;
+  CommentField(
+      {Key? key,
+      required this.feedGroup,
+      this.activity,
+      this.targetFeeds,
+      required this.textEditingController,
+      this.enableButton = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final streamFeed = StreamFeedCore.of(context);
-
     return Column(
       children: [
         Row(
@@ -40,30 +35,20 @@ class CommentFieldState extends State<CommentField> {
               child: Avatar(), //TODO: onUserTap
             ),
             Expanded(
-              child: TextArea(onSubmitted: (value) {
-                setState(() {
-                  text = value;
-                });//TODO: value notifier
-              }),
+              child: TextArea(
+                textEditingController: textEditingController,
+              ),
             ),
           ],
         ),
-        StyledTextButton(
-            //TODO; add way to customize button
-            label: 'Post',
-            onPressed: () async {
-              widget.activity != null
-                  ? await streamFeed.onAddReaction(
-                      kind: 'comment',
-                      activity: widget.activity!,
-                      data: {'text': text}, //TODO: key
-                      targetFeeds: widget.targetFeeds,
-                      feedGroup: widget.feedGroup,
-                    )
-                  : await streamFeed.onAddActivity(
-                      feedGroup: widget.feedGroup, data: {'text': text});
-            },
-            type: ButtonType.faded)
+        //TODO: condition this
+        if (enableButton)
+          PostCommentButton(
+            feedGroup: feedGroup,
+            activity: activity,
+            targetFeeds: targetFeeds,
+            textEditingController: textEditingController,
+          )
       ],
     );
   }

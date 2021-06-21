@@ -41,6 +41,7 @@ void main() {
 
     when(() => mockStreamAnalytics.trackEngagement(engagement))
         .thenAnswer((_) async => Future.value());
+    final textEditingController = TextEditingController();
 
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
@@ -51,23 +52,24 @@ void main() {
           key: key,
           feedGroup: feedGroup,
           activity: activity,
+          textEditingController: textEditingController,
         ),
       ),
     )));
 
     final avatar = find.byType(Avatar);
     final textArea = find.byType(TextArea);
-    final button = find.byType(StyledTextButton);
+    final button = find.byType(ElevatedButton);
     expect(avatar, findsOneWidget);
     expect(textArea, findsOneWidget);
-    expect(button, findsOneWidget);
+    // expect(button, findsOneWidget);
     await tester.enterText(textArea, textInput);
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pump();
     tester.widget<EditableText>(find.text(textInput));
 
-    final commentFieldState = key.currentState! as CommentFieldState;
-    expect(commentFieldState.text, textInput);
+    // final commentFieldState = key.currentState! as CommentFieldState;
+    expect(textEditingController.value.text, textInput);
 
     await tester.tap(button);
     verify(() => mockClient.reactions.add(kind, activityId)).called(1);
