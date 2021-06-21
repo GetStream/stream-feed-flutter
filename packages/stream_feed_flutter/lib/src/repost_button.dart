@@ -34,6 +34,7 @@ class RepostButton extends StatelessWidget {
       reaction: reaction,
       activeIcon: activeIcon ?? StreamSvgIcon.repost(color: Colors.blue),
       inactiveIcon: inactiveIcon ?? StreamSvgIcon.repost(color: Colors.grey),
+      hoverColor: Colors.green.shade100,
       kind: 'repost',
       onTap: onTap,
     );
