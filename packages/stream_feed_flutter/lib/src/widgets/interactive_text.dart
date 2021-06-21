@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/typedefs.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 
 import 'package:stream_feed_flutter/src/utils/extensions.dart';

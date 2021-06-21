@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-import 'package:stream_feed_flutter/stream_feed_flutter.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
-    hide Image;
+import 'package:stream_feed_flutter/src/widgets/buttons/reaction_button.dart';
+import 'package:stream_feed_flutter/src/widgets/icons.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'mock.dart';

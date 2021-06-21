@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/circular_progress_indicator.dart';
-import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StreamFeedCard extends StatelessWidget {

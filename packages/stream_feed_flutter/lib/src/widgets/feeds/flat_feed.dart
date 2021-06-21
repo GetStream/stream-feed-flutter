@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/activity.dart';
-import 'package:stream_feed_flutter/src/typedefs.dart';
-import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
+import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
+import 'package:stream_feed_flutter/src/widgets/states/states.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class FlatFeed extends StatelessWidget {
   const FlatFeed({
@@ -80,36 +81,5 @@ class FlatFeedInner extends StatelessWidget {
         activityFooterBuilder: activityFooterBuilder,
       ),
     );
-  }
-}
-
-//TODO: improve this
-class ErrorStateWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Icon(
-            Icons.announcement,
-            color: Colors.red,
-            size: 40,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'Sorry an error occured',
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-//TODO: improve this
-class ProgressStateWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: CircularProgressIndicator());
   }
 }

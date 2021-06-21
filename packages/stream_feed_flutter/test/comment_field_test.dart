@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stream_feed_flutter/src/comment_field.dart';
-import 'package:stream_feed_flutter/src/textarea.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/styled_text_button.dart';
+import 'package:stream_feed_flutter/src/widgets/comment/comment_field.dart';
+import 'package:stream_feed_flutter/src/widgets/comment/textarea.dart';
+import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:mocktail/mocktail.dart';
@@ -55,7 +57,7 @@ void main() {
 
     final avatar = find.byType(Avatar);
     final textArea = find.byType(TextArea);
-    final button = find.byType(Button);
+    final button = find.byType(StyledTextButton);
     expect(avatar, findsOneWidget);
     expect(textArea, findsOneWidget);
     expect(button, findsOneWidget);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/typedefs.dart';
-import 'package:stream_feed_flutter/src/user_bar.dart';
-import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
+import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ActivityHeader extends StatelessWidget {
   const ActivityHeader({

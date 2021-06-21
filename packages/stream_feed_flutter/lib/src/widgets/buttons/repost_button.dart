@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/icons.dart';
-import 'package:stream_feed_flutter/src/reaction_button.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/reaction_button.dart';
+import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class RepostButton extends StatelessWidget {

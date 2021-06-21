@@ -1,4 +1,4 @@
-import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:test/test.dart';
 
 main() {

@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/styled_text_button.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 // import 'package:test/test.dart';
 
@@ -10,14 +11,14 @@ void main() {
       final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
         ..addScenario(
             'Button primary',
-            Button(
+            StyledTextButton(
               label: 'Follow',
               onPressed: () {},
               type: ButtonType.primary,
             ))
         ..addScenario(
             'Button faded',
-            Button(
+            StyledTextButton(
               label: 'Following',
               onPressed: () {},
               type: ButtonType.faded,

@@ -1,6 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/reaction_icon.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
+class ReactionButton extends StatelessWidget {
+  ReactionButton({
+    required this.activity,
+    required this.kind,
+    required this.activeIcon,
+    required this.inactiveIcon,
+    this.hoverColor = Colors.lightBlue,
+    this.reaction,
+    this.onTap,
+    this.data,
+  });
+
+  ///The reaction received from stream that should be liked when pressing the LikeButton.
+  final Reaction? reaction;
+
+  /// The activity received from stream that should be liked when pressing the LikeButton.
+  final EnrichedActivity activity;
+
+  ///If you want to override on tap for some reasons
+  final VoidCallback? onTap;
+
+  final String kind;
+
+  /// The button to display if the user already reacted
+  final Widget activeIcon;
+
+  /// The button to display if the user didn't reacted yet
+  final Widget inactiveIcon;
+
+  final Map<String, Object>? data;
+
+  final Color hoverColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactionToggleIcon(
+      activity: activity,
+      count: reaction?.childrenCounts?[kind] ?? activity.reactionCounts?[kind],
+      ownReactions:
+          reaction?.ownChildren?[kind] ?? activity.ownReactions?[kind],
+      activeIcon: activeIcon,
+      inactiveIcon: inactiveIcon,
+      hoverColor: hoverColor,
+      kind: kind,
+      onTap: onTap,
+      data: data,
+    );
+  }
+}
 
 class ReactionToggleIcon extends StatefulWidget {
   final List<Reaction>? ownReactions;
@@ -14,7 +63,7 @@ class ReactionToggleIcon extends StatefulWidget {
   final String? userId;
   final Map<String, Object>? data;
   final List<FeedId>? targetFeeds;
-    final Color hoverColor;
+  final Color hoverColor;
   //TODO: see what we can extract from a parent widget and put in core
   ReactionToggleIcon({
     required this.activeIcon,
@@ -88,5 +137,43 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
     setState(() {
       alreadyReacted = !alreadyReacted;
     });
+  }
+}
+
+class ReactionIcon extends StatelessWidget {
+  const ReactionIcon({
+    Key? key,
+    this.count,
+    required this.icon,
+    this.onTap,
+    this.hoverColor = Colors.lightBlue,
+  }) : super(key: key);
+  final int? count;
+  final Widget icon;
+  final VoidCallback? onTap;
+  final Color hoverColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        hoverColor: hoverColor,
+        borderRadius: BorderRadius.circular(18.0), //iconSize
+        onTap: onTap,
+        child: count != null && count! > 0
+            ? Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    icon,
+                    SizedBox(width: 6),
+                    Center(child: Text('$count'))
+                  ],
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: icon,
+              ));
   }
 }

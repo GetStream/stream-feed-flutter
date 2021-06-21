@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stream_feed_flutter/src/textarea.dart';
+import 'package:stream_feed_flutter/src/widgets/comment/textarea.dart';
 
 void main() {
   testWidgets('TextArea', (WidgetTester tester) async {
