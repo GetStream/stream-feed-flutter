@@ -11,7 +11,7 @@ class EmojisAction extends StatelessWidget {
     return Icon(
       Icons.emoji_emotions_outlined, //TODO: svg icons
       color: Colors.blue,
-      semanticLabel: 'Emoji', //TODO: i18n
+      semanticLabel: 'Emojis', //TODO: i18n
     );
   }
 }
