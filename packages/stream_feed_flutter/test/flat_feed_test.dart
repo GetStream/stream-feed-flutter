@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
-import 'package:stream_feed_flutter/src/widgets/feeds/flat_feed.dart';
+import 'package:stream_feed_flutter/src/widgets/feeds/flat.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
     hide FlatFeed;

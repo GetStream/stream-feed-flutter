@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import '../comment/comment_item.dart';
+import '../comment/item.dart';
 
 class ReactionList extends StatelessWidget {
   final List<Reaction> reactions;

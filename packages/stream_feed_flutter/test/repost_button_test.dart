@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/repost_button.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/repost.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 

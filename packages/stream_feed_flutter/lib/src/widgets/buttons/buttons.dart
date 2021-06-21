@@ -1,3 +1,3 @@
-export 'like_button.dart';
-export 'post_button.dart';
-export 'repost_button.dart';
+export 'like.dart';
+export 'post.dart';
+export 'repost.dart';

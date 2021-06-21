@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/styled_text_button.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/text.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/textarea.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
