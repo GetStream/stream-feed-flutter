@@ -14,6 +14,7 @@ class ReactionToggleIcon extends StatefulWidget {
   final String? userId;
   final Map<String, Object>? data;
   final List<FeedId>? targetFeeds;
+    final Color hoverColor;
   //TODO: see what we can extract from a parent widget and put in core
   ReactionToggleIcon({
     required this.activeIcon,
@@ -25,6 +26,7 @@ class ReactionToggleIcon extends StatefulWidget {
     this.onTap,
     this.ownReactions,
     this.feedGroup = 'user',
+    this.hoverColor = Colors.lightBlue,
     this.count,
     this.userId,
   });
@@ -52,6 +54,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
         alreadyReacted ? widget.activeIcon : widget.inactiveIcon;
 
     return ReactionIcon(
+      hoverColor: widget.hoverColor,
       icon: displayedIcon,
       count: widget.count, //TODO: handle count
       onTap: () async {
