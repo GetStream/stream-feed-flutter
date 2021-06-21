@@ -10,16 +10,23 @@ class ReactionIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+        borderRadius: BorderRadius.circular(18.0), //iconSize
         onTap: onTap,
         child: count != null && count! > 0
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  icon,
-                  SizedBox(width: 6),
-                  Center(child: Text('$count'))
-                ],
+            ? Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    icon,
+                    SizedBox(width: 6),
+                    Center(child: Text('$count'))
+                  ],
+                ),
               )
-            : icon);
+            : Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: icon,
+              ));
   }
 }
