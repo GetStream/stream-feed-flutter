@@ -57,34 +57,55 @@ main() {
       expect(rightActions, findsOneWidget);
     });
 
-    group('CommentView', () {
-      testWidgets('with an activity', (tester) async {
-        await mockNetworkImages(() async {
-          await tester.pumpWidget(MaterialApp(
-            home: Scaffold(
-              body: CommentView(
-                feedGroup: 'user',
-                activity: EnrichedActivity(
-                  time: DateTime.now(),
-                  actor: EnrichableField(
-                    User(data: {
-                      'name': 'Rosemary',
-                      'handle': '@rosemary',
-                      'subtitle': 'likes playing fresbee in the park',
-                      'profile_image':
-                          'https://randomuser.me/api/portraits/women/20.jpg',
-                    }).toJson(),
+    group('AlertDialog', () {
+      group('CommentView', () {
+        testWidgets('with an activity', (tester) async {
+          await mockNetworkImages(() async {
+            await tester.pumpWidget(MaterialApp(
+              home: Scaffold(
+                body: CommentView(
+                  feedGroup: 'user',
+                  activity: EnrichedActivity(
+                    time: DateTime.now(),
+                    actor: EnrichableField(
+                      User(data: {
+                        'name': 'Rosemary',
+                        'handle': '@rosemary',
+                        'subtitle': 'likes playing fresbee in the park',
+                        'profile_image':
+                            'https://randomuser.me/api/portraits/women/20.jpg',
+                      }).toJson(),
+                    ),
                   ),
+                  textEditingController: TextEditingController(),
                 ),
-                textEditingController: TextEditingController(),
               ),
-            ),
-          ));
-          final activityHeader = find.byType(ActivityHeader);
-          expect(activityHeader, findsOneWidget);
+            ));
+            final activityHeader = find.byType(ActivityHeader);
+            expect(activityHeader, findsOneWidget);
 
-          final activityContent = find.byType(ActivityContent);
-          expect(activityContent, findsOneWidget);
+            final activityContent = find.byType(ActivityContent);
+            expect(activityContent, findsOneWidget);
+
+            final commentField = find.byType(CommentField);
+            expect(commentField, findsOneWidget);
+          });
+        });
+
+        testWidgets('without an activity', (tester) async {
+          await mockNetworkImages(() async {
+            await tester.pumpWidget(MaterialApp(
+              home: Scaffold(
+                body: CommentView(
+                  feedGroup: 'user',
+                  textEditingController: TextEditingController(),
+                ),
+              ),
+            ));
+
+            final commentField = find.byType(CommentField);
+            expect(commentField, findsOneWidget);
+          });
         });
       });
     });
