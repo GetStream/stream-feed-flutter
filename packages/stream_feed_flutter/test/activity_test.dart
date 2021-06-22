@@ -121,29 +121,6 @@ void main() {
     });
   });
 
-  testGoldens('ActivityFooter', (tester) async {
-    await tester.pumpWidgetBuilder(
-      Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ActivityFooter(
-            activity: EnrichedActivity(reactionCounts: {
-              'like': 139,
-              'repost': 23,
-            }, ownReactions: {
-              'like': [
-                Reaction(
-                  kind: 'like',
-                )
-              ]
-            }),
-          ),
-        ),
-      ),
-      surfaceSize: const Size(200, 200),
-    );
-    await screenMatchesGolden(tester, 'activity_footer');
-  });
   testWidgets('Activity', (tester) async {
     await mockNetworkImages(() async {
       await tester.pumpWidget(
@@ -173,5 +150,29 @@ void main() {
       expect(find.byType(ActivityContent), findsOneWidget);
       expect(find.byType(ActivityFooter), findsOneWidget);
     });
+  });
+
+  testGoldens('ActivityFooter', (tester) async {
+    await tester.pumpWidgetBuilder(
+      Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ActivityFooter(
+            activity: EnrichedActivity(reactionCounts: {
+              'like': 139,
+              'repost': 23,
+            }, ownReactions: {
+              'like': [
+                Reaction(
+                  kind: 'like',
+                )
+              ]
+            }),
+          ),
+        ),
+      ),
+      surfaceSize: const Size(200, 200),
+    );
+    await screenMatchesGolden(tester, 'activity_footer');
   });
 }

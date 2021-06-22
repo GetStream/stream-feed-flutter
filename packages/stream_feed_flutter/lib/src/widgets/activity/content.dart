@@ -25,26 +25,24 @@ class ActivityContent extends StatelessWidget {
         ? detector.parseText(
             EnrichableField.serialize(activityObject) as String) //TODO: ugly
         : <TaggedText?>[];
-    return Expanded(
-      child: Column(
-        children: [
-          Wrap(
-            //TODO: move to Text.rich(WidgetSpans)
-            children: taggedText
-                .map((it) => InteractiveText(
-                      //TODO: not interactive in case of a response
-                      tagged: it,
-                      onHashtagTap: onHashtagTap,
-                      onMentionTap: onMentionTap,
-                    ))
-                .toList(),
-          ),
-          //TODO: handle Video + Audio + Gallery
-          if (attachments != null)
-            StreamFeedCard(
-                og: OpenGraphData.fromJson(attachments as Map<String, dynamic>))
-        ],
-      ),
+    return Column(
+      children: [
+        Wrap(
+          //TODO: move to Text.rich(WidgetSpans)
+          children: taggedText
+              .map((it) => InteractiveText(
+                    //TODO: not interactive in case of a response
+                    tagged: it,
+                    onHashtagTap: onHashtagTap,
+                    onMentionTap: onMentionTap,
+                  ))
+              .toList(),
+        ),
+        //TODO: handle Video + Audio + Gallery
+        if (attachments != null)
+          StreamFeedCard(
+              og: OpenGraphData.fromJson(attachments as Map<String, dynamic>))
+      ],
     );
   }
 }

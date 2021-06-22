@@ -39,35 +39,35 @@ class UserBar extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.all(8.0),
             child: Avatar(user: user, onUserTap: onUserTap)),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...displayUsername(user),
+              if (afterUsername != null) afterUsername!,
+              if (showSubtitle)
+                subtitle ??
+                    ReactedBy(
+                        icon: reactionIcon ??
+                            ReactionByIcon(
+                              kind: kind,
+                            ),
+                        handleOrUsername: //TODO: handle no handle or name
+                            user?.data?[handleJsonKey] as String? ??
+                                user?.data?[nameJsonKey] as String
+                        //"rosemary"
+
+                        ),
+            ],
+          ),
+        ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...displayUsername(user),
-                if (afterUsername != null) afterUsername!,
-                if (showSubtitle)
-                  subtitle ??
-                      ReactedBy(
-                          icon: reactionIcon ??
-                              ReactionByIcon(
-                                kind: kind,
-                              ),
-                          handleOrUsername: //TODO: handle no handle or name
-                              user?.data?[handleJsonKey] as String? ??
-                                  user?.data?[nameJsonKey] as String
-                          //"rosemary"
-
-                          ),
-              ],
-            ),
+            child: HumanReadableTimestamp(timestamp: timestamp),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: HumanReadableTimestamp(timestamp: timestamp),
         )
       ],
     );
