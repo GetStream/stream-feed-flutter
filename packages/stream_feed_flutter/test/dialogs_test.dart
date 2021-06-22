@@ -18,5 +18,22 @@ main() {
       final postCommentButton = find.byType(PostCommentButton);
       expect(postCommentButton, findsOneWidget);
     });
+
+    testWidgets('Left', (tester) async {
+      await tester.pumpWidget(Material(
+          child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Stack(children: [LeftActions()]),
+      )));
+
+      final mediasAction = find.byType(MediasAction);
+      expect(mediasAction, findsOneWidget);
+
+      final emojisAction = find.byType(EmojisAction);
+      expect(emojisAction, findsOneWidget);
+
+      final gifAction = find.byType(GIFAction);
+      expect(gifAction, findsOneWidget);
+    });
   });
 }
