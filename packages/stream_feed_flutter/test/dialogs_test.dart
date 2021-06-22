@@ -35,5 +35,21 @@ main() {
       final gifAction = find.byType(GIFAction);
       expect(gifAction, findsOneWidget);
     });
+
+    testWidgets('AlertDialog', (tester) async {
+      await tester.pumpWidget(Material(
+          child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: AlertDialogActions(
+          feedGroup: 'user',
+          textEditingController: TextEditingController(),
+        ),
+      )));
+      final leftActions = find.byType(LeftActions);
+      expect(leftActions, findsOneWidget);
+
+      final rightActions = find.byType(RightActions);
+      expect(rightActions, findsOneWidget);
+    });
   });
 }
