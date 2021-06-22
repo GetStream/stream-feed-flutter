@@ -36,6 +36,7 @@ class FlatFeed extends StatelessWidget {
               onHashtagTap: onHashtagTap,
               onMentionTap: onMentionTap,
               onUserTap: onUserTap,
+              
               activityFooterBuilder: activityFooterBuilder,
             );
           } else if (snapshot.hasError) {
@@ -78,6 +79,7 @@ class FlatFeedInner extends StatelessWidget {
         onHashtagTap: onHashtagTap,
         onMentionTap: onMentionTap,
         onUserTap: onUserTap,
+        //TODO: onActivityTap:onActivityTap,
         activityFooterBuilder: activityFooterBuilder,
       ),
     );

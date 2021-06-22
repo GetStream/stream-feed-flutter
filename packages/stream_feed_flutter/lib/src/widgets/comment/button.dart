@@ -40,8 +40,8 @@ class PostCommentButton extends StatelessWidget {
                 )
               : await streamFeed.onAddActivity(
                   feedGroup: feedGroup,
-                  data: {'text': trimmedText},
                   verb: 'post',
+                  //data: TODO: attachments with upload controller thingy
                   object: trimmedText);
         },
         child: const Text('Post' //Respond //TODO: i18n

@@ -88,10 +88,10 @@ class AlertDialogActions extends StatelessWidget {
       alignment: Alignment.bottomLeft,
       child: Stack(
         children: [
-          LeftActions(),
+          LeftActions(),//TODO: upload controller thingy
           RightActions(
             textEditingController: textEditingController,
-            activity: activity,
+            activity: activity,//TODO: upload controller thingy
             targetFeeds: targetFeeds,
             feedGroup: feedGroup,
           ),

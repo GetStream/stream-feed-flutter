@@ -38,6 +38,8 @@ class FileStorageClient {
   /// ```
   /// API docs: [upload](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#upload)
   Future<String?> upload(AttachmentFile file) async {
+    //TODO: params onSendProgress: onSendProgress,
+      // cancelToken: cancelToken,
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return _files.upload(token, file);

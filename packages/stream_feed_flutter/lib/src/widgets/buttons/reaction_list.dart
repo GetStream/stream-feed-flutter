@@ -3,6 +3,7 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import '../comment/item.dart';
 
+//TODO: rename this to ReactionListInner and do a futureBuilder (will be in core) with future client.reactions.filter()
 class ReactionList extends StatelessWidget {
   final List<Reaction> reactions;
   final bool? reverse;
@@ -27,7 +28,7 @@ class ReactionList extends StatelessWidget {
       //TODO: extract this into core
       reverse: reverse ?? false,
       itemCount: reactions.length,
-      itemBuilder: (context, idx) => CommentItem(
+      itemBuilder: (context, idx) => CommentItem(//TODO: builder here
         user: reactions[idx].user,
         reaction: reactions[idx],
         onReactionTap: onReactionTap,
