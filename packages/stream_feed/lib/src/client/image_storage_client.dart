@@ -47,6 +47,8 @@ class ImageStorageClient {
   /// ```
   /// API docs: https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?q=Image
   Future<String?> upload(AttachmentFile image) {
+    //TODO: params onSendProgress: onSendProgress,
+    // cancelToken: cancelToken,
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return _images.upload(token, image);
