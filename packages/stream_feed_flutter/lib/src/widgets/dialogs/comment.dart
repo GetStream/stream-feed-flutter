@@ -38,7 +38,7 @@ class AlertDialogComment extends StatelessWidget {
 class CommentView extends StatelessWidget {
   const CommentView({
     Key? key,
-    required this.activity,
+    this.activity,
     required this.feedGroup,
     required this.textEditingController,
   }) : super(key: key);
