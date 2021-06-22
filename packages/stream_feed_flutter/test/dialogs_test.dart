@@ -10,6 +10,17 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 main() {
   group('Actions', () {
+    testWidgets('GIFAction', (tester) async {
+      await tester.pumpWidget(Material(
+          child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: GIFAction(),
+      )));
+
+      final gifAction = find.byType(GIFAction);
+      expect(gifAction, findsOneWidget);
+    });
+
     testWidgets('Right', (tester) async {
       await tester.pumpWidget(Material(
           child: Directionality(
