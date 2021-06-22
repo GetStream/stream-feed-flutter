@@ -10,6 +10,16 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 main() {
   group('Actions', () {
+    testWidgets('MediasAction', (tester) async {
+      await tester.pumpWidget(Material(
+          child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: MediasAction(),
+      )));
+
+         final mediasAction = find.byIcon(Icons.collections_outlined);
+      expect(mediasAction, findsOneWidget);
+    });
     testWidgets('GIFAction', (tester) async {
       await tester.pumpWidget(Material(
           child: Directionality(
@@ -17,7 +27,7 @@ main() {
         child: GIFAction(),
       )));
 
-      final gifAction = find.byType(GIFAction);
+      final gifAction = find.byIcon(Icons.gif_outlined);
       expect(gifAction, findsOneWidget);
     });
 
