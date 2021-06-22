@@ -28,7 +28,8 @@ class ReactionList extends StatelessWidget {
       //TODO: extract this into core
       reverse: reverse ?? false,
       itemCount: reactions.length,
-      itemBuilder: (context, idx) => CommentItem(//TODO: builder here
+      itemBuilder: (context, idx) => CommentItem(
+        //TODO: builder here
         user: reactions[idx].user,
         reaction: reactions[idx],
         onReactionTap: onReactionTap,

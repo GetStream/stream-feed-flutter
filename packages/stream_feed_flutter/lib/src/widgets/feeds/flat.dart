@@ -36,7 +36,7 @@ class FlatFeed extends StatelessWidget {
               onHashtagTap: onHashtagTap,
               onMentionTap: onMentionTap,
               onUserTap: onUserTap,
-              
+
               activityFooterBuilder: activityFooterBuilder,
             );
           } else if (snapshot.hasError) {
