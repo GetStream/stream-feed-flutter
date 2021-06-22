@@ -4,7 +4,6 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-// import 'package:test/test.dart';
 
 void main() {
   group('Avatar', () {
