@@ -29,17 +29,20 @@ class PostCommentButton extends StatelessWidget {
         onPressed: () async {
           final streamFeed = StreamFeedCore.of(context);
           final text = textEditingController.value.text;
-
+          final trimmedText = text.trim();
           activity != null
               ? await streamFeed.onAddReaction(
                   kind: 'comment',
                   activity: activity!,
-                  data: {'text': text}, //TODO: key
+                  data: {'text': trimmedText}, //TODO: key
                   targetFeeds: targetFeeds,
                   feedGroup: feedGroup,
                 )
               : await streamFeed.onAddActivity(
-                  feedGroup: feedGroup, data: {'text': text.trim()});
+                  feedGroup: feedGroup,
+                  data: {'text': trimmedText},
+                  verb: 'post',
+                  object: trimmedText);
         },
         child: const Text('Post' //Respond //TODO: i18n
             ));

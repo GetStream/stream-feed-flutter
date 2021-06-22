@@ -104,21 +104,29 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required String feedGroup}) async {
     final reaction = await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
-    await trackAnalytics(label: kind, activity: activity, feedGroup: feedGroup);
+    await trackAnalytics(
+        label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
     return reaction;
   }
 
   Future<Activity> onAddActivity(
       {required String feedGroup,
       Map<String, String>? data,
+      required String verb,
+      required String object,
       String? userId}) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
-      verb: 'post', //TODO: check in react sdk what's is expected here
-      object: '1', //hmm: apparently data["text"].trim()
+      verb: verb,
+      object: object,
       extraData: data,
     );
-    return await client.flatFeed(feedGroup, userId).addActivity(activity);
+
+    final addedActivity =
+        await client.flatFeed(feedGroup, userId).addActivity(activity);
+    await trackAnalytics(
+        label: 'post', foreignId: activity.foreignId, feedGroup: feedGroup);
+    return addedActivity;
   }
 
   Future<void> onRemoveReaction(
@@ -128,15 +136,15 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required String feedGroup}) async {
     await client.reactions.delete(id);
     await trackAnalytics(
-        label: 'un$kind', activity: activity, feedGroup: feedGroup);
+        label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
 
   Future<void> trackAnalytics(
       {required String label,
-      required EnrichedActivity activity,
+      required foreignId,
       required String feedGroup}) async {
     await analyticsClient!.trackEngagement(Engagement(
-        content: Content(foreignId: FeedId.fromId(activity.foreignId)),
+        content: Content(foreignId: FeedId.fromId(foreignId)),
         label: label,
         feedId: FeedId.fromId(feedGroup)));
   }
