@@ -149,7 +149,6 @@ main() {
     verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
   });
 
-
   testWidgets('TextArea', (WidgetTester tester) async {
     final textController = TextEditingController();
     final focusNode = FocusNode();
