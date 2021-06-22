@@ -58,6 +58,35 @@ main() {
     });
 
     group('AlertDialog', () {
+      testWidgets('Comment', (tester) async {
+        await mockNetworkImages(() async {
+          await tester.pumpWidget(MaterialApp(
+            home: Scaffold(
+              body: AlertDialogComment(
+                feedGroup: 'user',
+                activity: EnrichedActivity(
+                  time: DateTime.now(),
+                  actor: EnrichableField(
+                    User(data: {
+                      'name': 'Rosemary',
+                      'handle': '@rosemary',
+                      'subtitle': 'likes playing fresbee in the park',
+                      'profile_image':
+                          'https://randomuser.me/api/portraits/women/20.jpg',
+                    }).toJson(),
+                  ),
+                ),
+              ),
+            ),
+          ));
+          final alertDialogActions = find.byType(AlertDialogActions);
+          expect(alertDialogActions, findsOneWidget);
+
+          final commentView = find.byType(CommentView);
+          expect(commentView, findsOneWidget);
+        });
+      });
+
       group('CommentView', () {
         testWidgets('with an activity', (tester) async {
           await mockNetworkImages(() async {
