@@ -36,16 +36,18 @@ class AlertDialogComment extends StatelessWidget {
 }
 
 class CommentView extends StatelessWidget {
-  const CommentView({
-    Key? key,
-    this.activity,
-    required this.feedGroup,
-    required this.textEditingController,
-  }) : super(key: key);
+  const CommentView(
+      {Key? key,
+      this.activity,
+      this.feedGroup = 'user',
+      required this.textEditingController,
+      this.reactions = false})
+      : super(key: key);
 
   final EnrichedActivity? activity;
   final String feedGroup;
   final TextEditingController textEditingController;
+  final bool reactions;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,7 @@ class CommentView extends StatelessWidget {
           if (activity != null) ...[
             ActivityHeader(activity: activity!, showSubtitle: false),
             ActivityContent(activity: activity!), //TODO: not interactive
+            //TODO: analytics
             //TODO: "in response to" activity.to
           ],
           CommentField(
@@ -62,7 +65,12 @@ class CommentView extends StatelessWidget {
             activity: activity,
             enableButton: false,
             feedGroup: feedGroup,
-          )
+          ),
+          //TODO: builder for using it elsewhere than in actions
+          // if (reactions)
+          //   ReactionsListCore(
+          //       onSuccess: (BuildContext context, List<Reaction> reactions) =>
+          //           ReactionListInner(reactions: reactions))
         ],
       ),
     );

@@ -40,7 +40,7 @@ void main() {
       ];
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
-        body: ReactionList(
+        body: ReactionListInner(
             onUserTap: (user) => pressedUsers.add(user),
             onReactionTap: (reaction) => pressedReactions.add(reaction),
             onMentionTap: (mention) => pressedMentions.add(mention),

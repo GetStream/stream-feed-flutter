@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
+import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-typedef OnSuccess = Widget Function(BuildContext context, List<EnrichedActivity> activities);
 
 class FlatFeedCore extends StatelessWidget {
   const FlatFeedCore(
       {Key? key, required this.feedGroup, required this.onSuccess})
       : super(key: key);
 
-  final OnSuccess onSuccess;
+  final OnSuccessActivities onSuccess;
 
   final String feedGroup;
   @override

@@ -4,7 +4,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import '../comment/item.dart';
 
 //TODO: rename this to ReactionListInner and do a futureBuilder (will be in core) with future client.reactions.filter()
-class ReactionList extends StatelessWidget {
+class ReactionListInner extends StatelessWidget {
   final List<Reaction> reactions;
   final bool? reverse;
   final OnReactionTap? onReactionTap;
@@ -12,7 +12,7 @@ class ReactionList extends StatelessWidget {
   final OnMentionTap? onMentionTap;
   final OnUserTap? onUserTap;
 
-  const ReactionList({
+  const ReactionListInner({
     Key? key,
     required this.reactions,
     this.reverse,
@@ -25,7 +25,6 @@ class ReactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      //TODO: extract this into core
       reverse: reverse ?? false,
       itemCount: reactions.length,
       itemBuilder: (context, idx) => CommentItem(

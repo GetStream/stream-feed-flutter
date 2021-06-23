@@ -94,6 +94,9 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   /// The current user
   UserClient? get user => client.currentUser;
 
+  /// The current user
+  ReactionsClient get reactions => client.reactions;
+
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
 
   Future<Reaction> onAddReaction(
@@ -102,8 +105,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required EnrichedActivity activity,
       List<FeedId>? targetFeeds,
       required String feedGroup}) async {
-    final reaction = await client.reactions
-        .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
+    final reaction = await reactions.add(kind, activity.id!,
+        targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
     return reaction;
@@ -134,7 +137,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required EnrichedActivity activity,
       required String id,
       required String feedGroup}) async {
-    await client.reactions.delete(id);
+    await reactions.delete(id);
     await trackAnalytics(
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
@@ -148,6 +151,11 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         label: label,
         feedId: FeedId.fromId(feedGroup)));
   }
+
+  Future<List<Reaction>> getReactions(LookupAttribute lookupAttr, String lookupValue,
+          {Filter? filter, int? limit, String? kind}) async =>
+      await reactions.filter(lookupAttr, lookupValue,
+          filter: filter, limit: limit, kind: kind);
 
   Future<List<EnrichedActivity>> getEnrichedActivities({
     required String feedGroup,

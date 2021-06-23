@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/reaction_list.dart';
+import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:animations/animations.dart';
 
@@ -32,16 +34,22 @@ class FlatFeed extends StatelessWidget {
     return FlatFeedCore(
       onSuccess: (BuildContext context, List<EnrichedActivity> activities) {
         return FlatFeedInner(
-            feedGroup: feedGroup,
-            activities: activities, //TODO: no activity to display widget
-            onHashtagTap: onHashtagTap,
-            onMentionTap: onMentionTap,
-            onUserTap: onUserTap,
-            activityFooterBuilder: activityFooterBuilder,
-            onActivityTap: (context, activity) => pageRouteBuilder(
-                activity: activity!,
-                context: context,
-                transitionType: transitionType));
+          feedGroup: feedGroup,
+          activities: activities, //TODO: no activity to display widget
+          onHashtagTap: onHashtagTap,
+          onMentionTap: onMentionTap,
+          onUserTap: onUserTap,
+          activityFooterBuilder: activityFooterBuilder,
+          onActivityTap: (context, activity) => pageRouteBuilder(
+            activity: activity!,
+            context: context,
+            transitionType: transitionType,
+            widget: CommentView(
+              activity: activity,
+              textEditingController: TextEditingController(),
+            ),
+          ),
+        );
       },
       feedGroup: feedGroup,
     );
@@ -50,13 +58,13 @@ class FlatFeed extends StatelessWidget {
   void pageRouteBuilder(
       {required BuildContext context,
       required TransitionType transitionType,
-      required EnrichedActivity activity}) {
+      required EnrichedActivity activity,
+      required Widget widget}) {
     switch (transitionType) {
       case TransitionType.none:
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (BuildContext context) =>
-                StreamFeedActivity(activity: activity),
+            builder: (BuildContext context) => widget,
           ),
         );
         break;
@@ -64,8 +72,7 @@ class FlatFeed extends StatelessWidget {
         Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (_, __, ___) =>
-                  StreamFeedActivity(activity: activity),
+              pageBuilder: (_, __, ___) => widget,
               transitionsBuilder: (
                 _,
                 animation,
