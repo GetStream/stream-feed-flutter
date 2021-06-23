@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+import 'package:animations/animations.dart';
+
+enum TransitionType { none, sharedAxisTransition }
 
 class FlatFeed extends StatelessWidget {
   //TODO: put this in core with a builder List<EnrichedActivity>
-  const FlatFeed({
-    Key? key,
-    required this.feedGroup,
-    this.onHashtagTap,
-    this.onMentionTap,
-    this.onUserTap,
-    this.activityFooterBuilder,
-  }) : super(key: key);
+  const FlatFeed(
+      {Key? key,
+      this.feedGroup = 'user',
+      this.onHashtagTap,
+      this.onMentionTap,
+      this.onUserTap,
+      this.activityFooterBuilder,
+      this.transitionType = TransitionType.sharedAxisTransition})
+      : super(key: key);
 
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;
@@ -20,21 +24,62 @@ class FlatFeed extends StatelessWidget {
   final String feedGroup;
   final ActivityFooterBuilder? activityFooterBuilder;
 
+  ///Customise the transition
+  final TransitionType transitionType;
+
   @override
   Widget build(BuildContext context) {
     return FlatFeedCore(
       onSuccess: (BuildContext context, List<EnrichedActivity> activities) {
         return FlatFeedInner(
-          feedGroup: feedGroup,
-          activities: activities, //TODO: no activity to display widget
-          onHashtagTap: onHashtagTap,
-          onMentionTap: onMentionTap,
-          onUserTap: onUserTap,
-          activityFooterBuilder: activityFooterBuilder,
-        );
+            feedGroup: feedGroup,
+            activities: activities, //TODO: no activity to display widget
+            onHashtagTap: onHashtagTap,
+            onMentionTap: onMentionTap,
+            onUserTap: onUserTap,
+            activityFooterBuilder: activityFooterBuilder,
+            onActivityTap: (context, activity) => pageRouteBuilder(
+                activity: activity!,
+                context: context,
+                transitionType: transitionType));
       },
-      feedGroup: 'user',
+      feedGroup: feedGroup,
     );
+  }
+
+  void pageRouteBuilder(
+      {required BuildContext context,
+      required TransitionType transitionType,
+      required EnrichedActivity activity}) {
+    switch (transitionType) {
+      case TransitionType.none:
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) =>
+                StreamFeedActivity(activity: activity),
+          ),
+        );
+        break;
+      default:
+        Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) =>
+                  StreamFeedActivity(activity: activity),
+              transitionsBuilder: (
+                _,
+                animation,
+                secondaryAnimation,
+                child,
+              ) =>
+                  SharedAxisTransition(
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: SharedAxisTransitionType.horizontal,
+                child: child,
+              ),
+            ));
+    }
   }
 }
 
@@ -47,6 +92,7 @@ class FlatFeedInner extends StatelessWidget {
     this.onUserTap,
     this.activityFooterBuilder,
     this.feedGroup = 'user',
+    this.onActivityTap,
   }) : super(key: key);
 
   final OnHashtagTap? onHashtagTap;
@@ -54,6 +100,7 @@ class FlatFeedInner extends StatelessWidget {
   final OnUserTap? onUserTap;
   final List<EnrichedActivity> activities;
   final ActivityFooterBuilder? activityFooterBuilder;
+  final OnActivityTap? onActivityTap;
 
   ///The feed group part of the feed
   final String feedGroup;
@@ -68,7 +115,7 @@ class FlatFeedInner extends StatelessWidget {
         onHashtagTap: onHashtagTap,
         onMentionTap: onMentionTap,
         onUserTap: onUserTap,
-        //TODO: onActivityTap:onActivityTap,
+        onActivityTap: onActivityTap,
         activityFooterBuilder: activityFooterBuilder,
       ),
     );
