@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
-import 'package:stream_feed_flutter/src/widgets/states/states.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class FlatFeed extends StatelessWidget {
@@ -23,29 +22,19 @@ class FlatFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: StreamFeedCore.of(context)
-            .getEnrichedActivities(feedGroup: feedGroup),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<EnrichedActivity>> snapshot) {
-          if (snapshot.hasData) {
-            print(snapshot.data);
-            return FlatFeedInner(
-              feedGroup: feedGroup,
-              activities: snapshot.data!, //TODO: no activity to display widget
-              onHashtagTap: onHashtagTap,
-              onMentionTap: onMentionTap,
-              onUserTap: onUserTap,
-
-              activityFooterBuilder: activityFooterBuilder,
-            );
-          } else if (snapshot.hasError) {
-            print(snapshot.error);
-            return ErrorStateWidget();
-          } else {
-            return ProgressStateWidget();
-          }
-        });
+    return FlatFeedCore(
+      onSuccess: (BuildContext context, List<EnrichedActivity> activities) {
+        return FlatFeedInner(
+          feedGroup: feedGroup,
+          activities: activities, //TODO: no activity to display widget
+          onHashtagTap: onHashtagTap,
+          onMentionTap: onMentionTap,
+          onUserTap: onUserTap,
+          activityFooterBuilder: activityFooterBuilder,
+        );
+      },
+      feedGroup: 'user',
+    );
   }
 }
 
