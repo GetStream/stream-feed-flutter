@@ -4,7 +4,6 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-
 class FlatFeedCore extends StatelessWidget {
   const FlatFeedCore(
       {Key? key, required this.feedGroup, required this.onSuccess})
@@ -21,7 +20,7 @@ class FlatFeedCore extends StatelessWidget {
         builder: (BuildContext context,
             AsyncSnapshot<List<EnrichedActivity>> snapshot) {
           if (snapshot.hasData) {
-            return onSuccess(context,snapshot.data!);
+            return onSuccess(context, snapshot.data!);
             //TODO: no activity to display widget
           } else if (snapshot.hasError) {
             print(snapshot.error);

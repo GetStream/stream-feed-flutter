@@ -152,7 +152,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         feedId: FeedId.fromId(feedGroup)));
   }
 
-  Future<List<Reaction>> getReactions(LookupAttribute lookupAttr, String lookupValue,
+  Future<List<Reaction>> getReactions(
+          LookupAttribute lookupAttr, String lookupValue,
           {Filter? filter, int? limit, String? kind}) async =>
       await reactions.filter(lookupAttr, lookupValue,
           filter: filter, limit: limit, kind: kind);
