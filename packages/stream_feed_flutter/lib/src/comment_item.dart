@@ -43,16 +43,15 @@ class CommentItem extends StatelessWidget {
                   child: Row(
                     children: [
                       ...displayUsername(user),
-                      reaction.createdAt != null
-                          ? Text(
-                              timeago.format(reaction.createdAt!),
-                              style: TextStyle(
-                                  color: Color(0xff7a8287),
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.5,
-                                  fontSize: 14),
-                            )
-                          : Container(),
+                      if (reaction.createdAt != null)
+                        Text(
+                          timeago.format(reaction.createdAt!),
+                          style: TextStyle(
+                              color: Color(0xff7a8287),
+                              fontWeight: FontWeight.w400,
+                              height: 1.5,
+                              fontSize: 14),
+                        )
                     ],
                   ),
                 ),
