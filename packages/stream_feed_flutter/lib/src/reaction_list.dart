@@ -32,11 +32,12 @@ class ReactionList extends StatelessWidget {
                 onReactionTap?.call(reactions[idx]);
               },
               child: CommentItem(
-                  user: reactions[idx].user,
-                  reaction: reactions[idx],
-                  onHashtagTap: onHashtagTap,
-                  onMentionTap: onMentionTap,
-                  onUserTap: onUserTap),
+                user: reactions[idx].user,
+                reaction: reactions[idx],
+                onHashtagTap: onHashtagTap,
+                onMentionTap: onMentionTap,
+                onUserTap: onUserTap,
+              ),
             ));
   }
 

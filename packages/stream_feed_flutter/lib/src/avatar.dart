@@ -32,6 +32,19 @@ class Avatar extends StatelessWidget {
           ? ClipOval(
               child: Image.network(
                 profileUrl as String,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      //TODO: provide a way to customize progress indicator
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
                 width: size,
                 height: size,
                 fit: BoxFit.cover,
@@ -39,8 +52,8 @@ class Avatar extends StatelessWidget {
             )
           : ClipOval(
               child: StreamSvgIcon.avatar(
-              size: size,
-            )),
+                  //TODO: provide a way to cusomize default avatar
+                  size: size)),
     );
   }
 }

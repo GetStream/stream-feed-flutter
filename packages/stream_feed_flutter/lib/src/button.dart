@@ -47,11 +47,14 @@ class _BorderButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.white),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                    side: BorderSide(color: Color(0xFF007AFF))))),
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6.0),
+              side: BorderSide(color: Color(0xFF007AFF)),
+            ),
+          ),
+        ),
         child: Text(label),
       ),
     );
