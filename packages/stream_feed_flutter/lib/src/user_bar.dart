@@ -101,9 +101,8 @@ class ReactedBy extends StatelessWidget {
 }
 
 class ReactionByIcon extends StatelessWidget {
-  ReactionByIcon({Key? key, required this.kind, this.icon}) : super(key: key);
+  ReactionByIcon({Key? key, required this.kind}) : super(key: key);
   final String kind;
-  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
