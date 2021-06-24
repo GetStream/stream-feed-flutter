@@ -3,6 +3,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/models/follow_relation.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
@@ -63,10 +64,10 @@ void main() {
     });
 
     test('follows', () {
-      final follows = <Follow>[
-        const Follow('timeline:1', 'user:1'),
-        const Follow('timeline:1', 'user:2'),
-        const Follow('timeline:1', 'user:3'),
+      final follows = <FollowRelation>[
+        const FollowRelation(source: 'timeline:1', target: 'user:1'),
+        const FollowRelation(source: 'timeline:1', target: 'user:2'),
+        const FollowRelation(source: 'timeline:1', target: 'user:3'),
       ];
       expect(follows.map((e) => e.toJson()), [
         {'source': 'timeline:1', 'target': 'user:1'},
@@ -99,10 +100,18 @@ void main() {
       const offset = 0;
       final feed = FeedId('slug', 'userId');
       final feedIds = [FeedId('slug', 'userId')];
+      final date = DateTime.parse("2021-05-14T19:58:27.274792063Z");
       final follows = <Follow>[
-        const Follow('timeline:1', 'user:1'),
-        const Follow('timeline:1', 'user:2'),
-        const Follow('timeline:1', 'user:3'),
+        Follow(
+            feedId: 'timeline:1',
+            targetId: 'user:1',
+            createdAt: date,
+            updatedAt: date),
+        Follow(
+            feedId: 'timeline:1',
+            targetId: 'user:2',
+            createdAt: date,
+            updatedAt: date),
       ];
       when(() => api.following(token, feed, limit, offset, feedIds))
           .thenAnswer((_) async => follows);
@@ -116,10 +125,18 @@ void main() {
       const offset = 0;
       final feed = FeedId('slug', 'userId');
       final feedIds = [FeedId('slug', 'userId')];
+      final date = DateTime.parse("2021-05-14T19:58:27.274792063Z");
       final follows = <Follow>[
-        const Follow('timeline:1', 'user:1'),
-        const Follow('timeline:1', 'user:2'),
-        const Follow('timeline:1', 'user:3'),
+        Follow(
+            feedId: 'timeline:1',
+            targetId: 'user:1',
+            createdAt: date,
+            updatedAt: date),
+        Follow(
+            feedId: 'timeline:1',
+            targetId: 'user:2',
+            createdAt: date,
+            updatedAt: date),
       ];
       when(() => api.followers(token, feed, limit, offset, feedIds))
           .thenAnswer((_) async => follows);
