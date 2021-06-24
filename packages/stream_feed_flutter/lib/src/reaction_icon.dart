@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 class ReactionIcon extends StatelessWidget {
   const ReactionIcon({Key? key, this.count, required this.icon, this.onTap})
       : super(key: key);
+  
   final int? count;
+
+  ///The reaction icon you want to display
   final Widget icon;
+  
   final VoidCallback? onTap;
 
   @override
