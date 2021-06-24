@@ -5,7 +5,11 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
     hide Image;
 
 class Avatar extends StatelessWidget {
-  const Avatar({this.user, this.jsonKey = 'profile_image', this.size = 48, this.onUserTap});
+  const Avatar(
+      {this.user,
+      this.jsonKey = 'profile_image',
+      this.size = 48,
+      this.onUserTap});
 
   /// The [User] we want to display the avatar
   final User? user;
@@ -14,9 +18,9 @@ class Avatar extends StatelessWidget {
   final String jsonKey;
 
   final double size;
-  
+
   final OnUserTap? onUserTap;
-  
+
   @override
   Widget build(BuildContext context) {
     final profileUrl = user?.data?[jsonKey];
@@ -25,18 +29,18 @@ class Avatar extends StatelessWidget {
         onUserTap?.call(user);
       },
       child: profileUrl != null
-        ? ClipOval(
-            child: Image.network(
-              profileUrl as String,
-              width: size,
-              height: size,
-              fit: BoxFit.cover,
-            ),
-          )
-        : ClipOval(
-            child: StreamSvgIcon.avatar(
-            size: size,
-          )),
+          ? ClipOval(
+              child: Image.network(
+                profileUrl as String,
+                width: size,
+                height: size,
+                fit: BoxFit.cover,
+              ),
+            )
+          : ClipOval(
+              child: StreamSvgIcon.avatar(
+              size: size,
+            )),
     );
   }
 }
