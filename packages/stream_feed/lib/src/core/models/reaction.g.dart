@@ -37,6 +37,14 @@ Reaction _$ReactionFromJson(Map json) {
                   (e) => Reaction.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList()),
     ),
+    ownChildren: (json['own_children'] as Map?)?.map(
+      (k, e) => MapEntry(
+          k as String,
+          (e as List<dynamic>)
+              .map(
+                  (e) => Reaction.fromJson(Map<String, dynamic>.from(e as Map)))
+              .toList()),
+    ),
     childrenCounts: (json['children_counts'] as Map?)?.map(
       (k, e) => MapEntry(k as String, e as int),
     ),
@@ -64,6 +72,7 @@ Map<String, dynamic> _$ReactionToJson(Reaction instance) {
   writeNotNull('target_feeds_extra_data', instance.targetFeedsExtraData);
   writeNotNull('data', instance.data);
   writeNotNull('latest_children', readonly(instance.latestChildren));
+  writeNotNull('own_children', readonly(instance.ownChildren));
   writeNotNull('children_counts', readonly(instance.childrenCounts));
   return val;
 }

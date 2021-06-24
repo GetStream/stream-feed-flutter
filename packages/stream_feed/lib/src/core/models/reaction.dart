@@ -29,6 +29,7 @@ class Reaction extends Equatable {
     this.targetFeedsExtraData,
     this.data,
     this.latestChildren,
+    this.ownChildren,
     this.childrenCounts,
   });
 
@@ -81,6 +82,10 @@ class Reaction extends Equatable {
   /// Children reactions, grouped by reaction type.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final Map<String, List<Reaction>>? latestChildren;
+
+  /// Children reactions, grouped by reaction type.
+  @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
+  final Map<String, List<Reaction>>? ownChildren;
 
   /// Child reaction count, grouped by reaction kind
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
