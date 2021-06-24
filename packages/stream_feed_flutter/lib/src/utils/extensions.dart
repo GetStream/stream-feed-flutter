@@ -21,7 +21,7 @@ extension TagX on Tag {
         Tag.normalText: 'normalText',
       }[this]!;
 
-  TextStyle? style() => <Tag, TextStyle>{
+  TextStyle style() => <Tag, TextStyle>{
         Tag.hashtag: TextStyle(
             inherit: true,
             color: Color(0xff7a8287),
@@ -37,5 +37,5 @@ extension TagX on Tag {
             color: Color(0xff095482),
             fontSize: 14,
             fontWeight: FontWeight.w600),
-      }[this];
+      }[this]!;
 }
