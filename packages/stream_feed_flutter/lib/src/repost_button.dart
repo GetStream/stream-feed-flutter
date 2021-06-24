@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+import 'package:stream_feed_flutter/src/icons.dart';
+import 'package:stream_feed_flutter/src/reaction_button.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class RepostButton extends StatelessWidget {
-  RepostButton({this.reaction, required this.activity, this.onTap});
+  RepostButton({
+    this.reaction,
+    required this.activity,
+    this.onTap,
+    this.inactiveIcon,
+    this.activeIcon,
+  });
 
-  ///The reaction received from stream that should be repost when pressing the RepostButton.
+  ///If you want to override the activeIcon
+  final Widget? activeIcon;
+
+  ///If you want to override the inactiveIcon
+  final Widget? inactiveIcon;
+
+  ///The reaction received from stream that should be liked when pressing the LikeButton.
   final Reaction? reaction;
 
-  ///The activity received for stream for which to show the repost button. This is used to initialize the toggle state and the counter.
+  /// The activity received from stream that should be liked when pressing the LikeButton.
   final EnrichedActivity activity;
 
   ///If you want to override on tap for some reasons
@@ -15,14 +29,11 @@ class RepostButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactionToggleIcon(
+    return ReactionButton(
       activity: activity,
-      count: reaction?.childrenCounts?['repost'] ??
-          activity.reactionCounts?['repost'],
-      ownReactions:
-          reaction?.ownChildren?['repost'] ?? activity.ownReactions?['repost'],
-      activeIcon: StreamSvgIcon.repost(color: Colors.blue),
-      inactiveIcon: StreamSvgIcon.repost(),
+      reaction: reaction,
+      activeIcon: activeIcon ?? StreamSvgIcon.repost(color: Colors.blue),
+      inactiveIcon: inactiveIcon ?? StreamSvgIcon.repost(color: Colors.grey),
       kind: 'repost',
       onTap: onTap,
     );
