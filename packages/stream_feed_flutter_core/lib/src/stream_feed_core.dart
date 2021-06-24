@@ -40,8 +40,6 @@ class StreamFeedCore extends StatefulWidget {
     Key? key,
     required this.client,
     required this.child,
-    // this.onBackgroundEventReceived,
-    // this.backgroundKeepAlive = const Duration(minutes: 1),
   }) : super(key: key);
 
   /// Instance of Stream Chat Client containing information about the current
@@ -81,7 +79,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   Widget build(BuildContext context) => widget.child;
 
   /// The current user
-  UserClient? get user => client.currentUser;
+  StreamUser? get user => client.currentUser;
 
   Future<void> onAddReaction({
     Map<String, Object>? data,
