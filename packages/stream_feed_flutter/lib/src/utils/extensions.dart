@@ -10,9 +10,15 @@ extension ListTaggedTextX on List<TaggedText> {
 
 extension TagX on Tag {
   String toRegEx() => <Tag, String>{
-        Tag.hashtag: r'(?<hashtag>(^|\s)(#[a-z\d-]+))',
+        Tag.hashtag: r'(?<hashtag>(^|\s)(#[a-z\d-]+))', //TODO: handle uppercase
         Tag.mention: r'(?<mention>(^|\s)(@[a-z\d-]+))',
         Tag.normalText: '(?<normalText>([$_text]+))'
+      }[this]!;
+
+  String str() => <Tag, String>{
+        Tag.hashtag: 'hashtag',
+        Tag.mention: 'mention',
+        Tag.normalText: 'normalText',
       }[this]!;
 
   TextStyle style() => <Tag, TextStyle>{

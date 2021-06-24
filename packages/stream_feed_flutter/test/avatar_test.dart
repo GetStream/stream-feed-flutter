@@ -12,13 +12,19 @@ void main() {
   group('Avatar', () {
     testWidgets('url', (tester) async {
       await mockNetworkImages(() async {
-        await tester.pumpWidget(Avatar(
-            user: User(
-          data: {
-            'name': 'Sloan Humfrey',
-            'profile_image': 'https://randomuser.me/api/portraits/women/1.jpg',
-          },
-        )));
+        await tester.pumpWidget(Material(
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Avatar(
+                user: User(
+              data: {
+                'name': 'Sloan Humfrey',
+                'profile_image':
+                    'https://randomuser.me/api/portraits/women/1.jpg',
+              },
+            )),
+          ),
+        ));
         expect(find.byType(Image), findsOneWidget);
       });
     });

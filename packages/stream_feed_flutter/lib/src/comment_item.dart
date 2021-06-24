@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/typedefs.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'utils/extensions.dart';
 
-typedef OnClickMention = void Function(String? mention);
-typedef OnClickHashtag = void Function(String? hashtag);
-
 class CommentItem extends StatelessWidget {
-  final User user;
+  final User? user;
   final Reaction reaction;
-  final OnClickMention onClickMention;
-  final OnClickHashtag onClickHashtag;
+  final OnMentionTap? onMentionTap;
+  final OnHashtagTap? onHashtagTap;
+  final OnUserTap? onUserTap;
 
-  const CommentItem({
-    required this.user,
-    required this.reaction,
-    required this.onClickMention,
-    required this.onClickHashtag,
-  });
+  const CommentItem(
+      {required this.reaction,
+      this.user,
+      this.onMentionTap,
+      this.onHashtagTap,
+      this.onUserTap});
 
   @override
   Widget build(BuildContext context) {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
-    final taggedText = detector.parseText(reaction.data!['text'] as String);
+    final taggedText = reaction.data?['text'] != null
+        ? detector.parseText(reaction.data!['text'] as String)
+        : <TaggedText?>[];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Padding(padding: const EdgeInsets.all(8.0), child: Avatar(user: user)),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Avatar(user: user, onUserTap: onUserTap)),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -39,36 +42,30 @@ class CommentItem extends StatelessWidget {
                   padding: const EdgeInsets.all(2.0),
                   child: Row(
                     children: [
-                      Text(user.data!['name'] as String,
+                      ...displayUsername(user),
+                      if (reaction.createdAt != null)
+                        Text(
+                          timeago.format(reaction.createdAt!),
                           style: TextStyle(
-                              color: Color(0xff0ba8e0),
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14)),
-                      SizedBox(
-                        width: 4.0,
-                      ),
-                      Text(
-                        timeago.format(reaction.createdAt!),
-                        style: TextStyle(
-                            color: Color(0xff7a8287),
-                            fontWeight: FontWeight.w400,
-                            height: 1.5,
-                            fontSize: 14),
-                      ),
+                              color: Color(0xff7a8287),
+                              fontWeight: FontWeight.w400,
+                              height: 1.5,
+                              fontSize: 14),
+                        )
                     ],
                   ),
                 ),
                 Padding(
                     padding: const EdgeInsets.all(2.0),
-                    child: Wrap(
-                      children: taggedText
-                          .map((it) => _InteractiveText(
-                                tagged: it,
-                                onClickHashtag: onClickHashtag,
-                                onClickMention: onClickMention,
-                              ))
-                          .toList(),
-                    ))
+                    child: Wrap(children: [
+                      for (final tagged in taggedText)
+                        if (tagged != null)
+                          _InteractiveText(
+                            tagged: tagged,
+                            onHashtagTap: onHashtagTap,
+                            onMentionTap: onMentionTap,
+                          )
+                    ]))
               ],
             ),
           ),
@@ -76,17 +73,34 @@ class CommentItem extends StatelessWidget {
       ],
     );
   }
+
+  List<Widget> displayUsername(User? user) {
+    return user?.data?['name'] != null
+        ? [
+            Text(user!.data?['name'] as String,
+                style: TextStyle(
+                    color: Color(0xff0ba8e0),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14)),
+            // : Container(),
+            SizedBox(
+              width: 4.0,
+            ),
+          ]
+        : [Container()];
+  }
 }
 
 class _InteractiveText extends StatelessWidget {
-  final OnClickMention onClickMention;
-  final OnClickHashtag onClickHashtag;
-  final TaggedText tagged;
   const _InteractiveText({
     required this.tagged,
-    required this.onClickHashtag,
-    required this.onClickMention,
+    this.onHashtagTap,
+    this.onMentionTap,
   });
+
+  final OnMentionTap? onMentionTap;
+  final OnHashtagTap? onHashtagTap;
+  final TaggedText tagged;
 
   @override
   Widget build(BuildContext context) {
@@ -96,14 +110,14 @@ class _InteractiveText extends StatelessWidget {
       case Tag.hashtag:
         return InkWell(
           onTap: () {
-            onClickHashtag(tagged.text?.trim().replaceFirst('#', ''));
+            onHashtagTap?.call(tagged.text?.trim().replaceFirst('#', ''));
           },
           child: Text(tagged.text!, style: tagged.tag.style()),
         );
       case Tag.mention:
         return InkWell(
           onTap: () {
-            onClickMention(tagged.text?.trim().replaceFirst('@', ''));
+            onMentionTap?.call(tagged!.text?.trim().replaceFirst('@', ''));
           },
           child: Text(tagged.text!, style: tagged.tag.style()),
         );

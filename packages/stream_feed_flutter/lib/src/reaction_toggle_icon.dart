@@ -9,12 +9,13 @@ class ReactionToggleIcon extends StatelessWidget {
   final String kind;
   final int? count;
 
-  ReactionToggleIcon(
-      {required this.activeIcon,
-      required this.inactiveIcon,
-      required this.kind,
-      this.ownReactions,
-      this.count});
+  ReactionToggleIcon({
+    required this.activeIcon,
+    required this.inactiveIcon,
+    required this.kind,
+    this.ownReactions,
+    this.count,
+  });
   @override
   Widget build(BuildContext context) {
     final hasReactions = ownReactions != null;

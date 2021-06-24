@@ -144,7 +144,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: User(id: "test", data: {"test": "test"}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -463,7 +463,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: User(id: "test", data: {"test": "test"}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -501,7 +501,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: User(id: "test", data: {"test": "test"}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -526,7 +526,10 @@ void main() {
           'parent': 'test',
           'created_at': '2001-09-11T00:01:02.000',
           'target_feeds': ['slug:userId'],
-          'user': {'test': 'test'},
+          'user': {
+            'id': 'test',
+            'data': {'test': 'test'}
+          },
           'target_feeds_extra_data': {'test': 'test'},
           'data': {'test': 'test'}
         }
@@ -818,7 +821,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: User(id: "test", data: {"test": "test"}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         childrenCounts: const {'test': 1});
@@ -831,7 +834,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: User(id: "test", data: {"test": "test"}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -858,7 +861,10 @@ void main() {
         'parent': 'test',
         'created_at': '2001-09-11T00:01:02.000',
         'target_feeds': ['slug:userId'],
-        'user': {'test': 'test'},
+        'user': {
+          'id': 'test',
+          'data': {'test': 'test'}
+        },
         'target_feeds_extra_data': {'test': 'test'},
         'data': {'test': 'test'}
       });

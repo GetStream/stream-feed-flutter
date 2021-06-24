@@ -26,13 +26,13 @@ class TagDetector {
   static String buildRegex() =>
       Tag.values.map((tag) => tag.toRegEx()).join('|');
 
-  List<TaggedText> parseText(String text) {
+  List<TaggedText?> parseText(String text) {
     final tags = regExp.allMatches(text).toList();
     final result = tags
         .map((tag) => TaggedText.fromMap({
-              Tag.hashtag: tag.namedGroup(tag.groupNames.toList()[0]),
-              Tag.mention: tag.namedGroup(tag.groupNames.toList()[1]),
-              Tag.normalText: tag.namedGroup(tag.groupNames.toList()[2]),
+              Tag.hashtag: tag.namedGroup(Tag.hashtag.str()),
+              Tag.mention: tag.namedGroup(Tag.mention.str()),
+              Tag.normalText: tag.namedGroup(Tag.normalText.str()),
             }..removeWhere((key, value) => value == null)))
         .toList();
     return result;
