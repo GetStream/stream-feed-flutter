@@ -41,7 +41,7 @@ class ReactionToggleIcon extends StatelessWidget {
       onTap: () async {
         onTap?.call ??
             await onToggleReaction(context, alreadyReacted,
-                idToRemove: reactionsKind?.last?.id);
+                idToRemove: reactionsKind?.last.id);
       },
     );
   }
