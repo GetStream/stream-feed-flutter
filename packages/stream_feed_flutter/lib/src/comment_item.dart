@@ -117,7 +117,7 @@ class _InteractiveText extends StatelessWidget {
       case Tag.mention:
         return InkWell(
           onTap: () {
-            onMentionTap?.call(tagged!.text?.trim().replaceFirst('@', ''));
+            onMentionTap?.call(tagged.text?.trim().replaceFirst('@', ''));
           },
           child: Text(tagged.text!, style: tagged.tag.style()),
         );
