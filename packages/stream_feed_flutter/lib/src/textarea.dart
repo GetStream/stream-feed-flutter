@@ -65,6 +65,7 @@ class _TextAreaState extends State<TextArea> {
       child: TextField(
         key: Key('messageInputText'),
         onSubmitted: (value) => widget.onSubmitted(value),
+        maxLines: null,
         keyboardType: widget.keyboardType,
         controller: textEditingController,
         focusNode: _focusNode,
@@ -72,6 +73,7 @@ class _TextAreaState extends State<TextArea> {
         autofocus: widget.autofocus,
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
+            contentPadding: EdgeInsets.all(8.0),
             hintStyle: widget.hintTextStyle,
             border: InputBorder.none,
             hintText: widget.hintText),

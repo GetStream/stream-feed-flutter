@@ -5,3 +5,4 @@ export 'src/avatar.dart';
 export 'src/reaction_icon.dart';
 export 'src/reaction_toggle_icon.dart';
 export 'src/button.dart';
+export 'src/comment_field.dart';

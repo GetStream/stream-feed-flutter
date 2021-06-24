@@ -27,7 +27,7 @@ class Avatar extends StatelessWidget {
           )
         : ClipOval(
             child: StreamSvgIcon.avatar(
-            size: 30,
+            size: 48,
           ));
   }
 }
