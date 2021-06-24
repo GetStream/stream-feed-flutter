@@ -57,17 +57,15 @@ class CommentItem extends StatelessWidget {
                 ),
                 Padding(
                     padding: const EdgeInsets.all(2.0),
-                    child: Wrap(
-                      children: taggedText
-                          .map((it) => it != null
-                              ? _InteractiveText(
-                                  tagged: it,
-                                  onHashtagTap: onHashtagTap,
-                                  onMentionTap: onMentionTap,
-                                )
-                              : Offstage())
-                          .toList(),
-                    ))
+                    child: Wrap(children: [
+                      for (final tagged in taggedText)
+                        if (tagged != null)
+                          _InteractiveText(
+                            tagged: tagged,
+                            onHashtagTap: onHashtagTap,
+                            onMentionTap: onMentionTap,
+                          )
+                    ]))
               ],
             ),
           ),
