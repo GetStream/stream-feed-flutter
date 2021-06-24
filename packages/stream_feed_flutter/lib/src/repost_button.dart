@@ -20,7 +20,7 @@ class RepostButton extends StatelessWidget {
       count: reaction?.childrenCounts?['repost'] ??
           activity.reactionCounts?['repost'],
       ownReactions:
-          reaction?.ownChildren?['repost'] ?? activity.ownReactions?['like'],
+          reaction?.ownChildren?['repost'] ?? activity.ownReactions?['repost'],
       activeIcon: StreamSvgIcon.repost(color: Colors.blue),
       inactiveIcon: StreamSvgIcon.repost(),
       kind: 'repost',
