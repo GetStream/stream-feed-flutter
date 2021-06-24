@@ -58,16 +58,15 @@ class CommentItem extends StatelessWidget {
                 ),
                 Padding(
                     padding: const EdgeInsets.all(2.0),
-                    child: Wrap(
-                      //TODO: move to Text.rich(WidgetSpans)
-                      children: taggedText
-                          .map((it) => _InteractiveText(
-                                tagged: it,
-                                onHashtagTap: onHashtagTap,
-                                onMentionTap: onMentionTap,
-                              ))
-                          .toList(),
-                    ))
+                    child: Wrap(children: [
+                      for (final tagged in taggedText)
+                        if (tagged != null)
+                          _InteractiveText(
+                            tagged: tagged,
+                            onHashtagTap: onHashtagTap,
+                            onMentionTap: onMentionTap,
+                          )
+                    ]))
               ],
             ),
           ),
@@ -87,40 +86,37 @@ class CommentItem extends StatelessWidget {
 }
 
 class _InteractiveText extends StatelessWidget {
-  final OnMentionTap? onMentionTap;
-  final OnHashtagTap? onHashtagTap;
-  final TaggedText? tagged;
   const _InteractiveText({
-    this.tagged,
+    required this.tagged,
     this.onHashtagTap,
     this.onMentionTap,
   });
 
+  final OnMentionTap? onMentionTap;
+  final OnHashtagTap? onHashtagTap;
+  final TaggedText tagged;
+
   @override
   Widget build(BuildContext context) {
-    if (tagged != null) {
-      switch (tagged!.tag) {
-        case Tag.normalText:
-          return Text('${tagged!.text!} ', style: tagged!.tag.style());
-        case Tag.hashtag:
-          return InkWell(
-            onTap: () {
-              onHashtagTap?.call(tagged!.text?.trim().replaceFirst('#', ''));
-            },
-            child: Text(tagged!.text!, style: tagged!.tag.style()),
-          );
-        case Tag.mention:
-          return InkWell(
-            onTap: () {
-              onMentionTap?.call(tagged!.text?.trim().replaceFirst('@', ''));
-            },
-            child: Text(tagged!.text!, style: tagged!.tag.style()),
-          );
-        default:
-          return Text(tagged!.text!, style: tagged!.tag.style());
-      }
-    } else {
-      return Offstage();
+    switch (tagged.tag) {
+      case Tag.normalText:
+        return Text('${tagged.text!} ', style: tagged.tag.style());
+      case Tag.hashtag:
+        return InkWell(
+          onTap: () {
+            onHashtagTap?.call(tagged.text?.trim().replaceFirst('#', ''));
+          },
+          child: Text(tagged.text!, style: tagged.tag.style()),
+        );
+      case Tag.mention:
+        return InkWell(
+          onTap: () {
+            onMentionTap?.call(tagged.text?.trim().replaceFirst('@', ''));
+          },
+          child: Text(tagged.text!, style: tagged.tag.style()),
+        );
+      default:
+        return Text(tagged.text!, style: tagged.tag.style());
     }
   }
 }
