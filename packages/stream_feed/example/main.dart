@@ -8,7 +8,7 @@ Future<void> main() async {
   final apiKey = env['apiKey'];
   final appId = env['appId'];
   final clientWithSecret = StreamFeedClient.connect(
-    apiKey,
+    apiKey!,
     secret: secret,
     runner: Runner.server,
   );
