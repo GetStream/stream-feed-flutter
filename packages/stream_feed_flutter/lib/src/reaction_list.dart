@@ -5,7 +5,7 @@ import 'comment_item.dart';
 
 class ReactionList extends StatelessWidget {
   final List<Reaction> reactions;
-  final bool? reverse;
+  final bool reverse;
   final OnReactionTap? onReactionTap;
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;
@@ -14,7 +14,7 @@ class ReactionList extends StatelessWidget {
   const ReactionList({
     Key? key,
     required this.reactions,
-    this.reverse,
+    this.reverse = false,
     this.onReactionTap,
     this.onHashtagTap,
     this.onMentionTap,
@@ -24,7 +24,7 @@ class ReactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        reverse: reverse ?? false,
+        reverse: reverse,
         itemCount: reactions.length,
         itemBuilder: (context, idx) => InkWell(
               onTap: () {
