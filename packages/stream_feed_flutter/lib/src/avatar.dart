@@ -12,6 +12,8 @@ class Avatar extends StatelessWidget {
   /// A jsonKey if you want to override the profile url of [User.data]
   final String jsonKey;
 
+  final double size;
+
   @override
   Widget build(BuildContext context) {
     final profileUrl = user?.data?[jsonKey];
