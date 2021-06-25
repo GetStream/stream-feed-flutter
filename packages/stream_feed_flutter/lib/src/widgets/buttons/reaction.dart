@@ -7,6 +7,7 @@ class ReactionButton extends StatelessWidget {
     required this.kind,
     required this.activeIcon,
     required this.inactiveIcon,
+    this.feedGroup = 'user',
     this.hoverColor = Colors.lightBlue,
     this.reaction,
     this.onTap,
@@ -34,6 +35,8 @@ class ReactionButton extends StatelessWidget {
 
   final Color hoverColor;
 
+  final String feedGroup;
+
   @override
   Widget build(BuildContext context) {
     return ReactionToggleIcon(
@@ -47,6 +50,7 @@ class ReactionButton extends StatelessWidget {
       kind: kind,
       onTap: onTap,
       data: data,
+      feedGroup: feedGroup,
     );
   }
 }

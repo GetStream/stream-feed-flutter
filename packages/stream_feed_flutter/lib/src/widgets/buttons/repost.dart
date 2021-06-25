@@ -5,8 +5,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class RepostButton extends StatelessWidget {
   RepostButton({
-    this.reaction,
     required this.activity,
+    this.feedGroup = 'user',
+    this.reaction,
     this.onTap,
     this.inactiveIcon,
     this.activeIcon,
@@ -27,6 +28,8 @@ class RepostButton extends StatelessWidget {
   ///If you want to override on tap for some reasons
   final VoidCallback? onTap;
 
+  final String feedGroup;
+
   @override
   Widget build(BuildContext context) {
     return ReactionButton(
@@ -37,6 +40,7 @@ class RepostButton extends StatelessWidget {
       hoverColor: Colors.green.shade100,
       kind: 'repost',
       onTap: onTap,
+      feedGroup: feedGroup,
     );
   }
 }

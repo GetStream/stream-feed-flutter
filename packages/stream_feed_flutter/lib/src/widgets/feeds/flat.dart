@@ -6,6 +6,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:animations/animations.dart';
 
 enum TransitionType { none, sharedAxisTransition }
+enum DesignSystem { material, cupertino }
 
 class FlatFeed extends StatelessWidget {
   //TODO: rename this builder or something
@@ -16,6 +17,7 @@ class FlatFeed extends StatelessWidget {
     this.onMentionTap,
     this.onUserTap,
     this.activityFooterBuilder,
+    this.designSystem = DesignSystem.material,
     this.transitionType =
         TransitionType.sharedAxisTransition, //TODO: move this to core or theme
   }) : super(key: key);
@@ -25,6 +27,8 @@ class FlatFeed extends StatelessWidget {
   final OnUserTap? onUserTap;
   final String feedGroup;
   final ActivityFooterBuilder? activityFooterBuilder;
+
+  final DesignSystem designSystem;
 
   ///Customise the transition
   final TransitionType transitionType;

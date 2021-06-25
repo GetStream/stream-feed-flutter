@@ -5,8 +5,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class LikeButton extends StatelessWidget {
   LikeButton({
-    this.reaction,
     required this.activity,
+    this.feedGroup = 'user',
+    this.reaction,
     this.onTap,
     this.activeIcon,
     this.inactiveIcon,
@@ -27,6 +28,8 @@ class LikeButton extends StatelessWidget {
   ///If you want to override the inactiveIcon
   final Widget? inactiveIcon;
 
+  final String feedGroup;
+
   @override
   Widget build(BuildContext context) {
     return ReactionButton(
@@ -34,7 +37,6 @@ class LikeButton extends StatelessWidget {
       activeIcon: activeIcon ?? StreamSvgIcon.loveActive(),
       inactiveIcon: inactiveIcon ?? StreamSvgIcon.loveInactive(),
       hoverColor: Colors.red.shade100,
-
       ///TODO: third state hover on desktop
       reaction: reaction,
       kind: 'like',

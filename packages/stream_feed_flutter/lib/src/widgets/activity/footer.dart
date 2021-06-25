@@ -17,9 +17,18 @@ class ActivityFooter extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          PostButton(activity: activity, feedGroup: feedGroup),
-          RepostButton(activity: activity),
-          LikeButton(activity: activity),
+          PostButton(
+            activity: activity,
+            feedGroup: feedGroup,
+          ),
+          RepostButton(
+            activity: activity,
+            feedGroup: feedGroup,
+          ),
+          LikeButton(
+            activity: activity,
+            feedGroup: feedGroup,
+          ),
         ],
       ),
     );
