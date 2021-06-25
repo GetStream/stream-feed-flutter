@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/reaction_list.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:animations/animations.dart';
@@ -9,7 +8,7 @@ import 'package:animations/animations.dart';
 enum TransitionType { none, sharedAxisTransition }
 
 class FlatFeed extends StatelessWidget {
-  //TODO: put this in core with a builder List<EnrichedActivity>
+  //TODO: rename this builder or something
   const FlatFeed({
     Key? key,
     this.feedGroup = 'user',
@@ -46,7 +45,7 @@ class FlatFeed extends StatelessWidget {
           transitionType: transitionType,
           widget: CommentView(
             activity: activity,
-            textEditingController: TextEditingController(),
+            textEditingController: TextEditingController(),//TODO: move this into props for customisation like buildSpans
           ),
         ),
       ),

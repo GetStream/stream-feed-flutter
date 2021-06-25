@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
+import 'package:stream_feed_flutter/src/widgets/comment/item.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
@@ -36,11 +38,16 @@ class AlertDialogComment extends StatelessWidget {
 }
 
 class CommentView extends StatelessWidget {
+  //TODO: rename this page or something (used in actions and )
   const CommentView(
       {Key? key,
       this.activity,
       this.feedGroup = 'user',
       required this.textEditingController,
+      this.onReactionTap,
+      this.onHashtagTap,
+      this.onMentionTap,
+      this.onUserTap,
       this.reactions = false})
       : super(key: key);
 
@@ -48,6 +55,10 @@ class CommentView extends StatelessWidget {
   final String feedGroup;
   final TextEditingController textEditingController;
   final bool reactions;
+  final OnReactionTap? onReactionTap;
+  final OnHashtagTap? onHashtagTap;
+  final OnMentionTap? onMentionTap;
+  final OnUserTap? onUserTap;
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +78,20 @@ class CommentView extends StatelessWidget {
             feedGroup: feedGroup,
           ),
           //TODO: builder for using it elsewhere than in actions
-          // if (reactions)
-          //   ReactionsListCore(
-          //       onSuccess: (BuildContext context, List<Reaction> reactions) =>
-          //           ReactionListInner(reactions: reactions))
+          if (reactions)
+            ReactionsListCore(
+              feedGroup: feedGroup,
+              lookupValue: activity!.id!, //TODO: handle null safety
+              onSuccess: (context, reactions, idx) => CommentItem(
+                //TODO: builder here
+                user: reactions[idx].user,
+                reaction: reactions[idx],
+                onReactionTap: onReactionTap,
+                onHashtagTap: onHashtagTap,
+                onMentionTap: onMentionTap,
+                onUserTap: onUserTap,
+              ),
+            )
         ],
       ),
     );
