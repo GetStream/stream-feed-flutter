@@ -42,6 +42,7 @@ class StreamFeedCore extends StatefulWidget {
       required this.child,
       this.trackAnalytics = false,
       // required this.feedGroup,
+       this.navigatorKey,
       this.analyticsLocation,
       this.analyticsClient})
       : super(key: key);
@@ -58,6 +59,9 @@ class StreamFeedCore extends StatefulWidget {
   /// The location that should be used for analytics when liking in the feed,
   /// this is only useful when you have analytics enabled for your app.
   final String? analyticsLocation;
+
+  ///Your navigator key
+  final GlobalKey<NavigatorState>? navigatorKey;
 
   /// Widget descendant.
   final Widget child;
@@ -98,6 +102,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   ReactionsClient get reactions => client.reactions;
 
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
+    NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
   Future<Reaction> onAddReaction(
       {Map<String, Object>? data,

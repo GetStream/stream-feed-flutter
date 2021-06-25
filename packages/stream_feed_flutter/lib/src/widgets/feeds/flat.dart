@@ -45,7 +45,8 @@ class FlatFeed extends StatelessWidget {
           transitionType: transitionType,
           widget: CommentView(
             activity: activity,
-            textEditingController: TextEditingController(),//TODO: move this into props for customisation like buildSpans
+            textEditingController:
+                TextEditingController(), //TODO: move this into props for customisation like buildSpans
           ),
         ),
       ),
@@ -60,11 +61,11 @@ class FlatFeed extends StatelessWidget {
       required Widget widget}) {
     switch (transitionType) {
       case TransitionType.none:
-        Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => widget,
-          ),
-        );
+        StreamFeedCore.of(context).navigator!.push(
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => widget,
+              ),
+            );
         break;
       default:
         Navigator.push(
