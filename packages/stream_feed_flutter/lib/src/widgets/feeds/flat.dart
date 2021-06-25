@@ -63,32 +63,31 @@ class FlatFeed extends StatelessWidget {
       required TransitionType transitionType,
       required EnrichedActivity activity,
       required Widget widget}) {
+    final currentNavigator = StreamFeedCore.of(context).navigator!;
     switch (transitionType) {
       case TransitionType.none:
-        StreamFeedCore.of(context).navigator!.push(
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => widget,
-              ),
-            );
+        currentNavigator.push(
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => widget,
+          ),
+        );
         break;
       default:
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (_, __, ___) => widget,
-              transitionsBuilder: (
-                _,
-                animation,
-                secondaryAnimation,
-                child,
-              ) =>
-                  SharedAxisTransition(
-                animation: animation,
-                secondaryAnimation: secondaryAnimation,
-                transitionType: SharedAxisTransitionType.horizontal,
-                child: child,
-              ),
-            ));
+        currentNavigator.push(PageRouteBuilder(
+          pageBuilder: (_, __, ___) => widget,
+          transitionsBuilder: (
+            _,
+            animation,
+            secondaryAnimation,
+            child,
+          ) =>
+              SharedAxisTransition(
+            animation: animation,
+            secondaryAnimation: secondaryAnimation,
+            transitionType: SharedAxisTransitionType.horizontal,
+            child: child,
+          ),
+        ));
     }
   }
 }
