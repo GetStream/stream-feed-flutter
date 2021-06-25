@@ -3,7 +3,7 @@ import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
+//TODO: other things to add to core FollowListCore
 class ReactionsListCore extends StatelessWidget {
   const ReactionsListCore({
     Key? key,
