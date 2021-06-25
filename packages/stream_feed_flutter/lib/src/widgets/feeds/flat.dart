@@ -10,15 +10,16 @@ enum TransitionType { none, sharedAxisTransition }
 
 class FlatFeed extends StatelessWidget {
   //TODO: put this in core with a builder List<EnrichedActivity>
-  const FlatFeed(
-      {Key? key,
-      this.feedGroup = 'user',
-      this.onHashtagTap,
-      this.onMentionTap,
-      this.onUserTap,
-      this.activityFooterBuilder,
-      this.transitionType = TransitionType.sharedAxisTransition})
-      : super(key: key);
+  const FlatFeed({
+    Key? key,
+    this.feedGroup = 'user',
+    this.onHashtagTap,
+    this.onMentionTap,
+    this.onUserTap,
+    this.activityFooterBuilder,
+    this.transitionType =
+        TransitionType.sharedAxisTransition, //TODO: move this to core or theme
+  }) : super(key: key);
 
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;
@@ -32,25 +33,23 @@ class FlatFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatFeedCore(
-      onSuccess: (BuildContext context, List<EnrichedActivity> activities) {
-        return FlatFeedInner(
-          feedGroup: feedGroup,
-          activities: activities, //TODO: no activity to display widget
-          onHashtagTap: onHashtagTap,
-          onMentionTap: onMentionTap,
-          onUserTap: onUserTap,
-          activityFooterBuilder: activityFooterBuilder,
-          onActivityTap: (context, activity) => pageRouteBuilder(
-            activity: activity!,
-            context: context,
-            transitionType: transitionType,
-            widget: CommentView(
-              activity: activity,
-              textEditingController: TextEditingController(),
-            ),
+      onSuccess: (context, activities, idx) => StreamFeedActivity(
+        activity: activities[idx],
+        feedGroup: feedGroup,
+        onHashtagTap: onHashtagTap,
+        onMentionTap: onMentionTap,
+        onUserTap: onUserTap,
+        activityFooterBuilder: activityFooterBuilder,
+        onActivityTap: (context, activity) => pageRouteBuilder(
+          activity: activity!,
+          context: context,
+          transitionType: transitionType,
+          widget: CommentView(
+            activity: activity,
+            textEditingController: TextEditingController(),
           ),
-        );
-      },
+        ),
+      ),
       feedGroup: feedGroup,
     );
   }
@@ -87,44 +86,5 @@ class FlatFeed extends StatelessWidget {
               ),
             ));
     }
-  }
-}
-
-class FlatFeedInner extends StatelessWidget {
-  const FlatFeedInner({
-    Key? key,
-    required this.activities,
-    this.onHashtagTap,
-    this.onMentionTap,
-    this.onUserTap,
-    this.activityFooterBuilder,
-    this.feedGroup = 'user',
-    this.onActivityTap,
-  }) : super(key: key);
-
-  final OnHashtagTap? onHashtagTap;
-  final OnMentionTap? onMentionTap;
-  final OnUserTap? onUserTap;
-  final List<EnrichedActivity> activities;
-  final ActivityFooterBuilder? activityFooterBuilder;
-  final OnActivityTap? onActivityTap;
-
-  ///The feed group part of the feed
-  final String feedGroup;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: activities.length,
-      itemBuilder: (context, idx) => StreamFeedActivity(
-        activity: activities[idx],
-        feedGroup: feedGroup,
-        onHashtagTap: onHashtagTap,
-        onMentionTap: onMentionTap,
-        onUserTap: onUserTap,
-        onActivityTap: onActivityTap,
-        activityFooterBuilder: activityFooterBuilder,
-      ),
-    );
   }
 }
