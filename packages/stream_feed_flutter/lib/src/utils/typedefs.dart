@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 typedef OnMentionTap = void Function(String? mention);

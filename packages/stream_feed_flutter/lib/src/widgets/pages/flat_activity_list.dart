@@ -21,6 +21,7 @@ class FlatActivityListPage extends StatelessWidget {
     this.onProgressWidget = const ProgressStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
     this.designSystem = DesignSystem.material,
+    this.onActivityTap,
     this.transitionType =
         TransitionType.sharedAxisTransition, //TODO: move this to core or theme
   }) : super(key: key);
@@ -32,6 +33,9 @@ class FlatActivityListPage extends StatelessWidget {
   final ActivityFooterBuilder? activityFooterBuilder;
   final ActivityContentBuilder? activityContentBuilder;
   final ActivityHeaderBuilder? activityHeaderBuilder;
+
+  ///Override the current navigation behavior. Useful for user provided Navigator 2.0
+  final OnActivityTap? onActivityTap;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
 
@@ -55,18 +59,20 @@ class FlatActivityListPage extends StatelessWidget {
         activityHeaderBuilder: activityHeaderBuilder,
         activityFooterBuilder: activityFooterBuilder,
         activityContentBuilder: activityContentBuilder,
-        onActivityTap: (context, activity) => pageRouteBuilder(
-          activity: activity,
-          context: context,
-          transitionType: transitionType,
-          page: CommentView(
-            //TODO: core for loading this Navigator 2.0 style
-            activity: activity,
-            enableReactions: true,
-            textEditingController:
-                TextEditingController(), //TODO: move this into props for customisation like buildSpans
-          ),
-        ),
+        onActivityTap: (context, activity) => onActivityTap != null
+            ? onActivityTap?.call(context, activity)
+            //TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
+
+            : pageRouteBuilder(
+                activity: activity,
+                context: context,
+                transitionType: transitionType,
+                page: CommentView(
+                  enableReactions: true,
+                  textEditingController:
+                      TextEditingController(), //TODO: move this into props for customisation like buildSpans
+                ),
+              ),
       ),
       feedGroup: feedGroup,
     );
