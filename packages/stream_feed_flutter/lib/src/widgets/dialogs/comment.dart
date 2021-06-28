@@ -39,7 +39,7 @@ class AlertDialogComment extends StatelessWidget {
 }
 
 class CommentView extends StatelessWidget {
-  //TODO: rename this CommentPage or something (used in actions and )
+  //TODO: merge this with StreamFeedActivity
   const CommentView({
     Key? key,
     required this.textEditingController,
