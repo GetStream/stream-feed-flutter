@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -14,7 +13,8 @@ class ReactionListPage extends StatelessWidget {
       required this.onUserTap,
       required this.onReaction,
       this.onErrorWidget = const ErrorStateWidget(),
-      this.onProgressWidget = const ProgressStateWidget()})
+      this.onProgressWidget = const ProgressStateWidget(),
+      this.onEmptyWidget = const EmptyStateWidget()})
       : super(key: key);
 
   final String feedGroup;
@@ -26,6 +26,7 @@ class ReactionListPage extends StatelessWidget {
   final OnReaction onReaction;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
+  final Widget onEmptyWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class ReactionListPage extends StatelessWidget {
       lookupValue: activity!.id!, //TODO: handle null safety
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
+      onEmptyWidget: onEmptyWidget,
       onSuccess: (context, reactions, idx) =>
           onReaction(context, reactions[idx]),
     );

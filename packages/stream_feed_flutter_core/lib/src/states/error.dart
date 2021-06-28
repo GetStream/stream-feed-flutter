@@ -15,7 +15,7 @@ class ErrorStateWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'Sorry an error occured',
+            'Sorry an error has occured',
             textAlign: TextAlign.center,
           ),
         ],

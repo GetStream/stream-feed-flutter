@@ -24,24 +24,29 @@ class FlatFeedCore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: StreamFeedCore.of(context)
-            .getEnrichedActivities(feedGroup: feedGroup),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<EnrichedActivity>> snapshot) {
-          if (snapshot.hasError) {
-            return onErrorWidget; //snapshot.error
-          }
-          if (!snapshot.hasData) {
-            return onProgressWidget;
-          }
-          final channels = snapshot.data!;
-          if (channels.isEmpty) {
-            return onEmptyWidget;
-          }
-          return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, idx) =>
-                  onSuccess(context, snapshot.data!, idx));
-        });
+      future: StreamFeedCore.of(context)
+          .getEnrichedActivities(feedGroup: feedGroup),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<EnrichedActivity>> snapshot) {
+        if (snapshot.hasError) {
+          return onErrorWidget; //snapshot.error
+        }
+        if (!snapshot.hasData) {
+          return onProgressWidget;
+        }
+        final activities = snapshot.data!;
+        if (activities.isEmpty) {
+          return onEmptyWidget;
+        }
+        return ListView.builder(
+          itemCount: activities.length,
+          itemBuilder: (context, idx) => onSuccess(
+            context,
+            snapshot.data!,
+            idx,
+          ),
+        );
+      },
+    );
   }
 }

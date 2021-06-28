@@ -13,6 +13,7 @@ class ReactionListCore extends StatelessWidget {
     required this.lookupValue,
     this.onErrorWidget = const ErrorStateWidget(),
     this.onProgressWidget = const ProgressStateWidget(),
+    this.onEmptyWidget = const EmptyStateWidget(),
     this.lookupAttr = LookupAttribute.activityId,
     this.filter,
     this.kind,
@@ -22,6 +23,7 @@ class ReactionListCore extends StatelessWidget {
   final OnSuccessReactions onSuccess;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
+  final Widget onEmptyWidget;
 
   final LookupAttribute lookupAttr;
   final String lookupValue;
@@ -37,19 +39,24 @@ class ReactionListCore extends StatelessWidget {
             filter: filter, limit: limit, kind: kind),
         builder:
             (BuildContext context, AsyncSnapshot<List<Reaction>> snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, idx) =>
-                    onSuccess(context, snapshot.data!, idx));
-            //TODO: no activity to display widget
-          } else if (snapshot.hasError) {
-            //TODO: actual logs
-            print(snapshot.error);
-            return onErrorWidget;
-          } else {
+          if (snapshot.hasError) {
+            return onErrorWidget; //snapshot.error
+          }
+          if (!snapshot.hasData) {
             return onProgressWidget;
           }
+          final reactions = snapshot.data!;
+          if (reactions.isEmpty) {
+            return onEmptyWidget;
+          }
+          return ListView.builder(
+            itemCount: reactions.length,
+            itemBuilder: (context, idx) => onSuccess(
+              context,
+              snapshot.data!,
+              idx,
+            ),
+          );
         });
   }
 }
