@@ -49,13 +49,13 @@ class CommentView extends StatelessWidget {
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
-    this.reactions = false,
+    this.enableReactions = false,
   }) : super(key: key);
 
   final EnrichedActivity? activity;
   final String feedGroup;
   final TextEditingController textEditingController;
-  final bool reactions;
+  final bool enableReactions;
   final OnReactionTap? onReactionTap;
   final OnHashtagTap? onHashtagTap;
   final OnMentionTap? onMentionTap;
@@ -83,7 +83,7 @@ class CommentView extends StatelessWidget {
             feedGroup: feedGroup,
           ),
           //TODO: builder for using it elsewhere than in actions
-          if (reactions)
+          if (enableReactions)
             ReactionListPage(
                 feedGroup: feedGroup,
                 activity: activity,

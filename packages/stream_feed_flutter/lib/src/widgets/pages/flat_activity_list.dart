@@ -56,7 +56,7 @@ class FlatActivityListPage extends StatelessWidget {
           page: CommentView(
             //TODO: core for loading this Navigator 2.0 style
             activity: activity,
-            reactions: true,
+            enableReactions: true,
             textEditingController:
                 TextEditingController(), //TODO: move this into props for customisation like buildSpans
           ),
