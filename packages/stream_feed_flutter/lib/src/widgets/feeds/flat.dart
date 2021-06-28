@@ -44,7 +44,7 @@ class ActivityListPage extends StatelessWidget {
         onUserTap: onUserTap,
         activityFooterBuilder: activityFooterBuilder,
         onActivityTap: (context, activity) => pageRouteBuilder(
-          activity: activity!,
+          activity: activity,
           context: context,
           transitionType: transitionType,
           page: CommentView(

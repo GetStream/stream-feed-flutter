@@ -65,16 +65,21 @@ class CommentView extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
+          //TODO: "this post has been deleted by the author"
           if (activity != null) ...[
             ActivityHeader(activity: activity!, showSubtitle: false),
-            ActivityContent(activity: activity!), //TODO: not interactive
+            ActivityContent(
+                activity: activity!), //TODO: not interactive (ux in twitter)
             //TODO: analytics
             //TODO: "in response to" activity.to
           ],
           CommentField(
             textEditingController: textEditingController,
             activity: activity,
+
+            ///enabled in actions [RightActions]
             enableButton: false,
+
             feedGroup: feedGroup,
           ),
           //TODO: builder for using it elsewhere than in actions
@@ -144,7 +149,7 @@ class LeftActions extends StatelessWidget {
       child: Row(
         children: [
           //TODO: actual emojis, upload images, gif, etc
-          MediasAction(),//TODO: push an other dialog open file explorer take file uri upload it using sdk and it to attachments (sent in RightActions/PostCommentButton)
+          MediasAction(), //TODO: push an other dialog open file explorer take file uri upload it using sdk and it to attachments (sent in RightActions/PostCommentButton)
           SizedBox(width: spaceBetween),
           EmojisAction(), //TODO: push an other dialog and display a nice grid of emojis, add selected emoji to text controller
           SizedBox(width: spaceBetween),
