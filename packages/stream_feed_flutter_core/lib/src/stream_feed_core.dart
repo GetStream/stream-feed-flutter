@@ -42,7 +42,7 @@ class StreamFeedCore extends StatefulWidget {
       required this.child,
       this.trackAnalytics = false,
       // required this.feedGroup,
-       this.navigatorKey,
+      this.navigatorKey,
       this.analyticsLocation,
       this.analyticsClient})
       : super(key: key);
@@ -102,7 +102,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   ReactionsClient get reactions => client.reactions;
 
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
-    NavigatorState? get navigator => widget.navigatorKey?.currentState;
+  NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
   Future<Reaction> onAddReaction(
       {Map<String, Object>? data,

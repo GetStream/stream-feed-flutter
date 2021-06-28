@@ -23,7 +23,7 @@ class FlatFeedCore extends StatelessWidget {
             return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, idx) =>
-                    onSuccess(context, snapshot.data!,idx));
+                    onSuccess(context, snapshot.data!, idx));
             //TODO: no activity to display widget
           } else if (snapshot.hasError) {
             print(snapshot.error);

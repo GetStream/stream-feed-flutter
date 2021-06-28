@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class PostButton extends StatelessWidget {
   const PostButton({
     Key? key,
-     this.feedGroup = 'user',
+    this.feedGroup = 'user',
     required this.activity,
     this.iconSize = 14,
   }) : super(key: key);
