@@ -53,7 +53,7 @@ class ReactionListCore extends StatelessWidget {
             itemCount: reactions.length,
             itemBuilder: (context, idx) => onSuccess(
               context,
-              snapshot.data!,
+              reactions,
               idx,
             ),
           );

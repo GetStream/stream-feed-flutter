@@ -42,7 +42,7 @@ class FlatFeedCore extends StatelessWidget {
           itemCount: activities.length,
           itemBuilder: (context, idx) => onSuccess(
             context,
-            snapshot.data!,
+            activities,
             idx,
           ),
         );
