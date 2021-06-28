@@ -8,8 +8,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
 import 'mock.dart';
 
 void main() {
-  group('FlatFeed', () {
-    testWidgets('FlatFeed', (tester) async {
+  group('ActivityListPage', () {
+    testWidgets('ActivityListPage', (tester) async {
       await mockNetworkImages(() async {
         final activities = [
           EnrichedActivity(
@@ -50,7 +50,7 @@ void main() {
               body: StreamFeedCore(
                 analyticsClient: mockStreamAnalytics,
                 client: mockClient,
-                child: FlatFeed(
+                child: ActivityListPage(
                   feedGroup: 'user',
                 ),
               ),

@@ -38,18 +38,18 @@ class AlertDialogComment extends StatelessWidget {
 }
 
 class CommentView extends StatelessWidget {
-  //TODO: rename this page or something (used in actions and )
-  const CommentView(
-      {Key? key,
-      this.activity,
-      this.feedGroup = 'user',
-      required this.textEditingController,
-      this.onReactionTap,
-      this.onHashtagTap,
-      this.onMentionTap,
-      this.onUserTap,
-      this.reactions = false})
-      : super(key: key);
+  //TODO: rename this CommentPage or something (used in actions and )
+  const CommentView({
+    Key? key,
+    this.activity,
+    this.feedGroup = 'user',
+    required this.textEditingController,
+    this.onReactionTap,
+    this.onHashtagTap,
+    this.onMentionTap,
+    this.onUserTap,
+    this.reactions = false,
+  }) : super(key: key);
 
   final EnrichedActivity? activity;
   final String feedGroup;
@@ -83,7 +83,6 @@ class CommentView extends StatelessWidget {
               feedGroup: feedGroup,
               lookupValue: activity!.id!, //TODO: handle null safety
               onSuccess: (context, reactions, idx) => CommentItem(
-                //TODO: builder here
                 user: reactions[idx].user,
                 reaction: reactions[idx],
                 onReactionTap: onReactionTap,
@@ -136,7 +135,7 @@ class LeftActions extends StatelessWidget {
     this.spaceBefore = 60,
     this.spaceBetween = 8.0,
   }) : super(key: key);
-  final double spaceBefore;
+  final double spaceBefore; //useful for reddit style clone
   final double spaceBetween;
   @override
   Widget build(BuildContext context) {
@@ -144,11 +143,12 @@ class LeftActions extends StatelessWidget {
       left: spaceBefore, //TODO: compute this based on media query size
       child: Row(
         children: [
-          MediasAction(), //TODO: actions actual emojis, upload images, gif, etc
+          //TODO: actual emojis, upload images, gif, etc
+          MediasAction(),//TODO: push an other dialog open file explorer take file uri upload it using sdk and it to attachments (sent in RightActions/PostCommentButton)
           SizedBox(width: spaceBetween),
-          EmojisAction(),
+          EmojisAction(), //TODO: push an other dialog and display a nice grid of emojis, add selected emoji to text controller
           SizedBox(width: spaceBetween),
-          GIFAction(),
+          GIFAction(), //TODO: push an other dialog and display gif in a card and it to list of attachments
         ],
       ),
     );

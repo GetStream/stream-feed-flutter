@@ -8,9 +8,8 @@ import 'package:animations/animations.dart';
 enum TransitionType { none, sharedAxisTransition }
 enum DesignSystem { material, cupertino }
 
-class FlatFeed extends StatelessWidget {
-  //TODO: rename this builder or something
-  const FlatFeed({
+class ActivityListPage extends StatelessWidget {
+  const ActivityListPage({
     Key? key,
     this.feedGroup = 'user',
     this.onHashtagTap,
@@ -35,7 +34,7 @@ class FlatFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatFeedCore(
+    return FlatFeedCore(//TODO: activity type Flat?
       onSuccess: (context, activities, idx) => StreamFeedActivity(
         activity: activities[idx],
         feedGroup: feedGroup,
@@ -47,7 +46,7 @@ class FlatFeed extends StatelessWidget {
           activity: activity!,
           context: context,
           transitionType: transitionType,
-          widget: CommentView(
+          page: CommentView(//TODO: core for loading this Navigator 2.0 style
             activity: activity,
             textEditingController:
                 TextEditingController(), //TODO: move this into props for customisation like buildSpans
@@ -62,19 +61,19 @@ class FlatFeed extends StatelessWidget {
       {required BuildContext context,
       required TransitionType transitionType,
       required EnrichedActivity activity,
-      required Widget widget}) {
+      required Widget page}) {
     final currentNavigator = StreamFeedCore.of(context).navigator!;
     switch (transitionType) {
       case TransitionType.none:
         currentNavigator.push(
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => widget,
+            builder: (BuildContext context) => page,
           ),
         );
         break;
       default:
         currentNavigator.push(PageRouteBuilder(
-          pageBuilder: (_, __, ___) => widget,
+          pageBuilder: (_, __, ___) => page,
           transitionsBuilder: (
             _,
             animation,

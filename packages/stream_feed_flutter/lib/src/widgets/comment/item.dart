@@ -71,6 +71,7 @@ class CommentItem extends StatelessWidget {
                         //TODO: move to Text.rich(WidgetSpans)
                         children: taggedText
                             .map((it) => InteractiveText(
+                                  //TODO: for loop comprehension if not null instead of map
                                   tagged: it,
                                   onHashtagTap: onHashtagTap,
                                   onMentionTap: onMentionTap,
