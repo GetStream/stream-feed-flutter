@@ -5,11 +5,17 @@ import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class FlatFeedCore extends StatelessWidget {
-  const FlatFeedCore(
-      {Key? key, required this.feedGroup, required this.onSuccess})
-      : super(key: key);
+  const FlatFeedCore({
+    Key? key,
+    required this.feedGroup,
+    required this.onSuccess,
+    this.onErrorWidget = const ErrorStateWidget(),
+    this.onProgressWidget = const ProgressStateWidget(),
+  }) : super(key: key);
 
   final OnSuccessActivities onSuccess;
+  final Widget onErrorWidget;
+  final Widget onProgressWidget;
 
   final String feedGroup;
   @override
@@ -26,10 +32,11 @@ class FlatFeedCore extends StatelessWidget {
                     onSuccess(context, snapshot.data!, idx));
             //TODO: no activity to display widget
           } else if (snapshot.hasError) {
+            //TODO: actual log
             print(snapshot.error);
-            return ErrorStateWidget();
+            return onErrorWidget;
           } else {
-            return ProgressStateWidget();
+            return onProgressWidget;
           }
         });
   }

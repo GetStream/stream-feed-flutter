@@ -16,6 +16,8 @@ class ActivityListPage extends StatelessWidget {
     this.onMentionTap,
     this.onUserTap,
     this.activityFooterBuilder,
+    this.onProgressWidget = const ProgressStateWidget(),
+    this.onErrorWidget = const ErrorStateWidget(),
     this.designSystem = DesignSystem.material,
     this.transitionType =
         TransitionType.sharedAxisTransition, //TODO: move this to core or theme
@@ -26,6 +28,8 @@ class ActivityListPage extends StatelessWidget {
   final OnUserTap? onUserTap;
   final String feedGroup;
   final ActivityFooterBuilder? activityFooterBuilder;
+  final Widget onErrorWidget;
+  final Widget onProgressWidget;
 
   final DesignSystem designSystem;
 
@@ -35,6 +39,8 @@ class ActivityListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatFeedCore(
+      onProgressWidget: onProgressWidget,
+      onErrorWidget: onErrorWidget,
       //TODO: activity type Flat?
       onSuccess: (context, activities, idx) => StreamFeedActivity(
         activity: activities[idx],
