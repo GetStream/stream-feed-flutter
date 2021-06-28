@@ -15,6 +15,7 @@ class StreamFeedActivity extends StatelessWidget {
     this.onUserTap,
     this.activityFooterBuilder,
     this.activityContentBuilder,
+    this.activityHeaderBuilder,
     this.onActivityTap,
   }) : super(key: key);
   final EnrichedActivity activity;
@@ -24,6 +25,7 @@ class StreamFeedActivity extends StatelessWidget {
   final OnActivityTap? onActivityTap;
   final ActivityFooterBuilder? activityFooterBuilder;
   final ActivityContentBuilder? activityContentBuilder;
+  final ActivityHeaderBuilder? activityHeaderBuilder;
   final String feedGroup;
 
   @override
@@ -34,11 +36,12 @@ class StreamFeedActivity extends StatelessWidget {
       },
       child: Column(
         children: [
-          ActivityHeader(
-            //TODO: builders
-            activity: activity,
-            onUserTap: onUserTap,
-          ),
+          activityHeaderBuilder?.call(context, activity) ??
+              ActivityHeader(
+                //TODO: builders
+                activity: activity,
+                onUserTap: onUserTap,
+              ),
           activityContentBuilder?.call(context, activity) ??
               ActivityContent(
                 //TODO: builders

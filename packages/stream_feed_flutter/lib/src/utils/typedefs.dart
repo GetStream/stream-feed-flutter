@@ -14,5 +14,7 @@ typedef ActivityFooterBuilder = Widget Function(
 
 typedef ActivityContentBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
+typedef ActivityHeaderBuilder = Widget Function(
+    BuildContext context, EnrichedActivity activity);
 
 typedef OnReaction = Widget Function(BuildContext context, Reaction reaction);
