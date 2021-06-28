@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class TextArea extends StatefulWidget {
-  TextArea(
-      {this.textEditingController,
-      this.maxHeight = 150,
-      this.focusNode,
-      this.autofocus = false,
-      this.keyboardType = TextInputType.multiline,
-      this.inputTextStyle,
-      this.hintTextStyle,
-      this.onSubmitted,
-      this.hintText});
+  const TextArea({
+    Key? key,
+    this.textEditingController,
+    this.maxHeight = 150,
+    this.focusNode,
+    this.autofocus = false,
+    this.keyboardType = TextInputType.multiline,
+    this.inputTextStyle,
+    this.hintTextStyle,
+    this.onSubmitted,
+    this.hintText,
+  }) : super(key: key);
 
   /// The text controller of the TextField
   final TextEditingController? textEditingController;

@@ -9,10 +9,11 @@ class InteractiveText extends StatelessWidget {
   final OnHashtagTap? onHashtagTap;
   final TaggedText? tagged;
   const InteractiveText({
+    Key? key,
     this.tagged,
     this.onHashtagTap,
     this.onMentionTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

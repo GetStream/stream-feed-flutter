@@ -4,9 +4,10 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ActivityFooter extends StatelessWidget {
   const ActivityFooter({
+    Key? key,
     required this.activity,
     this.feedGroup = 'user',
-  });
+  }) : super(key: key);
   final EnrichedActivity activity;
   final String feedGroup;
 

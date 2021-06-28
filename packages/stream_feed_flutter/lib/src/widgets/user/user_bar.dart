@@ -19,6 +19,7 @@ class UserBar extends StatelessWidget {
   final bool showSubtitle;
 
   const UserBar({
+    Key? key,
     required this.timestamp,
     required this.kind,
     this.user,
@@ -29,7 +30,7 @@ class UserBar extends StatelessWidget {
     this.nameJsonKey = 'name',
     this.subtitle,
     this.showSubtitle = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

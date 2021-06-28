@@ -11,10 +11,11 @@ class ActivityContent extends StatelessWidget {
   final OnHashtagTap? onHashtagTap;
 
   const ActivityContent({
+    Key? key,
     required this.activity,
     this.onMentionTap,
     this.onHashtagTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

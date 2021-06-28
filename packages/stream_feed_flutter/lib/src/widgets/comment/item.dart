@@ -19,6 +19,7 @@ class CommentItem extends StatelessWidget {
   final OnReactionTap? onReactionTap;
 
   const CommentItem({
+    Key? key,
     required this.reaction,
     this.user,
     this.onMentionTap,
@@ -27,7 +28,7 @@ class CommentItem extends StatelessWidget {
     this.nameJsonKey = 'name',
     this.commentJsonKey = 'text',
     this.onReactionTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

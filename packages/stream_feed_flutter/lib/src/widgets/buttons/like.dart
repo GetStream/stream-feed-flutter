@@ -5,13 +5,14 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class LikeButton extends StatelessWidget {
   LikeButton({
+    Key? key,
     required this.activity,
     this.feedGroup = 'user',
     this.reaction,
     this.onTap,
     this.activeIcon,
     this.inactiveIcon,
-  });
+  }) : super(key: key);
 
   ///The reaction received from stream that should be liked when pressing the LikeButton.
   final Reaction? reaction;

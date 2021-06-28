@@ -9,10 +9,11 @@ class Avatar extends StatelessWidget {
   final double size;
   final OnUserTap? onUserTap;
   Avatar({
+    Key? key,
     this.user,
     this.size = 46,
     this.onUserTap,
-  });
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return InkWell(

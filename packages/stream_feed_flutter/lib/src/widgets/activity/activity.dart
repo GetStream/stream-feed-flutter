@@ -7,6 +7,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class StreamFeedActivity extends StatelessWidget {
   const StreamFeedActivity({
+    Key? key,
     required this.activity,
     this.feedGroup = 'user',
     this.onHashtagTap,
@@ -14,7 +15,7 @@ class StreamFeedActivity extends StatelessWidget {
     this.onUserTap,
     this.activityFooterBuilder,
     this.onActivityTap,
-  });
+  }) : super(key: key);
   final EnrichedActivity activity;
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
