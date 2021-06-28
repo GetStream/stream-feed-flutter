@@ -12,4 +12,7 @@ typedef OnActivityTap = void Function(
 typedef ActivityFooterBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
 
+typedef ActivityContentBuilder = Widget Function(
+    BuildContext context, EnrichedActivity activity);
+
 typedef OnReaction = Widget Function(BuildContext context, Reaction reaction);

@@ -16,6 +16,7 @@ class FlatActivityListPage extends StatelessWidget {
     this.onMentionTap,
     this.onUserTap,
     this.activityFooterBuilder,
+    this.activityContentBuilder,
     this.onProgressWidget = const ProgressStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
     this.designSystem = DesignSystem.material,
@@ -28,6 +29,7 @@ class FlatActivityListPage extends StatelessWidget {
   final OnUserTap? onUserTap;
   final String feedGroup;
   final ActivityFooterBuilder? activityFooterBuilder;
+   final ActivityContentBuilder? activityContentBuilder;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
 
@@ -49,6 +51,7 @@ class FlatActivityListPage extends StatelessWidget {
         onMentionTap: onMentionTap,
         onUserTap: onUserTap,
         activityFooterBuilder: activityFooterBuilder,
+        activityContentBuilder: activityContentBuilder,
         onActivityTap: (context, activity) => pageRouteBuilder(
           activity: activity,
           context: context,
