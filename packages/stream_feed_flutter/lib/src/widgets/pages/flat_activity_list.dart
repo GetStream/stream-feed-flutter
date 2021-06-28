@@ -20,6 +20,7 @@ class FlatActivityListPage extends StatelessWidget {
     this.activityHeaderBuilder,
     this.onProgressWidget = const ProgressStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
+    this.onEmptyWidget = const EmptyStateWidget(),
     this.onActivityTap,
     this.transitionType =
         TransitionType.sharedAxisTransition, //TODO: move this to core or theme
@@ -37,6 +38,7 @@ class FlatActivityListPage extends StatelessWidget {
   final OnActivityTap? onActivityTap;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
+  final Widget onEmptyWidget;
 
   ///Customise the transition
   final TransitionType transitionType;
