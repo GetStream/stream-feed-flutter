@@ -11,8 +11,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class AlertDialogComment extends StatelessWidget {
   const AlertDialogComment({
     Key? key,
-    this.activity,
     required this.feedGroup,
+    this.activity,
   }) : super(key: key);
   final String feedGroup;
   final EnrichedActivity? activity;
@@ -41,9 +41,9 @@ class CommentView extends StatelessWidget {
   //TODO: rename this CommentPage or something (used in actions and )
   const CommentView({
     Key? key,
+    required this.textEditingController,
     this.activity,
     this.feedGroup = 'user',
-    required this.textEditingController,
     this.onReactionTap,
     this.onHashtagTap,
     this.onMentionTap,
@@ -83,20 +83,60 @@ class CommentView extends StatelessWidget {
           ),
           //TODO: builder for using it elsewhere than in actions
           if (reactions)
-            ReactionsListCore(
-              feedGroup: feedGroup,
-              lookupValue: activity!.id!, //TODO: handle null safety
-              onSuccess: (context, reactions, idx) => CommentItem(
-                user: reactions[idx].user,
-                reaction: reactions[idx],
+            ReactionListPage(
+                feedGroup: feedGroup,
+                activity: activity,
                 onReactionTap: onReactionTap,
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,
                 onUserTap: onUserTap,
-              ),
-            )
+                onReaction: (context, reaction) => CommentItem(
+                      user: reaction.user,
+                      reaction: reaction,
+                      onReactionTap: onReactionTap,
+                      onHashtagTap: onHashtagTap,
+                      onMentionTap: onMentionTap,
+                      onUserTap: onUserTap,
+                    ))
         ],
       ),
+    );
+  }
+}
+
+class ReactionListPage extends StatelessWidget {
+  const ReactionListPage(
+      {Key? key,
+      required this.feedGroup,
+      required this.activity,
+      required this.onReactionTap,
+      required this.onHashtagTap,
+      required this.onMentionTap,
+      required this.onUserTap,
+      required this.onReaction,
+      this.onErrorWidget = const ErrorStateWidget(),
+      this.onProgressWidget = const ProgressStateWidget()})
+      : super(key: key);
+
+  final String feedGroup;
+  final EnrichedActivity? activity;
+  final OnReactionTap? onReactionTap;
+  final OnHashtagTap? onHashtagTap;
+  final OnMentionTap? onMentionTap;
+  final OnUserTap? onUserTap;
+  final OnReaction onReaction;
+  final Widget onErrorWidget;
+  final Widget onProgressWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactionListCore(
+      feedGroup: feedGroup,
+      lookupValue: activity!.id!, //TODO: handle null safety
+      onProgressWidget: onProgressWidget,
+      onErrorWidget: onErrorWidget,
+      onSuccess: (context, reactions, idx) =>
+          onReaction(context, reactions[idx]),
     );
   }
 }

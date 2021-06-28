@@ -4,20 +4,25 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-//TODO: other things to add to core FollowListCore
-class ReactionsListCore extends StatelessWidget {
-  const ReactionsListCore({
+//TODO: other things to add to core: FollowListCore, UserListCore
+class ReactionListCore extends StatelessWidget {
+  const ReactionListCore({
     Key? key,
     required this.feedGroup,
     required this.onSuccess,
-    this.lookupAttr = LookupAttribute.activityId,
     required this.lookupValue,
+    this.onErrorWidget = const ErrorStateWidget(),
+    this.onProgressWidget = const ProgressStateWidget(),
+    this.lookupAttr = LookupAttribute.activityId,
     this.filter,
     this.kind,
     this.limit,
   }) : super(key: key);
 
   final OnSuccessReactions onSuccess;
+  final Widget onErrorWidget;
+  final Widget onProgressWidget;
+
   final LookupAttribute lookupAttr;
   final String lookupValue;
   final Filter? filter;
@@ -39,10 +44,11 @@ class ReactionsListCore extends StatelessWidget {
                     onSuccess(context, snapshot.data!, idx));
             //TODO: no activity to display widget
           } else if (snapshot.hasError) {
+            //TODO: actual logs
             print(snapshot.error);
-            return ErrorStateWidget();
+            return onErrorWidget;
           } else {
-            return ProgressStateWidget();
+            return onProgressWidget;
           }
         });
   }
