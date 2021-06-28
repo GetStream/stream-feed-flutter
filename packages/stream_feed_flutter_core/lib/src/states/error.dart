@@ -2,7 +2,11 @@
 import 'package:flutter/material.dart';
 
 class ErrorStateWidget extends StatelessWidget {
-  const ErrorStateWidget({Key? key}) : super(key: key);
+  const ErrorStateWidget(
+      {Key? key, this.message = 'Sorry an error has occured'})
+      : super(key: key);
+
+  final String message;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -15,7 +19,7 @@ class ErrorStateWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'Sorry an error has occured',
+            message,
             textAlign: TextAlign.center,
           ),
         ],
