@@ -8,8 +8,8 @@ import 'package:animations/animations.dart';
 enum TransitionType { none, sharedAxisTransition }
 enum DesignSystem { material, cupertino }
 
-class ActivityListPage extends StatelessWidget {
-  const ActivityListPage({
+class FlatActivityListPage extends StatelessWidget {
+  const FlatActivityListPage({
     Key? key,
     this.feedGroup = 'user',
     this.onHashtagTap,
