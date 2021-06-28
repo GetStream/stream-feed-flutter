@@ -23,11 +23,10 @@ class FlatFeedCore extends StatelessWidget {
   final String feedGroup;
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<List<EnrichedActivity>>(
       future: StreamFeedCore.of(context)
           .getEnrichedActivities(feedGroup: feedGroup),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<EnrichedActivity>> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.hasError) {
           return onErrorWidget; //snapshot.error
         }
@@ -43,7 +42,7 @@ class FlatFeedCore extends StatelessWidget {
           itemBuilder: (context, idx) => onSuccess(
             context,
             activities,
-            idx,
+            idx
           ),
         );
       },

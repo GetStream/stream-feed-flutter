@@ -34,11 +34,15 @@ class ReactionListCore extends StatelessWidget {
   final String feedGroup;
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: StreamFeedCore.of(context).getReactions(lookupAttr, lookupValue,
-            filter: filter, limit: limit, kind: kind),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Reaction>> snapshot) {
+    return FutureBuilder<List<Reaction>>(
+        future: StreamFeedCore.of(context).getReactions(
+          lookupAttr,
+          lookupValue,
+          filter: filter,
+          limit: limit,
+          kind: kind,
+        ),
+        builder: (context, snapshot) {
           if (snapshot.hasError) {
             return onErrorWidget; //snapshot.error
           }
