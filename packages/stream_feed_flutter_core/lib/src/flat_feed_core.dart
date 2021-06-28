@@ -28,7 +28,7 @@ class FlatFeedCore extends StatelessWidget {
           .getEnrichedActivities(feedGroup: feedGroup),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return onErrorWidget; //snapshot.error
+          return onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
         }
         if (!snapshot.hasData) {
           return onProgressWidget;
@@ -42,7 +42,7 @@ class FlatFeedCore extends StatelessWidget {
           itemBuilder: (context, idx) => onSuccess(
             context,
             activities,
-            idx
+            idx,
           ),
         );
       },
