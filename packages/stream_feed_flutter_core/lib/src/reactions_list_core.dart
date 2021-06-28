@@ -13,7 +13,8 @@ class ReactionListCore extends StatelessWidget {
     required this.lookupValue,
     this.onErrorWidget = const ErrorStateWidget(),
     this.onProgressWidget = const ProgressStateWidget(),
-    this.onEmptyWidget = const EmptyStateWidget(),
+    this.onEmptyWidget =
+        const EmptyStateWidget(message: 'No comments to display'),
     this.lookupAttr = LookupAttribute.activityId,
     this.filter,
     this.kind,

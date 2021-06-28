@@ -14,7 +14,7 @@ class ReactionListPage extends StatelessWidget {
       required this.onReaction,
       this.onErrorWidget = const ErrorStateWidget(),
       this.onProgressWidget = const ProgressStateWidget(),
-      this.onEmptyWidget = const EmptyStateWidget()})
+      this.onEmptyWidget = const EmptyStateWidget(message: 'No comments to display')})
       : super(key: key);
 
   final String feedGroup;

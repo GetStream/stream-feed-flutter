@@ -12,7 +12,8 @@ class FlatFeedCore extends StatelessWidget {
       required this.onSuccess,
       this.onErrorWidget = const ErrorStateWidget(),
       this.onProgressWidget = const ProgressStateWidget(),
-      this.onEmptyWidget = const EmptyStateWidget()})
+      this.onEmptyWidget =
+          const EmptyStateWidget(message: 'No activties to display')})
       : super(key: key);
 
   final OnSuccessActivities onSuccess;
