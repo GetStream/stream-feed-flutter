@@ -79,7 +79,6 @@ class CommentView extends StatelessWidget {
 
             ///enabled in actions [RightActions]
             enableButton: false,
-
             feedGroup: feedGroup,
           ),
           //TODO: builder for using it elsewhere than in actions
