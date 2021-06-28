@@ -34,7 +34,8 @@ class ActivityListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatFeedCore(//TODO: activity type Flat?
+    return FlatFeedCore(
+      //TODO: activity type Flat?
       onSuccess: (context, activities, idx) => StreamFeedActivity(
         activity: activities[idx],
         feedGroup: feedGroup,
@@ -46,8 +47,10 @@ class ActivityListPage extends StatelessWidget {
           activity: activity!,
           context: context,
           transitionType: transitionType,
-          page: CommentView(//TODO: core for loading this Navigator 2.0 style
+          page: CommentView(
+            //TODO: core for loading this Navigator 2.0 style
             activity: activity,
+            reactions: true,
             textEditingController:
                 TextEditingController(), //TODO: move this into props for customisation like buildSpans
           ),

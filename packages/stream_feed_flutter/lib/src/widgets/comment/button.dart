@@ -44,7 +44,7 @@ class PostCommentButton extends StatelessWidget {
                 //data: TODO: attachments with upload controller thingy
                 object: trimmedText);
       },
-      child: const Text('Post'), //Respond //TODO: i18n
+      child: Text(activity != null ? 'Respond' : 'Post'), //TODO: i18n
     );
   }
 }
