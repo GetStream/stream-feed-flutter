@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
@@ -5,8 +6,7 @@ import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:animations/animations.dart';
 
-enum TransitionType { none, sharedAxisTransition }
-enum DesignSystem { material, cupertino }
+enum TransitionType { material, cupertino, sharedAxisTransition }
 
 class FlatActivityListPage extends StatelessWidget {
   const FlatActivityListPage({
@@ -20,7 +20,6 @@ class FlatActivityListPage extends StatelessWidget {
     this.activityHeaderBuilder,
     this.onProgressWidget = const ProgressStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
-    this.designSystem = DesignSystem.material,
     this.onActivityTap,
     this.transitionType =
         TransitionType.sharedAxisTransition, //TODO: move this to core or theme
@@ -38,8 +37,6 @@ class FlatActivityListPage extends StatelessWidget {
   final OnActivityTap? onActivityTap;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
-
-  final DesignSystem designSystem;
 
   ///Customise the transition
   final TransitionType transitionType;
@@ -85,9 +82,16 @@ class FlatActivityListPage extends StatelessWidget {
       required Widget page}) {
     final currentNavigator = StreamFeedCore.of(context).navigator!;
     switch (transitionType) {
-      case TransitionType.none:
+      case TransitionType.material:
         currentNavigator.push(
           MaterialPageRoute<void>(
+            builder: (BuildContext context) => page,
+          ),
+        );
+        break;
+      case TransitionType.cupertino:
+        currentNavigator.push(
+          CupertinoPageRoute<void>(
             builder: (BuildContext context) => page,
           ),
         );
