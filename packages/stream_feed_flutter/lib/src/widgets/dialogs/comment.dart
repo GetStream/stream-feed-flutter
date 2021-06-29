@@ -84,7 +84,7 @@ class CommentView extends StatelessWidget {
           ),
           //TODO: builder for using it elsewhere than in actions
           if (enableReactions)
-            ReactionListPage(
+            ReactionListPage(//TODO: extract to CommentList
                 feedGroup: feedGroup,
                 activity: activity,
                 onReactionTap: onReactionTap,
