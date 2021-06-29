@@ -7,6 +7,9 @@ typedef OnHashtagTap = void Function(String? hashtag);
 
 typedef OnReactionTap = void Function(Reaction? reaction);
 typedef OnUserTap = void Function(User? user);
+typedef OnNotificationTap = void Function(
+    NotificationGroup<EnrichedActivity>? notification);
+
 typedef OnActivityTap = void Function(
     BuildContext context, EnrichedActivity activity);
 
@@ -19,4 +22,5 @@ typedef ActivityHeaderBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
 
 typedef OnReaction = Widget Function(BuildContext context, Reaction reaction);
-typedef OnNotification = Widget Function(BuildContext context, NotificationGroup<EnrichedActivity> notification);
+typedef OnNotification = Widget Function(
+    BuildContext context, NotificationGroup<EnrichedActivity> notification);
