@@ -175,6 +175,25 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }) async =>
       await client.flatFeed(feedGroup, userId).getEnrichedActivities();
 
+  Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedNotifications(
+          {required String feedGroup,
+          int? limit,
+          int? offset,
+          String? session,
+          Filter? filter,
+          EnrichmentFlags? flags,
+          String? ranking,
+          String? userId,
+          ActivityMarker? marker}) async =>
+      await client.notificationFeed(feedGroup, userId).getEnrichedActivities(
+            limit: limit,
+            offset: offset,
+            session: session,
+            filter: filter,
+            marker: marker,
+            flags: flags,
+          );
+
   @override
   void initState() {
     super.initState();
