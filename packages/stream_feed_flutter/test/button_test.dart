@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/new_activities_notification.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/text.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
@@ -83,6 +84,22 @@ void main() {
   //     expect(pressedUsers, [reactions.first.user]);
   //   });
   // });
+
+  testWidgets('RealtimeMessage', (tester) async {
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+      body: NewActivitiesNotification(
+        onPressed: () => print("new activity"),
+        realtimeMessage: RealtimeMessage(
+          deleted: ['', ''],
+          newActivities: [EnrichedActivity(), EnrichedActivity()],
+          feed: FeedId('user', 'id'),
+        ),
+      ),
+    )));
+    final text = find.text('You have 4 new notifications.');
+    expect(text, findsOneWidget);
+  });
   testWidgets('LikeButton', (tester) async {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
