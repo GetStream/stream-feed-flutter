@@ -67,7 +67,7 @@ class FlatActivityListPage extends StatelessWidget {
                 activity: activity,
                 context: context,
                 transitionType: transitionType,
-                page: CommentView(
+                page: CommentView(//SinglePost?
                   enableReactions: true,
                   textEditingController:
                       TextEditingController(), //TODO: move this into props for customisation like buildSpans
