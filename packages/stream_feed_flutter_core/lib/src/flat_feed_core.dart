@@ -9,14 +9,14 @@ class FlatFeedCore extends StatelessWidget {
   const FlatFeedCore(
       {Key? key,
       required this.feedGroup,
-      required this.onSuccess,
+      required this.onActivities,
       this.onErrorWidget = const ErrorStateWidget(),
       this.onProgressWidget = const ProgressStateWidget(),
       this.onEmptyWidget =
           const EmptyStateWidget(message: 'No activties to display')})
       : super(key: key);
 
-  final OnSuccessActivities onSuccess;
+  final OnActivities onActivities;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
   final Widget onEmptyWidget;
@@ -40,7 +40,7 @@ class FlatFeedCore extends StatelessWidget {
         }
         return ListView.builder(
           itemCount: activities.length,
-          itemBuilder: (context, idx) => onSuccess(
+          itemBuilder: (context, idx) => onActivities(
             context,
             activities,
             idx,

@@ -37,7 +37,7 @@ class ReactionListPage extends StatelessWidget {
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       onEmptyWidget: onEmptyWidget,
-      onSuccess: (context, reactions, idx) =>
+      onReactions: (context, reactions, idx) =>
           onReaction(context, reactions[idx]),
     );
   }

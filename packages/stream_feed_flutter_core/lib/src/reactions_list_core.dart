@@ -9,7 +9,7 @@ class ReactionListCore extends StatelessWidget {
   const ReactionListCore({
     Key? key,
     required this.feedGroup,
-    required this.onSuccess,
+    required this.onReactions,
     required this.lookupValue,
     this.onErrorWidget = const ErrorStateWidget(),
     this.onProgressWidget = const ProgressStateWidget(),
@@ -21,7 +21,7 @@ class ReactionListCore extends StatelessWidget {
     this.limit,
   }) : super(key: key);
 
-  final OnSuccessReactions onSuccess;
+  final OnReactions onReactions;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
   final Widget onEmptyWidget;
@@ -56,7 +56,7 @@ class ReactionListCore extends StatelessWidget {
           }
           return ListView.builder(
             itemCount: reactions.length,
-            itemBuilder: (context, idx) => onSuccess(
+            itemBuilder: (context, idx) => onReactions(
               context,
               reactions,
               idx,
