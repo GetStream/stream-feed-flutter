@@ -39,6 +39,12 @@ class NotificationListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return NotificationFeedCore(
       feedGroup: feedGroup,
+      limit: limit,
+      offset: offset,
+      session: session,
+      filter: filter,
+      marker: marker,
+      flags: flags,
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       onEmptyWidget: onEmptyWidget,

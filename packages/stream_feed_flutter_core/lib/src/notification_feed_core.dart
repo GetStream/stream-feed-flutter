@@ -41,8 +41,15 @@ class NotificationFeedCore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<NotificationGroup<EnrichedActivity>>>(
-      future: StreamFeedCore.of(context)
-          .getEnrichedNotifications(feedGroup: feedGroup),
+      future: StreamFeedCore.of(context).getEnrichedNotifications(
+        feedGroup: feedGroup,
+        limit: limit,
+        offset: offset,
+        session: session,
+        filter: filter,
+        marker: marker,
+        flags: flags,
+      ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
