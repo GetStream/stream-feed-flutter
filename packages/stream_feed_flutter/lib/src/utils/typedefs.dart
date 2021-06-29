@@ -19,3 +19,4 @@ typedef ActivityHeaderBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
 
 typedef OnReaction = Widget Function(BuildContext context, Reaction reaction);
+typedef OnNotification = Widget Function(BuildContext context, NotificationGroup<EnrichedActivity> notification);
