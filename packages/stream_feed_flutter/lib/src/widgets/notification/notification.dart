@@ -17,7 +17,7 @@ class NotificationWidget extends StatelessWidget {
   final OnNotificationTap? onNotificationTap;
 
   String? get group => notificationGroup.group;
-  
+
   User getUserFrom(EnrichedActivity activity) => User.fromJson(
       EnrichableField.serialize(activity.actor) as Map<String, dynamic>);
 

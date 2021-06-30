@@ -25,7 +25,7 @@ class NewActivitiesNotification extends StatelessWidget {
     this.textStyle,
     this.buttonStyle,
   }) : super(key: key);
-  
+
   final LabelFunction labelFunction;
   final VoidCallback onPressed;
   final String labelPlural;
