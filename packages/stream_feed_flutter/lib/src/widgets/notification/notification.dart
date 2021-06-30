@@ -103,7 +103,7 @@ class NotificationHeader extends StatelessWidget {
           '${userDisplay(userOne)} and ${userDisplay(userTwo)} followed you'); //TODO: unhardcode this
     }
     return Text(
-        '${userDisplay(firstUsers.first)} and ${actorCount - 1} followed you'); //TODO: unhardcode this
+        '${userDisplay(firstUsers.first)} and ${actorCount - 1} other people followed you'); //TODO: unhardcode this
   }
 }
 
