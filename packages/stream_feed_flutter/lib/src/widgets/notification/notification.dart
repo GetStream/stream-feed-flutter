@@ -39,6 +39,7 @@ class NotificationWidget extends StatelessWidget {
             children: [
               Avatars(users: users),
               NotificationHeader(
+                group: group!,
                 firstUsers: users.take(2).toList(),
                 actorCount: notificationGroup.actorCount!,
               ),
@@ -81,9 +82,13 @@ class GroupIcon extends StatelessWidget {
 
 class NotificationHeader extends StatelessWidget {
   const NotificationHeader(
-      {Key? key, required this.firstUsers, required this.actorCount})
+      {Key? key,
+      required this.firstUsers,
+      required this.actorCount,
+      required this.group})
       : super(key: key);
   final List<User> firstUsers;
+  final String group;
   final int actorCount;
 
   String userDisplay(User user) =>
@@ -92,18 +97,24 @@ class NotificationHeader extends StatelessWidget {
   User get userOne => firstUsers[0];
   User get userTwo => firstUsers[1];
 
+  String get action => <String, String>{
+        'follow': 'followed you',
+        'like': 'liked your post', //TODO: object
+        'repost': 'reposted your post', //TODO: object
+        'comment': 'commented your post' //TODO: object
+      }[group]!;
+      
   @override
   Widget build(BuildContext context) {
     if (actorCount < 2) {
-      return Text(
-          '${userDisplay(firstUsers.first)} followed you'); //TODO: unhardcode this
+      return Text('${userDisplay(firstUsers.first)} $action');
     }
     if (actorCount == 2) {
       return Text(
-          '${userDisplay(userOne)} and ${userDisplay(userTwo)} followed you'); //TODO: unhardcode this
+          '${userDisplay(userOne)} and ${userDisplay(userTwo)} $action');
     }
     return Text(
-        '${userDisplay(firstUsers.first)} and ${actorCount - 1} other people followed you'); //TODO: unhardcode this
+        '${userDisplay(firstUsers.first)} and ${actorCount - 1} other people $action');
   }
 }
 
