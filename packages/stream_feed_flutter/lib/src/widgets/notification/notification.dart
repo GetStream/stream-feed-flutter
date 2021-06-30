@@ -43,7 +43,7 @@ class NotificationWidget extends StatelessWidget {
                 firstUsers: users.take(2).toList(),
                 actorCount: notificationGroup.actorCount!,
               ),
-              if (activity != null) NotificationContent(activity: activity!)
+              // if (activity != null) NotificationContent(activity: activity!)//TODO: fixme
             ],
           )
         ], //Display 10 avatars max
@@ -103,7 +103,7 @@ class NotificationHeader extends StatelessWidget {
         'repost': 'reposted your post', //TODO: object
         'comment': 'commented your post' //TODO: object
       }[group]!;
-      
+
   @override
   Widget build(BuildContext context) {
     if (actorCount < 2) {

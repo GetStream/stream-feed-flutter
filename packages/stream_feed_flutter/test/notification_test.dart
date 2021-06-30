@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/notification/notification.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 main() {
   group('Notification', () {
     group('Header', () {
-        group('repost', () {
+      group('repost', () {
         const group = 'repost';
         testWidgets('actorCount < 2', (tester) async {
           await buildNotificationHeader(tester,
@@ -40,8 +41,8 @@ main() {
                       'https://randomuser.me/api/portraits/men/72.jpg'
                 })
               ]);
-          final textFind = find
-              .text('Jordan Belfair and Jacky Davidson reposted your post');
+          final textFind =
+              find.text('Jordan Belfair and Jacky Davidson reposted your post');
 
           expect(textFind, findsOneWidget);
         });
@@ -262,13 +263,23 @@ Future<void> buildNotificationHeader(WidgetTester tester,
     {required int actorCount,
     required List<User> firstUsers,
     required String group}) async {
-  return await tester.pumpWidget(MaterialApp(
-    home: Scaffold(
-      body: NotificationHeader(
-        group: group,
-        actorCount: actorCount,
-        firstUsers: firstUsers,
+  await mockNetworkImages(() async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: NotificationWidget(
+            notificationGroup: NotificationGroup<EnrichedActivity>(
+              actorCount: actorCount,
+              group: group,
+              activities: firstUsers
+                  .map((user) => EnrichedActivity(
+                        actor: EnrichableField(user.toJson()),
+                      ))
+                  .toList(),
+            ),
+          ),
+        ),
       ),
-    ),
-  ));
+    );
+  });
 }
