@@ -2,9 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/notification/notification.dart';
+import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 main() {
+  const firstUsersSup2 = [
+    User(data: {
+      'name': 'Jordan Belfair',
+      'profile_image': 'https://randomuser.me/api/portraits/women/72.jpg'
+    }),
+    User(data: {
+      'name': 'Jacky Davidson',
+      'profile_image': 'https://randomuser.me/api/portraits/men/72.jpg'
+    }),
+    User(data: {
+      'name': 'Jordan Belfair',
+      'profile_image': 'https://randomuser.me/api/portraits/women/72.jpg'
+    }),
+    User(data: {
+      'name': 'Jacky Davidson',
+      'profile_image': 'https://randomuser.me/api/portraits/men/72.jpg'
+    }),
+    User(data: {
+      'name': 'Jordan Belfair',
+      'profile_image': 'https://randomuser.me/api/portraits/women/72.jpg'
+    }),
+    User(data: {
+      'name': 'Jacky Davidson',
+      'profile_image': 'https://randomuser.me/api/portraits/men/72.jpg'
+    }),
+    User(data: {
+      'name': 'Jordan Belfair',
+      'profile_image': 'https://randomuser.me/api/portraits/women/72.jpg'
+    }),
+    User(data: {
+      'name': 'Jacky Davidson',
+      'profile_image': 'https://randomuser.me/api/portraits/men/72.jpg'
+    }),
+    User(data: {
+      'name': 'Jordan Belfair',
+      'profile_image': 'https://randomuser.me/api/portraits/women/72.jpg'
+    }),
+    User(data: {
+      'name': 'Jacky Davidson',
+      'profile_image': 'https://randomuser.me/api/portraits/men/72.jpg'
+    }),
+  ];
   group('Notification', () {
     group('Header', () {
       group('repost', () {
@@ -49,24 +92,13 @@ main() {
 
         testWidgets('actorCount > 2', (tester) async {
           await buildNotificationHeader(tester,
-              actorCount: 12,
-              group: group,
-              firstUsers: [
-                User(data: {
-                  'name': 'Jordan Belfair',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/women/72.jpg'
-                }),
-                User(data: {
-                  'name': 'Jacky Davidson',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/men/72.jpg'
-                })
-              ]);
+              actorCount: 12, group: group, firstUsers: firstUsersSup2);
           final textFind = find
               .text('Jordan Belfair and 11 other people reposted your post');
 
           expect(textFind, findsOneWidget);
+          final avatars = find.byType(Avatar);
+          expect(avatars, findsNWidgets(10));
         });
       });
       group('comment', () {
@@ -111,24 +143,13 @@ main() {
 
         testWidgets('actorCount > 2', (tester) async {
           await buildNotificationHeader(tester,
-              actorCount: 12,
-              group: group,
-              firstUsers: [
-                User(data: {
-                  'name': 'Jordan Belfair',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/women/72.jpg'
-                }),
-                User(data: {
-                  'name': 'Jacky Davidson',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/men/72.jpg'
-                })
-              ]);
+              actorCount: 12, group: group, firstUsers: firstUsersSup2);
           final textFind = find
               .text('Jordan Belfair and 11 other people commented your post');
 
           expect(textFind, findsOneWidget);
+          final avatars = find.byType(Avatar);
+          expect(avatars, findsNWidgets(10));
         });
       });
       group('like', () {
@@ -173,24 +194,13 @@ main() {
 
         testWidgets('actorCount > 2', (tester) async {
           await buildNotificationHeader(tester,
-              actorCount: 12,
-              group: group,
-              firstUsers: [
-                User(data: {
-                  'name': 'Jordan Belfair',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/women/72.jpg'
-                }),
-                User(data: {
-                  'name': 'Jacky Davidson',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/men/72.jpg'
-                })
-              ]);
+              actorCount: 12, group: group, firstUsers: firstUsersSup2);
           final textFind =
               find.text('Jordan Belfair and 11 other people liked your post');
 
           expect(textFind, findsOneWidget);
+          final avatars = find.byType(Avatar);
+          expect(avatars, findsNWidgets(10));
         });
       });
       group('follow', () {
@@ -235,24 +245,13 @@ main() {
 
         testWidgets('actorCount > 2', (tester) async {
           await buildNotificationHeader(tester,
-              actorCount: 12,
-              group: group,
-              firstUsers: [
-                User(data: {
-                  'name': 'Jordan Belfair',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/women/72.jpg'
-                }),
-                User(data: {
-                  'name': 'Jacky Davidson',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/men/72.jpg'
-                })
-              ]);
+              actorCount: 12, group: group, firstUsers: firstUsersSup2);
           final textFind =
               find.text('Jordan Belfair and 11 other people followed you');
 
           expect(textFind, findsOneWidget);
+          final avatars = find.byType(Avatar);
+          expect(avatars, findsNWidgets(10));
         });
       });
     });
