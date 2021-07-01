@@ -138,20 +138,20 @@ class IconBadge extends StatelessWidget {
   const IconBadge(
       {Key? key,
       required this.onTap,
-      this.hidden,
-      this.showNumber,
+      this.hidden = false,
+      this.showNumber = true,
       this.unseen = 0})
       : super(key: key);
-  final bool? hidden;
+  final bool hidden;
   final VoidCallback onTap;
-  final bool? showNumber;
+  final bool showNumber;
   final int unseen;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: onTap,
-      icon: unseen > 0
+      icon: unseen > 0 && !hidden && showNumber
           ? Stack(
               children: <Widget>[
                 Icon(Icons.notifications),
