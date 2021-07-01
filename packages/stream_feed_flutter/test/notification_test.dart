@@ -273,6 +273,8 @@ Future<void> buildNotificationHeader(WidgetTester tester,
               group: group,
               activities: firstUsers
                   .map((user) => EnrichedActivity(
+                        object: EnrichableField(
+                            'I just missed my train 😤 #angry @sahil'),
                         actor: EnrichableField(user.toJson()),
                       ))
                   .toList(),

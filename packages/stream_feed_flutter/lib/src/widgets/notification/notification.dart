@@ -43,7 +43,7 @@ class NotificationWidget extends StatelessWidget {
                 firstUsers: users.take(2).toList(),
                 actorCount: notificationGroup.actorCount!,
               ),
-              // if (activity != null) NotificationContent(activity: activity!)//TODO: fixme
+              if (activity != null) NotificationContent(activity: activity!)//TODO: fixme
             ],
           )
         ], //Display 10 avatars max
