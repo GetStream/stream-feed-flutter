@@ -16,7 +16,7 @@ void main() {
               time: DateTime.parse(
                 '2021-04-11T07:40:37.975Z',
               ),
-                  verb: 'follow',
+              verb: 'follow',
               actor: EnrichableField(
                 User(data: {
                   'name': 'Jordan Belfair',
@@ -24,7 +24,6 @@ void main() {
                       'https://randomuser.me/api/portraits/women/72.jpg'
                 }).toJson(),
               ),
-          
             ),
             EnrichedActivity(
               time: DateTime.parse(

@@ -37,7 +37,8 @@ class NotificationListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationFeedCore(//twitter behavior: 30s delay to mark before marking new notifications as seen
+    return NotificationFeedCore(
+      //twitter behavior: 30s delay to mark before marking new notifications as seen
       feedGroup: feedGroup,
       limit: limit,
       offset: offset,
