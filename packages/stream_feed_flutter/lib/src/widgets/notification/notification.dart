@@ -140,19 +140,18 @@ class IconBadge extends StatelessWidget {
       required this.onTap,
       this.hidden,
       this.showNumber,
-      this.unseen})
+      this.unseen = 0})
       : super(key: key);
   final bool? hidden;
   final VoidCallback onTap;
   final bool? showNumber;
-  final int? unseen;
+  final int unseen;
 
-  bool get isUnseen => !(unseen?.isNegative != null);
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: onTap,
-      icon: isUnseen
+      icon: unseen > 0
           ? Stack(
               children: <Widget>[
                 Icon(Icons.notifications),
@@ -169,7 +168,7 @@ class IconBadge extends StatelessWidget {
                       minHeight: 12,
                     ),
                     child: Text(
-                      '${unseen!}',
+                      '$unseen',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 8,
