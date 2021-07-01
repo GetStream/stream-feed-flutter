@@ -30,6 +30,7 @@ class NotificationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      // TODO: change colore based on seen/read
       onTap: () => onNotificationTap?.call(
           notificationGroup), //twitter behavior: display activity with a list of people who liked it and a follow button
       child: Row(
@@ -43,7 +44,8 @@ class NotificationWidget extends StatelessWidget {
                 firstUsers: users.take(2).toList(),
                 actorCount: notificationGroup.actorCount!,
               ),
-              if (activity != null) NotificationContent(activity: activity!)//TODO: fixme
+              if (activity != null)
+                NotificationContent(activity: activity!) //TODO: fixme
             ],
           )
         ], //Display 10 avatars max
@@ -129,5 +131,56 @@ class NotificationContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(activityObject);
+  }
+}
+
+class IconBadge extends StatelessWidget {
+  const IconBadge(
+      {Key? key,
+      required this.onTap,
+      this.hidden,
+      this.showNumber,
+      this.unseen})
+      : super(key: key);
+  final bool? hidden;
+  final VoidCallback onTap;
+  final bool? showNumber;
+  final int? unseen;
+
+  bool get isUnseen => !(unseen?.isNegative != null);
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: onTap,
+      icon: isUnseen
+          ? Stack(
+              children: <Widget>[
+                Icon(Icons.notifications),
+                Positioned(
+                  right: 0, //TODO: add posibility to position this
+                  child: Container(
+                    padding: EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 12,
+                      minHeight: 12,
+                    ),
+                    child: Text(
+                      '${unseen!}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
+              ],
+            )
+          : Icon(Icons.notifications),
+    );
   }
 }
