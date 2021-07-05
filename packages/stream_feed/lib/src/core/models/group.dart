@@ -65,6 +65,7 @@ class NotificationGroup<T> extends Group<T> {
     String? group,
     List<T>? activities,
     int? actorCount,
+    //TODO:activity_count https://github.com/GetStream/stream-js/blob/23c4952288cbcf0a39705b6e474df5249359f69a/src/feed.ts#L137
     DateTime? createdAt,
     DateTime? updatedAt,
     this.isRead,
