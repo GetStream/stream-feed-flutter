@@ -22,6 +22,8 @@ RealtimeMessage _$RealtimeMessageFromJson(Map json) {
     publishedAt: json['published_at'] == null
         ? null
         : DateTime.parse(json['published_at'] as String),
+    unread: json['unread'] as int?,
+    unseen: json['unseen'] as int?,
   );
 }
 
@@ -42,5 +44,7 @@ Map<String, dynamic> _$RealtimeMessageToJson(RealtimeMessage instance) {
       ForeignIdTimePair.toList(instance.deletedForeignIds);
   val['new'] = instance.newActivities.map((e) => e.toJson()).toList();
   writeNotNull('published_at', instance.publishedAt?.toIso8601String());
+  val['unread'] = instance.unread;
+  val['unseen'] = instance.unseen;
   return val;
 }

@@ -20,6 +20,8 @@ class RealtimeMessage extends Equatable {
     this.newActivities = const <EnrichedActivity>[],
     this.appId,
     this.publishedAt,
+    this.unread,
+    this.unseen,
   });
 
   /// Create a new instance from a json
@@ -52,6 +54,10 @@ class RealtimeMessage extends Equatable {
   @JsonKey(includeIfNull: false)
   final DateTime? publishedAt;
 
+  // Notification Feed only
+  final int? unread;
+  final int? unseen;
+
   @override
   List<Object?> get props => [
         feed,
@@ -60,6 +66,8 @@ class RealtimeMessage extends Equatable {
         deletedForeignIds,
         newActivities,
         publishedAt,
+        unread,
+        unseen
       ];
 
   /// Serialize to json
