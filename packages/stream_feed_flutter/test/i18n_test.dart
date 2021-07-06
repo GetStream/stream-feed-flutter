@@ -7,9 +7,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class StreamFeedLocalizations {
-  final Locale locale;
+  // final Locale locale;
 
-  StreamFeedLocalizations(this.locale);
+  static final StreamFeedLocalizations _singleton =
+      StreamFeedLocalizations._internal();
+  StreamFeedLocalizations._internal();
+  static StreamFeedLocalizations get instance => _singleton;
+
+  StreamFeedLocalizations(); //this.locale
 
   // Helper method to keep the code in the widgets concise
   // Localizations are accessed using an InheritedWidget "of" syntax
@@ -24,7 +29,7 @@ class StreamFeedLocalizations {
 
   late Map<String, String> _localizedStrings;
 
-  Future<bool> load() async {
+  Future<StreamFeedLocalizations> load(Locale locale) async {
     // Load the language JSON file from the "lang" folder
     String jsonString = await rootBundle.loadString(
         'packages/stream_feed_flutter/lib/i18n/${locale.languageCode}.json');
@@ -36,7 +41,7 @@ class StreamFeedLocalizations {
 
     print(_localizedStrings.toString());
 
-    return true;
+    return this;
   }
 
   // This method will be called from every widget which needs a localized text
@@ -62,9 +67,7 @@ class StreamFeedLocalizationsDelegate
   @override
   Future<StreamFeedLocalizations> load(Locale locale) async {
     // StreamFeedLocalizations class is where the JSON loading actually runs
-    StreamFeedLocalizations localizations = StreamFeedLocalizations(locale);
-    await localizations.load();
-    return localizations;
+    return await StreamFeedLocalizations.instance.load(locale);
   }
 
   @override
@@ -72,14 +75,14 @@ class StreamFeedLocalizationsDelegate
 }
 
 extension LocalisationX on String {
-  String i18n(BuildContext context) =>
-      StreamFeedLocalizations.of(context).translate(this);
+  String get i18n => StreamFeedLocalizations.instance.translate(this);
 }
+
 class AppLang extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('1 like'.i18n(context))),
+      body: Center(child: Text('1 like'.i18n)),
     );
   }
 }
