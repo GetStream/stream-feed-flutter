@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:interpolation/interpolation.dart';
 
 class StreamFeedLocalizations {
-  // final Locale locale;
-
   static final StreamFeedLocalizations _singleton =
       StreamFeedLocalizations._internal();
   StreamFeedLocalizations._internal();
@@ -24,12 +24,16 @@ class StreamFeedLocalizations {
   }
 
   // Static member to have a simple access to the delegate from the MaterialApp
-  static const LocalizationsDelegate<StreamFeedLocalizations> delegate =
-      StreamFeedLocalizationsDelegate();
+  static LocalizationsDelegate<StreamFeedLocalizations> delegate =
+      StreamFeedLocalizationsDelegate(
+          interpolation: Interpolation(
+              option: InterpolationOption(prefix: '{{', suffix: '}}')));
 
   late Map<String, String> _localizedStrings;
+  late Interpolation _interpolation;
 
-  Future<StreamFeedLocalizations> load(Locale locale) async {
+  Future<StreamFeedLocalizations> load(
+      {required Interpolation interpolation, required Locale locale}) async {
     // Load the language JSON file from the "lang" folder
     String jsonString = await rootBundle.loadString(
         'packages/stream_feed_flutter/lib/i18n/${locale.languageCode}.json');
@@ -38,15 +42,15 @@ class StreamFeedLocalizations {
     _localizedStrings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());
     });
-
-    print(_localizedStrings.toString());
+    _interpolation = interpolation;
 
     return this;
   }
 
   // This method will be called from every widget which needs a localized text
-  String translate(String key) {
-    return _localizedStrings[key]!;
+  String translate(String key, {Map<String, dynamic>? args}) {
+    final translation = _localizedStrings[key]!;
+    return args != null ? _interpolation.eval(translation, args) : translation;
   }
 }
 
@@ -56,7 +60,9 @@ class StreamFeedLocalizationsDelegate
     extends LocalizationsDelegate<StreamFeedLocalizations> {
   // This delegate instance will never change (it doesn't even have fields!)
   // It can provide a constant constructor.
-  const StreamFeedLocalizationsDelegate();
+  const StreamFeedLocalizationsDelegate({required this.interpolation});
+
+  final Interpolation interpolation;
 
   @override
   bool isSupported(Locale locale) {
@@ -67,29 +73,36 @@ class StreamFeedLocalizationsDelegate
   @override
   Future<StreamFeedLocalizations> load(Locale locale) async {
     // StreamFeedLocalizations class is where the JSON loading actually runs
-    return await StreamFeedLocalizations.instance.load(locale);
+    return SynchronousFuture<StreamFeedLocalizations>(
+        await StreamFeedLocalizations.instance
+            .load(interpolation: interpolation, locale: locale));
   }
 
   @override
   bool shouldReload(StreamFeedLocalizationsDelegate old) => false;
 }
 
-extension LocalisationX on String {
-  String get i18n => StreamFeedLocalizations.instance.translate(this);
+extension LocalizationX on String {
+  String i18n({Map<String, dynamic>? args}) =>
+      StreamFeedLocalizations.instance.translate(this, args: args);
 }
 
 class AppLang extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('1 like'.i18n)),
+      body: Center(
+          child: Text('You have {{notificationCount}} new notifications'
+              .i18n(args: {
+        'notificationCount': 4
+      }))), //"You have {{notificationCount}} new notifications": "Vous avez reçu {{notificationCount}} nouvelles notifications",
     );
   }
 }
 
 main() {
   testWidgets('hey', (tester) async {
-    // WidgetsFlutterBinding.ensureInitialized();
+    WidgetsFlutterBinding.ensureInitialized();
     await tester.pumpWidget(MaterialApp(
         locale: Locale('fr'),
         supportedLocales: [
@@ -103,7 +116,7 @@ main() {
         ],
         home: AppLang()));
     await tester.pumpAndSettle();
-    final test = find.text("1 J'aime");
+    final test = find.text('Vous avez reçu 4 nouvelles notifications');
     expect(test, findsOneWidget);
   });
 }
