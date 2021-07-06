@@ -41,7 +41,6 @@ class StreamFeedLocalizations {
 
   // This method will be called from every widget which needs a localized text
   String translate(String key) {
-    print("KEY $key");
     return _localizedStrings[key]!;
   }
 }
@@ -63,7 +62,7 @@ class StreamFeedLocalizationsDelegate
   @override
   Future<StreamFeedLocalizations> load(Locale locale) async {
     // StreamFeedLocalizations class is where the JSON loading actually runs
-    StreamFeedLocalizations localizations = new StreamFeedLocalizations(locale);
+    StreamFeedLocalizations localizations = StreamFeedLocalizations(locale);
     await localizations.load();
     return localizations;
   }
@@ -72,22 +71,22 @@ class StreamFeedLocalizationsDelegate
   bool shouldReload(StreamFeedLocalizationsDelegate old) => false;
 }
 
+extension LocalisationX on String {
+  String i18n(BuildContext context) =>
+      StreamFeedLocalizations.of(context).translate(this);
+}
 class AppLang extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(StreamFeedLocalizations.of(context).translate("1 J'aime")),
-      // ),
-      body: Center(
-          child: Text(StreamFeedLocalizations.of(context).translate("1 like"))),
+      body: Center(child: Text('1 like'.i18n(context))),
     );
   }
 }
 
 main() {
   testWidgets('hey', (tester) async {
-    WidgetsFlutterBinding.ensureInitialized();
+    // WidgetsFlutterBinding.ensureInitialized();
     await tester.pumpWidget(MaterialApp(
         locale: Locale('fr'),
         supportedLocales: [
