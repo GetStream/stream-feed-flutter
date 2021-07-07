@@ -6,5 +6,5 @@ typedef OnActivities = Widget Function(
 
 typedef OnReactions = Widget Function(
     BuildContext context, List<Reaction> reactions, int idx);
-typedef OnNotifications = Widget Function(
-    BuildContext context, List<NotificationGroup<EnrichedActivity>> notifications, int idx);
+typedef OnNotifications = Widget Function(BuildContext context,
+    List<NotificationGroup<EnrichedActivity>> notifications, int idx);
