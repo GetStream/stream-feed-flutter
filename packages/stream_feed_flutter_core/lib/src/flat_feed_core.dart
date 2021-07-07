@@ -12,6 +12,13 @@ class FlatFeedCore extends StatelessWidget {
       required this.onSuccess,
       this.onErrorWidget = const ErrorStateWidget(),
       this.onProgressWidget = const ProgressStateWidget(),
+      this.limit,
+      this.offset,
+      this.session,
+      this.filter,
+      this.flags,
+      this.ranking,
+      this.userId,
       this.onEmptyWidget =
           const EmptyStateWidget(message: 'No activties to display')})
       : super(key: key);
@@ -20,13 +27,28 @@ class FlatFeedCore extends StatelessWidget {
   final Widget onErrorWidget;
   final Widget onProgressWidget;
   final Widget onEmptyWidget;
+  final int? limit;
+  final int? offset;
+  final String? session;
+  final Filter? filter;
+  final EnrichmentFlags? flags;
+  final String? ranking;
+  final String? userId;
 
   final String feedGroup;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<EnrichedActivity>>(
-      future: StreamFeedCore.of(context)
-          .getEnrichedActivities(feedGroup: feedGroup),
+      future: StreamFeedCore.of(context).getEnrichedActivities(
+        feedGroup: feedGroup,
+        limit: limit,
+        offset: offset,
+        session: session,
+        filter: filter,
+        flags: flags,
+        ranking: ranking,
+        userId: userId,
+      ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
