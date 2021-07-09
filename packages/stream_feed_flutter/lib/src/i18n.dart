@@ -12,7 +12,7 @@ class StreamFeedLocalizations {
   StreamFeedLocalizations._internal();
   static StreamFeedLocalizations get instance => _singleton;
 
-  StreamFeedLocalizations(); //this.locale
+  StreamFeedLocalizations();
 
   // Helper method to keep the code in the widgets concise
   // Localizations are accessed using an InheritedWidget "of" syntax
@@ -32,8 +32,8 @@ class StreamFeedLocalizations {
 
   Future<StreamFeedLocalizations> load(
       {required Interpolation interpolation, required Locale locale}) async {
-    // Load the language JSON file from the "lang" folder
-    String jsonString = await rootBundle.loadString(
+    // Load the language JSON file from the "i18n" folder
+    final jsonString = await rootBundle.loadString(
         'packages/stream_feed_flutter/lib/i18n/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
