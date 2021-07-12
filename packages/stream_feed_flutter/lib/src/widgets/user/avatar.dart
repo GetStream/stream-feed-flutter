@@ -20,7 +20,7 @@ class Avatar extends StatelessWidget {
     this.size = 46,
     this.onUserTap,
   }) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
