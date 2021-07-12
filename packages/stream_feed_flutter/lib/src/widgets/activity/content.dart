@@ -5,13 +5,16 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-/// Activity Content is a widget that displays the actual content of an activity.
+/// Activity Content is a widget that displays the content of an activity.
 /// i.e. the actual text of the activity, the media, etc.
 class ActivityContent extends StatelessWidget {
   ///The activity that is being displayed.
   final EnrichedActivity activity;
+
   ///A callback that is invoked when the user clicks on the content.
   final OnMentionTap? onMentionTap;
+
+  ///A callback that is invoked when the user clicks on hashtag
   final OnHashtagTap? onHashtagTap;
 
   const ActivityContent({

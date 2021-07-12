@@ -27,6 +27,7 @@ class ReactionButton extends StatelessWidget {
   ///If you want to override on tap for some reasons
   final VoidCallback? onTap;
 
+  /// The kind of reaction that should be displayed.
   final String kind;
 
   /// The button to display if the user already reacted
@@ -35,10 +36,13 @@ class ReactionButton extends StatelessWidget {
   /// The button to display if the user didn't reacted yet
   final Widget inactiveIcon;
 
+  /// The data to send along with this reaction.
   final Map<String, Object>? data;
 
+  /// The color to use when the user hovers over the button. (desktop/web)
   final Color hoverColor;
 
+  ///The group/slug of the feed to which this reaction will belong.
   final String feedGroup;
 
   @override
@@ -74,8 +78,10 @@ class ReactionToggleIcon extends StatefulWidget {
 
   /// The reaction count
   final int? count;
+
   /// A callback that will be called when the user clicks on the reaction icon
   final VoidCallback? onTap;
+
   /// The group/slug of the feed
   final String feedGroup;
   final EnrichedActivity activity;

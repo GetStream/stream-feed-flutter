@@ -31,6 +31,7 @@ class LikeButton extends StatelessWidget {
   ///If you want to override the inactiveIcon
   final Widget? inactiveIcon;
 
+  /// The feed group that the LikeButton is associated with.
   final String feedGroup;
 
   @override

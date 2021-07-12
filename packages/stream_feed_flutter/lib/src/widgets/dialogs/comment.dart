@@ -16,7 +16,11 @@ class AlertDialogComment extends StatelessWidget {
     required this.feedGroup,
     this.activity,
   }) : super(key: key);
+
+  /// The feed group/slug that is being commented on.
   final String feedGroup;
+
+  /// The activity that is being commented on.
   final EnrichedActivity? activity;
 
   @override
