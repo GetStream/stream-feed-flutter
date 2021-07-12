@@ -9,6 +9,7 @@ import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
 import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+/// An Alert Dialog that displays a the activity and a comment field.
 class AlertDialogComment extends StatelessWidget {
   const AlertDialogComment({
     Key? key,
@@ -38,6 +39,7 @@ class AlertDialogComment extends StatelessWidget {
   }
 }
 
+/// A Comment View is a widget the activity and a comment field and reactions (if enabled)
 class CommentView extends StatelessWidget {
   //TODO: merge this with StreamFeedActivity
   const CommentView({
@@ -105,6 +107,7 @@ class CommentView extends StatelessWidget {
   }
 }
 
+/// The Actions displayed in the dialog i.e. medias, gif, emojis etc.
 class AlertDialogActions extends StatelessWidget {
   const AlertDialogActions({
     Key? key,
@@ -136,7 +139,7 @@ class AlertDialogActions extends StatelessWidget {
     );
   }
 }
-
+/// Actions on the left side of the dialog i.e. medias, gif, emojis etc.
 class LeftActions extends StatelessWidget {
   const LeftActions({
     Key? key,
@@ -162,7 +165,7 @@ class LeftActions extends StatelessWidget {
     );
   }
 }
-
+/// Actions on the right side of the dialog i.e. "Post" button.
 class RightActions extends StatelessWidget {
   const RightActions({
     Key? key,

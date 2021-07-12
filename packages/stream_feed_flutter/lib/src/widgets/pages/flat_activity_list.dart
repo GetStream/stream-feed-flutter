@@ -8,6 +8,9 @@ import 'package:animations/animations.dart';
 
 enum TransitionType { material, cupertino, sharedAxisTransition }
 
+///The Page to display a list of activities
+///This page is the main page of the app
+///It displays a list of activities
 class FlatActivityListPage extends StatelessWidget {
   const FlatActivityListPage({
     Key? key,

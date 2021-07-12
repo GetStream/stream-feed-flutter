@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///A Post comment button is a widget that allows the user to comment on a post.
+/// When pressed the comment in the post will be sent to the server.
+/// ```dart
+/// PostCommentButton(
+///           feedGroup: feedGroup,
+///           activity: activity,
+///           targetFeeds: targetFeeds,
+///           textEditingController: textEditingController,
+///         )
+/// ```
 class PostCommentButton extends StatelessWidget {
-  /// ```dart
-  /// PostCommentButton(
-  ///           feedGroup: feedGroup,
-  ///           activity: activity,
-  ///           targetFeeds: targetFeeds,
-  ///           textEditingController: textEditingController,
-  ///         )
-  /// ```
   const PostCommentButton({
     Key? key,
     required this.textEditingController,

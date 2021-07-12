@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
+/// A Reaction Button is a widget that can be used to trigger a reaction.
+/// It displays the count of reactions it has received and the reaction
+/// it is currently displaying.
 class ReactionButton extends StatelessWidget {
   ReactionButton({
     Key? key,

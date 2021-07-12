@@ -4,7 +4,8 @@ import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
+///A widget that displays a single activity.
+/// i.e. a single post in a feed
 class ActivityWidget extends StatelessWidget {
   const ActivityWidget({
     Key? key,

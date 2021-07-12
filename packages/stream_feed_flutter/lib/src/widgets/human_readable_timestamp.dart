@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+
+/// An Human readable date.
 class HumanReadableTimestamp extends StatelessWidget {
   const HumanReadableTimestamp({
     Key? key,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// The default circular progress indicator.
 class StreamCircularProgressIndicator extends StatelessWidget {
   const StreamCircularProgressIndicator({
     Key? key,

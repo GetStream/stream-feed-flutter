@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
+/// Renders a list of reactions to a post.
 class ReactionListPage extends StatelessWidget {
   const ReactionListPage(
       {Key? key,

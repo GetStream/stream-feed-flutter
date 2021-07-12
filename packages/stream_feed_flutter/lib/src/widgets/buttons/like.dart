@@ -3,6 +3,8 @@ import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///The Like Button is a reaction button that displays a like icon.
+/// It is used to like a post when pressed
 class LikeButton extends StatelessWidget {
   LikeButton({
     Key? key,

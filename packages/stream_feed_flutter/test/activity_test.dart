@@ -98,7 +98,7 @@ void main() {
           },
         ),
       )));
-      final card = find.byType(StreamFeedCard);
+      final card = find.byType(ActivityCard);
       expect(card, findsOneWidget);
       final richtexts = tester.widgetList<Text>(find.byType(Text));
 

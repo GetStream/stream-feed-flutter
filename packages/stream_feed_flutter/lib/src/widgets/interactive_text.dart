@@ -4,6 +4,7 @@ import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 
 import 'package:stream_feed_flutter/src/utils/extensions.dart';
 
+/// A widget used for interactive text like mentions, hashtags, and links.
 class InteractiveText extends StatelessWidget {
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;

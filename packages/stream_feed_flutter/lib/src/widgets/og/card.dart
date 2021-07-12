@@ -3,7 +3,7 @@ import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class StreamFeedCard extends StatelessWidget {
+class ActivityCard extends StatelessWidget {
   final String? alt;
   final String? image;
   // final bool? nolink;
@@ -12,7 +12,7 @@ class StreamFeedCard extends StatelessWidget {
   final String? description;
   final String? url;
   final String? title;
-  const StreamFeedCard({
+  const ActivityCard({
     Key? key,
     required this.og,
     this.alt,

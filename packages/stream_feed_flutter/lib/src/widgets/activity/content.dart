@@ -5,6 +5,8 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+/// Activity Content is a widget that displays the actual content of an activity.
+/// i.e. the actual text of the activity, the media, etc.
 class ActivityContent extends StatelessWidget {
   final EnrichedActivity activity;
   final OnMentionTap? onMentionTap;
@@ -42,7 +44,7 @@ class ActivityContent extends StatelessWidget {
         ),
         //TODO: handle Video + Audio + Gallery
         if (attachments != null)
-          StreamFeedCard(
+          ActivityCard(
               og: OpenGraphData.fromJson(attachments as Map<String, dynamic>))
       ],
     );
