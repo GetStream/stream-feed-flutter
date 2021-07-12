@@ -34,7 +34,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// ```
 ///
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
-/// information about the channels.
+/// information about the activities.
 class FlatFeedCore extends StatelessWidget {
   const FlatFeedCore(
       {Key? key,
@@ -53,18 +53,40 @@ class FlatFeedCore extends StatelessWidget {
           const EmptyStateWidget(message: 'No activties to display')})
       : super(key: key);
 
+  /// A builder that let you build a ListView of EnrichedActivity based Widgets
   final EnrichedFeedBuilder feedBuilder;
+
+  /// An error widget to show when an error occurs
   final Widget onErrorWidget;
+
+  /// A progress widget to show when a request is in progress
   final Widget onProgressWidget;
+
+  /// A widget to show when the feed is empty
   final Widget onEmptyWidget;
+
+  /// The limit of activities to fetch
   final int? limit;
+
+  /// The offset of activities to fetch
   final int? offset;
+
+  /// The session to use for the request
   final String? session;
+
+  /// The filter to use for the request
   final Filter? filter;
+
+  /// The flags to use for the request
   final EnrichmentFlags? flags;
+
+  /// The ranking to use for the request
   final String? ranking;
+
+  /// The user id to use for the request
   final String? userId;
 
+  /// The feed group to use for the request
   final String feedGroup;
   @override
   Widget build(BuildContext context) {

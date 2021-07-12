@@ -51,6 +51,7 @@ class StreamFeedCore extends StatefulWidget {
   /// application.
   final StreamFeedClient client;
 
+  ///Analytics client
   final StreamAnalytics? analyticsClient;
 
   ///wether or not you want to track analytics in your app (can be useful for customised feeds via ML)
@@ -104,6 +105,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
   NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
+  /// Add a new reaction to the feed.
   Future<Reaction> onAddReaction(
       {Map<String, Object>? data,
       required String kind,
@@ -117,6 +119,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     return reaction;
   }
 
+  /// Add an activity to the feed.
   Future<Activity> onAddActivity(
       {required String feedGroup,
       Map<String, String>? data,
@@ -137,6 +140,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     return addedActivity;
   }
 
+  /// Remove reaction from the feed.
   Future<void> onRemoveReaction(
       {required String kind,
       required EnrichedActivity activity,
@@ -147,6 +151,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
 
+  ///Track analytics
   Future<void> trackAnalytics(
       {required String label,
       required foreignId,
@@ -157,12 +162,14 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         feedId: FeedId.fromId(feedGroup)));
   }
 
+  ///Get reactions form the activity
   Future<List<Reaction>> getReactions(
           LookupAttribute lookupAttr, String lookupValue,
           {Filter? filter, int? limit, String? kind}) async =>
       await reactions.filter(lookupAttr, lookupValue,
           filter: filter, limit: limit, kind: kind);
 
+  ///Get enriched activities from the feed
   Future<List<EnrichedActivity>> getEnrichedActivities({
     required String feedGroup,
     int? limit,
@@ -181,12 +188,9 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     WidgetsBinding.instance?.addObserver(this);
   }
 
-  StreamSubscription? _eventSubscription;
-
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    _eventSubscription?.cancel();
     _disconnectTimer?.cancel();
     super.dispose();
   }

@@ -1,11 +1,13 @@
 //TODO: improve this
 import 'package:flutter/material.dart';
 
+/// The default Error State Widget to display errors
 class ErrorStateWidget extends StatelessWidget {
   const ErrorStateWidget(
       {Key? key, this.message = 'Sorry an error has occured'})
       : super(key: key);
 
+  /// The error message to display
   final String message;
   @override
   Widget build(BuildContext context) {
