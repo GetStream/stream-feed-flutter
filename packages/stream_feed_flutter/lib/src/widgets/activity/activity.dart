@@ -4,6 +4,7 @@ import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
 ///A widget that displays a single activity.
 /// i.e. a single post in a feed
 class ActivityWidget extends StatelessWidget {
@@ -22,20 +23,28 @@ class ActivityWidget extends StatelessWidget {
 
   /// The activity to display.
   final EnrichedActivity activity;
+
   /// A callback to invoke when a mention is tapped.
   final OnMentionTap? onMentionTap;
+
   /// A callback to invoke when a hashtag is tapped.
   final OnHashtagTap? onHashtagTap;
+
   /// A callback to invoke when a user is tapped.
   final OnUserTap? onUserTap;
+
   /// A callback to invoke when the activity is tapped.
   final OnActivityTap? onActivityTap;
+
   /// A builder for the activity footer.
   final ActivityFooterBuilder? activityFooterBuilder;
+
   /// A builder for the activity content.
   final ActivityContentBuilder? activityContentBuilder;
+
   /// A builder for the activity header.
   final ActivityHeaderBuilder? activityHeaderBuilder;
+
   /// The group of the feed this activity belongs to.
   final String feedGroup;
 

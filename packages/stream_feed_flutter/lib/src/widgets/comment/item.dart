@@ -30,13 +30,14 @@ class CommentItem extends StatelessWidget {
   /// A callback to invoke when the user clicks on an avatar.
   final OnUserTap? onUserTap;
 
-  /// The json key in [User.data] 
+  /// The json key in [User.data]
   /// used to access the name you want to display. By default it's 'name'.
   final String nameJsonKey;
 
-  /// The json key in [Reaction.data] 
+  /// The json key in [Reaction.data]
   /// used to access the text of the comment you want to display. By default it's 'text'.
   final String commentJsonKey;
+
   ///The callback to invoke when the user clicks on the comment.
   final OnReactionTap? onReactionTap;
 

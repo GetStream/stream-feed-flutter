@@ -18,4 +18,5 @@ typedef ActivityContentBuilder = Widget Function(
 typedef ActivityHeaderBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
 
-typedef ReactionBuilder = Widget Function(BuildContext context, Reaction reaction);
+typedef ReactionBuilder = Widget Function(
+    BuildContext context, Reaction reaction);

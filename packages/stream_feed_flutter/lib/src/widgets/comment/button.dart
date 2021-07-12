@@ -19,15 +19,19 @@ class PostCommentButton extends StatelessWidget {
     required this.feedGroup,
     this.targetFeeds,
   }) : super(key: key);
+
   /// The activity that the reaction created by this post comment button will be attached to.
   /// if none supplied this will be a new activity.
   final EnrichedActivity? activity;
+
   /// The Text Editing Controller used to edit the comment text.
   /// Useful to decouple the text editing from the button.
   final TextEditingController textEditingController;
+
   /// The feed group that the post will be posted in.
   final String feedGroup;
-  ///The targeted feeds to post to. 
+
+  ///The targeted feeds to post to.
   final List<FeedId>? targetFeeds;
 
   @override
