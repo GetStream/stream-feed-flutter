@@ -29,7 +29,7 @@ class EnrichableField extends Equatable {
 }
 
 /// An Enriched Activity is an Activity with additional fields
-/// that are derived from the Activity's 
+/// that are derived from the Activity's
 @JsonSerializable()
 class EnrichedActivity extends Equatable {
   /// [EnrichedActivity] constructor
