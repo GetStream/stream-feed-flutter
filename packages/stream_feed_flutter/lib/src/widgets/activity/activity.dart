@@ -19,14 +19,24 @@ class ActivityWidget extends StatelessWidget {
     this.activityHeaderBuilder,
     this.onActivityTap,
   }) : super(key: key);
+
+  /// The activity to display.
   final EnrichedActivity activity;
+  /// A callback to invoke when a mention is tapped.
   final OnMentionTap? onMentionTap;
+  /// A callback to invoke when a hashtag is tapped.
   final OnHashtagTap? onHashtagTap;
+  /// A callback to invoke when a user is tapped.
   final OnUserTap? onUserTap;
+  /// A callback to invoke when the activity is tapped.
   final OnActivityTap? onActivityTap;
+  /// A builder for the activity footer.
   final ActivityFooterBuilder? activityFooterBuilder;
+  /// A builder for the activity content.
   final ActivityContentBuilder? activityContentBuilder;
+  /// A builder for the activity header.
   final ActivityHeaderBuilder? activityHeaderBuilder;
+  /// The group of the feed this activity belongs to.
   final String feedGroup;
 
   @override
