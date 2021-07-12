@@ -27,7 +27,7 @@ class FlatActivityListPage extends StatelessWidget {
         const EmptyStateWidget(message: 'No activities to display'),
     this.onActivityTap,
     this.transitionType =
-        TransitionType.sharedAxisTransition, //TODO: move this to core or theme
+        TransitionType.material, //TODO: move this to core or theme
   }) : super(key: key);
 
   /// A callback to handle hashtag taps
