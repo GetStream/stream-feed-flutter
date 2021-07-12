@@ -5,7 +5,8 @@ import 'package:stream_feed/stream_feed.dart';
 
 part 'personalized_feed.g.dart';
 
-/// Paginated [Activity]
+/// A personalized feed for a single user.
+/// i.e. a feed of based on user's activities.
 @JsonSerializable(createToJson: true)
 class PersonalizedFeed extends Paginated<EnrichedActivity> {
   /// [PaginatedReactions] constructor
@@ -26,8 +27,9 @@ class PersonalizedFeed extends Paginated<EnrichedActivity> {
   List<Object?> get props => [...super.props, version, offset, limit];
 
   final String version;
-
+  /// The offset of the first result in the current page.
   final int offset;
+  /// The maximum number of results to return.
   final int limit;
 
   /// Serialize to json

@@ -15,10 +15,11 @@ class UserData extends Equatable {
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
 
-  ///
+  /// Tiis is the id of the user
   final String id;
 
-  ///
+  /// This is the alias of the user
+  /// an alias is an alternative name that can be used to identify the user
   final String alias;
 
   @override
@@ -29,6 +30,8 @@ class UserData extends Equatable {
 }
 
 /// Custom meta-data for your event.
+/// i.e. the event's name, description, etc.
+///
 @JsonSerializable()
 class Feature extends Equatable {
   /// Create a new [Feature] with the given group and value.
@@ -38,10 +41,10 @@ class Feature extends Equatable {
   factory Feature.fromJson(Map<String, dynamic> json) =>
       _$FeatureFromJson(json);
 
-  ///
+  /// The group of the feature.
   final String group;
 
-  ///
+  /// The value of the feature.
   final String value;
 
   @override
@@ -51,7 +54,7 @@ class Feature extends Equatable {
   Map<String, dynamic> toJson() => _$FeatureToJson(this);
 }
 
-///
+/// An Event can be an Engagement or an Impression.
 @JsonSerializable()
 class Event extends Equatable {
   ///
@@ -66,10 +69,12 @@ class Event extends Equatable {
   /// Create a new instance from a json
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 
-  ///
+  /// The user data of the event.
+  /// i.e. the user's id, alias, etc.
   final UserData? userData;
 
-  /// Features
+  /// The feature that is being tracked.
+  /// i.e. the group and value of the feature.
   @JsonKey(includeIfNull: false)
   final List<Feature>? features;
 
@@ -78,7 +83,7 @@ class Event extends Equatable {
   final FeedId? feedId;
 
   /// (optional) the location of the content in your app.
-  /// ie email, profile page etc
+  /// i.e. email, profile page etc
   @JsonKey(includeIfNull: false)
   final String? location;
 
@@ -91,7 +96,8 @@ class Event extends Equatable {
   @override
   List<Object?> get props => [userData, features, feedId, location, position];
 
-  ///
+  /// Allows us to copy an Event and pass in arguments that overwrite settable
+  ///  values (e.g. userData, features, feedId, location, position)
   Event copyWith({
     UserData? userData,
     List<Feature>? features,
@@ -111,7 +117,7 @@ class Event extends Equatable {
   Map<String, dynamic> toJson() => _$EventToJson(this);
 }
 
-///
+/// An Engagement is when a user performs an action on your app.
 @JsonSerializable()
 class Engagement extends Event {
   ///
@@ -122,8 +128,6 @@ class Engagement extends Event {
     this.boost,
     List<Feature>? features,
     FeedId? feedId,
-
-    /// the location in your app. ie email, profile page etc
     String? location,
     int? position,
     this.trackedAt,
@@ -162,7 +166,9 @@ class Engagement extends Event {
   @override
   List<Object?> get props => [...super.props, content, label, score, trackedAt];
 
-  ///
+ /// Allows us to copy an Engagement and pass in arguments that overwrite 
+ /// settable values (e.g. content, label, score, boost, features, feedId, location, 
+ /// position, userData)
   @override
   Engagement copyWith({
     Content? content,
@@ -199,7 +205,6 @@ class Engagement extends Event {
 /// are not interested in. If the app often shows posts about football,
 /// and the user never engages with those posts,
 /// we can conclude that we're displaying the wrong content.
-/// The code below shows how to track that a user viewed 3 specific activities:
 @JsonSerializable()
 class Impression extends Event {
   /// [Impression] constructor
@@ -227,14 +232,16 @@ class Impression extends Event {
   /// Either a list of IDs or objects.
   final List<Content> contentList; //TODO:List<Content>
 
-  ///
+  /// time at which this event as been tracked
   @JsonKey(includeIfNull: false)
   final String? trackedAt;
 
   @override
   List<Object?> get props => [...super.props, contentList, trackedAt];
 
-  ///
+  /// Allows us to copy an Impression and pass in arguments that overwrite 
+  /// settable values (e.g. contentList, features, feedId, location, position, 
+  /// userData)
   @override
   Impression copyWith({
     List<Content>? contentList,
@@ -271,7 +278,9 @@ class Content extends Equatable {
   /// Add a "foreign_id" to the Content.
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
   final FeedId? foreignId;
+  
   @JsonKey(includeIfNull: false)
+  /// Data related to the content.
   final Map<String, Object>? data;
 
 //TODO: attribute: https://github.com/GetStream/stream-analytics-android/blob/62f624f6da5ded03bd4d10d9b169c8c6ddd59984/stream-analytics/src/main/java/io/getstream/analytics/beans/ContentAttribute.java#L39

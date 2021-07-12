@@ -6,6 +6,7 @@ import 'package:stream_feed/stream_feed.dart';
 
 /// {@template files}
 /// This API endpoint allows you to upload files and delete them
+/// We provide you a CDN, but for files.
 /// {@endtemplate}
 class FileStorageClient {
   /// Initialize a FileStorageClient object
@@ -46,7 +47,7 @@ class FileStorageClient {
   }
 
   /// Delete a file using the url returned by the APIs
-  /// /// Usage:
+  /// Usage:
   /// ```dart
   ///   await files.delete('fileUrl');
   /// ```

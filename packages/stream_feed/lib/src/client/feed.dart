@@ -1,4 +1,6 @@
+import 'package:faye_dart/faye_dart.dart';
 import 'package:meta/meta.dart';
+import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
@@ -10,16 +12,13 @@ import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
 import 'package:stream_feed/src/core/util/default.dart';
-
-import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:faye_dart/faye_dart.dart';
 
-///
+/// A type definition for the callback to be invoked when data is received.
 typedef MessageDataCallback = void Function(Map<String, dynamic>? data);
 
-///
+/// A type definition for the callback to be invoked when a message is received.
 typedef FeedSubscriber = Future<Subscription> Function(
   Token token,
   FeedId feedId,

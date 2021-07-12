@@ -9,9 +9,9 @@ part 'reaction.g.dart';
 
 /// Reactions are a special kind of data that
 /// can be used to capture user interaction
-///  with specific activities. Common examples of reactions are likes, comments,
+/// with specific activities. Common examples of reactions are likes, comments,
 /// and upvotes.
-///  Reactions are automatically returned to feeds' activities at read time
+/// Reactions are automatically returned to feeds' activities at read time
 /// when the reactions parameters are used.
 @JsonSerializable()
 class Reaction extends Equatable {

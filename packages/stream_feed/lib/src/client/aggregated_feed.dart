@@ -1,3 +1,4 @@
+import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
@@ -8,8 +9,6 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/group.dart';
 import 'package:stream_feed/src/core/util/default.dart';
-
-import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// {@template aggregatedFeed}

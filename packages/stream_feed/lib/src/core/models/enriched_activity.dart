@@ -28,8 +28,8 @@ class EnrichableField extends Equatable {
   List<Object?> get props => [data];
 }
 
-/// An enriched activity type with actor, object
-/// and reaction customizable types.
+/// An Enriched Activity is an Activity with additional fields
+/// that are derived from the Activity's 
 @JsonSerializable()
 class EnrichedActivity extends Equatable {
   /// [EnrichedActivity] constructor

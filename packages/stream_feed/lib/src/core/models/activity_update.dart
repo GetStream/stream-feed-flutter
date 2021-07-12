@@ -16,7 +16,7 @@ class ActivityUpdate extends Equatable {
     this.time,
   });
 
-  /// ActivityUpdate withId
+  /// ActivityUpdate with Id
   factory ActivityUpdate.withId({
     required String id,
     Map<String, Object>? set,
@@ -28,7 +28,7 @@ class ActivityUpdate extends Equatable {
         unset: unset,
       );
 
-  /// ActivityUpdate withForeignId
+  /// ActivityUpdate with ForeignId and time
   factory ActivityUpdate.withForeignId({
     required String foreignId,
     required DateTime time,
