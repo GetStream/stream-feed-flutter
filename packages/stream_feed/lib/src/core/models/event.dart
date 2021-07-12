@@ -166,9 +166,9 @@ class Engagement extends Event {
   @override
   List<Object?> get props => [...super.props, content, label, score, trackedAt];
 
- /// Allows us to copy an Engagement and pass in arguments that overwrite 
- /// settable values (e.g. content, label, score, boost, features, feedId, location, 
- /// position, userData)
+  /// Allows us to copy an Engagement and pass in arguments that overwrite
+  /// settable values (e.g. content, label, score, boost, features, feedId, location,
+  /// position, userData)
   @override
   Engagement copyWith({
     Content? content,
@@ -239,8 +239,8 @@ class Impression extends Event {
   @override
   List<Object?> get props => [...super.props, contentList, trackedAt];
 
-  /// Allows us to copy an Impression and pass in arguments that overwrite 
-  /// settable values (e.g. contentList, features, feedId, location, position, 
+  /// Allows us to copy an Impression and pass in arguments that overwrite
+  /// settable values (e.g. contentList, features, feedId, location, position,
   /// userData)
   @override
   Impression copyWith({
@@ -278,8 +278,9 @@ class Content extends Equatable {
   /// Add a "foreign_id" to the Content.
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
   final FeedId? foreignId;
-  
+
   @JsonKey(includeIfNull: false)
+
   /// Data related to the content.
   final Map<String, Object>? data;
 

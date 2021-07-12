@@ -64,7 +64,7 @@ class BatchOperationsClient {
       unfollows.map((e) => UnFollowRelation.fromFollow(e, keepHistory)),
     );
   }
-  
+
   Future<Iterable<Activity>> getActivitiesById(Iterable<String> ids) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return _batch.getActivitiesById(token, ids);
@@ -87,10 +87,12 @@ class BatchOperationsClient {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return _batch.getEnrichedActivitiesByForeignId(token, pairs);
   }
-/// Updating the activity
+
+  /// Updating the activity
   Future<void> updateActivity(Activity activity) =>
       updateActivities([activity]);
-/// Updating the activities
+
+  /// Updating the activities
   Future<void> updateActivities(Iterable<Activity> activities) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return _batch.updateActivities(token, activities);

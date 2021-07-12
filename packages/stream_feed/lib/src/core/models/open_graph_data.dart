@@ -137,7 +137,7 @@ class OgImage extends Equatable {
   /// - logo
   /// - photo
   /// - etc
-  /// 
+  ///
   final String? type;
 
   /// Value of the alt OG field.

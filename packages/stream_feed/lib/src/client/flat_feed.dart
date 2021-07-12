@@ -137,7 +137,7 @@ class FlatFeed extends Feed {
   /// - get a feed of activities from the current user
   /// ```dart
   /// var feed = await client.flatFeed('timeline').personalizedFeed();
-  /// 
+  ///
   Future<PersonalizedFeed> personalizedFeed({
     int? limit,
     int? offset,

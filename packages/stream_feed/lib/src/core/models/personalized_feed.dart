@@ -27,8 +27,10 @@ class PersonalizedFeed extends Paginated<EnrichedActivity> {
   List<Object?> get props => [...super.props, version, offset, limit];
 
   final String version;
+
   /// The offset of the first result in the current page.
   final int offset;
+
   /// The maximum number of results to return.
   final int limit;
 
