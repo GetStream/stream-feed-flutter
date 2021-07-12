@@ -11,14 +11,32 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class UserBar extends StatelessWidget {
   /// The User whose bar is being displayed.
   final User? user;
+
+  /// A callback called when the user's profile picture is clicked.
   final OnUserTap? onUserTap;
+
+  /// The reaction icon to display next to the user's name (if any)
   final Widget? reactionIcon;
+
+  /// The widget to display after the user's name.
   final Widget? afterUsername;
+
+  ///The subtitle of the user bar if any
   final Widget? subtitle;
+
+  /// The json key for the user's handle.
   final String handleJsonKey;
+
+  /// The json key for the user's name.
   final String nameJsonKey;
+
+  /// The time at which the user posted the message.
   final DateTime timestamp;
+
+  ///The reaction kind to display.
   final String kind;
+
+  ///Wether or not to show the subtitle.
   final bool showSubtitle;
 
   const UserBar({
