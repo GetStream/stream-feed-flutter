@@ -5,11 +5,41 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+/// [FlatFeedCore] is a simplified class that allows fetching a list of
+/// enriched activities (flat) while exposing UI builders.
+///
+///
+/// ```dart
+/// class FlatActivityListPage extends StatelessWidget {
+///   @override
+///   Widget build(BuildContext context) {
+///     return Scaffold(
+///       body: FlatFeedCore(
+///         onErrorWidget: Center(
+///             child: Text('An error has occured'),
+///         ),
+///         onEmptyWidget: Center(
+///             child: Text('Nothing here...'),
+///         ),
+///         onProgressWidget: Center(
+///             child: CircularProgressIndicator(),
+///         ),
+///         feedBuilder: (context, activties, idx) {
+///           return YourActivityWidget(activity: activities[idx]);
+///         }
+///       ),
+///     );
+///   }
+/// }
+/// ```
+///
+/// Make sure to have a [StreamFeedCore] ancestor in order to provide the
+/// information about the channels.
 class FlatFeedCore extends StatelessWidget {
   const FlatFeedCore(
       {Key? key,
       required this.feedGroup,
-      required this.onSuccess,
+      required this.feedBuilder,
       this.onErrorWidget = const ErrorStateWidget(),
       this.onProgressWidget = const ProgressStateWidget(),
       this.limit,
@@ -23,7 +53,7 @@ class FlatFeedCore extends StatelessWidget {
           const EmptyStateWidget(message: 'No activties to display')})
       : super(key: key);
 
-  final OnSuccessActivities onSuccess;
+  final EnrichedFeedBuilder feedBuilder;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
   final Widget onEmptyWidget;
@@ -62,7 +92,7 @@ class FlatFeedCore extends StatelessWidget {
         }
         return ListView.builder(
           itemCount: activities.length,
-          itemBuilder: (context, idx) => onSuccess(
+          itemBuilder: (context, idx) => feedBuilder(
             context,
             activities,
             idx,

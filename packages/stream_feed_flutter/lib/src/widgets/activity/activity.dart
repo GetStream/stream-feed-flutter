@@ -5,8 +5,8 @@ import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class StreamFeedActivity extends StatelessWidget {
-  const StreamFeedActivity({
+class ActivityWidget extends StatelessWidget {
+  const ActivityWidget({
     Key? key,
     required this.activity,
     this.feedGroup = 'user',

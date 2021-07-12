@@ -126,7 +126,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: StreamFeedActivity(
+            body: ActivityWidget(
               activity: EnrichedActivity(
                   time: DateTime.now(),
                   actor: EnrichableField(

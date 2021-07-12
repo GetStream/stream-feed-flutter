@@ -50,7 +50,7 @@ class FlatActivityListPage extends StatelessWidget {
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       //TODO: activity type Flat?
-      onSuccess: (context, activities, idx) => StreamFeedActivity(
+      feedBuilder: (context, activities, idx) => ActivityWidget(
         activity: activities[idx],
         feedGroup: feedGroup,
         onHashtagTap: onHashtagTap,
