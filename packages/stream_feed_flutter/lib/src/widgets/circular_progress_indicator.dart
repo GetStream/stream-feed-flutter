@@ -7,7 +7,11 @@ class StreamCircularProgressIndicator extends StatelessWidget {
     this.loadingProgress,
     required this.child,
   }) : super(key: key);
+
+  /// The child to be displayed inside the circular progress indicator.
   final Widget child;
+
+  /// The progress of the loading process.
   final ImageChunkEvent? loadingProgress;
   @override
   Widget build(BuildContext context) {

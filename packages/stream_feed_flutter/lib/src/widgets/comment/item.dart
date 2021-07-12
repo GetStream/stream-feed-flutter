@@ -7,20 +7,37 @@ import 'package:stream_feed_flutter/src/utils/display.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
 ///A Comment Item is a widget used to display a single comment on an activity.
 /// You click on:
 /// - the avatar to view the user's profile
 /// - on hashtags to view the activity feed for that tag.
 /// - mentions to view the activity feed for that user.
-/// 
+///
 class CommentItem extends StatelessWidget {
+  /// Who posted this comment.
   final User? user;
+
+  /// The content of the comment reaction
   final Reaction reaction;
+
+  /// A callback to invoke when the user clicks on a mention.
   final OnMentionTap? onMentionTap;
+
+  /// A callback to invoke when the user clicks on a hashtag.
   final OnHashtagTap? onHashtagTap;
+
+  /// A callback to invoke when the user clicks on an avatar.
   final OnUserTap? onUserTap;
+
+  /// The json key in [User.data] 
+  /// used to access the name you want to display. By default it's 'name'.
   final String nameJsonKey;
+
+  /// The json key in [Reaction.data] 
+  /// used to access the text of the comment you want to display. By default it's 'text'.
   final String commentJsonKey;
+  ///The callback to invoke when the user clicks on the comment.
   final OnReactionTap? onReactionTap;
 
   const CommentItem({

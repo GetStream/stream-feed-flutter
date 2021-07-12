@@ -6,8 +6,13 @@ import 'package:stream_feed_flutter/src/utils/extensions.dart';
 
 /// A widget used for interactive text like mentions, hashtags, and links.
 class InteractiveText extends StatelessWidget {
+  /// A callback that is invoked when the user clicks on a mention.
   final OnMentionTap? onMentionTap;
+
+  /// A callback that is invoked when the user clicks on a hashtag.
   final OnHashtagTap? onHashtagTap;
+
+  ///The tagged text we parsed as hashtag, mention, or normal text.
   final TaggedText? tagged;
   const InteractiveText({
     Key? key,

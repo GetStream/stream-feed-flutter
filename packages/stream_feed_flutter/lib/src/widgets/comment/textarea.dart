@@ -30,12 +30,16 @@ class TextArea extends StatefulWidget {
   /// The keyboard type assigned to the TextField
   final TextInputType keyboardType;
 
+  /// The text for the hint text
   final String? hintText;
 
+  /// The style for the input text
   final TextStyle? inputTextStyle;
 
+  /// The style for the hint text
   final TextStyle? hintTextStyle;
 
+  /// A callback that is invoked when the TextField is submitted.
   final void Function(String)? onSubmitted;
 
   @override

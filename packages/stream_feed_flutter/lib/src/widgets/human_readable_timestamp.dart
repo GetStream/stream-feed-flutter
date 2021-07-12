@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-
 /// An Human readable date.
 class HumanReadableTimestamp extends StatelessWidget {
   const HumanReadableTimestamp({
@@ -9,7 +8,7 @@ class HumanReadableTimestamp extends StatelessWidget {
     required this.timestamp,
   }) : super(key: key);
 
-  /// If you want to override reaction time
+  /// The timestamp to display.
   final DateTime timestamp;
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
 /// A Reaction Button is a widget that can be used to trigger a reaction.
 /// It displays the count of reactions it has received and the reaction
 /// it is currently displaying.
@@ -59,12 +60,23 @@ class ReactionButton extends StatelessWidget {
 }
 
 class ReactionToggleIcon extends StatefulWidget {
+  ///The reactions belongin to the current user
   final List<Reaction>? ownReactions;
+
+  /// The icon to display if you already reacted, with this rreaction kind, to this activity
   final Widget activeIcon;
+
+  /// The icon to display if you did not reacted yet, with this rreaction kind, to this activity
   final Widget inactiveIcon;
+
+  /// The kind of reaction
   final String kind;
+
+  /// The reaction count
   final int? count;
+  /// A callback that will be called when the user clicks on the reaction icon
   final VoidCallback? onTap;
+  /// The group/slug of the feed
   final String feedGroup;
   final EnrichedActivity activity;
   final String? userId;

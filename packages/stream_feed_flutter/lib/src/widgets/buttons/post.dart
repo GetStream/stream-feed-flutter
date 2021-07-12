@@ -11,8 +11,11 @@ class PostButton extends StatelessWidget {
     required this.activity,
     this.iconSize = 14,
   }) : super(key: key);
+  /// The group or slug of the feed to post to.
   final String feedGroup;
+  /// The activity to post to the feed.
   final EnrichedActivity activity;
+  /// The size of the icon to display.
   final double iconSize;
 
   @override

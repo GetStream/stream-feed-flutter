@@ -31,6 +31,7 @@ class RepostButton extends StatelessWidget {
   ///If you want to override on tap for some reasons
   final VoidCallback? onTap;
 
+  /// The feed group that the activity belongs to.
   final String feedGroup;
 
   @override

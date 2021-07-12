@@ -93,7 +93,7 @@ class CommentView extends StatelessWidget {
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,
                 onUserTap: onUserTap,
-                onReaction: (context, reaction) => CommentItem(
+                reactionBuilder: (context, reaction) => CommentItem(
                       user: reaction.user,
                       reaction: reaction,
                       onReactionTap: onReactionTap,
@@ -139,6 +139,7 @@ class AlertDialogActions extends StatelessWidget {
     );
   }
 }
+
 /// Actions on the left side of the dialog i.e. medias, gif, emojis etc.
 class LeftActions extends StatelessWidget {
   const LeftActions({
@@ -165,6 +166,7 @@ class LeftActions extends StatelessWidget {
     );
   }
 }
+
 /// Actions on the right side of the dialog i.e. "Post" button.
 class RightActions extends StatelessWidget {
   const RightActions({

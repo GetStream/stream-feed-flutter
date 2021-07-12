@@ -9,6 +9,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// Displays the user's name, profile picture, and a timestamp at which the
 /// user posted the message.
 class UserBar extends StatelessWidget {
+  /// The User whose bar is being displayed.
   final User? user;
   final OnUserTap? onUserTap;
   final Widget? reactionIcon;

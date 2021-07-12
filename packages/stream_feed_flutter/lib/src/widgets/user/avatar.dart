@@ -3,10 +3,16 @@ import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
 /// An avatar for the user.
 class Avatar extends StatelessWidget {
+  ///The User whose avatar we are displaying.
   final User? user;
+
+  ///The size of the avatar.
   final double size;
+
+  /// A callback invoked when the avatar is clicked.
   final OnUserTap? onUserTap;
   Avatar({
     Key? key,

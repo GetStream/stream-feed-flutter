@@ -30,18 +30,37 @@ class FlatActivityListPage extends StatelessWidget {
         TransitionType.sharedAxisTransition, //TODO: move this to core or theme
   }) : super(key: key);
 
+  /// A callback to handle hashtag taps
   final OnHashtagTap? onHashtagTap;
+
+  /// A callback to handle mention taps
   final OnMentionTap? onMentionTap;
+
+  /// A callback to handle user taps
   final OnUserTap? onUserTap;
+
+  /// A feed group to fetch activities for
   final String feedGroup;
+
+  /// A builder to build the activity footer
   final ActivityFooterBuilder? activityFooterBuilder;
+
+  /// A builder to build the activity content
   final ActivityContentBuilder? activityContentBuilder;
+
+  /// A builder to build the activity header
   final ActivityHeaderBuilder? activityHeaderBuilder;
 
   ///Override the current navigation behavior. Useful for user provided Navigator 2.0
   final OnActivityTap? onActivityTap;
+
+  /// A widget to display when theire is an error in the request
   final Widget onErrorWidget;
+
+  /// A widget to display to show a loading progress
   final Widget onProgressWidget;
+
+  /// A widget to display when there are no activities
   final Widget onEmptyWidget;
 
   ///Customise the transition
