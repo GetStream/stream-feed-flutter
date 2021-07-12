@@ -55,6 +55,7 @@ class StreamAnalytics {
       }).toList(growable: false);
 
   /// Send a new [Impression] event.
+  /// i.e. a user is viewing a page.
   /// ```dart
   ///  final analytics = AnalyticsClient(apiKey, secret: secret);
   /// await analytics.trackImpression(Impression(
@@ -77,6 +78,7 @@ class StreamAnalytics {
   }
 
   /// Send [Engagegement] event
+  /// i.e. a user is interacting with a content item.
   /// ```dart
   /// final analytics = AnalyticsClient(apiKey,
   ///     userToken: token);

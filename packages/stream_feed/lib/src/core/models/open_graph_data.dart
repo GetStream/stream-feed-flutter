@@ -4,6 +4,10 @@ import 'package:json_annotation/json_annotation.dart';
 part 'open_graph_data.g.dart';
 
 /// Open graph data from a website.
+/// An Open Graph data object is a set of key-value pairs that describe a
+/// web page.
+/// It can be used to describe the content of a page, the author of the page,
+/// or the page itself.
 @JsonSerializable(createToJson: true)
 class OpenGraphData extends Equatable {
   /// [OpenGraphData] constructor
@@ -26,27 +30,43 @@ class OpenGraphData extends Equatable {
       _$OpenGraphDataFromJson(json);
 
   ///	Value of the title OG field.
+  /// The title is usually short and descriptive.
   final String? title;
 
-  /// Value of the type OG field.
+  /// Value of the OG field `type`
+  /// The type can be one of the following:
+  /// - Article
+  /// - ArticlePage
+  /// - Audio
+  /// - Event
+  /// - Music
+  /// - etc
   final String? type;
 
   /// URL to scrape.
+  /// The URL is used to scrape the page.
   final String? url;
 
   /// Value of the site OG field
+  /// The site is the name of the website.
+  /// It is used to identify the website.
+  /// It is usually the domain name of the website.
   final String? site;
 
   /// Value of the site_name OG field.
+  /// It is usually the domain name of the website.
   final String? siteName;
 
   ///	Value of the description OG field.
+  /// It is used to describe the content of a page, the author of the page,
+  /// or the page itself.
   final String? description;
 
   ///	Value of the determiner OG field.
   final String? determiner;
 
   /// Value of the locale OG field.
+  /// It is used to describe the language of the content.
   final String? locale;
 
   ///	List of og images
@@ -111,6 +131,13 @@ class OgImage extends Equatable {
   final String? height;
 
   /// Value of the type OG field.
+  /// It is used to describe the type of an image.
+  /// It can be one of the following:
+  /// - icon
+  /// - logo
+  /// - photo
+  /// - etc
+  /// 
   final String? type;
 
   /// Value of the alt OG field.
@@ -165,6 +192,11 @@ class OgVideo extends Equatable {
   final String? height;
 
   /// Value of the type OG field.
+  /// It is used to describe the type of a video.
+  /// It can be one of the following:
+  /// - mp4
+  /// - ogv
+  /// - etc
   final String? type;
 
   /// Value of the alt OG field.
@@ -213,6 +245,11 @@ class OgAudio extends Equatable {
   final String? secureUrl;
 
   /// Value of the type OG field.
+  /// It is used to describe the type of an audio.
+  /// It can be one of the following:
+  /// - mp3
+  /// - ogg
+  /// - etc
   final String? type;
 
   @override

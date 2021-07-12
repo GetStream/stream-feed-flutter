@@ -6,7 +6,6 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/event.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 
-///
 class AnalyticsAPI {
   ///
   AnalyticsAPI(
@@ -17,7 +16,6 @@ class AnalyticsAPI {
 
   final StreamHttpClient _client;
 
-  ///
   Future<Response> trackImpressions(Token token, List<Impression> impressions) {
     for (final impression in impressions) {
       checkNotNull(impression.userData, 'Missing UserData');

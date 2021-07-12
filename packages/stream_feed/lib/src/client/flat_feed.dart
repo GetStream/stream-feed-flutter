@@ -1,3 +1,4 @@
+import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
@@ -8,8 +9,6 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
-
-import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// {@template flatFeed}
@@ -132,6 +131,13 @@ class FlatFeed extends Feed {
     return data;
   }
 
+  /// Retrieve a personalized feed for the currentUser
+  /// i.e. a feed of based on user's activities.
+  /// # Example:
+  /// - get a feed of activities from the current user
+  /// ```dart
+  /// var feed = await client.flatFeed('timeline').personalizedFeed();
+  /// 
   Future<PersonalizedFeed> personalizedFeed({
     int? limit,
     int? offset,

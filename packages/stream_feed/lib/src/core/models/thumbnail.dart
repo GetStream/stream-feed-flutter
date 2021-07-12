@@ -1,7 +1,8 @@
 import 'package:stream_feed/src/core/models/crop.dart';
 import 'package:stream_feed/src/core/models/resize.dart';
 
-/// Resize an image based on supplied [_width],[_height] and eventually [cropTypes],[resizeType]
+/// Create a Thumbnail of an image based on supplied [_width],[_height] 
+/// and eventually [cropTypes],[resizeType]
 class Thumbnail {
   /// [Thumbnail] constructor
   const Thumbnail(this._width, this._height,
@@ -12,7 +13,9 @@ class Thumbnail {
 
   final int _width;
   final int _height;
+  /// Type of resizing to be applied to the image
   final ResizeType resizeType;
+  /// Types of cropping to be applied to the image
   final List<CropType> cropTypes;
 
   /// Serialize params

@@ -34,7 +34,8 @@ class CollectionsClient {
   /// Required if you are using the sdk client side
   final Token? userToken;
 
-  /// Your API secret
+  /// Your API secret obtained via the dashboard.
+  /// Required if you are using the sdk server side
   final String? secret;
   final CollectionsAPI _collections;
 

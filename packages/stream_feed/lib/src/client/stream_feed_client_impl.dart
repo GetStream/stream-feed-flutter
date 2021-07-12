@@ -1,27 +1,25 @@
 import 'package:faye_dart/faye_dart.dart';
-
+import 'package:logging/logging.dart';
 import 'package:stream_feed/src/client/aggregated_feed.dart';
-import 'package:stream_feed/src/client/feed.dart';
-import 'package:stream_feed/src/client/flat_feed.dart';
-import 'package:stream_feed/src/client/notification_feed.dart';
 import 'package:stream_feed/src/client/batch_operations_client.dart';
 import 'package:stream_feed/src/client/collections_client.dart';
+import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/client/file_storage_client.dart';
+import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/client/image_storage_client.dart';
+import 'package:stream_feed/src/client/notification_feed.dart';
 import 'package:stream_feed/src/client/personalization_client.dart';
 import 'package:stream_feed/src/client/reactions_client.dart';
+import 'package:stream_feed/src/client/stream_feed_client.dart';
+import 'package:stream_feed/src/client/user_client.dart';
 import 'package:stream_feed/src/core/api/stream_api.dart';
 import 'package:stream_feed/src/core/api/stream_api_impl.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
-
-import 'package:stream_feed/src/client/user_client.dart';
-import 'package:stream_feed/src/client/stream_feed_client.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:logging/logging.dart';
 
 /// Handler function used for logging records. Function requires a single
 /// [LogRecord] as the only parameter.

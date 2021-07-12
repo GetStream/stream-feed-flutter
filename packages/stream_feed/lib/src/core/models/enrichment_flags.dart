@@ -35,7 +35,7 @@ class EnrichmentFlags {
   String? _userId;
   final Map<_EnrichmentType, Object> _flags = {};
 
-  /// Serialize enrichment flags
+  /// Serialize enrichment flags to a dictionary
   Map<String, Object?> get params {
     final params = _flags.map((key, value) => MapEntry(key.type, value));
     if (_userId != null) params['user_id'] = _userId!;
@@ -43,7 +43,7 @@ class EnrichmentFlags {
   }
 
   ///	If called activity object will have attribute "own_children"
-  ///that contains children reactions
+  ///that contains children reactions of the user
   EnrichmentFlags withOwnChildren() {
     _flags[_EnrichmentType.ownChildren] = true;
     return this;

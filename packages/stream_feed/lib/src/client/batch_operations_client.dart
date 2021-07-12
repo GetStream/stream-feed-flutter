@@ -2,7 +2,6 @@ import 'package:stream_feed/src/core/api/batch_api.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
-import 'package:stream_feed/src/core/models/follow.dart';
 import 'package:stream_feed/src/core/models/follow_relation.dart';
 import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed/src/core/util/default.dart';
@@ -65,7 +64,7 @@ class BatchOperationsClient {
       unfollows.map((e) => UnFollowRelation.fromFollow(e, keepHistory)),
     );
   }
-
+  
   Future<Iterable<Activity>> getActivitiesById(Iterable<String> ids) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return _batch.getActivitiesById(token, ids);
@@ -88,10 +87,10 @@ class BatchOperationsClient {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return _batch.getEnrichedActivitiesByForeignId(token, pairs);
   }
-
+/// Updating the activity
   Future<void> updateActivity(Activity activity) =>
       updateActivities([activity]);
-
+/// Updating the activities
   Future<void> updateActivities(Iterable<Activity> activities) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return _batch.updateActivities(token, activities);
