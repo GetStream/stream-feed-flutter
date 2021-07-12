@@ -32,24 +32,25 @@ class Activity extends Equatable {
   factory Activity.fromJson(Map<String, dynamic>? json) =>
       _$ActivityFromJson(Serializer.moveKeysToRoot(json, topLevelFields)!);
 
-  /// Activity id
+  /// Activity id: an unique identifier for the activity.
   @JsonKey(includeIfNull: false)
   final String? id;
 
-  /// The actor performing the activity
+  /// the thing or service that was the actor in the interaction.
   final String? actor;
 
-  ///	The verb of the activity
+  ///	The verb of the activity i.e. what the actor did.
   final String? verb;
 
-  /// The object of the activity
+  /// The object of the activity i.e the thing or service
+  /// that was acted upon or with.
   final String? object;
 
-  /// A unique ID from your application for this activity. IE: pin:1 or like:300
+  /// A unique ID from your application for this activity. i.e. : pin:1 or like:300
   @JsonKey(includeIfNull: false)
   final String? foreignId;
 
-  /// The optional target of the activity
+  /// The optional target of the activity i.e. meant for another thing or service.
   @JsonKey(includeIfNull: false)
   final String? target;
 
@@ -57,10 +58,11 @@ class Activity extends Equatable {
   @JsonKey(includeIfNull: false)
   final DateTime? time;
 
-  ///
+  /// The origin of the activity. i.e. where the actor came from.
   @JsonKey(includeIfNull: false)
   final String? origin;
 
+  /// The recipients of the action.
   /// The TO field allows you to specify a list of feeds
   /// to which the activity should be copied.
   ///  One way to think about it is as the CC functionality of email.
@@ -108,7 +110,7 @@ class Activity extends Equatable {
   )
   final List<FeedId>? to;
 
-  ///
+  /// The score of the activity to indicate the importance of the activity.
   @JsonKey(includeIfNull: false)
   final double? score;
 
@@ -122,7 +124,7 @@ class Activity extends Equatable {
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? analytics;
 
-  ///
+  /// extra context data to be used by the application.
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? extraContext;
 
