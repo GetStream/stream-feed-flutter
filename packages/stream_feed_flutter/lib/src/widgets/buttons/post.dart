@@ -3,9 +3,12 @@ import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template post_button}
 ///The Post Button is a reaction button that displays a post icon.
 ///It is used to post a comment to a post when clicked.
+///{@endtemplate}
 class PostButton extends StatelessWidget {
+  ///{@macro post_button}
   const PostButton({
     Key? key,
     this.feedGroup = 'user',

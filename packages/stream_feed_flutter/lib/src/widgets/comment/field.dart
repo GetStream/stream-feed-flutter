@@ -5,8 +5,10 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template comment_field}
 /// A Comment Field widget is a field for adding comments to a feed
 /// It displays the avatar, a textarea and a button to submit the comment.
+///{@endtemplate}
 class CommentField extends StatelessWidget {
   /// The activity on which the comment will be posted (reaction)
   /// if none is provided, the comment will be posted as new activity.
@@ -24,7 +26,8 @@ class CommentField extends StatelessWidget {
   ///The feed group part of the feed
   final String feedGroup;
 
-  CommentField({
+  ///{@macro comment_field}
+  const CommentField({
     Key? key,
     required this.feedGroup,
     this.activity,

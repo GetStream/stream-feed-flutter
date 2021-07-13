@@ -3,9 +3,11 @@ import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+///{@template activity_card}
 /// A card used to diplay Open Graph medias.
 /// For now it displays an image
 ///  and when clicked, it opens the media in device's browser.
+///{@endtemplate}
 class ActivityCard extends StatelessWidget {
   /// The alternative text to display for accessibility reasons.
   final String? alt;
@@ -27,6 +29,8 @@ class ActivityCard extends StatelessWidget {
 
   /// The title of the media.
   final String? title;
+
+  ///{@macro activity_card}
   const ActivityCard({
     Key? key,
     required this.og,

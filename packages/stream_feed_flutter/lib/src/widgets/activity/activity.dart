@@ -5,9 +5,12 @@ import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template activity_widget}
 ///A widget that displays a single activity.
 /// i.e. a single post in a feed
+///{@endtemplate}
 class ActivityWidget extends StatelessWidget {
+  ///{@macro activity_widget}
   const ActivityWidget({
     Key? key,
     required this.activity,

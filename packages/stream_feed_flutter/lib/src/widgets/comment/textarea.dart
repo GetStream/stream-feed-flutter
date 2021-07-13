@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+///{@template text_area}
 /// A TextArea is a multiline text input.
+///{@endtemplate}
 class TextArea extends StatefulWidget {
+  ///{@macro text_area}
   const TextArea({
     Key? key,
     this.textEditingController,

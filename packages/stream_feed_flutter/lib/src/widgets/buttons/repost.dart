@@ -3,10 +3,13 @@ import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template repost_button}
 /// A Repost Button is a widget that allows a user to repost a feed item.
 /// When pressed it will post a new item with the same content as the original
+///{@endtemplate}
 class RepostButton extends StatelessWidget {
-  RepostButton({
+  ///{@macro repost_button}
+  const RepostButton({
     Key? key,
     required this.activity,
     this.feedGroup = 'user',

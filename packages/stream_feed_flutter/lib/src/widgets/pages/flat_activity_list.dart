@@ -8,10 +8,13 @@ import 'package:animations/animations.dart';
 
 enum TransitionType { material, cupertino, sharedAxisTransition }
 
+///{@template flat_activity_list_page}
 ///The Page to display a list of activities
 ///This page is the main page of the app
 ///It displays a list of activities
+///{@endtemplate}
 class FlatActivityListPage extends StatelessWidget {
+  ///{@macro flat_activity_list_page}
   const FlatActivityListPage({
     Key? key,
     this.feedGroup = 'user',

@@ -5,8 +5,10 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template activity_content}
 /// Activity Content is a widget that displays the content of an activity.
 /// i.e. the actual text of the activity, the media, etc.
+///{@endtemplate}
 class ActivityContent extends StatelessWidget {
   ///The activity that is being displayed.
   final EnrichedActivity activity;
@@ -17,6 +19,7 @@ class ActivityContent extends StatelessWidget {
   ///A callback that is invoked when the user clicks on hashtag
   final OnHashtagTap? onHashtagTap;
 
+  ///{@macro activity_content}
   const ActivityContent({
     Key? key,
     required this.activity,

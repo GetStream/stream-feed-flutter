@@ -8,12 +8,14 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template comment_item}
 ///A Comment Item is a widget used to display a single comment on an activity.
 /// You click on:
 /// - the avatar to view the user's profile
 /// - on hashtags to view the activity feed for that tag.
 /// - mentions to view the activity feed for that user.
 ///
+///{@endtemplate}
 class CommentItem extends StatelessWidget {
   /// Who posted this comment.
   final User? user;
@@ -41,6 +43,7 @@ class CommentItem extends StatelessWidget {
   ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
 
+  ///{@macro comment_item}
   const CommentItem({
     Key? key,
     required this.reaction,

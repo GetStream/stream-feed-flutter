@@ -3,9 +3,12 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template activity_header}
 /// The Activity Header widget is a widget that displays the user's name and
 /// a profile image.
+///{@endtemplate}
 class ActivityHeader extends StatelessWidget {
+  ///{@macro activity_header}
   const ActivityHeader({
     Key? key,
     required this.activity,
@@ -14,6 +17,7 @@ class ActivityHeader extends StatelessWidget {
     this.showSubtitle = true,
   });
   final EnrichedActivity activity;
+
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
   final bool showSubtitle;

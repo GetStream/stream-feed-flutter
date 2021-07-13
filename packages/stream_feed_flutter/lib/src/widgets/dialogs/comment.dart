@@ -9,8 +9,11 @@ import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
 import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template alert_dialog}
 /// An Alert Dialog that displays a the activity and a comment field.
+///{@endtemplate}
 class AlertDialogComment extends StatelessWidget {
+  ///{@macro alert_dialog}
   const AlertDialogComment({
     Key? key,
     required this.feedGroup,
@@ -43,9 +46,12 @@ class AlertDialogComment extends StatelessWidget {
   }
 }
 
+///{@template comment_view}
 /// A Comment View is a widget the activity and a comment field and reactions (if enabled)
+///{@endtemplate}
 class CommentView extends StatelessWidget {
   //TODO: merge this with StreamFeedActivity
+  ///{@macro comment_view}
   const CommentView({
     Key? key,
     required this.textEditingController,
@@ -65,7 +71,8 @@ class CommentView extends StatelessWidget {
 
   ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
-  
+
+  ///{@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
 
   ///{@macro mention_callback}
@@ -118,8 +125,11 @@ class CommentView extends StatelessWidget {
   }
 }
 
+///{@template alert_dialog_actions}
 /// The Actions displayed in the dialog i.e. medias, gif, emojis etc.
+///{@endtemplate}
 class AlertDialogActions extends StatelessWidget {
+  ///{@macro alert_dialog_actions}
   const AlertDialogActions({
     Key? key,
     this.activity,
@@ -151,8 +161,11 @@ class AlertDialogActions extends StatelessWidget {
   }
 }
 
+///{@template left_actions}
 /// Actions on the left side of the dialog i.e. medias, gif, emojis etc.
+/// {@endtemplate}
 class LeftActions extends StatelessWidget {
+  ///{@macro left_actions}
   const LeftActions({
     Key? key,
     this.spaceBefore = 60,
@@ -178,8 +191,11 @@ class LeftActions extends StatelessWidget {
   }
 }
 
+///{@template right_actions}
 /// Actions on the right side of the dialog i.e. "Post" button.
+/// {@endtemplate}
 class RightActions extends StatelessWidget {
+  ///{@macro right_actions}
   const RightActions({
     Key? key,
     required this.textEditingController,

@@ -4,7 +4,9 @@ import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template avatar}
 /// An avatar for the user.
+///{@endtemplate}
 class Avatar extends StatelessWidget {
   ///The User whose avatar we are displaying.
   final User? user;
@@ -14,7 +16,9 @@ class Avatar extends StatelessWidget {
 
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
-  Avatar({
+
+  ///{@macro avatar}
+  const Avatar({
     Key? key,
     this.user,
     this.size = 46,

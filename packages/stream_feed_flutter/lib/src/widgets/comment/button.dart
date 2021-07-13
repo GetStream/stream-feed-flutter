@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template post_comment_button}
 ///A Post comment button is a widget that allows the user to comment on a post.
 /// When pressed the comment in the post will be sent to the server.
 /// ```dart
@@ -11,7 +12,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///           textEditingController: textEditingController,
 ///         )
 /// ```
+///{@endtemplate}
 class PostCommentButton extends StatelessWidget {
+  ///{@macro post_comment_button}
   const PostCommentButton({
     Key? key,
     required this.textEditingController,

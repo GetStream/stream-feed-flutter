@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-///Opens file explorer
+///{@template medias_action}
+///Opens file explorer to select a media file.
+///{@endtemplate}
 class MediasAction extends StatelessWidget {
+  ///{@macro medias_action}
   const MediasAction({
     Key? key,
   }) : super(key: key);

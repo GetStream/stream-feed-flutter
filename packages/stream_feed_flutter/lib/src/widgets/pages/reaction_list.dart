@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template reaction_list_page}
 /// Renders a list of reactions to a post.
+/// {@endtemplate}
 class ReactionListPage extends StatelessWidget {
+  ///{@macro reaction_list_page}
   const ReactionListPage(
       {Key? key,
       required this.feedGroup,

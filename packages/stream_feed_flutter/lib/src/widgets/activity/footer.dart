@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template activity_footer}
 /// The Activity Footer is a widget that is used to display the activity footer.
 /// i.e. reaction buttons,post,repost,like buttons, etc.
+///{@endtemplate}
 class ActivityFooter extends StatelessWidget {
+  ///{@macro activity_footer}
   const ActivityFooter({
     Key? key,
     required this.activity,
