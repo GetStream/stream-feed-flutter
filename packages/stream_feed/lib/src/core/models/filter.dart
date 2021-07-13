@@ -17,6 +17,7 @@ extension _FilterX on _Filter {
       }[this]!;
 }
 
+///{@template filter}
 /// Note: passing both id_lt[e]andid_gt[e] is not supported.
 ///
 /// Note: when using id_lt[e] the reactions are ordered by the created_at field,
@@ -24,6 +25,7 @@ extension _FilterX on _Filter {
 ///
 /// Note: when using id_gt[e] the reactions are ordered by the created_at field,
 ///  in ascending order.
+///{@endtemplate}
 class Filter {
   final Map<_Filter, String> _filters = {};
 

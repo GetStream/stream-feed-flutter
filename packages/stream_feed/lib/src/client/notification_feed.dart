@@ -35,7 +35,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// You can create new Notification Feed Groups in the dashboard.
 /// {@endtemplate}
 class NotificationFeed extends AggregatedFeed {
-  ///Initialize a [NotificationFeed] object
+  /// {@macro notificationFeed}
   NotificationFeed(
     FeedId feedId,
     FeedAPI feed, {
@@ -71,6 +71,8 @@ class NotificationFeed extends AggregatedFeed {
   ///   marker: ActivityMarker().allSeen(),
   /// );
   /// ```
+  ///
+  /// {@macro filter}
   @override
   Future<List<NotificationGroup<Activity>>> getActivities({
     int? limit,
@@ -96,6 +98,8 @@ class NotificationFeed extends AggregatedFeed {
   }
 
   /// Retrieve activities with reaction enrichment
+  ///
+  /// {@macro filter}
   @override
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
