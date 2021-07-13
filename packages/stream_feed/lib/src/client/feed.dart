@@ -25,10 +25,14 @@ typedef FeedSubscriber = Future<Subscription> Function(
   MessageDataCallback callback,
 );
 
+///{@template feed}
 /// The feed object contains convenient functions
 /// such add activity, remove activity etc
+///{@endtemplate}
 class Feed {
   ///Initialize a feed object
+  ///
+  ///{@macro feed}
   Feed(
     this.feedId,
     this.feed, {

@@ -18,6 +18,8 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// {@endtemplate}
 class ImageStorageClient {
   ///Initialize a [ImageStorageClient] object
+  ///
+  ///{@macro filesnandimages}
   ImageStorageClient(this._images, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,

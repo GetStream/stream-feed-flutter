@@ -24,6 +24,8 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// {@endtemplate}
 class CollectionsClient {
   ///Initialize a CollectionsClient object
+  ///
+  ///{@macro collections}
   CollectionsClient(this._collections, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,

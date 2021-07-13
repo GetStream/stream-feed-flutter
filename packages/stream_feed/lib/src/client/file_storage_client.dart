@@ -10,6 +10,8 @@ import 'package:stream_feed/stream_feed.dart';
 /// {@endtemplate}
 class FileStorageClient {
   /// Initialize a FileStorageClient object
+  ///
+  /// {@macro files}
   FileStorageClient(
     this._files, {
     this.userToken,
