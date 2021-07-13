@@ -12,7 +12,7 @@ class UserBar extends StatelessWidget {
   /// The User whose bar is being displayed.
   final User? user;
 
-  /// A callback called when the user's profile picture is clicked.
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
   /// The reaction icon to display next to the user's name (if any)

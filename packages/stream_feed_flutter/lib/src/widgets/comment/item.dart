@@ -21,13 +21,13 @@ class CommentItem extends StatelessWidget {
   /// The content of the comment reaction
   final Reaction reaction;
 
-  /// A callback to invoke when the user clicks on a mention.
+  ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
 
   /// A callback to invoke when the user clicks on a hashtag.
   final OnHashtagTap? onHashtagTap;
 
-  /// A callback to invoke when the user clicks on an avatar.
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
   /// The json key in [User.data]
@@ -38,7 +38,7 @@ class CommentItem extends StatelessWidget {
   /// used to access the text of the comment you want to display. By default it's 'text'.
   final String commentJsonKey;
 
-  ///The callback to invoke when the user clicks on the comment.
+  ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
 
   const CommentItem({

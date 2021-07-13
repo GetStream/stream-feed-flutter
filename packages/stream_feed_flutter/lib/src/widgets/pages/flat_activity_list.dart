@@ -30,13 +30,13 @@ class FlatActivityListPage extends StatelessWidget {
         TransitionType.material, //TODO: move this to core or theme
   }) : super(key: key);
 
-  /// A callback to handle hashtag taps
+  ///{@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
 
-  /// A callback to handle mention taps
+  ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
 
-  /// A callback to handle user taps
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
   /// A feed group to fetch activities for
@@ -51,7 +51,7 @@ class FlatActivityListPage extends StatelessWidget {
   /// A builder to build the activity header
   final ActivityHeaderBuilder? activityHeaderBuilder;
 
-  ///Override the current navigation behavior. Useful for user provided Navigator 2.0
+  ///{@macro activity_callback}
   final OnActivityTap? onActivityTap;
 
   /// A widget to display when theire is an error in the request

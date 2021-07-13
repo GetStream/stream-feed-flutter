@@ -62,9 +62,16 @@ class CommentView extends StatelessWidget {
   final String feedGroup;
   final TextEditingController textEditingController;
   final bool enableReactions;
+
+  ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
+  
   final OnHashtagTap? onHashtagTap;
+
+  ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
+
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
   @override

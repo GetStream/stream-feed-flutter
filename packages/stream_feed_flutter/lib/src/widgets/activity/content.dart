@@ -11,7 +11,7 @@ class ActivityContent extends StatelessWidget {
   ///The activity that is being displayed.
   final EnrichedActivity activity;
 
-  ///A callback that is invoked when the user clicks on the content.
+  ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
 
   ///A callback that is invoked when the user clicks on hashtag

@@ -25,16 +25,16 @@ class ReactionListPage extends StatelessWidget {
   /// The activity we want to display notifications for.
   final EnrichedActivity? activity;
 
-  /// The callback to invoke when a reaction is tapped.
+  ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
 
-  /// The callback to invoke when a hashtag is tapped.
+  ///{@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
 
-  /// The callback to invoke when a mention is tapped.
+  ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
 
-  /// The callback to invoke when a user is tapped.
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
   /// The callback to invoke when a reaction is added.

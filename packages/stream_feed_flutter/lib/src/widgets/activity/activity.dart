@@ -27,13 +27,13 @@ class ActivityWidget extends StatelessWidget {
   /// A callback to invoke when a mention is tapped.
   final OnMentionTap? onMentionTap;
 
-  /// A callback to invoke when a hashtag is tapped.
+  ///{@macro mention_callback}
   final OnHashtagTap? onHashtagTap;
 
-  /// A callback to invoke when a user is tapped.
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
-  /// A callback to invoke when the activity is tapped.
+  ///{@macro activity_callback}
   final OnActivityTap? onActivityTap;
 
   /// A builder for the activity footer.

@@ -14,6 +14,7 @@ class ActivityHeader extends StatelessWidget {
     this.showSubtitle = true,
   });
   final EnrichedActivity activity;
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
   final bool showSubtitle;
 
