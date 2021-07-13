@@ -33,9 +33,10 @@ final _levelEmojiMapper = {
   Level.SEVERE: '🚨',
 };
 
-// ignore: public_member_api_docs
+///{@macro stream_feed_client}
 class StreamFeedClientImpl implements StreamFeedClient {
   /// [StreamFeedClientImpl] constructor
+  ///{@macro stream_feed_client}
   StreamFeedClientImpl(
     this.apiKey, {
     this.secret,

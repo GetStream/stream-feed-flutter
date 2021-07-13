@@ -25,14 +25,18 @@ enum Runner {
   client,
 }
 
+///{@template stream_feed_client}
 /// The client class that manages API calls and authentication
 /// To instantiate the client you need an API key and secret.
 /// You can find the key and secret on the dashboard.
+/// If you want to use the API client directly on your web/mobile app
+/// you need to generate a user token server-side and pass it.
+///
+///
+///{@macro connect}
+///{@endtemplate}
 abstract class StreamFeedClient {
-  /// If you want to use the API client directly on your web/mobile app
-  /// you need to generate a user token server-side and pass it.
-  ///
-  ///
+  ///{@template connect}
   /// - Instantiate a new client (server side) with [StreamFeedClient.connect]
   /// using your api [secret] parameter and [apiKey]
   /// ```dart
@@ -48,6 +52,7 @@ abstract class StreamFeedClient {
   /// ```dart
   /// var client = connect('YOUR_API_KEY',token: Token('userToken'));
   /// ```
+  ///{@endtemplate}
   factory StreamFeedClient.connect(
     String apiKey, {
     Token? token,

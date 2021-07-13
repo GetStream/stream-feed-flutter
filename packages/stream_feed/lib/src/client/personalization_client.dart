@@ -38,6 +38,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// include user profiles and product information.
 /// {@endtemplate}
 class PersonalizationClient {
+  ///{@macro personalization}
   const PersonalizationClient(
     this._personalization, {
     this.userToken,
