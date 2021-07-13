@@ -19,7 +19,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// - 'Julie and 14 others liked your photo'
 /// {@endtemplate}
 class AggregatedFeed extends Feed {
-  /// Initialize a [AggregatedFeed] object
+  ///{@macro aggregatedFeed}
   AggregatedFeed(
     FeedId feedId,
     FeedAPI feed, {
@@ -45,6 +45,8 @@ class AggregatedFeed extends Feed {
   }
 
   /// Retrieve activities of type Aggregated feed
+  ///
+  /// {@macro filter}
   Future<List<Group<Activity>>> getActivities({
     int? limit,
     int? offset,
@@ -70,6 +72,8 @@ class AggregatedFeed extends Feed {
   }
 
   /// Retrieve activities with reaction enrichment
+  ///
+  /// {@macro filter}
   Future<List<Group<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
     int? offset,

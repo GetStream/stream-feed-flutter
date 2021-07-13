@@ -256,7 +256,7 @@ class Feed {
   ///  FeedId.id('user:43'),
   ///]);
   ///```
-  ///
+  /// {@macro filter}
   /// API docs: [reading-followed-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-followed-feeds)
   Future<List<Follow>> following({
     Iterable<FeedId>? filter,

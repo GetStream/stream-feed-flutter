@@ -15,7 +15,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// when the reactions parameters are used.
 /// {@endtemplate}
 class ReactionsClient {
-  ///Initialize a reaction client
+  ///{@macro reactions}
   ReactionsClient(this._reactions, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
@@ -178,6 +178,8 @@ class ReactionsClient {
   ///   'ed2837a6-0a3b-4679-adc1-778a1704852d',
   /// );
   /// ```
+  ///
+  /// {@macro filter}
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -194,6 +196,8 @@ class ReactionsClient {
 
   //------------------------- Server side methods ----------------------------//
   ///paginated reactions and filter them
+  ///
+  /// {@macro filter}
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {

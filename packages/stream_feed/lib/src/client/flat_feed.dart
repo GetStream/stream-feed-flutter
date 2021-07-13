@@ -20,7 +20,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// You can create new feed groups based on the flat type in the dashboard.
 /// {@endtemplate}
 class FlatFeed extends Feed {
-  /// Initialize a feed object
+  /// {@macro flatFeed}
   FlatFeed(
     FeedId feedId,
     FeedAPI feed, {
@@ -61,6 +61,8 @@ class FlatFeed extends Feed {
   ///```dart
   ///  var activities = await jack.getActivities(limit: 10);
   /// ```
+  ///
+  /// {@macro filter}
   Future<List<Activity>> getActivities({
     int? limit,
     int? offset,
@@ -105,6 +107,8 @@ class FlatFeed extends Feed {
   ///         .withReactionCounts(),
   ///   );
   /// ```
+  ///
+  /// {@macro filter}
   Future<List<EnrichedActivity>> getEnrichedActivities({
     int? limit,
     int? offset,
@@ -138,6 +142,7 @@ class FlatFeed extends Feed {
   /// ```dart
   /// var feed = await client.flatFeed('timeline').personalizedFeed();
   ///
+  /// {@macro filter}
   Future<PersonalizedFeed> personalizedFeed({
     int? limit,
     int? offset,
