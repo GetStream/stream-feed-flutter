@@ -84,20 +84,32 @@ class FlatActivityListPage extends StatelessWidget {
         activityHeaderBuilder: activityHeaderBuilder,
         activityFooterBuilder: activityFooterBuilder,
         activityContentBuilder: activityContentBuilder,
-        onActivityTap: (context, activity) => onActivityTap != null
-            ? onActivityTap?.call(context, activity)
-            //TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
+        onActivityTap: (context, activity) =>
 
-            : pageRouteBuilder(
-                activity: activity,
-                context: context,
-                transitionType: transitionType,
-                page: CommentView(
-                  enableReactions: true,
-                  textEditingController:
-                      TextEditingController(), //TODO: move this into props for customisation like buildSpans
-                ),
+            // onActivityTap != null
+            //     ? onActivityTap?.call(context, activity)
+            //     //TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
+// :
+            pageRouteBuilder(
+          activity: activity,
+          context: context,
+          transitionType: transitionType,
+          page: StreamFeedCore(
+            //TODO: there might be a better way to do this
+            client: StreamFeedCore.of(context).client,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text("Post"),
               ),
+              body: CommentView(
+                activity: activity,
+                enableReactions: true,
+                textEditingController:
+                    TextEditingController(), //TODO: move this into props for customisation like buildSpans
+              ),
+            ),
+          ),
+        ),
       ),
       feedGroup: feedGroup,
     );
@@ -108,24 +120,25 @@ class FlatActivityListPage extends StatelessWidget {
       required TransitionType transitionType,
       required EnrichedActivity activity,
       required Widget page}) {
-    final currentNavigator = StreamFeedCore.of(context).navigator!;
+    final currentNavigator = StreamFeedCore.of(context).navigator;
+    //assert navigator not null
     switch (transitionType) {
       case TransitionType.material:
-        currentNavigator.push(
+        currentNavigator!.push(
           MaterialPageRoute<void>(
             builder: (BuildContext context) => page,
           ),
         );
         break;
       case TransitionType.cupertino:
-        currentNavigator.push(
+        currentNavigator!.push(
           CupertinoPageRoute<void>(
             builder: (BuildContext context) => page,
           ),
         );
         break;
       default:
-        currentNavigator.push(PageRouteBuilder(
+        currentNavigator!.push(PageRouteBuilder(
           pageBuilder: (_, __, ___) => page,
           transitionsBuilder: (
             _,

@@ -39,27 +39,30 @@ class PostCommentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      // Dis/enabled button if textInputValue.length> 0
-      onPressed: () async {
-        final streamFeed = StreamFeedCore.of(context);
-        final text = textEditingController.value.text;
-        final trimmedText = text.trim();
-        activity != null
-            ? await streamFeed.onAddReaction(
-                kind: 'comment',
-                activity: activity!,
-                data: {'text': trimmedText}, //TODO: key
-                targetFeeds: targetFeeds,
-                feedGroup: feedGroup,
-              )
-            : await streamFeed.onAddActivity(
-                feedGroup: feedGroup,
-                verb: 'post',
-                //data: TODO: attachments with upload controller thingy
-                object: trimmedText);
-      },
-      child: Text(activity != null ? 'Respond' : 'Post'), //TODO: i18n
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(
+        // Dis/enabled button if textInputValue.length> 0
+        onPressed: () async {
+          final streamFeed = StreamFeedCore.of(context);
+          final text = textEditingController.value.text;
+          final trimmedText = text.trim();
+          activity != null
+              ? await streamFeed.onAddReaction(
+                  kind: 'comment',
+                  activity: activity!,
+                  data: {'text': trimmedText}, //TODO: key
+                  targetFeeds: targetFeeds,
+                  feedGroup: feedGroup,
+                )
+              : await streamFeed.onAddActivity(
+                  feedGroup: feedGroup,
+                  verb: 'post',
+                  //data: TODO: attachments with upload controller thingy
+                  object: trimmedText);
+        },
+        child: Text(activity != null ? 'Respond' : 'Post'), //TODO: i18n
+      ),
     );
   }
 }

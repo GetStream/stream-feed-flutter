@@ -36,13 +36,13 @@ class StreamFeedCore extends StatefulWidget {
   ///
   /// [StreamFeedCore] is a stateful widget which reacts to system events and
   /// updates Stream's connection status accordingly.
-  const StreamFeedCore(
+  StreamFeedCore(
       {Key? key,
       required this.client,
       required this.child,
       this.trackAnalytics = false,
       // required this.feedGroup,
-      this.navigatorKey,
+       this.navigatorKey,
       this.analyticsLocation,
       this.analyticsClient})
       : super(key: key);
@@ -156,10 +156,12 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       {required String label,
       required foreignId,
       required String feedGroup}) async {
-    await analyticsClient!.trackEngagement(Engagement(
-        content: Content(foreignId: FeedId.fromId(foreignId)),
-        label: label,
-        feedId: FeedId.fromId(feedGroup)));
+    analyticsClient != null
+        ? await analyticsClient!.trackEngagement(Engagement(
+            content: Content(foreignId: FeedId.fromId(foreignId)),
+            label: label,
+            feedId: FeedId.fromId(feedGroup)))
+        : print("warning: analytics: not enabled"); //TODO:logger
   }
 
   ///Get reactions form the activity

@@ -87,6 +87,7 @@ class ReactionListCore extends StatelessWidget {
             return onEmptyWidget;
           }
           return ListView.builder(
+            shrinkWrap: true,
             itemCount: reactions.length,
             itemBuilder: (context, idx) => reactionsBuilder(
               context,

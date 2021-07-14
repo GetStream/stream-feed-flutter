@@ -52,15 +52,15 @@ class CommentField extends StatelessWidget {
                 textEditingController: textEditingController,
               ),
             ),
+            if (enableButton)
+              PostCommentButton(
+                feedGroup: feedGroup,
+                activity: activity,
+                targetFeeds: targetFeeds,
+                textEditingController: textEditingController,
+              )
           ],
         ),
-        if (enableButton)
-          PostCommentButton(
-            feedGroup: feedGroup,
-            activity: activity,
-            targetFeeds: targetFeeds,
-            textEditingController: textEditingController,
-          )
       ],
     );
   }

@@ -14,6 +14,7 @@ void main() {
       final streamFeedCore = StreamFeedCore(
         key: streamFeedCoreKey,
         client: mockClient,
+        navigatorKey: null,
         child: Offstage(key: childKey),
       );
 
