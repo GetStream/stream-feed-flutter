@@ -45,7 +45,7 @@ class CommentField extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Avatar(), //TODO: onUserTap
+              child: Avatar(), //TODO: User in core and onUserTap
             ),
             Expanded(
               child: TextArea(
