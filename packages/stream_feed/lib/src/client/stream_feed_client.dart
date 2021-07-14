@@ -123,7 +123,7 @@ abstract class StreamFeedClient {
 
   /// Convenient getter for [NotificationFeed]:
   ///
-  /// {@macro aggregatedFeed}
+  /// {@macro notificationFeed}
   NotificationFeed notificationFeed(String slug, [String? userId]);
 
   /// Generate a JWT tokens that include the [userId] as payload
