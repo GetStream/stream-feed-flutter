@@ -112,6 +112,7 @@ class FlatFeedCore extends StatelessWidget {
         if (activities.isEmpty) {
           return onEmptyWidget;
         }
+        print(activities);
         return ListView.builder(
           itemCount: activities.length,
           itemBuilder: (context, idx) => feedBuilder(

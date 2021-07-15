@@ -93,7 +93,7 @@ class ReactionToggleIcon extends StatefulWidget {
   final List<FeedId>? targetFeeds;
   final Color hoverColor;
   //TODO: see what we can extract from a parent widget and put in core
-  ReactionToggleIcon({
+  const ReactionToggleIcon({
     Key? key,
     required this.activeIcon,
     required this.inactiveIcon,
@@ -117,6 +117,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   late bool alreadyReacted;
   late List<Reaction?>? reactionsKind;
   late String? idToRemove;
+  late int count;
 
   @override
   void initState() {
@@ -124,6 +125,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
     reactionsKind = widget.ownReactions?.filterByKind(widget.kind);
     alreadyReacted = reactionsKind?.isNotEmpty != null;
     idToRemove = reactionsKind?.last?.id;
+    count = widget.count ?? 0;
   }
 
   @override
@@ -134,7 +136,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
     return ReactionIcon(
       hoverColor: widget.hoverColor,
       icon: displayedIcon,
-      count: widget.count, //TODO: handle count
+      count: count, //TODO: handle count
       onTap: () async {
         widget.onTap?.call ?? await onToggleReaction();
       },
@@ -154,6 +156,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
     setState(() {
       alreadyReacted = !alreadyReacted;
       idToRemove = reaction.id!;
+      count += 1;
     });
   }
 
@@ -165,6 +168,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
         feedGroup: widget.feedGroup);
     setState(() {
       alreadyReacted = !alreadyReacted;
+      count -= 1;
     });
   }
 }

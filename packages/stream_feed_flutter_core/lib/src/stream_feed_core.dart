@@ -42,7 +42,7 @@ class StreamFeedCore extends StatefulWidget {
       required this.child,
       this.trackAnalytics = false,
       // required this.feedGroup,
-       this.navigatorKey,
+      this.navigatorKey,
       this.analyticsLocation,
       this.analyticsClient})
       : super(key: key);
@@ -182,7 +182,14 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     String? ranking,
     String? userId,
   }) async =>
-      await client.flatFeed(feedGroup, userId).getEnrichedActivities();
+      await client.flatFeed(feedGroup, userId).getEnrichedActivities(
+            limit: limit,
+            offset: offset,
+            session: session,
+            filter: filter,
+            flags: flags,
+            ranking: ranking,
+          );
 
   @override
   void initState() {

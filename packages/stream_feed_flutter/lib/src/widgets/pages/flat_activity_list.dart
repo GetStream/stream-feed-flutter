@@ -24,6 +24,12 @@ class FlatActivityListPage extends StatelessWidget {
     this.activityFooterBuilder,
     this.activityContentBuilder,
     this.activityHeaderBuilder,
+    this.limit,
+    this.offset,
+    this.session,
+    this.filter,
+    this.flags,
+    this.ranking,
     this.onProgressWidget = const ProgressStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
     this.onEmptyWidget =
@@ -69,9 +75,33 @@ class FlatActivityListPage extends StatelessWidget {
   ///Customise the transition
   final TransitionType transitionType;
 
+  /// The limit of activities to fetch
+  final int? limit;
+
+  /// The offset of activities to fetch
+  final int? offset;
+
+  /// The session to use for the request
+  final String? session;
+
+  /// The filter to use for the request
+  final Filter? filter;
+
+  /// The flags to use for the request
+  final EnrichmentFlags? flags;
+
+  /// The ranking to use for the request
+  final String? ranking;
+
   @override
   Widget build(BuildContext context) {
     return FlatFeedCore(
+      flags: flags,
+      limit: limit,
+      offset: offset,
+      session: session,
+      filter: filter,
+      ranking: ranking,
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       //TODO: activity type Flat?
