@@ -66,7 +66,10 @@ class MyHomePage extends StatelessWidget {
         client: client,
         navigatorKey: navigatorKey,
         child: FlatActivityListPage(
-          flags: EnrichmentFlags().withReactionCounts().withOwnChildren().withOwnReactions(),
+          flags: EnrichmentFlags()
+              .withReactionCounts()
+              .withOwnChildren()
+              .withOwnReactions(),
           feedGroup: 'user',
           onHashtagTap: (hashtag) => print('hashtag pressed: $hashtag'),
           onUserTap: (user) => print('hashtag pressed: ${user!.toJson()}'),

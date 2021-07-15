@@ -152,7 +152,7 @@ class FlatActivityListPage extends StatelessWidget {
       required EnrichedActivity activity,
       required Widget page}) {
     final currentNavigator = StreamFeedCore.of(context).navigator;
-    //assert navigator not null
+    //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:
         currentNavigator!.push(

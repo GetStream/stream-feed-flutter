@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
+import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
@@ -91,9 +92,10 @@ class CommentView extends StatelessWidget {
         children: [
           //TODO: "this post has been deleted by the author"
           if (activity != null) ...[
-            ActivityHeader(activity: activity!, showSubtitle: false),
-            ActivityContent(
-                activity: activity!), //TODO: not interactive (ux in twitter)
+            ActivityWidget(
+              activity: activity!,
+              feedGroup: feedGroup,
+            )
             //TODO: analytics
             //TODO: "in response to" activity.to
           ],
