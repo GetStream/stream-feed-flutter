@@ -95,14 +95,15 @@ class FlatActivityListPage extends StatelessWidget {
           context: context,
           transitionType: transitionType,
           page: StreamFeedCore(
-            //TODO: there might be a better way to do this
+            //TODO: let the user implement this
             client: StreamFeedCore.of(context).client,
             child: Scaffold(
               appBar: AppBar(
-                title: Text("Post"),
+                title: Text('Post'),
               ),
               body: CommentView(
                 activity: activity,
+                enableCommentFieldButton: true,
                 enableReactions: true,
                 textEditingController:
                     TextEditingController(), //TODO: move this into props for customisation like buildSpans

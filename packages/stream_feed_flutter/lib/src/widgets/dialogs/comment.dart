@@ -62,6 +62,7 @@ class CommentView extends StatelessWidget {
     this.onMentionTap,
     this.onUserTap,
     this.enableReactions = false,
+    this.enableCommentFieldButton = false,
   }) : super(key: key);
 
   final EnrichedActivity? activity;
@@ -81,6 +82,8 @@ class CommentView extends StatelessWidget {
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
+  final bool enableCommentFieldButton;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -98,8 +101,8 @@ class CommentView extends StatelessWidget {
             textEditingController: textEditingController,
             activity: activity,
 
-            ///enabled in actions [RightActions]
-            // enableButton: false,
+            //enabled in actions [RightActions]
+            enableButton: enableCommentFieldButton,
             feedGroup: feedGroup,
           ),
           //TODO: builder for using it elsewhere than in actions
