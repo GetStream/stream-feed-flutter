@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
@@ -13,7 +15,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///         )
 /// ```
 ///{@endtemplate}
-class PostCommentButton extends StatelessWidget {
+class PostCommentButton extends StatefulWidget {
   ///{@macro post_comment_button}
   const PostCommentButton({
     Key? key,
@@ -38,31 +40,52 @@ class PostCommentButton extends StatelessWidget {
   final List<FeedId>? targetFeeds;
 
   @override
+  State<PostCommentButton> createState() => _PostCommentButtonState();
+}
+
+class _PostCommentButtonState extends State<PostCommentButton> {
+  late StreamController<String> _textUpdates = StreamController<String>();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.textEditingController.addListener(() {
+      _textUpdates.add(widget.textEditingController.value.text);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        // Dis/enabled button if textInputValue.length> 0
-        onPressed: () async {
-          final streamFeed = StreamFeedCore.of(context);
-          final text = textEditingController.value.text;
-          final trimmedText = text.trim();
-          activity != null
-              ? await streamFeed.onAddReaction(
-                  kind: 'comment',
-                  activity: activity!,
-                  data: {'text': trimmedText}, //TODO: key
-                  targetFeeds: targetFeeds,
-                  feedGroup: feedGroup,
-                )
-              : await streamFeed.onAddActivity(
-                  feedGroup: feedGroup,
-                  verb: 'post',
-                  //data: TODO: attachments with upload controller thingy
-                  object: trimmedText);
-        },
-        child: Text(activity != null ? 'Respond' : 'Post'), //TODO: i18n
-      ),
-    );
+    return StreamBuilder<String>(
+        stream: _textUpdates.stream,
+        builder: (context, snapshot) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              // Dis/enabled button if textInputValue.length> 0
+              onPressed: snapshot.hasData && snapshot.data!.isNotEmpty
+                  ? () async {
+                      final streamFeed = StreamFeedCore.of(context);
+                      final trimmedText = snapshot.data!.trim();
+                      widget.activity != null
+                          ? await streamFeed.onAddReaction(
+                              kind: 'comment',
+                              activity: widget.activity!,
+                              data: {'text': trimmedText}, //TODO: key
+                              targetFeeds: widget.targetFeeds,
+                              feedGroup: widget.feedGroup,
+                            )
+                          : await streamFeed.onAddActivity(
+                              feedGroup: widget.feedGroup,
+                              verb: 'post',
+                              //data: TODO: attachments with upload controller thingy
+                              object: trimmedText);
+                    }
+                  : null,
+              child: Text(
+                  widget.activity != null ? 'Respond' : 'Post'), //TODO: i18n
+            ),
+          );
+        });
   }
 }
