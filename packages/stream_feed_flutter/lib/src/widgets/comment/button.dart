@@ -15,7 +15,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///         )
 /// ```
 ///{@endtemplate}
-class PostCommentButton extends StatefulWidget {
+class PostCommentButton extends StatelessWidget {
   ///{@macro post_comment_button}
   const PostCommentButton({
     Key? key,
@@ -40,11 +40,51 @@ class PostCommentButton extends StatefulWidget {
   final List<FeedId>? targetFeeds;
 
   @override
-  State<PostCommentButton> createState() => _PostCommentButtonState();
+  Widget build(BuildContext context) {
+    return ReactiveElevatedButton(
+      onSend: (inputText) async {
+        final streamFeed = StreamFeedCore.of(context);
+        final trimmedText = inputText.trim();
+        activity != null
+            ? await streamFeed.onAddReaction(
+                kind: 'comment',
+                activity: activity!,
+                data: {'text': trimmedText}, //TODO: key
+                targetFeeds: targetFeeds,
+                feedGroup: feedGroup,
+              )
+            : await streamFeed.onAddActivity(
+                feedGroup: feedGroup,
+                verb: 'post',
+                //data: TODO: attachments with upload controller thingy
+                object: trimmedText);
+      },
+
+      label: activity != null ? 'Respond' : 'Post', //TODO: i18n
+      textEditingController: textEditingController,
+    );
+  }
 }
 
-class _PostCommentButtonState extends State<PostCommentButton> {
-  late StreamController<String> _textUpdates = StreamController<String>();
+typedef OnSend = Function(String inputText);
+
+class ReactiveElevatedButton extends StatefulWidget {
+  final TextEditingController textEditingController;
+  final OnSend onSend;
+  final String label;
+  const ReactiveElevatedButton({
+    Key? key,
+    required this.textEditingController,
+    required this.label,
+    required this.onSend,
+  }) : super(key: key);
+
+  @override
+  _ReactiveElevatedButtonState createState() => _ReactiveElevatedButtonState();
+}
+
+class _ReactiveElevatedButtonState extends State<ReactiveElevatedButton> {
+  late final StreamController<String> _textUpdates = StreamController<String>();
 
   @override
   void initState() {
@@ -52,6 +92,12 @@ class _PostCommentButtonState extends State<PostCommentButton> {
     widget.textEditingController.addListener(() {
       _textUpdates.add(widget.textEditingController.value.text);
     });
+  }
+
+  @override
+  void dispose() {
+    _textUpdates.close();
+    super.dispose();
   }
 
   @override
@@ -65,25 +111,11 @@ class _PostCommentButtonState extends State<PostCommentButton> {
               // Dis/enabled button if textInputValue.length> 0
               onPressed: snapshot.hasData && snapshot.data!.isNotEmpty
                   ? () async {
-                      final streamFeed = StreamFeedCore.of(context);
-                      final trimmedText = snapshot.data!.trim();
-                      widget.activity != null
-                          ? await streamFeed.onAddReaction(
-                              kind: 'comment',
-                              activity: widget.activity!,
-                              data: {'text': trimmedText}, //TODO: key
-                              targetFeeds: widget.targetFeeds,
-                              feedGroup: widget.feedGroup,
-                            )
-                          : await streamFeed.onAddActivity(
-                              feedGroup: widget.feedGroup,
-                              verb: 'post',
-                              //data: TODO: attachments with upload controller thingy
-                              object: trimmedText);
+                      await widget.onSend(snapshot.data!);
                     }
                   : null,
-              child: Text(
-                  widget.activity != null ? 'Respond' : 'Post'), //TODO: i18n
+
+              child: Text(widget.label),
             ),
           );
         });
