@@ -226,7 +226,14 @@ void main() {
         )));
         final reactionIcon = find.byType(ReactionToggleIcon);
         expect(reactionIcon, findsOneWidget);
+
+        final count = find.text('1300');
+        expect(count, findsOneWidget);
+
         await tester.tap(reactionIcon);
+        await tester.pumpAndSettle();
+        final newCount = find.text('1299');
+        expect(newCount, findsOneWidget);
         verify(() => mockClient.reactions.delete(reaction.id!)).called(1);
         verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
       });
