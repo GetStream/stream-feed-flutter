@@ -4,8 +4,12 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 
 part 'followers.g.dart';
 
+///{@template followers}
+/// Followers of a feed used as a field in [FollowStats]
+///{@endtemplate}
 @JsonSerializable()
 class Followers extends Equatable {
+  ///{@macro followers}
   const Followers({required this.feed, this.count, this.slugs});
 
   factory Followers.fromJson(Map<String, dynamic> json) =>

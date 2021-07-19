@@ -4,13 +4,17 @@ import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'user.g.dart';
 
+///{@template user}
 /// Stream allows you to store user information
 /// and embed them inside activities or use them for personalization.
 ///
 /// When stored in activities, users are automatically enriched by Stream.
+///{@endtemplate}
 @JsonSerializable()
 class User extends Equatable {
   /// [User] constructor
+  /// 
+  /// {@macro user}
   const User({
     this.id,
     this.data,

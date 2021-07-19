@@ -3,10 +3,12 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'follow_relation.g.dart';
 
-///
+///{@template follow_relation}
+/// Model for a follow relationship between two feeds.
+/// {@endtemplate}
 @JsonSerializable()
 class FollowRelation extends Equatable {
-  ///
+  ///{@macro follow_relation}
   const FollowRelation({required this.source, required this.target});
 
   /// Create a new instance from a json
