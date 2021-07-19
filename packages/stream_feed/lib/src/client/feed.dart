@@ -225,7 +225,7 @@ class Feed {
   ///
   /// Usage:
   /// ```dart
-  /// final followers = await userFeed.getFollowers(limit: 10, offset: 0);
+  /// final followers = await userFeed.followers(limit: 10, offset: 0);
   /// ```
   ///
   /// API docs: [reading-feed-followers](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-feed-followers)
@@ -255,7 +255,7 @@ class Feed {
   ///
   /// - Check if user follows specific feeds
   /// ```dart
-  /// followed = await userFeed.getFollowed(limit: 2, offset: 0, feedIds: [
+  /// following = await userFeed.following(limit: 2, offset: 0, feedIds: [
   ///  FeedId.id('user:42'),
   ///  FeedId.id('user:43'),
   ///]);
