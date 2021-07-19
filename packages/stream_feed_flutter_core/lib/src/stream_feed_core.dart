@@ -122,7 +122,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   /// Add an activity to the feed.
   Future<Activity> onAddActivity(
       {required String feedGroup,
-      Map<String, String>? data,
+      Map<String, Object>? extraData,
       required String verb,
       required String object,
       String? userId}) async {
@@ -130,7 +130,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       actor: client.currentUser?.ref,
       verb: verb,
       object: object,
-      extraData: data,
+      extraData: extraData,
     );
 
     final addedActivity =

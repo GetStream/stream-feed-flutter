@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
@@ -28,19 +29,21 @@ class AlertDialogComment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textEditingController = TextEditingController();
+    final statusUpdateFormController =
+        StatusUpdateFormController(ImagePicker());
     return AlertDialog(
       actions: [
         AlertDialogActions(
+            activity: activity,
+            feedGroup: feedGroup,
+            textEditingController: textEditingController,
+            statusUpdateFormController: statusUpdateFormController),
+      ],
+      content: CommentView(
           activity: activity,
           feedGroup: feedGroup,
           textEditingController: textEditingController,
-        ),
-      ],
-      content: CommentView(
-        activity: activity,
-        feedGroup: feedGroup,
-        textEditingController: textEditingController,
-      ),
+          statusUpdateFormController: statusUpdateFormController),
     );
   }
 }
@@ -62,8 +65,10 @@ class CommentView extends StatelessWidget {
     this.onUserTap,
     this.enableReactions = false,
     this.enableCommentFieldButton = false,
+    required this.statusUpdateFormController,
   }) : super(key: key);
 
+  final StatusUpdateFormController statusUpdateFormController;
   final EnrichedActivity? activity;
   final String feedGroup;
   final TextEditingController textEditingController;
@@ -99,6 +104,7 @@ class CommentView extends StatelessWidget {
           ],
           CommentField(
             textEditingController: textEditingController,
+            statusUpdateFormController: statusUpdateFormController,
             activity: activity,
 
             //enabled in actions [RightActions]
@@ -139,10 +145,12 @@ class AlertDialogActions extends StatelessWidget {
     this.targetFeeds,
     required this.feedGroup,
     required this.textEditingController,
+    required this.statusUpdateFormController,
   }) : super(key: key);
   final EnrichedActivity? activity;
   final List<FeedId>? targetFeeds;
   final String feedGroup;
+  final StatusUpdateFormController statusUpdateFormController;
   final TextEditingController textEditingController;
 
   @override
@@ -151,9 +159,12 @@ class AlertDialogActions extends StatelessWidget {
       alignment: Alignment.bottomLeft,
       child: Stack(
         children: [
-          LeftActions(), //TODO: upload controller thingy
+          LeftActions(
+              statusUpdateFormController:
+                  statusUpdateFormController), //TODO: upload controller thingy
           RightActions(
             textEditingController: textEditingController,
+            statusUpdateFormController: statusUpdateFormController,
             activity: activity, //TODO: upload controller thingy
             targetFeeds: targetFeeds,
             feedGroup: feedGroup,
@@ -173,9 +184,12 @@ class LeftActions extends StatelessWidget {
     Key? key,
     this.spaceBefore = 60,
     this.spaceBetween = 8.0,
+    required this.statusUpdateFormController,
   }) : super(key: key);
   final double spaceBefore; //useful for reddit style clone
   final double spaceBetween;
+
+  final StatusUpdateFormController statusUpdateFormController;
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -183,7 +197,9 @@ class LeftActions extends StatelessWidget {
       child: Row(
         children: [
           //TODO: actual emojis, upload images, gif, etc
-          MediasAction(), //TODO: push an other dialog open file explorer take file uri upload it using sdk and it to attachments (sent in RightActions/PostCommentButton)
+          MediasAction(
+            statusUpdateFormController: statusUpdateFormController,
+          ), //TODO: push an other dialog open file explorer take file uri upload it using sdk and it to attachments (sent in RightActions/PostCommentButton)
           SizedBox(width: spaceBetween),
           EmojisAction(), //TODO: push an other dialog and display a nice grid of emojis, add selected emoji to text controller
           SizedBox(width: spaceBetween),
@@ -205,9 +221,11 @@ class RightActions extends StatelessWidget {
     this.activity,
     required this.feedGroup,
     this.targetFeeds,
+    required this.statusUpdateFormController,
   }) : super(key: key);
   final EnrichedActivity? activity;
   final TextEditingController textEditingController;
+  final StatusUpdateFormController statusUpdateFormController;
   final String feedGroup;
   final List<FeedId>? targetFeeds;
 
@@ -221,6 +239,7 @@ class RightActions extends StatelessWidget {
           activity: activity,
           targetFeeds: targetFeeds,
           textEditingController: textEditingController,
+          statusUpdateFormController: statusUpdateFormController,
         ));
   }
 }

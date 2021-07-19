@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/widgets/dialogs/medias.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template post_comment_button}
@@ -20,6 +21,7 @@ class PostCommentButton extends StatelessWidget {
   const PostCommentButton({
     Key? key,
     required this.textEditingController,
+    required this.statusUpdateFormController,
     this.activity,
     required this.feedGroup,
     this.targetFeeds,
@@ -33,11 +35,26 @@ class PostCommentButton extends StatelessWidget {
   /// Useful to decouple the text editing from the button.
   final TextEditingController textEditingController;
 
+  final StatusUpdateFormController statusUpdateFormController;
+
   /// The feed group that the post will be posted in.
   final String feedGroup;
 
   ///The targeted feeds to post to.
   final List<FeedId>? targetFeeds;
+
+  Map<String, Object>? getExtraData() {
+    if (statusUpdateFormController.lastPickedImage != null) {
+      return {
+        'attachments': OpenGraphData(images: [
+          OgImage(
+            image: statusUpdateFormController.lastPickedImage!,
+          )
+        ]).toJson(),
+      };
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +73,8 @@ class PostCommentButton extends StatelessWidget {
             : await streamFeed.onAddActivity(
                 feedGroup: feedGroup,
                 verb: 'post',
+                extraData: getExtraData(),
+
                 //data: TODO: attachments with upload controller thingy
                 object: trimmedText);
       },

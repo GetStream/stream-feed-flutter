@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
@@ -24,7 +25,9 @@ main() {
       await tester.pumpWidget(Material(
           child: Directionality(
         textDirection: TextDirection.ltr,
-        child: MediasAction(),
+        child: MediasAction(
+          statusUpdateFormController: StatusUpdateFormController(ImagePicker()),
+        ),
       )));
 
       final mediasAction = find.byIcon(Icons.collections_outlined);
@@ -46,6 +49,7 @@ main() {
           child: Directionality(
         textDirection: TextDirection.ltr,
         child: RightActions(
+          statusUpdateFormController: StatusUpdateFormController(ImagePicker()),
           feedGroup: 'user',
           textEditingController: TextEditingController(),
         ),
@@ -59,7 +63,12 @@ main() {
       await tester.pumpWidget(Material(
           child: Directionality(
         textDirection: TextDirection.ltr,
-        child: Stack(children: [LeftActions()]),
+        child: Stack(children: [
+          LeftActions(
+            statusUpdateFormController:
+                StatusUpdateFormController(ImagePicker()),
+          )
+        ]),
       )));
 
       final mediasAction = find.byType(MediasAction);
@@ -77,6 +86,8 @@ main() {
           child: Directionality(
         textDirection: TextDirection.ltr,
         child: AlertDialogActions(
+                   statusUpdateFormController:
+                StatusUpdateFormController(ImagePicker()),
           feedGroup: 'user',
           textEditingController: TextEditingController(),
         ),
@@ -124,6 +135,8 @@ main() {
             await tester.pumpWidget(MaterialApp(
               home: Scaffold(
                 body: CommentView(
+                           statusUpdateFormController:
+                StatusUpdateFormController(ImagePicker()),
                   feedGroup: 'user',
                   activity: EnrichedActivity(
                     time: DateTime.now(),
@@ -157,6 +170,8 @@ main() {
             await tester.pumpWidget(MaterialApp(
               home: Scaffold(
                 body: CommentView(
+                           statusUpdateFormController:
+                StatusUpdateFormController(ImagePicker()),
                   feedGroup: 'user',
                   textEditingController: TextEditingController(),
                 ),
