@@ -128,11 +128,11 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
     count = widget.count ?? 0;
   }
 
+  Widget get displayedIcon =>
+      alreadyReacted ? widget.activeIcon : widget.inactiveIcon;
+
   @override
   Widget build(BuildContext context) {
-    final displayedIcon =
-        alreadyReacted ? widget.activeIcon : widget.inactiveIcon;
-
     return ReactionIcon(
       hoverColor: widget.hoverColor,
       icon: displayedIcon,
