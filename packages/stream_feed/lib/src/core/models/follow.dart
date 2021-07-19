@@ -3,10 +3,12 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'follow.g.dart';
 
-///
+///{@template follow}
+/// Model for the follower of a feed
+/// {@endtemplate}
 @JsonSerializable()
 class Follow extends Equatable {
-  ///
+  ///{@macro follow}
   const Follow({
     required this.feedId,
     required this.targetId,

@@ -3,14 +3,18 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'open_graph_data.g.dart';
 
+///{@template open_graph}
 /// Open graph data from a website.
 /// An Open Graph data object is a set of key-value pairs that describe a
 /// web page.
 /// It can be used to describe the content of a page, the author of the page,
 /// or the page itself.
+///{@endtemplate}
 @JsonSerializable(createToJson: true)
 class OpenGraphData extends Equatable {
   /// [OpenGraphData] constructor
+  /// 
+  /// {@macro open_graph}
   const OpenGraphData({
     this.title,
     this.type,

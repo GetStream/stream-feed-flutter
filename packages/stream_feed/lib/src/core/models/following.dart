@@ -4,6 +4,9 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 
 part 'following.g.dart';
 
+///{@template following}
+///Following of a feed used in [FollowStats] as field
+///{@endtemplate}
 @JsonSerializable()
 class Following extends Equatable {
   const Following({required this.feed, this.count, this.slugs});
