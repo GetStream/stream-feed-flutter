@@ -13,7 +13,7 @@ part 'user.g.dart';
 @JsonSerializable()
 class User extends Equatable {
   /// [User] constructor
-  /// 
+  ///
   /// {@macro user}
   const User({
     this.id,

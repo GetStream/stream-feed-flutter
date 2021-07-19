@@ -1024,7 +1024,7 @@ void main() {
     });
 
     test('activity acttachment', () {
-      const openGraph =  OpenGraphData(
+      const openGraph = OpenGraphData(
           title:
               "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
           url:

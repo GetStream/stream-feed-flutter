@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 
-/// 
+///
 class ForeignIdTimePair extends Equatable {
   ///
   const ForeignIdTimePair(this.foreignID, this.time);

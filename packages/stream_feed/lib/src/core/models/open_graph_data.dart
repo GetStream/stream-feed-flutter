@@ -13,7 +13,7 @@ part 'open_graph_data.g.dart';
 @JsonSerializable(createToJson: true)
 class OpenGraphData extends Equatable {
   /// [OpenGraphData] constructor
-  /// 
+  ///
   /// {@macro open_graph}
   const OpenGraphData({
     this.title,
