@@ -141,8 +141,8 @@ await user1.unfollow(client.flatFeed('flat', '42'), keepHistory: true);
 await user1.follow(client.flatFeed('flat', '42'), activityCopyLimit: 0);
 
 // List followers, following
-await user1.getFollowers(limit: 10, offset: 10);
-await user1.getFollowed(limit: 10, offset: 0);
+await user1.followers(limit: 10, offset: 10);
+await user1.following(limit: 10, offset: 0);
 
 
 await user1.follow(client.flatFeed('flat', '42'));
