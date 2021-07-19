@@ -29,7 +29,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({required this.client});
+  const MyApp({Key? key, required this.client}) : super(key: key);
   final StreamFeedClient client;
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("FlatFeed"),
+        title: const Text("FlatFeed"),
       ),
       body: StreamFeedCore(
         client: client,

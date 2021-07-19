@@ -285,7 +285,7 @@ class Content extends Equatable {
   final Map<String, Object>? data;
 
 //TODO: attribute: https://github.com/GetStream/stream-analytics-android/blob/62f624f6da5ded03bd4d10d9b169c8c6ddd59984/stream-analytics/src/main/java/io/getstream/analytics/beans/ContentAttribute.java#L39
-  Content({required this.foreignId, this.data});
+  const Content({required this.foreignId, this.data});
 
   @override
   List<Object?> get props => [foreignId, data];

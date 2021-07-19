@@ -138,15 +138,15 @@ void main() {
               feed: FeedId.fromId('reward:1'),
               newActivities: [
                 EnrichedActivity(
-                    actor: EnrichableField('reward:1'),
+                    actor: const EnrichableField('reward:1'),
                     id: 'f3de8328-be2d-11eb-bb18-128a130028af',
                     extraData: {
                       'message':
                           "@Jessica check out getstream.io it's so dang awesome.",
                     },
-                    origin: EnrichableField(null),
-                    target: EnrichableField(null),
-                    object: EnrichableField('tweet:id'),
+                    origin: const EnrichableField(null),
+                    target: const EnrichableField(null),
+                    object: const EnrichableField('tweet:id'),
                     time: DateTime.parse('2021-05-26T14:23:33.918391'),
                     to: ['notification:jessica'],
                     verb: 'tweet')
@@ -174,7 +174,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: User(id: "test", data: {"test": "test"}),
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -416,7 +416,7 @@ void main() {
     final engagement = Engagement(
         content: Content(foreignId: FeedId.id('tweet:34349698')),
         label: 'click',
-        userData: UserData('test', 'test'),
+        userData: const UserData('test', 'test'),
         feedId: FeedId('user', 'thierry'));
     final json = {
       'user_data': {'id': 'test', 'alias': 'test'},
@@ -442,7 +442,7 @@ void main() {
             foreignId: FeedId.fromId('tweet:34349698'),
           )
         ],
-        userData: UserData('test', 'test'),
+        userData: const UserData('test', 'test'),
         feedId: FeedId('flat', 'tommaso'),
         location: 'profile_page');
     final json = {
@@ -475,7 +475,7 @@ void main() {
     final personalizedFeed = PersonalizedFeed.fromJson(json);
     expect(
         personalizedFeed,
-        PersonalizedFeed(
+        const PersonalizedFeed(
             limit: 25,
             offset: 0,
             version: 'user_1_1619210635',
@@ -493,7 +493,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: User(id: "test", data: {"test": "test"}),
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -531,7 +531,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: User(id: "test", data: {"test": "test"}),
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -851,7 +851,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: User(id: "test", data: {"test": "test"}),
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         childrenCounts: const {'test': 1});
@@ -864,7 +864,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: User(id: "test", data: {"test": "test"}),
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -1023,7 +1023,7 @@ void main() {
     });
 
     test('activity acttachment', () {
-      final openGraph = OpenGraphData(
+      const openGraph =  OpenGraphData(
           title:
               "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
           url:

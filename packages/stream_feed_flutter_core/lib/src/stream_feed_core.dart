@@ -161,7 +161,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
             content: Content(foreignId: FeedId.fromId(foreignId)),
             label: label,
             feedId: FeedId.fromId(feedGroup)))
-        : print("warning: analytics: not enabled"); //TODO:logger
+        : print('warning: analytics: not enabled'); //TODO:logger
   }
 
   ///Get reactions form the activity
