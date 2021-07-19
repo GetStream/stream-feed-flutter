@@ -210,6 +210,7 @@ class TokenHelper {
   }
 }
 
+/// Decode the JWT token
 JsonWebToken jwtDecode(Token userToken) =>
     JsonWebToken.unverified(userToken.token);
 

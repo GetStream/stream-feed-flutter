@@ -50,6 +50,7 @@ class CollectionEntry extends Equatable {
   /// When the collection object was last updated.
   final DateTime? updatedAt;
 
+  ///Handy getter to refer to the collection object for enrichment purposes
   String get ref => createCollectionReference(collection, id);
 
   @override
