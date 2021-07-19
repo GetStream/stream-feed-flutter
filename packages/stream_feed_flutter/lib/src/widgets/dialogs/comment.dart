@@ -9,7 +9,7 @@ import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template alert_dialog}
-/// An Alert Dialog that displays a the activity and a comment field.
+/// An Alert Dialog that displays an activity and a comment field.
 ///{@endtemplate}
 class AlertDialogComment extends StatelessWidget {
   ///{@macro alert_dialog}
@@ -46,7 +46,7 @@ class AlertDialogComment extends StatelessWidget {
 }
 
 ///{@template comment_view}
-/// A Comment View is a widget the activity and a comment field and reactions (if enabled)
+/// A Comment View is a widget that shows the activity and a comment field and reactions (if enabled)
 ///{@endtemplate}
 class CommentView extends StatelessWidget {
   //TODO: merge this with StreamFeedActivity
