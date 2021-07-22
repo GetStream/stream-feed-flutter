@@ -43,17 +43,14 @@ class PostCommentButton extends StatelessWidget {
   ///The targeted feeds to post to.
   final List<FeedId>? targetFeeds;
 
-  Map<String, Object>? getExtraData() {
-    if (statusUpdateFormController.lastPickedImage != null) {
-      return {
-        'attachments': OpenGraphData(images: [
-          OgImage(
-            image: statusUpdateFormController.lastPickedImage!,
-          )
-        ]).toJson(),
-      };
-    }
-    return null;
+  Map<String, Object> getExtraData(String imageUrl) {
+    return {
+      'attachments': OpenGraphData(images: [
+        OgImage(
+          image: imageUrl,
+        )
+      ]).toJson(),
+    };
   }
 
   @override
@@ -62,18 +59,27 @@ class PostCommentButton extends StatelessWidget {
       onSend: (inputText) async {
         final streamFeed = StreamFeedCore.of(context);
         final trimmedText = inputText.trim();
+        final lastPickedImage = statusUpdateFormController.lastPickedImage;
+        final imageUrl = await StreamFeedCore.of(context)
+            .client
+            .files
+            .upload(AttachmentFile(path: lastPickedImage));
         activity != null
             ? await streamFeed.onAddReaction(
                 kind: 'comment',
                 activity: activity!,
-                data: {'text': trimmedText}, //TODO: key
+                data: {
+                  'text': trimmedText,
+                  if (imageUrl != null) ...getExtraData(imageUrl)
+                }, //TODO: key
                 targetFeeds: targetFeeds,
+
                 feedGroup: feedGroup,
               )
             : await streamFeed.onAddActivity(
                 feedGroup: feedGroup,
                 verb: 'post',
-                extraData: getExtraData(),
+                extraData: imageUrl != null ? getExtraData(imageUrl) : null,
 
                 //data: TODO: attachments with upload controller thingy
                 object: trimmedText);

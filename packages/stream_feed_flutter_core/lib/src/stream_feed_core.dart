@@ -115,7 +115,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     final reaction = await reactions.add(kind, activity.id!,
         targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
-        label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
+        label: kind, foreignId: activity.foreignId!, feedGroup: feedGroup);
     return reaction;
   }
 
@@ -136,7 +136,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     final addedActivity =
         await client.flatFeed(feedGroup, userId).addActivity(activity);
     await trackAnalytics(
-        label: 'post', foreignId: activity.foreignId, feedGroup: feedGroup);
+        label: 'post', foreignId: activity.foreignId!, feedGroup: feedGroup);
     return addedActivity;
   }
 
@@ -148,13 +148,13 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required String feedGroup}) async {
     await reactions.delete(id);
     await trackAnalytics(
-        label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
+        label: 'un$kind', foreignId: activity.foreignId!, feedGroup: feedGroup);
   }
 
   ///Track analytics
   Future<void> trackAnalytics(
       {required String label,
-      required foreignId,
+      required String foreignId,
       required String feedGroup}) async {
     analyticsClient != null
         ? await analyticsClient!.trackEngagement(Engagement(
