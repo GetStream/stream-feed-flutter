@@ -52,7 +52,7 @@ class ReactionsClient {
   /// final comment = await client.reactions.add(
   ///   'comment',
   ///   activity.id,
-  ///   'john-doe',
+  ///  userId: 'john-doe',
   ///   data: {'text': 'awesome post!'},
   /// );
   ///```
@@ -84,7 +84,7 @@ class ReactionsClient {
   ///final reaction = await client.reactions.addChild(
   ///'like',
   ///comment.id,
-  ///'john-doe',
+  /// userId: 'john-doe',
   ///);
   ///```
   ///
