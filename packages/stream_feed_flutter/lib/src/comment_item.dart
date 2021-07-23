@@ -90,6 +90,7 @@ class _InteractiveText extends StatelessWidget {
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
   final TaggedText? tagged;
+
   const _InteractiveText({
     this.tagged,
     this.onHashtagTap,
@@ -101,23 +102,23 @@ class _InteractiveText extends StatelessWidget {
     if (tagged != null) {
       switch (tagged!.tag) {
         case Tag.normalText:
-          return Text('${tagged!.text!} ', style: tagged!.tag.style());
+          return Text('${tagged!.text} ', style: tagged!.tag.style());
         case Tag.hashtag:
           return InkWell(
             onTap: () {
-              onHashtagTap?.call(tagged!.text?.trim().replaceFirst('#', ''));
+              onHashtagTap?.call(tagged!.text.trim().replaceFirst('#', ''));
             },
-            child: Text(tagged!.text!, style: tagged!.tag.style()),
+            child: Text(tagged!.text, style: tagged!.tag.style()),
           );
         case Tag.mention:
           return InkWell(
             onTap: () {
-              onMentionTap?.call(tagged!.text?.trim().replaceFirst('@', ''));
+              onMentionTap?.call(tagged!.text.trim().replaceFirst('@', ''));
             },
-            child: Text(tagged!.text!, style: tagged!.tag.style()),
+            child: Text(tagged!.text, style: tagged!.tag.style()),
           );
         default:
-          return Text(tagged!.text!, style: tagged!.tag.style());
+          return Text(tagged!.text, style: tagged!.tag.style());
       }
     } else {
       return Offstage();
