@@ -18,11 +18,13 @@ void main() {
           og: OpenGraphData(url: _url, images: [OgImage(secureUrl: _url)]),
           activity: EnrichedActivity(
             actor: EnrichableField(
-              User(data: {
-                'name': 'Nora Ferguson',
-                'profile_image':
-                    'https://randomuser.me/api/portraits/women/72.jpg',
-              }).toJson(),
+              User(
+                data: {
+                  'name': 'Nora Ferguson',
+                  'profile_image':
+                      'https://randomuser.me/api/portraits/women/72.jpg',
+                },
+              ),
             ),
             object: EnrichableField(
                 {'text': 'I just missed my train 😤 #angry @sahil'}),
