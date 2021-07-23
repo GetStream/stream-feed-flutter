@@ -24,29 +24,46 @@ class StreamApiImpl implements StreamAPI {
 
   final StreamHttpClient _client;
 
-  @override
-  BatchAPI get batch => BatchAPI(_client);
+  BatchAPI? _batchAPI;
 
   @override
-  ReactionsAPI get reactions => ReactionsAPI(_client);
+  BatchAPI get batch => _batchAPI ??= BatchAPI(_client);
+
+  ReactionsAPI? _reactionsAPI;
 
   @override
-  UsersAPI get users => UsersAPI(_client);
+  ReactionsAPI get reactions => _reactionsAPI ??= ReactionsAPI(_client);
+
+  UsersAPI? _usersAPI;
 
   @override
-  CollectionsAPI get collections => CollectionsAPI(_client);
+  UsersAPI get users => _usersAPI ??= UsersAPI(_client);
+
+  CollectionsAPI? _collectionsAPI;
 
   @override
-  FeedAPI get feed => FeedAPI(_client);
+  CollectionsAPI get collections => _collectionsAPI ??= CollectionsAPI(_client);
+
+  FeedAPI? _feedAPI;
 
   @override
-  FilesAPI get files => FilesAPI(_client);
+  FeedAPI get feed => _feedAPI ??= FeedAPI(_client);
+
+  FilesAPI? _filesAPI;
 
   @override
-  ImagesAPI get images => ImagesAPI(_client);
+  FilesAPI get files => _filesAPI ??= FilesAPI(_client);
+
+  ImagesAPI? _imagesAPI;
 
   @override
-  PersonalizationAPI get personalization => PersonalizationAPI(_client);
+  ImagesAPI get images => _imagesAPI ??= ImagesAPI(_client);
+
+  PersonalizationAPI? _personalizationAPI;
+
+  @override
+  PersonalizationAPI get personalization =>
+      _personalizationAPI ??= PersonalizationAPI(_client);
 
   @override
   Future<OpenGraphData> openGraph(Token token, String targetUrl) async {
@@ -56,7 +73,6 @@ class StreamApiImpl implements StreamAPI {
       headers: {'Authorization': '$token'},
       queryParameters: {'url': targetUrl},
     );
-    //TODO: I have no idea if this works just pleasing null safe warnings
-    return OpenGraphData.fromJson(result.data as Map<String, dynamic>);
+    return OpenGraphData.fromJson(result.data);
   }
 }
