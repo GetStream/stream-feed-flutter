@@ -23,7 +23,7 @@ class PostCommentButton extends StatelessWidget {
     required this.textEditingController,
     required this.statusUpdateFormController,
     this.activity,
-    required this.feedGroup,
+    this.feedGroup = 'user',
     this.targetFeeds,
   }) : super(key: key);
 
