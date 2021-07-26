@@ -29,7 +29,7 @@ class CommentItem extends StatelessWidget {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final taggedText = reaction.data?[commentJsonKey] != null
         ? detector.parseText(reaction.data![commentJsonKey] as String)
-        : <TaggedText?>[];
+        : <TaggedText>[];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -58,15 +58,16 @@ class CommentItem extends StatelessWidget {
                 ),
                 Padding(
                     padding: const EdgeInsets.all(2.0),
-                    child: Wrap(children: [
-                      for (final tagged in taggedText)
-                        if (tagged != null)
-                          _InteractiveText(
-                            tagged: tagged,
-                            onHashtagTap: onHashtagTap,
-                            onMentionTap: onMentionTap,
-                          )
-                    ]))
+                    child: Wrap(
+                      //TODO: move to Text.rich(WidgetSpans)
+                      children: taggedText
+                          .map((it) => _InteractiveText(
+                                tagged: it,
+                                onHashtagTap: onHashtagTap,
+                                onMentionTap: onMentionTap,
+                              ))
+                          .toList(),
+                    ))
               ],
             ),
           ),
@@ -100,23 +101,23 @@ class _InteractiveText extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (tagged.tag) {
       case Tag.normalText:
-        return Text('${tagged.text!} ', style: tagged.tag.style());
+        return Text('${tagged.text} ', style: tagged.tag.style());
       case Tag.hashtag:
         return InkWell(
           onTap: () {
-            onHashtagTap?.call(tagged.text?.trim().replaceFirst('#', ''));
+            onHashtagTap?.call(tagged.text.trim().replaceFirst('#', ''));
           },
-          child: Text(tagged.text!, style: tagged.tag.style()),
+          child: Text(tagged.text, style: tagged.tag.style()),
         );
       case Tag.mention:
         return InkWell(
           onTap: () {
-            onMentionTap?.call(tagged.text?.trim().replaceFirst('@', ''));
+            onMentionTap?.call(tagged.text.trim().replaceFirst('@', ''));
           },
-          child: Text(tagged.text!, style: tagged.tag.style()),
+          child: Text(tagged.text, style: tagged.tag.style()),
         );
       default:
-        return Text(tagged.text!, style: tagged.tag.style());
+        return Text(tagged.text, style: tagged.tag.style());
     }
   }
 }
