@@ -86,4 +86,3 @@ class CommentItem extends StatelessWidget {
         fontSize: 14,
       ));
 }
-
