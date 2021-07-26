@@ -30,7 +30,7 @@ class CommentItem extends StatelessWidget {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final taggedText = reaction.data?[commentJsonKey] != null
         ? detector.parseText(reaction.data![commentJsonKey] as String)
-        : <TaggedText?>[];
+        : <TaggedText>[];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -86,3 +86,4 @@ class CommentItem extends StatelessWidget {
         fontSize: 14,
       ));
 }
+

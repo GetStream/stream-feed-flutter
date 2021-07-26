@@ -3,6 +3,7 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
+import 'package:stream_feed/src/core/models/follow_relation.dart';
 import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
@@ -35,7 +36,7 @@ class BatchOperationsClient {
   /// API docs: [add_many_activities](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-follow)
   ///
   Future<void> followMany(
-    Iterable<Follow> follows, {
+    Iterable<FollowRelation> follows, {
     int? activityCopyLimit,
   }) {
     final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
@@ -54,14 +55,14 @@ class BatchOperationsClient {
   /// API docs : [batch-unfollow](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-unfollow)
   ///
   Future<void> unfollowMany(
-    Iterable<Follow> unfollows, {
+    Iterable<UnFollowRelation> unfollows, {
     // TODO: seems to be Iterable<UnFollow> unfollows here
     required bool keepHistory,
   }) {
     final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
     return _batch.unfollowMany(
       token,
-      unfollows.map((e) => UnFollow.fromFollow(e, keepHistory)),
+      unfollows.map((e) => UnFollowRelation.fromFollow(e, keepHistory)),
     );
   }
 

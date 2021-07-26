@@ -8,26 +8,16 @@ part of 'follow.dart';
 
 Follow _$FollowFromJson(Map json) {
   return Follow(
-    json['source'] as String?,
-    json['target'] as String?,
+    feedId: json['feed_id'] as String,
+    targetId: json['target_id'] as String,
+    createdAt: DateTime.parse(json['created_at'] as String),
+    updatedAt: DateTime.parse(json['updated_at'] as String),
   );
 }
 
 Map<String, dynamic> _$FollowToJson(Follow instance) => <String, dynamic>{
-      'source': instance.source,
-      'target': instance.target,
-    };
-
-UnFollow _$UnFollowFromJson(Map json) {
-  return UnFollow(
-    json['source'] as String?,
-    json['target'] as String?,
-    json['keep_history'] as bool?,
-  );
-}
-
-Map<String, dynamic> _$UnFollowToJson(UnFollow instance) => <String, dynamic>{
-      'source': instance.source,
-      'target': instance.target,
-      'keep_history': instance.keepHistory,
+      'feed_id': instance.feedId,
+      'target_id': instance.targetId,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };
