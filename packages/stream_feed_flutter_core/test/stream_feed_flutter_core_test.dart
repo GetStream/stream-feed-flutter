@@ -19,7 +19,6 @@ class _TestWidgetState extends State<TestWidget> {
   }
 }
 
-
 void main() {
   testWidgets(
     'should render StreamFeedCore if both client and child is provided',
@@ -56,5 +55,4 @@ void main() {
       // expect(find.byKey(childKey), findsOneWidget);
     },
   );
-
 }

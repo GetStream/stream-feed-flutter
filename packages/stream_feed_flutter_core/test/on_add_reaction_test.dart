@@ -36,8 +36,8 @@ class _OnAddReactionWidgetState extends State<OnAddReactionWidget> {
   }
 }
 
-main(){
-    const kind = 'like';
+main() {
+  const kind = 'like';
   const foreignId = 'like:300';
   const activityId = 'activityId';
   const feedGroup = 'timeline:300';
