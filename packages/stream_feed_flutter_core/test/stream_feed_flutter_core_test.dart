@@ -24,17 +24,19 @@ void main() {
     (tester) async {
       final mockClient = MockClient();
       const streamFeedCoreKey = Key('streamFeedCore');
-      const childKey = Key('child');
+      final childKey = GlobalKey();
       final streamFeedCore = StreamFeedCore(
         key: streamFeedCoreKey,
         client: mockClient,
-        child: Offstage(key: childKey),
+        child: TestWidget(key: childKey),
       );
 
       await tester.pumpWidget(streamFeedCore);
 
       expect(find.byKey(streamFeedCoreKey), findsOneWidget);
       expect(find.byKey(childKey), findsOneWidget);
+      expect(
+          StreamFeedCore.of(childKey.currentState!.context).client, isNotNull);
     },
   );
   testWidgets(
@@ -46,8 +48,9 @@ void main() {
 
       expect(
           () => StreamFeedCore.of(childKey.currentState!.context),
-          throwsA(predicate<AssertionError>(
-              (e) => e.message == 'You must have a StreamFeed widget at the top of your widget tree')));
+          throwsA(predicate<AssertionError>((e) =>
+              e.message ==
+              'You must have a StreamFeed widget at the top of your widget tree')));
       // expect(find.byKey(childKey), findsOneWidget);
     },
   );
