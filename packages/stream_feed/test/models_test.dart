@@ -872,7 +872,7 @@ void main() {
   });
 
   test('Image', () {
-    const image = Image(
+    const image = OgImage(
         image: 'test',
         url: 'test',
         secureUrl: 'test',
@@ -881,12 +881,12 @@ void main() {
         type: 'test',
         alt: 'test');
     final imageJson = json.decode(fixture('image.json'));
-    final imageFromJson = Image.fromJson(imageJson);
+    final imageFromJson = OgImage.fromJson(imageJson);
     expect(imageFromJson, image);
   });
 
   test('Video', () {
-    const video = Video(
+    const video = OgVideo(
       image: 'test',
       url: 'test',
       secureUrl: 'test',
@@ -897,18 +897,18 @@ void main() {
     );
 
     final videoJson = json.decode(fixture('video.json'));
-    final videoFromJson = Video.fromJson(videoJson);
+    final videoFromJson = OgVideo.fromJson(videoJson);
     expect(videoFromJson, video);
   });
   test('Audio', () {
-    const audio = Audio(
+    const audio = OgAudio(
       audio: 'test',
       url: 'test',
       secureUrl: 'test',
       type: 'test',
     );
     final audioJson = json.decode(fixture('audio.json'));
-    final audioFromJson = Audio.fromJson(audioJson);
+    final audioFromJson = OgAudio.fromJson(audioJson);
     expect(audioFromJson, audio);
   });
 
@@ -923,7 +923,7 @@ void main() {
       determiner: 'test',
       locale: 'test',
       images: [
-        Image(
+        OgImage(
             image: 'test',
             url: 'test',
             secureUrl: 'test',
@@ -933,7 +933,7 @@ void main() {
             alt: 'test')
       ],
       videos: [
-        Video(
+        OgVideo(
           image: 'test',
           url: 'test',
           secureUrl: 'test',
@@ -944,7 +944,7 @@ void main() {
         )
       ],
       audios: [
-        Audio(
+        OgAudio(
           audio: 'test',
           url: 'test',
           secureUrl: 'test',

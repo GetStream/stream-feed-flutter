@@ -50,13 +50,13 @@ class OpenGraphData extends Equatable {
   final String? locale;
 
   ///	List of og images
-  final List<Image>? images;
+  final List<OgImage>? images;
 
   ///	List of og videos
-  final List<Video>? videos;
+  final List<OgVideo>? videos;
 
   ///	List of og audios
-  final List<Audio>? audios;
+  final List<OgAudio>? audios;
 
   @override
   List<Object?> get props => [
@@ -79,9 +79,9 @@ class OpenGraphData extends Equatable {
 
 /// OG Image object
 @JsonSerializable(createToJson: true)
-class Image extends Equatable {
+class OgImage extends Equatable {
   /// [Image] constructor
-  const Image({
+  const OgImage({
     this.image,
     this.url,
     this.secureUrl,
@@ -92,7 +92,8 @@ class Image extends Equatable {
   }); //TODO: rename this to OG Image
 
   /// Create a new instance from a json
-  factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
+  factory OgImage.fromJson(Map<String, dynamic> json) =>
+      _$OgImageFromJson(json);
 
   /// Value of the image OG field.
   final String? image;
@@ -127,14 +128,14 @@ class Image extends Equatable {
       ];
 
   /// Serialize to json
-  Map<String, dynamic> toJson() => _$ImageToJson(this);
+  Map<String, dynamic> toJson() => _$OgImageToJson(this);
 }
 
 /// OG Video object
 @JsonSerializable(createToJson: true)
-class Video extends Equatable {
+class OgVideo extends Equatable {
   /// [Video] constructor
-  const Video({
+  const OgVideo({
     this.image,
     this.url,
     this.secureUrl,
@@ -145,7 +146,8 @@ class Video extends Equatable {
   });
 
   /// Create a new instance from a json
-  factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
+  factory OgVideo.fromJson(Map<String, dynamic> json) =>
+      _$OgVideoFromJson(json);
 
   /// Value of the image OG field.
   final String? image;
@@ -180,14 +182,14 @@ class Video extends Equatable {
       ];
 
   /// Serialize to json
-  Map<String, dynamic> toJson() => _$VideoToJson(this);
+  Map<String, dynamic> toJson() => _$OgVideoToJson(this);
 }
 
 /// OG Audio object
 @JsonSerializable(createToJson: true)
-class Audio extends Equatable {
+class OgAudio extends Equatable {
   /// [Audio] constructor
-  const Audio({
+  const OgAudio({
     this.audio,
     this.url,
     this.secureUrl,
@@ -195,10 +197,11 @@ class Audio extends Equatable {
   });
 
   /// Create a new instance from a json
-  factory Audio.fromJson(Map<String, dynamic> json) => _$AudioFromJson(json);
+  factory OgAudio.fromJson(Map<String, dynamic> json) =>
+      _$OgAudioFromJson(json);
 
   /// Serialize to json the [Audio] object
-  Map<String, dynamic> toJson() => _$AudioToJson(this);
+  Map<String, dynamic> toJson() => _$OgAudioToJson(this);
 
   /// Value of the audio OG field.
   final String? audio;
