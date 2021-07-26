@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/textarea.dart';
-import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
+import 'package:stream_feed_flutter/src/widgets/status_update_controller.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';

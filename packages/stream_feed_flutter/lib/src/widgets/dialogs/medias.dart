@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:stream_feed_flutter/src/widgets/status_update_controller.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template medias_action}
@@ -25,21 +26,5 @@ class MediasAction extends StatelessWidget {
         await statusUpdateFormController.pickImage(source: ImageSource.gallery);
       },
     );
-  }
-}
-
-class StatusUpdateFormController extends ChangeNotifier {
-  StatusUpdateFormController(this._picker);
-  final ImagePicker _picker;
-  late String? lastPickedImage;
-
-  Future<void> pickImage({required ImageSource source}) async {
-    final xFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xFile != null) {
-      final imageURI = xFile.path;
-      print(imageURI);
-      lastPickedImage = imageURI;
-    }
-    notifyListeners();
   }
 }

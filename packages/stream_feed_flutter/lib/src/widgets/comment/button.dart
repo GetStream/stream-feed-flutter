@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/medias.dart';
+import 'package:stream_feed_flutter/src/widgets/status_update_controller.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template post_comment_button}
@@ -57,6 +58,7 @@ class PostCommentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveElevatedButton(
       onSend: (inputText) async {
+        print('tapped1');
         final streamFeed = StreamFeedCore.of(context);
         final trimmedText = inputText.trim();
         final lastPickedImage = statusUpdateFormController.lastPickedImage;
@@ -127,6 +129,7 @@ class _ReactiveElevatedButtonState extends State<ReactiveElevatedButton> {
 
   @override
   Widget build(BuildContext context) {
+    print('tapped');
     return StreamBuilder<String>(
         stream: _textUpdates.stream,
         builder: (context, snapshot) {
