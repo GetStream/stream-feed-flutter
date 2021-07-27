@@ -5,7 +5,11 @@ enum ButtonType { faded, info, primary } //TODO: info button
 class StyledTextButton extends StatelessWidget {
   //TODO: hmm probably replace this with elevatedButton
   final String label;
+
+  /// The callback called when you press the button
   final VoidCallback onPressed;
+
+  ///If it is a gradient or normal button
   final ButtonType type;
   StyledTextButton({
     required this.label,

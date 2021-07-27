@@ -31,8 +31,10 @@ class TextArea extends StatefulWidget {
 
   final String? hintText;
 
+  /// The text input style
   final TextStyle? inputTextStyle;
 
+  /// The hint text style
   final TextStyle? hintTextStyle;
 
   final void Function(String)? onSubmitted;

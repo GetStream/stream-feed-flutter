@@ -1,3 +1,11 @@
+
+# This is the default analysis_options.yaml for all packages and examples
+# If a package needs specific rules, create the analysis_options.yaml on it
+# include this file, like:
+#
+# include: ../../analysis_options.yaml
+#
+
 analyzer:
   exclude:
     - lib/**/*.g.dart

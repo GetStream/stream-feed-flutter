@@ -7,7 +7,7 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class UserBar extends StatelessWidget {
-  final User? user;
+  final User user;
   final OnUserTap? onUserTap;
   final Widget? reactionIcon;
   final Widget? afterUsername;
@@ -22,7 +22,7 @@ class UserBar extends StatelessWidget {
     Key? key,
     required this.timestamp,
     required this.kind,
-    this.user,
+    required this.user,
     this.onUserTap,
     this.reactionIcon,
     this.afterUsername,
@@ -55,12 +55,9 @@ class UserBar extends StatelessWidget {
                             ReactionByIcon(
                               kind: kind,
                             ),
-                        handleOrUsername: //TODO: handle no handle or name
-                            user?.data?[handleJsonKey] as String? ??
-                                user?.data?[nameJsonKey] as String
-                        //"rosemary"
-
-                        ),
+                        handleOrUsername:
+                            user.data?[handleJsonKey] as String? ??
+                                user.data?[nameJsonKey] as String),
             ],
           ),
         ),
@@ -109,13 +106,8 @@ class ReactedBy extends StatelessWidget {
 }
 
 class ReactionByIcon extends StatelessWidget {
-  ReactionByIcon({
-    Key? key,
-    required this.kind,
-    this.icon,
-  }) : super(key: key);
+  ReactionByIcon({Key? key, required this.kind}) : super(key: key);
   final String kind;
-  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {

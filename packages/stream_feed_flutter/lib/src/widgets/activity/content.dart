@@ -9,11 +9,13 @@ class ActivityContent extends StatelessWidget {
   final EnrichedActivity activity;
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
+  final String commentJsonKey;
 
   const ActivityContent({
     Key? key,
     required this.activity,
     this.onMentionTap,
+    this.commentJsonKey = 'comment',
     this.onHashtagTap,
   }) : super(key: key);
 
@@ -24,9 +26,9 @@ class ActivityContent extends StatelessWidget {
     final attachments =
         activity.extraData?['attachments']; //TODO: attachment builder
     final taggedText = activityObject != null
-        ? detector.parseText(
-            EnrichableField.serialize(activityObject) as String) //TODO: ugly
-        : <TaggedText?>[];
+        ? detector.parseText((EnrichableField.serialize(activityObject)
+            as Map<String, Object?>)[commentJsonKey] as String) //TODO: ugly
+        : <TaggedText>[];
     return Column(
       children: [
         Wrap(
