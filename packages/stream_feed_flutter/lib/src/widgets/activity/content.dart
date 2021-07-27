@@ -26,8 +26,8 @@ class ActivityContent extends StatelessWidget {
     final attachments =
         activity.extraData?['attachments']; //TODO: attachment builder
     final taggedText = activityObject != null
-        ? detector.parseText((EnrichableField.serialize(activityObject)
-            as Map<String, Object?>)[commentJsonKey] as String) //TODO: ugly
+        ? detector.parseText(
+            EnrichableField.serialize(activityObject) as String) //TODO: ugly
         : <TaggedText>[];
     return Column(
       children: [
