@@ -7,12 +7,12 @@ import '../../utils/typedefs.dart';
 
 class Avatar extends StatelessWidget {
   const Avatar({
-      Key? key,
-      this.user,
-      this.jsonKey = 'profile_image',
-      this.size = 46,
-      this.onUserTap,
-   }) : super(key: key);
+    Key? key,
+    this.user,
+    this.jsonKey = 'profile_image',
+    this.size = 46,
+    this.onUserTap,
+  }) : super(key: key);
 
   /// The [User] we want to display the avatar
   final User? user;
@@ -23,7 +23,7 @@ class Avatar extends StatelessWidget {
   final double size;
 
   final OnUserTap? onUserTap;
-  
+
   @override
   Widget build(BuildContext context) {
     final profileUrl = user?.data?[jsonKey];
