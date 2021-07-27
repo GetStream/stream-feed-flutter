@@ -96,15 +96,37 @@ class StreamFeedCoreState extends State<StreamFeedCore>
 
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
 
-  Future<void> onAddReaction(
+  Future<Reaction> onAddReaction(
       {Map<String, Object>? data,
       required String kind,
       required EnrichedActivity activity,
       List<FeedId>? targetFeeds,
       required String feedGroup}) async {
-    await client.reactions
+    final reaction = await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
-    await trackAnalytics(label: kind, activity: activity, feedGroup: feedGroup);
+    await trackAnalytics(
+        label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
+    return reaction;
+  }
+
+  Future<Activity> onAddActivity(
+      {required String feedGroup,
+      Map<String, String>? data,
+      required String verb,
+      required String object,
+      String? userId}) async {
+    final activity = Activity(
+      actor: client.currentUser?.ref,
+      verb: verb,
+      object: object,
+      extraData: data,
+    );
+
+    final addedActivity =
+        await client.flatFeed(feedGroup, userId).addActivity(activity);
+    await trackAnalytics(
+        label: 'post', foreignId: activity.foreignId, feedGroup: feedGroup);
+    return addedActivity;
   }
 
   Future<void> onRemoveReaction(
@@ -114,18 +136,30 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required String feedGroup}) async {
     await client.reactions.delete(id);
     await trackAnalytics(
-        label: 'un$kind', activity: activity, feedGroup: feedGroup);
+        label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
 
   Future<void> trackAnalytics(
       {required String label,
-      required EnrichedActivity activity,
+      required foreignId,
       required String feedGroup}) async {
     await analyticsClient!.trackEngagement(Engagement(
-        content: Content(foreignId: FeedId.fromId(activity.foreignId)),
+        content: Content(foreignId: FeedId.fromId(foreignId)),
         label: label,
         feedId: FeedId.fromId(feedGroup)));
   }
+
+  Future<List<EnrichedActivity>> getEnrichedActivities({
+    required String feedGroup,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
+    String? userId,
+  }) async =>
+      await client.flatFeed(feedGroup, userId).getEnrichedActivities();
 
   @override
   void initState() {

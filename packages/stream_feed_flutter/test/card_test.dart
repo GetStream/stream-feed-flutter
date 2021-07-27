@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:stream_feed_flutter/src/card.dart';
+import 'package:stream_feed_flutter/src/widgets/og/card.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 void main() {
   final logs = <String>[];
@@ -24,11 +25,25 @@ void main() {
   });
   testWidgets('Card', (tester) async {
     await mockNetworkImages(() async {
-      final _url = 'http://example.com/';
+      final title =
+          "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'";
+      final description =
+          'Why choose one when you can wear both? These energizing pairings stand out from the crowd';
+
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
         body: StreamFeedCard(
-          og: OpenGraphData(url: _url, images: [OgImage(secureUrl: _url)]),
+          og: OpenGraphData(
+              title: title,
+              url:
+                  'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+              description: description,
+              images: [
+                OgImage(
+                  image:
+                      'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+                )
+              ]),
         ),
       )));
 
@@ -42,8 +57,13 @@ void main() {
       expect(image, findsOneWidget);
 
       await tester.tap(inkwell);
-      expect(logs,
-          ['canLaunch', 'launch']); //TODO: hmm find a better way to do this
+      expect(logs, [
+        'canLaunch',
+        'launch'
+      ]); //TODO: hmm there might be a better way to do this
+
+      final richtexts = tester.widgetList<Text>(find.byType(Text));
+      expect(richtexts.toList().map((e) => e.data), [title, description]);
     });
   });
 

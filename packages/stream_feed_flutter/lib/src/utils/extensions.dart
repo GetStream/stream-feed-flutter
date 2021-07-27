@@ -27,15 +27,15 @@ extension TagX on Tag {
 
   TextStyle style() => <Tag, TextStyle>{
         Tag.hashtag: TextStyle(
-            inherit: true,
-            color: Color(0xff7a8287),
-            fontSize: 14,
-            fontWeight: FontWeight.w600),
+          inherit: true,
+          color: Color(0xff0076ff),
+          fontSize: 14,
+        ),
         Tag.mention: TextStyle(
-            inherit: true,
-            color: Color(0xff095482),
-            fontSize: 14,
-            fontWeight: FontWeight.w600),
+          inherit: true,
+          color: Color(0xff0076ff),
+          fontSize: 14,
+        ),
         Tag.normalText: TextStyle(
             inherit: true,
             color: Color(0xff095482),

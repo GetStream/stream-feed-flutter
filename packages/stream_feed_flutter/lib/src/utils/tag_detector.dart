@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'extensions.dart';
 import 'package:stream_feed/stream_feed.dart' show MapX;
 
-enum Tag { hashtag, mention, normalText }
+enum Tag { hashtag, mention, normalText } //TODO: url
 
 class TaggedText extends Equatable {
   final Tag tag;

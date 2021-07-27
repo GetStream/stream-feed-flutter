@@ -5,6 +5,7 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 
 import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 part 'realtime_message.g.dart';
 
@@ -16,7 +17,7 @@ class RealtimeMessage extends Equatable {
     required this.feed,
     this.deleted = const <String>[],
     this.deletedForeignIds = const <ForeignIdTimePair>[],
-    this.newActivities = const <Activity>[],
+    this.newActivities = const <EnrichedActivity>[],
     this.appId,
     this.publishedAt,
   });
@@ -45,7 +46,7 @@ class RealtimeMessage extends Equatable {
 
   /// All activities created by this update
   @JsonKey(name: 'new')
-  final List<Activity> newActivities;
+  final List<EnrichedActivity> newActivities;
 
   /// Time of the update in ISO format
   @JsonKey(includeIfNull: false)

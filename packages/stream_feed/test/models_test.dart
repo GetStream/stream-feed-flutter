@@ -126,7 +126,38 @@ void main() {
       });
     });
   });
+  group('RealtimeMessage', () {
+    test('fromJson', () {
+      final fromJson =
+          RealtimeMessage.fromJson(jsonFixture('realtime_message.json'));
 
+      expect(
+          fromJson,
+          RealtimeMessage(
+              deleted: [],
+              deletedForeignIds: [],
+              feed: FeedId.fromId('reward:1'),
+              newActivities: [
+                EnrichedActivity(
+                    actor: EnrichableField('reward:1'),
+                    id: 'f3de8328-be2d-11eb-bb18-128a130028af',
+                    extraData: {
+                      'message':
+                          "@Jessica check out getstream.io it's so dang awesome.",
+                    },
+                    origin: EnrichableField(null),
+                    target: EnrichableField(null),
+                    object: EnrichableField('tweet:id'),
+                    time: DateTime.parse('2021-05-26T14:23:33.918391'),
+                    to: ['notification:jessica'],
+                    verb: 'tweet')
+              ]));
+    });
+
+    test('issue-89', () {
+      RealtimeMessage.fromJson(jsonFixture('realtime_message_issue89.json'));
+    });
+  });
   test('EnrichedActivity issue 61', () {
     final enrichedActivity = EnrichedActivity.fromJson(
         jsonFixture('enriched_activity_issue61.json'));
@@ -870,125 +901,159 @@ void main() {
       });
     });
   });
-
-  test('Image', () {
-    const image = OgImage(
-        image: 'test',
-        url: 'test',
-        secureUrl: 'test',
-        width: 'test',
-        height: 'test',
-        type: 'test',
-        alt: 'test');
-    final imageJson = json.decode(fixture('image.json'));
-    final imageFromJson = OgImage.fromJson(imageJson);
-    expect(imageFromJson, image);
-  });
-
-  test('Video', () {
-    const video = OgVideo(
-      image: 'test',
-      url: 'test',
-      secureUrl: 'test',
-      width: 'test',
-      height: 'test',
-      type: 'test',
-      alt: 'test',
-    );
-
-    final videoJson = json.decode(fixture('video.json'));
-    final videoFromJson = OgVideo.fromJson(videoJson);
-    expect(videoFromJson, video);
-  });
-  test('Audio', () {
-    const audio = OgAudio(
-      audio: 'test',
-      url: 'test',
-      secureUrl: 'test',
-      type: 'test',
-    );
-    final audioJson = json.decode(fixture('audio.json'));
-    final audioFromJson = OgAudio.fromJson(audioJson);
-    expect(audioFromJson, audio);
-  });
-
-  test('OpenGraphData', () {
-    const openGraphData = OpenGraphData(
-      title: 'test',
-      type: 'test',
-      url: 'test',
-      site: 'test',
-      siteName: 'test',
-      description: 'test',
-      determiner: 'test',
-      locale: 'test',
-      images: [
-        OgImage(
-            image: 'test',
-            url: 'test',
-            secureUrl: 'test',
-            width: 'test',
-            height: 'test',
-            type: 'test',
-            alt: 'test')
-      ],
-      videos: [
-        OgVideo(
+  group('OG', () {
+    test('Image', () {
+      const image = OgImage(
           image: 'test',
           url: 'test',
           secureUrl: 'test',
           width: 'test',
           height: 'test',
           type: 'test',
-          alt: 'test',
-        )
-      ],
-      audios: [
-        OgAudio(
-          audio: 'test',
-          url: 'test',
-          secureUrl: 'test',
-          type: 'test',
-        )
-      ],
-    );
-    final openGraphDataJson = json.decode(fixture('open_graph_data.json'));
-    final openGraphDataFromJson = OpenGraphData.fromJson(openGraphDataJson);
-    expect(openGraphDataFromJson, openGraphData);
-    expect(openGraphData.toJson(), {
-      'title': 'test',
-      'type': 'test',
-      'url': 'test',
-      'site': 'test',
-      'site_name': 'test',
-      'description': 'test',
-      'determiner': 'test',
-      'locale': 'test',
-      'images': [
-        {
-          'image': 'test',
-          'url': 'test',
-          'secure_url': 'test',
-          'width': 'test',
-          'height': 'test',
-          'type': 'test',
-          'alt': 'test'
-        }
-      ],
-      'videos': [
-        {
-          'image': 'test',
-          'url': 'test',
-          'secure_url': 'test',
-          'width': 'test',
-          'height': 'test',
-          'type': 'test',
-          'alt': 'test'
-        }
-      ],
-      'audios': [
-        {'audio': 'test', 'url': 'test', 'secure_url': 'test', 'type': 'test'}
-      ]
+          alt: 'test');
+      final imageJson = json.decode(fixture('image.json'));
+      final imageFromJson = OgImage.fromJson(imageJson);
+      expect(imageFromJson, image);
+    });
+
+    test('Video', () {
+      const video = OgVideo(
+        image: 'test',
+        url: 'test',
+        secureUrl: 'test',
+        width: 'test',
+        height: 'test',
+        type: 'test',
+        alt: 'test',
+      );
+
+      final videoJson = json.decode(fixture('video.json'));
+      final videoFromJson = OgVideo.fromJson(videoJson);
+      expect(videoFromJson, video);
+    });
+    test('Audio', () {
+      const audio = OgAudio(
+        audio: 'test',
+        url: 'test',
+        secureUrl: 'test',
+        type: 'test',
+      );
+      final audioJson = json.decode(fixture('audio.json'));
+      final audioFromJson = OgAudio.fromJson(audioJson);
+      expect(audioFromJson, audio);
+    });
+
+    test('OpenGraphData', () {
+      const openGraphData = OpenGraphData(
+        title: 'test',
+        type: 'test',
+        url: 'test',
+        site: 'test',
+        siteName: 'test',
+        description: 'test',
+        determiner: 'test',
+        locale: 'test',
+        images: [
+          OgImage(
+              image: 'test',
+              url: 'test',
+              secureUrl: 'test',
+              width: 'test',
+              height: 'test',
+              type: 'test',
+              alt: 'test')
+        ],
+        videos: [
+          OgVideo(
+            image: 'test',
+            url: 'test',
+            secureUrl: 'test',
+            width: 'test',
+            height: 'test',
+            type: 'test',
+            alt: 'test',
+          )
+        ],
+        audios: [
+          OgAudio(
+            audio: 'test',
+            url: 'test',
+            secureUrl: 'test',
+            type: 'test',
+          )
+        ],
+      );
+      final openGraphDataJson = json.decode(fixture('open_graph_data.json'));
+      final openGraphDataFromJson = OpenGraphData.fromJson(openGraphDataJson);
+      expect(openGraphDataFromJson, openGraphData);
+      expect(openGraphData.toJson(), {
+        'title': 'test',
+        'type': 'test',
+        'url': 'test',
+        'site': 'test',
+        'site_name': 'test',
+        'description': 'test',
+        'determiner': 'test',
+        'locale': 'test',
+        'images': [
+          {
+            'image': 'test',
+            'url': 'test',
+            'secure_url': 'test',
+            'width': 'test',
+            'height': 'test',
+            'type': 'test',
+            'alt': 'test'
+          }
+        ],
+        'videos': [
+          {
+            'image': 'test',
+            'url': 'test',
+            'secure_url': 'test',
+            'width': 'test',
+            'height': 'test',
+            'type': 'test',
+            'alt': 'test'
+          }
+        ],
+        'audios': [
+          {'audio': 'test', 'url': 'test', 'secure_url': 'test', 'type': 'test'}
+        ]
+      });
+    });
+
+    test('activity acttachment', () {
+      final openGraph = OpenGraphData(
+          title:
+              "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+          url:
+              'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+          description:
+              'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+          images: [
+            OgImage(
+              image:
+                  'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+            )
+          ]);
+
+      expect(
+          openGraph,
+          OpenGraphData.fromJson({
+            'description':
+                'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+            'title':
+                "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+            'url':
+                'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+            'images': [
+              {
+                'image':
+                    'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+              },
+            ],
+          }));
     });
   });
 
