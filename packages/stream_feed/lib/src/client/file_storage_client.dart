@@ -1,5 +1,6 @@
 import 'package:stream_feed/src/core/api/files_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/http/typedefs.dart';
 import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -40,12 +41,13 @@ class FileStorageClient {
   /// await files.upload(multipartFile);
   /// ```
   /// API docs: [upload](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#upload)
-  Future<String?> upload(AttachmentFile file) async {
+  Future<String?> upload(AttachmentFile file,
+      {OnSendProgress? onSendProgress}) async {
     //TODO: params onSendProgress: onSendProgress,
     // cancelToken: cancelToken,
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
-    return _files.upload(token, file);
+    return _files.upload(token, file, onSendProgress: onSendProgress);
   }
 
   /// Delete a file using the url returned by the APIs
