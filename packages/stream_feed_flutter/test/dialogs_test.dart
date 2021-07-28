@@ -87,8 +87,7 @@ main() {
           child: Directionality(
         textDirection: TextDirection.ltr,
         child: AlertDialogActions(
-                   statusUpdateFormController:
-                StatusUpdateFormController(ImagePicker()),
+          statusUpdateFormController: StatusUpdateFormController(ImagePicker()),
           feedGroup: 'user',
           textEditingController: TextEditingController(),
         ),
@@ -136,8 +135,8 @@ main() {
             await tester.pumpWidget(MaterialApp(
               home: Scaffold(
                 body: CommentView(
-                           statusUpdateFormController:
-                StatusUpdateFormController(ImagePicker()),
+                  statusUpdateFormController:
+                      StatusUpdateFormController(ImagePicker()),
                   feedGroup: 'user',
                   activity: EnrichedActivity(
                     time: DateTime.now(),
@@ -171,8 +170,8 @@ main() {
             await tester.pumpWidget(MaterialApp(
               home: Scaffold(
                 body: CommentView(
-                           statusUpdateFormController:
-                StatusUpdateFormController(ImagePicker()),
+                  statusUpdateFormController:
+                      StatusUpdateFormController(ImagePicker()),
                   feedGroup: 'user',
                   textEditingController: TextEditingController(),
                 ),
