@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/images_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/http/typedefs.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
@@ -48,12 +50,17 @@ class ImageStorageClient {
   /// await client.images.upload(multipartFile);
   /// ```
   /// API docs: https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?q=Image
-  Future<String?> upload(AttachmentFile image) {
+  Future<String?> upload(
+    AttachmentFile image, {
+    OnSendProgress? onSendProgress,
+    CancelToken? cancelToken,
+  }) {
     //TODO: params onSendProgress: onSendProgress,
     // cancelToken: cancelToken,
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
-    return _images.upload(token, image);
+    return _images.upload(token, image,
+        onSendProgress: onSendProgress, cancelToken: cancelToken);
   }
 
   /// Images can be deleted using their URL.
