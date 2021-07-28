@@ -31,16 +31,29 @@ class FileStorageClient {
   final Token? userToken;
   final FilesAPI _files;
 
-  /// Upload a File instance or a readable stream of data
+  /// - Upload a File instance or a readable stream of data
   /// Usage:
   /// ```dart
-  ///   final file = File('yourfilepath');
-  /// var multipartFile = await MultipartFile.fromFile(
-  ///   file.path,
-  ///   filename: 'my-file'
-  /// );
-  /// await files.upload(multipartFile);
+  /// await files.upload(AttachmentFile(path: 'yourfilepath'));
   /// ```
+  /// - To cancel the upload, call `token.cancel('cancelled)`. For example
+  /// ```dart
+  ///  var token = CancelToken();
+  ///   // In one minute, we cancel!
+  ///   Timer(Duration(milliseconds: 500), () {
+  ///     token.cancel('cancelled');
+  ///   });
+  ///   await files.upload(AttachmentFile(path: 'yourfilepath'), token);
+  /// ```
+  /// - To get upload progress:
+  /// ```dart
+  ///  await files.upload(AttachmentFile(path: 'yourfilepath'), onSendProgress:(sentBytes,totalBytes){
+  ///    if (totalBytes != -1) {
+  ///       print((sentBytes / total * 100).toStringAsFixed(0) + '%');
+  ///     }
+  ///  });
+  /// ```
+  ///
   /// API docs: [upload](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#upload)
   Future<String?> upload(
     AttachmentFile file, {
