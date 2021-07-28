@@ -48,7 +48,7 @@ main() {
         Reaction(id: 'id', kind: kind, activityId: activityId, data: data);
     final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
 
-    // when(() => mockClient.reactions).thenReturn(mockReactions);
+    when(() => mockClient.reactions).thenReturn(mockReactions);
     when(() => mockClient.files).thenReturn(mockfiles);
     when(() => controller.lastPickedImage).thenReturn(lastPickedImage);
     when(() => mockfiles.upload(AttachmentFile(path: lastPickedImage)))
@@ -67,21 +67,18 @@ main() {
         ),
       ),
     )));
-    // final textFieldWidget = find.byType(TextField);
-    // await tester.enterText(textFieldWidget, 'Soup');
-    // await tester.testTextInput.receiveAction(TextInputAction.done);
 
     expect(textEditingController.value.text, 'Soup');
     final postCommentButton = find.text('Respond');
     expect(postCommentButton, findsOneWidget);
     final button = find.byType(ReactiveElevatedButton);
     expect(button, findsOneWidget);
-        await tester.pumpAndSettle();
-    await tester.tap(button);
     await tester.pumpAndSettle();
-    // verify(()=>controller.lastPickedImage).called(1);
-    // verify(() => mockfiles.upload(AttachmentFile(path: lastPickedImage)))
-    //     .called(1);
-    // verify(() => mockReactions.add(kind, activityId, data: data)).called(1);
+    await tester.tap(button);
+
+    verify(() => controller.lastPickedImage).called(1);
+    verify(() => mockfiles.upload(AttachmentFile(path: lastPickedImage)))
+        .called(1);
+    verify(() => mockReactions.add(kind, activityId, data: data)).called(1);
   });
 }

@@ -57,8 +57,8 @@ class PostCommentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveElevatedButton(
+      textEditingController: textEditingController,
       onSend: (inputText) async {
-        print('tapped1');
         final streamFeed = StreamFeedCore.of(context);
         final trimmedText = inputText.trim();
         final lastPickedImage = statusUpdateFormController.lastPickedImage;
@@ -88,12 +88,11 @@ class PostCommentButton extends StatelessWidget {
       },
 
       label: activity != null ? 'Respond' : 'Post', //TODO: i18n
-      textEditingController: textEditingController,
     );
   }
 }
 
-typedef OnSend = Function(String inputText);
+typedef OnSend = Future<void> Function(String inputText);
 
 class ReactiveElevatedButton extends StatefulWidget {
   final TextEditingController textEditingController;
@@ -112,24 +111,26 @@ class ReactiveElevatedButton extends StatefulWidget {
 
 class _ReactiveElevatedButtonState extends State<ReactiveElevatedButton> {
   late final StreamController<String> _textUpdates = StreamController<String>();
-
+  late TextEditingController _textEditingController;
   @override
   void initState() {
     super.initState();
-    widget.textEditingController.addListener(() {
-      _textUpdates.add(widget.textEditingController.value.text);
+    _textEditingController = widget.textEditingController;
+    _textUpdates.add(_textEditingController.value.text);
+    _textEditingController.addListener(() {
+      _textUpdates.add(_textEditingController.value.text);
     });
   }
 
   @override
   void dispose() {
     _textUpdates.close();
+    _textEditingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('tapped');
     return StreamBuilder<String>(
         stream: _textUpdates.stream,
         builder: (context, snapshot) {

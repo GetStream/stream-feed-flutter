@@ -10,7 +10,6 @@ class StatusUpdateFormController extends ChangeNotifier {
     final xFile = await _picker.pickImage(source: ImageSource.gallery);
     if (xFile != null) {
       final imageURI = xFile.path;
-      print(imageURI);
       lastPickedImage = imageURI;
     }
     notifyListeners();
