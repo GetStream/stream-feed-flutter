@@ -87,46 +87,45 @@ main() {
 
   testWidgets('CommentField', (WidgetTester tester) async {
     final key = GlobalKey();
+    final controller = MockStatusUpdateFormController();
     final mockClient = MockStreamFeedClient();
     final mockReactions = MockReactions();
-    final mockStreamAnalytics = MockStreamAnalytics();
-    when(() => mockClient.reactions).thenReturn(mockReactions);
-    const foreignId = 'like:300';
-    const activityId = 'activityId';
-    const feedGroup = 'whatever:300';
+    final mockfiles = MockFiles();
     const kind = 'comment';
+    const activityId = 'activityId';
+    const foreignId = 'like:300';
+    const lastPickedImage = 'dummyPath';
+    const uploadedImageUrl = 'dummyImageUrl';
     const textInput = 'Soup';
-    const reaction = Reaction(
-      kind: kind,
-      activityId: activityId,
-      data: {'text': textInput},
-    );
+    final data = {
+      'text': 'Soup',
+      'attachments': OpenGraphData(images: [
+        OgImage(
+          image: uploadedImageUrl,
+        )
+      ]).toJson(),
+    };
+    final reaction =
+        Reaction(id: 'id', kind: kind, activityId: activityId, data: data);
     final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
-    const label = kind;
-    final engagement = Engagement(
-        content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-        label: label,
-        feedId: FeedId.fromId(feedGroup));
 
-    when(() => mockReactions.add(
-          kind,
-          activityId,
-          data: {'text': textInput},
-        )).thenAnswer((_) async => reaction);
-
-    when(() => mockStreamAnalytics.trackEngagement(engagement))
-        .thenAnswer((_) async => Future.value());
+    when(() => mockClient.reactions).thenReturn(mockReactions);
+    when(() => mockClient.files).thenReturn(mockfiles);
+    when(() => controller.lastPickedImage).thenReturn(lastPickedImage);
+    when(() => mockfiles.upload(AttachmentFile(path: lastPickedImage)))
+        .thenAnswer((_) async => uploadedImageUrl);
+    when(() => mockReactions.add(kind, activityId, data: data))
+        .thenAnswer((_) async => reaction);
     final textEditingController = TextEditingController();
 
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
       body: StreamFeedCore(
-        analyticsClient: mockStreamAnalytics,
         client: mockClient,
         child: CommentField(
-          statusUpdateFormController: StatusUpdateFormController(ImagePicker()),
+          statusUpdateFormController: controller,
           key: key,
-          feedGroup: feedGroup,
+          feedGroup: 'user',
           activity: activity,
           textEditingController: textEditingController,
         ),
@@ -148,8 +147,10 @@ main() {
     expect(textEditingController.value.text, textInput);
 
     await tester.tap(button);
+    verify(() => controller.lastPickedImage).called(1);
+
     verify(() => mockClient.reactions.add(kind, activityId)).called(1);
-    verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+    // verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
   });
 
   testWidgets('TextArea', (WidgetTester tester) async {
