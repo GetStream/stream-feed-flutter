@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-
 import 'package:stream_feed/src/core/exceptions.dart';
+import 'package:stream_feed/src/core/http/typedefs.dart';
+import 'package:stream_feed/src/core/location.dart';
+import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/version.dart';
-import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
-import 'package:stream_feed/src/core/location.dart';
 
 part 'stream_http_client_options.dart';
 
@@ -84,19 +84,19 @@ class StreamHttpClient {
   }
 
   /// Handy method to make http POST request with error parsing.
-  Future<Response<T>> post<T>(
-    String path, {
-    String serviceName = 'api',
-    Object? data,
-    Map<String, Object?>? queryParameters,
-    Map<String, Object?>? headers,
-  }) async {
+  Future<Response<T>> post<T>(String path,
+      {String serviceName = 'api',
+      Object? data,
+      Map<String, Object?>? queryParameters,
+      Map<String, Object?>? headers,
+      OnSendProgress? onSendProgress}) async {
     try {
       final response = await httpClient.post<T>(
         enrichUrl(path, serviceName),
         queryParameters: queryParameters?.nullProtected,
         data: data,
         options: Options(headers: headers?.nullProtected),
+        onSendProgress: onSendProgress,
       );
       return response;
     } on DioError catch (error) {
@@ -172,6 +172,7 @@ class StreamHttpClient {
     String serviceName = 'api',
     Map<String, Object?>? queryParameters,
     Map<String, Object?>? headers,
+    OnSendProgress? onSendProgress,
   }) async {
     try {
       final formData = FormData.fromMap({'file': file});
@@ -181,6 +182,7 @@ class StreamHttpClient {
         data: formData,
         queryParameters: queryParameters,
         headers: headers,
+        onSendProgress:onSendProgress
       );
       return response;
     } on DioError catch (error) {
