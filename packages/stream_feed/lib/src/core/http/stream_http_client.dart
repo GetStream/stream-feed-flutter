@@ -105,23 +105,22 @@ class StreamHttpClient {
   }
 
   /// Handy method to make http POST request with error parsing.
-  Future<Response<T>> post<T>(String path,
-      {String serviceName = 'api',
-      Object? data,
-      Map<String, Object?>? queryParameters,
-      Map<String, Object?>? headers,
-      OnSendProgress? onSendProgress,
-      CancelToken? cancelToken,
-      }) async {
+  Future<Response<T>> post<T>(
+    String path, {
+    String serviceName = 'api',
+    Object? data,
+    Map<String, Object?>? queryParameters,
+    Map<String, Object?>? headers,
+    OnSendProgress? onSendProgress,
+    CancelToken? cancelToken,
+  }) async {
     try {
-      final response = await httpClient.post<T>(
-        enrichUrl(path, serviceName),
-        queryParameters: queryParameters?.nullProtected,
-        data: data,
-        options: Options(headers: headers?.nullProtected),
-        onSendProgress: onSendProgress,
-        cancelToken:cancelToken
-      );
+      final response = await httpClient.post<T>(enrichUrl(path, serviceName),
+          queryParameters: queryParameters?.nullProtected,
+          data: data,
+          options: Options(headers: headers?.nullProtected),
+          onSendProgress: onSendProgress,
+          cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {
       throw _parseError(error);
@@ -190,26 +189,21 @@ class StreamHttpClient {
   }
 
   /// Handy method to post files with error parsing.
-  Future<Response<T>> postFile<T>(
-    String path,
-    MultipartFile file, {
-    String serviceName = 'api',
-    Map<String, Object?>? queryParameters,
-    Map<String, Object?>? headers,
-    OnSendProgress? onSendProgress,
-    CancelToken? cancelToken
-  }) async {
+  Future<Response<T>> postFile<T>(String path, MultipartFile file,
+      {String serviceName = 'api',
+      Map<String, Object?>? queryParameters,
+      Map<String, Object?>? headers,
+      OnSendProgress? onSendProgress,
+      CancelToken? cancelToken}) async {
     try {
       final formData = FormData.fromMap({'file': file});
-      final response = await post<T>(
-        path,
-        serviceName: serviceName,
-        data: formData,
-        queryParameters: queryParameters,
-        headers: headers,
-        onSendProgress:onSendProgress,
-        cancelToken:cancelToken
-      );
+      final response = await post<T>(path,
+          serviceName: serviceName,
+          data: formData,
+          queryParameters: queryParameters,
+          headers: headers,
+          onSendProgress: onSendProgress,
+          cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {
       throw _parseError(error);
