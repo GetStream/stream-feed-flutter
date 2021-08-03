@@ -5,7 +5,6 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/text.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
@@ -286,29 +285,5 @@ void main() {
       );
       await screenMatchesGolden(tester, 'repost');
     });
-  });
-
-  testGoldens('StyledTextButton', (tester) async {
-    final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
-      ..addScenario(
-          'Button primary',
-          StyledTextButton(
-            label: 'Follow',
-            onPressed: () {},
-            type: ButtonType.primary,
-          ))
-      ..addScenario(
-          'Button faded',
-          StyledTextButton(
-            label: 'Following',
-            onPressed: () {},
-            type: ButtonType.faded,
-          ));
-
-    await tester.pumpWidgetBuilder(
-      builder.build(),
-      surfaceSize: const Size(200, 150),
-    );
-    await screenMatchesGolden(tester, 'buttons_grid');
   });
 }
