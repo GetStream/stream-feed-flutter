@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
@@ -27,9 +25,6 @@ class ChildReactionButton extends StatelessWidget {
   ///The reaction received from stream that should be liked when pressing the LikeButton.
   final Reaction? reaction;
 
-  /// The activity received from stream that should be liked when pressing the LikeButton.
-  // final EnrichedActivity activity;
-
   ///If you want to override on tap for some reasons
   final VoidCallback? onTap;
 
@@ -54,10 +49,8 @@ class ChildReactionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChildReactionToggleIcon(
-      count:
-          reaction?.childrenCounts?[kind],
-      ownReactions:
-          reaction?.ownChildren?[kind], 
+      count: reaction?.childrenCounts?[kind],
+      ownReactions: reaction?.ownChildren?[kind],
       reaction: reaction,
       activeIcon: activeIcon,
       inactiveIcon: inactiveIcon,
@@ -91,7 +84,6 @@ class ChildReactionToggleIcon extends StatefulWidget {
 
   /// The group/slug of the feed
   final String feedGroup;
-  // final EnrichedActivity activity;
   final String? userId;
   final Map<String, Object>? data;
   final List<FeedId>? targetFeeds;
@@ -103,7 +95,6 @@ class ChildReactionToggleIcon extends StatefulWidget {
     required this.activeIcon,
     required this.inactiveIcon,
     required this.kind,
-    // required this.activity,
     this.targetFeeds,
     this.data,
     this.onTap,

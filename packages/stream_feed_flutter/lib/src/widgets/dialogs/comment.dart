@@ -106,10 +106,9 @@ class CommentView extends StatelessWidget {
             feedGroup: feedGroup,
           ),
           //TODO: builder for using it elsewhere than in actions
-          if (enableReactions)
+          if (enableReactions && activity != null)
             ReactionListPage(
-                feedGroup: feedGroup,
-                activity: activity,
+                activity: activity!,
                 onReactionTap: onReactionTap,
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,
@@ -117,7 +116,7 @@ class CommentView extends StatelessWidget {
                 flags: EnrichmentFlags()
                     .withReactionCounts()
                     .withOwnChildren()
-                    .withOwnReactions(), //TODO: refactor this
+                    .withOwnReactions(), //TODO: refactor this?
                 reactionBuilder: (context, reaction) => CommentItem(
                       user: reaction.user,
                       reaction: reaction,

@@ -7,27 +7,29 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// {@endtemplate}
 class ReactionListPage extends StatelessWidget {
   ///{@macro reaction_list_page}
-  const ReactionListPage(
-      {Key? key,
-      required this.feedGroup,
-      required this.activity,
-      required this.onReactionTap,
-      required this.onHashtagTap,
-      required this.onMentionTap,
-      required this.onUserTap,
-      required this.reactionBuilder,
-      this.flags,
-      this.onErrorWidget = const ErrorStateWidget(),
-      this.onProgressWidget = const ProgressStateWidget(),
-      this.onEmptyWidget =
-          const EmptyStateWidget(message: 'No comments to display')})
-      : super(key: key);
-
-  /// The group/slug of the feed we want to display notifications for.
-  final String feedGroup;
+  ReactionListPage({
+    Key? key,
+    required this.activity,
+    required this.onReactionTap,
+    required this.onHashtagTap,
+    required this.onMentionTap,
+    required this.onUserTap,
+    required this.reactionBuilder,
+    this.onErrorWidget = const ErrorStateWidget(),
+    this.onProgressWidget = const ProgressStateWidget(),
+    this.onEmptyWidget =
+        const EmptyStateWidget(message: 'No comments to display'),
+    this.flags,
+    this.lookupAttr = LookupAttribute.activityId,
+    String? lookupValue,
+    this.filter,
+    this.limit,
+    this.kind,
+  })  : _lookupValue = lookupValue ?? activity.id!,
+        super(key: key);
 
   /// The activity we want to display notifications for.
-  final EnrichedActivity? activity;
+  final EnrichedActivity activity;
 
   ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
@@ -56,17 +58,24 @@ class ReactionListPage extends StatelessWidget {
   /// The flags to use for the request
   final EnrichmentFlags? flags;
 
-  // TODO: pass down props
+  final LookupAttribute lookupAttr;
+  final String _lookupValue;
+  final Filter? filter;
+  final int? limit;
+  final String? kind;
 
   @override
   Widget build(BuildContext context) {
     return ReactionListCore(
-      feedGroup: feedGroup,
-      lookupValue: activity!.id!, //TODO: handle null safety
+      lookupValue: _lookupValue, //TODO: handle null safety
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       onEmptyWidget: onEmptyWidget,
       flags: flags,
+      filter: filter,
+      kind: kind,
+      lookupAttr: lookupAttr,
+      limit: limit,
       reactionsBuilder: (context, reactions, idx) =>
           reactionBuilder(context, reactions[idx]),
     );

@@ -39,7 +39,6 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class ReactionListCore extends StatelessWidget {
   const ReactionListCore({
     Key? key,
-    required this.feedGroup,
     required this.reactionsBuilder,
     required this.lookupValue,
     this.onErrorWidget = const ErrorStateWidget(),
@@ -66,7 +65,6 @@ class ReactionListCore extends StatelessWidget {
   final int? limit;
   final String? kind;
 
-  final String feedGroup;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Reaction>>(
