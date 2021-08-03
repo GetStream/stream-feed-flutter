@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/human_readable_timestamp.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
@@ -112,7 +111,7 @@ class CommentItem extends StatelessWidget {
               ),
             ),
           ),
-          ChildReactionButton(
+          ChildReactionButton(//TODO: refactor LikeButton to accept a reaction
             activeIcon: StreamSvgIcon.loveActive(),
             inactiveIcon: StreamSvgIcon.loveInactive(),
             hoverColor: Colors.red.shade100,

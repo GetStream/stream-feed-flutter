@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-///{@template reaction_button}
+///{@template child_reaction_button}
 /// A Reaction Button is a widget that can be used to trigger a reaction.
 /// It displays the count of reactions it has received and the reaction
 /// it is currently displaying.
 ///{@endtemplate}
 class ChildReactionButton extends StatelessWidget {
-  ///{@macro reaction_button}
+  ///{@macro child_reaction_button}
   const ChildReactionButton({
     Key? key,
-    // required this.activity,
     required this.kind,
     required this.activeIcon,
     required this.inactiveIcon,
-    this.feedGroup = 'user',
     this.hoverColor = Colors.lightBlue,
     this.reaction,
     this.onTap,
@@ -43,9 +41,6 @@ class ChildReactionButton extends StatelessWidget {
   /// The color to use when the user hovers over the button. (desktop/web)
   final Color hoverColor;
 
-  ///The group/slug of the feed to which this reaction will belong.
-  final String feedGroup;
-
   @override
   Widget build(BuildContext context) {
     return ChildReactionToggleIcon(
@@ -58,7 +53,6 @@ class ChildReactionButton extends StatelessWidget {
       kind: kind,
       onTap: onTap,
       data: data,
-      feedGroup: feedGroup,
     );
   }
 }
@@ -82,8 +76,6 @@ class ChildReactionToggleIcon extends StatefulWidget {
   /// A callback that will be called when the user clicks on the reaction icon
   final VoidCallback? onTap;
 
-  /// The group/slug of the feed
-  final String feedGroup;
   final String? userId;
   final Map<String, Object>? data;
   final List<FeedId>? targetFeeds;
@@ -99,7 +91,6 @@ class ChildReactionToggleIcon extends StatefulWidget {
     this.data,
     this.onTap,
     this.ownReactions,
-    this.feedGroup = 'user',
     this.hoverColor = Colors.lightBlue,
     this.count,
     this.userId,
