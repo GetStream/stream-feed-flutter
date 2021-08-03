@@ -84,35 +84,45 @@ void main() {
       verify(() => api.delete(token, id)).called(1);
     });
 
-    // test('filter', () async {
-    //   const lookupAttr = LookupAttribute.activityId;
-    //   const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
-    //   final filter =
-    //       Filter().idGreaterThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
-    //   const kind = 'like';
-    //   const limit = 5;
-    //   const activityId = 'activityId';
-    //   const userId = 'john-doe';
-    //   const targetFeeds = <FeedId>[];
-    //   const data = {'text': 'awesome post!'};
-    //   const reactions = [
-    //     Reaction(
-    //       kind: kind,
-    //       activityId: activityId,
-    //       userId: userId,
-    //       data: data,
-    //       targetFeeds: targetFeeds,
-    //     )
-    //   ];
-    //   when(() =>
-    //           api.filter(token, lookupAttr, lookupValue, filter, limit, kind))
-    //       .thenAnswer((_) async => reactions);
-    //   await client.filter(lookupAttr, lookupValue,
-    //       filter: filter, limit: limit, kind: kind);
-    //   verify(() =>
-    //           api.filter(token, lookupAttr, lookupValue, filter, limit, kind))
-    //       .called(1);
-    // });
+    test('filter', () async {
+      const lookupAttr = LookupAttribute.activityId;
+      const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
+      final filter =
+          Filter().idGreaterThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+      const kind = 'like';
+      const limit = 5;
+      const activityId = 'activityId';
+      const userId = 'john-doe';
+      const targetFeeds = <FeedId>[];
+      const data = {'text': 'awesome post!'};
+      const reactions = [
+        Reaction(
+          kind: kind,
+          activityId: activityId,
+          userId: userId,
+          data: data,
+          targetFeeds: targetFeeds,
+        )
+      ];
+      final flags = EnrichmentFlags()
+          .withReactionCounts()
+          .withOwnChildren()
+          .withOwnReactions();
+      final options = {
+        'limit': limit,
+        ...filter.params,
+        ...flags.params,
+        'with_activity_data': lookupAttr == LookupAttribute.activityId,
+      };
+      when(() => api.filter(
+              token, lookupAttr, lookupValue, filter, limit, kind, options))
+          .thenAnswer((_) async => reactions);
+      await client.filter(lookupAttr, lookupValue,
+          filter: filter, limit: limit, kind: kind, flags: flags);
+      verify(() => api.filter(
+              token, lookupAttr, lookupValue, filter, limit, kind, options))
+          .called(1);
+    });
 
     test('addChild', () async {
       const kind = 'like';
