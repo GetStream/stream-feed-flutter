@@ -61,13 +61,11 @@ class ActivityWidget extends StatelessWidget {
         children: [
           activityHeaderBuilder?.call(context, activity) ??
               ActivityHeader(
-                //TODO: builders
                 activity: activity,
                 onUserTap: onUserTap,
               ),
           activityContentBuilder?.call(context, activity) ??
               ActivityContent(
-                //TODO: builders
                 activity: activity,
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,

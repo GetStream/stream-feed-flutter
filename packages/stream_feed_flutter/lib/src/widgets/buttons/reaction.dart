@@ -136,7 +136,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
     return ReactionIcon(
       hoverColor: widget.hoverColor,
       icon: displayedIcon,
-      count: count, //TODO: handle count
+      count: count,
       onTap: () async {
         widget.onTap?.call ?? await onToggleReaction();
       },

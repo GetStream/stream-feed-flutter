@@ -54,11 +54,10 @@ class ChildReactionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChildReactionToggleIcon(
-      // activity: activity,
       count:
-          reaction?.childrenCounts?[kind], //?? activity.reactionCounts?[kind],
+          reaction?.childrenCounts?[kind],
       ownReactions:
-          reaction?.ownChildren?[kind], // ?? activity.ownReactions?[kind],
+          reaction?.ownChildren?[kind], 
       reaction: reaction,
       activeIcon: activeIcon,
       inactiveIcon: inactiveIcon,
@@ -144,7 +143,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
     return ReactionIcon(
       hoverColor: widget.hoverColor,
       icon: displayedIcon,
-      count: count, //TODO: handle count
+      count: count,
       onTap: () async {
         widget.onTap?.call ?? await onToggleChildReaction();
       },
