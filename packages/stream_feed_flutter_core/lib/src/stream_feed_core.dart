@@ -151,6 +151,25 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
 
+  ///Add child reaction
+  Future<Reaction> onAddChildReaction(
+      {required String kind,
+      required Reaction reaction,
+      Map<String, Object>? data,
+      String? userId,
+      List<FeedId>? targetFeeds}) async {
+    print('onAddChildReaction');
+    final childReaction = await reactions.addChild(kind, reaction.id!,
+        data: data, userId: userId, targetFeeds: targetFeeds);
+    return childReaction;
+  }
+
+  /// Remove child reaction
+  Future<void> onRemoveChildReaction(
+      {required String id, String? kind, Reaction? reaction}) async {
+    await reactions.delete(id);
+  }
+
   ///Track analytics
   Future<void> trackAnalytics(
       {required String label,
@@ -166,10 +185,17 @@ class StreamFeedCoreState extends State<StreamFeedCore>
 
   ///Get reactions form the activity
   Future<List<Reaction>> getReactions(
-          LookupAttribute lookupAttr, String lookupValue,
-          {Filter? filter, int? limit, String? kind}) async =>
-      await reactions.filter(lookupAttr, lookupValue,
-          filter: filter, limit: limit, kind: kind);
+    LookupAttribute lookupAttr,
+    String lookupValue, {
+    Filter? filter,
+    int? limit,
+    String? kind,
+    EnrichmentFlags? flags,
+  }) async {
+    print('FILTER');
+    return await reactions.filter(lookupAttr, lookupValue,
+        filter: filter, limit: limit, kind: kind, flags: flags);
+  }
 
   ///Get enriched activities from the feed
   Future<List<EnrichedActivity>> getEnrichedActivities({

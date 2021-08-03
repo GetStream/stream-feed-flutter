@@ -48,6 +48,7 @@ class ReactionListCore extends StatelessWidget {
         const EmptyStateWidget(message: 'No comments to display'),
     this.lookupAttr = LookupAttribute.activityId,
     this.filter,
+    this.flags,
     this.kind,
     this.limit,
   }) : super(key: key);
@@ -61,6 +62,7 @@ class ReactionListCore extends StatelessWidget {
   final LookupAttribute lookupAttr;
   final String lookupValue;
   final Filter? filter;
+  final EnrichmentFlags? flags;
   final int? limit;
   final String? kind;
 
@@ -72,6 +74,7 @@ class ReactionListCore extends StatelessWidget {
           lookupAttr,
           lookupValue,
           filter: filter,
+          flags: flags,
           limit: limit,
           kind: kind,
         ),

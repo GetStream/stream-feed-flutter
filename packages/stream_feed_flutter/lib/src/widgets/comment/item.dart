@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/human_readable_timestamp.dart';
+import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/display.dart';
@@ -108,7 +111,19 @@ class CommentItem extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          ChildReactionButton(
+            activeIcon: StreamSvgIcon.loveActive(),
+            inactiveIcon: StreamSvgIcon.loveInactive(),
+            hoverColor: Colors.red.shade100,
+
+            ///TODO: third state hover on desktop
+            reaction: reaction,
+            kind: 'like',
+            // onTap: () {
+            //   print('tapped');
+            // }
+          ),
         ],
       ),
     );

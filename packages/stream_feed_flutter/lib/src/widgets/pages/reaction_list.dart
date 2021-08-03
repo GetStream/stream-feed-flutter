@@ -16,6 +16,7 @@ class ReactionListPage extends StatelessWidget {
       required this.onMentionTap,
       required this.onUserTap,
       required this.reactionBuilder,
+      this.flags,
       this.onErrorWidget = const ErrorStateWidget(),
       this.onProgressWidget = const ProgressStateWidget(),
       this.onEmptyWidget =
@@ -52,6 +53,11 @@ class ReactionListPage extends StatelessWidget {
   /// The empty widget to display if there is no data.
   final Widget onEmptyWidget;
 
+  /// The flags to use for the request
+  final EnrichmentFlags? flags;
+
+  // TODO: pass down props
+
   @override
   Widget build(BuildContext context) {
     return ReactionListCore(
@@ -60,6 +66,7 @@ class ReactionListPage extends StatelessWidget {
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       onEmptyWidget: onEmptyWidget,
+      flags: flags,
       reactionsBuilder: (context, reactions, idx) =>
           reactionBuilder(context, reactions[idx]),
     );

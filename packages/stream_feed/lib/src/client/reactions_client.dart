@@ -95,7 +95,7 @@ class ReactionsClient {
     String? userId,
     Map<String, Object>? data,
     List<FeedId>? targetFeeds,
-  }) {
+  }) async {
     final reaction = Reaction(
       kind: kind,
       parent: parentId,
@@ -185,13 +185,34 @@ class ReactionsClient {
     String lookupValue, {
     //TODO: check if it is a valid UUID with package uuid isValidUUID
     Filter? filter,
+    EnrichmentFlags? flags,
     int? limit,
     String? kind,
   }) {
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
-    return _reactions.filter(token, lookupAttr, lookupValue,
-        filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
+    //    'limit': limit ?? Default.limit,
+    // 'offset': offset ?? Default.offset, //TODO:add session everywhere
+    // ...filter?.params ?? Default.filter.params,
+    // ...Default.marker.params,
+    // if (flags != null) ...flags.params,
+    // if (ranking != null) 'ranking': ranking,
+    // if (session != null) 'session': session,
+    final options = {
+      'limit': limit ?? Default.limit,
+      ...filter?.params ?? Default.filter.params,
+      if (flags != null) ...flags.params,
+      'with_activity_data': lookupAttr == LookupAttribute.activityId,
+    };
+    return _reactions.filter(
+      token,
+      lookupAttr,
+      lookupValue,
+      filter ?? Default.filter,
+      limit ?? Default.limit,
+      kind ?? '',
+      options,
+    );
   }
 
   //------------------------- Server side methods ----------------------------//

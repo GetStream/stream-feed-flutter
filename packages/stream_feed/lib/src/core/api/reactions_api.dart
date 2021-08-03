@@ -73,16 +73,13 @@ class ReactionsAPI {
     Filter filter,
     int limit,
     String kind,
+      Map<String, Object?> options,
   ) async {
     checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
     final result = await _client.get<Map>(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
-      queryParameters: {
-        'limit': limit.toString(),
-        ...filter.params,
-        'with_activity_data': lookupAttr == LookupAttribute.activityId,
-      },
+      queryParameters: options,
     );
     final data = (result.data!['results'] as List)
         .map((e) => Reaction.fromJson(e))

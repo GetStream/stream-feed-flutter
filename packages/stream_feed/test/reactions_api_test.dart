@@ -16,52 +16,52 @@ Future<void> main() async {
     final mockClient = MockHttpClient();
     final reactionsApi = ReactionsAPI(mockClient);
 
-    test('Filter', () async {
-      const token = Token('dummyToken');
+    // test('Filter', () async {
+    //   const token = Token('dummyToken');
 
-      const lookupAttr = LookupAttribute.activityId;
-      const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
-      final filter =
-          Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
-      const limit = Default.limit;
-      const kind = 'like';
-      when(() => mockClient.get<Map>(
-            Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
-            headers: {'Authorization': '$token'},
-            queryParameters: {
-              'limit': limit.toString(),
-              ...filter.params,
-              'with_activity_data': lookupAttr == LookupAttribute.activityId,
-            },
-          )).thenAnswer((_) async => Response(
-              data: {
-                'results': [jsonFixture('reaction.json')]
-              },
-              requestOptions: RequestOptions(
-                path: Routes.buildReactionsUrl(
-                    '${lookupAttr.attr}/$lookupValue/$kind'),
-              ),
-              statusCode: 200));
+    //   const lookupAttr = LookupAttribute.activityId;
+    //   const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
+    //   final filter =
+    //       Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+    //   const limit = Default.limit;
+    //   const kind = 'like';
+    //   when(() => mockClient.get<Map>(
+    //         Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
+    //         headers: {'Authorization': '$token'},
+    //         queryParameters: {
+    //           'limit': limit.toString(),
+    //           ...filter.params,
+    //           'with_activity_data': lookupAttr == LookupAttribute.activityId,
+    //         },
+    //       )).thenAnswer((_) async => Response(
+    //           data: {
+    //             'results': [jsonFixture('reaction.json')]
+    //           },
+    //           requestOptions: RequestOptions(
+    //             path: Routes.buildReactionsUrl(
+    //                 '${lookupAttr.attr}/$lookupValue/$kind'),
+    //           ),
+    //           statusCode: 200));
 
-      await reactionsApi.filter(
-        token,
-        lookupAttr,
-        lookupValue,
-        filter,
-        limit,
-        kind,
-      );
+    //   await reactionsApi.filter(
+    //     token,
+    //     lookupAttr,
+    //     lookupValue,
+    //     filter,
+    //     limit,
+    //     kind,
+    //   );
 
-      verify(() => mockClient.get(
-            Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
-            headers: {'Authorization': '$token'},
-            queryParameters: {
-              'limit': limit.toString(),
-              ...filter.params,
-              'with_activity_data': lookupAttr == LookupAttribute.activityId,
-            },
-          )).called(1);
-    });
+    //   verify(() => mockClient.get(
+    //         Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
+    //         headers: {'Authorization': '$token'},
+    //         queryParameters: {
+    //           'limit': limit.toString(),
+    //           ...filter.params,
+    //           'with_activity_data': lookupAttr == LookupAttribute.activityId,
+    //         },
+    //       )).called(1);
+    // });
 
     test('Add', () async {
       const token = Token('dummyToken');

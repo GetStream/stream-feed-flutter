@@ -114,6 +114,10 @@ class CommentView extends StatelessWidget {
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,
                 onUserTap: onUserTap,
+                flags: EnrichmentFlags()
+                    .withReactionCounts()
+                    .withOwnChildren()
+                    .withOwnReactions(), //TODO: refactor this
                 reactionBuilder: (context, reaction) => CommentItem(
                       user: reaction.user,
                       reaction: reaction,
