@@ -120,9 +120,6 @@ class CommentItem extends StatelessWidget {
             ///TODO: third state hover on desktop
             reaction: reaction,
             kind: 'like',
-            // onTap: () {
-            //   print('tapped');
-            // }
           ),
         ],
       ),

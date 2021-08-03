@@ -158,7 +158,6 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       Map<String, Object>? data,
       String? userId,
       List<FeedId>? targetFeeds}) async {
-    print('onAddChildReaction');
     final childReaction = await reactions.addChild(kind, reaction.id!,
         data: data, userId: userId, targetFeeds: targetFeeds);
     return childReaction;
@@ -192,7 +191,6 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     String? kind,
     EnrichmentFlags? flags,
   }) async {
-    print('FILTER');
     return await reactions.filter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind, flags: flags);
   }

@@ -146,8 +146,6 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
       icon: displayedIcon,
       count: count, //TODO: handle count
       onTap: () async {
-        print("COUNT ${count}");
-        print('alreadyReacted $alreadyReacted');
         widget.onTap?.call ?? await onToggleChildReaction();
       },
     );
