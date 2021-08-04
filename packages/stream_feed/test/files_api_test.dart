@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:stream_feed/stream_feed.dart';
-import 'package:test/test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed/src/core/api/files_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
-import 'package:stream_feed/src/core/api/files_api.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed/stream_feed.dart';
+import 'package:test/test.dart';
 
 import 'matcher.dart';
 import 'mock.dart';
