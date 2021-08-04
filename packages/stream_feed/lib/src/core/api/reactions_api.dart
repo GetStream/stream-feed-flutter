@@ -73,7 +73,7 @@ class ReactionsAPI {
     Filter filter,
     int limit,
     String kind,
-      Map<String, Object?> options,
+    Map<String, Object?> options,
   ) async {
     checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
     final result = await _client.get<Map>(
