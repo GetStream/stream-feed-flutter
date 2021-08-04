@@ -144,7 +144,7 @@ void main() {
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
     final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
-    const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
+    const reaction = Reaction(id: 'id', kind: kind, parent: activityId);
     const userId = 'user:300';
     final withoutOwnReactions = ChildReactionToggleIcon(
       reaction: reaction,
@@ -162,21 +162,20 @@ void main() {
       activeIcon: activeIcon,
     );
     group('widget test', () {
-      testWidgets('withoutOwnReactions: onAddReaction', (tester) async {
+      testWidgets('withoutOwnReactions: onAddChildReaction', (tester) async {
         final mockClient = MockStreamFeedClient();
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
-        when(() => mockClient.reactions).thenReturn(mockReactions);
 
         const label = kind;
         // final engagement = Engagement(
         //     content: Content(foreignId: FeedId.fromId(activity.foreignId)),
         //     label: label,
         //     feedId: FeedId.fromId(feedGroup));
-
+        when(() => mockClient.reactions).thenReturn(mockReactions);
         when(() => mockReactions.addChild(
               kind,
-              activityId,
+              reaction.id!,
             )).thenAnswer((_) async => reaction);
 
         // when(() => mockStreamAnalytics.trackEngagement(engagement))
@@ -189,17 +188,18 @@ void main() {
               client: mockClient,
               child: withoutOwnReactions),
         )));
-        final reactionIcon = find.byType(ChildReactionToggleIcon);
+        final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
         await tester.tap(reactionIcon);
+        await tester.pumpAndSettle();
         verify(() => mockClient.reactions.addChild(
               kind,
-              activityId,
+              reaction.id!,
             )).called(1);
         // verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
       });
 
-      testWidgets('withOwnReactions: onRemoveReaction', (tester) async {
+      testWidgets('withOwnReactions: onRemoveChildReaction', (tester) async {
         final mockClient = MockStreamFeedClient();
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
@@ -224,7 +224,7 @@ void main() {
               client: mockClient,
               child: withOwnReactions),
         )));
-        final reactionIcon = find.byType(ReactionToggleIcon);
+        final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
 
         final count = find.text('1300');
@@ -306,7 +306,7 @@ void main() {
               client: mockClient,
               child: withoutOwnReactions),
         )));
-        final reactionIcon = find.byType(ReactionToggleIcon);
+        final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
         await tester.tap(reactionIcon);
         verify(() => mockClient.reactions.add(

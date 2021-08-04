@@ -136,7 +136,10 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     final addedActivity =
         await client.flatFeed(feedGroup, userId).addActivity(activity);
     await trackAnalytics(
-        label: 'post', foreignId: activity.foreignId, feedGroup: feedGroup);
+      label: 'post',
+      foreignId: activity.foreignId,
+      feedGroup: feedGroup,
+    ); //TODO: remove hardcoded value
     return addedActivity;
   }
 

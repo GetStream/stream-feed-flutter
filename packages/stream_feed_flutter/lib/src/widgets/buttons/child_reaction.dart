@@ -14,14 +14,14 @@ class ChildReactionButton extends StatelessWidget {
     required this.kind,
     required this.activeIcon,
     required this.inactiveIcon,
+    required this.reaction,
     this.hoverColor = Colors.lightBlue,
-    this.reaction,
     this.onTap,
     this.data,
   }) : super(key: key);
 
   ///The reaction received from stream that should be liked when pressing the LikeButton.
-  final Reaction? reaction;
+  final Reaction reaction;
 
   ///If you want to override on tap for some reasons
   final VoidCallback? onTap;
@@ -44,8 +44,8 @@ class ChildReactionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChildReactionToggleIcon(
-      count: reaction?.childrenCounts?[kind],
-      ownReactions: reaction?.ownChildren?[kind],
+      count: reaction.childrenCounts?[kind],
+      ownReactions: reaction.ownChildren?[kind],
       reaction: reaction,
       activeIcon: activeIcon,
       inactiveIcon: inactiveIcon,
@@ -80,13 +80,14 @@ class ChildReactionToggleIcon extends StatefulWidget {
   final Map<String, Object>? data;
   final List<FeedId>? targetFeeds;
   final Color hoverColor;
-  final Reaction? reaction;
+  final Reaction reaction;
   //TODO: see what we can extract from a parent widget and put in core
   const ChildReactionToggleIcon({
     Key? key,
     required this.activeIcon,
     required this.inactiveIcon,
     required this.kind,
+    required this.reaction,
     this.targetFeeds,
     this.data,
     this.onTap,
@@ -94,7 +95,6 @@ class ChildReactionToggleIcon extends StatefulWidget {
     this.hoverColor = Colors.lightBlue,
     this.count,
     this.userId,
-    this.reaction,
   }) : super(key: key);
 
   @override
@@ -138,7 +138,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
 
   Future<void> onAddChildReaction() async {
     final reaction = await StreamFeedCore.of(context).onAddChildReaction(
-      reaction: widget.reaction!,
+      reaction: widget.reaction,
       kind: widget.kind,
       data: widget.data,
     );
@@ -153,7 +153,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
   Future<void> onRemoveChildReaction() async {
     await StreamFeedCore.of(context).onRemoveChildReaction(
       kind: widget.kind,
-      reaction: widget.reaction!,
+      reaction: widget.reaction,
       id: idToRemove!,
     );
     setState(() {
