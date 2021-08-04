@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/paginated.dart';
 import 'package:stream_feed/stream_feed.dart';
 
