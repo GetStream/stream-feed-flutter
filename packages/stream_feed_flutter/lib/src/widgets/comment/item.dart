@@ -63,7 +63,7 @@ class CommentItem extends StatelessWidget {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final taggedText = reaction.data?[commentJsonKey] != null
         ? detector.parseText(reaction.data![commentJsonKey] as String)
-        : <TaggedText?>[];
+        : <TaggedText>[];
     return InkWell(
       onTap: () {
         onReactionTap?.call(reaction);

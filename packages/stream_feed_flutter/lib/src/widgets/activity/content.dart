@@ -18,12 +18,14 @@ class ActivityContent extends StatelessWidget {
 
   ///A callback that is invoked when the user clicks on hashtag
   final OnHashtagTap? onHashtagTap;
+  final String commentJsonKey;
 
   ///{@macro activity_content}
   const ActivityContent({
     Key? key,
     required this.activity,
     this.onMentionTap,
+    this.commentJsonKey = 'comment',
     this.onHashtagTap,
   }) : super(key: key);
 
@@ -36,7 +38,7 @@ class ActivityContent extends StatelessWidget {
     final taggedText = activityObject != null
         ? detector.parseText(
             EnrichableField.serialize(activityObject) as String) //TODO: ugly
-        : <TaggedText?>[];
+        : <TaggedText>[];
     return Column(
       children: [
         Wrap(

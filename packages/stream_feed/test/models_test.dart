@@ -11,6 +11,7 @@ import 'package:stream_feed/src/core/models/group.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 

@@ -36,10 +36,10 @@ class TextArea extends StatefulWidget {
   /// The text for the hint text
   final String? hintText;
 
-  /// The style for the input text
+  /// The text input style
   final TextStyle? inputTextStyle;
 
-  /// The style for the hint text
+  /// The hint text style
   final TextStyle? hintTextStyle;
 
   /// A callback that is invoked when the TextField is submitted.

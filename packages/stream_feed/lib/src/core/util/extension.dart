@@ -1,11 +1,14 @@
 import 'package:http_parser/http_parser.dart' show MediaType;
 import 'package:mime/mime.dart';
 
-/// Convenient class Extension on [Map]
-extension MapX<K, V> on Map<K, V> {
-  /// return a [Map] with no null entries (in their key or values)
-  Map<K, V> get nullProtected =>
-      Map.from(this)..removeWhere((key, value) => key == null || value == null);
+/// Useful extension functions for [Map]
+extension MapX<K, V> on Map<K?, V?> {
+  /// Returns a new map with null keys or values removed
+  Map<K, V> get nullProtected {
+    final nullProtected = {...this}
+      ..removeWhere((key, value) => key == null || value == null);
+    return nullProtected.cast();
+  }
 }
 
 /// Useful extension functions for [String]
