@@ -181,7 +181,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         ? await analyticsClient!.trackEngagement(Engagement(
             content: Content(foreignId: FeedId.fromId(foreignId)),
             label: label,
-            feedId: FeedId.fromId(feedGroup)))
+            feedId: FeedId.fromId(feedGroup),
+          ))
         : print('warning: analytics: not enabled'); //TODO:logger
   }
 
@@ -194,8 +195,14 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     String? kind,
     EnrichmentFlags? flags,
   }) async {
-    return await reactions.filter(lookupAttr, lookupValue,
-        filter: filter, limit: limit, kind: kind, flags: flags);
+    return await reactions.filter(
+      lookupAttr,
+      lookupValue,
+      filter: filter,
+      limit: limit,
+      kind: kind,
+      flags: flags,
+    );
   }
 
   ///Get enriched activities from the feed
