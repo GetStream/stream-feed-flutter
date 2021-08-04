@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-
 import 'package:stream_feed/src/core/exceptions.dart';
+import 'package:stream_feed/src/core/location.dart';
+import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/version.dart';
-import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
-import 'package:stream_feed/src/core/location.dart';
 
 part 'stream_http_client_options.dart';
 
