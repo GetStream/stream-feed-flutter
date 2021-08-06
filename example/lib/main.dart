@@ -8,8 +8,8 @@ import 'home.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final _key = String.fromEnvironment('key');
-  final _user_token = String.fromEnvironment('user_token');
+  const _key = String.fromEnvironment('key');
+  const _user_token = String.fromEnvironment('user_token');
   final client = StreamFeedClient.connect(_key, token: Token(_user_token));
   runApp(
     MyApp(
