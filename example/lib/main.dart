@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
               for (final user in appUsers)
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () async {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -110,10 +110,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     },
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      primary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -128,7 +130,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Colors.blue,
                             ),
                           ),
-                          const Icon(Icons.arrow_forward_ios)
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          )
                         ],
                       ),
                     ),
