@@ -8,7 +8,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// it is currently displaying.
 ///{@endtemplate}
 class ReactionButton extends StatelessWidget {
-  ///{@macro reaction_button}
+  /// Builds a [ReactionButton].
   const ReactionButton({
     Key? key,
     required this.activity,

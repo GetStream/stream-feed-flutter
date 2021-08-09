@@ -9,7 +9,7 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 /// it is currently displaying.
 ///{@endtemplate}
 class ChildReactionButton extends StatelessWidget {
-  ///{@macro child_reaction_button}
+  /// Builds a [ChildReactionButton].
   const ChildReactionButton({
     Key? key,
     required this.kind,

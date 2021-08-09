@@ -8,7 +8,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// When pressed it will post a new item with the same content as the original
 ///{@endtemplate}
 class RepostButton extends StatelessWidget {
-  ///{@macro repost_button}
+  /// Builds a [RepostButton].
   const RepostButton({
     Key? key,
     required this.activity,
