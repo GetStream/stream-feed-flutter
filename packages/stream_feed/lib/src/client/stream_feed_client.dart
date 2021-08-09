@@ -26,12 +26,13 @@ enum Runner {
 }
 
 ///{@template stream_feed_client}
-/// The client class that manages API calls and authentication
+/// The client class that manages API calls and authentication.
+///
 /// To instantiate the client you need an API key and secret.
-/// You can find the key and secret on the dashboard.
+/// You can find the key and secret on the Stream dashboard.
+///
 /// If you want to use the API client directly on your web/mobile app
 /// you need to generate a user token server-side and pass it.
-///
 ///
 ///{@macro connect}
 ///{@endtemplate}
