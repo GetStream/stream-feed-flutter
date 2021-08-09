@@ -34,6 +34,8 @@ enum Runner {
 /// If you want to use the API client directly on your web/mobile app
 /// you need to generate a user token server-side and pass it.
 ///
+/// There are a few different ways to use a [StreamFeedClient]:
+///
 ///{@macro connect}
 ///{@endtemplate}
 abstract class StreamFeedClient {
