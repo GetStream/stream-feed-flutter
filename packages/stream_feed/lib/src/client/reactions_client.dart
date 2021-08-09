@@ -77,14 +77,37 @@ class ReactionsClient {
     return _reactions.add(token, reaction);
   }
 
-  /// Adds a like to the previously created comment
+  /// A reaction can also be added to another reaction; in this case,
+  /// a child reaction is created. Child reactions are created
+  /// in the same way as regular reactions but have a few crucial differences:
+  /// 
+  ///     Child reactions are not part of the parent activity counts
+  ///     Child reactions are only returned when the parent is returned
+  ///     In order to paginate over reactions,
+  /// you need to filter using the parent reaction ID
+  ///     Recent children reactions and their counts
+  /// are added to the parent reaction body
+  /// 
+  /// Reaction nesting is limited. The deepest level
+  /// where you can insert your child reaction is 3.
+  /// 
+  /// Let's take an example: Bob creates an activity
+  /// 
+  ///     Alice comments on this activity
+  ///     Bob comments on Alice's comment
+  ///     Carl comments on Bob's comment.
+  /// 
+  /// Carl's comment is at the maximum third nesting level,
+  /// so Alice can't like or comment on Carl's comment because it would be
+  /// the fourth level of nesting.
   ///
-  ///Example:
+  /// ## Example:
+  /// Adds a like to the previously created comment
   ///```dart
   ///final reaction = await client.reactions.addChild(
-  ///'like',
-  ///comment.id,
-  ///'john-doe',
+  /// 'like',
+  /// comment.id,
+  /// 'john-doe',
   ///);
   ///```
   ///
