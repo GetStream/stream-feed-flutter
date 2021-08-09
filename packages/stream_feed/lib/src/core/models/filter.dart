@@ -33,25 +33,27 @@ class Filter {
   Map<String, String> get params =>
       _filters.map((key, value) => MapEntry(key.name, value));
 
-  ///Filter the reactions on ids greater than or equal to the given value
+  /// Retrieve reactions created after the on with ID 
+  /// equal to the parameter (inclusive)
   Filter idGreaterThanOrEqual(String id) {
     _filters[_Filter.idGreaterThanOrEqual] = id;
     return this;
   }
 
-  ///	Filter the reactions on ids greater than the given value
+  /// Retrieve reactions created after the one with ID equal to the parameter.
   Filter idGreaterThan(String id) {
     _filters[_Filter.idGreaterThan] = id;
     return this;
   }
 
-  ///Filter the reactions on ids smaller than or equal to the given value
+  ///	Retrieve reactions created before the one with ID
+  // /equal to the parameter (inclusive)
   Filter idLessThanOrEqual(String id) {
     _filters[_Filter.idLessThanOrEqual] = id;
     return this;
   }
 
-  ///Filter the reactions on ids smaller than the given value
+  ///Retrieve reactions before the one with ID equal to the parameter
   Filter idLessThan(String id) {
     _filters[_Filter.idLessThan] = id;
     return this;
