@@ -21,6 +21,7 @@ class AppUser {
         token =
             '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibmVldmFzaC1yYW1kaWFsIn0.yKqSehu_O5WJGh3-aa5qipnBRs7Qtue-1T9TZhT2ejw'''; //ignore: public_member_api_docs
 
+  //ignore: public_member_api_docs
   const AppUser.reuben()
       : id = 'groovin',
         name = 'Reuben Turner',

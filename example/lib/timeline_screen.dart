@@ -57,7 +57,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                 ? Column(
                     children: [
                       const Text('No activities yet!'),
-                      RaisedButton(
+                      ElevatedButton(
                         onPressed: _loadActivities,
                         child: const Text('Reload'),
                       )

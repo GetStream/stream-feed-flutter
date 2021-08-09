@@ -29,12 +29,14 @@ class _AddActivityDialogState extends State<AddActivityDialog> {
               ),
             ),
             const SizedBox(height: 12),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 final message = _activityController.text;
                 Navigator.pop<String>(context, message);
               },
-              color: Colors.blue,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+              ),
               child: const Text(
                 'POST ACTIVITY',
                 style: TextStyle(
