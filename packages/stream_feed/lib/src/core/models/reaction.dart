@@ -73,7 +73,7 @@ class Reaction extends Equatable {
   @JsonKey(includeIfNull: false)
   final User? user;
 
-  /// Additional data to attach to the notification activities	
+  /// Additional data to attach to the notification activities
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? targetFeedsExtraData;
 
