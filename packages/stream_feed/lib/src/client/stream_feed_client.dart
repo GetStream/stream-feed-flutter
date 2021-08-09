@@ -141,11 +141,11 @@ abstract class StreamFeedClient {
     DateTime? expiresAt,
   });
 
-  ///This endpoint allows you to retrieve open graph information from a URL
-  ///which you can then use to add images and a description to activities.
+  /// This endpoint allows you to retrieve open graph information from a URL,
+  /// which you can then use to add images and a description to activities.
   ///
-  ///For example:
-  ///```dart
+  /// For example:
+  /// ```dart
   /// final urlPreview = await client.og(
   ///   'http://www.imdb.com/title/tt0117500/',
   /// );
@@ -154,7 +154,7 @@ abstract class StreamFeedClient {
 
   /// Create a new user in stream
   ///
-  /// Usage
+  /// # Usage
   ///
   /// ```dart
   /// await createUser('john-doe', {
@@ -192,10 +192,11 @@ abstract class StreamFeedClient {
   Future<User> updateUser(String id, Map<String, Object?> data);
 
   /// Delete the user
-  /// Usage:
-  ///```dart
-  ///await deleteUser('123');
-  ///```
-  ///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
+  ///
+  /// # Usage:
+  /// ```dart
+  /// await deleteUser('123');
+  /// ```
+  /// API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
   Future<void> deleteUser(String id);
 }
