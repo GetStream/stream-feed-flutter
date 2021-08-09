@@ -33,7 +33,7 @@ class Filter {
   Map<String, String> get params =>
       _filters.map((key, value) => MapEntry(key.name, value));
 
-  /// Retrieve reactions created after the on with ID 
+  /// Retrieve reactions created after the on with ID
   /// equal to the parameter (inclusive)
   Filter idGreaterThanOrEqual(String id) {
     _filters[_Filter.idGreaterThanOrEqual] = id;
