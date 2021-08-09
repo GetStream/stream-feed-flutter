@@ -41,10 +41,11 @@ class Reaction extends Equatable {
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final String? id;
 
-  /// Type of reaction. Must not be empty or longer than 255 characters.
+  /// The type of reaction (eg. like, comment, ...)
+  /// Must not be empty or longer than 255 characters.
   final String? kind;
 
-  /// Activity ID for the reaction. Must be a valid activity ID.
+  /// The ID of the activity the reaction refers to. Must be a valid activity ID.
   final String? activityId;
 
   ///	user_id of the reaction. Must not be empty or longer than 255 characters.
@@ -63,7 +64,8 @@ class Reaction extends Equatable {
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final DateTime? updatedAt;
 
-  /// Target feeds for the reaction. List of feed ids (e.g.: timeline:bob)
+  /// The feeds that should receive a notification activity
+  /// List of feed ids (e.g.: timeline:bob)
   @JsonKey(includeIfNull: false, fromJson: FeedId.fromIds, toJson: FeedId.toIds)
   final List<FeedId>? targetFeeds;
 
@@ -71,11 +73,11 @@ class Reaction extends Equatable {
   @JsonKey(includeIfNull: false)
   final User? user;
 
-  /// Extra Data of the target Feed
+  /// Additional data to attach to the notification activities	
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? targetFeedsExtraData;
 
-  /// Extra data of the reaction
+  /// Additional data to attach to the reaction
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? data;
 
