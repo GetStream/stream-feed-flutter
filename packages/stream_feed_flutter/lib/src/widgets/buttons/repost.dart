@@ -19,19 +19,25 @@ class RepostButton extends StatelessWidget {
     this.activeIcon,
   }) : super(key: key);
 
-  ///If you want to override the activeIcon
+  /// The icon to display when a post has been liked by the current user.
   final Widget? activeIcon;
 
-  ///If you want to override the inactiveIcon
+  /// The icon to display when a post has not yet been liked by the current
+  /// user.
   final Widget? inactiveIcon;
 
-  ///The reaction received from stream that should be liked when pressing the LikeButton.
+  /// The reaction received from Stream that should be liked when pressing
+  /// the [LikeButton].
   final Reaction? reaction;
 
-  /// The activity received from stream that should be liked when pressing the LikeButton.
+  /// The activity received from Stream that should be liked when pressing
+  /// the [LikeButton].
   final EnrichedActivity activity;
 
-  ///If you want to override on tap for some reasons
+  /// The callback to be performed on tap.
+  ///
+  /// This is generally not to be overridden, but can be done if developers
+  /// wish.
   final VoidCallback? onTap;
 
   /// The feed group that the activity belongs to.
