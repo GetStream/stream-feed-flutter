@@ -4,8 +4,7 @@ import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template activity_header}
-/// The Activity Header widget is a widget that displays the user's name and
-/// a profile image.
+/// Displays the user's name and a profile image.
 ///{@endtemplate}
 class ActivityHeader extends StatelessWidget {
   ///{@macro activity_header}
@@ -22,7 +21,7 @@ class ActivityHeader extends StatelessWidget {
   final OnUserTap? onUserTap;
   final bool showSubtitle;
 
-  ///Wether you want to display like activities or repost activities
+  /// Whether you want to display like activities or repost activities
   final String activityKind;
   @override
   Widget build(BuildContext context) {
