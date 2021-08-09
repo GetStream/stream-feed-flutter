@@ -12,7 +12,7 @@ import 'package:mocktail/mocktail.dart';
 import 'mock.dart';
 
 main() {
- testWidgets('CommentItem', (tester) async {
+  testWidgets('CommentItem', (tester) async {
     await mockNetworkImages(() async {
       var pressedHashtags = <String?>[];
       var pressedMentions = <String?>[];
