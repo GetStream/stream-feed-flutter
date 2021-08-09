@@ -126,13 +126,13 @@ abstract class StreamFeedClient {
   /// {@macro notificationFeed}
   NotificationFeed notificationFeed(String slug, [String? userId]);
 
-  /// Generate a JWT tokens that include the [userId] as payload
-  /// and that are signed using your Stream API Secret.
+  /// Generate a JWT that includes the [userId] as payload and that is signed
+  /// using your Stream API Secret.
   ///
-  /// Optionally you can have tokens expire after a certain amount of time.
+  /// Optionally, you can have tokens expire after a certain amount of time.
   ///
-  /// By default all SDK libraries generate user tokens
-  /// without an expiration time.
+  /// By default, all SDK libraries generate user tokens without an expiration
+  /// time.
   Token frontendToken(
     String userId, {
     DateTime? expiresAt,
