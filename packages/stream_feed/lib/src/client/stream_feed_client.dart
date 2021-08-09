@@ -168,7 +168,8 @@ abstract class StreamFeedClient {
   });
 
   /// Get the user data
-  /// Usage
+  ///
+  /// # Usage
   /// ```dart
   /// await getUser('123');
   /// ```
