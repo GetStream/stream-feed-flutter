@@ -27,7 +27,8 @@ class User extends Equatable {
   /// Create a new instance from a json
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  ///	User ID.
+  ///	The unique identifier for the new user (eg. username, user id, etc.).
+  /// The value is restricted to alphanumeric characters, dashes and underscore symbols.
   final String? id;
 
   /// User additional data.
