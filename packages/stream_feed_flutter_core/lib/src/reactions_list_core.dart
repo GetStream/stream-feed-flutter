@@ -85,7 +85,7 @@ class _ReactionListCoreState extends State<ReactionListCore>
     super.didChangeDependencies();
   }
 
-  /// Fetches initial users and updates the widget
+  /// Fetches initial reactions and updates the widget
   Future<void> loadData() => _reactionsBloc!.queryReactions(
         widget.lookupAttr,
         widget.lookupValue,

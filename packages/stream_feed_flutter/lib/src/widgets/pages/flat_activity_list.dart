@@ -95,54 +95,56 @@ class FlatActivityListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatFeedCore(
-      flags: flags,
-      limit: limit,
-      offset: offset,
-      session: session,
-      filter: filter,
-      ranking: ranking,
-      onProgressWidget: onProgressWidget,
-      onErrorWidget: onErrorWidget,
-      //TODO: activity type Flat?
-      feedBuilder: (context, activities, idx) => ActivityWidget(
-        activity: activities[idx],
-        feedGroup: feedGroup,
-        onHashtagTap: onHashtagTap,
-        onMentionTap: onMentionTap,
-        onUserTap: onUserTap,
-        activityHeaderBuilder: activityHeaderBuilder,
-        activityFooterBuilder: activityFooterBuilder,
-        activityContentBuilder: activityContentBuilder,
-        onActivityTap: (context, activity) =>
+    return ActivitiesBloc(
+      child: FlatFeedCore(
+        flags: flags,
+        limit: limit,
+        offset: offset,
+        session: session,
+        filter: filter,
+        ranking: ranking,
+        onProgressWidget: onProgressWidget,
+        onErrorWidget: onErrorWidget,
+        //TODO: activity type Flat?
+        feedBuilder: (context, activities, idx) => ActivityWidget(
+          activity: activities[idx],
+          feedGroup: feedGroup,
+          onHashtagTap: onHashtagTap,
+          onMentionTap: onMentionTap,
+          onUserTap: onUserTap,
+          activityHeaderBuilder: activityHeaderBuilder,
+          activityFooterBuilder: activityFooterBuilder,
+          activityContentBuilder: activityContentBuilder,
+          onActivityTap: (context, activity) =>
 
-            // onActivityTap != null
-            //     ? onActivityTap?.call(context, activity)
-            //     //TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
-// :
-            pageRouteBuilder(
-          activity: activity,
-          context: context,
-          transitionType: transitionType,
-          page: StreamFeedCore(
-            //TODO: let the user implement this
-            client: StreamFeedCore.of(context).client,
-            child: Scaffold(
-              appBar: AppBar(
-                title: Text('Post'),
-              ),
-              body: CommentView(
-                activity: activity,
-                enableCommentFieldButton: true,
-                enableReactions: true,
-                textEditingController:
-                    TextEditingController(), //TODO: move this into props for customisation like buildSpans
+              // onActivityTap != null
+              //     ? onActivityTap?.call(context, activity)
+              //     //TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
+              // :
+              pageRouteBuilder(
+            activity: activity,
+            context: context,
+            transitionType: transitionType,
+            page: StreamFeedCore(
+              //TODO: let the user implement this
+              client: StreamFeedCore.of(context).client,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text('Post'),
+                ),
+                body: CommentView(
+                  activity: activity,
+                  enableCommentFieldButton: true,
+                  enableReactions: true,
+                  textEditingController:
+                      TextEditingController(), //TODO: move this into props for customisation like buildSpans
+                ),
               ),
             ),
           ),
         ),
+        feedGroup: feedGroup,
       ),
-      feedGroup: feedGroup,
     );
   }
 

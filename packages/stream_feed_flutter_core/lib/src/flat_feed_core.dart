@@ -35,7 +35,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
 /// information about the activities.
-class FlatFeedCore extends StatelessWidget {
+class FlatFeedCore extends StatefulWidget {
   const FlatFeedCore(
       {Key? key,
       required this.feedGroup,
@@ -88,34 +88,56 @@ class FlatFeedCore extends StatelessWidget {
 
   /// The feed group to use for the request
   final String feedGroup;
+
+  @override
+  State<FlatFeedCore> createState() => _FlatFeedCoreState();
+}
+
+class _FlatFeedCoreState extends State<FlatFeedCore>
+    with WidgetsBindingObserver {
+  ActivitiesBlocState? _activitiesBloc;
+
+  @override
+  void didChangeDependencies() {
+    final newActivitiesBloc = ActivitiesBloc.of(context);
+    if (newActivitiesBloc != _activitiesBloc) {
+      _activitiesBloc = newActivitiesBloc;
+      loadData();
+    }
+    super.didChangeDependencies();
+  }
+
+  /// Fetches initial reactions and updates the widget
+  Future<void> loadData() => _activitiesBloc!.queryEnrichedActivities(
+        feedGroup: widget.feedGroup,
+        limit: widget.limit,
+        offset: widget.offset,
+        session: widget.session,
+        filter: widget.filter,
+        flags: widget.flags,
+        ranking: widget.ranking,
+        userId: widget.userId,
+      );
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<EnrichedActivity>>(
-      future: StreamFeedCore.of(context).getEnrichedActivities(
-        feedGroup: feedGroup,
-        limit: limit,
-        offset: offset,
-        session: session,
-        filter: filter,
-        flags: flags,
-        ranking: ranking,
-        userId: userId,
-      ),
+    return StreamBuilder<List<EnrichedActivity>>(
+      stream: _activitiesBloc!.activitiesStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
+          return widget
+              .onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
         }
         if (!snapshot.hasData) {
-          return onProgressWidget;
+          return widget.onProgressWidget;
         }
         final activities = snapshot.data!;
         if (activities.isEmpty) {
-          return onEmptyWidget;
+          return widget.onEmptyWidget;
         }
-        print(activities);
         return ListView.builder(
           itemCount: activities.length,
-          itemBuilder: (context, idx) => feedBuilder(
+          itemBuilder: (context, idx) => widget.feedBuilder(
             context,
             activities,
             idx,

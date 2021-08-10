@@ -106,12 +106,13 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
   /// Add a new reaction to the feed.
-  Future<Reaction> onAddReaction(
-      {Map<String, Object>? data,
-      required String kind,
-      required EnrichedActivity activity,
-      List<FeedId>? targetFeeds,
-      required String feedGroup}) async {
+  Future<Reaction> onAddReaction({
+    Map<String, Object>? data,
+    required String kind,
+    required EnrichedActivity activity,
+    List<FeedId>? targetFeeds,
+    required String feedGroup,
+  }) async {
     final reaction = await reactions.add(kind, activity.id!,
         targetFeeds: targetFeeds, data: data);
     await trackAnalytics(

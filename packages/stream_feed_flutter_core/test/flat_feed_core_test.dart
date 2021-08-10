@@ -47,16 +47,18 @@ main() {
           body: StreamFeedCore(
             analyticsClient: mockStreamAnalytics,
             client: mockClient,
-            child: FlatFeedCore(
-              feedGroup: 'user',
-              feedBuilder: (BuildContext context,
-                  List<EnrichedActivity> activities, int idx) {
-                return Column(
-                  children: [
-                    Text("${activities[idx].reactionCounts?['like']}") //counts
-                  ],
-                );
-              },
+            child: ActivitiesBloc(
+              child: FlatFeedCore(
+                feedGroup: 'user',
+                feedBuilder: (BuildContext context,
+                    List<EnrichedActivity> activities, int idx) {
+                  return Column(
+                    children: [
+                      Text("${activities[idx].reactionCounts?['like']}") //counts
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),
