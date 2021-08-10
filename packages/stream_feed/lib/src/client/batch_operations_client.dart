@@ -7,7 +7,9 @@ import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// Enables adding multiple activities with a single operation.
 class BatchOperationsClient {
+  /// Builds a [BatchOperationsClient].
   BatchOperationsClient(this._batch, {required this.secret});
   final String secret;
   final BatchAPI _batch;
@@ -65,6 +67,7 @@ class BatchOperationsClient {
     );
   }
 
+  /// Retrieve a batch of activities by a single id.
   Future<Iterable<Activity>> getActivitiesById(Iterable<String> ids) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return _batch.getActivitiesById(token, ids);
@@ -76,6 +79,7 @@ class BatchOperationsClient {
     return _batch.getEnrichedActivitiesById(token, ids);
   }
 
+  /// Retrieve a batch of activities by a single foreign id.
   Future<Iterable<Activity>> getActivitiesByForeignId(
       Iterable<ForeignIdTimePair> pairs) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
@@ -88,11 +92,11 @@ class BatchOperationsClient {
     return _batch.getEnrichedActivitiesByForeignId(token, pairs);
   }
 
-  /// Updating the activity
+  /// Update a single activity
   Future<void> updateActivity(Activity activity) =>
       updateActivities([activity]);
 
-  /// Updating the activities
+  /// Update a batch of activities
   Future<void> updateActivities(Iterable<Activity> activities) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.write);
     return _batch.updateActivities(token, activities);
