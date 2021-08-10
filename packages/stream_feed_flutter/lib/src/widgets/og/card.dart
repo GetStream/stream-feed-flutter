@@ -5,8 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 ///{@template activity_card}
 /// A card used to diplay Open Graph medias.
-/// For now it displays an image
-///  and when clicked, it opens the media in device's browser.
+///
+/// For now it displays an image and when clicked, it opens the media in
+/// the device's browser.
 ///{@endtemplate}
 class ActivityCard extends StatelessWidget {
   /// The alternative text to display for accessibility reasons.
