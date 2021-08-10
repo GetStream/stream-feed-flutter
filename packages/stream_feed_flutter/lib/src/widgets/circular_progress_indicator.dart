@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 /// The default circular progress indicator.
 class StreamCircularProgressIndicator extends StatelessWidget {
+  /// Builds a [StreamCircularProgressIndicator].
   const StreamCircularProgressIndicator({
     Key? key,
     this.loadingProgress,
@@ -13,6 +14,7 @@ class StreamCircularProgressIndicator extends StatelessWidget {
 
   /// The progress of the loading process.
   final ImageChunkEvent? loadingProgress;
+
   @override
   Widget build(BuildContext context) {
     if (loadingProgress == null) return child;
