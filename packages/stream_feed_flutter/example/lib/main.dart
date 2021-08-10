@@ -1,16 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 Future<void> main() async {
-  final env = Platform.environment;
-  final secret = env['secret'];
-  final apiKey = env['apiKey'];
-  final appId = env['appId'];
-  final frontendToken = env['frontendToken'];
+  const secret = String.fromEnvironment('secret');
+  const apiKey = String.fromEnvironment('apiKey');
+  const appId = String.fromEnvironment('appId');
+  const frontendToken = String.fromEnvironment('frontendToken');
   final clientForScret = StreamFeedClient.connect(
-    apiKey!,
+    apiKey,
     secret: secret,
     runner: Runner.server,
   );

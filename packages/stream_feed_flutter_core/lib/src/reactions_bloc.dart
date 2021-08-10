@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ReactionsBloc extends StatefulWidget {
-  /// Instantiate a new [UsersBloc]. The parameter [child] must be supplied and
+  /// Instantiate a new [ReactionsBloc]. The parameter [child] must be supplied and
   /// not null.
   const ReactionsBloc({
     required this.child,
@@ -35,17 +35,17 @@ class ReactionsBloc extends StatefulWidget {
 /// The current state of the [ReactionsBloc]
 class ReactionsBlocState extends State<ReactionsBloc>
     with AutomaticKeepAliveClientMixin {
-  /// The current users list
+  /// The current reactions list
   List<Reaction>? get reactions => _reactionsController.valueOrNull;
 
-  /// The current users list as a stream
+  /// The current reactions list as a stream
   Stream<List<Reaction>> get reactionsStream => _reactionsController.stream;
 
   final _reactionsController = BehaviorSubject<List<Reaction>>();
 
   final _queryReactionsLoadingController = BehaviorSubject.seeded(false);
 
-  /// The stream notifying the state of queryUsers call
+  /// The stream notifying the state of queryReactions call
   Stream<bool> get queryReactionsLoading =>
       _queryReactionsLoadingController.stream;
 

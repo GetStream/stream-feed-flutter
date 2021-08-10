@@ -66,18 +66,20 @@ class ReactionListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactionListCore(
-      lookupValue: _lookupValue, //TODO: handle null safety
-      onProgressWidget: onProgressWidget,
-      onErrorWidget: onErrorWidget,
-      onEmptyWidget: onEmptyWidget,
-      flags: flags,
-      filter: filter,
-      kind: kind,
-      lookupAttr: lookupAttr,
-      limit: limit,
-      reactionsBuilder: (context, reactions, idx) =>
-          reactionBuilder(context, reactions[idx]),
+    return ReactionsBloc(
+      child: ReactionListCore(
+        lookupValue: _lookupValue, //TODO: handle null safety
+        onProgressWidget: onProgressWidget,
+        onErrorWidget: onErrorWidget,
+        onEmptyWidget: onEmptyWidget,
+        flags: flags,
+        filter: filter,
+        kind: kind,
+        lookupAttr: lookupAttr,
+        limit: limit,
+        reactionsBuilder: (context, reactions, idx) =>
+            reactionBuilder(context, reactions[idx]),
+      ),
     );
   }
 }
