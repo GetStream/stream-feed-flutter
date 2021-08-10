@@ -12,7 +12,7 @@ import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// {@template aggregatedFeed}
-/// Aggregated feeds are helpful if you want to group activities.
+/// Aggregated feeds are helpful for grouping activities.
 ///
 /// Here are some examples of what you can achieve using aggregated feeds:
 /// - 'Eric followed 10 people'
@@ -34,7 +34,7 @@ class AggregatedFeed extends Feed {
           subscriber: subscriber,
         );
 
-  ///Retrieves one activity from a feed
+  /// Retrieves one activity from a feed
   Future<Group<Activity>> getActivityDetail(String activityId) async {
     final activities = await getActivities(
         limit: 1,
