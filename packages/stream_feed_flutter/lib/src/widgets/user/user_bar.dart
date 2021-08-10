@@ -21,7 +21,7 @@ class UserBar extends StatelessWidget {
   /// The widget to display after the user's name.
   final Widget? afterUsername;
 
-  ///The subtitle of the user bar if any
+  /// The subtitle of the user bar if any
   final Widget? subtitle;
 
   /// The json key for the user's handle.
@@ -33,12 +33,13 @@ class UserBar extends StatelessWidget {
   /// The time at which the user posted the message.
   final DateTime timestamp;
 
-  ///The reaction kind to display.
+  /// The reaction kind to display.
   final String kind;
 
-  ///Wether or not to show the subtitle.
+  /// Whether or not to show the subtitle.
   final bool showSubtitle;
 
+  /// Builds a [UserBar].
   const UserBar({
     Key? key,
     required this.timestamp,
