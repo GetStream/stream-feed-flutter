@@ -23,7 +23,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// and server-side except the batch methods that are only available server-side
 /// {@endtemplate}
 class CollectionsClient {
-  ///Initialize a CollectionsClient object
+  /// Initialize a CollectionsClient object
   ///
   ///{@macro collections}
   CollectionsClient(this._collections, {this.userToken, this.secret})
@@ -46,9 +46,9 @@ class CollectionsClient {
 
   /// Add item to collection
   ///
-  /// Usage:
+  /// # Usage:
   ///
-  /// For example let's our CheeseBurger object to the food collection
+  /// For example let's add our CheeseBurger object to the food collection
   /// ```dart
   /// final cheeseBurger = await client.collections.add(
   ///   'food',
@@ -95,7 +95,6 @@ class CollectionsClient {
   /// [entryId] : Collection entry id
   /// [collection] : Collection name
   ///
-  ///
   /// ## Usage:
   ///
   /// Let's delete the burger we created in the [add] example, like this:
@@ -126,6 +125,7 @@ class CollectionsClient {
   }
 
   /// Update item in the object storage
+  ///
   /// ### Parameters
   ///  - [collection] :  collection name
   ///  - [data] :  ObjectStore data
@@ -157,6 +157,7 @@ class CollectionsClient {
   /// ### Parameters:
   /// [collection] : collections name
   /// [ids] : an array of ids we want to delete
+  ///
   /// ### Usage
   /// For example, to delete the entries with ID 123 and 124
   /// from visitor collection we do this
@@ -176,6 +177,7 @@ class CollectionsClient {
   /// ### Parameters
   /// [collection] : collection name
   /// [ids] : an array of ids
+  ///
   /// ### Usage
   /// To select the entries with ID 123 and 124 from items collection
   ///  we do this:
