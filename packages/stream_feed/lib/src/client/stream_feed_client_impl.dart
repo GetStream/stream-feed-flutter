@@ -34,7 +34,7 @@ final _levelEmojiMapper = {
 
 ///{@macro stream_feed_client}
 class StreamFeedClientImpl implements StreamFeedClient {
-  /// [StreamFeedClientImpl] constructor
+  /// Builds a [StreamFeedClientImpl].
   ///{@macro stream_feed_client}
   StreamFeedClientImpl(
     this.apiKey, {
