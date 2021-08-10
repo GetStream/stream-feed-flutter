@@ -9,10 +9,10 @@ import '../../utils/typedefs.dart';
 /// An avatar for the user.
 ///{@endtemplate}
 class Avatar extends StatelessWidget {
-  ///The User whose avatar we are displaying.
+  /// The User whose avatar we are displaying.
   final User? user;
 
-  ///The size of the avatar.
+  /// The size of the avatar.
   final double size;
 
   ///{@macro user_callback}
@@ -27,7 +27,7 @@ class Avatar extends StatelessWidget {
     this.onUserTap,
   }) : super(key: key);
 
-  /// A jsonKey if you want to override the profile url of [User.data]
+  /// A jsonKey for overriding the profile url of [User.data]
   final String jsonKey;
 
   @override
