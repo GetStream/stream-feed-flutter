@@ -5,7 +5,7 @@ import 'package:stream_feed/src/core/models/event.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// {@template analytics}
-/// Send out analytic events to the Stream service.
+/// Sends out analytic events to the Stream service.
 /// We recommend tracking every event for each user. This allows you to
 /// gain a better understanding of that user's interests.
 /// Common examples include:
@@ -35,7 +35,7 @@ class StreamAnalytics {
   final String? secret;
   final Token? userToken;
 
-  ///
+  /// Data related to the user
   UserData? userData;
   //TODO: get user?
 
@@ -55,6 +55,7 @@ class StreamAnalytics {
       }).toList(growable: false);
 
   /// Send a new [Impression] event.
+  ///
   /// i.e. a user is viewing a page.
   /// ```dart
   ///  final analytics = AnalyticsClient(apiKey, secret: secret);
@@ -78,6 +79,7 @@ class StreamAnalytics {
   }
 
   /// Send [Engagegement] event
+  ///
   /// i.e. a user is interacting with a content item.
   /// ```dart
   /// final analytics = AnalyticsClient(apiKey,
