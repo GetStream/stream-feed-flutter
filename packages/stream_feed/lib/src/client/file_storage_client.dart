@@ -63,7 +63,7 @@ class FileStorageClient {
     return _files.delete(token, url);
   }
 
-  /// {@template refreshUrl}
+  /// {@template filesRefreshUrl}
   /// Explicitly refresh CDN urls for uploaded images on the Stream CDN
   /// (only needed for files on the Stream CDN).
   ///
