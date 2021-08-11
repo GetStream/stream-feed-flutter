@@ -135,8 +135,10 @@ class FlatFeed extends Feed {
     return data;
   }
 
+  /// {@template personalizedFeed}
   /// Retrieve a personalized feed for the currentUser
   /// i.e. a feed of based on user's activities.
+  /// {@endtemplate}
   ///
   /// # Example:
   /// - get a feed of activities from the current user
