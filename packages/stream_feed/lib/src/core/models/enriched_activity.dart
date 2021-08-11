@@ -5,7 +5,16 @@ import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'enriched_activity.g.dart';
 
-/// A field that can be enriched.
+/// Enrichment is a concept in Stream that enables our API to work quickly
+/// and efficiently.
+///
+/// It is the concept that most data is stored as references to an original
+/// data. For example, if I add an activity to my feed and it fans out to 50
+/// followers, the activity is not copied 50 times, but the activity is stored
+/// in a single table only once, and references are stored in 51 feeds.
+///
+/// The same rule applies to users and reactions. They are stored only once,
+/// but references are used elsewhere.
 class EnrichableField extends Equatable {
   /// Builds a  [EnrichableField].
   const EnrichableField(this.data);
