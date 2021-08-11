@@ -29,7 +29,7 @@ class FilesAPI {
         queryParameters: {'url': targetUrl},
       );
 
-  /// {@macro refreshUrl}
+  /// {@macro filesRefreshUrl}
   Future<String?> refreshUrl(Token token, String targetUrl) async {
     final result = await _client.post(Routes.filesUrl,
         headers: {'Authorization': '$token'}, data: {'url': targetUrl});
