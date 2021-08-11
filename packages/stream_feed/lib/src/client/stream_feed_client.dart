@@ -13,7 +13,7 @@ import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 
-/// Different sides on which you can run this [StreamFeedClient] on
+/// Different environments in which you can run this [StreamFeedClient].
 enum Runner {
   /// Marks the [StreamFeedClient] that it is currently running on server-side
   server,
@@ -22,7 +22,7 @@ enum Runner {
   client,
 }
 
-///{@template stream_feed_client}
+/// {@template stream_feed_client}
 /// The client class that manages API calls and authentication.
 ///
 /// To instantiate the client you need an API key and secret.
@@ -33,10 +33,10 @@ enum Runner {
 ///
 /// There are a few different ways to use a [StreamFeedClient]:
 ///
-///{@macro connect}
-///{@endtemplate}
+/// {@macro connect}
+/// {@endtemplate}
 abstract class StreamFeedClient {
-  ///{@template connect}
+  /// {@template connect}
   /// - Instantiate a new client (server side) with [StreamFeedClient.connect]
   /// using your api [secret] parameter and [apiKey]
   /// ```dart
@@ -52,7 +52,7 @@ abstract class StreamFeedClient {
   /// ```dart
   /// var client = connect('YOUR_API_KEY',token: Token('userToken'));
   /// ```
-  ///{@endtemplate}
+  /// {@endtemplate}
   factory StreamFeedClient.connect(
     String apiKey, {
     Token? token,
