@@ -5,15 +5,15 @@ import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'enriched_activity.g.dart';
 
-/// A field that can be Enrichabl Field
+/// A field that can be enriched.
 class EnrichableField extends Equatable {
-  /// Constructor [EnrichableField]
+  /// Builds a  [EnrichableField].
   const EnrichableField(this.data);
 
   /// Underlying [EnrichableField] data
   final Object? data;
 
-  /// Serialize [EnrichableField]
+  /// Deserializes an [EnrichableField].
   static EnrichableField deserialize(Object? obj) {
     if (obj is String) {
       return EnrichableField(obj);
@@ -21,7 +21,7 @@ class EnrichableField extends Equatable {
     return EnrichableField(obj as Map<String, dynamic>?);
   }
 
-  /// Serialize [EnrichableField]
+  /// Serializes an [EnrichableField].
   static Object? serialize(EnrichableField? field) => field?.data;
 
   @override
@@ -52,7 +52,7 @@ class EnrichedActivity extends Equatable {
     this.latestReactions,
   });
 
-  /// Create a new instance from a json
+  /// Create a new instance from a JSON object
   factory EnrichedActivity.fromJson(Map<String, dynamic>? json) =>
       _$EnrichedActivityFromJson(
           Serializer.moveKeysToRoot(json, topLevelFields)!);
@@ -79,7 +79,8 @@ class EnrichedActivity extends Equatable {
   final EnrichableField? object;
 
   /// A unique ID from your application for this activity.
-  /// IE: pin:1 or like:300.
+  ///
+  /// Examples: "pin:1" or "like:300".
   @JsonKey(includeIfNull: false)
   final String? foreignId;
 
@@ -91,7 +92,9 @@ class EnrichedActivity extends Equatable {
   )
   final EnrichableField? target;
 
-  /// The optional time of the activity, isoformat. Default is the current time.
+  /// The optional time of the activity in iso format.
+  ///
+  /// Defaults to the current time.
   @JsonKey(includeIfNull: false)
   final DateTime? time;
 
@@ -103,8 +106,9 @@ class EnrichedActivity extends Equatable {
   )
   final EnrichableField? origin;
 
-  /// An array allows you to specify
-  /// a list of feeds to which the activity should be copied.
+  /// An array allows you to specify a list of feeds to which the activity
+  /// should be copied.
+  ///
   /// One way to think about it is as the CC functionality of email.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final List<String>? to;
@@ -177,7 +181,7 @@ class EnrichedActivity extends Equatable {
         latestReactions,
       ];
 
-  /// Serialize to json
+  /// Serialize to JSON
   Map<String, dynamic> toJson() => Serializer.moveKeysToMapInPlace(
       _$EnrichedActivityToJson(this), topLevelFields);
 }
