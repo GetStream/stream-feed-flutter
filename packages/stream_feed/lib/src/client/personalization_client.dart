@@ -3,9 +3,9 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// {@template personalization}
 /// Allows for personalizing a feed to the user's preference.
 ///
-/// {@template personalization}
 /// Personalization is a powerful feature. It enables you to leverage machine
 /// learning to optimize what's shown in the feed.
 ///
@@ -56,9 +56,11 @@ class PersonalizationClient {
   final String? secret;
   final PersonalizationAPI _personalization;
 
+  /// {@template personalizationGet}
   /// Reads the personalized feed for a given user
   ///
   /// Our data science team will typically tell you which endpoint to use
+  /// {@endtemplate}
   Future<Map> get(
     String resource, {
     Map<String, dynamic>? params,
