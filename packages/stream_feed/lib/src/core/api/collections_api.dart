@@ -12,9 +12,11 @@ class CollectionsAPI {
 
   final StreamHttpClient _client;
 
-  /// Add item to collection
-  /// Note: when using client-side auth the user_id field must not be provided
+  /// Adds one item to a collection.
+  ///
+  /// Note: when using client-side, auth the user_id field must not be provided
   /// as the value will be taken from the user token.
+  ///
   /// Note: If a collection object with the same ID already exists,
   /// the request will error with code 409 Conflict.
   Future<CollectionEntry> add(
@@ -35,8 +37,9 @@ class CollectionsAPI {
     return CollectionEntry.fromJson(result.data!);
   }
 
-  /// Delete entry from collection
-  ///Will return an empty response on success.
+  /// Deletes a single entry from a collection.
+  ///
+  /// Returns an empty response on success.
   Future<Response> delete(
       Token token, String collection, String entryId) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
@@ -47,7 +50,7 @@ class CollectionsAPI {
     );
   }
 
-  ///Remove all objects by id from the collection.
+  /// Removes all objects by id from the collection.
   Future<Response> deleteMany(
       Token token, String collection, Iterable<String> entryIds) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
@@ -62,7 +65,7 @@ class CollectionsAPI {
     );
   }
 
-  ///Get item from collection and sync data
+  /// Gets a single item from a collection and syncs its data.
   Future<CollectionEntry> get(
       Token token, String collection, String entryId) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
@@ -74,7 +77,7 @@ class CollectionsAPI {
     return CollectionEntry.fromJson(result.data!);
   }
 
-  /// Select all objects with ids from the collection.
+  /// Selects all objects with ids from the collection.
   Future<List<CollectionEntry>> select(
       Token token, String collection, Iterable<String> entryIds) async {
     checkArgument(collection.isNotEmpty, "Collection name can't be empty");
@@ -92,7 +95,7 @@ class CollectionsAPI {
     return data;
   }
 
-  /// Update item in the object storage
+  /// Updates a single item in the object storage.
   Future<CollectionEntry> update(
       Token token, String? userId, CollectionEntry entry) async {
     checkNotNull(entry, "Collection can't be null");
@@ -110,7 +113,7 @@ class CollectionsAPI {
     return CollectionEntry.fromJson(result.data!);
   }
 
-  ///Upsert one or more items within a collection.
+  /// Upserts one or more items within a collection.
   Future<List<CollectionEntry>> upsert(
       //TODO: Map<String, Iterable<CollectionEntry>>
       Token token,
