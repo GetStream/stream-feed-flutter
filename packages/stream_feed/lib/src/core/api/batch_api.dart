@@ -18,6 +18,7 @@ class BatchAPI {
 
   final StreamHttpClient _client;
 
+  /// Add one activity to many feeds
   Future<Response> addToMany(
       Token token, Activity activity, Iterable<FeedId> feedIds) async {
     checkArgument(feedIds.isNotEmpty, 'No feeds to add to');
@@ -31,6 +32,7 @@ class BatchAPI {
     );
   }
 
+  /// Follow multiple feeds
   Future<Response> followMany(Token token, int activityCopyLimit,
       Iterable<FollowRelation> follows) async {
     checkArgument(
@@ -45,6 +47,7 @@ class BatchAPI {
     );
   }
 
+  /// Unfollow multiple feeds
   Future<Response> unfollowMany(
       Token token, Iterable<UnFollowRelation> unfollows) async {
     checkArgument(unfollows.isNotEmpty, 'No feeds to unfollow');
@@ -55,6 +58,7 @@ class BatchAPI {
     );
   }
 
+  /// Retrieve a batch of activities by a single id.
   Future<List<Activity>> getActivitiesById(
       Token token, Iterable<String> ids) async {
     checkArgument(ids.isNotEmpty, 'No activities to get');
@@ -69,6 +73,7 @@ class BatchAPI {
     return data;
   }
 
+  /// Retrieve a batch of activities by a single foreign id.
   Future<List<Activity>> getActivitiesByForeignId(
       Token token, Iterable<ForeignIdTimePair> pairs) async {
     checkArgument(pairs.isNotEmpty, 'No activities to get');
@@ -87,6 +92,7 @@ class BatchAPI {
     return data;
   }
 
+  /// Retrieve multiple enriched activities by a single id
   Future<List<EnrichedActivity>> getEnrichedActivitiesById(
       Token token, Iterable<String> ids) async {
     checkArgument(ids.isNotEmpty, 'No activities to get');
@@ -101,6 +107,7 @@ class BatchAPI {
     return data;
   }
 
+  /// Retrieve multiple enriched activities by a single foreign id
   Future<List<EnrichedActivity>> getEnrichedActivitiesByForeignId(
       Token token, Iterable<ForeignIdTimePair> pairs) async {
     checkArgument(pairs.isNotEmpty, 'No activities to get');
@@ -119,6 +126,7 @@ class BatchAPI {
     return data;
   }
 
+  /// Update multiple Activities
   Future<Response> updateActivities(
       Token token, Iterable<Activity> activities) async {
     checkArgument(activities.isNotEmpty, 'No activities to update');
