@@ -13,7 +13,7 @@ import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Feeds
 class FeedAPI {
-  /// [FeedAPI] constructor
+  /// Builds a [FeedAPI].
   const FeedAPI(this._client);
 
   final StreamHttpClient _client;
@@ -77,7 +77,7 @@ class FeedAPI {
     );
   }
 
-  ///Retrieve activities
+  /// Retrieve activities
   Future<Response<Map>> getActivities(
     Token token,
     FeedId feed,
@@ -89,8 +89,9 @@ class FeedAPI {
         queryParameters: options,
       );
 
-  ///Retrieve the number of follower
-  ///and following feed stats of the current feed.
+  /// Retrieve the number of followers and following feed stats of the current
+  /// feed.
+  ///
   /// For each count, feed slugs can be provided to filter counts accordingly.
   Future<FollowStats> followStats(
     Token token,
@@ -101,7 +102,7 @@ class FeedAPI {
     return FollowStats.fromJson(response.data!['results']);
   }
 
-  ///Retrieve activities with reaction enrichment
+  /// Retrieve activities with reaction enrichment
   Future<Response> getEnrichedActivities(
     Token token,
     FeedId feed,
@@ -140,7 +141,7 @@ class FeedAPI {
     return data;
   }
 
-  ///List the followers of this feed
+  /// List the followers of this feed
   Future<List<Follow>> followers(
     Token token,
     FeedId feed,
@@ -167,7 +168,7 @@ class FeedAPI {
     return data;
   }
 
-  ///Remove an Activity by referencing its foreign_id
+  /// Remove an Activity by referencing its foreign_id
   Future<Response> removeActivityByForeignId(
     Token token,
     FeedId feed,
@@ -179,14 +180,14 @@ class FeedAPI {
         queryParameters: {'foreign_id': '1'},
       );
 
-  ///Removes the activity by activityId
+  /// Removes the activity by activityId
   Future<Response> removeActivityById(Token token, FeedId feed, String id) =>
       _client.delete(
         Routes.buildFeedUrl(feed, id),
         headers: {'Authorization': '$token'},
       );
 
-  ///Unfollow the given feed
+  /// Unfollow the given feed
   Future<Response> unfollow(
     Token token,
     FeedId source,
@@ -199,8 +200,9 @@ class FeedAPI {
         queryParameters: {'keep_history': keepHistory},
       );
 
-  ///Update Activities By ForeignId
-  ///Note: the keys of set and unset must not collide.
+  /// Update Activities By `foreignId`.
+  ///
+  /// Note: the keys of set and unset must not be identical.
   Future<List<Activity>> updateActivitiesByForeignId(
       Token token, Iterable<ActivityUpdate> updates) async {
     checkArgument(updates.isNotEmpty, 'No updates');
@@ -224,8 +226,9 @@ class FeedAPI {
     return data;
   }
 
-  ///Update Activities By Id
-  ///Note: the keys of set and unset must not collide.
+  /// Update Activities By `id`.
+  ///
+  /// Note: the keys of set and unset must not be identical.
   Future<List<Activity>> updateActivitiesById(
       Token token, Iterable<ActivityUpdate> updates) async {
     checkArgument(updates.isNotEmpty, 'No updates');
@@ -248,8 +251,9 @@ class FeedAPI {
     return data;
   }
 
-  ///Update [Activity.foreignId] By ForeignId
-  ///Note: the keys of set and unset must not collide.
+  /// Update [Activity.foreignId] By `foreignId`.
+  ///
+  /// Note: the keys of set and unset must not be identical.
   Future<Activity> updateActivityByForeignId(
       Token token, ActivityUpdate update) async {
     checkNotNull(update.foreignId, 'No activity to update');
@@ -267,8 +271,9 @@ class FeedAPI {
     return data;
   }
 
-  ///Partial update by activity ID
-  /// Note: the keys of set and unset must not collide.
+  /// Partial update by activity ID.
+  ///
+  /// Note: the keys of set and unset must not be identical.
   Future<Activity> updateActivityById(
       Token token, ActivityUpdate update) async {
     checkNotNull(update.id, 'No activity to update');
@@ -285,8 +290,9 @@ class FeedAPI {
     return data;
   }
 
-  ///Updates an activity's [Activity.to] fields
-  ///Note: the keys of set and unset must not collide.
+  /// Updates an activity's [Activity.to] fields.
+  ///
+  /// Note: the keys of set and unset must not be identical.
   Future<Response> updateActivityToTargets(
     Token token,
     FeedId feed,
@@ -323,6 +329,7 @@ class FeedAPI {
     );
   }
 
+  /// {@macro personalizedFeed}
   Future<PersonalizedFeed> personalizedFeed(
     Token token,
     Map<String, Object> options,
