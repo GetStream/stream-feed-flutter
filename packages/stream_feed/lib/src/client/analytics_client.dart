@@ -54,23 +54,35 @@ class StreamAnalytics {
         );
       }).toList(growable: false);
 
-  /// Send a new [Impression] event.
+  /// {@template trackImpression}
+  /// Tracks the amount of times an Activity has been viewed, by which
+  /// users, and more.
   ///
-  /// i.e. a user is viewing a page.
+  /// Check out the [Impression] object to view the full details of what
+  /// gets tracked.
+  ///
+  /// {@endtemplate}
+  ///
+  /// # Example
+  ///
+  /// A user is viewing a page:
   /// ```dart
   ///  final analytics = AnalyticsClient(apiKey, secret: secret);
-  /// await analytics.trackImpression(Impression(
+  /// await analytics.trackImpression(
+  ///   Impression(
   ///     contentList: [
   ///       {"foreign_id": "tweet:34349698"}
   ///     ],
   ///     userData: UserData("test", "test"),
   ///     feedId: FeedId("flat", "tommaso"),
-  ///     location: "profile_page");
+  ///     location: "profile_page",
+  ///   ),
+  /// );
   /// ```
   Future<void> trackImpression(Impression impression) =>
       trackImpressions([impression]);
 
-  /// Send [Impression]s events
+  /// Send [Impression] events
   Future<void> trackImpressions(List<Impression> impressions) async {
     final impressionDataList = _validateAndNormalizeUserData(impressions);
     final token =
@@ -78,22 +90,31 @@ class StreamAnalytics {
     await _analytics.trackImpressions(token, impressionDataList);
   }
 
-  /// Send [Engagegement] event
+  /// {@template trackEngagement}
+  /// Tracks the interactions users have had with an Activity.
   ///
-  /// i.e. a user is interacting with a content item.
+  /// Check out the [Engagement] class for the full details of what gets
+  /// tracked.
+  /// {@endtemplate}
+  ///
+  /// # Example
+  ///
+  /// A user is interacting with a content item:
   /// ```dart
-  /// final analytics = AnalyticsClient(apiKey,
-  ///     userToken: token);
-  /// await analytics.trackEngagement(Engagement(
+  /// final analytics = AnalyticsClient(apiKey, userToken: token);
+  /// await analytics.trackEngagement(
+  ///   Engagement(
   ///     content: {"foreign_id": "tweet:34349698"},
   ///     label: "click",
   ///     userData: UserData("test", "test"),
-  ///     feedId: FeedId("user", "thierry")));
+  ///     feedId: FeedId("user", "thierry"),
+  ///   ),
+  /// );
   /// ```
   Future<void> trackEngagement(Engagement engagement) =>
       trackEngagements([engagement]);
 
-  /// Send [Engagegement]s event
+  /// Send [Engagement] event
   Future<void> trackEngagements(List<Engagement> engagements) {
     final engagementDataList = _validateAndNormalizeUserData(engagements);
     final token =
