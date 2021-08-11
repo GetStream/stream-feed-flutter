@@ -2,7 +2,7 @@ part of 'stream_http_client.dart';
 
 /// Client options to modify [StreamHttpClient]
 class StreamHttpClientOptions {
-  /// Instantiates a new [StreamHttpClientOptions]
+  /// Builds a  [StreamHttpClientOptions].
   const StreamHttpClientOptions({
     this.location,
     this.version = 'v1.0',
@@ -13,32 +13,36 @@ class StreamHttpClientOptions {
     this.receiveTimeout = const Duration(seconds: 10),
   });
 
-  /// data center to use with client
+  /// Data center to use with client
   final Location? location;
 
-  /// protocol to use with the api calls
+  /// Protocol to use with the api calls
   final String protocol;
 
-  /// track a source name for the api calls
+  /// Track a source name for the api calls
   final String group;
 
-  /// connect timeout, default to 10s
+  /// Connect timeout.
+  ///
+  /// Defaults to 10 seconds.
   final Duration connectTimeout;
 
-  /// received timeout, default to 10s
+  /// Received timeout.
+  ///
+  /// Defaults to 10 seconds.
   final Duration receiveTimeout;
 
-  /// map of url's to possibly override baseUrl
+  /// Map of url's to possibly override baseUrl
   final Map<String, String> urlOverride;
 
-  /// version to use with client
+  /// Version to use with client
   final String version;
 
   /// Get the current user agent
   String get _userAgent => 'stream-feed-dart-client-${CurrentPlatform.name}-'
       '${packageVersion.split('+')[0]}';
 
-  /// generates a baseUrl using the provided [serviceName]
+  /// Generates a baseUrl using the provided [serviceName]
   String _getBaseUrl(String serviceName) {
     if (urlOverride.containsKey(serviceName)) {
       return urlOverride[serviceName]!;
