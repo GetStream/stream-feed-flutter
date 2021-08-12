@@ -4,13 +4,15 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 
 part 'following.g.dart';
 
-///{@template following}
-///Following of a feed used in [FollowStats] as field
-///{@endtemplate}
+/// {@template following}
+/// Following of a feed used in [FollowStats] as field
+/// {@endtemplate}
 @JsonSerializable()
 class Following extends Equatable {
+  /// Builds a [Following].
   const Following({required this.feed, this.count, this.slugs});
 
+  /// Builds a [Following] from a JSON object.
   factory Following.fromJson(Map<String, dynamic> json) =>
       _$FollowingFromJson(json);
 
