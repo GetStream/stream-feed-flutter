@@ -12,7 +12,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// An Alert Dialog that displays an activity and a comment field.
 ///{@endtemplate}
 class AlertDialogComment extends StatelessWidget {
-  ///{@macro alert_dialog}
+  /// Builds an [AlertDialogComment].
   const AlertDialogComment({
     Key? key,
     required this.feedGroup,

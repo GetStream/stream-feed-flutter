@@ -2,7 +2,7 @@ import 'package:stream_feed/src/core/models/crop.dart';
 import 'package:stream_feed/src/core/models/resize.dart';
 
 /// Create a Thumbnail of an image based on supplied [_width],[_height]
-/// and eventually [cropTypes],[resizeType]
+/// and eventually [cropTypes] and [resizeType]
 class Thumbnail {
   /// [Thumbnail] constructor
   const Thumbnail(this._width, this._height,

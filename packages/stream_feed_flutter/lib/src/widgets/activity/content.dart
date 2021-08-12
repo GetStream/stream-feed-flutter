@@ -6,8 +6,9 @@ import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template activity_content}
-/// Activity Content is a widget that displays the content of an activity.
-/// i.e. the actual text of the activity, the media, etc.
+/// Displays the content of an activity.
+///
+/// This would be the actual text of the activity, the media, etc.
 ///{@endtemplate}
 class ActivityContent extends StatelessWidget {
   ///The activity that is being displayed.
@@ -16,7 +17,7 @@ class ActivityContent extends StatelessWidget {
   ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
 
-  ///A callback that is invoked when the user clicks on hashtag
+  /// A callback that is invoked when the user clicks on hashtag
   final OnHashtagTap? onHashtagTap;
   final String commentJsonKey;
 

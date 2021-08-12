@@ -6,12 +6,12 @@ import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Images
 class ImagesAPI {
-  /// [ImagesAPI] constructor
+  /// Builds an [ImagesAPI].
   const ImagesAPI(this._client);
 
   final StreamHttpClient _client;
 
-  /// Uploading an image
+  /// Uploads a single image image
   Future<String?> upload(Token token, AttachmentFile image) async {
     final multiPartFile = await image.toMultipartFile();
     final result = await _client.postFile<Map>(
@@ -22,14 +22,14 @@ class ImagesAPI {
     return result.data!['file'];
   }
 
-  /// Images can be deleted using their URL.
+  /// Delete a single image using its URL.
   Future<Response> delete(Token token, String targetUrl) => _client.delete(
         Routes.imagesUrl,
         headers: {'Authorization': '$token'},
         queryParameters: {'url': targetUrl},
       );
 
-  /// Images can be obtained using their URL.
+  /// Get a single image using its URL.
   Future<String?> get(
     Token token,
     String targetUrl, {
@@ -46,6 +46,7 @@ class ImagesAPI {
     return result.data['file'];
   }
 
+  /// {@macro imageRefreshUrl}
   Future<String?> refreshUrl(Token token, String targetUrl) async {
     final result = await _client.post(Routes.imagesUrl,
         headers: {'Authorization': '$token'}, data: {'url': targetUrl});

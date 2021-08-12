@@ -3,12 +3,13 @@ import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 ///{@template child_reaction_button}
-/// A Reaction Button is a widget that can be used to trigger a reaction.
-/// It displays the count of reactions it has received and the reaction
+/// Used to trigger a reaction.
+///
+/// It displays the number of reactions it has received and the reaction
 /// it is currently displaying.
 ///{@endtemplate}
 class ChildReactionButton extends StatelessWidget {
-  ///{@macro child_reaction_button}
+  /// Builds a [ChildReactionButton].
   const ChildReactionButton({
     Key? key,
     required this.kind,
@@ -20,25 +21,31 @@ class ChildReactionButton extends StatelessWidget {
     this.data,
   }) : super(key: key);
 
-  ///The reaction received from stream that should be liked when pressing the LikeButton.
+  /// The reaction received from stream that should be liked when pressing
+  /// the LikeButton.
   final Reaction reaction;
 
-  ///If you want to override on tap for some reasons
+  /// The callback to be performed on tap.
+  ///
+  /// This is generally not to be overridden, but can be done if developers
+  /// wish.
   final VoidCallback? onTap;
 
   /// The kind of reaction that should be displayed.
   final String kind;
 
-  /// The button to display if the user already reacted
+  /// The button to display if the user has already reacted
   final Widget activeIcon;
 
-  /// The button to display if the user didn't reacted yet
+  /// The button to display if the user didn't react yet
   final Widget inactiveIcon;
 
   /// The data to send along with this reaction.
   final Map<String, Object>? data;
 
-  /// The color to use when the user hovers over the button. (desktop/web)
+  /// The color to use when the user hovers over the button.
+  ///
+  /// Generally applies to desktop and web.
   final Color hoverColor;
 
   @override
@@ -58,13 +65,15 @@ class ChildReactionButton extends StatelessWidget {
 }
 
 class ChildReactionToggleIcon extends StatefulWidget {
-  ///The reactions belongin to the current user
+  /// The reactions belonging to the current user
   final List<Reaction>? ownReactions;
 
-  /// The icon to display if you already reacted, with this rreaction kind, to this activity
+  /// The icon to display if the current user has already reacted, with this
+  /// reaction kind, to this activity.
   final Widget activeIcon;
 
-  /// The icon to display if you did not reacted yet, with this rreaction kind, to this activity
+  /// The icon to display if the current user did not react yet, with this
+  /// reaction kind, to this activity.
   final Widget inactiveIcon;
 
   /// The kind of reaction
@@ -73,7 +82,7 @@ class ChildReactionToggleIcon extends StatefulWidget {
   /// The reaction count
   final int? count;
 
-  /// A callback that will be called when the user clicks on the reaction icon
+  /// The callback to be performed when the user clicks on the reaction icon.
   final VoidCallback? onTap;
 
   final String? userId;

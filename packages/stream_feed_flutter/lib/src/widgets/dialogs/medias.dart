@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 ///Opens file explorer to select a media file.
 ///{@endtemplate}
 class MediasAction extends StatelessWidget {
-  ///{@macro medias_action}
+  /// Builds a [MediasAction].
   const MediasAction({
     Key? key,
   }) : super(key: key);

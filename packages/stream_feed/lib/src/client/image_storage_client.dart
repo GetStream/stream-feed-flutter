@@ -8,16 +8,16 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// Image and files have separate clients
 /// (e.g. images can be resized, whereas files cannot).
 ///
-/// Once the upload is completed the URL of the file/image is returned and is ready for use.
+/// Once the upload is completed the URL of the file/image is returned and is
+/// ready for use.
 ///
 /// The returned URL is served via CDN and can be requested by anyone.
 ///
-/// In order to avoid resource enumeration attacks,
-/// a unique signature is added.
+/// In order to avoid resource enumeration attacks, a unique signature is added.
 /// Manipulating the returned URL will likely result in HTTP errors.
 /// {@endtemplate}
 class ImageStorageClient {
-  ///Initialize a [ImageStorageClient] object
+  /// Initializes a [ImageStorageClient] object
   ///
   ///{@macro filesnandimages}
   ImageStorageClient(this._images, {this.userToken, this.secret})
@@ -58,7 +58,7 @@ class ImageStorageClient {
 
   /// Images can be deleted using their URL.
   /// # Examples
-
+  ///
   /// - deleting an image using the url returned by the APIs
   /// ```dart
   /// client.images.delete(imageURL);
@@ -85,10 +85,10 @@ class ImageStorageClient {
   ///
   /// - create a 50x50 thumbnail and crop from center
   /// ```dart
-  ///await client.images.getCropped(
-  ///  'imageUrl',
-  ///  const Crop(50, 50),
-  ///);
+  /// await client.images.getCropped(
+  ///   'imageUrl',
+  ///   const Crop(50, 50),
+  /// );
   /// ```
   Future<String?> getCropped(String url, Crop crop) =>
       _process(url, crop.params);
@@ -115,8 +115,13 @@ class ImageStorageClient {
   Future<String?> thumbnail(String url, Thumbnail thumbnail) =>
       _process(url, thumbnail.params);
 
-  /// Explicitly refresh CDN urls for uploaded images on the Stream CDN (only needed for files on the Stream CDN).
-  /// Note that Stream CDN is not enabled by default, if in doubt please contact us.
+  /// {@template imageRefreshUrl}
+  /// Explicitly refresh CDN urls for uploaded images on the Stream CDN
+  /// (only needed for files on the Stream CDN).
+  ///
+  /// Note that Stream CDN is not enabled by default. If in doubt, please
+  /// contact us.
+  /// {@endtemplate}
   Future<String?> refreshUrl(String targetUrl) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);

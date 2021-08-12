@@ -6,27 +6,30 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template comment_field}
-/// A Comment Field widget is a field for adding comments to a feed
-/// It displays the avatar, a textarea and a button to submit the comment.
+/// A field for adding comments to a feed.
+///
+/// It displays the avatar, a text area and a button to submit the comment.
 ///{@endtemplate}
 class CommentField extends StatelessWidget {
-  /// The activity on which the comment will be posted (reaction)
-  /// if none is provided, the comment will be posted as new activity.
+  /// The activity on which the comment will be posted (reaction).
+  ///
+  /// If no activity is provided, the comment will be posted as a new activity.
   final EnrichedActivity? activity;
 
   /// The target feed on which the comment will be posted.
   final List<FeedId>? targetFeeds;
 
-  /// Text Editing Controller used by both the comment textarea and the submit button.
+  /// [TextEditingController] used by both the comment text area and the
+  /// submit button.
   final TextEditingController textEditingController;
 
-  /// Wether or not you want to display the comment button.
+  /// Whether or not to display the comment button.
   final bool enableButton;
 
   ///The feed group part of the feed
   final String feedGroup;
 
-  ///{@macro comment_field}
+  /// Builds a [CommentField].
   const CommentField({
     Key? key,
     required this.feedGroup,

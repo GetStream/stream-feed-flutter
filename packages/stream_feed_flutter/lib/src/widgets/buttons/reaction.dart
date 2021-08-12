@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template reaction_button}
-/// A Reaction Button is a widget that can be used to trigger a reaction.
-/// It displays the count of reactions it has received and the reaction
+/// A widget that can be used to trigger a reaction.
+///
+/// Displays the count of reactions it has received and the reaction
 /// it is currently displaying.
 ///{@endtemplate}
 class ReactionButton extends StatelessWidget {
-  ///{@macro reaction_button}
+  /// Builds a [ReactionButton].
   const ReactionButton({
     Key? key,
     required this.activity,
@@ -21,28 +22,35 @@ class ReactionButton extends StatelessWidget {
     this.data,
   }) : super(key: key);
 
-  ///The reaction received from stream that should be liked when pressing the LikeButton.
+  /// The reaction received from Stream that should be liked when pressing
+  /// the [LikeButton].
   final Reaction? reaction;
 
-  /// The activity received from stream that should be liked when pressing the LikeButton.
+  /// The activity received from Stream that should be liked when pressing
+  /// the [LikeButton].
   final EnrichedActivity activity;
 
-  ///If you want to override on tap for some reasons
+  /// The callback to be performed on tap.
+  ///
+  /// This is generally not to be overridden, but can be done if developers
+  /// wish.
   final VoidCallback? onTap;
 
   /// The kind of reaction that should be displayed.
   final String kind;
 
-  /// The button to display if the user already reacted
+  /// The button to display if the current user has already reacted
   final Widget activeIcon;
 
-  /// The button to display if the user didn't reacted yet
+  /// The button to display if the current user has not reacted yet
   final Widget inactiveIcon;
 
   /// The data to send along with this reaction.
   final Map<String, Object>? data;
 
-  /// The color to use when the user hovers over the button. (desktop/web)
+  /// The color to use when the user hovers over the button.
+  ///
+  /// Generally applies to desktop and web.
   final Color hoverColor;
 
   ///The group/slug of the feed to which this reaction will belong.

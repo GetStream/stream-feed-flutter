@@ -9,12 +9,12 @@ import 'package:animations/animations.dart';
 enum TransitionType { material, cupertino, sharedAxisTransition }
 
 ///{@template flat_activity_list_page}
-///The Page to display a list of activities
-///This page is the main page of the app
-///It displays a list of activities
+/// Display a list of activities.
+///
+/// Best used as the main page of an app.
 ///{@endtemplate}
 class FlatActivityListPage extends StatelessWidget {
-  ///{@macro flat_activity_list_page}
+  /// Builds a [FlatActivityListPage].
   const FlatActivityListPage({
     Key? key,
     this.feedGroup = 'user',
@@ -51,28 +51,28 @@ class FlatActivityListPage extends StatelessWidget {
   /// A feed group to fetch activities for
   final String feedGroup;
 
-  /// A builder to build the activity footer
+  /// Builds the activity footer
   final ActivityFooterBuilder? activityFooterBuilder;
 
-  /// A builder to build the activity content
+  /// Builds the activity content
   final ActivityContentBuilder? activityContentBuilder;
 
-  /// A builder to build the activity header
+  /// Builds the activity header
   final ActivityHeaderBuilder? activityHeaderBuilder;
 
   ///{@macro activity_callback}
   final OnActivityTap? onActivityTap;
 
-  /// A widget to display when theire is an error in the request
+  /// A widget to display when there is an error in the request
   final Widget onErrorWidget;
 
-  /// A widget to display to show a loading progress
+  /// A widget to display loading progress
   final Widget onProgressWidget;
 
   /// A widget to display when there are no activities
   final Widget onEmptyWidget;
 
-  ///Customise the transition
+  /// Customises the transition
   final TransitionType transitionType;
 
   /// The limit of activities to fetch

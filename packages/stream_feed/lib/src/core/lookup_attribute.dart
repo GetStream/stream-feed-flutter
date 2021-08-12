@@ -1,12 +1,12 @@
 /// Lookup objects based on attributes
 enum LookupAttribute {
-  /// the id of the activity you want to lookup
+  /// The id of the activity you want to lookup
   activityId,
 
-  /// the id of the reaction you want to lookup
+  /// The id of the reaction you want to lookup
   reactionId,
 
-  /// the id of the user you want to lookup
+  /// The id of the user you want to lookup
   userId,
 }
 

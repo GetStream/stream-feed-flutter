@@ -5,6 +5,8 @@ import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// Provides methods for reacting to Activities.
+///
 /// {@template reactions}
 /// Reactions are a special kind of data that can be used
 /// to capture user interaction with specific activities.
@@ -22,10 +24,10 @@ class ReactionsClient {
           'At least a secret or userToken must be provided',
         );
 
-  ///User JWT Token
+  /// User JWT
   final Token? userToken;
 
-  ///The reactions client
+  /// The reactions client
   final ReactionsAPI _reactions;
 
   /// Your API secret. You can get it in your Stream Dashboard [here](https://dashboard.getstream.io/dashboard/v2/)
@@ -103,12 +105,12 @@ class ReactionsClient {
   ///
   /// ## Example:
   /// Adds a like to the previously created comment
-  ///```dart
-  ///final reaction = await client.reactions.addChild(
-  /// 'like',
-  /// comment.id,
-  /// 'john-doe',
-  ///);
+  ///` ``dart
+  /// final reaction = await client.reactions.addChild(
+  ///   'like',
+  ///   comment.id,
+  ///   'john-doe',
+  /// );
   ///```
   ///
   /// API docs: [reactions_add_child](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_add_child/?language=dart)
@@ -156,14 +158,14 @@ class ReactionsClient {
     return _reactions.get(token, id);
   }
 
-  ///Reactions can be updated by providing the reaction ID parameter.
+  /// Reactions can be updated by providing the reaction ID parameter.
   ///
-  ///Changes to reactions are propagated to all notified feeds;
+  /// Changes to reactions are propagated to all notified feeds;
   ///
-  ///if the target_feeds list is updated,
-  ///notifications will be added and removed accordingly.
-  ///# Examples
-  ///```dart
+  /// if the target_feeds list is updated,
+  /// notifications will be added and removed accordingly.
+  /// # Examples
+  /// ```dart
   /// await client.reactions.update(
   ///   reaction.id,
   ///   data: {'text': 'love it!'},
@@ -232,7 +234,7 @@ class ReactionsClient {
   }
 
   //------------------------- Server side methods ----------------------------//
-  ///paginated reactions and filter them
+  /// Paginated reactions and filter them
   ///
   /// {@macro filter}
   Future<PaginatedReactions> paginatedFilter(

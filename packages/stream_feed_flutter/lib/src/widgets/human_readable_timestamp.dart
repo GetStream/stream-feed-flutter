@@ -3,6 +3,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 /// An Human readable date.
 class HumanReadableTimestamp extends StatelessWidget {
+  /// Builds a [HumanReadableTimestamp].
   const HumanReadableTimestamp({
     Key? key,
     required this.timestamp,
