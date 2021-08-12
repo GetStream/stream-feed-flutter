@@ -7,7 +7,7 @@ import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
-/// Enables adding multiple activities with a single operation.
+/// Enables getting, adding and updating multiple activities with a single operation.
 class BatchOperationsClient {
   /// Builds a [BatchOperationsClient].
   BatchOperationsClient(this._batch, {required this.secret});
