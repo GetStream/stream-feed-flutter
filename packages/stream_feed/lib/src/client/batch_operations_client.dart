@@ -67,7 +67,7 @@ class BatchOperationsClient {
     );
   }
 
-  /// Retrieve a batch of activities by a single id.
+  /// Retrieve a batch of activities by a list of ids.
   Future<Iterable<Activity>> getActivitiesById(Iterable<String> ids) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return _batch.getActivitiesById(token, ids);
