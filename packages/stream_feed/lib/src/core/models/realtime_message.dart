@@ -8,20 +8,23 @@ import 'package:stream_feed/stream_feed.dart';
 
 part 'realtime_message.g.dart';
 
-/// A realtime message
-/// for changes to one or many feeds; each time a new activity is added or removed,
-///  an update will be received directly.
-/// Also, do note that new activities coming from subscription
-/// will only contain enrichment for these fields:
-///     Activity SA
-///     Reaction SR
-///     Object SO
-///     User SU
-
-/// the only thing you don’t get is the enriched reactions like `own_reaction` or `latest_reactions`
+/// A realtime message for changes to one or many feeds.
+///
+/// Each time a new activity is added or removed, an update will be received
+/// directly.
+///
+/// Note that new activities coming from subscription will only contain
+/// enrichment for these fields:
+///   - Activity SA
+///   - Reaction SR
+///   - Object SO
+///   - User SU
+///
+/// The only thing you don’t get is the enriched reactions like `own_reaction`
+/// or `latest_reactions`
 @JsonSerializable()
 class RealtimeMessage extends Equatable {
-  /// Instantiates a new realtime message object
+  /// Builds a [RealtimeMessage].
   const RealtimeMessage({
     required this.feed,
     this.deleted = const <String>[],
@@ -31,7 +34,7 @@ class RealtimeMessage extends Equatable {
     this.publishedAt,
   });
 
-  /// Create a new instance from a json
+  /// Create a new instance from a JSON object
   factory RealtimeMessage.fromJson(Map<String, dynamic> json) =>
       _$RealtimeMessageFromJson(json);
 
