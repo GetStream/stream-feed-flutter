@@ -24,7 +24,9 @@ class StreamUser with EquatableMixin {
   /// User id
   final String id;
 
+  /// {@template jwt}
   /// User JWT
+  /// {@endtemplate}
   final Token? _userToken;
 
   /// The users client
