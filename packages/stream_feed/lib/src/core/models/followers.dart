@@ -9,9 +9,10 @@ part 'followers.g.dart';
 ///{@endtemplate}
 @JsonSerializable()
 class Followers extends Equatable {
-  ///{@macro followers}
+  /// Builds a [Followers].
   const Followers({required this.feed, this.count, this.slugs});
 
+  /// Builds a [Followers] from a JSON object.
   factory Followers.fromJson(Map<String, dynamic> json) =>
       _$FollowersFromJson(json);
 
