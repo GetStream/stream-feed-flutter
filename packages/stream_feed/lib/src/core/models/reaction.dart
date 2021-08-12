@@ -7,15 +7,16 @@ import 'package:stream_feed/stream_feed.dart';
 
 part 'reaction.g.dart';
 
-/// Reactions are a special kind of data that
-/// can be used to capture user interaction
-/// with specific activities. Common examples of reactions are likes, comments,
-/// and upvotes.
+/// Reactions are a special kind of data that can be used to capture user
+/// interaction with specific activities.
+///
+/// Common examples of reactions are likes, comments, and upvotes.
+///
 /// Reactions are automatically returned to feeds' activities at read time
 /// when the reactions parameters are used.
 @JsonSerializable()
 class Reaction extends Equatable {
-  /// [Reaction] constructor
+  /// Builds a [Reaction].
   const Reaction({
     this.id,
     this.kind,
@@ -33,7 +34,7 @@ class Reaction extends Equatable {
     this.childrenCounts,
   });
 
-  /// Create a new instance from a json
+  /// Create a new instance from a JSON object
   factory Reaction.fromJson(Map<String, dynamic> json) =>
       _$ReactionFromJson(json);
 
@@ -41,17 +42,23 @@ class Reaction extends Equatable {
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final String? id;
 
-  /// The type of reaction (eg. like, comment, ...)
+  /// The type of reaction (eg. like, comment, ...).
+  ///
   /// Must not be empty or longer than 255 characters.
   final String? kind;
 
-  /// The ID of the activity the reaction refers to. Must be a valid activity ID.
+  /// The ID of the activity the reaction refers to.
+  ///
+  /// Must be a valid activity ID.
   final String? activityId;
 
-  ///	user_id of the reaction. Must not be empty or longer than 255 characters.
+  ///	`user_id` of the reaction.
+  ///
+  /// Must not be empty or longer than 255 characters.
   final String? userId;
 
   /// ID of the parent reaction.
+  ///
   /// If provided, it must be the ID of a reaction that has no parents.
   @JsonKey(includeIfNull: false)
   final String? parent;
@@ -65,6 +72,7 @@ class Reaction extends Equatable {
   final DateTime? updatedAt;
 
   /// The feeds that should receive a notification activity
+  ///
   /// List of feed ids (e.g.: timeline:bob)
   @JsonKey(includeIfNull: false, fromJson: FeedId.fromIds, toJson: FeedId.toIds)
   final List<FeedId>? targetFeeds;
@@ -94,6 +102,7 @@ class Reaction extends Equatable {
   final Map<String, int>? childrenCounts;
 
   /// Known top level fields.
+  ///
   /// Useful for [Serializer] methods.
   static const topLevelFields = [
     'id',
@@ -109,8 +118,7 @@ class Reaction extends Equatable {
     'children_counts',
   ];
 
-  ///allows us to copy a Reaction
-  ///and pass in arguments that overwrite settable values.
+  /// Copies this [Reaction] to a new instance.
   Reaction copyWith({
     String? id,
     String? kind,
