@@ -137,6 +137,43 @@ class EnrichedActivity extends Equatable {
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? extraData;
 
+  EnrichedActivity copyWith({
+    EnrichableField? actor,
+    EnrichableField? object,
+    String? verb,
+    EnrichableField? target,
+    List<String>? to,
+    String? foreignId,
+    String? id,
+    DateTime? time,
+    Map<String, Object>? analytics,
+    Map<String, Object>? extraContext,
+    EnrichableField? origin,
+    double? score,
+    Map<String, Object>? extraData,
+    Map<String, int>? reactionCounts,
+    Map<String, List<Reaction>>? ownReactions,
+    Map<String, List<Reaction>>? latestReactions,
+  }) =>
+      EnrichedActivity(
+        actor: actor ?? this.actor,
+        object: object ?? this.object,
+        verb: verb ?? this.verb,
+        target: target ?? this.target,
+        to: to ?? this.to,
+        foreignId: foreignId ?? this.foreignId,
+        id: id ?? this.id,
+        time: time ?? this.time,
+        analytics: analytics ?? this.analytics,
+        extraContext: extraContext ?? this.extraContext,
+        origin: origin ?? this.origin,
+        score: score ?? this.score,
+        extraData: extraData ?? this.extraData,
+        reactionCounts: reactionCounts ?? this.reactionCounts,
+        ownReactions: ownReactions ?? this.ownReactions,
+        latestReactions: latestReactions ?? this.latestReactions,
+      );
+
   /// Known top level fields.
   /// Useful for [Serializer] methods.
   static const topLevelFields = [

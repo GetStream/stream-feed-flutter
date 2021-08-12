@@ -155,7 +155,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
         feedGroup: widget.feedGroup);
     setState(() {
       alreadyReacted = !alreadyReacted;
-      idToRemove = reaction.id!;
+      idToRemove = reaction.id;
       count += 1;
     });
   }

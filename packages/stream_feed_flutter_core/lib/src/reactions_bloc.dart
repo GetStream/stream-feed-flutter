@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ReactionsBloc extends StatefulWidget {
-  /// Instantiate a new [ReactionsBloc]. The parameter [child] must be supplied and
-  /// not null.
+  /// Instantiate a new [ReactionsBloc]. The parameter [child] must be supplied
+  /// and not null.
   const ReactionsBloc({
     required this.child,
     Key? key,
@@ -50,6 +49,26 @@ class ReactionsBlocState extends State<ReactionsBloc>
       _queryReactionsLoadingController.stream;
 
   late StreamFeedCoreState _streamFeedCore;
+
+  // Future<Reaction> onAddChildReaction(
+  //     {required String kind,
+  //     required Reaction reaction,
+  //     Map<String, Object>? data,
+  //     String? userId,
+  //     List<FeedId>? targetFeeds}) async {
+  //   final client = _streamFeedCore.client;
+  //   final childReaction = await client.reactions.addChild(kind, reaction.id!,
+  //       data: data, userId: userId, targetFeeds: targetFeeds);
+
+  //   final path = getReactionPath(reaction);
+  //   var count = path.childrenCounts?[kind] ?? 0;
+  //   count += 1;
+  //   final ownReactions = reaction.ownChildren?[kind];
+  //   final reactionsKind = ownReactions?.filterByKind(kind);
+  //   var alreadyReacted = reactionsKind?.isNotEmpty != null;
+  //   var idToRemove = reactionsKind?.last?.id;
+
+  // }
 
   Future<void> queryReactions(LookupAttribute lookupAttr, String lookupValue,
       {Filter? filter,

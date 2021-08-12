@@ -145,7 +145,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
 
     setState(() {
       alreadyReacted = !alreadyReacted;
-      idToRemove = reaction.id!;
+      idToRemove = reaction.id;
       count += 1;
     });
   }

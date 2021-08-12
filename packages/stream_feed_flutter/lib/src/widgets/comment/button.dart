@@ -57,7 +57,8 @@ class PostCommentButton extends StatelessWidget {
                 feedGroup: feedGroup,
                 verb: 'post',
                 //data: TODO: attachments with upload controller thingy
-                object: trimmedText);
+                object: trimmedText,
+              );
       },
 
       label: activity != null ? 'Respond' : 'Post', //TODO: i18n
