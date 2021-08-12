@@ -5,10 +5,11 @@ import 'package:stream_feed/stream_feed.dart';
 part 'personalized_feed.g.dart';
 
 /// A personalized feed for a single user.
-/// i.e. a feed of based on user's activities.
+///
+/// In other words, a feed of based on user's activities.
 @JsonSerializable(createToJson: true)
 class PersonalizedFeed extends Paginated<EnrichedActivity> {
-  /// [PaginatedReactions] constructor
+  /// Builds a [PaginatedReactions].
   const PersonalizedFeed({
     required this.version,
     required this.offset,
@@ -18,7 +19,7 @@ class PersonalizedFeed extends Paginated<EnrichedActivity> {
     String? duration,
   }) : super(next, results, duration);
 
-  /// Deserilize json to [PaginatedReactions]
+  /// Deserialize json to [PaginatedReactions]
   factory PersonalizedFeed.fromJson(Map<String, dynamic> json) =>
       _$PersonalizedFeedFromJson(json);
 
