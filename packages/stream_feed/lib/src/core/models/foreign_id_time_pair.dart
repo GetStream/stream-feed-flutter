@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 
-/// Wraps a foreign id with a time
+/// A model that wraps [foreignID] and [time]
 class ForeignIdTimePair extends Equatable {
   /// Builds a [ForeignIdTimePair].
   const ForeignIdTimePair(this.foreignID, this.time);
