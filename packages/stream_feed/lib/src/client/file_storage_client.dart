@@ -5,7 +5,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 /// {@template files}
-/// This API endpoint allows the uploading of files to a, and deleting files
+/// This API endpoint allows the uploading of files to, and deleting files
 /// from, a Stream-provided CDN.
 /// {@endtemplate}
 class FileStorageClient {
