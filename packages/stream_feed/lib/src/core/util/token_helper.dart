@@ -5,16 +5,16 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 
 /// Actions permissions
 enum TokenAction {
-  /// allows any operations
+  /// Allows any operations
   any,
 
-  /// allows read operations
+  /// Allows read operations
   read,
 
-  /// allows write operations
+  /// Allows write operations
   write,
 
-  /// allows delete operations
+  /// Allows delete operations
   delete,
 }
 
@@ -29,43 +29,43 @@ extension _TokenActionX on TokenAction {
 
 /// Resource Access Restrictions
 enum TokenResource {
-  /// allows access to any resource
+  /// Allows access to any resource
   any,
 
-  /// allows access to [Activity] resource
+  /// Allows access to [Activity] resource
   activities,
 
-  /// allows access to analytics resource
+  /// Allows access to analytics resource
   analytics,
 
-  /// allows access to analyticsRedirect resource
+  /// Allows access to analyticsRedirect resource
   analyticsRedirect,
 
-  /// allows access to [CollectionEntry] resource
+  /// Allows access to [CollectionEntry] resource
   collections,
 
-  /// allows access to files resource
+  /// Allows access to files resource
   files,
 
-  /// allows access to [Feed] resource
+  /// Allows access to [Feed] resource
   feed,
 
-  /// allows access to feedTargets resource
+  /// Allows access to feedTargets resource
   feedTargets,
 
-  /// allows access to [Follow] resource
+  /// Allows access to [Follow] resource
   follower,
 
-  /// allows access to [OpenGraph] resource
+  /// Allows access to [OpenGraph] resource
   openGraph,
 
-  /// token resource that allows access to personalization resource
+  /// Token resource that allows access to personalization resource
   personalization,
 
-  /// token resource that allows access to [Reaction] resource
+  /// Token resource that allows access to [Reaction] resource
   reactions,
 
-  /// token resource that allows access to [User] resource
+  /// Token resource that allows access to [User] resource
   users,
 }
 
@@ -89,12 +89,12 @@ extension TokenResourceX on TokenResource {
       }[this];
 }
 
-///Class that generates tokens
+/// Class that generates tokens
 class TokenHelper {
   /// Constructor for [TokenHelper]
   const TokenHelper();
 
-  /// build Feed Token
+  /// Build Feed Token
   static Token buildFeedToken(
     String secret,
     TokenAction action, [
@@ -103,7 +103,7 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.feed, action, feed?.claim ?? '*');
 
-  /// build Feed Token
+  /// Build Feed Token
   static Token buildAnalyticsToken(
     String secret,
     TokenAction action, [
@@ -112,7 +112,7 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.analytics, action, feed?.claim ?? '*');
 
-  /// build Follow Token
+  /// Build Follow Token
   static Token buildFollowToken(
     String secret,
     TokenAction action, [
@@ -121,47 +121,47 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.follower, action, feed?.claim ?? '*');
 
-  /// build Personalization Token
+  /// Build Personalization Token
   static Token buildAnyToken(String secret, TokenAction action,
           {String? userId}) =>
       _buildBackendToken(secret, TokenResource.any, action, '*',
           userId: userId);
 
-  /// build Personalization Token
+  /// Build Personalization Token
   static Token buildPersonalizationToken(String secret, TokenAction action,
           {String? userId}) =>
       _buildBackendToken(secret, TokenResource.personalization, action, '*',
           userId: userId);
 
-  /// build Reaction Token
+  /// Build Reaction Token
   static Token buildReactionToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.reactions, action, '*');
 
-  /// build Analytics Token
+  /// Build Analytics Token
   static Token buildAnalytics(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.analytics, action, '*');
 
-  /// build Analytics Redirect Token
+  /// Build Analytics Redirect Token
   static Token buildAnalyticsRedirect(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.analyticsRedirect, action, '*');
 
-  /// build Activity Token
+  /// Build Activity Token
   static Token buildActivityToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.activities, action, '*');
 
-  /// build Users Token
+  /// Build Users Token
   static Token buildUsersToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.users, action, '*');
 
-  /// build Collections Token
+  /// Build Collections Token
   static Token buildCollectionsToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.collections, action, '*');
 
-  /// build Open Graph Token
+  /// Build Open Graph Token
   static Token buildOpenGraphToken(String secret) => _buildBackendToken(
       secret, TokenResource.openGraph, TokenAction.read, '*');
 
-  /// build To Target Update Token
+  /// Build To Target Update Token
   static Token buildToTargetUpdateToken(
     String secret,
     TokenAction action, [
@@ -170,11 +170,11 @@ class TokenHelper {
       _buildBackendToken(
           secret, TokenResource.feedTargets, action, feed?.claim ?? '*');
 
-  /// build Files Token
+  /// Build Files Token
   static Token buildFilesToken(String secret, TokenAction action) =>
       _buildBackendToken(secret, TokenResource.files, action, '*');
 
-  /// build Frontend Token
+  /// Build Frontend Token
   static Token buildFrontendToken(
     String secret,
     String userId, {
@@ -188,7 +188,7 @@ class TokenHelper {
         issueJwtHS256(secret: secret, expiresAt: expiresAt, claims: claims));
   }
 
-  /// Creates the JWT token for [feedId], [resource] and [action]
+  /// Creates the JWT for [feedId], [resource] and [action]
   /// using the api [secret]
   static Token _buildBackendToken(
     String secret,
@@ -210,11 +210,11 @@ class TokenHelper {
   }
 }
 
-/// Decode the JWT token
+/// Decode the JWT
 JsonWebToken jwtDecode(Token userToken) =>
     JsonWebToken.unverified(userToken.token);
 
-///Issues a Jwt issue signed with HS256
+/// Issues a JWT issue signed with HS256
 String issueJwtHS256({
   required String secret,
   required Map<String, Object?>? claims,
@@ -252,7 +252,7 @@ String issueJwtHS256({
   return jws.toCompactSerialization();
 }
 
-///base64 url encodes a secret
+/// Base64 url encodes a secret
 String base64Urlencode(String secret) {
   final Codec<String?, String> stringToBase64Url = utf8.fuse(base64Url);
   final encoded = stringToBase64Url.encode(secret);
