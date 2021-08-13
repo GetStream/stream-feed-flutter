@@ -68,6 +68,7 @@ class ActivitiesBlocState extends State<ActivitiesBloc>
     await trackAnalytics(
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
     final activityPath = activities!.getEnrichedActivityPath(activity);
+    print("ACTIVITY PATH: $activityPath");
     final indexPath = activities!.indexOf(activity);
 
     var ownReactions = activityPath.ownReactions;

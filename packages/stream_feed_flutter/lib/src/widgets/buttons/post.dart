@@ -50,6 +50,7 @@ class PostButton extends StatelessWidget {
                     child: StreamFeedCore(
                       //TODO: there might be a better way to do this
                       client: StreamFeedCore.of(context).client,
+                      activitiesProvider: ActivitiesBloc.of(context),
                       child: AlertDialogComment(
                         activity: activity,
                         feedGroup: feedGroup,

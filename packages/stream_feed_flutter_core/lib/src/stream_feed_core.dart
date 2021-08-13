@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/activities_bloc.dart';
 
 /// Widget used to provide information about the feed to the widget tree.
 /// This Widget is used to react to life cycle changes and system updates.
@@ -36,16 +37,17 @@ class StreamFeedCore extends StatefulWidget {
   ///
   /// [StreamFeedCore] is a stateful widget which reacts to system events and
   /// updates Stream's connection status accordingly.
-  StreamFeedCore(
-      {Key? key,
-      required this.client,
-      required this.child,
-      this.trackAnalytics = false,
-      // required this.feedGroup,
-      this.navigatorKey,
-      this.analyticsLocation,
-      this.analyticsClient})
-      : super(key: key);
+  StreamFeedCore({
+    Key? key,
+    required this.client,
+    required this.child,
+    this.trackAnalytics = false,
+    // required this.feedGroup,
+    this.navigatorKey,
+    this.analyticsLocation,
+    this.analyticsClient,
+    this.activitiesProvider,
+  }) : super(key: key);
 
   /// Instance of Stream Feed Client containing information about the current
   /// application.
@@ -53,6 +55,7 @@ class StreamFeedCore extends StatefulWidget {
 
   ///Analytics client
   final StreamAnalytics? analyticsClient;
+  final ActivitiesBlocState? activitiesProvider;
 
   ///wether or not you want to track analytics in your app (can be useful for customised feeds via ML)
   final bool trackAnalytics;
@@ -98,6 +101,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
 
   /// The current user
   StreamUser? get user => client.currentUser;
+
+  ActivitiesBlocState? get activitiesProvider=>widget.activitiesProvider;
 
   /// The current user
   ReactionsClient get reactions => client.reactions;
