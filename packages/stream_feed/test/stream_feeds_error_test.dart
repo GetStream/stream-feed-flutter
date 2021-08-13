@@ -65,6 +65,6 @@ void main() {
     const errorCode = FeedsError.authenticationFailed;
     final error = StreamFeedsNetworkError(errorCode);
 
-    expect(error.isRetrievable, isTrue);
+    expect(error.isRetriable, isTrue);
   });
 }
