@@ -70,7 +70,7 @@ class StreamFeedsNetworkError extends StreamFeedsError {
   FeedsError? get errorCode => feedsErrorCodeFromCode(code);
 
   ///
-  bool get isRetrievable => data == null;
+  bool get isRetriable => data == null;
 
   @override
   List<Object?> get props => [...super.props, code, statusCode];
