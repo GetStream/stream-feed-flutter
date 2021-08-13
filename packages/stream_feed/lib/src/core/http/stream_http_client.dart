@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
+import 'package:stream_feed/src/core/error/feeds_error_code.dart';
+import 'package:stream_feed/src/core/error/stream_feeds_error.dart';
 import 'package:stream_feed/src/core/exceptions.dart';
 import 'package:stream_feed/src/core/location.dart';
 import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
@@ -53,13 +55,15 @@ class StreamHttpClient {
   @visibleForTesting
   final Dio httpClient;
 
-  Exception _parseError(DioError error) {
-    if (error.type == DioErrorType.response) {
-      final apiError = StreamApiException(
-          error.response?.data?.toString(), error.response?.statusCode);
-      return apiError;
+  StreamFeedsNetworkError _parseError(DioError dioError) {
+    StreamFeedsNetworkError feedsError;
+    if (dioError is FeedsError) {
+      feedsError = dioError.error;
+    } else {
+      feedsError = StreamFeedsNetworkError.fromDioError(dioError);
     }
-    return error;
+    print(feedsError.errorCode);
+    return feedsError..stackTrace = dioError.stackTrace;
   }
 
   /// Combines the base url with the [relativeUrl]
