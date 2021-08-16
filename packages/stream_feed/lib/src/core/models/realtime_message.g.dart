@@ -18,7 +18,7 @@ RealtimeMessage _$RealtimeMessageFromJson(Map json) {
             (e as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
             ),
-            (value) => value as Object))
+            (value) => value))
         .toList(),
     appId: json['app_id'] as String?,
     publishedAt: json['published_at'] == null

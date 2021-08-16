@@ -18,7 +18,7 @@ PaginatedReactions _$PaginatedReactionsFromJson(Map json) {
             (json['activity'] as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
             ),
-            (value) => value as Object),
+            (value) => value),
     json['duration'] as String?,
   );
 }

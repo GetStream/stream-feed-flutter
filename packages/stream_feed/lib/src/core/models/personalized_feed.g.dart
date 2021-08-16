@@ -17,7 +17,7 @@ PersonalizedFeed _$PersonalizedFeedFromJson(Map json) {
             (e as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
             ),
-            (value) => value as Object))
+            (value) => value))
         .toList(),
     duration: json['duration'] as String?,
   );
