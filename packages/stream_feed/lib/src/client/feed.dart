@@ -11,10 +11,10 @@ import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:stream_feed/stream_feed.dart';
 
 /// A type definition for the callback to be invoked when data is received.
 typedef MessageDataCallback = void Function(Map<String, dynamic>? data);

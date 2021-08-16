@@ -9,9 +9,9 @@ import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/group.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:stream_feed/stream_feed.dart';
 
 /// {@template notificationFeed}
 /// Notification Feed Groups extend the "Aggregated Feed Group" concept
@@ -104,7 +104,7 @@ class NotificationFeed extends AggregatedFeed {
   /// {@macro filter}
   @override
   Future<List<NotificationGroup<EnrichedActivity>>>
-      getEnrichedActivities<A extends Object>({
+      getEnrichedActivities<A>({
     int? limit,
     int? offset,
     String? session,
@@ -129,7 +129,7 @@ class NotificationFeed extends AggregatedFeed {
                   json! as Map<String, dynamic>?,
                   (json) => (A is User)
                       ? User.fromJson(json! as Map<String, dynamic>)
-                      : A,
+                      : json,
                 )))
         .toList(growable: false);
     return data;

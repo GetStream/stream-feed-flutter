@@ -8,9 +8,9 @@ import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/group.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:stream_feed/stream_feed.dart';
 
 /// {@template aggregatedFeed}
 /// Aggregated feeds are helpful for grouping activities.
@@ -75,8 +75,7 @@ class AggregatedFeed extends Feed {
   /// Retrieve activities with reaction enrichment
   ///
   /// {@macro filter}
-  Future<List<Group<EnrichedActivity>>>
-      getEnrichedActivities<A extends Object>({
+  Future<List<Group<EnrichedActivity>>> getEnrichedActivities<A>({
     int? limit,
     int? offset,
     String? session,
@@ -101,7 +100,7 @@ class AggregatedFeed extends Feed {
                   json! as Map<String, dynamic>?,
                   (json) => (A is User)
                       ? User.fromJson(json! as Map<String, dynamic>)
-                      : A,
+                      : json,
                 )))
         .toList(growable: false);
     return data;

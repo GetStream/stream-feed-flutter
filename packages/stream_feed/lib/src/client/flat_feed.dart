@@ -8,10 +8,9 @@ import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-
-import '../../stream_feed.dart';
 
 /// {@template flatFeed}
 /// Flat is the default feed type - and the only feed type that you can follow.
@@ -47,7 +46,8 @@ class FlatFeed extends Feed {
   }
 
   /// Retrieves one enriched activity from a feed
-  Future<EnrichedActivity> getEnrichedActivityDetail(String activityId) async {
+  Future<EnrichedActivity> getEnrichedActivityDetail<A>(
+      String activityId) async {
     final activities = await getEnrichedActivities(
         limit: 1,
         filter: Filter()
@@ -111,7 +111,7 @@ class FlatFeed extends Feed {
   /// ```
   ///
   /// {@macro filter}
-  Future<List<EnrichedActivity>> getEnrichedActivities<A extends Object>({
+  Future<List<EnrichedActivity>> getEnrichedActivities<A>({
     int? limit,
     int? offset,
     String? session,
@@ -136,7 +136,7 @@ class FlatFeed extends Feed {
               e,
               (json) => (A is User)
                   ? User.fromJson(json! as Map<String, dynamic>)
-                  : A,
+                  : json as A,
             ))
         .toList(growable: false);
     return data;

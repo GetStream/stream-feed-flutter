@@ -122,8 +122,8 @@ void main() {
           rawActivities
               .map((e) => NotificationGroup.fromJson(
                   e,
-                  (json) =>
-                      EnrichedActivity.fromJson(json as Map<String, dynamic>?)))
+                  (json) => EnrichedActivity.fromJson(
+                      json as Map<String, dynamic>?, (json) => json)))
               .toList(growable: false));
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
     });

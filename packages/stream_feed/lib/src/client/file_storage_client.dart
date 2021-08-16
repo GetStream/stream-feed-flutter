@@ -2,7 +2,6 @@ import 'package:stream_feed/src/core/api/files_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:stream_feed/stream_feed.dart';
 
 /// {@template files}
 /// This API endpoint allows the uploading of files to, and deleting files
