@@ -6,7 +6,7 @@ part of 'enriched_activity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-EnrichedActivity<A> _$EnrichedActivityFromJson<A extends Object>(
+EnrichedActivity<A> _$EnrichedActivityFromJson<A>(
   Map json,
   A Function(Object? json) fromJsonA,
 ) {
@@ -52,7 +52,7 @@ EnrichedActivity<A> _$EnrichedActivityFromJson<A extends Object>(
   );
 }
 
-Map<String, dynamic> _$EnrichedActivityToJson<A extends Object>(
+Map<String, dynamic> _$EnrichedActivityToJson<A>(
   EnrichedActivity<A> instance,
   Object? Function(A value) toJsonA,
 ) {

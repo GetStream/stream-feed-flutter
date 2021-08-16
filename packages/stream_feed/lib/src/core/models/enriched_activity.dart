@@ -40,7 +40,7 @@ class EnrichableField extends Equatable {
 /// An Enriched Activity is an Activity with additional fields
 /// that are derived from the Activity's
 @JsonSerializable(genericArgumentFactories: true)
-class EnrichedActivity<A extends Object> extends Equatable {
+class EnrichedActivity<A> extends Equatable {
   /// [EnrichedActivity] constructor
   const EnrichedActivity({
     this.id,
