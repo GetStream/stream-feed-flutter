@@ -10,6 +10,7 @@ import 'package:stream_feed/src/core/models/follow_relation.dart';
 import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 /// The http layer api for for anything related to Batch operations
 class BatchAPI {
@@ -93,7 +94,7 @@ class BatchAPI {
   }
 
   /// Retrieve multiple enriched activities by a single id
-  Future<List<EnrichedActivity>> getEnrichedActivitiesById(
+  Future<List<EnrichedActivity>> getEnrichedActivitiesById<A extends Object>(
       Token token, Iterable<String> ids) async {
     checkArgument(ids.isNotEmpty, 'No activities to get');
     final result = await _client.get(
@@ -102,7 +103,12 @@ class BatchAPI {
       queryParameters: {'ids': ids.join(',')},
     );
     final data = (result.data['results'] as List)
-        .map((e) => EnrichedActivity.fromJson(e))
+        .map((e) => EnrichedActivity.fromJson(
+              e,
+              (json) => (A is User)
+                  ? User.fromJson(json! as Map<String, dynamic>)
+                  : A,
+            ))
         .toList(growable: false);
     return data;
   }
@@ -124,7 +130,12 @@ class BatchAPI {
       },
     );
     final data = (result.data['results'] as List)
-        .map((e) => EnrichedActivity.fromJson(e))
+        .map((e) => EnrichedActivity.fromJson(
+              e,
+              (json) => (A is User)
+                  ? User.fromJson(json! as Map<String, dynamic>)
+                  : A,
+            ))
         .toList(growable: false);
     return data;
   }
