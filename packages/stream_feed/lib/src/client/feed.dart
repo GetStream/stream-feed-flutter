@@ -14,6 +14,7 @@ import 'package:stream_feed/src/core/models/realtime_message.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 /// A type definition for the callback to be invoked when data is received.
 typedef MessageDataCallback = void Function(Map<String, dynamic>? data);
@@ -65,7 +66,7 @@ class Feed {
 
   /// Subscribes to any changes in the feed, return a [Subscription]
   @experimental
-  Future<Subscription> subscribe(
+  Future<Subscription> subscribe<A>(
     void Function(RealtimeMessage? message) callback,
   ) {
     checkNotNull(
@@ -76,7 +77,11 @@ class Feed {
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
 
     return subscriber!(token, feedId, (data) {
-      final realtimeMessage = RealtimeMessage.fromJson(data!);
+      final realtimeMessage = RealtimeMessage.fromJson(
+        data!,
+        (json) =>
+            (A is User) ? User.fromJson(json! as Map<String, dynamic>) : json,
+      );
       callback(realtimeMessage);
     });
   }

@@ -128,18 +128,20 @@ void main() {
   });
   group('RealtimeMessage', () {
     test('fromJson', () {
-      final fromJson =
-          RealtimeMessage.fromJson(jsonFixture('realtime_message.json'));
+      final fromJson = RealtimeMessage<String>.fromJson(
+        jsonFixture('realtime_message.json'),
+        (json) => json! as String,
+      );
 
       expect(
           fromJson,
-          RealtimeMessage(
+          RealtimeMessage<String>(
               deleted: [],
               deletedForeignIds: [],
               feed: FeedId.fromId('reward:1'),
               newActivities: [
-                EnrichedActivity(
-                    actor: const EnrichableField('reward:1'),
+                EnrichedActivity<String>(
+                    actor: 'reward:1',
                     id: 'f3de8328-be2d-11eb-bb18-128a130028af',
                     extraData: {
                       'message':
@@ -155,7 +157,10 @@ void main() {
     });
 
     test('issue-89', () {
-      RealtimeMessage.fromJson(jsonFixture('realtime_message_issue89.json'));
+      RealtimeMessage.fromJson(
+        jsonFixture('realtime_message_issue89.json'),
+        (json) => json,
+      );
     });
   });
   test('EnrichedActivity issue 61', () {

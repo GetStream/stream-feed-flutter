@@ -22,21 +22,24 @@ part 'realtime_message.g.dart';
 ///
 /// The only thing you don’t get is the enriched reactions like `own_reaction`
 /// or `latest_reactions`
-@JsonSerializable()
-class RealtimeMessage extends Equatable {
+@JsonSerializable(genericArgumentFactories: true)
+class RealtimeMessage<A> extends Equatable {
   /// Builds a [RealtimeMessage].
   const RealtimeMessage({
     required this.feed,
     this.deleted = const <String>[],
     this.deletedForeignIds = const <ForeignIdTimePair>[],
-    this.newActivities = const <EnrichedActivity>[],
+    this.newActivities,
     this.appId,
     this.publishedAt,
   });
 
   /// Create a new instance from a JSON object
-  factory RealtimeMessage.fromJson(Map<String, dynamic> json) =>
-      _$RealtimeMessageFromJson(json);
+  factory RealtimeMessage.fromJson(
+    Map<String, dynamic> json,
+    A Function(Object? json) fromJsonA,
+  ) =>
+      _$RealtimeMessageFromJson<A>(json, fromJsonA);
 
   /// Name of the feed this update was published on
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
@@ -58,7 +61,7 @@ class RealtimeMessage extends Equatable {
 
   /// All activities created by this update
   @JsonKey(name: 'new')
-  final List<EnrichedActivity> newActivities;
+  final List<EnrichedActivity<A>>? newActivities;
 
   /// Time of the update in ISO format
   @JsonKey(includeIfNull: false)
@@ -75,5 +78,6 @@ class RealtimeMessage extends Equatable {
       ];
 
   /// Serialize to json
-  Map<String, dynamic> toJson() => _$RealtimeMessageToJson(this);
+  Map<String, dynamic> toJson(Object? Function(A value) toJsonA) =>
+      _$RealtimeMessageToJson(this, toJsonA);
 }
