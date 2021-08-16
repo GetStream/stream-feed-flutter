@@ -13,9 +13,11 @@ PersonalizedFeed _$PersonalizedFeedFromJson(Map json) {
     limit: json['limit'] as int,
     next: json['next'] as String?,
     results: (json['results'] as List<dynamic>?)
-        ?.map((e) => EnrichedActivity.fromJson((e as Map?)?.map(
+        ?.map((e) => EnrichedActivity.fromJson(
+            (e as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
-            )))
+            ),
+            (value) => value as Object))
         .toList(),
     duration: json['duration'] as String?,
   );
@@ -24,7 +26,11 @@ PersonalizedFeed _$PersonalizedFeedFromJson(Map json) {
 Map<String, dynamic> _$PersonalizedFeedToJson(PersonalizedFeed instance) =>
     <String, dynamic>{
       'next': instance.next,
-      'results': instance.results?.map((e) => e.toJson()).toList(),
+      'results': instance.results
+          ?.map((e) => e.toJson(
+                (value) => value,
+              ))
+          .toList(),
       'duration': instance.duration,
       'version': instance.version,
       'offset': instance.offset,

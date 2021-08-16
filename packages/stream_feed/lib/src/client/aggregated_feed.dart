@@ -93,8 +93,10 @@ class AggregatedFeed extends Feed {
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
-        .map((e) => Group.fromJson(e,
-            (json) => EnrichedActivity.fromJson(json as Map<String, dynamic>?)))
+        .map((e) => Group.fromJson(
+            e,
+            (json) =>
+                EnrichedActivity.fromJson(json! as Map<String, dynamic>)))
         .toList(growable: false);
     return data;
   }

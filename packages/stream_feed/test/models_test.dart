@@ -159,8 +159,9 @@ void main() {
     });
   });
   test('EnrichedActivity issue 61', () {
-    final enrichedActivity = EnrichedActivity.fromJson(
-        jsonFixture('enriched_activity_issue61.json'));
+    final enrichedActivity = EnrichedActivity<User>.fromJson(
+        jsonFixture('enriched_activity_issue61.json'),
+        (json) => User.fromJson(json! as Map<String, dynamic>));
     expect(enrichedActivity.latestReactions, isNotNull);
     expect(enrichedActivity.ownReactions, isNotNull);
     expect(enrichedActivity.reactionCounts, isNotNull);
@@ -205,8 +206,9 @@ void main() {
       },
     );
     final enrichedActivityJson = json.decode(fixture('enriched_activity.json'));
-    final enrichedActivityFromJson =
-        EnrichedActivity.fromJson(enrichedActivityJson);
+    final enrichedActivityFromJson = EnrichedActivity.fromJson(
+        enrichedActivityJson,
+        (json) => User.fromJson(json as Map<String, dynamic>));
     expect(enrichedActivityFromJson, enrichedActivity);
     // we will never get “extra_data” from the api
     //that's why it's not explicit in the json fixture

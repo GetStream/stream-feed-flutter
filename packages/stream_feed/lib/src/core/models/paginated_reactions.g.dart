@@ -14,9 +14,11 @@ PaginatedReactions _$PaginatedReactionsFromJson(Map json) {
         .toList(),
     json['activity'] == null
         ? null
-        : EnrichedActivity.fromJson((json['activity'] as Map?)?.map(
-            (k, e) => MapEntry(k as String, e),
-          )),
+        : EnrichedActivity.fromJson(
+            (json['activity'] as Map?)?.map(
+              (k, e) => MapEntry(k as String, e),
+            ),
+            (value) => value as Object),
     json['duration'] as String?,
   );
 }
@@ -26,5 +28,7 @@ Map<String, dynamic> _$PaginatedReactionsToJson(PaginatedReactions instance) =>
       'next': instance.next,
       'results': instance.results?.map((e) => e.toJson()).toList(),
       'duration': instance.duration,
-      'activity': instance.activity?.toJson(),
+      'activity': instance.activity?.toJson(
+        (value) => value,
+      ),
     };

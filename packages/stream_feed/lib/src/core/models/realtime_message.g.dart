@@ -14,9 +14,11 @@ RealtimeMessage _$RealtimeMessageFromJson(Map json) {
     deletedForeignIds:
         ForeignIdTimePair.fromList(json['deleted_foreign_ids'] as List?),
     newActivities: (json['new'] as List<dynamic>)
-        .map((e) => EnrichedActivity.fromJson((e as Map?)?.map(
+        .map((e) => EnrichedActivity.fromJson(
+            (e as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
-            )))
+            ),
+            (value) => value as Object))
         .toList(),
     appId: json['app_id'] as String?,
     publishedAt: json['published_at'] == null
@@ -40,7 +42,11 @@ Map<String, dynamic> _$RealtimeMessageToJson(RealtimeMessage instance) {
   val['deleted'] = instance.deleted;
   val['deleted_foreign_ids'] =
       ForeignIdTimePair.toList(instance.deletedForeignIds);
-  val['new'] = instance.newActivities.map((e) => e.toJson()).toList();
+  val['new'] = instance.newActivities
+      .map((e) => e.toJson(
+            (value) => value,
+          ))
+      .toList();
   writeNotNull('published_at', instance.publishedAt?.toIso8601String());
   return val;
 }

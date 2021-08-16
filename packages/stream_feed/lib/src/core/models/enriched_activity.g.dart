@@ -6,10 +6,13 @@ part of 'enriched_activity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-EnrichedActivity _$EnrichedActivityFromJson(Map json) {
-  return EnrichedActivity(
+EnrichedActivity<A> _$EnrichedActivityFromJson<A extends Object>(
+  Map json,
+  A Function(Object? json) fromJsonA,
+) {
+  return EnrichedActivity<A>(
     id: json['id'] as String?,
-    actor: EnrichableField.deserialize(json['actor']),
+    actor: _$nullableGenericFromJson(json['actor'], fromJsonA),
     verb: json['verb'] as String?,
     object: EnrichableField.deserialize(json['object']),
     foreignId: json['foreign_id'] as String?,
@@ -49,7 +52,10 @@ EnrichedActivity _$EnrichedActivityFromJson(Map json) {
   );
 }
 
-Map<String, dynamic> _$EnrichedActivityToJson(EnrichedActivity instance) {
+Map<String, dynamic> _$EnrichedActivityToJson<A extends Object>(
+  EnrichedActivity<A> instance,
+  Object? Function(A value) toJsonA,
+) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -59,7 +65,7 @@ Map<String, dynamic> _$EnrichedActivityToJson(EnrichedActivity instance) {
   }
 
   writeNotNull('id', readonly(instance.id));
-  val['actor'] = EnrichableField.serialize(instance.actor);
+  val['actor'] = _$nullableGenericToJson(instance.actor, toJsonA);
   val['verb'] = instance.verb;
   val['object'] = EnrichableField.serialize(instance.object);
   writeNotNull('foreign_id', instance.foreignId);
@@ -76,3 +82,15 @@ Map<String, dynamic> _$EnrichedActivityToJson(EnrichedActivity instance) {
   writeNotNull('extra_data', instance.extraData);
   return val;
 }
+
+T? _$nullableGenericFromJson<T>(
+  Object? input,
+  T Function(Object? json) fromJson,
+) =>
+    input == null ? null : fromJson(input);
+
+Object? _$nullableGenericToJson<T>(
+  T? input,
+  Object? Function(T value) toJson,
+) =>
+    input == null ? null : toJson(input);

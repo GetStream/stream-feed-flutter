@@ -108,8 +108,11 @@ class BatchAPI {
   }
 
   /// Retrieve multiple enriched activities by a single foreign id
-  Future<List<EnrichedActivity>> getEnrichedActivitiesByForeignId(
-      Token token, Iterable<ForeignIdTimePair> pairs) async {
+  Future<List<EnrichedActivity>>
+      getEnrichedActivitiesByForeignId<A extends Object>(
+    Token token,
+    Iterable<ForeignIdTimePair> pairs,
+  ) async {
     checkArgument(pairs.isNotEmpty, 'No activities to get');
     final result = await _client.get(
       Routes.enrichedActivitiesUrl,

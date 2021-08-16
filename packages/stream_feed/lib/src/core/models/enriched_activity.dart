@@ -39,8 +39,8 @@ class EnrichableField extends Equatable {
 
 /// An Enriched Activity is an Activity with additional fields
 /// that are derived from the Activity's
-@JsonSerializable()
-class EnrichedActivity extends Equatable {
+@JsonSerializable(genericArgumentFactories: true)
+class EnrichedActivity<A extends Object> extends Equatable {
   /// [EnrichedActivity] constructor
   const EnrichedActivity({
     this.id,
@@ -62,20 +62,22 @@ class EnrichedActivity extends Equatable {
   });
 
   /// Create a new instance from a JSON object
-  factory EnrichedActivity.fromJson(Map<String, dynamic>? json) =>
-      _$EnrichedActivityFromJson(
-          Serializer.moveKeysToRoot(json, topLevelFields)!);
+  factory EnrichedActivity.fromJson(
+    Map<String, dynamic>? json,
+    A Function(Object? json) fromJsonA,
+  ) =>
+      _$EnrichedActivityFromJson<A>(json!, fromJsonA);
 
   /// The Stream id of the activity.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final String? id;
 
   /// The actor performing the activity.
-  @JsonKey(
+  /*@JsonKey(
     fromJson: EnrichableField.deserialize,
     toJson: EnrichableField.serialize,
-  )
-  final EnrichableField? actor;
+  )*/
+  final A? actor;
 
   /// The verb of the activity.
   final String? verb;
@@ -191,6 +193,7 @@ class EnrichedActivity extends Equatable {
       ];
 
   /// Serialize to JSON
-  Map<String, dynamic> toJson() => Serializer.moveKeysToMapInPlace(
-      _$EnrichedActivityToJson(this), topLevelFields);
+  Map<String, dynamic> toJson(Object? Function(A value) toJsonA) =>
+      Serializer.moveKeysToMapInPlace(
+          _$EnrichedActivityToJson(this, toJsonA), topLevelFields);
 }
