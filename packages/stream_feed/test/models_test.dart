@@ -190,7 +190,7 @@ void main() {
         childrenCounts: const {'test': 1});
     final enrichedActivity = EnrichedActivity(
       id: 'test',
-      actor: const EnrichableField('test'),
+      actor: 'test',
       object: const EnrichableField('test'),
       verb: 'test',
       target: const EnrichableField('test'),
@@ -212,8 +212,7 @@ void main() {
     );
     final enrichedActivityJson = json.decode(fixture('enriched_activity.json'));
     final enrichedActivityFromJson = EnrichedActivity.fromJson(
-        enrichedActivityJson,
-        (json) => User.fromJson(json! as Map<String, dynamic>));
+        enrichedActivityJson, (json) => json! as String);
     expect(enrichedActivityFromJson, enrichedActivity);
     // we will never get “extra_data” from the api
     //that's why it's not explicit in the json fixture
@@ -508,9 +507,9 @@ void main() {
         //   "test": [reaction2]
         // },//TODO: test this
         childrenCounts: const {'test': 1});
-    final enrichedActivity = EnrichedActivity(
+    final enrichedActivity = EnrichedActivity<String>(
       id: 'test',
-      actor: const EnrichableField('test'),
+      actor: 'test',
       object: const EnrichableField('test'),
       verb: 'test',
       target: const EnrichableField('test'),
@@ -551,10 +550,12 @@ void main() {
 
     final paginatedReactionsJson =
         json.decode(fixture('paginated_reactions.json'));
-    final paginatedReactionsFromJson =
-        PaginatedReactions.fromJson(paginatedReactionsJson);
+    final paginatedReactionsFromJson = PaginatedReactions.fromJson(
+      paginatedReactionsJson,
+      (json) => json! as String,
+    );
     expect(paginatedReactionsFromJson, paginatedReactions);
-    expect(paginatedReactions.toJson(), {
+    expect(paginatedReactions.toJson((json) => json), {
       'next': 'test',
       'results': [
         {
