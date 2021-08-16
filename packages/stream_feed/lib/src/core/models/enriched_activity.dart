@@ -66,7 +66,8 @@ class EnrichedActivity<A> extends Equatable {
     Map<String, dynamic>? json,
     A Function(Object? json) fromJsonA,
   ) =>
-      _$EnrichedActivityFromJson<A>(json!, fromJsonA);
+      _$EnrichedActivityFromJson<A>(
+          Serializer.moveKeysToRoot(json, topLevelFields)!, fromJsonA);
 
   /// The Stream id of the activity.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
