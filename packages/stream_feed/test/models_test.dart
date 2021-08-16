@@ -208,7 +208,7 @@ void main() {
     final enrichedActivityJson = json.decode(fixture('enriched_activity.json'));
     final enrichedActivityFromJson = EnrichedActivity.fromJson(
         enrichedActivityJson,
-        (json) => User.fromJson(json as Map<String, dynamic>));
+        (json) => User.fromJson(json! as Map<String, dynamic>));
     expect(enrichedActivityFromJson, enrichedActivity);
     // we will never get “extra_data” from the api
     //that's why it's not explicit in the json fixture
