@@ -74,10 +74,6 @@ class EnrichedActivity<A> extends Equatable {
   final String? id;
 
   /// The actor performing the activity.
-  /*@JsonKey(
-    fromJson: EnrichableField.deserialize,
-    toJson: EnrichableField.serialize,
-  )*/
   final A? actor;
 
   /// The verb of the activity.
