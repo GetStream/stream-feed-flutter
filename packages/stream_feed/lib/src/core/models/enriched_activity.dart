@@ -74,6 +74,8 @@ class EnrichedActivity<A> extends Equatable {
   final String? id;
 
   /// The actor performing the activity.
+  ///
+  /// The type of this field can be either a `String` or a [User].
   final A? actor;
 
   /// The verb of the activity.
