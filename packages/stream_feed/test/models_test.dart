@@ -128,19 +128,20 @@ void main() {
   });
   group('RealtimeMessage', () {
     test('fromJson', () {
-      final fromJson = RealtimeMessage<String>.fromJson(
+      final fromJson = RealtimeMessage<String, String>.fromJson(
         jsonFixture('realtime_message.json'),
+        (json) => json! as String,
         (json) => json! as String,
       );
 
       expect(
           fromJson,
-          RealtimeMessage<String>(
+          RealtimeMessage<String, String>(
               deleted: [],
               deletedForeignIds: [],
               feed: FeedId.fromId('reward:1'),
               newActivities: [
-                EnrichedActivity<String>(
+                EnrichedActivity<String, String>(
                     actor: 'reward:1',
                     id: 'f3de8328-be2d-11eb-bb18-128a130028af',
                     extraData: {
@@ -149,7 +150,7 @@ void main() {
                     },
                     origin: const EnrichableField(null),
                     target: const EnrichableField(null),
-                    object: const EnrichableField('tweet:id'),
+                    object: 'tweet:id',
                     time: DateTime.parse('2021-05-26T14:23:33.918391'),
                     to: ['notification:jessica'],
                     verb: 'tweet')
@@ -160,13 +161,16 @@ void main() {
       RealtimeMessage.fromJson(
         jsonFixture('realtime_message_issue89.json'),
         (json) => json,
+        (json) => json,
       );
     });
   });
   test('EnrichedActivity issue 61', () {
-    final enrichedActivity = EnrichedActivity<User>.fromJson(
-        jsonFixture('enriched_activity_issue61.json'),
-        (json) => User.fromJson(json! as Map<String, dynamic>));
+    final enrichedActivity = EnrichedActivity<User, String>.fromJson(
+      jsonFixture('enriched_activity_issue61.json'),
+      (json) => User.fromJson(json! as Map<String, dynamic>),
+      (json) => json! as String,
+    );
     expect(enrichedActivity.latestReactions, isNotNull);
     expect(enrichedActivity.ownReactions, isNotNull);
     expect(enrichedActivity.reactionCounts, isNotNull);
@@ -212,7 +216,10 @@ void main() {
     );
     final enrichedActivityJson = json.decode(fixture('enriched_activity.json'));
     final enrichedActivityFromJson = EnrichedActivity.fromJson(
-        enrichedActivityJson, (json) => json! as String);
+      enrichedActivityJson,
+      (json) => json! as String,
+      (json) => json! as String,
+    );
     expect(enrichedActivityFromJson, enrichedActivity);
     // we will never get “extra_data” from the api
     //that's why it's not explicit in the json fixture
@@ -507,10 +514,10 @@ void main() {
         //   "test": [reaction2]
         // },//TODO: test this
         childrenCounts: const {'test': 1});
-    final enrichedActivity = EnrichedActivity<String>(
+    final enrichedActivity = EnrichedActivity<String, String>(
       id: 'test',
       actor: 'test',
-      object: const EnrichableField('test'),
+      object: 'test',
       verb: 'test',
       target: const EnrichableField('test'),
       to: const ['test'],
@@ -553,36 +560,42 @@ void main() {
     final paginatedReactionsFromJson = PaginatedReactions.fromJson(
       paginatedReactionsJson,
       (json) => json! as String,
+      (json) => json! as String,
     );
     expect(paginatedReactionsFromJson, paginatedReactions);
-    expect(paginatedReactions.toJson((json) => json), {
-      'next': 'test',
-      'results': [
+    expect(
+        paginatedReactions.toJson(
+          (json) => json,
+          (json) => json,
+        ),
         {
-          'kind': 'test',
-          'activity_id': 'test',
-          'user_id': 'test',
-          'parent': 'test',
-          'created_at': '2001-09-11T00:01:02.000',
-          'target_feeds': ['slug:userId'],
-          'user': {
-            'id': 'test',
-            'data': {'test': 'test'}
-          },
-          'target_feeds_extra_data': {'test': 'test'},
-          'data': {'test': 'test'}
-        }
-      ],
-      'duration': 'duration',
-      'activity': {
-        'actor': 'test',
-        'verb': 'test',
-        'object': 'test',
-        'foreign_id': 'test',
-        'time': '2001-09-11T00:01:02.000',
-        'test': 'test'
-      }
-    });
+          'next': 'test',
+          'results': [
+            {
+              'kind': 'test',
+              'activity_id': 'test',
+              'user_id': 'test',
+              'parent': 'test',
+              'created_at': '2001-09-11T00:01:02.000',
+              'target_feeds': ['slug:userId'],
+              'user': {
+                'id': 'test',
+                'data': {'test': 'test'}
+              },
+              'target_feeds_extra_data': {'test': 'test'},
+              'data': {'test': 'test'}
+            }
+          ],
+          'duration': 'duration',
+          'activity': {
+            'actor': 'test',
+            'verb': 'test',
+            'object': 'test',
+            'foreign_id': 'test',
+            'time': '2001-09-11T00:01:02.000',
+            'test': 'test'
+          }
+        });
   });
 
   group('Filter', () {

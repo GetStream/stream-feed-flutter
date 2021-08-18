@@ -121,9 +121,13 @@ void main() {
           activities,
           rawActivities
               .map((e) => Group.fromJson(
-                  e,
-                  (json) => EnrichedActivity.fromJson(
-                      json as Map<String, dynamic>?, (json) => json)))
+                    e,
+                    (json) => EnrichedActivity.fromJson(
+                      json as Map<String, dynamic>?,
+                      (json) => json,
+                      (json) => json,
+                    ),
+                  ))
               .toList(growable: false));
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
     });

@@ -76,7 +76,11 @@ void main() {
       expect(
           activities,
           rawActivities
-              .map((e) => EnrichedActivity.fromJson(e, (json) => json))
+              .map((e) => EnrichedActivity.fromJson(
+                    e,
+                    (json) => json,
+                    (json) => json,
+                  ))
               .toList(growable: false)
               .first);
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
@@ -180,7 +184,11 @@ void main() {
       expect(
           activities,
           rawActivities
-              .map((e) => EnrichedActivity.fromJson(e, (json) => json))
+              .map((e) => EnrichedActivity.fromJson(
+                    e,
+                    (json) => json,
+                    (json) => json,
+                  ))
               .toList(growable: false));
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
     });
