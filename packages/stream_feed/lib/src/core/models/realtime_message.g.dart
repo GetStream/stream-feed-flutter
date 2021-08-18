@@ -6,11 +6,12 @@ part of 'realtime_message.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-RealtimeMessage<A> _$RealtimeMessageFromJson<A>(
+RealtimeMessage<A, Ob> _$RealtimeMessageFromJson<A, Ob>(
   Map json,
   A Function(Object? json) fromJsonA,
+  Ob Function(Object? json) fromJsonOb,
 ) {
-  return RealtimeMessage<A>(
+  return RealtimeMessage<A, Ob>(
     feed: FeedId.fromId(json['feed'] as String?),
     deleted:
         (json['deleted'] as List<dynamic>).map((e) => e as String).toList(),
@@ -21,7 +22,8 @@ RealtimeMessage<A> _$RealtimeMessageFromJson<A>(
             (e as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
             ),
-            (value) => fromJsonA(value)))
+            (value) => fromJsonA(value),
+            (value) => fromJsonOb(value)))
         .toList(),
     appId: json['app_id'] as String?,
     publishedAt: json['published_at'] == null
@@ -30,9 +32,10 @@ RealtimeMessage<A> _$RealtimeMessageFromJson<A>(
   );
 }
 
-Map<String, dynamic> _$RealtimeMessageToJson<A>(
-  RealtimeMessage<A> instance,
+Map<String, dynamic> _$RealtimeMessageToJson<A, Ob>(
+  RealtimeMessage<A, Ob> instance,
   Object? Function(A value) toJsonA,
+  Object? Function(Ob value) toJsonOb,
 ) {
   final val = <String, dynamic>{
     'feed': FeedId.toId(instance.feed),
@@ -51,6 +54,7 @@ Map<String, dynamic> _$RealtimeMessageToJson<A>(
   val['new'] = instance.newActivities
       ?.map((e) => e.toJson(
             (value) => toJsonA(value),
+            (value) => toJsonOb(value),
           ))
       .toList();
   writeNotNull('published_at', instance.publishedAt?.toIso8601String());

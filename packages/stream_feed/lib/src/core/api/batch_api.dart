@@ -94,8 +94,9 @@ class BatchAPI {
   }
 
   /// Retrieve multiple enriched activities by a single id
-  Future<List<EnrichedActivity>> getEnrichedActivitiesById<A extends Object>(
-      Token token, Iterable<String> ids) async {
+  Future<List<EnrichedActivity>>
+      getEnrichedActivitiesById<A extends Object, Ob>(
+          Token token, Iterable<String> ids) async {
     checkArgument(ids.isNotEmpty, 'No activities to get');
     final result = await _client.get(
       Routes.enrichedActivitiesUrl,
@@ -108,6 +109,9 @@ class BatchAPI {
               (json) => (A is User)
                   ? User.fromJson(json! as Map<String, dynamic>)
                   : A,
+              (json) => (Ob is CollectionEntry)
+                  ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
+                  : json,
             ))
         .toList(growable: false);
     return data;
@@ -115,7 +119,7 @@ class BatchAPI {
 
   /// Retrieve multiple enriched activities by a single foreign id
   Future<List<EnrichedActivity>>
-      getEnrichedActivitiesByForeignId<A extends Object>(
+      getEnrichedActivitiesByForeignId<A extends Object, Ob>(
     Token token,
     Iterable<ForeignIdTimePair> pairs,
   ) async {
@@ -135,6 +139,9 @@ class BatchAPI {
               (json) => (A is User)
                   ? User.fromJson(json! as Map<String, dynamic>)
                   : A,
+              (json) => (Ob is CollectionEntry)
+                  ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
+                  : json,
             ))
         .toList(growable: false);
     return data;

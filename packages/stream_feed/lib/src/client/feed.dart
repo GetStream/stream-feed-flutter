@@ -5,6 +5,7 @@ import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
+import 'package:stream_feed/src/core/models/collection_entry.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
@@ -66,7 +67,7 @@ class Feed {
 
   /// Subscribes to any changes in the feed, return a [Subscription]
   @experimental
-  Future<Subscription> subscribe<A>(
+  Future<Subscription> subscribe<A, Ob>(
     void Function(RealtimeMessage? message) callback,
   ) {
     checkNotNull(
@@ -81,6 +82,9 @@ class Feed {
         data!,
         (json) =>
             (A is User) ? User.fromJson(json! as Map<String, dynamic>) : json,
+        (json) => (Ob is CollectionEntry)
+            ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
+            : Ob,
       );
       callback(realtimeMessage);
     });

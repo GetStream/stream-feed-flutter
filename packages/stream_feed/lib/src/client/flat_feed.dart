@@ -3,6 +3,7 @@ import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_marker.dart';
+import 'package:stream_feed/src/core/models/collection_entry.dart';
 import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
@@ -111,7 +112,7 @@ class FlatFeed extends Feed {
   /// ```
   ///
   /// {@macro filter}
-  Future<List<EnrichedActivity>> getEnrichedActivities<A>({
+  Future<List<EnrichedActivity>> getEnrichedActivities<A, Ob>({
     int? limit,
     int? offset,
     String? session,
@@ -137,6 +138,9 @@ class FlatFeed extends Feed {
               (json) => (A is User)
                   ? User.fromJson(json! as Map<String, dynamic>)
                   : json as A,
+              (json) => (Ob is CollectionEntry)
+                  ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
+                  : json,
             ))
         .toList(growable: false);
     return data;
