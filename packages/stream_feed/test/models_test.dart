@@ -227,6 +227,65 @@ void main() {
     // gets collected as a field extra_data of type Map
     expect(enrichedActivityFromJson.extraData, {'test': 'test'});
   });
+  test('EnrichedActivity with CollectionEntry object', () {
+    final reaction1 = Reaction(
+        id: 'test',
+        kind: 'test',
+        activityId: 'test',
+        userId: 'test',
+        parent: 'test',
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        targetFeeds: [FeedId('slug', 'userId')],
+        user: const User(id: 'test', data: {'test': 'test'}),
+        targetFeedsExtraData: const {'test': 'test'},
+        data: const {'test': 'test'},
+        // latestChildren: {
+        //   "test": [reaction2]
+        // },
+        childrenCounts: const {'test': 1});
+    final enrichedActivity = EnrichedActivity(
+      id: 'test',
+      actor: 'test',
+      object: CollectionEntry(
+          createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+          collection: 'test',
+          id: 'test',
+          data: const {'test': 'test'},
+          updatedAt: DateTime.parse('2001-09-11T00:01:03.000'),
+          foreignId: 'test'),
+      verb: 'test',
+      target: const EnrichableField('test'),
+      to: const ['test'],
+      foreignId: 'test',
+      time: DateTime.parse('2001-09-11T00:01:02.000'),
+      analytics: const {'test': 'test'},
+      extraContext: const {'test': 'test'},
+      origin: const EnrichableField('test'),
+      score: 1,
+      extraData: const {'test': 'test'},
+      reactionCounts: const {'test': 1},
+      ownReactions: {
+        'test': [reaction1]
+      },
+      latestReactions: {
+        'test': [reaction1]
+      },
+    );
+    final enrichedActivityJson =
+        json.decode(fixture('enriched_activity_collection_entry.json'));
+    final enrichedActivityFromJson = EnrichedActivity.fromJson(
+      enrichedActivityJson,
+      (json) => json! as String,
+      (json) => CollectionEntry.fromJson(json! as Map<String, dynamic>),
+    );
+    expect(enrichedActivityFromJson, enrichedActivity);
+    // we will never get “extra_data” from the api
+    //that's why it's not explicit in the json fixture
+    // all the extra data other than the default fields in json will ultimately
+    // gets collected as a field extra_data of type Map
+    expect(enrichedActivityFromJson.extraData, {'test': 'test'});
+  });
   group('Activity', () {
     final activity = Activity(
         target: 'test',
