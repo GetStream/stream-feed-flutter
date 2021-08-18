@@ -195,7 +195,7 @@ void main() {
     final enrichedActivity = EnrichedActivity(
       id: 'test',
       actor: 'test',
-      object: const EnrichableField('test'),
+      object: 'test',
       verb: 'test',
       target: const EnrichableField('test'),
       to: const ['test'],
