@@ -5,3 +5,4 @@ export 'lookup_attribute.dart';
 export 'models/index.dart';
 export 'util/enrichment.dart';
 export 'util/extension.dart';
+export 'util/typedefs.dart';
