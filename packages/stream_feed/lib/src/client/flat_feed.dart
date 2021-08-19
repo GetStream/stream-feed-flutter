@@ -112,7 +112,7 @@ class FlatFeed extends Feed {
   /// ```
   ///
   /// {@macro filter}
-  Future<List<EnrichedActivity>> getEnrichedActivities<A, Ob>({
+  Future<List<EnrichedActivity<A, Ob>>> getEnrichedActivities<A, Ob>({
     int? limit,
     int? offset,
     String? session,
@@ -136,11 +136,11 @@ class FlatFeed extends Feed {
         .map((e) => EnrichedActivity.fromJson(
               e,
               (json) => (A is User)
-                  ? User.fromJson(json! as Map<String, dynamic>)
+                  ? User.fromJson(json! as Map<String, dynamic>) as A
                   : json as A,
               (json) => (Ob is CollectionEntry)
-                  ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
-                  : json,
+                  ? CollectionEntry.fromJson(json! as Map<String, dynamic>) as Ob
+                  : json as Ob,
             ))
         .toList(growable: false);
     return data;

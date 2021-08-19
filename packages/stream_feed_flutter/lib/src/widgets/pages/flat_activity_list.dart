@@ -95,7 +95,7 @@ class FlatActivityListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatFeedCore(
+    return FlatFeedCore<User,CollectionEntry>(
       flags: flags,
       limit: limit,
       offset: offset,
