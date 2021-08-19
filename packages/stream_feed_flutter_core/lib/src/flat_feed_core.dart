@@ -91,8 +91,7 @@ class FlatFeedCore<A, Ob> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: StreamFeedCore.of(context)
-          .getEnrichedActivities<A, Ob>(
+      future: StreamFeedCore.of(context).getEnrichedActivities<A, Ob>(
         feedGroup: feedGroup,
         limit: limit,
         offset: offset,
@@ -102,9 +101,8 @@ class FlatFeedCore<A, Ob> extends StatelessWidget {
         ranking: ranking,
         userId: userId,
       ),
-      builder: (context,
-          AsyncSnapshot<List<EnrichedActivity<A, Ob>>>
-              snapshot) {
+      builder:
+          (context, AsyncSnapshot<List<EnrichedActivity<A, Ob>>> snapshot) {
         if (snapshot.hasError) {
           return onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
         }

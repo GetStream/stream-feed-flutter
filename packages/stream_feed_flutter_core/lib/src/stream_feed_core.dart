@@ -206,7 +206,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }
 
   ///Get enriched activities from the feed
-  Future<List<EnrichedActivity<A,Ob>>> getEnrichedActivities<A,Ob>({
+  Future<List<EnrichedActivity<A, Ob>>> getEnrichedActivities<A, Ob>({
     required String feedGroup,
     int? limit,
     int? offset,
@@ -216,7 +216,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     String? ranking,
     String? userId,
   }) async =>
-      await client.flatFeed(feedGroup, userId).getEnrichedActivities<A,Ob>(
+      await client.flatFeed(feedGroup, userId).getEnrichedActivities<A, Ob>(
             limit: limit,
             offset: offset,
             session: session,
