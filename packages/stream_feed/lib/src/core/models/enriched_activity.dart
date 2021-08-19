@@ -39,6 +39,11 @@ class EnrichableField extends Equatable {
 
 /// An Enriched Activity is an Activity with additional fields
 /// that are derived from the Activity's
+///
+/// This class makes use of generics in order to have a more flexible API
+/// surface. Here is a legend of what each generic is for:
+/// * A = [actor]
+/// * Ob = [object]
 @JsonSerializable(genericArgumentFactories: true)
 class EnrichedActivity<A, Ob> extends Equatable {
   /// [EnrichedActivity] constructor
