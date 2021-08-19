@@ -15,7 +15,7 @@ class ActivityHeader extends StatelessWidget {
     this.activityKind = 'like', //TODO: enum that thing
     this.showSubtitle = true,
   });
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
@@ -25,16 +25,12 @@ class ActivityHeader extends StatelessWidget {
   final String activityKind;
   @override
   Widget build(BuildContext context) {
-    final serializedActor =
-        EnrichableField.serialize(activity.actor); //TODO: ugly
-    final user =
-        User.fromJson(serializedActor as Map<String, dynamic>); //TODO: ugly
     return UserBar(
-        user: user,
-        onUserTap: onUserTap,
-        timestamp: activity.time!,
-        kind: activityKind,
-        showSubtitle:
-            showSubtitle); //TODO: display what instead of null timestamp?
+      user: activity.actor!,
+      onUserTap: onUserTap,
+      timestamp: activity.time!,
+      kind: activityKind,
+      showSubtitle: showSubtitle,
+    ); //TODO: display what instead of null timestamp?
   }
 }

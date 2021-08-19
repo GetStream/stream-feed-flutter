@@ -3,7 +3,6 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template activity_widget}
 /// A widget that displays a single activity.
@@ -25,7 +24,7 @@ class ActivityWidget extends StatelessWidget {
   }) : super(key: key);
 
   /// The activity to display.
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   /// A callback to invoke when a mention is tapped.
   final OnMentionTap? onMentionTap;

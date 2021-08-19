@@ -23,7 +23,7 @@ class AlertDialogComment extends StatelessWidget {
   final String feedGroup;
 
   /// The activity that is being commented on.
-  final EnrichedActivity? activity;
+  final DefaultEnrichedActivity? activity;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class CommentView extends StatelessWidget {
     this.enableCommentFieldButton = false,
   }) : super(key: key);
 
-  final EnrichedActivity? activity;
+  final DefaultEnrichedActivity? activity;
   final String feedGroup;
   final TextEditingController textEditingController;
   final bool enableReactions;

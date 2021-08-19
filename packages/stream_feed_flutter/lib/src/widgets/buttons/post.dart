@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template post_button}
@@ -22,7 +23,7 @@ class PostButton extends StatelessWidget {
   final String feedGroup;
 
   /// The activity to post to the feed.
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   final Reaction? reaction;
 
