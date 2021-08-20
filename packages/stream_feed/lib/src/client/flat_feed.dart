@@ -135,10 +135,10 @@ class FlatFeed extends Feed {
     final data = (result.data['results'] as List)
         .map((e) => EnrichedActivity.fromJson(
               e,
-              (json) => (A is User)
+              (json) => (A == User)
                   ? User.fromJson(json! as Map<String, dynamic>) as A
                   : json as A,
-              (json) => (Ob is CollectionEntry)
+              (json) => (Ob == CollectionEntry)
                   ? CollectionEntry.fromJson(json! as Map<String, dynamic>) as Ob
                   : json as Ob,
             ))
