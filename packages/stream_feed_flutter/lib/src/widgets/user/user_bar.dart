@@ -120,7 +120,7 @@ class ReactedBy extends StatelessWidget {
             SizedBox(
               width: 4.0,
             ),
-            Text('by'), //TODO: padding?
+            Text('by '), //TODO: padding?
             Text(handleOrUsername) //TODO: padding?
           ],
         ));
