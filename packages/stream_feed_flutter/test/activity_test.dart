@@ -89,7 +89,7 @@ void main() {
                 'https://randomuser.me/api/portraits/women/72.jpg',
               },
             ),
-            object: EnrichableField('I just missed my train 😤 #angry @sahil'),
+            object: 'I just missed my train 😤 #angry @sahil',
           ),
           onMentionTap: (String? mention) {
             pressedMentions.add(mention);

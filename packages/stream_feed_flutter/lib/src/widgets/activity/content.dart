@@ -12,7 +12,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///{@endtemplate}
 class ActivityContent extends StatelessWidget {
   ///The activity that is being displayed.
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
@@ -37,8 +37,7 @@ class ActivityContent extends StatelessWidget {
     final attachments =
         activity.extraData?['attachments']; //TODO: attachment builder
     final taggedText = activityObject != null
-        ? detector.parseText(
-            EnrichableField.serialize(activityObject) as String) //TODO: ugly
+        ? detector.parseText(activityObject) //TODO: ugly
         : <TaggedText>[];
     return Column(
       children: [

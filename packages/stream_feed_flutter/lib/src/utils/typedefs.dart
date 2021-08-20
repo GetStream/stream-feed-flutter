@@ -40,4 +40,4 @@ typedef ReactionBuilder = Widget Function(
     BuildContext context, Reaction reaction);
 
 ///
-typedef DefaultEnrichedActivity = EnrichedActivity<User, CollectionEntry>;
+typedef DefaultEnrichedActivity = EnrichedActivity<User, String>;
