@@ -57,6 +57,7 @@ class ActivityWidget extends StatelessWidget {
         onActivityTap?.call(context, activity);
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // TODO: account for LTR vs RTL languages
         children: [
           activityHeaderBuilder?.call(context, activity) ??
               ActivityHeader(
