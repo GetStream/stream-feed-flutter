@@ -14,12 +14,20 @@ class ActivityHeader extends StatelessWidget {
     this.onUserTap,
     this.activityKind = 'like', //TODO: enum that thing
     this.showSubtitle = true,
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
   });
   final DefaultEnrichedActivity activity;
 
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
   final bool showSubtitle;
+
+    /// The json key for the user's handle.
+  final String handleJsonKey;
+
+  /// The json key for the user's name.
+  final String nameJsonKey;
 
   /// Whether you want to display like activities or repost activities
   final String activityKind;
@@ -31,6 +39,8 @@ class ActivityHeader extends StatelessWidget {
       timestamp: activity.time!,
       kind: activityKind,
       showSubtitle: showSubtitle,
+      nameJsonKey:nameJsonKey,
+      handleJsonKey: handleJsonKey,
     ); //TODO: display what instead of null timestamp?
   }
 }

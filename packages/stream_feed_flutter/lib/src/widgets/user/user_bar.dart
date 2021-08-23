@@ -49,7 +49,7 @@ class UserBar extends StatelessWidget {
     this.reactionIcon,
     this.afterUsername,
     this.handleJsonKey = 'handle',
-    this.nameJsonKey = 'full_name',
+    this.nameJsonKey = 'name',
     this.subtitle,
     this.showSubtitle = true,
   }) : super(key: key);
