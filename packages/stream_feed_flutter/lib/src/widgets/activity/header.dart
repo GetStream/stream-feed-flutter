@@ -23,7 +23,7 @@ class ActivityHeader extends StatelessWidget {
   final OnUserTap? onUserTap;
   final bool showSubtitle;
 
-    /// The json key for the user's handle.
+  /// The json key for the user's handle.
   final String handleJsonKey;
 
   /// The json key for the user's name.
@@ -39,7 +39,7 @@ class ActivityHeader extends StatelessWidget {
       timestamp: activity.time!,
       kind: activityKind,
       showSubtitle: showSubtitle,
-      nameJsonKey:nameJsonKey,
+      nameJsonKey: nameJsonKey,
       handleJsonKey: handleJsonKey,
     ); //TODO: display what instead of null timestamp?
   }
