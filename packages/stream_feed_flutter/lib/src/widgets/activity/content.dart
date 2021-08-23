@@ -12,17 +12,19 @@ class ActivityContent extends StatelessWidget {
   final String commentJsonKey;
 
   const ActivityContent({
+    Key? key,
     required this.activity,
     this.onMentionTap,
     this.commentJsonKey = 'comment',
     this.onHashtagTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final activityObject = activity.object;
-    final attachments = activity.extraData?['attachments'];
+    final attachments =
+        activity.extraData?['attachments']; //TODO: attachment builder
     final taggedText = activityObject != null
         ? detector.parseText(
             EnrichableField.serialize(activityObject) as String) //TODO: ugly

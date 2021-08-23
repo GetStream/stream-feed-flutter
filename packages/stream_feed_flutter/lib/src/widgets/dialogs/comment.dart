@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
+import 'package:stream_feed_flutter/src/widgets/comment/item.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class AlertDialogComment extends StatelessWidget {
   const AlertDialogComment({
     Key? key,
-    this.activity,
     required this.feedGroup,
+    this.activity,
   }) : super(key: key);
   final String feedGroup;
   final EnrichedActivity? activity;
@@ -36,33 +39,66 @@ class AlertDialogComment extends StatelessWidget {
 }
 
 class CommentView extends StatelessWidget {
+  //TODO: merge this with StreamFeedActivity
   const CommentView({
     Key? key,
-    this.activity,
-    required this.feedGroup,
     required this.textEditingController,
+    this.activity,
+    this.feedGroup = 'user',
+    this.onReactionTap,
+    this.onHashtagTap,
+    this.onMentionTap,
+    this.onUserTap,
+    this.enableReactions = false,
   }) : super(key: key);
 
   final EnrichedActivity? activity;
   final String feedGroup;
   final TextEditingController textEditingController;
+  final bool enableReactions;
+  final OnReactionTap? onReactionTap;
+  final OnHashtagTap? onHashtagTap;
+  final OnMentionTap? onMentionTap;
+  final OnUserTap? onUserTap;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
+          //TODO: "this post has been deleted by the author"
           if (activity != null) ...[
             ActivityHeader(activity: activity!, showSubtitle: false),
-            ActivityContent(activity: activity!), //TODO: not interactive
+            ActivityContent(
+                activity: activity!), //TODO: not interactive (ux in twitter)
+            //TODO: analytics
             //TODO: "in response to" activity.to
           ],
           CommentField(
             textEditingController: textEditingController,
             activity: activity,
+
+            ///enabled in actions [RightActions]
             enableButton: false,
             feedGroup: feedGroup,
-          )
+          ),
+          //TODO: builder for using it elsewhere than in actions
+          if (enableReactions)
+            ReactionListPage(
+                feedGroup: feedGroup,
+                activity: activity,
+                onReactionTap: onReactionTap,
+                onHashtagTap: onHashtagTap,
+                onMentionTap: onMentionTap,
+                onUserTap: onUserTap,
+                onReaction: (context, reaction) => CommentItem(
+                      user: reaction.user,
+                      reaction: reaction,
+                      onReactionTap: onReactionTap,
+                      onHashtagTap: onHashtagTap,
+                      onMentionTap: onMentionTap,
+                      onUserTap: onUserTap,
+                    ))
         ],
       ),
     );
@@ -107,7 +143,7 @@ class LeftActions extends StatelessWidget {
     this.spaceBefore = 60,
     this.spaceBetween = 8.0,
   }) : super(key: key);
-  final double spaceBefore;
+  final double spaceBefore; //useful for reddit style clone
   final double spaceBetween;
   @override
   Widget build(BuildContext context) {
@@ -115,11 +151,12 @@ class LeftActions extends StatelessWidget {
       left: spaceBefore, //TODO: compute this based on media query size
       child: Row(
         children: [
-          MediasAction(), //TODO: actions actual emojis, upload images, gif, etc
+          //TODO: actual emojis, upload images, gif, etc
+          MediasAction(), //TODO: push an other dialog open file explorer take file uri upload it using sdk and it to attachments (sent in RightActions/PostCommentButton)
           SizedBox(width: spaceBetween),
-          EmojisAction(),
+          EmojisAction(), //TODO: push an other dialog and display a nice grid of emojis, add selected emoji to text controller
           SizedBox(width: spaceBetween),
-          GIFAction(),
+          GIFAction(), //TODO: push an other dialog and display gif in a card and it to list of attachments
         ],
       ),
     );

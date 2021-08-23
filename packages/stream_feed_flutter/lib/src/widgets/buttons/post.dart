@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class PostButton extends StatelessWidget {
   const PostButton({
     Key? key,
-    required this.feedGroup,
+    this.feedGroup = 'user',
     required this.activity,
     this.iconSize = 14,
   }) : super(key: key);
@@ -22,6 +22,7 @@ class PostButton extends StatelessWidget {
       hoverColor: Colors.blue.shade100,
       onPressed: () {
         showDialog<void>(
+          //TODO: switch (await showDialog<Delete/Register>
           context: context,
           builder: (_) {
             return MediaQuery(

@@ -42,6 +42,7 @@ class StreamFeedCore extends StatefulWidget {
       required this.child,
       this.trackAnalytics = false,
       // required this.feedGroup,
+      this.navigatorKey,
       this.analyticsLocation,
       this.analyticsClient})
       : super(key: key);
@@ -58,6 +59,9 @@ class StreamFeedCore extends StatefulWidget {
   /// The location that should be used for analytics when liking in the feed,
   /// this is only useful when you have analytics enabled for your app.
   final String? analyticsLocation;
+
+  ///Your navigator key
+  final GlobalKey<NavigatorState>? navigatorKey;
 
   /// Widget descendant.
   final Widget child;
@@ -94,7 +98,11 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   /// The current user
   StreamUser? get user => client.currentUser;
 
+  /// The current user
+  ReactionsClient get reactions => client.reactions;
+
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
+  NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
   Future<Reaction> onAddReaction(
       {Map<String, Object>? data,
@@ -102,8 +110,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required EnrichedActivity activity,
       List<FeedId>? targetFeeds,
       required String feedGroup}) async {
-    final reaction = await client.reactions
-        .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
+    final reaction = await reactions.add(kind, activity.id!,
+        targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
     return reaction;
@@ -134,7 +142,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       required EnrichedActivity activity,
       required String id,
       required String feedGroup}) async {
-    await client.reactions.delete(id);
+    await reactions.delete(id);
     await trackAnalytics(
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
@@ -148,6 +156,12 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         label: label,
         feedId: FeedId.fromId(feedGroup)));
   }
+
+  Future<List<Reaction>> getReactions(
+          LookupAttribute lookupAttr, String lookupValue,
+          {Filter? filter, int? limit, String? kind}) async =>
+      await reactions.filter(lookupAttr, lookupValue,
+          filter: filter, limit: limit, kind: kind);
 
   Future<List<EnrichedActivity>> getEnrichedActivities({
     required String feedGroup,

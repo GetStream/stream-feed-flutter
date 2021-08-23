@@ -5,12 +5,14 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class LikeButton extends StatelessWidget {
   LikeButton({
-    this.reaction,
+    Key? key,
     required this.activity,
+    this.feedGroup = 'user',
+    this.reaction,
     this.onTap,
     this.activeIcon,
     this.inactiveIcon,
-  });
+  }) : super(key: key);
 
   ///The reaction received from stream that should be liked when pressing the LikeButton.
   final Reaction? reaction;
@@ -26,6 +28,8 @@ class LikeButton extends StatelessWidget {
 
   ///If you want to override the inactiveIcon
   final Widget? inactiveIcon;
+
+  final String feedGroup;
 
   @override
   Widget build(BuildContext context) {

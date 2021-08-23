@@ -3,15 +3,17 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ReactionButton extends StatelessWidget {
   ReactionButton({
+    Key? key,
     required this.activity,
     required this.kind,
     required this.activeIcon,
     required this.inactiveIcon,
+    this.feedGroup = 'user',
     this.hoverColor = Colors.lightBlue,
     this.reaction,
     this.onTap,
     this.data,
-  });
+  }) : super(key: key);
 
   ///The reaction received from stream that should be liked when pressing the LikeButton.
   final Reaction? reaction;
@@ -34,6 +36,8 @@ class ReactionButton extends StatelessWidget {
 
   final Color hoverColor;
 
+  final String feedGroup;
+
   @override
   Widget build(BuildContext context) {
     return ReactionToggleIcon(
@@ -47,6 +51,7 @@ class ReactionButton extends StatelessWidget {
       kind: kind,
       onTap: onTap,
       data: data,
+      feedGroup: feedGroup,
     );
   }
 }
@@ -66,6 +71,7 @@ class ReactionToggleIcon extends StatefulWidget {
   final Color hoverColor;
   //TODO: see what we can extract from a parent widget and put in core
   ReactionToggleIcon({
+    Key? key,
     required this.activeIcon,
     required this.inactiveIcon,
     required this.kind,
@@ -78,7 +84,7 @@ class ReactionToggleIcon extends StatefulWidget {
     this.hoverColor = Colors.lightBlue,
     this.count,
     this.userId,
-  });
+  }) : super(key: key);
 
   @override
   State<ReactionToggleIcon> createState() => _ReactionToggleIconState();

@@ -4,9 +4,10 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ActivityFooter extends StatelessWidget {
   const ActivityFooter({
+    Key? key,
     required this.activity,
     this.feedGroup = 'user',
-  });
+  }) : super(key: key);
   final EnrichedActivity activity;
   final String feedGroup;
 
@@ -17,9 +18,18 @@ class ActivityFooter extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          PostButton(activity: activity, feedGroup: feedGroup),
-          RepostButton(activity: activity),
-          LikeButton(activity: activity),
+          PostButton(
+            activity: activity,
+            feedGroup: feedGroup,
+          ),
+          RepostButton(
+            activity: activity,
+            feedGroup: feedGroup,
+          ),
+          LikeButton(
+            activity: activity,
+            feedGroup: feedGroup,
+          ),
         ],
       ),
     );
