@@ -36,13 +36,26 @@ class RealtimeMessage<A, Ob, T> extends Equatable {
 
   /// Create a new instance from a JSON object
   factory RealtimeMessage.fromJson(
-    Map<String, dynamic> json,
-    A Function(Object? json) fromJsonA,
-    Ob Function(Object? json) fromJsonOb,
-    T Function(Object? json) fromJsonT,
-  ) =>
+    Map<String, dynamic> json, [
+    A Function(Object? json)? fromJsonA,
+    Ob Function(Object? json)? fromJsonOb,
+    T Function(Object? json)? fromJsonT,
+  ]) =>
       _$RealtimeMessageFromJson<A, Ob, T>(
-          json, fromJsonA, fromJsonOb, fromJsonT);
+          json,
+          fromJsonA ??
+              (json) => (A == User)
+                  ? User.fromJson(json! as Map<String, dynamic>) as A
+                  : json as A,
+          fromJsonOb ??
+              (json) => (Ob == CollectionEntry)
+                  ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
+                      as Ob
+                  : json as Ob,
+          fromJsonT ??
+              (jsonT) => (T == Activity)
+                  ? Activity.fromJson(jsonT! as Map<String, dynamic>) as T
+                  : jsonT as T);
 
   /// Name of the feed this update was published on
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)

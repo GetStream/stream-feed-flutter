@@ -47,9 +47,9 @@ class FlatFeed extends Feed {
   }
 
   /// Retrieves one enriched activity from a feed
-  Future<EnrichedActivity> getEnrichedActivityDetail<A>(
+  Future<EnrichedActivity<A, Ob, T>> getEnrichedActivityDetail<A, Ob, T>(
       String activityId) async {
-    final activities = await getEnrichedActivities(
+    final activities = await getEnrichedActivities<A, Ob, T>(
         limit: 1,
         filter: Filter()
             .idLessThanOrEqual(activityId)

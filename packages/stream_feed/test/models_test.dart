@@ -160,18 +160,12 @@ void main() {
     test('issue-89', () {
       RealtimeMessage.fromJson(
         jsonFixture('realtime_message_issue89.json'),
-        (json) => json,
-        (json) => json,
-        (json) => json,
       );
     });
   });
   test('EnrichedActivity issue 61', () {
     final enrichedActivity = EnrichedActivity<User, String, String>.fromJson(
       jsonFixture('enriched_activity_issue61.json'),
-      (json) => User.fromJson(json! as Map<String, dynamic>),
-      (json) => json! as String,
-      (json) => json! as String,
     );
     expect(enrichedActivity.latestReactions, isNotNull);
     expect(enrichedActivity.ownReactions, isNotNull);
@@ -217,11 +211,8 @@ void main() {
       },
     );
     final enrichedActivityJson = json.decode(fixture('enriched_activity.json'));
-    final enrichedActivityFromJson = EnrichedActivity.fromJson(
-      enrichedActivityJson,
-      (json) => json! as String,
-      (json) => json! as String,
-    );
+    final enrichedActivityFromJson =
+        EnrichedActivity<String, String, String>.fromJson(enrichedActivityJson);
     expect(enrichedActivityFromJson, enrichedActivity);
     // we will never get “extra_data” from the api
     //that's why it's not explicit in the json fixture
@@ -276,10 +267,9 @@ void main() {
     );
     final enrichedActivityJson =
         json.decode(fixture('enriched_activity_collection_entry.json'));
-    final enrichedActivityFromJson = EnrichedActivity.fromJson(
+    final enrichedActivityFromJson =
+        EnrichedActivity<String, CollectionEntry, String>.fromJson(
       enrichedActivityJson,
-      (json) => json! as String,
-      (json) => CollectionEntry.fromJson(json! as Map<String, dynamic>),
     );
     expect(enrichedActivityFromJson, enrichedActivity);
     // we will never get “extra_data” from the api
@@ -575,7 +565,7 @@ void main() {
         //   "test": [reaction2]
         // },//TODO: test this
         childrenCounts: const {'test': 1});
-    final enrichedActivity = EnrichedActivity<String, String, Object?>(
+    final enrichedActivity = EnrichedActivity<String, String, String>(
       id: 'test',
       actor: 'test',
       object: 'test',
@@ -618,12 +608,9 @@ void main() {
 
     final paginatedReactionsJson =
         json.decode(fixture('paginated_reactions.json'));
-    final paginatedReactionsFromJson = PaginatedReactions.fromJson(
-      paginatedReactionsJson,
-      (json) => json! as String,
-      (json) => json! as String,
-      (json) => json,
-    );
+    final paginatedReactionsFromJson =
+        PaginatedReactions<String, String, String>.fromJson(
+            paginatedReactionsJson);
     expect(paginatedReactionsFromJson, paginatedReactions);
     expect(
         paginatedReactions.toJson(
@@ -653,6 +640,7 @@ void main() {
           'activity': {
             'actor': 'test',
             'verb': 'test',
+            'target': 'test',
             'object': 'test',
             'foreign_id': 'test',
             'time': '2001-09-11T00:01:02.000',
