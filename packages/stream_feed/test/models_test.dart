@@ -150,7 +150,6 @@ void main() {
                           "@Jessica check out getstream.io it's so dang awesome.",
                     },
                     origin: const EnrichableField(null),
-                    target: const EnrichableField(null),
                     object: 'tweet:id',
                     time: DateTime.parse('2021-05-26T14:23:33.918391'),
                     to: ['notification:jessica'],
