@@ -1,18 +1,19 @@
+import 'package:logging/logging.dart';
 import 'package:stream_feed/src/client/aggregated_feed.dart';
-import 'package:stream_feed/src/client/flat_feed.dart';
-import 'package:stream_feed/src/client/notification_feed.dart';
 import 'package:stream_feed/src/client/batch_operations_client.dart';
 import 'package:stream_feed/src/client/collections_client.dart';
 import 'package:stream_feed/src/client/file_storage_client.dart';
+import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/client/image_storage_client.dart';
+import 'package:stream_feed/src/client/notification_feed.dart';
 import 'package:stream_feed/src/client/personalization_client.dart';
+import 'package:stream_feed/src/client/reactions_client.dart';
+import 'package:stream_feed/src/client/stream_feed_client_impl.dart';
+import 'package:stream_feed/src/client/stream_user.dart';
+import 'package:stream_feed/src/core/api/stream_api.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
-
-import 'package:stream_feed/src/client/reactions_client.dart';
-import 'package:stream_feed/src/client/stream_user.dart';
-import 'package:stream_feed/src/client/stream_feed_client_impl.dart';
 
 /// Different sides on which you can run this [StreamFeedClient] on
 enum Runner {
@@ -53,6 +54,10 @@ abstract class StreamFeedClient {
     String? appId,
     StreamHttpClientOptions? options,
     Runner runner = Runner.client,
+    StreamAPI? api,
+    String fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
+    Level logLevel = Level.WARNING,
+    LogHandlerFunction? logHandlerFunction,
   }) =>
       StreamFeedClientImpl(
         apiKey,
@@ -61,6 +66,10 @@ abstract class StreamFeedClient {
         appId: appId,
         options: options,
         runner: runner,
+        api: api,
+        fayeUrl: fayeUrl,
+        logLevel: logLevel,
+        logHandlerFunction: logHandlerFunction,
       );
 
   /// Returns the currentUser assigned to [StreamFeedClient]

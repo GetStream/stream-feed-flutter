@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:stream_feed/src/core/api/files_api.dart';
 import 'package:stream_feed/src/core/api/images_api.dart';
 import 'package:stream_feed/src/core/api/personalization_api.dart';
@@ -18,9 +19,15 @@ class StreamApiImpl implements StreamAPI {
   /// [StreamApiImpl] constructor
   StreamApiImpl(
     String apiKey, {
+    Logger? logger,
     StreamHttpClient? client,
     StreamHttpClientOptions? options,
-  }) : _client = client ?? StreamHttpClient(apiKey, options: options);
+  }) : _client = client ??
+            StreamHttpClient(
+              apiKey,
+              logger: logger,
+              options: options,
+            );
 
   final StreamHttpClient _client;
 
