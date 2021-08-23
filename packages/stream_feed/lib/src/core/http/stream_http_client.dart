@@ -1,16 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-
 import 'package:stream_feed/src/core/exceptions.dart';
+import 'package:stream_feed/src/core/location.dart';
+import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/version.dart';
-import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
-import 'package:stream_feed/src/core/location.dart';
 
 part 'stream_http_client_options.dart';
 
-/// This is where we configure the base url, headers,
-///  query parameters and convenient methods for http verbs with error parsing.
+/// This is where we configure the base url, headers, query parameters and
+/// convenience methods for http verbs with error parsing.
 class StreamHttpClient {
   /// [StreamHttpClient] constructor
   StreamHttpClient(
@@ -37,17 +36,20 @@ class StreamHttpClient {
   }
 
   /// Your project Stream Chat api key.
-  /// Find your API keys here https://getstream.io/dashboard/
-  /// The API key, it can be safely shared with untrusted entities
+  ///
+  /// Find your API keys here https://getstream.io/dashboard/.
+  ///
+  /// An API key can be safely shared with untrusted entities.
   final String apiKey;
 
   /// Your project Stream Feed clientOptions.
   final StreamHttpClientOptions options;
 
-  /// [Dio] httpClient
-  /// It's been chosen because it's easy to use
-  /// and supports interesting features out of the box
-  /// (Interceptors, Global configuration, FormData, File downloading etc.)
+  /// [Dio] `httpClient`.
+  ///
+  /// Dio was chosen because it's easy to use and supports interesting features
+  /// out of the box (Interceptors, Global configuration, FormData, File
+  /// downloading etc.)
   @visibleForTesting
   final Dio httpClient;
 
@@ -64,7 +66,7 @@ class StreamHttpClient {
   String enrichUrl(String relativeUrl, String serviceName) =>
       '${options._getBaseUrl(serviceName)}/$relativeUrl';
 
-  /// Handy method to make http GET request with error parsing.
+  /// Handy method to make an http GET request with error parsing.
   Future<Response<T>> get<T>(
     String path, {
     String serviceName = 'api',
@@ -83,7 +85,7 @@ class StreamHttpClient {
     }
   }
 
-  /// Handy method to make http POST request with error parsing.
+  /// Handy method to make an http POST request with error parsing.
   Future<Response<T>> post<T>(
     String path, {
     String serviceName = 'api',
@@ -104,7 +106,7 @@ class StreamHttpClient {
     }
   }
 
-  /// Handy method to make http DELETE request with error parsing.
+  /// Handy method to make an http DELETE request with error parsing.
   Future<Response<T>> delete<T>(
     String path, {
     String serviceName = 'api',
@@ -123,7 +125,7 @@ class StreamHttpClient {
     }
   }
 
-  /// Handy method to make http PATCH request with error parsing.
+  /// Handy method to make an http PATCH request with error parsing.
   Future<Response<T>> patch<T>(
     String path, {
     String serviceName = 'api',
@@ -144,7 +146,7 @@ class StreamHttpClient {
     }
   }
 
-  /// Handy method to make http PUT request with error parsing.
+  /// Handy method to make an http PUT request with error parsing.
   Future<Response<T>> put<T>(
     String path, {
     String serviceName = 'api',

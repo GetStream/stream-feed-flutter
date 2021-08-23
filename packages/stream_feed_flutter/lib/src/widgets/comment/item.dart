@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/human_readable_timestamp.dart';
+import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/display.dart';
@@ -8,16 +10,46 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template comment_item}
+/// Displays a single comment on an activity.
+///
+/// Click on:
+/// - the avatar to view the user's profile
+/// - hashtags to view the activity feed for that tag.
+/// - mentions to view the activity feed for that user.
+///
+///{@endtemplate}
 class CommentItem extends StatelessWidget {
+  /// Who posted this comment.
   final User? user;
+
+  /// The content of the comment reaction
   final Reaction reaction;
+
+  ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
+
+  /// A callback to invoke when the user clicks on a hashtag.
   final OnHashtagTap? onHashtagTap;
+
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
+
+  /// The json key in [User.data].
+  ///
+  /// Used to access the name you want to display. By default it is 'name'.
   final String nameJsonKey;
+
+  /// The json key in [Reaction.data].
+  ///
+  /// Used to access the text of the comment you want to display.
+  /// By default it is 'text'.
   final String commentJsonKey;
+
+  ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
 
+  /// Builds a [CommentItem].
   const CommentItem({
     Key? key,
     required this.reaction,
@@ -82,7 +114,17 @@ class CommentItem extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          ChildReactionButton(
+            //TODO: refactor LikeButton to accept a reaction
+            activeIcon: StreamSvgIcon.loveActive(),
+            inactiveIcon: StreamSvgIcon.loveInactive(),
+            hoverColor: Colors.red.shade100,
+
+            ///TODO: third state hover on desktop
+            reaction: reaction,
+            kind: 'like',
+          ),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
@@ -8,19 +9,17 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/group.dart';
 import 'package:stream_feed/src/core/util/default.dart';
-
-import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// {@template aggregatedFeed}
-/// Aggregated feeds are helpful if you want to group activities.
+/// Aggregated feeds are helpful for grouping activities.
 ///
 /// Here are some examples of what you can achieve using aggregated feeds:
 /// - 'Eric followed 10 people'
 /// - 'Julie and 14 others liked your photo'
 /// {@endtemplate}
 class AggregatedFeed extends Feed {
-  /// Initialize a [AggregatedFeed] object
+  ///{@macro aggregatedFeed}
   AggregatedFeed(
     FeedId feedId,
     FeedAPI feed, {
@@ -35,7 +34,7 @@ class AggregatedFeed extends Feed {
           subscriber: subscriber,
         );
 
-  ///Retrieves one activity from a feed
+  /// Retrieves one activity from a feed
   Future<Group<Activity>> getActivityDetail(String activityId) async {
     final activities = await getActivities(
         limit: 1,
@@ -46,6 +45,8 @@ class AggregatedFeed extends Feed {
   }
 
   /// Retrieve activities of type Aggregated feed
+  ///
+  /// {@macro filter}
   Future<List<Group<Activity>>> getActivities({
     int? limit,
     int? offset,
@@ -71,6 +72,8 @@ class AggregatedFeed extends Feed {
   }
 
   /// Retrieve activities with reaction enrichment
+  ///
+  /// {@macro filter}
   Future<List<Group<EnrichedActivity>>> getEnrichedActivities({
     int? limit,
     int? offset,

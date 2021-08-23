@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template reaction_button}
+/// A widget that can be used to trigger a reaction.
+///
+/// Displays the count of reactions it has received and the reaction
+/// it is currently displaying.
+///{@endtemplate}
 class ReactionButton extends StatelessWidget {
-  ReactionButton({
+  /// Builds a [ReactionButton].
+  const ReactionButton({
     Key? key,
     required this.activity,
     required this.kind,
@@ -15,27 +22,38 @@ class ReactionButton extends StatelessWidget {
     this.data,
   }) : super(key: key);
 
-  ///The reaction received from stream that should be liked when pressing the LikeButton.
+  /// The reaction received from Stream that should be liked when pressing
+  /// the [LikeButton].
   final Reaction? reaction;
 
-  /// The activity received from stream that should be liked when pressing the LikeButton.
+  /// The activity received from Stream that should be liked when pressing
+  /// the [LikeButton].
   final EnrichedActivity activity;
 
-  ///If you want to override on tap for some reasons
+  /// The callback to be performed on tap.
+  ///
+  /// This is generally not to be overridden, but can be done if developers
+  /// wish.
   final VoidCallback? onTap;
 
+  /// The kind of reaction that should be displayed.
   final String kind;
 
-  /// The button to display if the user already reacted
+  /// The button to display if the current user has already reacted
   final Widget activeIcon;
 
-  /// The button to display if the user didn't reacted yet
+  /// The button to display if the current user has not reacted yet
   final Widget inactiveIcon;
 
+  /// The data to send along with this reaction.
   final Map<String, Object>? data;
 
+  /// The color to use when the user hovers over the button.
+  ///
+  /// Generally applies to desktop and web.
   final Color hoverColor;
 
+  ///The group/slug of the feed to which this reaction will belong.
   final String feedGroup;
 
   @override
@@ -57,12 +75,25 @@ class ReactionButton extends StatelessWidget {
 }
 
 class ReactionToggleIcon extends StatefulWidget {
+  ///The reactions belongin to the current user
   final List<Reaction>? ownReactions;
+
+  /// The icon to display if you already reacted, with this rreaction kind, to this activity
   final Widget activeIcon;
+
+  /// The icon to display if you did not reacted yet, with this rreaction kind, to this activity
   final Widget inactiveIcon;
+
+  /// The kind of reaction
   final String kind;
+
+  /// The reaction count
   final int? count;
+
+  /// A callback that will be called when the user clicks on the reaction icon
   final VoidCallback? onTap;
+
+  /// The group/slug of the feed
   final String feedGroup;
   final EnrichedActivity activity;
   final String? userId;
@@ -70,7 +101,7 @@ class ReactionToggleIcon extends StatefulWidget {
   final List<FeedId>? targetFeeds;
   final Color hoverColor;
   //TODO: see what we can extract from a parent widget and put in core
-  ReactionToggleIcon({
+  const ReactionToggleIcon({
     Key? key,
     required this.activeIcon,
     required this.inactiveIcon,
@@ -94,6 +125,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   late bool alreadyReacted;
   late List<Reaction?>? reactionsKind;
   late String? idToRemove;
+  late int count;
 
   @override
   void initState() {
@@ -101,17 +133,18 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
     reactionsKind = widget.ownReactions?.filterByKind(widget.kind);
     alreadyReacted = reactionsKind?.isNotEmpty != null;
     idToRemove = reactionsKind?.last?.id;
+    count = widget.count ?? 0;
   }
+
+  Widget get displayedIcon =>
+      alreadyReacted ? widget.activeIcon : widget.inactiveIcon;
 
   @override
   Widget build(BuildContext context) {
-    final displayedIcon =
-        alreadyReacted ? widget.activeIcon : widget.inactiveIcon;
-
     return ReactionIcon(
       hoverColor: widget.hoverColor,
       icon: displayedIcon,
-      count: widget.count, //TODO: handle count
+      count: count,
       onTap: () async {
         widget.onTap?.call ?? await onToggleReaction();
       },
@@ -131,6 +164,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
     setState(() {
       alreadyReacted = !alreadyReacted;
       idToRemove = reaction.id!;
+      count += 1;
     });
   }
 
@@ -142,6 +176,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
         feedGroup: widget.feedGroup);
     setState(() {
       alreadyReacted = !alreadyReacted;
+      count -= 1;
     });
   }
 }

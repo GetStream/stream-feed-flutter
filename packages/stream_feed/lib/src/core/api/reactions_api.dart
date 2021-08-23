@@ -10,12 +10,12 @@ import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Reactions
 class ReactionsAPI {
-  /// [ReactionsAPI] constructor
+  /// Builds a [ReactionsAPI].
   const ReactionsAPI(this._client);
 
   final StreamHttpClient _client;
 
-  ///Add reaction
+  /// Add reaction
   Future<Reaction> add(Token token, Reaction reaction) async {
     checkArgument(reaction.activityId != null || reaction.parent != null,
         'Reaction has to either have an activity ID or parent');
@@ -58,7 +58,8 @@ class ReactionsAPI {
     );
   }
 
-  ///read reactions and filter them
+  /// Read reactions and filter them
+  ///
   /// Parameters:
   /// - [lookupAttr]: name of the reaction attribute to paginate on.
   /// Can be activity_id, reaction_id or user_id.
@@ -73,16 +74,13 @@ class ReactionsAPI {
     Filter filter,
     int limit,
     String kind,
+    Map<String, Object?> options,
   ) async {
     checkArgument(lookupValue.isNotEmpty, "Lookup value can't be empty");
     final result = await _client.get<Map>(
       Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
       headers: {'Authorization': '$token'},
-      queryParameters: {
-        'limit': limit.toString(),
-        ...filter.params,
-        'with_activity_data': lookupAttr == LookupAttribute.activityId,
-      },
+      queryParameters: options,
     );
     final data = (result.data!['results'] as List)
         .map((e) => Reaction.fromJson(e))
@@ -90,7 +88,7 @@ class ReactionsAPI {
     return data;
   }
 
-  ///paginated reactions and filter them
+  /// Paginated reactions and filter them
   Future<PaginatedReactions> paginatedFilter(
     Token token,
     LookupAttribute lookupAttr,
@@ -124,7 +122,7 @@ class ReactionsAPI {
     return PaginatedReactions.fromJson(result.data);
   }
 
-  /// update a reaction
+  /// Update a reaction
   Future<Reaction> update(Token token, Reaction updatedReaction) async {
     checkArgument(updatedReaction.id!.isNotEmpty, "Reaction id can't be empty");
     final targetFeedIds = updatedReaction.targetFeeds

@@ -8,7 +8,13 @@ import 'package:animations/animations.dart';
 
 enum TransitionType { material, cupertino, sharedAxisTransition }
 
+///{@template flat_activity_list_page}
+/// Display a list of activities.
+///
+/// Best used as the main page of an app.
+///{@endtemplate}
 class FlatActivityListPage extends StatelessWidget {
+  /// Builds a [FlatActivityListPage].
   const FlatActivityListPage({
     Key? key,
     this.feedGroup = 'user',
@@ -18,39 +24,88 @@ class FlatActivityListPage extends StatelessWidget {
     this.activityFooterBuilder,
     this.activityContentBuilder,
     this.activityHeaderBuilder,
+    this.limit,
+    this.offset,
+    this.session,
+    this.filter,
+    this.flags,
+    this.ranking,
     this.onProgressWidget = const ProgressStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
     this.onEmptyWidget =
         const EmptyStateWidget(message: 'No activities to display'),
     this.onActivityTap,
     this.transitionType =
-        TransitionType.sharedAxisTransition, //TODO: move this to core or theme
+        TransitionType.material, //TODO: move this to core or theme
   }) : super(key: key);
 
+  ///{@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
+
+  ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
+
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
+
+  /// A feed group to fetch activities for
   final String feedGroup;
+
+  /// Builds the activity footer
   final ActivityFooterBuilder? activityFooterBuilder;
+
+  /// Builds the activity content
   final ActivityContentBuilder? activityContentBuilder;
+
+  /// Builds the activity header
   final ActivityHeaderBuilder? activityHeaderBuilder;
 
-  ///Override the current navigation behavior. Useful for user provided Navigator 2.0
+  ///{@macro activity_callback}
   final OnActivityTap? onActivityTap;
+
+  /// A widget to display when there is an error in the request
   final Widget onErrorWidget;
+
+  /// A widget to display loading progress
   final Widget onProgressWidget;
+
+  /// A widget to display when there are no activities
   final Widget onEmptyWidget;
 
-  ///Customise the transition
+  /// Customises the transition
   final TransitionType transitionType;
+
+  /// The limit of activities to fetch
+  final int? limit;
+
+  /// The offset of activities to fetch
+  final int? offset;
+
+  /// The session to use for the request
+  final String? session;
+
+  /// The filter to use for the request
+  final Filter? filter;
+
+  /// The flags to use for the request
+  final EnrichmentFlags? flags;
+
+  /// The ranking to use for the request
+  final String? ranking;
 
   @override
   Widget build(BuildContext context) {
     return FlatFeedCore(
+      flags: flags,
+      limit: limit,
+      offset: offset,
+      session: session,
+      filter: filter,
+      ranking: ranking,
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       //TODO: activity type Flat?
-      onSuccess: (context, activities, idx) => StreamFeedActivity(
+      feedBuilder: (context, activities, idx) => ActivityWidget(
         activity: activities[idx],
         feedGroup: feedGroup,
         onHashtagTap: onHashtagTap,
@@ -59,20 +114,33 @@ class FlatActivityListPage extends StatelessWidget {
         activityHeaderBuilder: activityHeaderBuilder,
         activityFooterBuilder: activityFooterBuilder,
         activityContentBuilder: activityContentBuilder,
-        onActivityTap: (context, activity) => onActivityTap != null
-            ? onActivityTap?.call(context, activity)
-            //TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
+        onActivityTap: (context, activity) =>
 
-            : pageRouteBuilder(
-                activity: activity,
-                context: context,
-                transitionType: transitionType,
-                page: CommentView(
-                  enableReactions: true,
-                  textEditingController:
-                      TextEditingController(), //TODO: move this into props for customisation like buildSpans
-                ),
+            // onActivityTap != null
+            //     ? onActivityTap?.call(context, activity)
+            //     //TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
+// :
+            pageRouteBuilder(
+          activity: activity,
+          context: context,
+          transitionType: transitionType,
+          page: StreamFeedCore(
+            //TODO: let the user implement this
+            client: StreamFeedCore.of(context).client,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text('Post'),
               ),
+              body: CommentView(
+                activity: activity,
+                enableCommentFieldButton: true,
+                enableReactions: true,
+                textEditingController:
+                    TextEditingController(), //TODO: move this into props for customisation like buildSpans
+              ),
+            ),
+          ),
+        ),
       ),
       feedGroup: feedGroup,
     );
@@ -83,24 +151,25 @@ class FlatActivityListPage extends StatelessWidget {
       required TransitionType transitionType,
       required EnrichedActivity activity,
       required Widget page}) {
-    final currentNavigator = StreamFeedCore.of(context).navigator!;
+    final currentNavigator = StreamFeedCore.of(context).navigator;
+    //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:
-        currentNavigator.push(
+        currentNavigator!.push(
           MaterialPageRoute<void>(
             builder: (BuildContext context) => page,
           ),
         );
         break;
       case TransitionType.cupertino:
-        currentNavigator.push(
+        currentNavigator!.push(
           CupertinoPageRoute<void>(
             builder: (BuildContext context) => page,
           ),
         );
         break;
       default:
-        currentNavigator.push(PageRouteBuilder(
+        currentNavigator!.push(PageRouteBuilder(
           pageBuilder: (_, __, ___) => page,
           transitionsBuilder: (
             _,

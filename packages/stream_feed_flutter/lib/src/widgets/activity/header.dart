@@ -3,7 +3,11 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template activity_header}
+/// Displays the user's name and a profile image.
+///{@endtemplate}
 class ActivityHeader extends StatelessWidget {
+  ///{@macro activity_header}
   const ActivityHeader({
     Key? key,
     required this.activity,
@@ -12,10 +16,12 @@ class ActivityHeader extends StatelessWidget {
     this.showSubtitle = true,
   });
   final EnrichedActivity activity;
+
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
   final bool showSubtitle;
 
-  ///Wether you want to display like activities or repost activities
+  /// Whether you want to display like activities or repost activities
   final String activityKind;
   @override
   Widget build(BuildContext context) {

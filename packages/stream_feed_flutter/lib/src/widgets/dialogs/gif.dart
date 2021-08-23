@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+///{@template gif_action}
 ///Opens a gif dialog
+///{@endtemplate}
 class GIFAction extends StatelessWidget {
+  /// Builds a [GIFAction].
   const GIFAction({
     Key? key,
   }) : super(key: key);

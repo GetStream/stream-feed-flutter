@@ -3,16 +3,36 @@ import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class StreamFeedCard extends StatelessWidget {
+///{@template activity_card}
+/// A card used to diplay Open Graph medias.
+///
+/// For now it displays an image and when clicked, it opens the media in
+/// the device's browser.
+///{@endtemplate}
+class ActivityCard extends StatelessWidget {
+  /// The alternative text to display for accessibility reasons.
   final String? alt;
+
+  /// The image to display.
   final String? image;
   // final bool? nolink;
+  /// The Opengraph media object.
   final OpenGraphData og;
+
+  /// The imageUrl of the media.
   final String? imageURL;
+
+  /// The description of the media.
   final String? description;
+
+  /// The url of the media.
   final String? url;
+
+  /// The title of the media.
   final String? title;
-  const StreamFeedCard({
+
+  ///{@macro activity_card}
+  const ActivityCard({
     Key? key,
     required this.og,
     this.alt,
