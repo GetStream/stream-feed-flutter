@@ -1,19 +1,29 @@
-import 'package:example/utils/utils.dart';
+import 'package:example/activity_item.dart';
+import 'package:example/add_activity_dialog.dart';
+import 'package:example/extension.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-import 'activity_item.dart';
-import 'add_activity_dialog.dart';
-
+//ignore: public_member_api_docs
 class ProfileScreen extends StatefulWidget {
+  //ignore: public_member_api_docs
   const ProfileScreen({
+    required this.currentUser,
     Key? key,
-    required this.streamUser,
   }) : super(key: key);
-  final User streamUser;
+
+  //ignore: public_member_api_docs
+  final StreamUser currentUser;
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<StreamUser>('currentUser', currentUser));
+  }
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -25,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadActivities({bool pullToRefresh = false}) async {
     if (!pullToRefresh) setState(() => _isLoading = true);
 
-    final userFeed = _client.flatFeed('user', widget.streamUser.id!);
+    final userFeed = _client.flatFeed('user', widget.currentUser.id);
     final data = await userFeed.getActivities();
     if (!pullToRefresh) _isLoading = false;
     setState(() => activities = data);
@@ -40,49 +50,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = widget.streamUser;
+    final user = widget.currentUser;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final message = await showDialog<String>(
             context: context,
-            builder: (_) => AddActivityDialog(),
+            builder: (_) => const AddActivityDialog(),
           );
           if (message != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Posting Activity...'),
-              ),
-            );
+            context.showSnackBar('Posting Activity...');
 
             final activity = Activity(
-              actor: user.id,
+              actor: user.ref,
               verb: 'tweet',
               object: '1',
-              extraData: {
-                'tweet': message,
-              },
+              extraData: {'tweet': message},
             );
-            final userFeed = _client.flatFeed('user', user.id!);
+
+            final userFeed = _client.flatFeed('timeline', user.id);
             await userFeed.addActivity(activity);
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Activity Posted...'),
-              ),
-            );
+            context.showSnackBar('Activity Posted...');
             _loadActivities();
           }
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: Center(
         child: RefreshIndicator(
           onRefresh: () => _loadActivities(pullToRefresh: true),
           child: _isLoading
-              ? CircularProgressIndicator()
+              ? const CircularProgressIndicator()
               : activities.isEmpty
-                  ? Text('No activities yet!')
+                  ? const Text('No activities yet!')
                   : ListView.separated(
                       itemCount: activities.length,
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -95,6 +96,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<Activity>('activities', activities));
   }
 }
 //Shared an update Just now

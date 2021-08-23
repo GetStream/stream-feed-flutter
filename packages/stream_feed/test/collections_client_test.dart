@@ -67,7 +67,7 @@ void main() {
       const entryId = 'entryId';
       const collection = 'collection';
       final entry = client.entry(collection, entryId);
-      expect(entry, CollectionEntry(collection: collection, id: entryId));
+      expect(entry, const CollectionEntry(collection: collection, id: entryId));
     });
     test('update', () async {
       const collection = 'users';

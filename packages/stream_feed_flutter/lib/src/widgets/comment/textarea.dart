@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+///{@template text_area}
+/// A TextArea is a multiline text input.
+///{@endtemplate}
 class TextArea extends StatefulWidget {
+  /// Builds a [TextArea].
   const TextArea({
     Key? key,
     this.textEditingController,
@@ -29,12 +33,16 @@ class TextArea extends StatefulWidget {
   /// The keyboard type assigned to the TextField
   final TextInputType keyboardType;
 
+  /// The text for the hint text
   final String? hintText;
 
+  /// The text input style
   final TextStyle? inputTextStyle;
 
+  /// The hint text style
   final TextStyle? hintTextStyle;
 
+  /// A callback that is invoked when the TextField is submitted.
   final void Function(String)? onSubmitted;
 
   @override

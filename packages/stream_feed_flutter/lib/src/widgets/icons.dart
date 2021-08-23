@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-/// Icon set of stream chat
+/// Icon set of stream feed
 class StreamSvgIcon extends StatelessWidget {
-  /// Constructor for creating a [StreamSvgIcon]
+  /// Builds a [StreamSvgIcon]
   const StreamSvgIcon({
     Key? key,
-    this.assetName,
+    required this.assetName,
     this.color,
     this.width = 14,
     this.height = 14,
   }) : super(key: key);
 
-  /// Name of icon asset
-  final String? assetName;
+  /// The name of the icon asset
+  final String assetName;
 
-  /// Width of icon
+  /// The width of the icon
   final double? width;
 
-  /// Height of icon
+  /// The height of the icon
   final double? height;
 
-  /// Color of icon
+  /// The color of the icon
   final Color? color;
 
-  /// [StreamSvgIcon] type
+  /// [StreamSvgIcon] loveActive icon
   factory StreamSvgIcon.loveActive({
     double? size,
     Color? color,
@@ -36,7 +36,7 @@ class StreamSvgIcon extends StatelessWidget {
         height: size,
       );
 
-  /// [StreamSvgIcon] type
+  /// [StreamSvgIcon] loveInactive icon
   factory StreamSvgIcon.loveInactive({
     double? size,
     Color? color,
@@ -48,7 +48,7 @@ class StreamSvgIcon extends StatelessWidget {
         height: size,
       );
 
-  /// [StreamSvgIcon] type
+  /// [StreamSvgIcon] repost icon
   factory StreamSvgIcon.repost({
     double? size,
     Color? color,
@@ -60,7 +60,7 @@ class StreamSvgIcon extends StatelessWidget {
         height: size,
       );
 
-  /// [StreamSvgIcon] type
+  /// [StreamSvgIcon] reply icon
   factory StreamSvgIcon.reply({
     double? size,
     Color? color,
@@ -72,7 +72,7 @@ class StreamSvgIcon extends StatelessWidget {
         height: size,
       );
 
-  /// [StreamSvgIcon] type
+  /// [StreamSvgIcon] share icon
   factory StreamSvgIcon.share({
     double? size,
     Color? color,
@@ -84,7 +84,7 @@ class StreamSvgIcon extends StatelessWidget {
         height: size,
       );
 
-  /// [StreamSvgIcon] type
+  /// [StreamSvgIcon] post icon
   factory StreamSvgIcon.post({
     double? size,
     Color? color,
@@ -96,7 +96,7 @@ class StreamSvgIcon extends StatelessWidget {
         height: size,
       );
 
-  /// [StreamSvgIcon] type
+  /// [StreamSvgIcon] categories icon
   factory StreamSvgIcon.categories({
     double? size,
     Color? color,
@@ -108,7 +108,7 @@ class StreamSvgIcon extends StatelessWidget {
         height: size,
       );
 
-  /// [StreamSvgIcon] type
+  /// [StreamSvgIcon] gear icon
   factory StreamSvgIcon.gear({
     double? size,
     Color? color,

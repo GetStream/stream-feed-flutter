@@ -12,12 +12,12 @@ class UsersAPI {
   final StreamHttpClient _client;
 
   /// Create a new user
-  Future<User> add(
+  Future<User> create(
     Token token,
     String id,
-    Map<String, Object> data, [
+    Map<String, Object?> data, {
     bool getOrCreate = false,
-  ]) async {
+  }) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final user = User(id: id, data: data);
     final result = await _client.post<Map<String, dynamic>>(
@@ -29,9 +29,12 @@ class UsersAPI {
     return User.fromJson(result.data!);
   }
 
-  /// Get the user data
-  Future<User> get(Token token, String id,
-      [bool withFollowCounts = false]) async {
+  /// Get data for a single user
+  Future<User> get(
+    Token token,
+    String id, {
+    bool withFollowCounts = false,
+  }) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final result = await _client.get(
       Routes.buildUsersUrl('$id/'),
@@ -41,8 +44,8 @@ class UsersAPI {
     return User.fromJson(result.data);
   }
 
-  ///Update the user
-  Future<User> update(Token token, String id, Map<String, Object> data) async {
+  /// Update a single user
+  Future<User> update(Token token, String id, Map<String, Object?> data) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final updatedUser = User(id: id, data: data);
     final result = await _client.put(
@@ -53,7 +56,7 @@ class UsersAPI {
     return User.fromJson(result.data);
   }
 
-  ///Delete the user
+  /// Delete a single user
   Future<void> delete(Token token, String id) {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     return _client.delete(

@@ -1,27 +1,41 @@
 import 'package:example/people_screen.dart';
 import 'package:example/profile_screen.dart';
 import 'package:example/timeline_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
+//ignore: public_member_api_docs
 class HomeScreen extends StatefulWidget {
-  final User streamUser;
+  //ignore: public_member_api_docs
+  const HomeScreen({
+    required this.currentUser,
+    Key? key,
+  }) : super(key: key);
 
-  const HomeScreen({Key? key, required this.streamUser}) : super(key: key);
+  //ignore: public_member_api_docs
+  final StreamUser currentUser;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<StreamUser>('currentUser', currentUser));
+  }
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   @override
+  //ignore: prefer_expression_function_bodies
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          children: [
+          children: const [
             Icon(Icons.bike_scooter_rounded),
             SizedBox(width: 16),
             Text('Tweet It!'),
@@ -31,21 +45,19 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          TimelineScreen(streamUser: widget.streamUser),
-          ProfileScreen(streamUser: widget.streamUser),
-          PeopleScreen(streamUser: widget.streamUser),
+          TimelineScreen(currentUser: widget.currentUser),
+          ProfileScreen(currentUser: widget.currentUser),
+          PeopleScreen(currentUser: widget.currentUser),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.blue,
-        elevation: 16.0,
+        elevation: 16,
         type: BottomNavigationBarType.fixed,
         iconSize: 22,
-        selectedFontSize: 14,
-        unselectedFontSize: 12,
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
-        items: [
+        items: const [
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.timeline),

@@ -7,7 +7,7 @@
 **🔗 Quick Links**
 
 - [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
-- [Tutorial](https://getstream.io/activity-feed/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
+- [Tutorial](https://getstream.io/activity-feeds/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
 - [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/) to jumpstart your design with notifications and social feeds
 
 ## 🛠 Installation
@@ -141,8 +141,8 @@ await user1.unfollow(client.flatFeed('flat', '42'), keepHistory: true);
 await user1.follow(client.flatFeed('flat', '42'), activityCopyLimit: 0);
 
 // List followers, following
-await user1.getFollowers(limit: 10, offset: 10);
-await user1.getFollowed(limit: 10, offset: 0);
+await user1.followers(limit: 10, offset: 10);
+await user1.following(limit: 10, offset: 0);
 
 
 await user1.follow(client.flatFeed('flat', '42'));
