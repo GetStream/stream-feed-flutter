@@ -36,7 +36,7 @@ void main() {
       final activeIcon = tester.widget<StreamSvgIcon>(icon);
       expect(activeIcon.assetName, StreamSvgIcon.loveActive().assetName);
 
-      final by = find.text('by').first;
+      final by = find.text('by ').first;
       expect(by, findsOneWidget);
       final handle = find.text('@rosemary').first;
       expect(handle, findsOneWidget);
