@@ -67,7 +67,7 @@ class Feed {
 
   /// Subscribes to any changes in the feed, return a [Subscription]
   @experimental
-  Future<Subscription> subscribe<A, Ob>(
+  Future<Subscription> subscribe<A, Ob, T>(
     void Function(RealtimeMessage? message) callback,
   ) {
     checkNotNull(
@@ -85,6 +85,9 @@ class Feed {
         (json) => (Ob is CollectionEntry)
             ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
             : Ob,
+        (jsonT) => (T is Activity)
+            ? Activity.fromJson(jsonT! as Map<String, dynamic>)
+            : T,
       );
       callback(realtimeMessage);
     });

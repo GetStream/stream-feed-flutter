@@ -35,7 +35,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
 /// information about the activities.
-class FlatFeedCore<A, Ob> extends StatelessWidget {
+class FlatFeedCore<A, Ob, T> extends StatelessWidget {
   const FlatFeedCore(
       {Key? key,
       required this.feedGroup,
@@ -54,7 +54,7 @@ class FlatFeedCore<A, Ob> extends StatelessWidget {
       : super(key: key);
 
   /// A builder that let you build a ListView of EnrichedActivity based Widgets
-  final EnrichedFeedBuilder<A, Ob> feedBuilder;
+  final EnrichedFeedBuilder<A, Ob, T> feedBuilder;
 
   /// An error widget to show when an error occurs
   final Widget onErrorWidget;
@@ -91,7 +91,7 @@ class FlatFeedCore<A, Ob> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: StreamFeedCore.of(context).getEnrichedActivities<A, Ob>(
+      future: StreamFeedCore.of(context).getEnrichedActivities<A, Ob, T>(
         feedGroup: feedGroup,
         limit: limit,
         offset: offset,
@@ -102,7 +102,7 @@ class FlatFeedCore<A, Ob> extends StatelessWidget {
         userId: userId,
       ),
       builder:
-          (context, AsyncSnapshot<List<EnrichedActivity<A, Ob>>> snapshot) {
+          (context, AsyncSnapshot<List<EnrichedActivity<A, Ob, T>>> snapshot) {
         if (snapshot.hasError) {
           return onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
         }

@@ -6,18 +6,19 @@ part of 'enriched_activity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-EnrichedActivity<A, Ob> _$EnrichedActivityFromJson<A, Ob>(
+EnrichedActivity<A, Ob, T> _$EnrichedActivityFromJson<A, Ob, T>(
   Map json,
   A Function(Object? json) fromJsonA,
   Ob Function(Object? json) fromJsonOb,
+  T Function(Object? json) fromJsonT,
 ) {
-  return EnrichedActivity<A, Ob>(
+  return EnrichedActivity<A, Ob, T>(
     id: json['id'] as String?,
     actor: _$nullableGenericFromJson(json['actor'], fromJsonA),
     verb: json['verb'] as String?,
     object: _$nullableGenericFromJson(json['object'], fromJsonOb),
     foreignId: json['foreign_id'] as String?,
-    target: EnrichableField.deserialize(json['target']),
+    target: _$nullableGenericFromJson(json['target'], fromJsonT),
     time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
     origin: EnrichableField.deserialize(json['origin']),
     to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -53,10 +54,11 @@ EnrichedActivity<A, Ob> _$EnrichedActivityFromJson<A, Ob>(
   );
 }
 
-Map<String, dynamic> _$EnrichedActivityToJson<A, Ob>(
-  EnrichedActivity<A, Ob> instance,
+Map<String, dynamic> _$EnrichedActivityToJson<A, Ob, T>(
+  EnrichedActivity<A, Ob, T> instance,
   Object? Function(A value) toJsonA,
   Object? Function(Ob value) toJsonOb,
+  Object? Function(T value) toJsonT,
 ) {
   final val = <String, dynamic>{};
 
@@ -71,7 +73,7 @@ Map<String, dynamic> _$EnrichedActivityToJson<A, Ob>(
   val['verb'] = instance.verb;
   val['object'] = _$nullableGenericToJson(instance.object, toJsonOb);
   writeNotNull('foreign_id', instance.foreignId);
-  writeNotNull('target', readonly(instance.target));
+  val['target'] = _$nullableGenericToJson(instance.target, toJsonT);
   writeNotNull('time', instance.time?.toIso8601String());
   writeNotNull('origin', readonly(instance.origin));
   writeNotNull('to', readonly(instance.to));

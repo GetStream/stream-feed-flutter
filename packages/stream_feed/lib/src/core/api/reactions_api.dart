@@ -90,7 +90,7 @@ class ReactionsAPI {
   }
 
   /// Paginated reactions and filter them
-  Future<PaginatedReactions> paginatedFilter<A, Ob>(
+  Future<PaginatedReactions> paginatedFilter<A, Ob, T>(
     Token token,
     LookupAttribute lookupAttr,
     String lookupValue,
@@ -115,11 +115,14 @@ class ReactionsAPI {
       (json) => (Ob is CollectionEntry)
           ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
           : Ob,
+      (jsonT) => (T is Activity)
+          ? Activity.fromJson(jsonT! as Map<String, dynamic>)
+          : T,
     );
   }
 
   /// Next reaction pagination returned by [PaginatedReactions].next
-  Future<PaginatedReactions> nextPaginatedFilter<A, Ob>(
+  Future<PaginatedReactions> nextPaginatedFilter<A, Ob, T>(
       Token token, String next) async {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
     final result = await _client.get(
@@ -132,6 +135,9 @@ class ReactionsAPI {
       (json) => (Ob is CollectionEntry)
           ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
           : Ob,
+      (jsonT) => (T is Activity)
+          ? Activity.fromJson(jsonT! as Map<String, dynamic>)
+          : T,
     );
   }
 

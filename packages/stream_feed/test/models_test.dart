@@ -128,20 +128,21 @@ void main() {
   });
   group('RealtimeMessage', () {
     test('fromJson', () {
-      final fromJson = RealtimeMessage<String, String>.fromJson(
+      final fromJson = RealtimeMessage<String, String, String?>.fromJson(
         jsonFixture('realtime_message.json'),
         (json) => json! as String,
         (json) => json! as String,
+        (json) => null,
       );
 
       expect(
           fromJson,
-          RealtimeMessage<String, String>(
+          RealtimeMessage<String, String, String?>(
               deleted: [],
               deletedForeignIds: [],
               feed: FeedId.fromId('reward:1'),
               newActivities: [
-                EnrichedActivity<String, String>(
+                EnrichedActivity<String, String, String?>(
                     actor: 'reward:1',
                     id: 'f3de8328-be2d-11eb-bb18-128a130028af',
                     extraData: {
@@ -162,13 +163,15 @@ void main() {
         jsonFixture('realtime_message_issue89.json'),
         (json) => json,
         (json) => json,
+        (json) => json,
       );
     });
   });
   test('EnrichedActivity issue 61', () {
-    final enrichedActivity = EnrichedActivity<User, String>.fromJson(
+    final enrichedActivity = EnrichedActivity<User, String, String>.fromJson(
       jsonFixture('enriched_activity_issue61.json'),
       (json) => User.fromJson(json! as Map<String, dynamic>),
+      (json) => json! as String,
       (json) => json! as String,
     );
     expect(enrichedActivity.latestReactions, isNotNull);
@@ -573,7 +576,7 @@ void main() {
         //   "test": [reaction2]
         // },//TODO: test this
         childrenCounts: const {'test': 1});
-    final enrichedActivity = EnrichedActivity<String, String>(
+    final enrichedActivity = EnrichedActivity<String, String, Object?>(
       id: 'test',
       actor: 'test',
       object: 'test',
@@ -620,10 +623,12 @@ void main() {
       paginatedReactionsJson,
       (json) => json! as String,
       (json) => json! as String,
+      (json) => json,
     );
     expect(paginatedReactionsFromJson, paginatedReactions);
     expect(
         paginatedReactions.toJson(
+          (json) => json,
           (json) => json,
           (json) => json,
         ),

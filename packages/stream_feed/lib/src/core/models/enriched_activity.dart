@@ -5,6 +5,8 @@ import 'package:stream_feed/src/core/models/reaction.dart';
 import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/serializer.dart';
 
+import 'activity.dart';
+
 part 'enriched_activity.g.dart';
 
 /// Enrichment is a concept in Stream that enables our API to work quickly
@@ -46,8 +48,9 @@ class EnrichableField extends Equatable {
 /// surface. Here is a legend of what each generic is for:
 /// * A = [actor]
 /// * Ob = [object]
+/// * T = [target]
 @JsonSerializable(genericArgumentFactories: true)
-class EnrichedActivity<A, Ob> extends Equatable {
+class EnrichedActivity<A, Ob, T> extends Equatable {
   /// [EnrichedActivity] constructor
   const EnrichedActivity({
     this.id,
@@ -73,18 +76,23 @@ class EnrichedActivity<A, Ob> extends Equatable {
     Map<String, dynamic>? json, [
     A Function(Object? json)? fromJsonA,
     Ob Function(Object? json)? fromJsonOb,
+    T Function(Object? json)? fromJsonT,
   ]) =>
-      _$EnrichedActivityFromJson<A, Ob>(
-        Serializer.moveKeysToRoot(json, topLevelFields)!,
-        fromJsonA ??
-            (json) => (A == User)
-                ? User.fromJson(json! as Map<String, dynamic>) as A
-                : json as A,
-        fromJsonOb ??
-            (json) => (Ob == CollectionEntry)
-                ? CollectionEntry.fromJson(json! as Map<String, dynamic>) as Ob
-                : json as Ob,
-      );
+      _$EnrichedActivityFromJson<A, Ob, T>(
+          Serializer.moveKeysToRoot(json, topLevelFields)!,
+          fromJsonA ??
+              (json) => (A == User)
+                  ? User.fromJson(json! as Map<String, dynamic>) as A
+                  : json as A,
+          fromJsonOb ??
+              (json) => (Ob == CollectionEntry)
+                  ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
+                      as Ob
+                  : json as Ob,
+          fromJsonT ??
+              (jsonT) => (T == Activity)
+                  ? Activity.fromJson(jsonT! as Map<String, dynamic>) as T
+                  : jsonT as T);
 
   /// The Stream id of the activity.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
@@ -109,13 +117,8 @@ class EnrichedActivity<A, Ob> extends Equatable {
   @JsonKey(includeIfNull: false)
   final String? foreignId;
 
-  ///
-  @JsonKey(
-    includeIfNull: false,
-    fromJson: EnrichableField.deserialize,
-    toJson: Serializer.readOnly,
-  )
-  final EnrichableField? target;
+  /// The type of this field can be either [Activity] or `String`.
+  final T? target;
 
   /// The optional time of the activity in iso format.
   ///
@@ -210,7 +213,9 @@ class EnrichedActivity<A, Ob> extends Equatable {
   Map<String, dynamic> toJson(
     Object? Function(A value) toJsonA,
     Object? Function(Ob value) toJsonOb,
+    Object? Function(T value) toJsonT,
   ) =>
       Serializer.moveKeysToMapInPlace(
-          _$EnrichedActivityToJson(this, toJsonA, toJsonOb), topLevelFields);
+          _$EnrichedActivityToJson(this, toJsonA, toJsonOb, toJsonT),
+          topLevelFields);
 }

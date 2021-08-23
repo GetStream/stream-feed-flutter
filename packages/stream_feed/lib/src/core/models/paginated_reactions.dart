@@ -7,7 +7,7 @@ part 'paginated_reactions.g.dart';
 
 /// Paginated [Reaction]
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
-class PaginatedReactions<A, Ob> extends Paginated<Reaction> {
+class PaginatedReactions<A, Ob, T> extends Paginated<Reaction> {
   /// Builds a [PaginatedReactions].
   const PaginatedReactions(
       String? next, List<Reaction>? results, this.activity, String? duration)
@@ -18,8 +18,10 @@ class PaginatedReactions<A, Ob> extends Paginated<Reaction> {
     Map<String, dynamic> json,
     A Function(Object? json) fromJsonA,
     Ob Function(Object? json) fromJsonOb,
+    T Function(Object? json) fromJsonT,
   ) =>
-      _$PaginatedReactionsFromJson<A, Ob>(json, fromJsonA, fromJsonOb);
+      _$PaginatedReactionsFromJson<A, Ob, T>(
+          json, fromJsonA, fromJsonOb, fromJsonT);
 
   @override
   List<Object?> get props => [...super.props, activity];
@@ -27,12 +29,13 @@ class PaginatedReactions<A, Ob> extends Paginated<Reaction> {
   /// The activity data.
   ///
   /// This field is returned only when with_activity_data is sent.
-  final EnrichedActivity<A, Ob>? activity;
+  final EnrichedActivity<A, Ob, T>? activity;
 
   /// Serialize to json
   Map<String, dynamic> toJson(
     Object? Function(A value) toJsonA,
     Object? Function(Ob value) toJsonOb,
+    Object? Function(T value) toJsonT,
   ) =>
-      _$PaginatedReactionsToJson(this, toJsonA, toJsonOb);
+      _$PaginatedReactionsToJson(this, toJsonA, toJsonOb, toJsonT);
 }
