@@ -117,7 +117,7 @@ class EnrichedActivity<A, Ob, T> extends Equatable {
   @JsonKey(includeIfNull: false)
   final String? foreignId;
 
-  /// /// Describes the target of the activity.
+  /// Describes the target of the activity.
   ///
   /// The precise meaning of the activity's target is dependent on the
   /// activities verb, but will often be the object the English preposition
