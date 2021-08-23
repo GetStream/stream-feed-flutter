@@ -117,6 +117,18 @@ class EnrichedActivity<A, Ob, T> extends Equatable {
   @JsonKey(includeIfNull: false)
   final String? foreignId;
 
+  /// /// Describes the target of the activity.
+  ///
+  /// The precise meaning of the activity's target is dependent on the
+  /// activities verb, but will often be the object the English preposition
+  /// "to".
+  ///
+  /// For instance, in the activity, "John saved a movie to his wishlist",
+  /// the target of the activity is "wishlist". The activity target MUST NOT
+  /// be used to identity an indirect object that is not a target of the
+  /// activity. An activity MAY contain a target property whose value is a
+  /// single Object.
+  ///
   /// The type of this field can be either [Activity] or `String`.
   final T? target;
 
