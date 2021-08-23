@@ -1,22 +1,24 @@
 /// The type of crop
 enum CropType {
-  /// crop the top of the image
+  /// Crop the top of the image
   top,
 
-  /// crop the bottom of the image
+  /// Crop the bottom of the image
   bottom,
 
-  /// crop the left of the image
+  /// Crop the left of the image
   left,
 
-  /// crop the right of the image
+  /// Crop the right of the image
   right,
 
-  /// crop the center of the image
+  /// Crop the center of the image
   center,
 }
 
+/// Extensions for [CropType].
 extension CropX on CropType {
+  /// Gets the crop type as a String.
   String? get name => {
         CropType.top: 'top',
         CropType.bottom: 'bottom',
@@ -26,9 +28,9 @@ extension CropX on CropType {
       }[this];
 }
 
-/// Crop an image based on supplied [_width],[_height] and eventually [types]
+/// Crops an image based on supplied [_width],[_height] and eventually [types]
 class Crop {
-  /// [Crop] constructor
+  /// Builds a [Crop].
   const Crop(
     this._width,
     this._height, {
@@ -41,7 +43,7 @@ class Crop {
   final int _height;
   final List<CropType> _types;
 
-  /// serialize [Crop] params
+  /// Serialize [Crop] params
   Map<String, Object> get params => <String, Object>{
         'crop': _types.map((it) => it.name).join(','),
         'w': _width,

@@ -32,7 +32,7 @@ void main() {
 
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
-        body: StreamFeedCard(
+        body: ActivityCard(
           og: OpenGraphData(
               title: title,
               url:

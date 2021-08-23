@@ -44,8 +44,7 @@ main() {
       analyticsClient: mockStreamAnalytics,
       client: mockClient,
       child: ReactionListCore(
-        feedGroup: 'user',
-        onSuccess: (context, reactions, idx) => Offstage(),
+        reactionsBuilder: (context, reactions, idx) => Offstage(),
         lookupValue: lookupValue,
         filter: filter,
         limit: limit,

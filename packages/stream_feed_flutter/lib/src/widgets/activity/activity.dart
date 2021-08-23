@@ -5,8 +5,13 @@ import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class StreamFeedActivity extends StatelessWidget {
-  const StreamFeedActivity({
+///{@template activity_widget}
+/// A widget that displays a single activity.
+/// i.e. a single post in a feed
+///{@endtemplate}
+class ActivityWidget extends StatelessWidget {
+  ///{@macro activity_widget}
+  const ActivityWidget({
     Key? key,
     required this.activity,
     this.feedGroup = 'user',
@@ -18,14 +23,32 @@ class StreamFeedActivity extends StatelessWidget {
     this.activityHeaderBuilder,
     this.onActivityTap,
   }) : super(key: key);
+
+  /// The activity to display.
   final EnrichedActivity activity;
+
+  /// A callback to invoke when a mention is tapped.
   final OnMentionTap? onMentionTap;
+
+  ///{@macro mention_callback}
   final OnHashtagTap? onHashtagTap;
+
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
+
+  ///{@macro activity_callback}
   final OnActivityTap? onActivityTap;
+
+  /// A builder for the activity footer.
   final ActivityFooterBuilder? activityFooterBuilder;
+
+  /// A builder for the activity content.
   final ActivityContentBuilder? activityContentBuilder;
+
+  /// A builder for the activity header.
   final ActivityHeaderBuilder? activityHeaderBuilder;
+
+  /// The group of the feed this activity belongs to.
   final String feedGroup;
 
   @override
@@ -38,13 +61,11 @@ class StreamFeedActivity extends StatelessWidget {
         children: [
           activityHeaderBuilder?.call(context, activity) ??
               ActivityHeader(
-                //TODO: builders
                 activity: activity,
                 onUserTap: onUserTap,
               ),
           activityContentBuilder?.call(context, activity) ??
               ActivityContent(
-                //TODO: builders
                 activity: activity,
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,

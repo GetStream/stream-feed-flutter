@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-///Opens an emoji dialog
+///{@template emojis_action}
+/// Opens an emoji dialog
+/// {@endtemplate}
 class EmojisAction extends StatelessWidget {
+  /// Builds an [EmojiDialog].
   const EmojisAction({
     Key? key,
   }) : super(key: key);

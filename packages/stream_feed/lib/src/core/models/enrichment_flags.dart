@@ -2,19 +2,19 @@ enum _EnrichmentType {
   ///"ownChildren" attribute
   ownChildren,
 
-  ///"ownReactions" attribute
+  /// "ownReactions" attribute
   ownReactions,
 
-  ///"reactionCounts" attribute
+  /// "reactionCounts" attribute
   reactionCounts,
 
-  ///"reaction_kinds_filter" attribute
+  /// "reaction_kinds_filter" attribute
   reactionKinds,
 
-  ///"with_recent_reactions" attribute
+  /// "with_recent_reactions" attribute
   recentReactions,
 
-  ///"latest_reactions" attribute
+  /// "latest_reactions" attribute
   recentReactionsLimit,
 }
 
@@ -29,13 +29,13 @@ extension _EnrichmentTypeX on _EnrichmentType {
       }[this]!;
 }
 
-/// Flags to indicate the API to enrich activities
-/// with additional infos like user reactions and count
+/// Flags to indicate the API to enrich activities with additional info like
+/// user reactions and count
 class EnrichmentFlags {
   String? _userId;
   final Map<_EnrichmentType, Object> _flags = {};
 
-  /// Serialize enrichment flags
+  /// Serialize enrichment flags to a dictionary
   Map<String, Object?> get params {
     final params = _flags.map((key, value) => MapEntry(key.type, value));
     if (_userId != null) params['user_id'] = _userId!;
@@ -43,21 +43,21 @@ class EnrichmentFlags {
   }
 
   ///	If called activity object will have attribute "own_children"
-  ///that contains children reactions
+  /// that contains children reactions of the user
   EnrichmentFlags withOwnChildren() {
     _flags[_EnrichmentType.ownChildren] = true;
     return this;
   }
 
   ///	If called activity object will have attribute "own_reactions"
-  ///that contains list of reactions created by the user himself.
+  /// that contains list of reactions created by the user himself.
   EnrichmentFlags withOwnReactions() {
     _flags[_EnrichmentType.ownReactions] = true;
     return this;
   }
 
   ///	If called activity object will have attribute "own_reactions"
-  ///that contains list of reactions of other users.
+  /// that contains list of reactions of other users.
   EnrichmentFlags withUserReactions(String userId) {
     _flags[_EnrichmentType.ownReactions] = true;
     _userId = userId;
@@ -65,7 +65,7 @@ class EnrichmentFlags {
   }
 
   /// If called activity object will have attribute "latest_reactions"
-  ///  that contains list of recently created reactions
+  /// that contains list of recently created reactions
   EnrichmentFlags withRecentReactions([int? limit]) {
     if (limit == null) {
       _flags[_EnrichmentType.recentReactions] = true;
@@ -75,7 +75,7 @@ class EnrichmentFlags {
     return this;
   }
 
-  ///	filter reactions by kinds
+  ///	Filter reactions by kinds
   EnrichmentFlags reactionKindFilter(Iterable<String> kinds) {
     _flags[_EnrichmentType.reactionKinds] = kinds.join(',');
     return this;

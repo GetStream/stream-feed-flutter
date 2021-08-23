@@ -20,10 +20,10 @@ String? _toString(Uint8List? bytes) {
   return String.fromCharCodes(bytes);
 }
 
-/// The class that contains the information about an attachment file
+/// Contains information about an attachment file.
 @JsonSerializable()
 class AttachmentFile extends Equatable {
-  /// Creates a new [AttachmentFile] instance.
+  /// Builds an [AttachmentFile].
   AttachmentFile({
     this.path,
     this.name,
@@ -38,11 +38,13 @@ class AttachmentFile extends Equatable {
           'File by path is not supported in web, Please provide bytes',
         );
 
-  /// Create a new instance from a json
+  /// Create a new instance from a JSON object
   factory AttachmentFile.fromJson(Map<String, dynamic> json) =>
       _$AttachmentFileFromJson(json);
 
-  /// The absolute path for a cached copy of this file. It can be used to
+  /// The absolute path for a cached copy of this file.
+  ///
+  /// It can be used to
   /// create a file instance with a descriptor for the given path.
   /// ```
   /// final File myFile = File(platformFile.path);
@@ -52,7 +54,9 @@ class AttachmentFile extends Equatable {
   /// File name including its extension.
   final String? name;
 
-  /// Byte data for this file. Particularly useful if you want to manipulate
+  /// Byte data for this file.
+  ///
+  /// Particularly useful if you want to manipulate
   /// its data or easily upload to somewhere else.
   @JsonKey(toJson: _toString, fromJson: _fromString)
   final Uint8List? bytes;

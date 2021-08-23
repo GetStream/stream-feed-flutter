@@ -49,7 +49,7 @@ main() {
             client: mockClient,
             child: FlatFeedCore(
               feedGroup: 'user',
-              onSuccess: (BuildContext context,
+              feedBuilder: (BuildContext context,
                   List<EnrichedActivity> activities, int idx) {
                 return Column(
                   children: [

@@ -5,7 +5,20 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
 
 import '../../utils/typedefs.dart';
 
+///{@template avatar}
+/// An avatar for the user.
+///{@endtemplate}
 class Avatar extends StatelessWidget {
+  /// The User whose avatar we are displaying.
+  final User? user;
+
+  /// The size of the avatar.
+  final double size;
+
+  ///{@macro user_callback}
+  final OnUserTap? onUserTap;
+
+  ///{@macro avatar}
   const Avatar({
     Key? key,
     this.user,
@@ -14,15 +27,8 @@ class Avatar extends StatelessWidget {
     this.onUserTap,
   }) : super(key: key);
 
-  /// The [User] we want to display the avatar
-  final User? user;
-
-  /// A jsonKey if you want to override the profile url of [User.data]
+  /// A jsonKey for overriding the profile url of [User.data]
   final String jsonKey;
-
-  final double size;
-
-  final OnUserTap? onUserTap;
 
   @override
   Widget build(BuildContext context) {

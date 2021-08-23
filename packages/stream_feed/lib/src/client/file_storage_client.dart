@@ -5,10 +5,13 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 /// {@template files}
-/// This API endpoint allows you to upload files and delete them
+/// This API endpoint allows the uploading of files to, and deleting files
+/// from, a Stream-provided CDN.
 /// {@endtemplate}
 class FileStorageClient {
-  /// Initialize a FileStorageClient object
+  /// Initializes a FileStorageClient object
+  ///
+  /// {@macro files}
   FileStorageClient(
     this._files, {
     this.userToken,
@@ -46,7 +49,7 @@ class FileStorageClient {
   }
 
   /// Delete a file using the url returned by the APIs
-  /// /// Usage:
+  /// Usage:
   /// ```dart
   ///   await files.delete('fileUrl');
   /// ```
@@ -60,8 +63,13 @@ class FileStorageClient {
     return _files.delete(token, url);
   }
 
-  /// Explicitly refresh CDN urls for uploaded images on the Stream CDN (only needed for files on the Stream CDN).
-  /// Note that Stream CDN is not enabled by default, if in doubt please contact us.
+  /// {@template filesRefreshUrl}
+  /// Explicitly refresh CDN urls for uploaded images on the Stream CDN
+  /// (only needed for files on the Stream CDN).
+  ///
+  /// Note that Stream CDN is not enabled by default, if in doubt please
+  /// contact us.
+  /// {@endtemplate}
   Future<String?> refreshUrl(String targetUrl) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);

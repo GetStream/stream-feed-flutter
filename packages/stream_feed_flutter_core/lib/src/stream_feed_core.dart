@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-/// Widget used to provide information about the chat to the widget tree.
+/// Widget used to provide information about the feed to the widget tree.
 /// This Widget is used to react to life cycle changes and system updates.
 /// When the app goes into the background, the websocket connection is kept
 /// alive for two minutes before being terminated.
@@ -36,7 +36,7 @@ class StreamFeedCore extends StatefulWidget {
   ///
   /// [StreamFeedCore] is a stateful widget which reacts to system events and
   /// updates Stream's connection status accordingly.
-  const StreamFeedCore(
+  StreamFeedCore(
       {Key? key,
       required this.client,
       required this.child,
@@ -51,6 +51,7 @@ class StreamFeedCore extends StatefulWidget {
   /// application.
   final StreamFeedClient client;
 
+  ///Analytics client
   final StreamAnalytics? analyticsClient;
 
   ///wether or not you want to track analytics in your app (can be useful for customised feeds via ML)
@@ -104,6 +105,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
   NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
+  /// Add a new reaction to the feed.
   Future<Reaction> onAddReaction(
       {Map<String, Object>? data,
       required String kind,
@@ -117,6 +119,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     return reaction;
   }
 
+  /// Add an activity to the feed.
   Future<Activity> onAddActivity(
       {required String feedGroup,
       Map<String, String>? data,
@@ -133,10 +136,14 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     final addedActivity =
         await client.flatFeed(feedGroup, userId).addActivity(activity);
     await trackAnalytics(
-        label: 'post', foreignId: activity.foreignId, feedGroup: feedGroup);
+      label: 'post',
+      foreignId: activity.foreignId,
+      feedGroup: feedGroup,
+    ); //TODO: remove hardcoded value
     return addedActivity;
   }
 
+  /// Remove reaction from the feed.
   Future<void> onRemoveReaction(
       {required String kind,
       required EnrichedActivity activity,
@@ -147,22 +154,58 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
 
+  ///Add child reaction
+  Future<Reaction> onAddChildReaction(
+      {required String kind,
+      required Reaction reaction,
+      Map<String, Object>? data,
+      String? userId,
+      List<FeedId>? targetFeeds}) async {
+    final childReaction = await reactions.addChild(kind, reaction.id!,
+        data: data, userId: userId, targetFeeds: targetFeeds);
+    return childReaction;
+  }
+
+  /// Remove child reaction
+  Future<void> onRemoveChildReaction(
+      {required String id, String? kind, Reaction? reaction}) async {
+    await reactions.delete(id);
+  }
+
+  ///Track analytics
   Future<void> trackAnalytics(
       {required String label,
       required foreignId,
       required String feedGroup}) async {
-    await analyticsClient!.trackEngagement(Engagement(
-        content: Content(foreignId: FeedId.fromId(foreignId)),
-        label: label,
-        feedId: FeedId.fromId(feedGroup)));
+    analyticsClient != null
+        ? await analyticsClient!.trackEngagement(Engagement(
+            content: Content(foreignId: FeedId.fromId(foreignId)),
+            label: label,
+            feedId: FeedId.fromId(feedGroup),
+          ))
+        : print('warning: analytics: not enabled'); //TODO:logger
   }
 
+  ///Get reactions form the activity
   Future<List<Reaction>> getReactions(
-          LookupAttribute lookupAttr, String lookupValue,
-          {Filter? filter, int? limit, String? kind}) async =>
-      await reactions.filter(lookupAttr, lookupValue,
-          filter: filter, limit: limit, kind: kind);
+    LookupAttribute lookupAttr,
+    String lookupValue, {
+    Filter? filter,
+    int? limit,
+    String? kind,
+    EnrichmentFlags? flags,
+  }) async {
+    return await reactions.filter(
+      lookupAttr,
+      lookupValue,
+      filter: filter,
+      limit: limit,
+      kind: kind,
+      flags: flags,
+    );
+  }
 
+  ///Get enriched activities from the feed
   Future<List<EnrichedActivity>> getEnrichedActivities({
     required String feedGroup,
     int? limit,
@@ -173,7 +216,14 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     String? ranking,
     String? userId,
   }) async =>
-      await client.flatFeed(feedGroup, userId).getEnrichedActivities();
+      await client.flatFeed(feedGroup, userId).getEnrichedActivities(
+            limit: limit,
+            offset: offset,
+            session: session,
+            filter: filter,
+            flags: flags,
+            ranking: ranking,
+          );
 
   @override
   void initState() {
@@ -181,12 +231,9 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     WidgetsBinding.instance?.addObserver(this);
   }
 
-  StreamSubscription? _eventSubscription;
-
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    _eventSubscription?.cancel();
     _disconnectTimer?.cancel();
     super.dispose();
   }
