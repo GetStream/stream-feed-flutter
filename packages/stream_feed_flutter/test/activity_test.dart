@@ -86,7 +86,7 @@ void main() {
               data: {
                 'name': 'Nora Ferguson',
                 'profile_image':
-                'https://randomuser.me/api/portraits/women/72.jpg',
+                    'https://randomuser.me/api/portraits/women/72.jpg',
               },
             ),
             object: 'I just missed my train 😤 #angry @sahil',
