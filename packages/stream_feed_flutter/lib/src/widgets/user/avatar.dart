@@ -6,11 +6,13 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
 import '../../utils/typedefs.dart';
 
 class Avatar extends StatelessWidget {
-  const Avatar(
-      {this.user,
-      this.jsonKey = 'profile_image',
-      this.size = 48,
-      this.onUserTap});
+  const Avatar({
+    Key? key,
+    this.user,
+    this.jsonKey = 'profile_image',
+    this.size = 46,
+    this.onUserTap,
+  }) : super(key: key);
 
   /// The [User] we want to display the avatar
   final User? user;

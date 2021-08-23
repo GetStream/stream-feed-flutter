@@ -41,7 +41,6 @@ class CommentField extends StatelessWidget {
             ),
           ],
         ),
-        //TODO: condition this
         if (enableButton)
           PostCommentButton(
             feedGroup: feedGroup,

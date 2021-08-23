@@ -7,20 +7,25 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class StreamFeedActivity extends StatelessWidget {
   const StreamFeedActivity({
+    Key? key,
     required this.activity,
     this.feedGroup = 'user',
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
     this.activityFooterBuilder,
+    this.activityContentBuilder,
+    this.activityHeaderBuilder,
     this.onActivityTap,
-  });
+  }) : super(key: key);
   final EnrichedActivity activity;
   final OnMentionTap? onMentionTap;
   final OnHashtagTap? onHashtagTap;
   final OnUserTap? onUserTap;
   final OnActivityTap? onActivityTap;
   final ActivityFooterBuilder? activityFooterBuilder;
+  final ActivityContentBuilder? activityContentBuilder;
+  final ActivityHeaderBuilder? activityHeaderBuilder;
   final String feedGroup;
 
   @override
@@ -31,17 +36,19 @@ class StreamFeedActivity extends StatelessWidget {
       },
       child: Column(
         children: [
-          ActivityHeader(
-            //TODO: builders
-            activity: activity,
-            onUserTap: onUserTap,
-          ),
-          ActivityContent(
-            //TODO: builders
-            activity: activity,
-            onHashtagTap: onHashtagTap,
-            onMentionTap: onMentionTap,
-          ),
+          activityHeaderBuilder?.call(context, activity) ??
+              ActivityHeader(
+                //TODO: builders
+                activity: activity,
+                onUserTap: onUserTap,
+              ),
+          activityContentBuilder?.call(context, activity) ??
+              ActivityContent(
+                //TODO: builders
+                activity: activity,
+                onHashtagTap: onHashtagTap,
+                onMentionTap: onMentionTap,
+              ),
           activityFooterBuilder?.call(context, activity) ??
               ActivityFooter(
                 activity: activity,
