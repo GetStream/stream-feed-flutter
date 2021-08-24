@@ -46,7 +46,9 @@ main() {
             child: FlatFeedCore(
               feedGroup: 'user',
               feedBuilder: (BuildContext context,
-                  List<EnrichedActivity> activities, int idx) {
+                  List<EnrichedActivity<User, String, String, String>>
+                      activities,
+                  int idx) {
                 return Column(
                   children: [
                     Text("${activities[idx].reactionCounts?['like']}") //counts
