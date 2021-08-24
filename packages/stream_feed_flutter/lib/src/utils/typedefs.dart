@@ -24,7 +24,6 @@ typedef OnUserTap = void Function(User? user);
 typedef OnNotificationTap = void Function(
     NotificationGroup<EnrichedActivity>? notification);
 
-
 ///{@template activity_callback}
 /// A callback to handle activity taps
 /// {@endtemplate}
@@ -39,8 +38,7 @@ typedef ActivityContentBuilder = Widget Function(
 typedef ActivityHeaderBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
 
-typedef OnReaction = Widget Function(BuildContext context, Reaction reaction);
-typedef OnNotification = Widget Function(
+typedef NotificationBuilder = Widget Function(
     BuildContext context, NotificationGroup<EnrichedActivity> notification);
 typedef ReactionBuilder = Widget Function(
     BuildContext context, Reaction reaction);

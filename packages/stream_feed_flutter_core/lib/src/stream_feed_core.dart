@@ -173,10 +173,11 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }
 
   ///Track analytics
-  Future<void> trackAnalytics(
-      {required String label,
-      required foreignId,
-      required String feedGroup}) async {
+  Future<void> trackAnalytics({
+    required String label,
+    String? foreignId,
+    required String feedGroup,
+  }) async {
     analyticsClient != null
         ? await analyticsClient!.trackEngagement(Engagement(
             content: Content(foreignId: FeedId.fromId(foreignId)),
@@ -225,16 +226,17 @@ class StreamFeedCoreState extends State<StreamFeedCore>
             ranking: ranking,
           );
 
-  Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedNotifications(
-          {required String feedGroup,
-          int? limit,
-          int? offset,
-          String? session,
-          Filter? filter,
-          EnrichmentFlags? flags,
-          String? ranking,
-          String? userId,
-          ActivityMarker? marker}) async =>
+  Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedNotifications({
+    required String feedGroup,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
+    String? userId,
+    ActivityMarker? marker,
+  }) async =>
       await client.notificationFeed(feedGroup, userId).getEnrichedActivities(
             limit: limit,
             offset: offset,

@@ -6,7 +6,7 @@ class NotificationListPage extends StatelessWidget {
   const NotificationListPage({
     Key? key,
     required this.feedGroup,
-    required this.onNotification,
+    required this.notificationBuilder,
     this.limit,
     this.offset,
     this.session,
@@ -30,7 +30,7 @@ class NotificationListPage extends StatelessWidget {
   final String? ranking;
   final String? userId;
   final ActivityMarker? marker;
-  final OnNotification onNotification;
+  final NotificationBuilder notificationBuilder;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
   final Widget onEmptyWidget;
@@ -49,8 +49,8 @@ class NotificationListPage extends StatelessWidget {
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       onEmptyWidget: onEmptyWidget,
-      onNotifications: (context, notifications, idx) =>
-          onNotification(context, notifications[idx]),
+      notificationsBuilder: (context, notifications, idx) =>
+          notificationBuilder(context, notifications[idx]),
     );
   }
 }

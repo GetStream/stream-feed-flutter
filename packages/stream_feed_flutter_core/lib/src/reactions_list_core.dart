@@ -39,7 +39,6 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class ReactionListCore extends StatelessWidget {
   const ReactionListCore({
     Key? key,
-    required this.feedGroup,
     required this.reactionsBuilder,
     required this.lookupValue,
     this.onErrorWidget = const ErrorStateWidget(),

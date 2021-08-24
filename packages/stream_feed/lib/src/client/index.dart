@@ -4,4 +4,4 @@ export 'flat_feed.dart';
 export 'notification_feed.dart';
 export 'reactions_client.dart';
 export 'stream_feed_client.dart';
-export 'user_client.dart';
+export 'stream_user.dart';

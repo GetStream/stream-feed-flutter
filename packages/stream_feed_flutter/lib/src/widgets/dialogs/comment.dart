@@ -101,16 +101,15 @@ class CommentView extends StatelessWidget {
             textEditingController: textEditingController,
             activity: activity,
 
-            //enabled in actions [RightActions]
-            enableButton: enableCommentFieldButton,
+            ///enabled in actions [RightActions]
+            enableButton: false,
             feedGroup: feedGroup,
           ),
           //TODO: builder for using it elsewhere than in actions
           if (enableReactions && activity != null)
             ReactionListPage(
                 //TODO: extract to CommentList
-                feedGroup: feedGroup,
-                activity: activity,
+                activity: activity!,
                 onReactionTap: onReactionTap,
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,

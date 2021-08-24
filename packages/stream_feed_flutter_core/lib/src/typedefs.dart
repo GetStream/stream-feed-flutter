@@ -5,5 +5,5 @@ typedef EnrichedFeedBuilder = Widget Function(
     BuildContext context, List<EnrichedActivity> activities, int idx);
 typedef ReactionsBuilder = Widget Function(
     BuildContext context, List<Reaction> reactions, int idx);
-typedef OnNotifications = Widget Function(BuildContext context,
+typedef NotificationsBuilder = Widget Function(BuildContext context,
     List<NotificationGroup<EnrichedActivity>> notifications, int idx);
