@@ -125,16 +125,11 @@ class NotificationFeed extends AggregatedFeed {
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
         .map((e) => NotificationGroup.fromJson(
-            e,
-            (json) => EnrichedActivity.fromJson(
-                  json! as Map<String, dynamic>?,
-                  (json) => (A is User)
-                      ? User.fromJson(json! as Map<String, dynamic>)
-                      : json,
-                  (json) => (Ob is CollectionEntry)
-                      ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
-                      : json,
-                )))
+              e,
+              (json) => EnrichedActivity<A, Ob, T, Or>.fromJson(
+                json! as Map<String, dynamic>?,
+              ),
+            ))
         .toList(growable: false);
     return data;
   }
