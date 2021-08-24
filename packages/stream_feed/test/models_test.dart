@@ -213,7 +213,7 @@ void main() {
     );
     final enrichedActivityJson = json.decode(fixture('enriched_activity.json'));
     final enrichedActivityFromJson =
-        EnrichedActivity<String, String, String, String?>.fromJson(
+        EnrichedActivity<String, String, String, String>.fromJson(
             enrichedActivityJson);
     expect(enrichedActivityFromJson, enrichedActivity);
     // we will never get “extra_data” from the api

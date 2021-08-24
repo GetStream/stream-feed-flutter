@@ -30,6 +30,9 @@ part 'enriched_activity.g.dart';
 /// * Or = [origin]
 @JsonSerializable(genericArgumentFactories: true)
 class EnrichedActivity<A, Ob, T, Or> extends Equatable {
+  //TODO: improve this
+  // when type parameter to can a default type in Dart
+  //i.e. https://github.com/dart-lang/language/issues/283#issuecomment-839603127
   /// Builds an [EnrichedActivity].
   const EnrichedActivity({
     this.id,
