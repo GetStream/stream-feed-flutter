@@ -29,7 +29,7 @@ class PaginatedReactions<A, Ob, T, Or> extends Paginated<Reaction> {
         fromJsonA ??
             (jsonA) => (A == User)
                 ? User.fromJson(jsonA! as Map<String, dynamic>) as A
-                : json as A,
+                : jsonA as A,
         fromJsonOb ??
             (jsonOb) => (Ob == CollectionEntry)
                 ? CollectionEntry.fromJson(jsonOb! as Map<String, dynamic>)
