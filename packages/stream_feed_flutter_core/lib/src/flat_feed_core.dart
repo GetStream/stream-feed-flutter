@@ -101,8 +101,8 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
         ranking: ranking,
         userId: userId,
       ),
-      builder:
-          (context, AsyncSnapshot<List<EnrichedActivity<A, Ob, T, Or>>> snapshot) {
+      builder: (context,
+          AsyncSnapshot<List<EnrichedActivity<A, Ob, T, Or>>> snapshot) {
         if (snapshot.hasError) {
           return onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
         }
