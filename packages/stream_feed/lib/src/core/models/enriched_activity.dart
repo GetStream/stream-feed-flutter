@@ -49,9 +49,10 @@ class EnrichableField extends Equatable {
 /// * A = [actor]
 /// * Ob = [object]
 /// * T = [target]
+/// * Or = [origin]
 @JsonSerializable(genericArgumentFactories: true)
 class EnrichedActivity<A, Ob, T> extends Equatable {
-  /// [EnrichedActivity] constructor
+  /// Builds an [EnrichedActivity].
   const EnrichedActivity({
     this.id,
     this.actor,
@@ -139,6 +140,8 @@ class EnrichedActivity<A, Ob, T> extends Equatable {
   final DateTime? time;
 
   /// The feed id where the activity was posted.
+  ///
+  /// Can be of type User, Reaction, or String
   @JsonKey(
     includeIfNull: false,
     fromJson: EnrichableField.deserialize,
