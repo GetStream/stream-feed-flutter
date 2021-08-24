@@ -94,8 +94,8 @@ class BatchAPI {
   }
 
   /// Retrieve multiple enriched activities by a single id
-  Future<List<EnrichedActivity>>
-      getEnrichedActivitiesById<A extends Object, Ob>(
+  Future<List<EnrichedActivity<A, Ob, T, Or>>>
+      getEnrichedActivitiesById<A, Ob, T, Or>(
           Token token, Iterable<String> ids) async {
     checkArgument(ids.isNotEmpty, 'No activities to get');
     final result = await _client.get(
@@ -104,15 +104,7 @@ class BatchAPI {
       queryParameters: {'ids': ids.join(',')},
     );
     final data = (result.data['results'] as List)
-        .map((e) => EnrichedActivity.fromJson(
-              e,
-              (json) => (A is User)
-                  ? User.fromJson(json! as Map<String, dynamic>)
-                  : A,
-              (json) => (Ob is CollectionEntry)
-                  ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
-                  : json,
-            ))
+        .map((e) => EnrichedActivity<A, Ob, T, Or>.fromJson(e))
         .toList(growable: false);
     return data;
   }
