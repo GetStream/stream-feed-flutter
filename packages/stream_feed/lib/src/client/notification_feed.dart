@@ -104,7 +104,7 @@ class NotificationFeed extends AggregatedFeed {
   ///
   /// {@macro filter}
   @override
-  Future<List<NotificationGroup<EnrichedActivity>>>
+  Future<List<NotificationGroup<EnrichedActivity<A, Ob, T, Or>>>>
       getEnrichedActivities<A, Ob, T, Or>({
     int? limit,
     int? offset,

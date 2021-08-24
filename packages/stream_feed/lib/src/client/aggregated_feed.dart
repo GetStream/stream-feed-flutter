@@ -76,7 +76,8 @@ class AggregatedFeed extends Feed {
   /// Retrieve activities with reaction enrichment
   ///
   /// {@macro filter}
-  Future<List<Group<EnrichedActivity>>> getEnrichedActivities<A, Ob, T, Or>({
+  Future<List<Group<EnrichedActivity<A, Ob, T, Or>>>>
+      getEnrichedActivities<A, Ob, T, Or>({
     int? limit,
     int? offset,
     String? session,
