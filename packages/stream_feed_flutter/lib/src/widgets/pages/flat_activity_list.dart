@@ -30,6 +30,8 @@ class FlatActivityListPage extends StatelessWidget {
     this.filter,
     this.flags,
     this.ranking,
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
     this.onProgressWidget = const ProgressStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
     this.onEmptyWidget =
@@ -93,6 +95,10 @@ class FlatActivityListPage extends StatelessWidget {
   /// The ranking to use for the request
   final String? ranking;
 
+  final String handleJsonKey;
+
+  final String nameJsonKey;
+
   @override
   Widget build(BuildContext context) {
     return FlatFeedCore<User, String, String, String>(
@@ -111,6 +117,8 @@ class FlatActivityListPage extends StatelessWidget {
         onHashtagTap: onHashtagTap,
         onMentionTap: onMentionTap,
         onUserTap: onUserTap,
+        nameJsonKey: nameJsonKey,
+        handleJsonKey: handleJsonKey,
         activityHeaderBuilder: activityHeaderBuilder,
         activityFooterBuilder: activityFooterBuilder,
         activityContentBuilder: activityContentBuilder,
@@ -132,6 +140,8 @@ class FlatActivityListPage extends StatelessWidget {
                 title: Text('Post'),
               ),
               body: CommentView(
+                nameJsonKey: nameJsonKey,
+                handleJsonKey: handleJsonKey,
                 activity: activity,
                 enableCommentFieldButton: true,
                 enableReactions: true,

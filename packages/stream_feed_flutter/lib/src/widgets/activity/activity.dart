@@ -14,6 +14,8 @@ class ActivityWidget extends StatelessWidget {
     Key? key,
     required this.activity,
     this.feedGroup = 'user',
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
@@ -25,6 +27,10 @@ class ActivityWidget extends StatelessWidget {
 
   /// The activity to display.
   final DefaultEnrichedActivity activity;
+
+  final String handleJsonKey;
+
+  final String nameJsonKey;
 
   /// A callback to invoke when a mention is tapped.
   final OnMentionTap? onMentionTap;
@@ -61,6 +67,7 @@ class ActivityWidget extends StatelessWidget {
         children: [
           activityHeaderBuilder?.call(context, activity) ??
               ActivityHeader(
+                handleJsonKey:handleJsonKey,
                 activity: activity,
                 onUserTap: onUserTap,
               ),

@@ -17,7 +17,12 @@ class PostButton extends StatelessWidget {
     required this.activity,
     this.reaction,
     this.iconSize = 14,
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
   }) : super(key: key);
+
+  final String handleJsonKey;
+  final String nameJsonKey;
 
   /// The group or slug of the feed to post to.
   final String feedGroup;
@@ -55,6 +60,8 @@ class PostButton extends StatelessWidget {
                       child: AlertDialogComment(
                         activity: activity,
                         feedGroup: feedGroup,
+                        nameJsonKey: nameJsonKey,
+                        handleJsonKey: handleJsonKey,
                       ),
                     ));
               },

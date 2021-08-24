@@ -17,6 +17,8 @@ class AlertDialogComment extends StatelessWidget {
     Key? key,
     required this.feedGroup,
     this.activity,
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
   }) : super(key: key);
 
   /// The feed group/slug that is being commented on.
@@ -24,6 +26,9 @@ class AlertDialogComment extends StatelessWidget {
 
   /// The activity that is being commented on.
   final DefaultEnrichedActivity? activity;
+
+  final String handleJsonKey;
+  final String nameJsonKey;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +45,8 @@ class AlertDialogComment extends StatelessWidget {
         activity: activity,
         feedGroup: feedGroup,
         textEditingController: textEditingController,
+        nameJsonKey: nameJsonKey,
+        handleJsonKey: handleJsonKey,
       ),
     );
   }
@@ -62,6 +69,8 @@ class CommentView extends StatelessWidget {
     this.onUserTap,
     this.enableReactions = false,
     this.enableCommentFieldButton = false,
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
   }) : super(key: key);
 
   final DefaultEnrichedActivity? activity;
@@ -83,6 +92,10 @@ class CommentView extends StatelessWidget {
 
   final bool enableCommentFieldButton;
 
+  final String handleJsonKey;
+
+  final String nameJsonKey;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -93,6 +106,8 @@ class CommentView extends StatelessWidget {
             ActivityWidget(
               activity: activity!,
               feedGroup: feedGroup,
+              nameJsonKey: nameJsonKey,
+              handleJsonKey: handleJsonKey,
             )
             //TODO: analytics
             //TODO: "in response to" activity.to
