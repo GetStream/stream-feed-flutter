@@ -6,13 +6,14 @@ part of 'enriched_activity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-EnrichedActivity<A, Ob, T> _$EnrichedActivityFromJson<A, Ob, T>(
+EnrichedActivity<A, Ob, T, Or> _$EnrichedActivityFromJson<A, Ob, T, Or>(
   Map json,
   A Function(Object? json) fromJsonA,
   Ob Function(Object? json) fromJsonOb,
   T Function(Object? json) fromJsonT,
+  Or Function(Object? json) fromJsonOr,
 ) {
-  return EnrichedActivity<A, Ob, T>(
+  return EnrichedActivity<A, Ob, T, Or>(
     id: json['id'] as String?,
     actor: _$nullableGenericFromJson(json['actor'], fromJsonA),
     verb: json['verb'] as String?,
@@ -20,7 +21,7 @@ EnrichedActivity<A, Ob, T> _$EnrichedActivityFromJson<A, Ob, T>(
     foreignId: json['foreign_id'] as String?,
     target: _$nullableGenericFromJson(json['target'], fromJsonT),
     time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
-    origin: EnrichableField.deserialize(json['origin']),
+    origin: _$nullableGenericFromJson(json['origin'], fromJsonOr),
     to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
     score: (json['score'] as num?)?.toDouble(),
     analytics: (json['analytics'] as Map?)?.map(
@@ -54,11 +55,12 @@ EnrichedActivity<A, Ob, T> _$EnrichedActivityFromJson<A, Ob, T>(
   );
 }
 
-Map<String, dynamic> _$EnrichedActivityToJson<A, Ob, T>(
-  EnrichedActivity<A, Ob, T> instance,
+Map<String, dynamic> _$EnrichedActivityToJson<A, Ob, T, Or>(
+  EnrichedActivity<A, Ob, T, Or> instance,
   Object? Function(A value) toJsonA,
   Object? Function(Ob value) toJsonOb,
   Object? Function(T value) toJsonT,
+  Object? Function(Or value) toJsonOr,
 ) {
   final val = <String, dynamic>{};
 
@@ -69,13 +71,13 @@ Map<String, dynamic> _$EnrichedActivityToJson<A, Ob, T>(
   }
 
   writeNotNull('id', readonly(instance.id));
-  val['actor'] = _$nullableGenericToJson(instance.actor, toJsonA);
+  writeNotNull('actor', _$nullableGenericToJson(instance.actor, toJsonA));
   val['verb'] = instance.verb;
-  val['object'] = _$nullableGenericToJson(instance.object, toJsonOb);
+  writeNotNull('object', _$nullableGenericToJson(instance.object, toJsonOb));
   writeNotNull('foreign_id', instance.foreignId);
-  val['target'] = _$nullableGenericToJson(instance.target, toJsonT);
+  writeNotNull('target', _$nullableGenericToJson(instance.target, toJsonT));
   writeNotNull('time', instance.time?.toIso8601String());
-  writeNotNull('origin', readonly(instance.origin));
+  writeNotNull('origin', _$nullableGenericToJson(instance.origin, toJsonOr));
   writeNotNull('to', readonly(instance.to));
   writeNotNull('score', readonly(instance.score));
   writeNotNull('analytics', readonly(instance.analytics));

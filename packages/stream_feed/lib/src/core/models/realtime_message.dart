@@ -23,7 +23,7 @@ part 'realtime_message.g.dart';
 /// The only thing you don’t get is the enriched reactions like `own_reaction`
 /// or `latest_reactions`
 @JsonSerializable(genericArgumentFactories: true)
-class RealtimeMessage<A, Ob, T> extends Equatable {
+class RealtimeMessage<A, Ob, T, Or> extends Equatable {
   /// Builds a [RealtimeMessage].
   const RealtimeMessage({
     required this.feed,
@@ -40,22 +40,33 @@ class RealtimeMessage<A, Ob, T> extends Equatable {
     A Function(Object? json)? fromJsonA,
     Ob Function(Object? json)? fromJsonOb,
     T Function(Object? json)? fromJsonT,
+    Or Function(Object? json)? fromJsonOr,
   ]) =>
-      _$RealtimeMessageFromJson<A, Ob, T>(
-          json,
-          fromJsonA ??
-              (json) => (A == User)
-                  ? User.fromJson(json! as Map<String, dynamic>) as A
-                  : json as A,
-          fromJsonOb ??
-              (json) => (Ob == CollectionEntry)
-                  ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
-                      as Ob
-                  : json as Ob,
-          fromJsonT ??
-              (jsonT) => (T == Activity)
-                  ? Activity.fromJson(jsonT! as Map<String, dynamic>) as T
-                  : jsonT as T);
+      _$RealtimeMessageFromJson<A, Ob, T, Or>(
+        json,
+        fromJsonA ??
+            (jsonA) => (A == User)
+                ? User.fromJson(jsonA! as Map<String, dynamic>) as A
+                : jsonA as A,
+        fromJsonOb ??
+            (jsonOb) => (Ob == CollectionEntry)
+                ? CollectionEntry.fromJson(jsonOb! as Map<String, dynamic>) as Ob
+                : jsonOb as Ob,
+        fromJsonT ??
+            (jsonT) => (T == Activity)
+                ? Activity.fromJson(jsonT! as Map<String, dynamic>) as T
+                : jsonT as T,
+        fromJsonOr ??
+            (jsonOr) {
+              if (Or == User) {
+                return User.fromJson(jsonOr! as Map<String, dynamic>) as Or;
+              } else if (Or == Reaction) {
+                return Reaction.fromJson(jsonOr! as Map<String, dynamic>) as Or;
+              } else {
+                return jsonOr as Or;
+              }
+            },
+      );
 
   /// Name of the feed this update was published on
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
@@ -77,7 +88,7 @@ class RealtimeMessage<A, Ob, T> extends Equatable {
 
   /// All activities created by this update
   @JsonKey(name: 'new')
-  final List<EnrichedActivity<A, Ob, T>>? newActivities;
+  final List<EnrichedActivity<A, Ob, T, Or>>? newActivities;
 
   /// Time of the update in ISO format
   @JsonKey(includeIfNull: false)
@@ -98,6 +109,7 @@ class RealtimeMessage<A, Ob, T> extends Equatable {
     Object? Function(A value) toJsonA,
     Object? Function(Ob value) toJsonOb,
     Object? Function(T value) toJsonT,
+    Object? Function(Or value) toJsonOr,
   ) =>
-      _$RealtimeMessageToJson(this, toJsonA, toJsonOb, toJsonT);
+      _$RealtimeMessageToJson(this, toJsonA, toJsonOb, toJsonT, toJsonOr);
 }

@@ -17,25 +17,21 @@ main() {
         //   'repost': 23,
         // },
         time: DateTime.now(),
-        actor: EnrichableField(
-          User(data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          }).toJson(),
-        ),
+        actor: User(data: {
+          'name': 'Rosemary',
+          'handle': '@rosemary',
+          'subtitle': 'likes playing fresbee in the park',
+          'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+        }),
       ),
       EnrichedActivity(
         time: DateTime.now(),
-        actor: EnrichableField(
-          User(data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          }).toJson(),
-        ),
+        actor: User(data: {
+          'name': 'Rosemary',
+          'handle': '@rosemary',
+          'subtitle': 'likes playing fresbee in the park',
+          'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+        }),
       ),
     ];
     when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);

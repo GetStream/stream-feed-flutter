@@ -19,6 +19,7 @@ PersonalizedFeed _$PersonalizedFeedFromJson(Map json) {
             ),
             (value) => value,
             (value) => value,
+            (value) => value,
             (value) => value))
         .toList(),
     duration: json['duration'] as String?,
@@ -30,6 +31,7 @@ Map<String, dynamic> _$PersonalizedFeedToJson(PersonalizedFeed instance) =>
       'next': instance.next,
       'results': instance.results
           ?.map((e) => e.toJson(
+                (value) => value,
                 (value) => value,
                 (value) => value,
                 (value) => value,
