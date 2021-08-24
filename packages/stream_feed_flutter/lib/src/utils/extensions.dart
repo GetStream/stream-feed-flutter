@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'tag_detector.dart';
+
 part 'constants.dart';
 
 extension ListTaggedTextX on List<TaggedText> {
@@ -9,6 +10,9 @@ extension ListTaggedTextX on List<TaggedText> {
 }
 
 extension TagX on Tag {
+  // TODO: Improve all regex
+  // eg -> @#sahil (Detects as normal text)
+  //       %sahil (does not includes "%" in the normal text)
   String toRegEx() => <Tag, String>{
         Tag.hashtag: r'(?<hashtag>(^|\s)(#[a-z\d-]+))', //TODO: handle uppercase
         Tag.mention: r'(?<mention>(^|\s)(@[a-z\d-]+))',
@@ -21,7 +25,7 @@ extension TagX on Tag {
         Tag.normalText: 'normalText',
       }[this]!;
 
-  TextStyle? style() => <Tag, TextStyle>{
+  TextStyle style() => <Tag, TextStyle>{
         Tag.hashtag: TextStyle(
           inherit: true,
           color: Color(0xff0076ff),
@@ -37,5 +41,5 @@ extension TagX on Tag {
           color: Colors.black,
           fontSize: 14,
         ),
-      }[this];
+      }[this]!;
 }

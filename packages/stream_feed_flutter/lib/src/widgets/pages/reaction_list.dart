@@ -2,43 +2,82 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///{@template reaction_list_page}
+/// Renders a list of reactions to a post.
+///{@endtemplate}
 class ReactionListPage extends StatelessWidget {
-  const ReactionListPage(
-      {Key? key,
-      required this.feedGroup,
-      required this.activity,
-      required this.onReactionTap,
-      required this.onHashtagTap,
-      required this.onMentionTap,
-      required this.onUserTap,
-      required this.onReaction,
-      this.onErrorWidget = const ErrorStateWidget(),
-      this.onProgressWidget = const ProgressStateWidget(),
-      this.onEmptyWidget =
-          const EmptyStateWidget(message: 'No comments to display')})
-      : super(key: key);
+  /// Builds a [ReactionListPage].
+  ReactionListPage({
+    Key? key,
+    required this.activity,
+    required this.onReactionTap,
+    required this.onHashtagTap,
+    required this.onMentionTap,
+    required this.onUserTap,
+    required this.reactionBuilder,
+    this.onErrorWidget = const ErrorStateWidget(),
+    this.onProgressWidget = const ProgressStateWidget(),
+    this.onEmptyWidget =
+        const EmptyStateWidget(message: 'No comments to display'),
+    this.flags,
+    this.lookupAttr = LookupAttribute.activityId,
+    String? lookupValue,
+    this.filter,
+    this.limit,
+    this.kind,
+  })  : _lookupValue = lookupValue ?? activity.id!,
+        super(key: key);
 
-  final String feedGroup;
-  final EnrichedActivity? activity;
+  /// The activity to display notifications for.
+  final EnrichedActivity activity;
+
+  ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
+
+  ///{@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
+
+  ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
+
+  ///{@macro user_callback}
   final OnUserTap? onUserTap;
-  final OnReaction onReaction;
+
+  /// The callback to invoke when a reaction is added.
+  final ReactionBuilder reactionBuilder;
+
+  /// The widget to display if there is an error.
   final Widget onErrorWidget;
+
+  /// The widget to display while loading is in progress.
   final Widget onProgressWidget;
+
+  /// The widget to display if there is no data.
   final Widget onEmptyWidget;
+
+  /// The flags to use for the request
+  final EnrichmentFlags? flags;
+
+  final LookupAttribute lookupAttr;
+  final String _lookupValue;
+  final Filter? filter;
+  final int? limit;
+  final String? kind;
 
   @override
   Widget build(BuildContext context) {
     return ReactionListCore(
-      feedGroup: feedGroup,
-      lookupValue: activity!.id!, //TODO: handle null safety
+      lookupValue: _lookupValue, //TODO: handle null safety
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       onEmptyWidget: onEmptyWidget,
-      onReactions: (context, reactions, idx) =>
-          onReaction(context, reactions[idx]),
+      flags: flags,
+      filter: filter,
+      kind: kind,
+      lookupAttr: lookupAttr,
+      limit: limit,
+      reactionsBuilder: (context, reactions, idx) =>
+          reactionBuilder(context, reactions[idx]),
     );
   }
 }

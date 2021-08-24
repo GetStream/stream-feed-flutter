@@ -60,7 +60,7 @@ Future<void> main() async {
           ),
           statusCode: 200));
 
-      await usersApi.add(token, id, data);
+      await usersApi.create(token, id, data);
 
       verify(() => mockClient.post<Map>(
             Routes.buildUsersUrl(),

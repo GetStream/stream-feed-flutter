@@ -25,14 +25,20 @@ Future<void> main() async {
           Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
       const limit = Default.limit;
       const kind = 'like';
+      final flags = EnrichmentFlags()
+          .withReactionCounts()
+          .withOwnChildren()
+          .withOwnReactions();
+      final options = {
+        'limit': limit,
+        ...filter.params,
+        ...flags.params,
+        'with_activity_data': lookupAttr == LookupAttribute.activityId,
+      };
       when(() => mockClient.get<Map>(
             Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
             headers: {'Authorization': '$token'},
-            queryParameters: {
-              'limit': limit.toString(),
-              ...filter.params,
-              'with_activity_data': lookupAttr == LookupAttribute.activityId,
-            },
+            queryParameters: options,
           )).thenAnswer((_) async => Response(
               data: {
                 'results': [jsonFixture('reaction.json')]
@@ -50,16 +56,13 @@ Future<void> main() async {
         filter,
         limit,
         kind,
+        options,
       );
 
       verify(() => mockClient.get(
             Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
             headers: {'Authorization': '$token'},
-            queryParameters: {
-              'limit': limit.toString(),
-              ...filter.params,
-              'with_activity_data': lookupAttr == LookupAttribute.activityId,
-            },
+            queryParameters: options,
           )).called(1);
     });
 

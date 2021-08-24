@@ -69,7 +69,7 @@ void main() {
               client: mockClient,
               child: NotificationListPage(
                 feedGroup: 'user',
-                onNotification: (BuildContext context,
+                notificationBuilder: (BuildContext context,
                         NotificationGroup<EnrichedActivity> notification) =>
                     Text("${notification.activities?.length}"),
               ),

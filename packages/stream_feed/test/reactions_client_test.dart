@@ -104,13 +104,23 @@ void main() {
           targetFeeds: targetFeeds,
         )
       ];
-      when(() =>
-              api.filter(token, lookupAttr, lookupValue, filter, limit, kind))
+      final flags = EnrichmentFlags()
+          .withReactionCounts()
+          .withOwnChildren()
+          .withOwnReactions();
+      final options = {
+        'limit': limit,
+        ...filter.params,
+        ...flags.params,
+        'with_activity_data': lookupAttr == LookupAttribute.activityId,
+      };
+      when(() => api.filter(
+              token, lookupAttr, lookupValue, filter, limit, kind, options))
           .thenAnswer((_) async => reactions);
       await client.filter(lookupAttr, lookupValue,
-          filter: filter, limit: limit, kind: kind);
-      verify(() =>
-              api.filter(token, lookupAttr, lookupValue, filter, limit, kind))
+          filter: filter, limit: limit, kind: kind, flags: flags);
+      verify(() => api.filter(
+              token, lookupAttr, lookupValue, filter, limit, kind, options))
           .called(1);
     });
 

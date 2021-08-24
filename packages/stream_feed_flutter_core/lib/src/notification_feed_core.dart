@@ -9,7 +9,7 @@ class NotificationFeedCore extends StatelessWidget {
   const NotificationFeedCore(
       {Key? key,
       required this.feedGroup,
-      required this.onNotifications,
+      required this.notificationsBuilder,
       this.limit,
       this.offset,
       this.session,
@@ -24,7 +24,7 @@ class NotificationFeedCore extends StatelessWidget {
           const EmptyStateWidget(message: 'No notifications to display')})
       : super(key: key);
 
-  final OnNotifications onNotifications;
+  final NotificationsBuilder notificationsBuilder;
   final Widget onErrorWidget;
   final Widget onProgressWidget;
   final Widget onEmptyWidget;
@@ -63,7 +63,7 @@ class NotificationFeedCore extends StatelessWidget {
         }
         return ListView.builder(
           itemCount: notifications.length,
-          itemBuilder: (context, idx) => onNotifications(
+          itemBuilder: (context, idx) => notificationsBuilder(
             context,
             notifications,
             idx,

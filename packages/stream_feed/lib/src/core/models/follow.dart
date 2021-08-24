@@ -3,10 +3,12 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'follow.g.dart';
 
-///
+/// {@template follow}
+/// Model for the follower of a feed
+/// {@endtemplate}
 @JsonSerializable()
 class Follow extends Equatable {
-  ///
+  /// Builds a [Follow]
   const Follow({
     required this.feedId,
     required this.targetId,
@@ -14,20 +16,21 @@ class Follow extends Equatable {
     required this.updatedAt,
   });
 
-  /// Create a new instance from a json
+  /// Create a new instance from a JSON object
   factory Follow.fromJson(Map<String, dynamic> json) => _$FollowFromJson(json);
 
   /// The combination of feed slug and user id separated by a colon
-  ///For example: flat:1
+  ///
+  /// For example: flat:1
   final String feedId;
 
-  /// the id of the feed you want to follow
+  /// The id of the feed you want to follow
   final String targetId;
 
-  ///Date at which the follow relationship was created
+  /// Date at which the follow relationship was created
   final DateTime createdAt;
 
-  ///Date at which the follow relationship was updated
+  /// Date at which the follow relationship was updated
   final DateTime updatedAt;
 
   @override

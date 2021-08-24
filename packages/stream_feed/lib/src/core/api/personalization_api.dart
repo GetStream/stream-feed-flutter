@@ -5,11 +5,14 @@ import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 
+/// {@macro personalization}
 class PersonalizationAPI {
+  /// Builds a [PersonalizationAPI].
   const PersonalizationAPI(this.client);
 
   final StreamHttpClient client;
 
+  /// {@macro personalizationGet}
   Future<Map> get(
     Token token,
     String resource,
