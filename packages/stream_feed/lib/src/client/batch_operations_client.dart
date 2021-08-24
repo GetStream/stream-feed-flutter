@@ -90,7 +90,7 @@ class BatchOperationsClient {
       getEnrichedActivitiesByForeignId<A, Ob, T, Or>(
           Iterable<ForeignIdTimePair> pairs) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
-    return _batch.getEnrichedActivitiesByForeignId(token, pairs);
+    return _batch.getEnrichedActivitiesByForeignId<A, Ob, T, Or>(token, pairs);
   }
 
   /// Update a single activity
