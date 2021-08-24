@@ -86,8 +86,9 @@ class BatchOperationsClient {
     return _batch.getActivitiesByForeignId(token, pairs);
   }
 
-  Future<Iterable<EnrichedActivity>> getEnrichedActivitiesByForeignId(
-      Iterable<ForeignIdTimePair> pairs) {
+  Future<Iterable<EnrichedActivity<A, Ob, T, Or>>>
+      getEnrichedActivitiesByForeignId<A, Ob, T, Or>(
+          Iterable<ForeignIdTimePair> pairs) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return _batch.getEnrichedActivitiesByForeignId(token, pairs);
   }
