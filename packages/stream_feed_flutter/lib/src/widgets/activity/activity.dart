@@ -67,7 +67,8 @@ class ActivityWidget extends StatelessWidget {
         children: [
           activityHeaderBuilder?.call(context, activity) ??
               ActivityHeader(
-                handleJsonKey:handleJsonKey,
+                nameJsonKey: nameJsonKey,
+                handleJsonKey: handleJsonKey,
                 activity: activity,
                 onUserTap: onUserTap,
               ),

@@ -128,7 +128,6 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: ActivityWidget(
-              nameJsonKey:'full_name',
               activity: EnrichedActivity(
                   time: DateTime.now(),
                   actor: User(data: {
