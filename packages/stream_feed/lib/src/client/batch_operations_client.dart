@@ -73,7 +73,7 @@ class BatchOperationsClient {
     return _batch.getActivitiesById(token, ids);
   }
 
-  Future<Iterable<EnrichedActivity>> getEnrichedActivitiesById(
+  Future<Iterable<EnrichedActivity>> getEnrichedActivitiesById<A, Ob, T, Or>(
       Iterable<String> ids) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
     return _batch.getEnrichedActivitiesById(token, ids);
