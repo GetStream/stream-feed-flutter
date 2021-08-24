@@ -22,12 +22,12 @@ class PersonalizedFeed<A, Ob, T, Or>
 
   /// Deserialize json to [PaginatedReactions]
   factory PersonalizedFeed.fromJson(
-    Map<String, dynamic> json,
+    Map<String, dynamic> json, [
     A Function(Object? json)? fromJsonA,
     Ob Function(Object? json)? fromJsonOb,
     T Function(Object? json)? fromJsonT,
     Or Function(Object? json)? fromJsonOr,
-  ) =>
+  ]) =>
       _$PersonalizedFeedFromJson<A, Ob, T, Or>(
         json,
         fromJsonA ??
