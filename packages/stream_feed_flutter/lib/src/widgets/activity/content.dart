@@ -11,17 +11,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// This would be the actual text of the activity, the media, etc.
 ///{@endtemplate}
 class ActivityContent extends StatelessWidget {
-  ///The activity that is being displayed.
-  final DefaultEnrichedActivity activity;
-
-  ///{@macro mention_callback}
-  final OnMentionTap? onMentionTap;
-
-  /// A callback that is invoked when the user clicks on hashtag
-  final OnHashtagTap? onHashtagTap;
-  final String commentJsonKey;
-
-  ///{@macro activity_content}
+  /// Builds an [ActivityContent].
   const ActivityContent({
     Key? key,
     required this.activity,
@@ -29,6 +19,17 @@ class ActivityContent extends StatelessWidget {
     this.commentJsonKey = 'comment',
     this.onHashtagTap,
   }) : super(key: key);
+
+  /// The activity that is being displayed.
+  final DefaultEnrichedActivity activity;
+
+  /// {@macro mention_callback}
+  final OnMentionTap? onMentionTap;
+
+  /// A callback that is invoked when the user clicks on hashtag
+  final OnHashtagTap? onHashtagTap;
+
+  final String commentJsonKey;
 
   @override
   Widget build(BuildContext context) {
