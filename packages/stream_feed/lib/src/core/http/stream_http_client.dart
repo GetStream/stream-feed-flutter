@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_feed/src/core/error/feeds_error_code.dart';
 import 'package:stream_feed/src/core/error/stream_feeds_error.dart';
 import 'package:stream_feed/src/core/exceptions.dart';
+import 'package:stream_feed/src/core/http/interceptor/logging_interceptor.dart';
 import 'package:stream_feed/src/core/location.dart';
 import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
@@ -18,6 +20,7 @@ class StreamHttpClient {
     this.apiKey, {
     Dio? dio,
     StreamHttpClientOptions? options,
+    Logger? logger,
   })  : options = options ?? const StreamHttpClientOptions(),
         httpClient = dio ?? Dio() {
     httpClient
@@ -31,10 +34,22 @@ class StreamHttpClient {
         'stream-auth-type': 'jwt',
         'x-stream-client': this.options._userAgent,
       }
-      ..interceptors.add(LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ));
+      ..interceptors.addAll([
+        if (logger != null && logger.level != Level.OFF)
+          LoggingInterceptor(
+            requestHeader: true,
+            logPrint: (step, message) {
+              switch (step) {
+                case InterceptStep.request:
+                  return logger.info(message);
+                case InterceptStep.response:
+                  return logger.info(message);
+                case InterceptStep.error:
+                  return logger.severe(message);
+              }
+            },
+          ),
+      ]);
   }
 
   /// Your project Stream Chat api key.

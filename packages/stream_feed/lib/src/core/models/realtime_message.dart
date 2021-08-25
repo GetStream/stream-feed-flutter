@@ -88,6 +88,16 @@ class RealtimeMessage<A, Ob, T, Or> extends Equatable {
   final List<ForeignIdTimePair> deletedForeignIds;
 
   /// All activities created by this update
+  /// Do note that new activities coming from subscription
+  /// will only contain enrichment for these fields:
+  ///
+  /// 1. Activity `SA`
+  /// 2. Reaction `SR`
+  /// 3. Object `SO`
+  /// 4. User `SU`
+  ///
+  /// the only thing you don’t get is the enriched reactions like `own_reaction`
+  /// or `latest_reactions`
   @JsonKey(name: 'new')
   final List<EnrichedActivity<A, Ob, T, Or>>? newActivities;
 

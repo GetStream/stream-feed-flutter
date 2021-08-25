@@ -82,7 +82,6 @@ main() {
       expect(pressedMentions, ['sacha']);
     });
   });
-
   testWidgets('CommentField', (WidgetTester tester) async {
     final key = GlobalKey();
     final mockClient = MockStreamFeedClient();
