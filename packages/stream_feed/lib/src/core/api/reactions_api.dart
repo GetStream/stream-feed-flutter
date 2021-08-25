@@ -90,7 +90,7 @@ class ReactionsAPI {
   }
 
   /// Paginated reactions and filter them
-  Future<PaginatedReactions> paginatedFilter<A, Ob, T>(
+  Future<PaginatedReactions<A, Ob, T, Or>> paginatedFilter<A, Ob, T, Or>(
     Token token,
     LookupAttribute lookupAttr,
     String lookupValue,
@@ -109,36 +109,20 @@ class ReactionsAPI {
         'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
-    return PaginatedReactions.fromJson(
-      result.data,
-      (json) => (A is User) ? User.fromJson(json! as Map<String, dynamic>) : A,
-      (json) => (Ob is CollectionEntry)
-          ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
-          : Ob,
-      (jsonT) => (T is Activity)
-          ? Activity.fromJson(jsonT! as Map<String, dynamic>)
-          : T,
-    );
+    return PaginatedReactions<A, Ob, T, Or>.fromJson(result.data);
   }
 
   /// Next reaction pagination returned by [PaginatedReactions].next
-  Future<PaginatedReactions> nextPaginatedFilter<A, Ob, T>(
-      Token token, String next) async {
+  Future<PaginatedReactions<A, Ob, T, Or>> nextPaginatedFilter<A, Ob, T, Or>(
+    Token token,
+    String next,
+  ) async {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
     final result = await _client.get(
       next,
       headers: {'Authorization': '$token'},
     );
-    return PaginatedReactions.fromJson(
-      result.data,
-      (json) => (A is User) ? User.fromJson(json! as Map<String, dynamic>) : A,
-      (json) => (Ob is CollectionEntry)
-          ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
-          : Ob,
-      (jsonT) => (T is Activity)
-          ? Activity.fromJson(jsonT! as Map<String, dynamic>)
-          : T,
-    );
+    return PaginatedReactions<A, Ob, T, Or>.fromJson(result.data);
   }
 
   /// Update a reaction
