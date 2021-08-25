@@ -67,7 +67,7 @@ class PostButton extends StatelessWidget {
               },
             );
           },
-          icon: StreamSvgIcon.post(),
+          icon: StreamSvgIcon.reply(),
         ),
         if (count != null && count! > 0) Text('${count!}')
       ],
