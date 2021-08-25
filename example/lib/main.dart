@@ -8,9 +8,12 @@ import 'package:stream_feed/stream_feed.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final _key = String.fromEnvironment('key');
-  final _user_token = String.fromEnvironment('user_token');
-  final client = StreamFeedClient.connect(_key, token: Token(_user_token));
+  const _key = String.fromEnvironment('key');
+  const _userToken = String.fromEnvironment('user_token');
+  final client = StreamFeedClient.connect(
+    _key,
+    token: const Token(_userToken),
+  );
   runApp(
     MyApp(
       client: client,
