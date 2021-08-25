@@ -539,10 +539,11 @@ void main() {
       'results': [],
       'duration': '419.81ms'
     };
-    final personalizedFeed = PersonalizedFeed.fromJson(json);
+    final personalizedFeed =
+        PersonalizedFeed<Object?, Object?, Object?, Object?>.fromJson(json);
     expect(
         personalizedFeed,
-        const PersonalizedFeed(
+        const PersonalizedFeed<Object?, Object?, Object?, Object?>(
             limit: 25,
             offset: 0,
             version: 'user_1_1619210635',
