@@ -110,23 +110,21 @@ void main() {
                 path: '',
               ),
               statusCode: 200));
-      final activities = await client.getEnrichedActivities(
-          limit: limit,
-          offset: offset,
-          filter: filter,
-          marker: marker,
-          flags: flags);
+      final activities =
+          await client.getEnrichedActivities<String, String, String, String>(
+              limit: limit,
+              offset: offset,
+              filter: filter,
+              marker: marker,
+              flags: flags);
 
       expect(
           activities,
           rawActivities
               .map((e) => Group.fromJson(
                     e,
-                    (json) => EnrichedActivity.fromJson(
-                      json as Map<String, dynamic>?,
-                      (json) => json,
-                      (json) => json,
-                    ),
+                    (json) => EnrichedActivity<String, String, String,
+                        String>.fromJson(json as Map<String, dynamic>?),
                   ))
               .toList(growable: false));
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
