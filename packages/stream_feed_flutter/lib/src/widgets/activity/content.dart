@@ -40,24 +40,27 @@ class ActivityContent extends StatelessWidget {
     final taggedText = activityObject != null
         ? detector.parseText(activityObject) //TODO: ugly
         : <TaggedText>[];
-    return Column(
-      children: [
-        Wrap(
-          //TODO: move to Text.rich(WidgetSpans)
-          children: taggedText
-              .map((it) => InteractiveText(
-                    //TODO: not interactive in case of a response
-                    tagged: it,
-                    onHashtagTap: onHashtagTap,
-                    onMentionTap: onMentionTap,
-                  ))
-              .toList(),
-        ),
-        //TODO: handle Video + Audio + Gallery
-        if (attachments != null)
-          ActivityCard(
-              og: OpenGraphData.fromJson(attachments as Map<String, dynamic>))
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8),
+      child: Column(
+        children: [
+          Wrap(
+            //TODO: move to Text.rich(WidgetSpans)
+            children: taggedText
+                .map((it) => InteractiveText(
+                      //TODO: not interactive in case of a response
+                      tagged: it,
+                      onHashtagTap: onHashtagTap,
+                      onMentionTap: onMentionTap,
+                    ))
+                .toList(),
+          ),
+          //TODO: handle Video + Audio + Gallery
+          if (attachments != null)
+            ActivityCard(
+                og: OpenGraphData.fromJson(attachments as Map<String, dynamic>))
+        ],
+      ),
     );
   }
 }
