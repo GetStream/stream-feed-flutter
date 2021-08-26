@@ -39,7 +39,6 @@ class ActivityFooter extends StatelessWidget {
             activity: activity,
             feedGroup: feedGroup,
           ),
-          // TODO: add ShareButton
         ],
       ),
     );
