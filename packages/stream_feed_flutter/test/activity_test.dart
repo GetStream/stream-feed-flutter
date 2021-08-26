@@ -170,7 +170,7 @@ void main() {
           ),
         ),
       ),
-      surfaceSize: const Size(300, 200),
+      surfaceSize: const Size(200, 200),
     );
     await screenMatchesGolden(tester, 'activity_footer');
   });

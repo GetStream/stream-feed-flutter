@@ -24,17 +24,16 @@ class ActivityFooter extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           PostButton(
             activity: activity,
             feedGroup: feedGroup,
           ),
-          const SizedBox(width: 16),
           RepostButton(
             activity: activity,
             feedGroup: feedGroup,
           ),
-          const SizedBox(width: 16),
           LikeButton(
             activity: activity,
             feedGroup: feedGroup,
