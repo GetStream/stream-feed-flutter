@@ -16,7 +16,7 @@ class HumanReadableTimestamp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       timeago.format(timestamp),
-      style: TextStyle(
+      style: const TextStyle(
         color: Color(0xff7a8287),
         fontWeight: FontWeight.w400,
         height: 1.5,

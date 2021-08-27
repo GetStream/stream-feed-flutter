@@ -10,6 +10,19 @@ import 'package:url_launcher/url_launcher.dart';
 /// the device's browser.
 ///{@endtemplate}
 class ActivityCard extends StatelessWidget {
+  /// Builds an [ActivityCard].
+  const ActivityCard({
+    Key? key,
+    required this.og,
+    this.alt,
+    this.image,
+    // this.nolink,
+    this.description,
+    this.title,
+    this.url,
+    this.imageURL,
+  }) : super(key: key);
+
   /// The alternative text to display for accessibility reasons.
   final String? alt;
 
@@ -30,19 +43,6 @@ class ActivityCard extends StatelessWidget {
 
   /// The title of the media.
   final String? title;
-
-  ///{@macro activity_card}
-  const ActivityCard({
-    Key? key,
-    required this.og,
-    this.alt,
-    this.image,
-    // this.nolink,
-    this.description,
-    this.title,
-    this.url,
-    this.imageURL,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

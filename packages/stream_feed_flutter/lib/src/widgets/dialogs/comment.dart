@@ -27,7 +27,10 @@ class AlertDialogComment extends StatelessWidget {
   /// The activity that is being commented on.
   final DefaultEnrichedActivity? activity;
 
+  /// TODO: document me
   final String handleJsonKey;
+
+  /// TODO: document me
   final String nameJsonKey;
 
   @override
