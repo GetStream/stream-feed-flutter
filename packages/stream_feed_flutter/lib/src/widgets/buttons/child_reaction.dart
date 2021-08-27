@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/child_reaction_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
@@ -16,7 +17,7 @@ class ChildReactionButton extends StatelessWidget {
     required this.activeIcon,
     required this.inactiveIcon,
     required this.reaction,
-    this.hoverColor = Colors.lightBlue,
+    this.hoverColor,
     this.onTap,
     this.data,
   }) : super(key: key);
@@ -46,7 +47,7 @@ class ChildReactionButton extends StatelessWidget {
   /// The color to use when the user hovers over the button.
   ///
   /// Generally applies to desktop and web.
-  final Color hoverColor;
+  final Color? hoverColor;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,7 @@ class ChildReactionButton extends StatelessWidget {
       reaction: reaction,
       activeIcon: activeIcon,
       inactiveIcon: inactiveIcon,
-      hoverColor: hoverColor,
+      hoverColor: ChildReactionTheme.of(context).hoverColor!,
       kind: kind,
       onTap: onTap,
       data: data,
@@ -64,7 +65,25 @@ class ChildReactionButton extends StatelessWidget {
   }
 }
 
+/// TODO: document me
 class ChildReactionToggleIcon extends StatefulWidget {
+  //TODO: see what we can extract from a parent widget and put in core
+  /// Builds a [ChildReactionToggleIcon].
+  const ChildReactionToggleIcon({
+    Key? key,
+    required this.activeIcon,
+    required this.inactiveIcon,
+    required this.kind,
+    required this.reaction,
+    this.targetFeeds,
+    this.data,
+    this.onTap,
+    this.ownReactions,
+    this.hoverColor,
+    this.count,
+    this.userId,
+  }) : super(key: key);
+
   /// The reactions belonging to the current user
   final List<Reaction>? ownReactions;
 
@@ -85,26 +104,20 @@ class ChildReactionToggleIcon extends StatefulWidget {
   /// The callback to be performed when the user clicks on the reaction icon.
   final VoidCallback? onTap;
 
+  /// TODO: document me
   final String? userId;
+
+  /// TODO: document me
   final Map<String, Object>? data;
+
+  /// TODO: document me
   final List<FeedId>? targetFeeds;
-  final Color hoverColor;
+
+  /// TODO: document me
+  final Color? hoverColor;
+
+  /// TODO: document me
   final Reaction reaction;
-  //TODO: see what we can extract from a parent widget and put in core
-  const ChildReactionToggleIcon({
-    Key? key,
-    required this.activeIcon,
-    required this.inactiveIcon,
-    required this.kind,
-    required this.reaction,
-    this.targetFeeds,
-    this.data,
-    this.onTap,
-    this.ownReactions,
-    this.hoverColor = Colors.lightBlue,
-    this.count,
-    this.userId,
-  }) : super(key: key);
 
   @override
   State<ChildReactionToggleIcon> createState() =>
@@ -132,7 +145,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
   @override
   Widget build(BuildContext context) {
     return ReactionIcon(
-      hoverColor: widget.hoverColor,
+      hoverColor: ChildReactionTheme.of(context).toggleColor!,
       icon: displayedIcon,
       count: count,
       onTap: () async {
