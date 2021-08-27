@@ -17,7 +17,8 @@ void main() {
         _childReactionThemeMidLerp);
   });
 
-  testWidgets('', (widgetTester) async {
+  testWidgets('Passing no ChildReactionTheme results in default values',
+      (widgetTester) async {
     late BuildContext _context;
     await widgetTester.pumpWidget(
       MaterialApp(

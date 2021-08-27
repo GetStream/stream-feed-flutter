@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/theme/child_reaction_theme.dart';
+import 'package:stream_feed_flutter/src/theme/themes.dart';
 
 /// Applies a [StreamFeedThemeData] to descendent Stream Feed widgets.
 class StreamFeedTheme extends InheritedWidget {
@@ -44,30 +44,45 @@ class StreamFeedThemeData with Diagnosticable {
   /// Builds a [StreamFeedThemeData] with default values, if none are given.
   factory StreamFeedThemeData({
     ChildReactionThemeData? childReactionTheme,
+    ReactionThemeData? reactionTheme,
   }) {
     // Use the given childReactionTheme or a default.
-    childReactionTheme ??= ChildReactionThemeData(
+    childReactionTheme ??= const ChildReactionThemeData(
       hoverColor: Colors.lightBlue,
       toggleColor: Colors.lightBlue,
     );
 
+    reactionTheme ??= const ReactionThemeData(
+      hoverColor: Colors.lightBlue,
+      toggleHoverColor: Colors.lightBlue,
+      iconHoverColor: Colors.lightBlue,
+    );
+
     return StreamFeedThemeData.raw(
       childReactionTheme: childReactionTheme,
+      reactionTheme: reactionTheme,
     );
   }
 
   /// Raw [StreamFeedThemeData] initialization.
   const StreamFeedThemeData.raw({
     required this.childReactionTheme,
+    required this.reactionTheme,
   });
 
   /// {@macro childReactionThemeData}
   final ChildReactionThemeData childReactionTheme;
 
+  /// {@macro reactionThemeData}
+  final ReactionThemeData reactionTheme;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ChildReactionThemeData>(
-        'childReactionTheme', childReactionTheme));
+    properties
+      ..add(DiagnosticsProperty<ChildReactionThemeData>(
+          'childReactionTheme', childReactionTheme))
+      ..add(DiagnosticsProperty<ReactionThemeData>(
+          'reactionTheme', reactionTheme));
   }
 }
