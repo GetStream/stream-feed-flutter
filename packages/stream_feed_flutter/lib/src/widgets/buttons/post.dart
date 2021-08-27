@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
-import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template post_button}
@@ -21,7 +21,10 @@ class PostButton extends StatelessWidget {
     this.nameJsonKey = 'name',
   }) : super(key: key);
 
+  /// TODO: document me
   final String handleJsonKey;
+
+  /// TODO: document me
   final String nameJsonKey;
 
   /// The group or slug of the feed to post to.
@@ -30,11 +33,13 @@ class PostButton extends StatelessWidget {
   /// The activity to post to the feed.
   final DefaultEnrichedActivity activity;
 
+  /// TODO: document me
   final Reaction? reaction;
 
   /// The size of the icon to display.
   final double iconSize;
 
+  /// TODO: document me
   int? get count =>
       reaction?.childrenCounts?['comment'] ??
       activity.reactionCounts?['comment'];
@@ -53,7 +58,7 @@ class PostButton extends StatelessWidget {
               context: context,
               builder: (_) {
                 return MediaQuery(
-                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
                     child: StreamFeedCore(
                       //TODO: there might be a better way to do this
                       client: StreamFeedCore.of(context).client,

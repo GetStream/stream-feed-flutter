@@ -53,23 +53,25 @@ class ActivityCard extends StatelessWidget {
         firstOgImage?.image ??
         imageURL;
     return InkWell(
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: const BorderRadius.all(
+        Radius.circular(4),
+      ),
       onTap: () async {
         await canLaunch(_url) //TODO: provide a callback
             ? await launch(_url)
             : throw 'Could not launch $_url';
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: Card(
           color: Colors.grey[50],
           child: Row(children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.circular(4.0),
+              borderRadius: BorderRadius.circular(4),
               child: Image.network(
                 image!,
-                height: 100.0,
-                width: 100.0,
+                height: 100,
+                width: 100,
                 semanticLabel:
                     firstOgImage?.alt ?? alt ?? title ?? description ?? '',
                 loadingBuilder: (
@@ -86,22 +88,22 @@ class ActivityCard extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         og.title!, //TODO: handle null
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xff007aff),
                           fontSize: 14,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         og.description!, //TODO: handle null
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xff364047),
                           fontSize: 13,
                           overflow: TextOverflow.ellipsis,

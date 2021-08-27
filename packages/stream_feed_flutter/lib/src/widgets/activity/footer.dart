@@ -15,8 +15,10 @@ class ActivityFooter extends StatelessWidget {
     this.feedGroup = 'user',
   }) : super(key: key);
 
+  /// TODO: document me
   final DefaultEnrichedActivity activity;
 
+  /// TODO: document me
   final String feedGroup;
 
   @override

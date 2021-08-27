@@ -76,9 +76,16 @@ class CommentView extends StatelessWidget {
     this.nameJsonKey = 'name',
   }) : super(key: key);
 
+  /// TODO: document me
   final DefaultEnrichedActivity? activity;
+
+  /// TODO: document me
   final String feedGroup;
+
+  /// TODO: document me
   final TextEditingController textEditingController;
+
+  /// TODO: document me
   final bool enableReactions;
 
   ///{@macro reaction_callback}
@@ -93,10 +100,13 @@ class CommentView extends StatelessWidget {
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
+  /// TODO: document me
   final bool enableCommentFieldButton;
 
+  /// TODO: document me
   final String handleJsonKey;
 
+  /// TODO: document me
   final String nameJsonKey;
 
   @override
@@ -161,9 +171,17 @@ class AlertDialogActions extends StatelessWidget {
     required this.feedGroup,
     required this.textEditingController,
   }) : super(key: key);
+
+  /// TODO: document me
   final EnrichedActivity? activity;
+
+  /// TODO: document me
   final List<FeedId>? targetFeeds;
+
+  /// TODO: document me
   final String feedGroup;
+
+  /// TODO: document me
   final TextEditingController textEditingController;
 
   @override
@@ -172,7 +190,7 @@ class AlertDialogActions extends StatelessWidget {
       alignment: Alignment.bottomLeft,
       child: Stack(
         children: [
-          LeftActions(), //TODO: upload controller thingy
+          const LeftActions(), //TODO: upload controller thingy
           RightActions(
             textEditingController: textEditingController,
             activity: activity, //TODO: upload controller thingy
@@ -195,7 +213,12 @@ class LeftActions extends StatelessWidget {
     this.spaceBefore = 60,
     this.spaceBetween = 8.0,
   }) : super(key: key);
-  final double spaceBefore; //useful for reddit style clone
+
+  /// TODO: document me
+  final double spaceBefore;
+
+  /// TODO: document me
+  //useful for reddit style clone
   final double spaceBetween;
   @override
   Widget build(BuildContext context) {
@@ -204,11 +227,11 @@ class LeftActions extends StatelessWidget {
       child: Row(
         children: [
           //TODO: actual emojis, upload images, gif, etc
-          MediasAction(), //TODO: push an other dialog open file explorer take file uri upload it using sdk and it to attachments (sent in RightActions/PostCommentButton)
+          const MediasAction(), //TODO: push an other dialog open file explorer take file uri upload it using sdk and it to attachments (sent in RightActions/PostCommentButton)
           SizedBox(width: spaceBetween),
-          EmojisAction(), //TODO: push an other dialog and display a nice grid of emojis, add selected emoji to text controller
+          const EmojisAction(), //TODO: push an other dialog and display a nice grid of emojis, add selected emoji to text controller
           SizedBox(width: spaceBetween),
-          GIFAction(), //TODO: push an other dialog and display gif in a card and it to list of attachments
+          const GIFAction(), //TODO: push an other dialog and display gif in a card and it to list of attachments
         ],
       ),
     );
@@ -227,9 +250,17 @@ class RightActions extends StatelessWidget {
     required this.feedGroup,
     this.targetFeeds,
   }) : super(key: key);
+
+  /// TODO: document me
   final EnrichedActivity? activity;
+
+  /// TODO: document me
   final TextEditingController textEditingController;
+
+  /// TODO: document me
   final String feedGroup;
+
+  /// TODO: document me
   final List<FeedId>? targetFeeds;
 
   @override

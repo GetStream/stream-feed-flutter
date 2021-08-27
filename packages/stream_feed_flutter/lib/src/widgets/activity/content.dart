@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/widgets/og/card.dart';
-import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
-import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
+import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
+import 'package:stream_feed_flutter/src/widgets/og/card.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template activity_content}
@@ -29,6 +29,7 @@ class ActivityContent extends StatelessWidget {
   /// A callback that is invoked when the user clicks on hashtag
   final OnHashtagTap? onHashtagTap;
 
+  /// TODO: document me
   final String commentJsonKey;
 
   @override

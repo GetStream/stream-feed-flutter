@@ -57,7 +57,7 @@ class ChildReactionButton extends StatelessWidget {
       reaction: reaction,
       activeIcon: activeIcon,
       inactiveIcon: inactiveIcon,
-      hoverColor: ChildReactionTheme.of(context).hoverColor!,
+      hoverColor: ChildReactionTheme.of(context).hoverColor,
       kind: kind,
       onTap: onTap,
       data: data,
@@ -145,7 +145,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
   @override
   Widget build(BuildContext context) {
     return ReactionIcon(
-      hoverColor: ChildReactionTheme.of(context).toggleColor!,
+      hoverColor: ChildReactionTheme.of(context).toggleColor,
       icon: displayedIcon,
       count: count,
       onTap: () async {
@@ -167,7 +167,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
 
     setState(() {
       alreadyReacted = !alreadyReacted;
-      idToRemove = reaction.id!;
+      idToRemove = reaction.id;
       count += 1;
     });
   }

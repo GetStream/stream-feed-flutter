@@ -139,20 +139,18 @@ void main() {
       expect(
           fromJson,
           RealtimeMessage<String, String, String?, String?>(
-              deleted: [],
-              deletedForeignIds: [],
               feed: FeedId.fromId('reward:1'),
               newActivities: [
                 EnrichedActivity<String, String, String?, String?>(
                     actor: 'reward:1',
                     id: 'f3de8328-be2d-11eb-bb18-128a130028af',
-                    extraData: {
+                    extraData: const {
                       'message':
                           "@Jessica check out getstream.io it's so dang awesome.",
                     },
                     object: 'tweet:id',
                     time: DateTime.parse('2021-05-26T14:23:33.918391'),
-                    to: ['notification:jessica'],
+                    to: const ['notification:jessica'],
                     verb: 'tweet')
               ]));
     });
@@ -719,16 +717,16 @@ void main() {
 
   test('Follow', () {
     final followJson = {
-      "feed_id": "timeline:feedId",
-      "target_id": "user:userId",
-      "created_at": "2021-05-14T19:58:27.274792063Z",
-      "updated_at": "2021-05-14T19:58:27.274792063Z"
+      'feed_id': 'timeline:feedId',
+      'target_id': 'user:userId',
+      'created_at': '2021-05-14T19:58:27.274792063Z',
+      'updated_at': '2021-05-14T19:58:27.274792063Z'
     };
     final follow = Follow(
         feedId: 'timeline:feedId',
         targetId: 'user:userId',
-        createdAt: DateTime.parse("2021-05-14T19:58:27.274792063Z"),
-        updatedAt: DateTime.parse("2021-05-14T19:58:27.274792063Z"));
+        createdAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'),
+        updatedAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'));
 
     expect(follow, Follow.fromJson(followJson));
     expect(follow.toJson(), {
@@ -1117,20 +1115,22 @@ void main() {
 
       expect(
           openGraph,
-          OpenGraphData.fromJson({
-            'description':
-                'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
-            'title':
-                "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
-            'url':
-                'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
-            'images': [
-              {
-                'image':
-                    'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
-              },
-            ],
-          }));
+          OpenGraphData.fromJson(
+            const {
+              'description':
+                  'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+              'title':
+                  "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+              'url':
+                  'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+              'images': [
+                {
+                  'image':
+                      'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+                },
+              ],
+            },
+          ));
     });
   });
 

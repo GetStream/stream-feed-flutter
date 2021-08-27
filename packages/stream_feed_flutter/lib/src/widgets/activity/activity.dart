@@ -28,8 +28,10 @@ class ActivityWidget extends StatelessWidget {
   /// The activity to display.
   final DefaultEnrichedActivity activity;
 
+  /// TODO: document me
   final String handleJsonKey;
 
+  /// TODO: document me
   final String nameJsonKey;
 
   /// A callback to invoke when a mention is tapped.
