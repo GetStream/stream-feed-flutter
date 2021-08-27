@@ -57,7 +57,7 @@ class ChildReactionButton extends StatelessWidget {
       reaction: reaction,
       activeIcon: activeIcon,
       inactiveIcon: inactiveIcon,
-      hoverColor: ChildReactionTheme.of(context).hoverColor,
+      hoverColor: hoverColor ?? ChildReactionTheme.of(context).hoverColor,
       kind: kind,
       onTap: onTap,
       data: data,

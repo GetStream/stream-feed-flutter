@@ -286,6 +286,7 @@ void main() {
       feedGroup: feedGroup,
       inactiveIcon: inactiveIcon,
       activeIcon: activeIcon,
+      hoverColor: Colors.lightBlue,
     );
     final withOwnReactions = ReactionToggleIcon(
       activity: activity,
@@ -295,6 +296,7 @@ void main() {
       ownReactions: [reaction],
       inactiveIcon: inactiveIcon,
       activeIcon: activeIcon,
+      hoverColor: Colors.lightBlue,
     );
     group('widget test', () {
       testWidgets('withoutOwnReactions: onAddReaction', (tester) async {
