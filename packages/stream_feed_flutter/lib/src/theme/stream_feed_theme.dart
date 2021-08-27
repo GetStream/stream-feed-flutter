@@ -25,7 +25,7 @@ class StreamFeedTheme extends InheritedWidget {
 
     assert(
       streamFeedTheme != null,
-      'You must have a StreamChatTheme widget at the top of your widget tree',
+      'You must have a StreamFeedTheme widget at the top of your widget tree',
     );
 
     return streamFeedTheme!.data;
