@@ -194,9 +194,10 @@ void main() {
             },
             home: Scaffold(
               body: StreamFeedCore(
-                  analyticsClient: mockStreamAnalytics,
-                  client: mockClient,
-                  child: withoutOwnReactions),
+                analyticsClient: mockStreamAnalytics,
+                client: mockClient,
+                child: withoutOwnReactions,
+              ),
             ),
           ),
         );
@@ -272,24 +273,29 @@ void main() {
     const foreignId = 'like:300';
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
-    final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+    const activity = EnrichedActivity(
+      id: activityId,
+      foreignId: foreignId,
+    );
     const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
     const userId = 'user:300';
     final withoutOwnReactions = ReactionToggleIcon(
-        activity: activity,
-        kind: kind,
-        count: count,
-        feedGroup: feedGroup,
-        inactiveIcon: inactiveIcon,
-        activeIcon: activeIcon);
+      activity: activity,
+      kind: kind,
+      count: count,
+      feedGroup: feedGroup,
+      inactiveIcon: inactiveIcon,
+      activeIcon: activeIcon,
+    );
     final withOwnReactions = ReactionToggleIcon(
-        activity: activity,
-        kind: kind,
-        count: count,
-        feedGroup: feedGroup,
-        ownReactions: [reaction],
-        inactiveIcon: inactiveIcon,
-        activeIcon: activeIcon);
+      activity: activity,
+      kind: kind,
+      count: count,
+      feedGroup: feedGroup,
+      ownReactions: [reaction],
+      inactiveIcon: inactiveIcon,
+      activeIcon: activeIcon,
+    );
     group('widget test', () {
       testWidgets('withoutOwnReactions: onAddReaction', (tester) async {
         final mockClient = MockStreamFeedClient();
