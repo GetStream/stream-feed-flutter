@@ -145,7 +145,8 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
   @override
   Widget build(BuildContext context) {
     return ReactionIcon(
-      hoverColor: ChildReactionTheme.of(context).toggleColor,
+      hoverColor:
+          widget.hoverColor ?? ChildReactionTheme.of(context).toggleColor,
       icon: displayedIcon,
       count: count,
       onTap: () async {

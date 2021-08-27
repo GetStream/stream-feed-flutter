@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'mock.dart';
 
@@ -141,10 +141,14 @@ void main() {
     const foreignId = 'like:300';
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
-    final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+    const activity = EnrichedActivity(
+      id: activityId,
+      foreignId: foreignId,
+    );
     const reaction = Reaction(id: 'id', kind: kind, parent: activityId);
     const userId = 'user:300';
     final withoutOwnReactions = ChildReactionToggleIcon(
+      hoverColor: Colors.lightBlue,
       reaction: reaction,
       kind: kind,
       count: count,
@@ -152,6 +156,7 @@ void main() {
       activeIcon: activeIcon,
     );
     final withOwnReactions = ChildReactionToggleIcon(
+      hoverColor: Colors.lightBlue,
       reaction: reaction,
       kind: kind,
       count: count,
@@ -179,13 +184,22 @@ void main() {
         // when(() => mockStreamAnalytics.trackEngagement(engagement))
         //     .thenAnswer((_) async => Future.value());
 
-        await tester.pumpWidget(MaterialApp(
+        await tester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) {
+              return StreamFeedTheme(
+                data: StreamFeedThemeData(),
+                child: child!,
+              );
+            },
             home: Scaffold(
-          body: StreamFeedCore(
-              analyticsClient: mockStreamAnalytics,
-              client: mockClient,
-              child: withoutOwnReactions),
-        )));
+              body: StreamFeedCore(
+                  analyticsClient: mockStreamAnalytics,
+                  client: mockClient,
+                  child: withoutOwnReactions),
+            ),
+          ),
+        );
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
         await tester.tap(reactionIcon);
@@ -370,14 +384,23 @@ void main() {
   group('ReactionIcon', () {
     testWidgets('onTap', (tester) async {
       var tapped = 0;
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeedTheme(
+              data: StreamFeedThemeData(),
+              child: child!,
+            );
+          },
           home: Scaffold(
-        body: ReactionIcon(
-          icon: StreamSvgIcon.repost(),
-          count: 23,
-          onTap: () => tapped++,
+            body: ReactionIcon(
+              icon: StreamSvgIcon.repost(),
+              count: 23,
+              onTap: () => tapped++,
+            ),
+          ),
         ),
-      )));
+      );
 
       final icon = find.byType(StreamSvgIcon);
       final activeIcon = tester.widget<StreamSvgIcon>(icon);
@@ -391,10 +414,13 @@ void main() {
 
     testGoldens('repost golden', (tester) async {
       await tester.pumpWidgetBuilder(
-        Center(
-          child: ReactionIcon(
-            icon: StreamSvgIcon.repost(),
-            count: 23,
+        StreamFeedTheme(
+          data: StreamFeedThemeData(),
+          child: Center(
+            child: ReactionIcon(
+              icon: StreamSvgIcon.repost(),
+              count: 23,
+            ),
           ),
         ),
         surfaceSize: const Size(100, 75),
