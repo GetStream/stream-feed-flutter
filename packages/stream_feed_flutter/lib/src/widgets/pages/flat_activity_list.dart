@@ -146,20 +146,14 @@ class FlatActivityListPage extends StatelessWidget {
           page: StreamFeedCore(
             //TODO: let the user implement this
             client: StreamFeedCore.of(context).client,
-            child: Scaffold(
-              appBar: AppBar(
-                /// TODO: parameterize me
-                title: const Text('Post'),
-              ),
-              body: CommentView(
-                nameJsonKey: nameJsonKey,
-                handleJsonKey: handleJsonKey,
-                activity: activity,
-                enableCommentFieldButton: true,
-                enableReactions: true,
-                textEditingController:
-                    TextEditingController(), //TODO: move this into props for customisation like buildSpans
-              ),
+            child: CommentView(
+              nameJsonKey: nameJsonKey,
+              handleJsonKey: handleJsonKey,
+              activity: activity,
+              enableCommentFieldButton: true,
+              enableReactions: true,
+              textEditingController:
+              TextEditingController(), //TODO: move this into props for customisation like buildSpans
             ),
           ),
         ),
