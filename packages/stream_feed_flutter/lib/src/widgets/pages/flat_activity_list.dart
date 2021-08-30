@@ -153,7 +153,7 @@ class FlatActivityListPage extends StatelessWidget {
               enableCommentFieldButton: true,
               enableReactions: true,
               textEditingController:
-              TextEditingController(), //TODO: move this into props for customisation like buildSpans
+                  TextEditingController(), //TODO: move this into props for customisation like buildSpans
             ),
           ),
         ),
@@ -163,11 +163,12 @@ class FlatActivityListPage extends StatelessWidget {
   }
 
   /// TODO: document me
-  void pageRouteBuilder(
-      {required BuildContext context,
-      required TransitionType transitionType,
-      required EnrichedActivity activity,
-      required Widget page}) {
+  void pageRouteBuilder({
+    required BuildContext context,
+    required TransitionType transitionType,
+    required EnrichedActivity activity,
+    required Widget page,
+  }) {
     final currentNavigator = StreamFeedCore.of(context).navigator;
     //TODO: assert navigator not null
     switch (transitionType) {
