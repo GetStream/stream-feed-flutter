@@ -43,9 +43,15 @@ class StreamFeedTheme extends InheritedWidget {
 class StreamFeedThemeData with Diagnosticable {
   /// Builds a [StreamFeedThemeData] with default values, if none are given.
   factory StreamFeedThemeData({
+    Brightness? brightness,
     ChildReactionThemeData? childReactionTheme,
     ReactionThemeData? reactionTheme,
   }) {
+    // Use the given brightness, or a default
+    final _brightness = brightness ?? Brightness.light;
+    // Determine dark or light
+    final isDark = _brightness == Brightness.dark;
+
     // Use the given childReactionTheme or a default.
     childReactionTheme ??= const ChildReactionThemeData(
       hoverColor: Colors.lightBlue,
@@ -59,6 +65,7 @@ class StreamFeedThemeData with Diagnosticable {
     );
 
     return StreamFeedThemeData.raw(
+      brightness: _brightness,
       childReactionTheme: childReactionTheme,
       reactionTheme: reactionTheme,
     );
@@ -66,9 +73,13 @@ class StreamFeedThemeData with Diagnosticable {
 
   /// Raw [StreamFeedThemeData] initialization.
   const StreamFeedThemeData.raw({
+    required this.brightness,
     required this.childReactionTheme,
     required this.reactionTheme,
   });
+
+  /// The [Brightness] of this theme.
+  final Brightness brightness;
 
   /// {@macro childReactionThemeData}
   final ChildReactionThemeData childReactionTheme;
@@ -83,6 +94,7 @@ class StreamFeedThemeData with Diagnosticable {
       ..add(DiagnosticsProperty<ChildReactionThemeData>(
           'childReactionTheme', childReactionTheme))
       ..add(DiagnosticsProperty<ReactionThemeData>(
-          'reactionTheme', reactionTheme));
+          'reactionTheme', reactionTheme))
+      ..add(EnumProperty<Brightness>('brightness', brightness));
   }
 }
