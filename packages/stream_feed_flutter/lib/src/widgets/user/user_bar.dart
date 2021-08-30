@@ -60,8 +60,12 @@ class UserBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Padding(
-            padding: const EdgeInsets.all(8),
-            child: Avatar(user: user, onUserTap: onUserTap)),
+          padding: const EdgeInsets.all(8),
+          child: Avatar(
+            user: user,
+            onUserTap: onUserTap,
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
@@ -73,13 +77,13 @@ class UserBar extends StatelessWidget {
               if (showSubtitle)
                 subtitle ??
                     ReactedBy(
-                        icon: reactionIcon ??
-                            ReactionByIcon(
-                              kind: kind,
-                            ),
-                        handleOrUsername:
-                            user.data?[handleJsonKey] as String? ??
-                                user.data?[nameJsonKey] as String),
+                      icon: reactionIcon ??
+                          ReactionByIcon(
+                            kind: kind,
+                          ),
+                      handleOrUsername: user.data?[handleJsonKey] as String? ??
+                          user.data?[nameJsonKey] as String,
+                    ),
             ],
           ),
         ),
