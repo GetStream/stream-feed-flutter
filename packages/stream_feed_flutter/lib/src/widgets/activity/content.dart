@@ -59,7 +59,8 @@ class ActivityContent extends StatelessWidget {
           //TODO: handle Video + Audio + Gallery
           if (attachments != null)
             ActivityCard(
-                og: OpenGraphData.fromJson(attachments as Map<String, dynamic>))
+              og: OpenGraphData.fromJson(attachments as Map<String, dynamic>),
+            )
         ],
       ),
     );
