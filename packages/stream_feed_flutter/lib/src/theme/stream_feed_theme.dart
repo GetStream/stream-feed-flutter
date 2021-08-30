@@ -71,6 +71,14 @@ class StreamFeedThemeData with Diagnosticable {
     );
   }
 
+  /// A default light theme.
+  factory StreamFeedThemeData.light() =>
+      StreamFeedThemeData(brightness: Brightness.light);
+
+  /// A default dark theme.
+  factory StreamFeedThemeData.dark() =>
+      StreamFeedThemeData(brightness: Brightness.dark);
+
   /// Raw [StreamFeedThemeData] initialization.
   const StreamFeedThemeData.raw({
     required this.brightness,
