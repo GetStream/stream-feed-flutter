@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template like_button}
@@ -49,7 +50,10 @@ class LikeButton extends StatelessWidget {
     return ReactionButton(
       activity: activity,
       activeIcon: activeIcon ?? StreamSvgIcon.loveActive(),
-      inactiveIcon: inactiveIcon ?? StreamSvgIcon.loveInactive(),
+      inactiveIcon: inactiveIcon ??
+          StreamSvgIcon.loveInactive(
+            color: StreamFeedTheme.of(context).primaryIconTheme.color,
+          ),
       hoverColor: Colors.red.shade100,
 
       ///TODO: third state hover on desktop

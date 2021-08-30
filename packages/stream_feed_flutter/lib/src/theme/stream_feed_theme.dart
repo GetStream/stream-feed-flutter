@@ -46,6 +46,7 @@ class StreamFeedThemeData with Diagnosticable {
     Brightness? brightness,
     ChildReactionThemeData? childReactionTheme,
     ReactionThemeData? reactionTheme,
+    IconThemeData? primaryIconTheme,
   }) {
     // Use the given brightness, or a default
     final _brightness = brightness ?? Brightness.light;
@@ -58,16 +59,23 @@ class StreamFeedThemeData with Diagnosticable {
       toggleColor: Colors.lightBlue,
     );
 
+    // Use the given reactionTheme or a default.
     reactionTheme ??= const ReactionThemeData(
       hoverColor: Colors.lightBlue,
       toggleHoverColor: Colors.lightBlue,
       iconHoverColor: Colors.lightBlue,
     );
 
+    // Use the given primaryIconTheme or a default.
+    primaryIconTheme ??= IconThemeData(
+      color: isDark ? const Color(0xff959595) : const Color(0xff757575),
+    );
+
     return StreamFeedThemeData.raw(
       brightness: _brightness,
       childReactionTheme: childReactionTheme,
       reactionTheme: reactionTheme,
+      primaryIconTheme: primaryIconTheme,
     );
   }
 
@@ -84,6 +92,7 @@ class StreamFeedThemeData with Diagnosticable {
     required this.brightness,
     required this.childReactionTheme,
     required this.reactionTheme,
+    required this.primaryIconTheme,
   });
 
   /// The [Brightness] of this theme.
@@ -95,6 +104,9 @@ class StreamFeedThemeData with Diagnosticable {
   /// {@macro reactionThemeData}
   final ReactionThemeData reactionTheme;
 
+  /// The primary icon theme
+  final IconThemeData primaryIconTheme;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -103,6 +115,8 @@ class StreamFeedThemeData with Diagnosticable {
           'childReactionTheme', childReactionTheme))
       ..add(DiagnosticsProperty<ReactionThemeData>(
           'reactionTheme', reactionTheme))
-      ..add(EnumProperty<Brightness>('brightness', brightness));
+      ..add(EnumProperty<Brightness>('brightness', brightness))
+      ..add(DiagnosticsProperty<IconThemeData>(
+          'primaryIconTheme', primaryIconTheme));
   }
 }

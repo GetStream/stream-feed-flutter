@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
@@ -73,7 +74,9 @@ class ReplyButton extends StatelessWidget {
               },
             );
           },
-          icon: StreamSvgIcon.reply(),
+          icon: StreamSvgIcon.reply(
+            color: StreamFeedTheme.of(context).primaryIconTheme.color,
+          ),
         ),
         if (count != null && count! > 0) Text('${count!}')
       ],
