@@ -58,17 +58,18 @@ class PostButton extends StatelessWidget {
               context: context,
               builder: (_) {
                 return MediaQuery(
-                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-                    child: StreamFeedCore(
-                      //TODO: there might be a better way to do this
-                      client: StreamFeedCore.of(context).client,
-                      child: AlertDialogComment(
-                        activity: activity,
-                        feedGroup: feedGroup,
-                        nameJsonKey: nameJsonKey,
-                        handleJsonKey: handleJsonKey,
-                      ),
-                    ));
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+                  child: StreamFeedCore(
+                    //TODO: there might be a better way to do this
+                    client: StreamFeedCore.of(context).client,
+                    child: AlertDialogComment(
+                      activity: activity,
+                      feedGroup: feedGroup,
+                      nameJsonKey: nameJsonKey,
+                      handleJsonKey: handleJsonKey,
+                    ),
+                  ),
+                );
               },
             );
           },
