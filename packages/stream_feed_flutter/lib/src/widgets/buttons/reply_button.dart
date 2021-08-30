@@ -4,14 +4,14 @@ import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template post_button}
+///{@template reply_button}
 /// A reaction button that displays a post icon.
 ///
 /// Used to post a reply to a post when clicked.
 ///{@endtemplate}
-class PostButton extends StatelessWidget {
-  /// Builds a [PostButton].
-  const PostButton({
+class ReplyButton extends StatelessWidget {
+  /// Builds a [ReplyButton].
+  const ReplyButton({
     Key? key,
     this.feedGroup = 'user',
     required this.activity,

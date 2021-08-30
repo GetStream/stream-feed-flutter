@@ -28,7 +28,7 @@ class ActivityFooter extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          PostButton(
+          ReplyButton(
             activity: activity,
             feedGroup: feedGroup,
           ),
