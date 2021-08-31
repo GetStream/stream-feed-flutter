@@ -75,11 +75,12 @@ class CommentItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
-              padding: const EdgeInsets.all(8),
-              child: Avatar(
-                user: user,
-                onUserTap: onUserTap,
-              )),
+            padding: const EdgeInsets.all(8),
+            child: Avatar(
+              user: user,
+              onUserTap: onUserTap,
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8),
@@ -98,18 +99,19 @@ class CommentItem extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                      padding: const EdgeInsets.all(2),
-                      child: Wrap(
-                        //TODO: move to Text.rich(WidgetSpans)
-                        children: taggedText
-                            .map((it) => InteractiveText(
-                                  //TODO: for loop comprehension if not null instead of map
-                                  tagged: it,
-                                  onHashtagTap: onHashtagTap,
-                                  onMentionTap: onMentionTap,
-                                ))
-                            .toList(),
-                      ))
+                    padding: const EdgeInsets.all(2),
+                    child: Wrap(
+                      //TODO: move to Text.rich(WidgetSpans)
+                      children: taggedText
+                          .map((it) => InteractiveText(
+                                //TODO: for loop comprehension if not null instead of map
+                                tagged: it,
+                                onHashtagTap: onHashtagTap,
+                                onMentionTap: onMentionTap,
+                              ))
+                          .toList(),
+                    ),
+                  ),
                 ],
               ),
             ),
