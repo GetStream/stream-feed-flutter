@@ -540,7 +540,7 @@ void main() {
       'duration': '419.81ms'
     };
     final personalizedFeed =
-        PersonalizedFeed<Object?, Object?, Object?, Object?>.fromJson(json);
+        PersonalizedFeed<String,String,String,String>.fromJson(json);
     expect(
         personalizedFeed,
         const PersonalizedFeed<Object?, Object?, Object?, Object?>(
