@@ -106,6 +106,7 @@ class UserBarThemeData with Diagnosticable {
           TextStyle.lerp(a.timestampTextStyle, b.timestampTextStyle, t),
       usernameTextStyle:
           TextStyle.lerp(a.usernameTextStyle, b.usernameTextStyle, t),
+      avatarSize: a.avatarSize,
     );
   }
 
