@@ -7,6 +7,7 @@ import 'package:stream_feed_flutter/src/widgets/human_readable_timestamp.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
+import 'package:stream_feed_flutter/src/widgets/user/username.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template comment_item}
@@ -92,7 +93,10 @@ class CommentItem extends StatelessWidget {
                     padding: const EdgeInsets.all(2),
                     child: Row(
                       children: [
-                        ...displayUsername(user),
+                        Username(
+                          user: user!,
+                          nameJsonKey: nameJsonKey,
+                        ),
                         if (reaction.createdAt != null)
                           HumanReadableTimestamp(timestamp: reaction.createdAt!)
                       ],
@@ -130,14 +134,4 @@ class CommentItem extends StatelessWidget {
       ),
     );
   }
-
-  /// TODO: document me
-  List<Widget> displayUsername(User? user) => handleDisplay(
-      user?.data,
-      nameJsonKey,
-      const TextStyle(
-        color: Color(0xff0ba8e0),
-        fontWeight: FontWeight.w700,
-        fontSize: 14,
-      ));
 }

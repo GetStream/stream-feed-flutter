@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/user_bar_theme.dart';
 import 'package:stream_feed_flutter/src/utils/display.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/human_readable_timestamp.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
+import 'package:stream_feed_flutter/src/widgets/user/username.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /// Displays the user's name, profile picture, and a timestamp at which the
@@ -72,7 +74,10 @@ class UserBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...displayUsername(user),
+              Username(
+                user: user,
+                nameJsonKey: nameJsonKey,
+              ),
               if (afterUsername != null) afterUsername!,
               if (showSubtitle)
                 subtitle ??
@@ -96,16 +101,6 @@ class UserBar extends StatelessWidget {
       ],
     );
   }
-
-  /// TODO: document me
-  List<Widget> displayUsername(User? user) => handleDisplay(
-      user?.data,
-      nameJsonKey,
-      const TextStyle(
-        color: Color(0xff0ba8e0),
-        fontWeight: FontWeight.w700,
-        fontSize: 14,
-      ));
 }
 
 /// TODO: document me

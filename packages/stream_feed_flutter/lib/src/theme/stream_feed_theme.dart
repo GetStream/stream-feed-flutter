@@ -49,6 +49,7 @@ class StreamFeedThemeData with Diagnosticable {
     IconThemeData? primaryIconTheme,
     GifDialogThemeData? gifDialogTheme,
     OgCardThemeData? ogCardTheme,
+    UserBarThemeData? userBarTheme,
   }) {
     // Use the given brightness, or a default
     final _brightness = brightness ?? Brightness.light;
@@ -113,6 +114,22 @@ class StreamFeedThemeData with Diagnosticable {
       ),
     );
 
+    // Use the given userBarTheme or a default.
+    userBarTheme ??= const UserBarThemeData(
+      usernameTextStyle: TextStyle(
+        color: Color(0xff0ba8e0),
+        fontWeight: FontWeight.w700,
+        fontSize: 14,
+      ),
+      timestampTextStyle: TextStyle(
+        color: Color(0xff7a8287),
+        fontWeight: FontWeight.w400,
+        height: 1.5,
+        fontSize: 14,
+      ),
+      avatarSize: 46,
+    );
+
     return StreamFeedThemeData.raw(
       brightness: _brightness,
       childReactionTheme: childReactionTheme,
@@ -120,6 +137,7 @@ class StreamFeedThemeData with Diagnosticable {
       primaryIconTheme: primaryIconTheme,
       gifDialogTheme: gifDialogTheme,
       ogCardTheme: ogCardTheme,
+      userBarTheme: userBarTheme,
     );
   }
 
@@ -139,6 +157,7 @@ class StreamFeedThemeData with Diagnosticable {
     required this.primaryIconTheme,
     required this.gifDialogTheme,
     required this.ogCardTheme,
+    required this.userBarTheme,
   });
 
   /// The [Brightness] of this theme.
@@ -159,6 +178,9 @@ class StreamFeedThemeData with Diagnosticable {
   /// {@macro ogCardThemeData}
   final OgCardThemeData ogCardTheme;
 
+  /// {@macro userBarThemeData}
+  final UserBarThemeData userBarTheme;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -172,6 +194,8 @@ class StreamFeedThemeData with Diagnosticable {
           'primaryIconTheme', primaryIconTheme))
       ..add(DiagnosticsProperty<GifDialogThemeData>(
           'gifDialogTheme', gifDialogTheme))
-      ..add(DiagnosticsProperty<OgCardThemeData>('ogCardTheme', ogCardTheme));
+      ..add(DiagnosticsProperty<OgCardThemeData>('ogCardTheme', ogCardTheme))
+      ..add(
+          DiagnosticsProperty<UserBarThemeData>('userBarTheme', userBarTheme));
   }
 }
