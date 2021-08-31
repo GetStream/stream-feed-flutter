@@ -48,6 +48,7 @@ class StreamFeedThemeData with Diagnosticable {
     ReactionThemeData? reactionTheme,
     IconThemeData? primaryIconTheme,
     GifDialogThemeData? gifDialogTheme,
+    OgCardThemeData? ogCardTheme,
   }) {
     // Use the given brightness, or a default
     final _brightness = brightness ?? Brightness.light;
@@ -89,12 +90,27 @@ class StreamFeedThemeData with Diagnosticable {
       color: isDark ? const Color(0xff959595) : const Color(0xff757575),
     );
 
+    // Use the given gifDialogTheme or a default.
     gifDialogTheme ??= GifDialogThemeData(
       boxDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: Colors.blue),
       ),
       iconColor: Colors.blue,
+    );
+
+    // Use the given ogCardTheme or a default.
+    ogCardTheme ??= const OgCardThemeData(
+      titleTextStyle: TextStyle(
+        color: Color(0xff007aff),
+        fontSize: 14,
+        overflow: TextOverflow.ellipsis,
+      ),
+      descriptionTextStyle: TextStyle(
+        color: Color(0xff364047),
+        fontSize: 13,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     return StreamFeedThemeData.raw(
@@ -121,6 +137,7 @@ class StreamFeedThemeData with Diagnosticable {
     required this.reactionTheme,
     required this.primaryIconTheme,
     required this.gifDialogTheme,
+    required this.ogCardTheme,
   });
 
   /// The [Brightness] of this theme.
@@ -138,6 +155,9 @@ class StreamFeedThemeData with Diagnosticable {
   /// {@macro gifDialogThemeData}
   final GifDialogThemeData gifDialogTheme;
 
+  /// {@macro ogCardThemeData}
+  final OgCardThemeData ogCardTheme;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -150,6 +170,7 @@ class StreamFeedThemeData with Diagnosticable {
       ..add(DiagnosticsProperty<IconThemeData>(
           'primaryIconTheme', primaryIconTheme))
       ..add(DiagnosticsProperty<GifDialogThemeData>(
-          'gifDialogTheme', gifDialogTheme));
+          'gifDialogTheme', gifDialogTheme))
+      ..add(DiagnosticsProperty<OgCardThemeData>('ogCardTheme', ogCardTheme));
   }
 }

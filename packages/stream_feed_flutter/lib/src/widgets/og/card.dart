@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/og_card_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -95,20 +96,12 @@ class ActivityCard extends StatelessWidget {
                     children: [
                       Text(
                         og.title!, //TODO: handle null
-                        style: const TextStyle(
-                          color: Color(0xff007aff),
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        style: OgCardTheme.of(context).titleTextStyle,
                       ),
                       const SizedBox(height: 10),
                       Text(
                         og.description!, //TODO: handle null
-                        style: const TextStyle(
-                          color: Color(0xff364047),
-                          fontSize: 13,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        style: OgCardTheme.of(context).descriptionTextStyle,
                       ),
                     ],
                   ),
