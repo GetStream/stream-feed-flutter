@@ -119,6 +119,7 @@ class StreamFeedThemeData with Diagnosticable {
       reactionTheme: reactionTheme,
       primaryIconTheme: primaryIconTheme,
       gifDialogTheme: gifDialogTheme,
+      ogCardTheme: ogCardTheme,
     );
   }
 
