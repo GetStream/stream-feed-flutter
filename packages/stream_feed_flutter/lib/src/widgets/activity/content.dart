@@ -39,7 +39,7 @@ class ActivityContent extends StatelessWidget {
     final attachments =
         activity.extraData?['attachments']; //TODO: attachment builder
     final taggedText = activityObject != null
-        ? detector.parseText(activityObject) //TODO: ugly
+        ? detector.parseText(activityObject)
         : <TaggedText>[];
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
