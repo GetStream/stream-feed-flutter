@@ -543,7 +543,7 @@ void main() {
         PersonalizedFeed<String,String,String,String>.fromJson(json);
     expect(
         personalizedFeed,
-        const PersonalizedFeed<Object?, Object?, Object?, Object?>(
+        const PersonalizedFeed<String, String, String, String>(
             limit: 25,
             offset: 0,
             version: 'user_1_1619210635',
