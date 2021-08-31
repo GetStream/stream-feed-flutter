@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/reaction_theme.dart';
 import 'package:stream_feed_flutter/src/utils/extensions.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
@@ -26,23 +27,35 @@ class InteractiveText extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (tagged.tag) {
       case Tag.normalText:
-        return Text('${tagged.text} ', style: tagged.tag.style());
+        return Text(
+          '${tagged.text} ',
+          style: ReactionTheme.of(context).normalTextStyle,
+        );
       case Tag.hashtag:
         return InkWell(
           onTap: () {
             onHashtagTap?.call(tagged.text.trim().replaceFirst('#', ''));
           },
-          child: Text(tagged.text, style: tagged.tag.style()),
+          child: Text(
+            tagged.text,
+            style: ReactionTheme.of(context).hashtagTextStyle,
+          ),
         );
       case Tag.mention:
         return InkWell(
           onTap: () {
             onMentionTap?.call(tagged.text.trim().replaceFirst('@', ''));
           },
-          child: Text(tagged.text, style: tagged.tag.style()),
+          child: Text(
+            tagged.text,
+            style: ReactionTheme.of(context).mentionTextStyle,
+          ),
         );
       default:
-        return Text(tagged.text, style: tagged.tag.style());
+        return Text(
+          tagged.text,
+          style: ReactionTheme.of(context).normalTextStyle,
+        );
     }
   }
 }

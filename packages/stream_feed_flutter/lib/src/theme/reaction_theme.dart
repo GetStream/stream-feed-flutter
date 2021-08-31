@@ -68,6 +68,9 @@ class ReactionThemeData with Diagnosticable {
     this.hoverColor,
     this.toggleHoverColor,
     this.iconHoverColor,
+    this.hashtagTextStyle,
+    this.mentionTextStyle,
+    this.normalTextStyle,
   });
 
   /// The color shown when the user hovers over the button.
@@ -81,17 +84,32 @@ class ReactionThemeData with Diagnosticable {
   /// The hover color for a [ReactionIcon].
   final Color? iconHoverColor;
 
+  /// Text styling of hashtag text.
+  final TextStyle? hashtagTextStyle;
+
+  /// The styling of mention text.
+  final TextStyle? mentionTextStyle;
+
+  /// The styling of normal text.
+  final TextStyle? normalTextStyle;
+
   /// Creates a copy of this theme, but with the given fields replaced with
   /// the new values.
   ReactionThemeData copyWith({
     Color? hoverColor,
     Color? toggleHoverColor,
     Color? iconHoverColor,
+    TextStyle? hashtagTextStyle,
+    TextStyle? mentionTextStyle,
+    TextStyle? normalTextStyle,
   }) {
     return ReactionThemeData(
       hoverColor: hoverColor ?? this.hoverColor,
       toggleHoverColor: toggleHoverColor ?? this.toggleHoverColor,
       iconHoverColor: iconHoverColor ?? this.iconHoverColor,
+      hashtagTextStyle: hashtagTextStyle ?? this.hashtagTextStyle,
+      mentionTextStyle: mentionTextStyle ?? this.mentionTextStyle,
+      normalTextStyle: normalTextStyle ?? this.normalTextStyle,
     );
   }
 
@@ -107,6 +125,11 @@ class ReactionThemeData with Diagnosticable {
       hoverColor: Color.lerp(a.hoverColor, b.hoverColor, t),
       toggleHoverColor: Color.lerp(a.toggleHoverColor, b.toggleHoverColor, t),
       iconHoverColor: Color.lerp(a.iconHoverColor, b.iconHoverColor, t),
+      hashtagTextStyle:
+          TextStyle.lerp(a.hashtagTextStyle, b.hashtagTextStyle, t),
+      mentionTextStyle:
+          TextStyle.lerp(a.mentionTextStyle, b.mentionTextStyle, t),
+      normalTextStyle: TextStyle.lerp(a.normalTextStyle, b.normalTextStyle, t),
     );
   }
 
@@ -117,7 +140,10 @@ class ReactionThemeData with Diagnosticable {
           runtimeType == other.runtimeType &&
           hoverColor == other.hoverColor &&
           toggleHoverColor == other.toggleHoverColor &&
-          iconHoverColor == other.iconHoverColor;
+          iconHoverColor == other.iconHoverColor &&
+          hashtagTextStyle == other.hashtagTextStyle &&
+          mentionTextStyle == other.mentionTextStyle &&
+          normalTextStyle == other.normalTextStyle;
 
   @override
   int get hashCode => hoverColor.hashCode ^ toggleHoverColor.hashCode;
@@ -128,6 +154,12 @@ class ReactionThemeData with Diagnosticable {
     properties
       ..add(ColorProperty('hoverColor', hoverColor))
       ..add(ColorProperty('toggleHoverColor', toggleHoverColor))
-      ..add(ColorProperty('iconHoverColor', iconHoverColor));
+      ..add(ColorProperty('iconHoverColor', iconHoverColor))
+      ..add(
+          DiagnosticsProperty<TextStyle?>('hashtagTextStyle', hashtagTextStyle))
+      ..add(
+          DiagnosticsProperty<TextStyle?>('mentionTextStyle', mentionTextStyle))
+      ..add(
+          DiagnosticsProperty<TextStyle?>('normalTextStyle', normalTextStyle));
   }
 }

@@ -60,10 +60,27 @@ class StreamFeedThemeData with Diagnosticable {
     );
 
     // Use the given reactionTheme or a default.
-    reactionTheme ??= const ReactionThemeData(
+    reactionTheme ??= ReactionThemeData(
       hoverColor: Colors.lightBlue,
       toggleHoverColor: Colors.lightBlue,
       iconHoverColor: Colors.lightBlue,
+      hashtagTextStyle: const TextStyle(
+        color: Color(0xff0076ff),
+        fontSize: 14,
+      ),
+      mentionTextStyle: const TextStyle(
+        color: Color(0xff0076ff),
+        fontSize: 14,
+      ),
+      normalTextStyle: isDark
+          ? const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            )
+          : const TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
     );
 
     // Use the given primaryIconTheme or a default.
