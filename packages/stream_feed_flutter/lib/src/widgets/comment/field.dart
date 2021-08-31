@@ -46,9 +46,13 @@ class CommentField extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(8),
-              child: Avatar(), //TODO: User in core and onUserTap
+              //TODO: pass down User
+              child: Avatar(
+                // user: user,
+                size: UserBarTheme.of(context).avatarSize,
+              ), //TODO: User in core and onUserTap
             ),
             Expanded(
               child: TextArea(

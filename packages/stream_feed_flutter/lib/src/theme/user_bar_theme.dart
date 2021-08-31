@@ -77,14 +77,14 @@ class UserBarThemeData with Diagnosticable {
   final TextStyle? usernameTextStyle;
 
   /// The size of the avatar.
-  final int? avatarSize;
+  final double? avatarSize;
 
   /// Creates a copy of this theme, but with the given fields replaced with
   /// the new values.
   UserBarThemeData copyWith({
     TextStyle? timestampTextStyle,
     TextStyle? usernameTextStyle,
-    int? avatarSize,
+    double? avatarSize,
   }) {
     return UserBarThemeData(
       timestampTextStyle: timestampTextStyle ?? this.timestampTextStyle,
@@ -128,7 +128,7 @@ class UserBarThemeData with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IntProperty('avatarSize', avatarSize));
+    properties.add(DoubleProperty('avatarSize', avatarSize));
     properties.add(DiagnosticsProperty<TextStyle?>(
         'usernameTextStyle', usernameTextStyle));
     properties.add(DiagnosticsProperty<TextStyle?>(

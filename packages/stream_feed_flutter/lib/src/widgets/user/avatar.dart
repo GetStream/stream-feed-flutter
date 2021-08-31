@@ -20,7 +20,7 @@ class Avatar extends StatelessWidget {
   final User? user;
 
   /// The size of the avatar.
-  final double size;
+  final double? size;
 
   ///{@macro user_callback}
   final OnUserTap? onUserTap;

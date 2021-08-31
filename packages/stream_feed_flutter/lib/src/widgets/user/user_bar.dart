@@ -66,6 +66,7 @@ class UserBar extends StatelessWidget {
           child: Avatar(
             user: user,
             onUserTap: onUserTap,
+            size: UserBarTheme.of(context).avatarSize,
           ),
         ),
         Padding(
@@ -78,6 +79,7 @@ class UserBar extends StatelessWidget {
                 user: user,
                 nameJsonKey: nameJsonKey,
               ),
+              const SizedBox(width: 4),
               if (afterUsername != null) afterUsername!,
               if (showSubtitle)
                 subtitle ??

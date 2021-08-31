@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/user_bar_theme.dart';
 import 'package:stream_feed_flutter/src/utils/display.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
@@ -80,6 +81,7 @@ class CommentItem extends StatelessWidget {
             child: Avatar(
               user: user,
               onUserTap: onUserTap,
+              size: UserBarTheme.of(context).avatarSize,
             ),
           ),
           Expanded(
@@ -94,11 +96,14 @@ class CommentItem extends StatelessWidget {
                     child: Row(
                       children: [
                         Username(
-                          user: user!,
+                          user: user,
                           nameJsonKey: nameJsonKey,
                         ),
+                        const SizedBox(width: 4),
                         if (reaction.createdAt != null)
-                          HumanReadableTimestamp(timestamp: reaction.createdAt!)
+                          HumanReadableTimestamp(
+                              timestamp:
+                                  reaction.createdAt!) //not null in the future
                       ],
                     ),
                   ),
@@ -108,7 +113,6 @@ class CommentItem extends StatelessWidget {
                       //TODO: move to Text.rich(WidgetSpans)
                       children: taggedText
                           .map((it) => InteractiveText(
-                                //TODO: for loop comprehension if not null instead of map
                                 tagged: it,
                                 onHashtagTap: onHashtagTap,
                                 onMentionTap: onMentionTap,

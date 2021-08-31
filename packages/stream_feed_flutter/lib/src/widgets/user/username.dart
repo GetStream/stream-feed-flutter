@@ -6,20 +6,22 @@ class Username extends StatelessWidget {
   /// Builds a [Username].
   const Username({
     Key? key,
-    required this.user,
+    this.user,
     required this.nameJsonKey,
   }) : super(key: key);
 
   /// The user to show a username for
-  final User user;
+  final User? user;
 
   /// TODO: document me
   final String nameJsonKey;
 
+  String? get username => user?.data?[nameJsonKey] as String?;
+
   @override
   Widget build(BuildContext context) {
     return Text(
-      user.data?[nameJsonKey] as String,
+      username ?? 'anonymous',
       style: UserBarTheme.of(context).usernameTextStyle,
     );
   }
