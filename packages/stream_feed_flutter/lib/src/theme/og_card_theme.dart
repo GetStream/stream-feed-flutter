@@ -103,6 +103,17 @@ class OgCardThemeData with Diagnosticable {
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OgCardThemeData &&
+          runtimeType == other.runtimeType &&
+          titleTextStyle == other.titleTextStyle &&
+          descriptionTextStyle == other.descriptionTextStyle;
+
+  @override
+  int get hashCode => titleTextStyle.hashCode ^ descriptionTextStyle.hashCode;
+
+  @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
