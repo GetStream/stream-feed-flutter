@@ -19,6 +19,7 @@ class LikeButton extends StatelessWidget {
     this.onTap,
     this.activeIcon,
     this.inactiveIcon,
+    this.hoverColor,
   }) : super(key: key);
 
   /// The reaction received from Stream that should be liked when pressing
@@ -44,6 +45,8 @@ class LikeButton extends StatelessWidget {
 
   /// The feed group that this [LikeButton] is associated with.
   final String feedGroup;
+
+  final Color? hoverColor;
 
   @override
   Widget build(BuildContext context) {
