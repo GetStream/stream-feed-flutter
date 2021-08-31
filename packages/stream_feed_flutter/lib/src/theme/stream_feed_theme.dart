@@ -47,6 +47,7 @@ class StreamFeedThemeData with Diagnosticable {
     ChildReactionThemeData? childReactionTheme,
     ReactionThemeData? reactionTheme,
     IconThemeData? primaryIconTheme,
+    GifDialogThemeData? gifDialogTheme,
   }) {
     // Use the given brightness, or a default
     final _brightness = brightness ?? Brightness.light;
@@ -88,11 +89,20 @@ class StreamFeedThemeData with Diagnosticable {
       color: isDark ? const Color(0xff959595) : const Color(0xff757575),
     );
 
+    gifDialogTheme ??= GifDialogThemeData(
+      boxDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: Colors.blue),
+      ),
+      iconColor: Colors.blue,
+    );
+
     return StreamFeedThemeData.raw(
       brightness: _brightness,
       childReactionTheme: childReactionTheme,
       reactionTheme: reactionTheme,
       primaryIconTheme: primaryIconTheme,
+      gifDialogTheme: gifDialogTheme,
     );
   }
 
@@ -110,6 +120,7 @@ class StreamFeedThemeData with Diagnosticable {
     required this.childReactionTheme,
     required this.reactionTheme,
     required this.primaryIconTheme,
+    required this.gifDialogTheme,
   });
 
   /// The [Brightness] of this theme.
@@ -124,6 +135,9 @@ class StreamFeedThemeData with Diagnosticable {
   /// The primary icon theme
   final IconThemeData primaryIconTheme;
 
+  /// {@macro gifDialogThemeData}
+  final GifDialogThemeData gifDialogTheme;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -134,6 +148,8 @@ class StreamFeedThemeData with Diagnosticable {
           'reactionTheme', reactionTheme))
       ..add(EnumProperty<Brightness>('brightness', brightness))
       ..add(DiagnosticsProperty<IconThemeData>(
-          'primaryIconTheme', primaryIconTheme));
+          'primaryIconTheme', primaryIconTheme))
+      ..add(DiagnosticsProperty<GifDialogThemeData>(
+          'gifDialogTheme', gifDialogTheme));
   }
 }

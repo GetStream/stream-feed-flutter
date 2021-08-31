@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/gif_dialog_theme.dart';
 
 ///{@template gif_action}
 ///Opens a gif dialog
@@ -12,13 +13,10 @@ class GIFAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: Colors.blue),
-      ),
-      child: const Icon(
+      decoration: GifDialogTheme.of(context).boxDecoration,
+      child: Icon(
         Icons.gif_outlined, //TODO: svg icons
-        color: Colors.blue,
+        color: GifDialogTheme.of(context).iconColor,
         semanticLabel: 'GIF', //TODO: i18n
       ),
     );
