@@ -54,7 +54,7 @@ class LikeButton extends StatelessWidget {
           StreamSvgIcon.loveInactive(
             color: StreamFeedTheme.of(context).primaryIconTheme.color,
           ),
-      hoverColor: Colors.red.shade100,
+      hoverColor: hoverColor ?? ReactionTheme.of(context).hoverColor,
 
       ///TODO: third state hover on desktop
       reaction: reaction,
