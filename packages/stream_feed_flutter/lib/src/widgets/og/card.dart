@@ -65,31 +65,32 @@ class ActivityCard extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Card(
           color: Colors.grey[50],
-          child: Row(children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: Image.network(
-                image!,
-                height: 100,
-                width: 100,
-                semanticLabel:
-                    firstOgImage?.alt ?? alt ?? title ?? description ?? '',
-                loadingBuilder: (
-                  BuildContext context,
-                  Widget child,
-                  ImageChunkEvent? loadingProgress,
-                ) =>
-                    StreamCircularProgressIndicator(
-                  loadingProgress: loadingProgress,
-                  child: child,
+          child: Row(
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.network(
+                  image!,
+                  height: 100,
+                  width: 100,
+                  semanticLabel:
+                      firstOgImage?.alt ?? alt ?? title ?? description ?? '',
+                  loadingBuilder: (
+                    BuildContext context,
+                    Widget child,
+                    ImageChunkEvent? loadingProgress,
+                  ) =>
+                      StreamCircularProgressIndicator(
+                    loadingProgress: loadingProgress,
+                    child: child,
+                  ),
+                  fit: BoxFit.fill,
                 ),
-                fit: BoxFit.fill,
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -109,10 +110,12 @@ class ActivityCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ]),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ]),
+            ],
+          ),
         ),
       ),
     );
