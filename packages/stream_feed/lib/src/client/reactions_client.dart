@@ -237,7 +237,7 @@ class ReactionsClient {
   /// Paginated reactions and filter them
   ///
   /// {@macro filter}
-  Future<PaginatedReactions> paginatedFilter(
+  Future<PaginatedReactions<A, Ob, T, Or>> paginatedFilter<A, Ob, T, Or>(
     LookupAttribute lookupAttr,
     String lookupValue, {
     Filter? filter,
@@ -246,7 +246,13 @@ class ReactionsClient {
   }) {
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
-    return _reactions.paginatedFilter(token, lookupAttr, lookupValue,
-        filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
+    return _reactions.paginatedFilter<A, Ob, T, Or>(
+      token,
+      lookupAttr,
+      lookupValue,
+      filter ?? Default.filter,
+      limit ?? Default.limit,
+      kind ?? '',
+    );
   }
 }

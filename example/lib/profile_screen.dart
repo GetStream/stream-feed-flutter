@@ -1,20 +1,29 @@
-import 'extension.dart';
+import 'package:example/activity_item.dart';
+import 'package:example/add_activity_dialog.dart';
+import 'package:example/extension.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-import 'activity_item.dart';
-import 'add_activity_dialog.dart';
-
+//ignore: public_member_api_docs
 class ProfileScreen extends StatefulWidget {
+  //ignore: public_member_api_docs
   const ProfileScreen({
-    Key? key,
     required this.currentUser,
+    Key? key,
   }) : super(key: key);
 
+  //ignore: public_member_api_docs
   final StreamUser currentUser;
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<StreamUser>('currentUser', currentUser));
+  }
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -47,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         onPressed: () async {
           final message = await showDialog<String>(
             context: context,
-            builder: (_) => AddActivityDialog(),
+            builder: (_) => const AddActivityDialog(),
           );
           if (message != null) {
             context.showSnackBar('Posting Activity...');
@@ -66,15 +75,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _loadActivities();
           }
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: Center(
         child: RefreshIndicator(
           onRefresh: () => _loadActivities(pullToRefresh: true),
           child: _isLoading
-              ? CircularProgressIndicator()
+              ? const CircularProgressIndicator()
               : activities.isEmpty
-                  ? Text('No activities yet!')
+                  ? const Text('No activities yet!')
                   : ListView.separated(
                       itemCount: activities.length,
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -87,6 +96,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<Activity>('activities', activities));
   }
 }
 //Shared an update Just now

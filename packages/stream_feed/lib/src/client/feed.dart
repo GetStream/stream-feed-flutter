@@ -67,8 +67,8 @@ class Feed {
 
   /// Subscribes to any changes in the feed, return a [Subscription]
   @experimental
-  Future<Subscription> subscribe<A, Ob, T>(
-    void Function(RealtimeMessage? message) callback,
+  Future<Subscription> subscribe<A, Ob, T, Or>(
+    void Function(RealtimeMessage<A, Ob, T, Or>? message) callback,
   ) {
     checkNotNull(
       subscriber,
@@ -78,16 +78,8 @@ class Feed {
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
 
     return subscriber!(token, feedId, (data) {
-      final realtimeMessage = RealtimeMessage.fromJson(
+      final realtimeMessage = RealtimeMessage<A, Ob, T, Or>.fromJson(
         data!,
-        (json) =>
-            (A is User) ? User.fromJson(json! as Map<String, dynamic>) : json,
-        (json) => (Ob is CollectionEntry)
-            ? CollectionEntry.fromJson(json! as Map<String, dynamic>)
-            : Ob,
-        (jsonT) => (T is Activity)
-            ? Activity.fromJson(jsonT! as Map<String, dynamic>)
-            : T,
       );
       callback(realtimeMessage);
     });

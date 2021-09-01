@@ -49,10 +49,11 @@ class StreamFeedClientImpl implements StreamFeedClient {
     StreamHttpClientOptions? options,
   }) {
     assert(_ensureCredentials(), '');
-    _api = api ?? StreamApiImpl(apiKey, options: options);
     _logger = Logger.detached('📜')..level = logLevel;
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
     _logger.info('instantiating new client');
+
+    _api = api ?? StreamApiImpl(apiKey, logger: _logger, options: options);
 
     if (userToken != null) {
       final jwtBody = jwtDecode(userToken!);
