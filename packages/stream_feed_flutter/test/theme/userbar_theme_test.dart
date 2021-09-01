@@ -4,8 +4,7 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 void main() {
   test('UserBarThemeData copyWith, ==, hashCode basics', () {
-    expect(const UserBarThemeData(),
-        const UserBarThemeData().copyWith());
+    expect(const UserBarThemeData(), const UserBarThemeData().copyWith());
     expect(const UserBarThemeData().hashCode,
         const UserBarThemeData().copyWith().hashCode);
   });
