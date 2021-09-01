@@ -128,26 +128,25 @@ void main() {
   });
   group('RealtimeMessage', () {
     test('fromJson', () {
-      final fromJson =
-          RealtimeMessage<String, String, String?, String?>.fromJson(
-        jsonFixture('realtime_message.json'),
-        (json) => json! as String,
-        (json) => json! as String,
-        (json) => null,
-      );
+      final fromJson = RealtimeMessage<String, String, String, String>.fromJson(
+          jsonFixture('realtime_message.json'));
 
       expect(
           fromJson,
-          RealtimeMessage<String, String, String?, String?>(
+          RealtimeMessage<String, String, String, String>(
+              deleted: [],
+              deletedForeignIds: [],
               feed: FeedId.fromId('reward:1'),
               newActivities: [
-                EnrichedActivity<String, String, String?, String?>(
+                EnrichedActivity<String, String, String, String>(
                     actor: 'reward:1',
                     id: 'f3de8328-be2d-11eb-bb18-128a130028af',
                     extraData: const {
                       'message':
                           "@Jessica check out getstream.io it's so dang awesome.",
                     },
+                    target: "test",
+                    origin: "test",
                     object: 'tweet:id',
                     time: DateTime.parse('2021-05-26T14:23:33.918391'),
                     to: const ['notification:jessica'],
@@ -156,9 +155,42 @@ void main() {
     });
 
     test('issue-89', () {
-      RealtimeMessage.fromJson(
+      final fixture = RealtimeMessage<User, String, String?, String?>.fromJson(
         jsonFixture('realtime_message_issue89.json'),
       );
+      expect(
+          fixture,
+          RealtimeMessage<User, String, String?, String?>(
+              deleted: [],
+              deletedForeignIds: [],
+              feed: FeedId.fromId("task:32db0f46-3593-4e14-aa57-f05af4887260"),
+              newActivities: [
+                EnrichedActivity(
+                  foreignId: null,
+                  id: "cff95542-c979-11eb-8080-80005abdd229",
+                  object: "task_situation_updated to true",
+                  time: DateTime.parse("2021-06-09T23:24:18.238189"),
+                  verb: "updated",
+                  actor: User(
+                      createdAt: DateTime.parse("2021-04-13T22:53:19.670051Z"),
+                      updatedAt: DateTime.parse("2021-04-13T22:53:19.670051Z"),
+                      id: "eTHVBnEm0FQB2HeaRKVlEfVf58B3personal",
+                      data: {
+                        "gender": "Male",
+                        "name": "Rickey Lee",
+                        "photo":
+                            "https://firebasestorage.googleapis.com/v0/b/fire-snab.appspot.com/o/profile-image-placeholder.png?alt=media&token=b17598bb-a510-4167-8354-ab75642ba89e"
+                      }),
+                  extraData: {
+                    "createdTask": {
+                      "id": "32db0f46-3593-4e14-aa57-f05af4887260",
+                      "title": "KeyPack",
+                      "isFinished": true
+                    },
+                    "group": "updated_2021-06-09",
+                  },
+                )
+              ]));
     });
   });
   test('EnrichedActivity issue 61', () {
@@ -538,10 +570,10 @@ void main() {
       'duration': '419.81ms'
     };
     final personalizedFeed =
-        PersonalizedFeed<Object?, Object?, Object?, Object?>.fromJson(json);
+        PersonalizedFeed<String, String, String, String>.fromJson(json);
     expect(
         personalizedFeed,
-        const PersonalizedFeed<Object?, Object?, Object?, Object?>(
+        const PersonalizedFeed<String, String, String, String>(
             limit: 25,
             offset: 0,
             version: 'user_1_1619210635',
