@@ -82,23 +82,32 @@ void main() {
   //   });
   // });
   testWidgets('LikeButton', (tester) async {
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) {
+          return StreamFeedTheme(
+            data: StreamFeedThemeData.light(),
+            child: child!,
+          );
+        },
         home: Scaffold(
-      body: LikeButton(
-        activity:
-            EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
-        // .add and .delete
-        reaction: Reaction(kind: 'like', childrenCounts: {
-          'like': 3
-        }, ownChildren: {
-          'like': [
-            Reaction(
-              kind: 'like',
-            )
-          ]
-        }),
+          body: LikeButton(
+            activity:
+                EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
+            // .add and .delete
+            reaction: Reaction(kind: 'like', childrenCounts: {
+              'like': 3
+            }, ownChildren: {
+              'like': [
+                Reaction(
+                  kind: 'like',
+                )
+              ]
+            }),
+          ),
+        ),
       ),
-    )));
+    );
 
     final icon = find.byType(StreamSvgIcon);
     final activeIcon = tester.widget<StreamSvgIcon>(icon);
@@ -108,23 +117,32 @@ void main() {
   });
 
   testWidgets('RepostButton', (tester) async {
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) {
+          return StreamFeedTheme(
+            data: StreamFeedThemeData.light(),
+            child: child!,
+          );
+        },
         home: Scaffold(
-      body: RepostButton(
-        activity:
-            EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
-        // .add and .delete
-        reaction: Reaction(kind: 'repost', childrenCounts: {
-          'repost': 3
-        }, ownChildren: {
-          'repost': [
-            Reaction(
-              kind: 'repost',
-            )
-          ]
-        }),
+          body: RepostButton(
+            activity:
+                EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
+            // .add and .delete
+            reaction: Reaction(kind: 'repost', childrenCounts: {
+              'repost': 3
+            }, ownChildren: {
+              'repost': [
+                Reaction(
+                  kind: 'repost',
+                )
+              ]
+            }),
+          ),
+        ),
       ),
-    )));
+    );
 
     final icon = find.byType(StreamSvgIcon);
     final activeIcon = tester.widget<StreamSvgIcon>(icon);
