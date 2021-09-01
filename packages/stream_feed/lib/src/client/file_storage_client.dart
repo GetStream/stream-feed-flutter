@@ -12,7 +12,7 @@ class FileStorageClient {
   /// Initializes a FileStorageClient object
   ///
   /// {@macro files}
-  FileStorageClient(
+  const FileStorageClient(
     this._files, {
     this.userToken,
     this.secret,

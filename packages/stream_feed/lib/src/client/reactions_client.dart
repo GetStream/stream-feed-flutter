@@ -17,8 +17,8 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// when the reactions parameters are used.
 /// {@endtemplate}
 class ReactionsClient {
-  ///{@macro reactions}
-  ReactionsClient(this._reactions, {this.userToken, this.secret})
+  ///Initialize a reaction client
+  const ReactionsClient(this._reactions, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',

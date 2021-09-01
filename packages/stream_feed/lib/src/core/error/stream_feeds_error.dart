@@ -21,7 +21,7 @@ class StreamFeedsError with EquatableMixin implements Exception {
 /// A custom [Exception] for printing http-related Stream Feeds errors.
 class StreamFeedsNetworkError extends StreamFeedsError {
   /// Builds a [StreamFeedsNetworkError].
-  StreamFeedsNetworkError(
+   StreamFeedsNetworkError(
     FeedsError error, {
     int? statusCode,
     this.data,

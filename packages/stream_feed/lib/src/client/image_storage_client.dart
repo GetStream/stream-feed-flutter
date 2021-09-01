@@ -20,7 +20,7 @@ class ImageStorageClient {
   /// Initializes a [ImageStorageClient] object
   ///
   ///{@macro filesnandimages}
-  ImageStorageClient(this._images, {this.userToken, this.secret})
+  const ImageStorageClient(this._images, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
