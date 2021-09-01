@@ -39,7 +39,7 @@ class ActivityHeader extends StatelessWidget {
     return UserBar(
       user: activity.actor!, //TODO: actor will be non nullable in the future
       onUserTap: onUserTap,
-      timestamp: activity.time!,//TODO: time will be non nullable in the future
+      timestamp: activity.time!, //TODO: time will be non nullable in the future
       kind: activityKind,
       showSubtitle: showSubtitle,
       nameJsonKey: nameJsonKey,

@@ -4,8 +4,7 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 void main() {
   test('GifDialogThemeData copyWith, ==, hashCode basics', () {
-    expect(const GifDialogThemeData(),
-        const GifDialogThemeData().copyWith());
+    expect(const GifDialogThemeData(), const GifDialogThemeData().copyWith());
     expect(const GifDialogThemeData().hashCode,
         const GifDialogThemeData().copyWith().hashCode);
   });

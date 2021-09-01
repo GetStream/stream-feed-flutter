@@ -158,7 +158,7 @@ class FlatActivityListPage extends StatelessWidget {
                 enableCommentFieldButton: true,
                 enableReactions: true,
                 textEditingController:
-                TextEditingController(), //TODO: move this into props for customisation like buildSpans
+                    TextEditingController(), //TODO: move this into props for customisation like buildSpans
               ),
             ),
           ),
