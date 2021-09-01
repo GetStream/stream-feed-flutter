@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/og_card_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,6 +11,19 @@ import 'package:url_launcher/url_launcher.dart';
 /// the device's browser.
 ///{@endtemplate}
 class ActivityCard extends StatelessWidget {
+  /// Builds an [ActivityCard].
+  const ActivityCard({
+    Key? key,
+    required this.og,
+    this.alt,
+    this.image,
+    // this.nolink,
+    this.description,
+    this.title,
+    this.url,
+    this.imageURL,
+  }) : super(key: key);
+
   /// The alternative text to display for accessibility reasons.
   final String? alt;
 
@@ -31,19 +45,6 @@ class ActivityCard extends StatelessWidget {
   /// The title of the media.
   final String? title;
 
-  ///{@macro activity_card}
-  const ActivityCard({
-    Key? key,
-    required this.og,
-    this.alt,
-    this.image,
-    // this.nolink,
-    this.description,
-    this.title,
-    this.url,
-    this.imageURL,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final _url = og.url!;
@@ -53,64 +54,61 @@ class ActivityCard extends StatelessWidget {
         firstOgImage?.image ??
         imageURL;
     return InkWell(
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: const BorderRadius.all(
+        Radius.circular(4),
+      ),
       onTap: () async {
         await canLaunch(_url) //TODO: provide a callback
             ? await launch(_url)
             : throw 'Could not launch $_url';
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: Card(
           color: Colors.grey[50],
-          child: Row(children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4.0),
-              child: Image.network(
-                image!,
-                height: 100.0,
-                width: 100.0,
-                semanticLabel:
-                    firstOgImage?.alt ?? alt ?? title ?? description ?? '',
-                loadingBuilder: (
-                  BuildContext context,
-                  Widget child,
-                  ImageChunkEvent? loadingProgress,
-                ) =>
-                    StreamCircularProgressIndicator(
-                  loadingProgress: loadingProgress,
-                  child: child,
+          child: Row(
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.network(
+                  image!,
+                  height: 100,
+                  width: 100,
+                  semanticLabel:
+                      firstOgImage?.alt ?? alt ?? title ?? description ?? '',
+                  loadingBuilder: (
+                    BuildContext context,
+                    Widget child,
+                    ImageChunkEvent? loadingProgress,
+                  ) =>
+                      StreamCircularProgressIndicator(
+                    loadingProgress: loadingProgress,
+                    child: child,
+                  ),
+                  fit: BoxFit.fill,
                 ),
-                fit: BoxFit.fill,
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         og.title!, //TODO: handle null
-                        style: TextStyle(
-                          color: Color(0xff007aff),
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        style: OgCardTheme.of(context).titleTextStyle,
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         og.description!, //TODO: handle null
-                        style: TextStyle(
-                          color: Color(0xff364047),
-                          fontSize: 13,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        style: OgCardTheme.of(context).descriptionTextStyle,
                       ),
-                    ]),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ]),
+            ],
+          ),
         ),
       ),
     );

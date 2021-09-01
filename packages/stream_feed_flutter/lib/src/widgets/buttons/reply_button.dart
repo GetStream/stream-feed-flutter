@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
-import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template post_button}
+///{@template reply_button}
 /// A reaction button that displays a post icon.
 ///
 /// Used to post a reply to a post when clicked.
 ///{@endtemplate}
-class PostButton extends StatelessWidget {
-  /// Builds a [PostButton].
-  const PostButton({
+class ReplyButton extends StatelessWidget {
+  /// Builds a [ReplyButton].
+  const ReplyButton({
     Key? key,
     this.feedGroup = 'user',
     required this.activity,
@@ -21,7 +22,10 @@ class PostButton extends StatelessWidget {
     this.nameJsonKey = 'name',
   }) : super(key: key);
 
+  /// TODO: document me
   final String handleJsonKey;
+
+  /// TODO: document me
   final String nameJsonKey;
 
   /// The group or slug of the feed to post to.
@@ -30,11 +34,13 @@ class PostButton extends StatelessWidget {
   /// The activity to post to the feed.
   final DefaultEnrichedActivity activity;
 
+  /// TODO: document me
   final Reaction? reaction;
 
   /// The size of the icon to display.
   final double iconSize;
 
+  /// TODO: document me
   int? get count =>
       reaction?.childrenCounts?['comment'] ??
       activity.reactionCounts?['comment'];
@@ -53,21 +59,24 @@ class PostButton extends StatelessWidget {
               context: context,
               builder: (_) {
                 return MediaQuery(
-                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                    child: StreamFeedCore(
-                      //TODO: there might be a better way to do this
-                      client: StreamFeedCore.of(context).client,
-                      child: AlertDialogComment(
-                        activity: activity,
-                        feedGroup: feedGroup,
-                        nameJsonKey: nameJsonKey,
-                        handleJsonKey: handleJsonKey,
-                      ),
-                    ));
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+                  child: StreamFeedCore(
+                    //TODO: there might be a better way to do this
+                    client: StreamFeedCore.of(context).client,
+                    child: AlertDialogComment(
+                      activity: activity,
+                      feedGroup: feedGroup,
+                      nameJsonKey: nameJsonKey,
+                      handleJsonKey: handleJsonKey,
+                    ),
+                  ),
+                );
               },
             );
           },
-          icon: StreamSvgIcon.post(),
+          icon: StreamSvgIcon.reply(
+            color: StreamFeedTheme.of(context).primaryIconTheme.color,
+          ),
         ),
         if (count != null && count! > 0) Text('${count!}')
       ],

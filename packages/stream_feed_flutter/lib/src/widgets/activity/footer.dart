@@ -14,17 +14,21 @@ class ActivityFooter extends StatelessWidget {
     required this.activity,
     this.feedGroup = 'user',
   }) : super(key: key);
+
+  /// TODO: document me
   final DefaultEnrichedActivity activity;
+
+  /// TODO: document me
   final String feedGroup;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          PostButton(
+          ReplyButton(
             activity: activity,
             feedGroup: feedGroup,
           ),

@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/widgets/human_readable_timestamp.dart';
+import 'package:stream_feed_flutter/src/theme/user_bar_theme.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
-import 'package:stream_feed_flutter/src/utils/display.dart';
+import 'package:stream_feed_flutter/src/widgets/human_readable_timestamp.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
+import 'package:stream_feed_flutter/src/widgets/user/username.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /// Displays the user's name, profile picture, and a timestamp at which the
 /// user posted the message.
 class UserBar extends StatelessWidget {
+  /// Builds a [UserBar].
+  const UserBar({
+    Key? key,
+    required this.timestamp,
+    required this.kind,
+    required this.user,
+    this.onUserTap,
+    this.reactionIcon,
+    this.afterUsername,
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
+    this.subtitle,
+    this.showSubtitle = true,
+  }) : super(key: key);
+
   /// The User whose bar is being displayed.
   final User user;
 
@@ -39,96 +55,97 @@ class UserBar extends StatelessWidget {
   /// Whether or not to show the subtitle.
   final bool showSubtitle;
 
-  /// Builds a [UserBar].
-  const UserBar({
-    Key? key,
-    required this.timestamp,
-    required this.kind,
-    required this.user,
-    this.onUserTap,
-    this.reactionIcon,
-    this.afterUsername,
-    this.handleJsonKey = 'handle',
-    this.nameJsonKey = 'name',
-    this.subtitle,
-    this.showSubtitle = true,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Avatar(user: user, onUserTap: onUserTap)),
+          padding: const EdgeInsets.all(8),
+          child: Avatar(
+            user: user,
+            onUserTap: onUserTap,
+            size: UserBarTheme.of(context).avatarSize,
+          ),
+        ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...displayUsername(user),
+              Username(
+                user: user,
+                nameJsonKey: nameJsonKey,
+              ),
+              const SizedBox(width: 4),
               if (afterUsername != null) afterUsername!,
               if (showSubtitle)
                 subtitle ??
                     ReactedBy(
-                        icon: reactionIcon ??
-                            ReactionByIcon(
-                              kind: kind,
-                            ),
-                        handleOrUsername:
-                            user.data?[handleJsonKey] as String? ??
-                                user.data?[nameJsonKey] as String),
+                      icon: reactionIcon ??
+                          ReactionByIcon(
+                            kind: kind,
+                          ),
+                      handleOrUsername: user.data?[handleJsonKey] as String? ??
+                          user.data?[nameJsonKey] as String,
+                    ),
             ],
           ),
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: HumanReadableTimestamp(timestamp: timestamp),
           ),
         )
       ],
     );
   }
-
-  List<Widget> displayUsername(User? user) => handleDisplay(
-      user?.data,
-      nameJsonKey,
-      TextStyle(
-          color: Color(0xff0ba8e0), fontWeight: FontWeight.w700, fontSize: 14));
 }
 
+/// TODO: document me
 class ReactedBy extends StatelessWidget {
+  /// Builds a [ReactedBy].
   const ReactedBy({
     Key? key,
     required this.icon,
     required this.handleOrUsername,
   }) : super(key: key);
 
+  /// TODO: document me
   final Widget icon;
+
+  /// TODO: document me
   final String handleOrUsername;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Row(
-          children: [
-            icon,
-            SizedBox(
-              width: 4.0,
-            ),
-            Text('by '), //TODO: padding?
-            Text(handleOrUsername) //TODO: padding?
-          ],
-        ));
+      padding: const EdgeInsets.all(2),
+      child: Row(
+        children: [
+          icon,
+          const SizedBox(
+            width: 4,
+          ),
+          const Text('by '), //TODO: padding?
+          Text(handleOrUsername) //TODO: padding?
+        ],
+      ),
+    );
   }
 }
 
+/// TODO: document me
 class ReactionByIcon extends StatelessWidget {
-  ReactionByIcon({Key? key, required this.kind}) : super(key: key);
+  /// Builds a [ReactionByIcon].
+  const ReactionByIcon({
+    Key? key,
+    required this.kind,
+  }) : super(key: key);
+
+  /// TODO: document me
   final String kind;
 
   @override
@@ -139,7 +156,7 @@ class ReactionByIcon extends StatelessWidget {
       case 'repost':
         return StreamSvgIcon.repost();
       default:
-        return Offstage();
+        return const Offstage();
     }
   }
 }

@@ -68,7 +68,7 @@ class _TextAreaState extends State<TextArea> {
     return LimitedBox(
       maxHeight: widget.maxHeight,
       child: TextField(
-        key: Key('messageInputText'),
+        key: const Key('messageInputText'),
         onSubmitted: (value) => widget.onSubmitted?.call(value),
         maxLines: null,
         keyboardType: widget.keyboardType,
@@ -78,7 +78,7 @@ class _TextAreaState extends State<TextArea> {
         autofocus: widget.autofocus,
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8),
             hintStyle: widget.hintTextStyle,
             border: InputBorder.none,
             hintText: widget.hintText),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/user_bar_theme.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-/// An Human readable date.
+/// A human readable date.
 class HumanReadableTimestamp extends StatelessWidget {
   /// Builds a [HumanReadableTimestamp].
   const HumanReadableTimestamp({
@@ -16,12 +17,7 @@ class HumanReadableTimestamp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       timeago.format(timestamp),
-      style: TextStyle(
-        color: Color(0xff7a8287),
-        fontWeight: FontWeight.w400,
-        height: 1.5,
-        fontSize: 14,
-      ),
+      style: UserBarTheme.of(context).timestampTextStyle,
     );
   }
 }

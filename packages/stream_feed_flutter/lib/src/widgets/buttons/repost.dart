@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -49,7 +50,10 @@ class RepostButton extends StatelessWidget {
       activity: activity,
       reaction: reaction,
       activeIcon: activeIcon ?? StreamSvgIcon.repost(color: Colors.blue),
-      inactiveIcon: inactiveIcon ?? StreamSvgIcon.repost(color: Colors.grey),
+      inactiveIcon: inactiveIcon ??
+          StreamSvgIcon.repost(
+            color: StreamFeedTheme.of(context).primaryIconTheme.color,
+          ),
       hoverColor: Colors.green.shade100,
       kind: 'repost',
       onTap: onTap,
