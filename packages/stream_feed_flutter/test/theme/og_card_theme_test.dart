@@ -4,8 +4,7 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 void main() {
   test('OgCardThemeData copyWith, ==, hashCode basics', () {
-    expect(const OgCardThemeData(),
-        const OgCardThemeData().copyWith());
+    expect(const OgCardThemeData(), const OgCardThemeData().copyWith());
     expect(const OgCardThemeData().hashCode,
         const OgCardThemeData().copyWith().hashCode);
   });
