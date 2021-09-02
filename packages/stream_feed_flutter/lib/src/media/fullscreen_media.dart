@@ -34,6 +34,7 @@ class FullscreenMedia extends StatefulWidget {
 
 class _FullscreenMediaState extends State<FullscreenMedia>
     with SingleTickerProviderStateMixin {
+  // Whether to display the image options to the user by default or not.
   bool _optionsShown = true;
 
   late final AnimationController _controller;
