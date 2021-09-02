@@ -63,7 +63,23 @@ class _FullscreenMediaState extends State<FullscreenMedia>
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
-        children: [],
+        children: [
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return PageView.builder(
+                controller: _pageController,
+                onPageChanged: (val) {
+                  setState(() => _currentPage = val);
+                },
+                itemBuilder: (context, index) {
+                  final media = widget.media[index];
+                  return Container();
+                },
+              );
+            },
+          ),
+        ],
       ),
     );
   }
