@@ -1,3 +1,4 @@
+export 'error/index.dart';
 export 'http/stream_http_client.dart' show StreamHttpClientOptions;
 export 'http/token.dart';
 export 'location.dart';
