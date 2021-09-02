@@ -15,33 +15,96 @@ class GalleryPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 270,
-      child: GridView.builder(
-        itemCount: urls.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-        ),
-        itemBuilder: (context, index) {
-          return Image.network(
-            urls[index],
-            height: 100,
-            width: 100,
-            loadingBuilder: (
-              BuildContext context,
-              Widget child,
-              ImageChunkEvent? loadingProgress,
-            ) {
-              return StreamCircularProgressIndicator(
-                loadingProgress: loadingProgress,
-                child: child,
-              );
-            },
-            fit: BoxFit.fill,
-          );
-        },
+    final mediaQueryData = MediaQuery.of(context);
+    return ConstrainedBox(
+      constraints: BoxConstraints.loose(Size(
+        mediaQueryData.size.width * 1.0,
+        mediaQueryData.size.height * 0.3,
+      ),),
+      child: Flex(
+        direction: Axis.vertical,
+        children: [
+          Flexible(
+            fit: FlexFit.tight,
+            child: Flex(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              direction: Axis.horizontal,
+              children: [
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Image.network(
+                    urls.first,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 2),
+                    child: Image.network(
+                      urls[1],
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (urls.length >= 3)
+            Flexible(
+              fit: FlexFit.tight,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Flex(
+                  direction: Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Image.network(
+                        urls[2],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    if (urls.length >= 4)
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Image.network(
+                                urls[3],
+                                fit: BoxFit.cover,
+                              ),
+                              if (urls.length > 4)
+                                Positioned.fill(
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: Material(
+                                      color: Colors.black38,
+                                      child: Center(
+                                        child: Text(
+                                          '+ ${urls.length - 4}',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 26,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
