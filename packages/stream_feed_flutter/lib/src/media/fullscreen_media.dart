@@ -75,7 +75,13 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                 },
                 itemBuilder: (context, index) {
                   final media = widget.media[index];
-                  return Container();
+                  if (media.mediaType == MediaType.image) {
+                    // TODO: return PhotoView here
+                    return Container();
+                  } else {
+                    // TODO: handle other media types
+                    return Container();
+                  }
                 },
               );
             },
