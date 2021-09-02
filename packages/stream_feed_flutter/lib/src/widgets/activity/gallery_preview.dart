@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart';
 
 /// A widget that displays image previews
 class GalleryPreview extends StatelessWidget {
@@ -17,10 +16,12 @@ class GalleryPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
     return ConstrainedBox(
-      constraints: BoxConstraints.loose(Size(
-        mediaQueryData.size.width * 1.0,
-        mediaQueryData.size.height * 0.3,
-      ),),
+      constraints: BoxConstraints.loose(
+        Size(
+          mediaQueryData.size.width * 1.0,
+          mediaQueryData.size.height * 0.3,
+        ),
+      ),
       child: Flex(
         direction: Axis.vertical,
         children: [
@@ -37,16 +38,17 @@ class GalleryPreview extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 2),
-                    child: Image.network(
-                      urls[1],
-                      fit: BoxFit.cover,
+                if (urls.length >= 2)
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Image.network(
+                        urls[1],
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
