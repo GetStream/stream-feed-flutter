@@ -58,12 +58,16 @@ class FileStorageClient {
   Future<String?> upload(
     AttachmentFile file, {
     OnSendProgress? onSendProgress,
+    OnReceiveProgress? onReceiveProgress,
     CancelToken? cancelToken,
   }) async {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return _files.upload(token, file,
-        onSendProgress: onSendProgress, cancelToken: cancelToken);
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+        cancelToken: cancelToken,
+        );
   }
 
   /// Delete a file using the url returned by the APIs

@@ -53,6 +53,7 @@ class ImageStorageClient {
   Future<String?> upload(
     AttachmentFile image, {
     OnSendProgress? onSendProgress,
+    OnReceiveProgress? onReceiveProgress,
     CancelToken? cancelToken,
   }) {
     //TODO: params onSendProgress: onSendProgress,
@@ -60,7 +61,9 @@ class ImageStorageClient {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return _images.upload(token, image,
-        onSendProgress: onSendProgress, cancelToken: cancelToken);
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+        cancelToken: cancelToken);
   }
 
   /// Images can be deleted using their URL.

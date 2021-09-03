@@ -112,6 +112,7 @@ class StreamHttpClient {
     Map<String, Object?>? queryParameters,
     Map<String, Object?>? headers,
     OnSendProgress? onSendProgress,
+    OnReceiveProgress? onReceiveProgress,
     CancelToken? cancelToken,
   }) async {
     try {
@@ -120,6 +121,7 @@ class StreamHttpClient {
           data: data,
           options: Options(headers: headers?.nullProtected),
           onSendProgress: onSendProgress,
+          onReceiveProgress:onReceiveProgress,
           cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {
@@ -194,6 +196,7 @@ class StreamHttpClient {
       Map<String, Object?>? queryParameters,
       Map<String, Object?>? headers,
       OnSendProgress? onSendProgress,
+      OnReceiveProgress? onReceiveProgress,
       CancelToken? cancelToken}) async {
     try {
       final formData = FormData.fromMap({'file': file});
@@ -203,6 +206,7 @@ class StreamHttpClient {
           queryParameters: queryParameters,
           headers: headers,
           onSendProgress: onSendProgress,
+          onReceiveProgress:onReceiveProgress,
           cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {
