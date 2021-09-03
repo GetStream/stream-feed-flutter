@@ -114,6 +114,7 @@ class _FullscreenMediaState extends State<FullscreenMedia>
               children: [
                 GalleryHeader(
                   currentIndex: _currentPage,
+                  totalMedia: widget.media.length,
                   onBackButtonPressed: () => Navigator.of(context).pop(),
                 ),
               ],

@@ -11,6 +11,7 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     this.showBackButton = true,
     this.currentIndex = 0,
+    this.totalMedia,
     this.onBackButtonPressed,
   })  : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
@@ -28,6 +29,8 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
   /// The current index of the media being shown.
   final int? currentIndex;
 
+  final int? totalMedia;
+
   @override
   final Size preferredSize;
 
@@ -44,6 +47,9 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
             )
           : const SizedBox(),
       centerTitle: true,
+      title: totalMedia != null
+          ? Text('${currentIndex! + 1} of $totalMedia')
+          : null,
     );
   }
 
