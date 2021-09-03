@@ -1,3 +1,8 @@
+## 0.3.0: 03/09/2021
+
+- breaking: `User user(String userId)` is now `StreamUser user(String userId)` for easier state management
+- new: CancelToken and OnSendProgress named parameters to support cancelling an upload and tracking its progress
+
 ## 0.2.3: 03/08/2021
 
 - remove dead links in Readmes
