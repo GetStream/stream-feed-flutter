@@ -1,3 +1,7 @@
+## 0.2.3+1: 03/09/2021
+
+ Breaking change warning: `UserClient user(String userId)` will be `StreamUser user(String userId)` for easier state management in the 0.3.0 release
+ 
 ## 0.2.3: 03/08/2021
 
 - remove dead links in Readmes

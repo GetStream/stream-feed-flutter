@@ -160,6 +160,8 @@ class StreamFeedClientImpl implements StreamFeedClient {
       PersonalizationClient(_api.personalization,
           userToken: userToken, secret: secret);
 
+  @Deprecated(
+      "`UserClient user(String userId)` will be `StreamUser user(String userId)` for easier state management in the 0.3.0 release")
   @override
   UserClient user(String userId) =>
       UserClient(_api.users, userId, userToken: userToken, secret: secret);
