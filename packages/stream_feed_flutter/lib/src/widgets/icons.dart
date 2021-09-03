@@ -120,6 +120,18 @@ class StreamSvgIcon extends StatelessWidget {
         height: size,
       );
 
+  /// [StreamSvgIcon] type
+  factory StreamSvgIcon.close({
+    double? size,
+    Color? color,
+  }) =>
+      StreamSvgIcon(
+        assetName: 'Icon_close.svg',
+        color: color,
+        width: size,
+        height: size,
+      );
+
   /// The name of the icon asset
   final String assetName;
 

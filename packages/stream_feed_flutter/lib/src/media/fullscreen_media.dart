@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:stream_feed_flutter/src/media/gallery_header.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 // ignore_for_file: cascade_invocations
@@ -65,7 +66,6 @@ class _FullscreenMediaState extends State<FullscreenMedia>
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(),
       body: Stack(
         children: [
           AnimatedBuilder(
@@ -83,6 +83,14 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                       imageProvider: NetworkImage(media.url),
                       maxScale: PhotoViewComputedScale.covered,
                       minScale: PhotoViewComputedScale.contained,
+                      onTapUp: (a, b, c) {
+                        setState(() => _optionsShown = !_optionsShown);
+                        if (_controller.isCompleted) {
+                          _controller.reverse();
+                        } else {
+                          _controller.forward();
+                        }
+                      },
                     );
                   } else {
                     // TODO: handle other media types
@@ -91,6 +99,19 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                 },
               );
             },
+          ),
+          AnimatedOpacity(
+            opacity: _optionsShown ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GalleryHeader(
+                  currentIndex: _currentPage,
+                  onBackButtonPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
           ),
         ],
       ),
