@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 // ignore_for_file: cascade_invocations
@@ -76,8 +78,9 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                 itemBuilder: (context, index) {
                   final media = widget.media[index];
                   if (media.mediaType == MediaType.image) {
-                    // TODO: return PhotoView here
-                    return Container();
+                    return PhotoView(
+                      imageProvider: NetworkImage(media.url),
+                    );
                   } else {
                     // TODO: handle other media types
                     return Container();
