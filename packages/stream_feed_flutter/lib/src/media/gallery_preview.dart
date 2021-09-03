@@ -8,11 +8,11 @@ class GalleryPreview extends StatelessWidget {
   /// Builds a [GalleryPreview].
   const GalleryPreview({
     Key? key,
-    required this.urls,
+    required this.media,
   }) : super(key: key);
 
   /// The list of image urls to display
-  final List<String> urls;
+  final List<Media> media;
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +38,12 @@ class GalleryPreview extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () => _onTap(context, 0),
                     child: Image.network(
-                      urls.first,
+                      media.first.url,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                if (urls.length >= 2)
+                if (media.length >= 2)
                   Flexible(
                     fit: FlexFit.tight,
                     child: Padding(
@@ -51,7 +51,7 @@ class GalleryPreview extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () => _onTap(context, 1),
                         child: Image.network(
-                          urls[1],
+                          media[1].url,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -60,7 +60,7 @@ class GalleryPreview extends StatelessWidget {
               ],
             ),
           ),
-          if (urls.length >= 3)
+          if (media.length >= 3)
             Flexible(
               fit: FlexFit.tight,
               child: Padding(
@@ -74,12 +74,12 @@ class GalleryPreview extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () => _onTap(context, 2),
                         child: Image.network(
-                          urls[2],
+                          media[2].url,
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    if (urls.length >= 4)
+                    if (media.length >= 4)
                       Flexible(
                         fit: FlexFit.tight,
                         child: Padding(
@@ -87,11 +87,14 @@ class GalleryPreview extends StatelessWidget {
                           child: Stack(
                             fit: StackFit.expand,
                             children: [
-                              Image.network(
-                                urls[3],
-                                fit: BoxFit.cover,
+                              GestureDetector(
+                                onTap: () => _onTap(context, 3),
+                                child: Image.network(
+                                  media[3].url,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              if (urls.length > 4)
+                              if (media.length > 4)
                                 Positioned.fill(
                                   child: GestureDetector(
                                     onTap: () => _onTap(context, 3),
@@ -99,7 +102,7 @@ class GalleryPreview extends StatelessWidget {
                                       color: Colors.black38,
                                       child: Center(
                                         child: Text(
-                                          '+ ${urls.length - 4}',
+                                          '+ ${media.length - 4}',
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 26,
@@ -123,10 +126,6 @@ class GalleryPreview extends StatelessWidget {
   }
 
   void _onTap(BuildContext context, int index) {
-    final media = <Media>[];
-    for (final url in urls) {
-      media.add(Media(url: url));
-    }
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => FullscreenMedia(
@@ -140,6 +139,6 @@ class GalleryPreview extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<String>('urls', urls));
+    properties.add(IterableProperty<Media>('media', media));
   }
 }

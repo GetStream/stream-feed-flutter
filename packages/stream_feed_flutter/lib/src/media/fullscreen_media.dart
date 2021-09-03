@@ -73,11 +73,13 @@ class _FullscreenMediaState extends State<FullscreenMedia>
             builder: (context, child) {
               return PageView.builder(
                 controller: _pageController,
+                itemCount: widget.media.length,
                 onPageChanged: (val) {
                   setState(() => _currentPage = val);
                 },
                 itemBuilder: (context, index) {
                   final media = widget.media[index];
+                  //print(media.url);
                   if (media.mediaType == MediaType.image) {
                     return PhotoView(
                       imageProvider: NetworkImage(media.url),
@@ -90,6 +92,12 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                         } else {
                           _controller.forward();
                         }
+                      },
+                      loadingBuilder: (context, event) {
+                        print(event);
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
                       },
                     );
                   } else {
