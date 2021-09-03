@@ -2,38 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class ActivitiesBloc extends StatefulWidget {
-  /// Instantiate a new [ActivitiesBloc]. The parameter [child] must be supplied and
-  /// not null.
-  const ActivitiesBloc({
-    required this.child,
-    Key? key,
-  }) : super(key: key);
-
-  /// The widget child
-  final Widget child;
-
-  @override
-  ActivitiesBlocState createState() => ActivitiesBlocState();
-
-  /// Use this method to get the current [ActivitiesBlocState] instance
-  static ActivitiesBlocState of(BuildContext context) {
-    ActivitiesBlocState? state;
-
-    state = context.findAncestorStateOfType<ActivitiesBlocState>();
-
-    assert(
-      state != null,
-      'You must have a ActivitiesBloc widget as ancestor',
-    );
-
-    return state!;
-  }
-}
-
-/// The current state of the [ReactionsBloc]
-class ActivitiesBlocState extends State<ActivitiesBloc>
-    with AutomaticKeepAliveClientMixin {
+class ActivitiesBloc {
   /// The current reactions list
   List<EnrichedActivity>? get activities => _activitiesController.valueOrNull;
 
@@ -156,25 +125,28 @@ class ActivitiesBlocState extends State<ActivitiesBloc>
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    _streamFeedCore = StreamFeedCore.of(context);
-    super.didChangeDependencies();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return widget.child;
-  }
-
-  @override
   void dispose() {
     _activitiesController.close();
     _queryActivitiesLoadingController.close();
-    super.dispose();
+  }
+}
+
+class ActivitiesProvider extends InheritedWidget {
+  const ActivitiesProvider({
+    Key? key,
+    required this.bloc,
+    required Widget child,
+  }) : super(key: key, child: child);
+
+  final ActivitiesBloc bloc;
+
+  static ActivitiesProvider of(BuildContext context) {
+    final ActivitiesProvider? result =
+        context.dependOnInheritedWidgetOfExactType<ActivitiesProvider>();
+    assert(result != null, 'No ActivitiesBloc found in context');
+    return result!;
   }
 
   @override
-  bool get wantKeepAlive => true;
+  bool updateShouldNotify(ActivitiesProvider old) => bloc != old.bloc;
 }

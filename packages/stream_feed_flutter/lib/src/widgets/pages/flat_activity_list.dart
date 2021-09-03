@@ -95,7 +95,8 @@ class FlatActivityListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActivitiesBloc(
+    return ActivitiesProvider(
+      bloc: ActivitiesBloc(),
       child: FlatFeedCore(
         flags: flags,
         limit: limit,
@@ -128,7 +129,6 @@ class FlatActivityListPage extends StatelessWidget {
             page: StreamFeedCore(
               //TODO: let the user implement this
               client: StreamFeedCore.of(context).client,
-              activitiesProvider:ActivitiesBloc.of(context),
               child: Scaffold(
                 appBar: AppBar(
                   title: Text('Post'),

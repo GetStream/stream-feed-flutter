@@ -43,7 +43,8 @@ main() {
             body: StreamFeedCore(
       analyticsClient: mockStreamAnalytics,
       client: mockClient,
-      child: ReactionsBloc(
+      child: ReactionsProvider(
+        bloc: ReactionsBloc(),
         child: ReactionListCore(
           reactionsBuilder: (context, reactions, idx) => Offstage(),
           lookupValue: lookupValue,

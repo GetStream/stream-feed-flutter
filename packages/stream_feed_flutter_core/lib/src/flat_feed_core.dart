@@ -95,11 +95,11 @@ class FlatFeedCore extends StatefulWidget {
 
 class _FlatFeedCoreState extends State<FlatFeedCore>
     with WidgetsBindingObserver {
-  ActivitiesBlocState? _activitiesBloc;
+  late ActivitiesBloc _activitiesBloc;
 
   @override
   void didChangeDependencies() {
-    final newActivitiesBloc = ActivitiesBloc.of(context);
+    final newActivitiesBloc = ActivitiesProvider.of(context).bloc;
     if (newActivitiesBloc != _activitiesBloc) {
       _activitiesBloc = newActivitiesBloc;
       loadData();
@@ -108,7 +108,7 @@ class _FlatFeedCoreState extends State<FlatFeedCore>
   }
 
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => _activitiesBloc!.queryEnrichedActivities(
+  Future<void> loadData() => _activitiesBloc.queryEnrichedActivities(
         feedGroup: widget.feedGroup,
         limit: widget.limit,
         offset: widget.offset,
@@ -122,7 +122,7 @@ class _FlatFeedCoreState extends State<FlatFeedCore>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<EnrichedActivity>>(
-      stream: _activitiesBloc!.activitiesStream,
+      stream: _activitiesBloc.activitiesStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return widget

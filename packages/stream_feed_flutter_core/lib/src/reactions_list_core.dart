@@ -73,11 +73,11 @@ class ReactionListCore extends StatefulWidget {
 
 class _ReactionListCoreState extends State<ReactionListCore>
     with WidgetsBindingObserver {
-  ReactionsBlocState? _reactionsBloc;
+  late ReactionsBloc _reactionsBloc;
 
   @override
   void didChangeDependencies() {
-    final newReactionsBloc = ReactionsBloc.of(context);
+    final newReactionsBloc = ReactionsProvider.of(context).bloc;
     if (newReactionsBloc != _reactionsBloc) {
       _reactionsBloc = newReactionsBloc;
       loadData();
@@ -86,7 +86,7 @@ class _ReactionListCoreState extends State<ReactionListCore>
   }
 
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => _reactionsBloc!.queryReactions(
+  Future<void> loadData() => _reactionsBloc.queryReactions(
         widget.lookupAttr,
         widget.lookupValue,
         filter: widget.filter,
@@ -98,7 +98,7 @@ class _ReactionListCoreState extends State<ReactionListCore>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Reaction>>(
-        stream: _reactionsBloc!.reactionsStream,
+        stream: _reactionsBloc.reactionsStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return widget.onErrorWidget; //snapshot.error

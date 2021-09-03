@@ -66,7 +66,8 @@ class ReactionListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactionsBloc(
+    return ReactionsProvider(
+      bloc: ReactionsBloc(),
       child: ReactionListCore(
         lookupValue: _lookupValue, //TODO: handle null safety
         onProgressWidget: onProgressWidget,

@@ -47,7 +47,8 @@ main() {
           body: StreamFeedCore(
             analyticsClient: mockStreamAnalytics,
             client: mockClient,
-            child: ActivitiesBloc(
+            child: ActivitiesProvider(
+              bloc: ActivitiesBloc(),
               child: FlatFeedCore(
                 feedGroup: 'user',
                 feedBuilder: (BuildContext context,

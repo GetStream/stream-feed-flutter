@@ -2,38 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class ReactionsBloc extends StatefulWidget {
-  /// Instantiate a new [ReactionsBloc]. The parameter [child] must be supplied
-  /// and not null.
-  const ReactionsBloc({
-    required this.child,
-    Key? key,
-  }) : super(key: key);
-
-  /// The widget child
-  final Widget child;
-
-  @override
-  ReactionsBlocState createState() => ReactionsBlocState();
-
-  /// Use this method to get the current [ReactionsBlocState] instance
-  static ReactionsBlocState of(BuildContext context) {
-    ReactionsBlocState? state;
-
-    state = context.findAncestorStateOfType<ReactionsBlocState>();
-
-    assert(
-      state != null,
-      'You must have a ReactionsBloc widget as ancestor',
-    );
-
-    return state!;
-  }
-}
-
-/// The current state of the [ReactionsBloc]
-class ReactionsBlocState extends State<ReactionsBloc>
-    with AutomaticKeepAliveClientMixin {
+class ReactionsBloc {
   /// The current reactions list
   List<Reaction>? get reactions => _reactionsController.valueOrNull;
 
@@ -106,25 +75,28 @@ class ReactionsBlocState extends State<ReactionsBloc>
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    _streamFeedCore = StreamFeedCore.of(context);
-    super.didChangeDependencies();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return widget.child;
-  }
-
-  @override
   void dispose() {
     _reactionsController.close();
     _queryReactionsLoadingController.close();
-    super.dispose();
+  }
+}
+
+class ReactionsProvider extends InheritedWidget {
+  const ReactionsProvider({
+    Key? key,
+    required this.bloc,
+    required Widget child,
+  }) : super(key: key, child: child);
+
+  final ReactionsBloc bloc;
+
+  static ReactionsProvider of(BuildContext context) {
+    final ReactionsProvider? result =
+        context.dependOnInheritedWidgetOfExactType<ReactionsProvider>();
+    assert(result != null, 'No ReactionsBloc found in context');
+    return result!;
   }
 
   @override
-  bool get wantKeepAlive => true;
+  bool updateShouldNotify(ReactionsProvider old) => bloc != old.bloc;
 }

@@ -46,7 +46,6 @@ class StreamFeedCore extends StatefulWidget {
     this.navigatorKey,
     this.analyticsLocation,
     this.analyticsClient,
-    this.activitiesProvider,
   }) : super(key: key);
 
   /// Instance of Stream Feed Client containing information about the current
@@ -55,7 +54,6 @@ class StreamFeedCore extends StatefulWidget {
 
   ///Analytics client
   final StreamAnalytics? analyticsClient;
-  final ActivitiesBlocState? activitiesProvider;
 
   ///wether or not you want to track analytics in your app (can be useful for customised feeds via ML)
   final bool trackAnalytics;
@@ -101,8 +99,6 @@ class StreamFeedCoreState extends State<StreamFeedCore>
 
   /// The current user
   StreamUser? get user => client.currentUser;
-
-  ActivitiesBlocState? get activitiesProvider=>widget.activitiesProvider;
 
   /// The current user
   ReactionsClient get reactions => client.reactions;
@@ -179,10 +175,11 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }
 
   ///Track analytics
-  Future<void> trackAnalytics(
-      {required String label,
-      required foreignId,
-      required String feedGroup}) async {
+  Future<void> trackAnalytics({
+    required String label,
+    required String feedGroup,
+    String? foreignId,
+  }) async {
     analyticsClient != null
         ? await analyticsClient!.trackEngagement(Engagement(
             content: Content(foreignId: FeedId.fromId(foreignId)),
