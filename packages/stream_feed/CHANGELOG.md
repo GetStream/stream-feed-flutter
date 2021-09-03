@@ -1,7 +1,9 @@
 ## 0.3.0: 03/09/2021
 
-- breaking: `User user(String userId)` is now `StreamUser user(String userId)` for easier state management
-- new: CancelToken and OnSendProgress named parameters to support cancelling an upload and tracking its progress
+- breaking: `UserClient user(String userId)` is now `StreamUser user(String userId)` for easier state management
+- new: CancelToken, OnSendProgress and OnReceiveProgress named parameters to support cancelling an up/download and tracking its progress
+- new: logger options to allow choosing the Logger level
+- improvements: error handling and expose exeception type
 
 ## 0.2.3: 03/08/2021
 
