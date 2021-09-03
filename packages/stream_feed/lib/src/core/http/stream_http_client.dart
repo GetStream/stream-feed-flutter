@@ -121,7 +121,7 @@ class StreamHttpClient {
           data: data,
           options: Options(headers: headers?.nullProtected),
           onSendProgress: onSendProgress,
-          onReceiveProgress:onReceiveProgress,
+          onReceiveProgress: onReceiveProgress,
           cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {
@@ -206,7 +206,7 @@ class StreamHttpClient {
           queryParameters: queryParameters,
           headers: headers,
           onSendProgress: onSendProgress,
-          onReceiveProgress:onReceiveProgress,
+          onReceiveProgress: onReceiveProgress,
           cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {

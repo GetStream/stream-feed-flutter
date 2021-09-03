@@ -22,7 +22,7 @@ void main() {
       final options = RequestOptions(path: 'test-path');
       final data =
           ErrorResponse(code: code, message: message, statusCode: statusCode);
-      
+
       final dioError = DioError(
         requestOptions: options,
         response: Response(

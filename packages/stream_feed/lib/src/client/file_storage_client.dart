@@ -63,11 +63,13 @@ class FileStorageClient {
   }) async {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
-    return _files.upload(token, file,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-        cancelToken: cancelToken,
-        );
+    return _files.upload(
+      token,
+      file,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+      cancelToken: cancelToken,
+    );
   }
 
   /// Delete a file using the url returned by the APIs
