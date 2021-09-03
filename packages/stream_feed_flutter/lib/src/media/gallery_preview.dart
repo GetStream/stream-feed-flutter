@@ -33,27 +33,22 @@ class GalleryPreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               direction: Axis.horizontal,
               children: [
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: GestureDetector(
-                    onTap: () => _onTap(context, 0),
-                    child: Image.network(
-                      media.first.url,
-                      fit: BoxFit.cover,
-                    ),
+                FlexibleImage(
+                  media: media,
+                  child: Image.network(
+                    media.first.url,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 if (media.length >= 2)
-                  Flexible(
-                    fit: FlexFit.tight,
+                  FlexibleImage(
+                    media: media,
+                    index: 1,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 2),
-                      child: GestureDetector(
-                        onTap: () => _onTap(context, 1),
-                        child: Image.network(
-                          media[1].url,
-                          fit: BoxFit.cover,
-                        ),
+                      child: Image.network(
+                        media[1].url,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -69,30 +64,26 @@ class GalleryPreview extends StatelessWidget {
                   direction: Axis.horizontal,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Flexible(
-                      fit: FlexFit.tight,
-                      child: GestureDetector(
-                        onTap: () => _onTap(context, 2),
-                        child: Image.network(
-                          media[2].url,
-                          fit: BoxFit.cover,
-                        ),
+                    FlexibleImage(
+                      media: media,
+                      index: 2,
+                      child: Image.network(
+                        media[2].url,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     if (media.length >= 4)
-                      Flexible(
-                        fit: FlexFit.tight,
+                      FlexibleImage(
+                        media: media,
+                        index: 3,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 2),
                           child: Stack(
                             fit: StackFit.expand,
                             children: [
-                              GestureDetector(
-                                onTap: () => _onTap(context, 3),
-                                child: Image.network(
-                                  media[3].url,
-                                  fit: BoxFit.cover,
-                                ),
+                              Image.network(
+                                media[3].url,
+                                fit: BoxFit.cover,
                               ),
                               if (media.length > 4)
                                 Positioned.fill(
@@ -140,5 +131,42 @@ class GalleryPreview extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(IterableProperty<Media>('media', media));
+  }
+}
+
+/// A flexible, tappable image that resizes itself according to (...?)
+class FlexibleImage extends StatelessWidget {
+  /// Builds a [FlexibleImage].
+  const FlexibleImage({
+    Key? key,
+    required this.media,
+    this.index = 0,
+    this.child,
+    this.flexFit = FlexFit.tight,
+  }) : super(key: key);
+
+  final Widget? child;
+  final FlexFit flexFit;
+  final int index;
+  final List<Media> media;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      fit: flexFit,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FullscreenMedia(
+                startIndex: index,
+                media: media,
+              ),
+            ),
+          );
+        },
+        child: child,
+      ),
+    );
   }
 }

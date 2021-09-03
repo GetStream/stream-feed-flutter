@@ -79,7 +79,6 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                 },
                 itemBuilder: (context, index) {
                   final media = widget.media[index];
-                  //print(media.url);
                   if (media.mediaType == MediaType.image) {
                     return PhotoView(
                       imageProvider: NetworkImage(media.url),
@@ -94,7 +93,6 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                         }
                       },
                       loadingBuilder: (context, event) {
-                        print(event);
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
