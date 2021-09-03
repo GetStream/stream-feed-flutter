@@ -81,6 +81,8 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                   if (media.mediaType == MediaType.image) {
                     return PhotoView(
                       imageProvider: NetworkImage(media.url),
+                      maxScale: PhotoViewComputedScale.covered,
+                      minScale: PhotoViewComputedScale.contained,
                     );
                   } else {
                     // TODO: handle other media types
