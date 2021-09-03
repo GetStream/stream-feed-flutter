@@ -65,6 +65,7 @@ class _FullscreenMediaState extends State<FullscreenMedia>
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(),
       body: Stack(
         children: [
           AnimatedBuilder(

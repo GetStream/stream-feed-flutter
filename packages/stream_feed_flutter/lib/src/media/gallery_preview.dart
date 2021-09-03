@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/media/fullscreen_media.dart';
+import 'package:stream_feed_flutter/src/media/media.dart';
 
 /// A widget that displays image previews
 class GalleryPreview extends StatelessWidget {
@@ -33,9 +35,12 @@ class GalleryPreview extends StatelessWidget {
               children: [
                 Flexible(
                   fit: FlexFit.tight,
-                  child: Image.network(
-                    urls.first,
-                    fit: BoxFit.cover,
+                  child: GestureDetector(
+                    onTap: () => _onTap(context, 0),
+                    child: Image.network(
+                      urls.first,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 if (urls.length >= 2)
@@ -43,9 +48,12 @@ class GalleryPreview extends StatelessWidget {
                     fit: FlexFit.tight,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 2),
-                      child: Image.network(
-                        urls[1],
-                        fit: BoxFit.cover,
+                      child: GestureDetector(
+                        onTap: () => _onTap(context, 1),
+                        child: Image.network(
+                          urls[1],
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -63,9 +71,12 @@ class GalleryPreview extends StatelessWidget {
                   children: [
                     Flexible(
                       fit: FlexFit.tight,
-                      child: Image.network(
-                        urls[2],
-                        fit: BoxFit.cover,
+                      child: GestureDetector(
+                        onTap: () => _onTap(context, 2),
+                        child: Image.network(
+                          urls[2],
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     if (urls.length >= 4)
@@ -83,7 +94,7 @@ class GalleryPreview extends StatelessWidget {
                               if (urls.length > 4)
                                 Positioned.fill(
                                   child: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () => _onTap(context, 3),
                                     child: Material(
                                       color: Colors.black38,
                                       child: Center(
@@ -107,6 +118,21 @@ class GalleryPreview extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  void _onTap(BuildContext context, int index) {
+    final media = <Media>[];
+    for (final url in urls) {
+      media.add(Media(url: url));
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FullscreenMedia(
+          startIndex: index,
+          media: media,
+        ),
       ),
     );
   }
