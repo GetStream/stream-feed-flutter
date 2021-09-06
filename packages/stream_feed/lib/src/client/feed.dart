@@ -32,10 +32,8 @@ typedef FeedSubscriber = Future<Subscription> Function(
 /// such as add activity, remove activity, etc.
 ///{@endtemplate}
 class Feed {
-  ///Initializes a feed object
-  ///
-  ///{@macro feed}
-  Feed(
+  ///Initialize a feed object
+  const Feed(
     this.feedId,
     this.feed, {
     this.userToken,

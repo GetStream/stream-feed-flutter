@@ -3,28 +3,37 @@ import 'package:json_annotation/json_annotation.dart';
 part 'responses.g.dart';
 
 class _BaseResponse {
-  String? duration;
+  const _BaseResponse(this.duration);
+  final String? duration;
 }
 
-/// Model response for [StreamChatNetworkError] data
+/// Model response for [StreamFeedNetworkError] data
 @JsonSerializable()
 class ErrorResponse extends _BaseResponse {
-  /// The http error code
-  int? code;
-
-  /// The message associated to the error code
-  String? message;
-
-  /// The backend error code
-  @JsonKey(name: 'StatusCode')
-  int? statusCode;
-
-  /// A detailed message about the error
-  String? moreInfo;
+  /// Create a new instance from a json
+  const ErrorResponse(
+      {String? duration,
+      this.message,
+      this.code,
+      this.statusCode,
+      this.moreInfo})
+      : super(duration);
 
   /// Create a new instance from a json
-  static ErrorResponse fromJson(Map<String, dynamic> json) =>
+  factory ErrorResponse.fromJson(Map<String, dynamic> json) =>
       _$ErrorResponseFromJson(json);
+
+  /// The http error code
+  final int? code;
+
+  /// The message associated to the error code
+  final String? message;
+
+  /// The backend error code
+  final int? statusCode;
+
+  /// A detailed message about the error
+  final String? moreInfo;
 
   /// Serialize to json
   Map<String, dynamic> toJson() => _$ErrorResponseToJson(this);

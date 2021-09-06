@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/images_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/http/typedefs.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
@@ -20,7 +22,7 @@ class ImageStorageClient {
   /// Initializes a [ImageStorageClient] object
   ///
   ///{@macro filesnandimages}
-  ImageStorageClient(this._images, {this.userToken, this.secret})
+  const ImageStorageClient(this._images, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
@@ -39,21 +41,37 @@ class ImageStorageClient {
   ///
   /// # Example
   /// ```dart
-  /// final image = File('...');
-  /// var multipartFile = await MultipartFile.fromFile(
-  ///   image.path,
-  ///   filename: 'my-photo',
-  ///   contentType: MediaType('image', 'jpeg'),
-  /// );
+  /// final file = AttachmentFile(path: 'yourfilepath');
   /// await client.images.upload(multipartFile);
   /// ```
+  /// - To cancel the upload, call `token.cancel('cancelled)`. For example
+  /// ```dart
+  ///  var token = CancelToken();
+  ///   // In one minute, we cancel!
+  ///   Timer(Duration(milliseconds: 500), () {
+  ///     token.cancel('cancelled');
+  ///   });
+  ///   await images.upload(AttachmentFile(path: 'yourfilepath'), token);
+  /// ```
+  /// - To get upload progress:
+  /// ```dart
+  ///  await images.upload(AttachmentFile(path: 'yourfilepath'), onSendProgress:(sentBytes,totalBytes){
+  ///    if (totalBytes != -1) {
+  ///       print((sentBytes / total * 100).toStringAsFixed(0) + '%');
+  ///     }
+  ///  });
+  /// ```
+  ///
   /// API docs: https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?q=Image
-  Future<String?> upload(AttachmentFile image) {
-    //TODO: params onSendProgress: onSendProgress,
-    // cancelToken: cancelToken,
+  Future<String?> upload(
+    AttachmentFile image, {
+    OnSendProgress? onSendProgress,
+    CancelToken? cancelToken,
+  }) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
-    return _images.upload(token, image);
+    return _images.upload(token, image,
+        onSendProgress: onSendProgress, cancelToken: cancelToken);
   }
 
   /// Images can be deleted using their URL.
@@ -78,6 +96,12 @@ class ImageStorageClient {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
     return _images.get(token, url);
+  }
+
+    Future<String?> _process(String url, Map<String, Object?> params) {
+    final token =
+        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
+    return _images.get(token, url, options: params);
   }
 
   /// Crop an image using its URL. A new URL is then returned by the API.
@@ -105,11 +129,7 @@ class ImageStorageClient {
   Future<String?> getResized(String url, Resize resize) =>
       _process(url, resize.params);
 
-  Future<String?> _process(String url, Map<String, Object?> params) {
-    final token =
-        userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
-    return _images.get(token, url, options: params);
-  }
+
 
   ///Generate a thumbnail for a given image url
   Future<String?> thumbnail(String url, Thumbnail thumbnail) =>
