@@ -15,7 +15,7 @@ import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 
-/// Different environments in which you can run this [StreamFeedClient].
+/// Different sides on which you can run this [StreamFeedClient] on
 enum Runner {
   /// Marks the [StreamFeedClient] that it is currently running on server-side
   server,
