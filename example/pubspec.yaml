@@ -11,7 +11,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
   timeago: ^3.0.2
   stream_feed:
     path: ../packages/stream_feed
