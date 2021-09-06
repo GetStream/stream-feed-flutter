@@ -12,18 +12,6 @@ class StreamSvgIcon extends StatelessWidget {
     this.height = 14,
   }) : super(key: key);
 
-  /// The name of the icon asset
-  final String assetName;
-
-  /// The width of the icon
-  final double? width;
-
-  /// The height of the icon
-  final double? height;
-
-  /// The color of the icon
-  final Color? color;
-
   /// [StreamSvgIcon] loveActive icon
   factory StreamSvgIcon.loveActive({
     double? size,
@@ -131,6 +119,19 @@ class StreamSvgIcon extends StatelessWidget {
         width: size,
         height: size,
       );
+
+  /// The name of the icon asset
+  final String assetName;
+
+  /// The width of the icon
+  final double? width;
+
+  /// The height of the icon
+  final double? height;
+
+  /// The color of the icon
+  final Color? color;
+
   @override
   Widget build(BuildContext context) {
     final key = Key('StreamSvgIcon-$assetName');

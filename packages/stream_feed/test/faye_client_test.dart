@@ -42,7 +42,7 @@ void main() async {
     await Future.delayed(const Duration(seconds: 3));
 
     expect(realTimeMessage, isNotNull);
-    expect(realTimeMessage!.newActivities.first.id,
+    expect(realTimeMessage!.newActivities!.first.id,
         activity.id); //TODO: this test is flaky
 
     addTearDown(subscription.cancel);

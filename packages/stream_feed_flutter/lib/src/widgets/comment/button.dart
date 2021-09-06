@@ -70,18 +70,27 @@ class PostCommentButton extends StatelessWidget {
   }
 }
 
+/// TODO: document me
 typedef OnSend = Function(String inputText);
 
+/// TODO: document me
 class ReactiveElevatedButton extends StatefulWidget {
-  final TextEditingController textEditingController;
-  final OnSend onSend;
-  final String label;
+  /// Builds a [ReactiveElevatedButton].
   const ReactiveElevatedButton({
     Key? key,
     required this.textEditingController,
     required this.label,
     required this.onSend,
   }) : super(key: key);
+
+  /// TODO: document me
+  final TextEditingController textEditingController;
+
+  /// TODO: document me
+  final OnSend onSend;
+
+  /// TODO: document me
+  final String label;
 
   @override
   _ReactiveElevatedButtonState createState() => _ReactiveElevatedButtonState();
@@ -110,7 +119,7 @@ class _ReactiveElevatedButtonState extends State<ReactiveElevatedButton> {
         stream: _textUpdates.stream,
         builder: (context, snapshot) {
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: ElevatedButton(
               // Dis/enabled button if textInputValue.length> 0
               onPressed: snapshot.hasData && snapshot.data!.isNotEmpty

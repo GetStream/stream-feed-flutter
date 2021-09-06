@@ -18,11 +18,14 @@ void main() {
     final api = AnalyticsAPI(apiKey, client: httpClient);
     final impression = Impression(
       contentList: [
-        Content(foreignId: FeedId.fromId('post:42'), data: {
-          'actor': {'id': 'user:2353540'},
-          'verb': 'share',
-          'object': {'id': 'song:34349698'},
-        })
+        Content(
+          foreignId: FeedId.fromId('post:42'),
+          data: const {
+            'actor': {'id': 'user:2353540'},
+            'verb': 'share',
+            'object': {'id': 'song:34349698'},
+          },
+        ),
       ],
       feedId: FeedId('timeline', 'tom'),
     );
