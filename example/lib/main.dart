@@ -1,19 +1,18 @@
 import 'package:example/app_user.dart';
 import 'package:example/client_provider.dart';
 import 'package:example/extension.dart';
-import 'package:example/home.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
+import 'client_provider.dart';
+import 'home.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  const _key = String.fromEnvironment('key');
-  const _userToken = String.fromEnvironment('user_token');
-  final client = StreamFeedClient.connect(
-    _key,
-    token: const Token(_userToken),
-  );
+  final _key = String.fromEnvironment('key');
+  final _user_token = String.fromEnvironment('user_token');
+
+  final client = StreamFeedClient.connect(_key, token: Token(_user_token));
   runApp(
     MyApp(
       client: client,
@@ -43,12 +42,6 @@ class MyApp extends StatelessWidget {
         child: child!,
       ),
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<StreamFeedClient>('client', client));
   }
 }
 

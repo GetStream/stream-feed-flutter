@@ -26,7 +26,7 @@ class CollectionsClient {
   /// Initialize a CollectionsClient object
   ///
   ///{@macro collections}
-  CollectionsClient(this._collections, {this.userToken, this.secret})
+  const CollectionsClient(this._collections, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
