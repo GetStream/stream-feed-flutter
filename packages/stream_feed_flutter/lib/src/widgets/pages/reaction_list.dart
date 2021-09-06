@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/utils/debug.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
@@ -66,22 +67,20 @@ class ReactionListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactionsProvider(
-      bloc: ReactionsBloc(client: StreamFeedProvider.of(context).client),
-      child: ReactionListCore(
-        reactionsBloc: ReactionsProvider.of(context).bloc,
-        lookupValue: _lookupValue, //TODO: handle null safety
-        onProgressWidget: onProgressWidget,
-        onErrorWidget: onErrorWidget,
-        onEmptyWidget: onEmptyWidget,
-        flags: flags,
-        filter: filter,
-        kind: kind,
-        lookupAttr: lookupAttr,
-        limit: limit,
-        reactionsBuilder: (context, reactions, idx) =>
-            reactionBuilder(context, reactions[idx]),
-      ),
+     debugCheckHasReactionsProvider(context);
+    return ReactionListCore(
+      reactionsBloc: ReactionsProvider.of(context).bloc,
+      lookupValue: _lookupValue, //TODO: handle null safety
+      onProgressWidget: onProgressWidget,
+      onErrorWidget: onErrorWidget,
+      onEmptyWidget: onEmptyWidget,
+      flags: flags,
+      filter: filter,
+      kind: kind,
+      lookupAttr: lookupAttr,
+      limit: limit,
+      reactionsBuilder: (context, reactions, idx) =>
+          reactionBuilder(context, reactions[idx]),
     );
   }
 }

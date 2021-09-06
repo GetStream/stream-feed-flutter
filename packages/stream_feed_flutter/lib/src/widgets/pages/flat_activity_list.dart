@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/utils/debug.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
@@ -95,6 +96,7 @@ class FlatActivityListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugCheckHasActivitiesProvider(context);
     return FlatFeedCore(
       activitiesBloc: ActivitiesProvider.of(context).bloc,
       flags: flags,
