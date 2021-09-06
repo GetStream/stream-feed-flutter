@@ -50,8 +50,13 @@ void main() {
               body: StreamFeedProvider(
                 analyticsClient: mockStreamAnalytics,
                 client: mockClient,
-                child: FlatActivityListPage(
-                  feedGroup: 'user',
+                child: ActivitiesProvider(
+                  bloc: ActivitiesBloc(
+                    client: mockClient,
+                  ),
+                  child: FlatActivityListPage(
+                    feedGroup: 'user',
+                  ),
                 ),
               ),
             ),

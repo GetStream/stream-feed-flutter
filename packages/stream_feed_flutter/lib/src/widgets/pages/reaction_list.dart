@@ -69,6 +69,7 @@ class ReactionListPage extends StatelessWidget {
     return ReactionsProvider(
       bloc: ReactionsBloc(client: StreamFeedProvider.of(context).client),
       child: ReactionListCore(
+        reactionsBloc: ReactionsProvider.of(context).bloc,
         lookupValue: _lookupValue, //TODO: handle null safety
         onProgressWidget: onProgressWidget,
         onErrorWidget: onErrorWidget,
