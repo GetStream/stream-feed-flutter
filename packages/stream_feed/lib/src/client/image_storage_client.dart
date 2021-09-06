@@ -98,7 +98,7 @@ class ImageStorageClient {
     return _images.get(token, url);
   }
 
-    Future<String?> _process(String url, Map<String, Object?> params) {
+  Future<String?> _process(String url, Map<String, Object?> params) {
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.read);
     return _images.get(token, url, options: params);
@@ -128,8 +128,6 @@ class ImageStorageClient {
   /// ```
   Future<String?> getResized(String url, Resize resize) =>
       _process(url, resize.params);
-
-
 
   ///Generate a thumbnail for a given image url
   Future<String?> thumbnail(String url, Thumbnail thumbnail) =>
