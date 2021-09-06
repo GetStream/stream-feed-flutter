@@ -1,4 +1,4 @@
-## 0.3.0: 03/09/2021
+## 0.3.0: 06/09/2021
 
 - improvements: 
   - docs
@@ -13,7 +13,7 @@
 - new: allow sending enrichment flags in `filter` mehod
 - new: createReactionReference
   
-- ## 0.2.3: 03/08/2021
+## 0.2.3: 03/08/2021
 
 - remove dead links in Readmes
   
