@@ -5,6 +5,7 @@
 - new: logger options to allow choosing the Logger level
 - improvements: error handling and expose exeception type
 - fix: missing field ownChildren field `Reaction` model
+- breaking: change type of `Reaction` model field user from  `Map<String,dynamic>` to `User`
 
 ## 0.2.3: 03/08/2021
 
