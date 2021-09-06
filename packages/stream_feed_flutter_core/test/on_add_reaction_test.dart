@@ -26,7 +26,7 @@ class _OnAddReactionWidgetState extends State<OnAddReactionWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await StreamFeedProvider.of(context).onAddReaction(
+        await StreamFeedProvider.of(context).onAddReaction(//TODO: get rid of mutations in StreamFeedProvider 
           activity: widget.activity,
           feedGroup: widget.feedGroup,
           kind: widget.kind,

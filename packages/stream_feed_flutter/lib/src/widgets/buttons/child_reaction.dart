@@ -137,7 +137,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
   }
 
   Future<void> onAddChildReaction() async {
-    final reaction = await StreamFeedProvider.of(context).onAddChildReaction(
+    final reaction = await StreamFeedProvider.of(context).onAddChildReaction(//TODO: get rid of mutations in StreamFeedProvider 
       reaction: widget.reaction,
       kind: widget.kind,
       data: widget.data,
@@ -151,7 +151,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
   }
 
   Future<void> onRemoveChildReaction() async {
-    await StreamFeedProvider.of(context).onRemoveChildReaction(
+    await StreamFeedProvider.of(context).onRemoveChildReaction(//TODO: get rid of mutations in StreamFeedProvider 
       kind: widget.kind,
       reaction: widget.reaction,
       id: idToRemove!,
