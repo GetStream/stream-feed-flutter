@@ -5,15 +5,24 @@ import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'enriched_activity.g.dart';
 
-/// A field that can be Enrichabl Field
+/// Enrichment is a concept in Stream that enables our API to work quickly
+/// and efficiently.
+///
+/// It is the concept that most data is stored as references to an original
+/// data. For example, if I add an activity to my feed and it fans out to 50
+/// followers, the activity is not copied 50 times, but the activity is stored
+/// in a single table only once, and references are stored in 51 feeds.
+///
+/// The same rule applies to users and reactions. They are stored only once,
+/// but references are used elsewhere.
 class EnrichableField extends Equatable {
-  /// Constructor [EnrichableField]
+  /// Builds a  [EnrichableField].
   const EnrichableField(this.data);
 
   /// Underlying [EnrichableField] data
   final Object? data;
 
-  /// Serialize [EnrichableField]
+  /// Deserializes an [EnrichableField].
   static EnrichableField deserialize(Object? obj) {
     if (obj is String) {
       return EnrichableField(obj);
@@ -21,15 +30,15 @@ class EnrichableField extends Equatable {
     return EnrichableField(obj as Map<String, dynamic>?);
   }
 
-  /// Serialize [EnrichableField]
+  /// Serializes an [EnrichableField].
   static Object? serialize(EnrichableField? field) => field?.data;
 
   @override
   List<Object?> get props => [data];
 }
 
-/// An enriched activity type with actor, object
-/// and reaction customizable types.
+/// An Enriched Activity is an Activity with additional fields
+/// that are derived from the Activity's
 @JsonSerializable()
 class EnrichedActivity extends Equatable {
   /// [EnrichedActivity] constructor
@@ -52,7 +61,7 @@ class EnrichedActivity extends Equatable {
     this.latestReactions,
   });
 
-  /// Create a new instance from a json
+  /// Create a new instance from a JSON object
   factory EnrichedActivity.fromJson(Map<String, dynamic>? json) =>
       _$EnrichedActivityFromJson(
           Serializer.moveKeysToRoot(json, topLevelFields)!);
@@ -79,7 +88,8 @@ class EnrichedActivity extends Equatable {
   final EnrichableField? object;
 
   /// A unique ID from your application for this activity.
-  /// IE: pin:1 or like:300.
+  ///
+  /// Examples: "pin:1" or "like:300".
   @JsonKey(includeIfNull: false)
   final String? foreignId;
 
@@ -91,7 +101,9 @@ class EnrichedActivity extends Equatable {
   )
   final EnrichableField? target;
 
-  /// The optional time of the activity, isoformat. Default is the current time.
+  /// The optional time of the activity in iso format.
+  ///
+  /// Defaults to the current time.
   @JsonKey(includeIfNull: false)
   final DateTime? time;
 
@@ -103,8 +115,9 @@ class EnrichedActivity extends Equatable {
   )
   final EnrichableField? origin;
 
-  /// An array allows you to specify
-  /// a list of feeds to which the activity should be copied.
+  /// An array allows you to specify a list of feeds to which the activity
+  /// should be copied.
+  ///
   /// One way to think about it is as the CC functionality of email.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final List<String>? to;
@@ -123,7 +136,7 @@ class EnrichedActivity extends Equatable {
 
   /// Include reaction counts to activities.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
-  final Map<String, Object>? reactionCounts;
+  final Map<String, int>? reactionCounts;
 
   /// Include reactions added by current user to all activities.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
@@ -177,7 +190,7 @@ class EnrichedActivity extends Equatable {
         latestReactions,
       ];
 
-  /// Serialize to json
+  /// Serialize to JSON
   Map<String, dynamic> toJson() => Serializer.moveKeysToMapInPlace(
       _$EnrichedActivityToJson(this), topLevelFields);
 }

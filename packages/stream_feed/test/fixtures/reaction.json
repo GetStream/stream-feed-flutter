@@ -10,7 +10,10 @@
     "slug:userId"
   ],
   "user": {
-    "test": "test"
+    "id": "test",
+    "data": {
+      "test": "test"
+    }
   },
   "target_feeds_extra_data": {
     "test": "test"

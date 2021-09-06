@@ -20,9 +20,9 @@ Reaction _$ReactionFromJson(Map json) {
         ? null
         : DateTime.parse(json['updated_at'] as String),
     targetFeeds: FeedId.fromIds(json['target_feeds'] as List?),
-    user: (json['user'] as Map?)?.map(
-      (k, e) => MapEntry(k as String, e as Object),
-    ),
+    user: json['user'] == null
+        ? null
+        : User.fromJson(Map<String, dynamic>.from(json['user'] as Map)),
     targetFeedsExtraData: (json['target_feeds_extra_data'] as Map?)?.map(
       (k, e) => MapEntry(k as String, e as Object),
     ),
@@ -30,6 +30,14 @@ Reaction _$ReactionFromJson(Map json) {
       (k, e) => MapEntry(k as String, e as Object),
     ),
     latestChildren: (json['latest_children'] as Map?)?.map(
+      (k, e) => MapEntry(
+          k as String,
+          (e as List<dynamic>)
+              .map(
+                  (e) => Reaction.fromJson(Map<String, dynamic>.from(e as Map)))
+              .toList()),
+    ),
+    ownChildren: (json['own_children'] as Map?)?.map(
       (k, e) => MapEntry(
           k as String,
           (e as List<dynamic>)
@@ -60,10 +68,11 @@ Map<String, dynamic> _$ReactionToJson(Reaction instance) {
   writeNotNull('created_at', instance.createdAt?.toIso8601String());
   writeNotNull('updated_at', readonly(instance.updatedAt));
   writeNotNull('target_feeds', FeedId.toIds(instance.targetFeeds));
-  writeNotNull('user', instance.user);
+  writeNotNull('user', instance.user?.toJson());
   writeNotNull('target_feeds_extra_data', instance.targetFeedsExtraData);
   writeNotNull('data', instance.data);
   writeNotNull('latest_children', readonly(instance.latestChildren));
+  writeNotNull('own_children', readonly(instance.ownChildren));
   writeNotNull('children_counts', readonly(instance.childrenCounts));
   return val;
 }

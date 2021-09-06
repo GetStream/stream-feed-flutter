@@ -6,19 +6,19 @@ class ActivityMarker {
   Set<String> _readIds = {};
   Set<String> _seenIds = {};
 
-  /// mark everything as read
+  /// Mark everything as read
   ActivityMarker allRead() {
     _allRead = true;
     return this;
   }
 
-  /// mark everything as seen
+  /// Mark everything as seen
   ActivityMarker allSeen() {
     _allSeen = true;
     return this;
   }
 
-  /// mark all activities with ids [activityIds] as read
+  /// Mark all activities with ids [activityIds] as read
   ActivityMarker read(Iterable<String> activityIds) {
     if (!_allRead) {
       _readIds = {..._readIds, ...activityIds};
@@ -26,7 +26,7 @@ class ActivityMarker {
     return this;
   }
 
-  /// mark all activities with ids [activityIds] as seen
+  /// Mark all activities with ids [activityIds] as seen
   ActivityMarker seen(Iterable<String> activityIds) {
     if (!_allSeen) {
       _seenIds = {..._seenIds, ...activityIds};
@@ -34,7 +34,7 @@ class ActivityMarker {
     return this;
   }
 
-  /// serialize ActivityMarker params
+  /// Serialize ActivityMarker params
   Map<String, Object> get params {
     final params = <String, Object>{};
     if (_allRead) {

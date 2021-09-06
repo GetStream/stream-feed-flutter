@@ -5,6 +5,8 @@ import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
+/// Provides methods for reacting to Activities.
+///
 /// {@template reactions}
 /// Reactions are a special kind of data that can be used
 /// to capture user interaction with specific activities.
@@ -16,16 +18,16 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// {@endtemplate}
 class ReactionsClient {
   ///Initialize a reaction client
-  ReactionsClient(this._reactions, {this.userToken, this.secret})
+  const ReactionsClient(this._reactions, {this.userToken, this.secret})
       : assert(
           userToken != null || secret != null,
           'At least a secret or userToken must be provided',
         );
 
-  ///User JWT Token
+  /// User JWT
   final Token? userToken;
 
-  ///The reactions client
+  /// The reactions client
   final ReactionsAPI _reactions;
 
   /// Your API secret. You can get it in your Stream Dashboard [here](https://dashboard.getstream.io/dashboard/v2/)
@@ -52,7 +54,7 @@ class ReactionsClient {
   /// final comment = await client.reactions.add(
   ///   'comment',
   ///   activity.id,
-  ///   'john-doe',
+  ///  userId: 'john-doe',
   ///   data: {'text': 'awesome post!'},
   /// );
   ///```
@@ -77,15 +79,38 @@ class ReactionsClient {
     return _reactions.add(token, reaction);
   }
 
-  /// Adds a like to the previously created comment
+  /// A reaction can also be added to another reaction; in this case,
+  /// a child reaction is created. Child reactions are created
+  /// in the same way as regular reactions but have a few crucial differences:
   ///
-  ///Example:
-  ///```dart
-  ///final reaction = await client.reactions.addChild(
-  ///'like',
-  ///comment.id,
-  ///'john-doe',
-  ///);
+  ///     Child reactions are not part of the parent activity counts
+  ///     Child reactions are only returned when the parent is returned
+  ///     In order to paginate over reactions,
+  /// you need to filter using the parent reaction ID
+  ///     Recent children reactions and their counts
+  /// are added to the parent reaction body
+  ///
+  /// Reaction nesting is limited. The deepest level
+  /// where you can insert your child reaction is 3.
+  ///
+  /// Let's take an example: Bob creates an activity
+  ///
+  ///     Alice comments on this activity
+  ///     Bob comments on Alice's comment
+  ///     Carl comments on Bob's comment.
+  ///
+  /// Carl's comment is at the maximum third nesting level,
+  /// so Alice can't like or comment on Carl's comment because it would be
+  /// the fourth level of nesting.
+  ///
+  /// ## Example:
+  /// Adds a like to the previously created comment
+  ///` ``dart
+  /// final reaction = await client.reactions.addChild(
+  ///   'like',
+  ///   comment.id,
+  ///   'john-doe',
+  /// );
   ///```
   ///
   /// API docs: [reactions_add_child](https://getstream.io/activity-feeds/docs/flutter-dart/reactions_add_child/?language=dart)
@@ -95,7 +120,7 @@ class ReactionsClient {
     String? userId,
     Map<String, Object>? data,
     List<FeedId>? targetFeeds,
-  }) {
+  }) async {
     final reaction = Reaction(
       kind: kind,
       parent: parentId,
@@ -133,14 +158,14 @@ class ReactionsClient {
     return _reactions.get(token, id);
   }
 
-  ///Reactions can be updated by providing the reaction ID parameter.
+  /// Reactions can be updated by providing the reaction ID parameter.
   ///
-  ///Changes to reactions are propagated to all notified feeds;
+  /// Changes to reactions are propagated to all notified feeds;
   ///
-  ///if the target_feeds list is updated,
-  ///notifications will be added and removed accordingly.
-  ///# Examples
-  ///```dart
+  /// if the target_feeds list is updated,
+  /// notifications will be added and removed accordingly.
+  /// # Examples
+  /// ```dart
   /// await client.reactions.update(
   ///   reaction.id,
   ///   data: {'text': 'love it!'},
@@ -178,22 +203,40 @@ class ReactionsClient {
   ///   'ed2837a6-0a3b-4679-adc1-778a1704852d',
   /// );
   /// ```
+  ///
+  /// {@macro filter}
   Future<List<Reaction>> filter(
     LookupAttribute lookupAttr,
     String lookupValue, {
     //TODO: check if it is a valid UUID with package uuid isValidUUID
     Filter? filter,
+    EnrichmentFlags? flags,
     int? limit,
     String? kind,
   }) {
     final token =
         userToken ?? TokenHelper.buildReactionToken(secret!, TokenAction.read);
-    return _reactions.filter(token, lookupAttr, lookupValue,
-        filter ?? Default.filter, limit ?? Default.limit, kind ?? '');
+    final options = {
+      'limit': limit ?? Default.limit,
+      ...filter?.params ?? Default.filter.params,
+      if (flags != null) ...flags.params,
+      'with_activity_data': lookupAttr == LookupAttribute.activityId,
+    };
+    return _reactions.filter(
+      token,
+      lookupAttr,
+      lookupValue,
+      filter ?? Default.filter,
+      limit ?? Default.limit,
+      kind ?? '',
+      options,
+    );
   }
 
   //------------------------- Server side methods ----------------------------//
-  ///paginated reactions and filter them
+  /// Paginated reactions and filter them
+  ///
+  /// {@macro filter}
   Future<PaginatedReactions> paginatedFilter(
     LookupAttribute lookupAttr,
     String lookupValue, {

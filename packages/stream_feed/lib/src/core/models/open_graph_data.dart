@@ -3,10 +3,16 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'open_graph_data.g.dart';
 
+/// {@template open_graph}
 /// Open graph data from a website.
+///
+/// An Open Graph data object is a set of key-value pairs that describe a
+/// web page. It can be used to describe the content of a page, the author of
+/// the page, or the page itself.
+/// {@endtemplate}
 @JsonSerializable(createToJson: true)
 class OpenGraphData extends Equatable {
-  /// [OpenGraphData] constructor
+  /// Builds an [OpenGraphData].
   const OpenGraphData({
     this.title,
     this.type,
@@ -26,37 +32,60 @@ class OpenGraphData extends Equatable {
       _$OpenGraphDataFromJson(json);
 
   ///	Value of the title OG field.
+  ///
+  /// The title is usually short and descriptive.
   final String? title;
 
-  /// Value of the type OG field.
+  /// Value of the OG field `type`
+  ///
+  /// The type can be one of the following:
+  /// - Article
+  /// - ArticlePage
+  /// - Audio
+  /// - Event
+  /// - Music
+  /// - etc
   final String? type;
 
   /// URL to scrape.
+  ///
+  /// The URL is used to scrape the page.
   final String? url;
 
   /// Value of the site OG field
+  ///
+  /// The site is the name of the website.
+  /// It is used to identify the website.
+  /// It is usually the domain name of the website.
   final String? site;
 
   /// Value of the site_name OG field.
+  ///
+  /// It is usually the domain name of the website.
   final String? siteName;
 
   ///	Value of the description OG field.
+  ///
+  /// It is used to describe the content of a page, the author of the page,
+  /// or the page itself.
   final String? description;
 
   ///	Value of the determiner OG field.
   final String? determiner;
 
   /// Value of the locale OG field.
+  ///
+  /// It is used to describe the language of the content.
   final String? locale;
 
   ///	List of og images
-  final List<Image>? images;
+  final List<OgImage>? images;
 
   ///	List of og videos
-  final List<Video>? videos;
+  final List<OgVideo>? videos;
 
   ///	List of og audios
-  final List<Audio>? audios;
+  final List<OgAudio>? audios;
 
   @override
   List<Object?> get props => [
@@ -79,9 +108,9 @@ class OpenGraphData extends Equatable {
 
 /// OG Image object
 @JsonSerializable(createToJson: true)
-class Image extends Equatable {
-  /// [Image] constructor
-  const Image({
+class OgImage extends Equatable {
+  /// Builds an [OgImage].
+  const OgImage({
     this.image,
     this.url,
     this.secureUrl,
@@ -92,7 +121,8 @@ class Image extends Equatable {
   });
 
   /// Create a new instance from a json
-  factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
+  factory OgImage.fromJson(Map<String, dynamic> json) =>
+      _$OgImageFromJson(json);
 
   /// Value of the image OG field.
   final String? image;
@@ -110,6 +140,13 @@ class Image extends Equatable {
   final String? height;
 
   /// Value of the type OG field.
+  ///
+  /// It is used to describe the type of an image.
+  /// It can be one of the following:
+  /// - icon
+  /// - logo
+  /// - photo
+  /// - etc
   final String? type;
 
   /// Value of the alt OG field.
@@ -127,14 +164,14 @@ class Image extends Equatable {
       ];
 
   /// Serialize to json
-  Map<String, dynamic> toJson() => _$ImageToJson(this);
+  Map<String, dynamic> toJson() => _$OgImageToJson(this);
 }
 
 /// OG Video object
 @JsonSerializable(createToJson: true)
-class Video extends Equatable {
-  /// [Video] constructor
-  const Video({
+class OgVideo extends Equatable {
+  /// Builds an [OgVideo].
+  const OgVideo({
     this.image,
     this.url,
     this.secureUrl,
@@ -145,7 +182,8 @@ class Video extends Equatable {
   });
 
   /// Create a new instance from a json
-  factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
+  factory OgVideo.fromJson(Map<String, dynamic> json) =>
+      _$OgVideoFromJson(json);
 
   /// Value of the image OG field.
   final String? image;
@@ -163,6 +201,12 @@ class Video extends Equatable {
   final String? height;
 
   /// Value of the type OG field.
+  ///
+  /// It is used to describe the type of a video.
+  /// It can be one of the following:
+  /// - mp4
+  /// - ogv
+  /// - etc
   final String? type;
 
   /// Value of the alt OG field.
@@ -180,14 +224,14 @@ class Video extends Equatable {
       ];
 
   /// Serialize to json
-  Map<String, dynamic> toJson() => _$VideoToJson(this);
+  Map<String, dynamic> toJson() => _$OgVideoToJson(this);
 }
 
 /// OG Audio object
 @JsonSerializable(createToJson: true)
-class Audio extends Equatable {
-  /// [Audio] constructor
-  const Audio({
+class OgAudio extends Equatable {
+  /// Builds an [OgAudio].
+  const OgAudio({
     this.audio,
     this.url,
     this.secureUrl,
@@ -195,10 +239,11 @@ class Audio extends Equatable {
   });
 
   /// Create a new instance from a json
-  factory Audio.fromJson(Map<String, dynamic> json) => _$AudioFromJson(json);
+  factory OgAudio.fromJson(Map<String, dynamic> json) =>
+      _$OgAudioFromJson(json);
 
   /// Serialize to json the [Audio] object
-  Map<String, dynamic> toJson() => _$AudioToJson(this);
+  Map<String, dynamic> toJson() => _$OgAudioToJson(this);
 
   /// Value of the audio OG field.
   final String? audio;
@@ -210,6 +255,12 @@ class Audio extends Equatable {
   final String? secureUrl;
 
   /// Value of the type OG field.
+  ///
+  /// It is used to describe the type of an audio.
+  /// It can be one of the following:
+  /// - mp3
+  /// - ogg
+  /// - etc
   final String? type;
 
   @override

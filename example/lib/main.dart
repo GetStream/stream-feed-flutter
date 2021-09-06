@@ -1,14 +1,17 @@
-import 'package:example/dummy_app_user.dart';
-import 'package:example/utils/utils.dart';
+import 'package:example/app_user.dart';
+import 'package:example/client_provider.dart';
+import 'package:example/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
+import 'client_provider.dart';
 import 'home.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   final _key = String.fromEnvironment('key');
   final _user_token = String.fromEnvironment('user_token');
+
   final client = StreamFeedClient.connect(_key, token: Token(_user_token));
   runApp(
     MyApp(
@@ -60,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: 42),
-              for (final user in DummyAppUser.values)
+              for (final user in appUsers)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: RaisedButton(
@@ -70,8 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           content: Text('Loading User'),
                         ),
                       );
-                      final streamUser = await _client.user(user.id!).create(
-                            user.data!,
+                      final streamUser = await _client.user(user.id).create(
+                            user.data,
                             getOrCreate: true,
                           );
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -82,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (_) => HomeScreen(
-                            streamUser: streamUser,
+                            currentUser: streamUser,
                           ),
                         ),
                       );
@@ -99,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            user.name!,
+                            user.name,
                             style: TextStyle(
                               fontSize: 24,
                               color: Colors.blue,

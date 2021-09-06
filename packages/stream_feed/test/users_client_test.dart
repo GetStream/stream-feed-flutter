@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed/src/client/user_client.dart';
+import 'package:stream_feed/src/client/stream_user.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/user.dart';
 import 'package:test/test.dart';
@@ -13,7 +13,7 @@ void main() {
 
     const token = Token('dummyToken');
     const id = 'john-doe';
-    final client = UserClient(api, id, userToken: token);
+    final client = StreamUser(api, id, userToken: token);
 
     test('ref', () {
       expect(client.ref, 'SU:john-doe');
@@ -26,9 +26,10 @@ void main() {
         'gender': 'male',
       };
       const user = User(id: id, data: data);
-      when(() => api.add(token, id, data, true)).thenAnswer((_) async => user);
+      when(() => api.create(token, id, data, getOrCreate: true))
+          .thenAnswer((_) async => user);
       await client.getOrCreate(data);
-      verify(() => api.add(token, id, data, true)).called(1);
+      verify(() => api.create(token, id, data, getOrCreate: true)).called(1);
     });
     test('add', () async {
       const data = {
@@ -37,9 +38,9 @@ void main() {
         'gender': 'male',
       };
       const user = User(id: id, data: data);
-      when(() => api.add(token, id, data)).thenAnswer((_) async => user);
+      when(() => api.create(token, id, data)).thenAnswer((_) async => user);
       await client.create(data);
-      verify(() => api.add(token, id, data)).called(1);
+      verify(() => api.create(token, id, data)).called(1);
     });
 
     test('delete', () async {
@@ -62,10 +63,11 @@ void main() {
         'gender': 'male',
       };
       const user = User(id: id, data: data);
-      when(() => api.get(token, id, true)).thenAnswer((_) async => user);
+      when(() => api.get(token, id, withFollowCounts: true))
+          .thenAnswer((_) async => user);
       await client.profile();
 
-      verify(() => api.get(token, id, true)).called(1);
+      verify(() => api.get(token, id, withFollowCounts: true)).called(1);
     });
 
     test('get', () async {

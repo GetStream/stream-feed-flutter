@@ -6,9 +6,9 @@ import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/event.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 
-///
+/// {@macro analytics}
 class AnalyticsAPI {
-  ///
+  /// Builds an [AnalyticsAPI].
   AnalyticsAPI(
     String apiKey, {
     StreamHttpClient? client,
@@ -17,7 +17,7 @@ class AnalyticsAPI {
 
   final StreamHttpClient _client;
 
-  ///
+  /// {@macro trackImpression}
   Future<Response> trackImpressions(Token token, List<Impression> impressions) {
     for (final impression in impressions) {
       checkNotNull(impression.userData, 'Missing UserData');
@@ -30,7 +30,7 @@ class AnalyticsAPI {
     );
   }
 
-  ///
+  /// {@macro trackImpression}
   Future<Response> trackEngagements(Token token, List<Engagement> engagements) {
     for (final engagement in engagements) {
       checkNotNull(engagement.userData, 'Missing UserData');

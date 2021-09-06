@@ -1,3 +1,4 @@
+import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
@@ -8,21 +9,18 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
-
-import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// {@template flatFeed}
-///Flat is the default feed type -
-///and the only feed type that you can follow.
+/// Flat is the default feed type - and the only feed type that you can follow.
 ///
-///It's not possible to follow either aggregated or notification feeds.
+/// It's not possible to follow either aggregated or notification feeds.
 ///
 /// You can create new feed groups based on the flat type in the dashboard.
 /// {@endtemplate}
 class FlatFeed extends Feed {
   /// Initialize a feed object
-  FlatFeed(
+  const FlatFeed(
     FeedId feedId,
     FeedAPI feed, {
     Token? userToken,
@@ -36,7 +34,7 @@ class FlatFeed extends Feed {
           subscriber: subscriber,
         );
 
-  ///Retrieves one activity from a feed
+  /// Retrieves one activity from a feed
   Future<Activity> getActivityDetail(String activityId) async {
     final activities = await getActivities(
         limit: 1,
@@ -46,7 +44,7 @@ class FlatFeed extends Feed {
     return activities.first;
   }
 
-  ///Retrieves one activity from a feed
+  /// Retrieves one enriched activity from a feed
   Future<EnrichedActivity> getEnrichedActivityDetail(String activityId) async {
     final activities = await getEnrichedActivities(
         limit: 1,
@@ -56,12 +54,15 @@ class FlatFeed extends Feed {
     return activities.first;
   }
 
-  ///Retrieve activities
-  ///# Example:
-  /// Read Jack's timeline
-  ///```dart
+  /// Retrieve activities
+  ///
+  /// # Example:
+  ///  Read Jack's timeline
+  /// ```dart
   ///  var activities = await jack.getActivities(limit: 10);
   /// ```
+  ///
+  /// {@macro filter}
   Future<List<Activity>> getActivities({
     int? limit,
     int? offset,
@@ -92,20 +93,22 @@ class FlatFeed extends Feed {
   /// - read bob's timeline and include most recent reactions
   /// to all activities and their total count
   /// ```dart
-  ///await client.flatFeed('timeline', 'bob').getEnrichedActivities(
-  ///     flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
-  ///   );
+  /// await client.flatFeed('timeline', 'bob').getEnrichedActivities(
+  ///   flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
+  /// );
   /// ```
   /// - read bob's timeline and include most recent reactions
   /// to all activities and her own reactions
   /// ```dart
   /// await client.flatFeed('timeline', 'bob').getEnrichedActivities(
-  ///      flags: EnrichmentFlags()
-  ///         .withOwnReactions()
-  ///         .withRecentReactions()
-  ///         .withReactionCounts(),
-  ///   );
+  ///   flags: EnrichmentFlags()
+  ///     .withOwnReactions()
+  ///     .withRecentReactions()
+  ///     .withReactionCounts(),
+  /// );
   /// ```
+  ///
+  /// {@macro filter}
   Future<List<EnrichedActivity>> getEnrichedActivities({
     int? limit,
     int? offset,
@@ -132,6 +135,17 @@ class FlatFeed extends Feed {
     return data;
   }
 
+  /// {@template personalizedFeed}
+  /// Retrieve a personalized feed for the currentUser
+  /// i.e. a feed of based on user's activities.
+  /// {@endtemplate}
+  ///
+  /// # Example:
+  /// - get a feed of activities from the current user
+  /// ```dart
+  /// var feed = await client.flatFeed('timeline').personalizedFeed();
+  ///
+  /// {@macro filter}
   Future<PersonalizedFeed> personalizedFeed({
     int? limit,
     int? offset,

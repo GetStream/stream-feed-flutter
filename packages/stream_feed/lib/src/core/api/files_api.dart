@@ -1,23 +1,27 @@
 import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/http/typedefs.dart';
 import 'package:stream_feed/src/core/models/attachment_file.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 
 /// The http layer api for CRUD operations on Files
 class FilesAPI {
-  /// [FilesAPI] constructor
+  /// Builds a [FilesAPI].
   const FilesAPI(this._client);
 
   final StreamHttpClient _client;
 
   /// Upload a File instance or a readable stream of data
-  Future<String?> upload(Token token, AttachmentFile file) async {
+  Future<String?> upload(Token token, AttachmentFile file,
+      {OnSendProgress? onSendProgress, CancelToken? cancelToken}) async {
     final multiPartFile = await file.toMultipartFile();
     final result = await _client.postFile<Map>(
       Routes.filesUrl,
       multiPartFile,
       headers: {'Authorization': '$token'},
+      onSendProgress: onSendProgress,
+      cancelToken: cancelToken,
     );
     return result.data!['file'];
   }
@@ -29,6 +33,7 @@ class FilesAPI {
         queryParameters: {'url': targetUrl},
       );
 
+  /// {@macro filesRefreshUrl}
   Future<String?> refreshUrl(Token token, String targetUrl) async {
     final result = await _client.post(Routes.filesUrl,
         headers: {'Authorization': '$token'}, data: {'url': targetUrl});

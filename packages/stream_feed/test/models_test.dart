@@ -11,6 +11,7 @@ import 'package:stream_feed/src/core/models/group.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -138,15 +139,15 @@ void main() {
               feed: FeedId.fromId('reward:1'),
               newActivities: [
                 EnrichedActivity(
-                    actor: EnrichableField('reward:1'),
+                    actor: const EnrichableField('reward:1'),
                     id: 'f3de8328-be2d-11eb-bb18-128a130028af',
                     extraData: {
                       'message':
                           "@Jessica check out getstream.io it's so dang awesome.",
                     },
-                    origin: EnrichableField(null),
-                    target: EnrichableField(null),
-                    object: EnrichableField('tweet:id'),
+                    origin: const EnrichableField(null),
+                    target: const EnrichableField(null),
+                    object: const EnrichableField('tweet:id'),
                     time: DateTime.parse('2021-05-26T14:23:33.918391'),
                     to: ['notification:jessica'],
                     verb: 'tweet')
@@ -174,7 +175,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -416,7 +417,7 @@ void main() {
     final engagement = Engagement(
         content: Content(foreignId: FeedId.id('tweet:34349698')),
         label: 'click',
-        userData: UserData('test', 'test'),
+        userData: const UserData('test', 'test'),
         feedId: FeedId('user', 'thierry'));
     final json = {
       'user_data': {'id': 'test', 'alias': 'test'},
@@ -442,7 +443,7 @@ void main() {
             foreignId: FeedId.fromId('tweet:34349698'),
           )
         ],
-        userData: UserData('test', 'test'),
+        userData: const UserData('test', 'test'),
         feedId: FeedId('flat', 'tommaso'),
         location: 'profile_page');
     final json = {
@@ -475,7 +476,7 @@ void main() {
     final personalizedFeed = PersonalizedFeed.fromJson(json);
     expect(
         personalizedFeed,
-        PersonalizedFeed(
+        const PersonalizedFeed(
             limit: 25,
             offset: 0,
             version: 'user_1_1619210635',
@@ -493,7 +494,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -531,7 +532,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -556,7 +557,10 @@ void main() {
           'parent': 'test',
           'created_at': '2001-09-11T00:01:02.000',
           'target_feeds': ['slug:userId'],
-          'user': {'test': 'test'},
+          'user': {
+            'id': 'test',
+            'data': {'test': 'test'}
+          },
           'target_feeds_extra_data': {'test': 'test'},
           'data': {'test': 'test'}
         }
@@ -848,7 +852,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         childrenCounts: const {'test': 1});
@@ -861,7 +865,7 @@ void main() {
         createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
         updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
         targetFeeds: [FeedId('slug', 'userId')],
-        user: const {'test': 'test'},
+        user: const User(id: 'test', data: {'test': 'test'}),
         targetFeedsExtraData: const {'test': 'test'},
         data: const {'test': 'test'},
         // latestChildren: {
@@ -888,131 +892,168 @@ void main() {
         'parent': 'test',
         'created_at': '2001-09-11T00:01:02.000',
         'target_feeds': ['slug:userId'],
-        'user': {'test': 'test'},
+        'user': {
+          'id': 'test',
+          'data': {'test': 'test'}
+        },
         'target_feeds_extra_data': {'test': 'test'},
         'data': {'test': 'test'}
       });
     });
   });
-
-  test('Image', () {
-    const image = Image(
-        image: 'test',
-        url: 'test',
-        secureUrl: 'test',
-        width: 'test',
-        height: 'test',
-        type: 'test',
-        alt: 'test');
-    final imageJson = json.decode(fixture('image.json'));
-    final imageFromJson = Image.fromJson(imageJson);
-    expect(imageFromJson, image);
-  });
-
-  test('Video', () {
-    const video = Video(
-      image: 'test',
-      url: 'test',
-      secureUrl: 'test',
-      width: 'test',
-      height: 'test',
-      type: 'test',
-      alt: 'test',
-    );
-
-    final videoJson = json.decode(fixture('video.json'));
-    final videoFromJson = Video.fromJson(videoJson);
-    expect(videoFromJson, video);
-  });
-  test('Audio', () {
-    const audio = Audio(
-      audio: 'test',
-      url: 'test',
-      secureUrl: 'test',
-      type: 'test',
-    );
-    final audioJson = json.decode(fixture('audio.json'));
-    final audioFromJson = Audio.fromJson(audioJson);
-    expect(audioFromJson, audio);
-  });
-
-  test('OpenGraphData', () {
-    const openGraphData = OpenGraphData(
-      title: 'test',
-      type: 'test',
-      url: 'test',
-      site: 'test',
-      siteName: 'test',
-      description: 'test',
-      determiner: 'test',
-      locale: 'test',
-      images: [
-        Image(
-            image: 'test',
-            url: 'test',
-            secureUrl: 'test',
-            width: 'test',
-            height: 'test',
-            type: 'test',
-            alt: 'test')
-      ],
-      videos: [
-        Video(
+  group('OG', () {
+    test('Image', () {
+      const image = OgImage(
           image: 'test',
           url: 'test',
           secureUrl: 'test',
           width: 'test',
           height: 'test',
           type: 'test',
-          alt: 'test',
-        )
-      ],
-      audios: [
-        Audio(
-          audio: 'test',
-          url: 'test',
-          secureUrl: 'test',
-          type: 'test',
-        )
-      ],
-    );
-    final openGraphDataJson = json.decode(fixture('open_graph_data.json'));
-    final openGraphDataFromJson = OpenGraphData.fromJson(openGraphDataJson);
-    expect(openGraphDataFromJson, openGraphData);
-    expect(openGraphData.toJson(), {
-      'title': 'test',
-      'type': 'test',
-      'url': 'test',
-      'site': 'test',
-      'site_name': 'test',
-      'description': 'test',
-      'determiner': 'test',
-      'locale': 'test',
-      'images': [
-        {
-          'image': 'test',
-          'url': 'test',
-          'secure_url': 'test',
-          'width': 'test',
-          'height': 'test',
-          'type': 'test',
-          'alt': 'test'
-        }
-      ],
-      'videos': [
-        {
-          'image': 'test',
-          'url': 'test',
-          'secure_url': 'test',
-          'width': 'test',
-          'height': 'test',
-          'type': 'test',
-          'alt': 'test'
-        }
-      ],
-      'audios': [
-        {'audio': 'test', 'url': 'test', 'secure_url': 'test', 'type': 'test'}
-      ]
+          alt: 'test');
+      final imageJson = json.decode(fixture('image.json'));
+      final imageFromJson = OgImage.fromJson(imageJson);
+      expect(imageFromJson, image);
+    });
+
+    test('Video', () {
+      const video = OgVideo(
+        image: 'test',
+        url: 'test',
+        secureUrl: 'test',
+        width: 'test',
+        height: 'test',
+        type: 'test',
+        alt: 'test',
+      );
+
+      final videoJson = json.decode(fixture('video.json'));
+      final videoFromJson = OgVideo.fromJson(videoJson);
+      expect(videoFromJson, video);
+    });
+    test('Audio', () {
+      const audio = OgAudio(
+        audio: 'test',
+        url: 'test',
+        secureUrl: 'test',
+        type: 'test',
+      );
+      final audioJson = json.decode(fixture('audio.json'));
+      final audioFromJson = OgAudio.fromJson(audioJson);
+      expect(audioFromJson, audio);
+    });
+
+    test('OpenGraphData', () {
+      const openGraphData = OpenGraphData(
+        title: 'test',
+        type: 'test',
+        url: 'test',
+        site: 'test',
+        siteName: 'test',
+        description: 'test',
+        determiner: 'test',
+        locale: 'test',
+        images: [
+          OgImage(
+              image: 'test',
+              url: 'test',
+              secureUrl: 'test',
+              width: 'test',
+              height: 'test',
+              type: 'test',
+              alt: 'test')
+        ],
+        videos: [
+          OgVideo(
+            image: 'test',
+            url: 'test',
+            secureUrl: 'test',
+            width: 'test',
+            height: 'test',
+            type: 'test',
+            alt: 'test',
+          )
+        ],
+        audios: [
+          OgAudio(
+            audio: 'test',
+            url: 'test',
+            secureUrl: 'test',
+            type: 'test',
+          )
+        ],
+      );
+      final openGraphDataJson = json.decode(fixture('open_graph_data.json'));
+      final openGraphDataFromJson = OpenGraphData.fromJson(openGraphDataJson);
+      expect(openGraphDataFromJson, openGraphData);
+      expect(openGraphData.toJson(), {
+        'title': 'test',
+        'type': 'test',
+        'url': 'test',
+        'site': 'test',
+        'site_name': 'test',
+        'description': 'test',
+        'determiner': 'test',
+        'locale': 'test',
+        'images': [
+          {
+            'image': 'test',
+            'url': 'test',
+            'secure_url': 'test',
+            'width': 'test',
+            'height': 'test',
+            'type': 'test',
+            'alt': 'test'
+          }
+        ],
+        'videos': [
+          {
+            'image': 'test',
+            'url': 'test',
+            'secure_url': 'test',
+            'width': 'test',
+            'height': 'test',
+            'type': 'test',
+            'alt': 'test'
+          }
+        ],
+        'audios': [
+          {'audio': 'test', 'url': 'test', 'secure_url': 'test', 'type': 'test'}
+        ]
+      });
+    });
+
+    test('activity acttachment', () {
+      const openGraph = OpenGraphData(
+          title:
+              "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+          url:
+              'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+          description:
+              'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+          images: [
+            OgImage(
+              image:
+                  'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+            )
+          ]);
+
+      expect(
+          openGraph,
+          OpenGraphData.fromJson({
+            'description':
+                'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+            'title':
+                "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+            'url':
+                'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+            'images': [
+              {
+                'image':
+                    'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+              },
+            ],
+          }));
     });
   });
 

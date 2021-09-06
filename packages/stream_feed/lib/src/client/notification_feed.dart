@@ -1,3 +1,5 @@
+import 'package:stream_feed/src/client/aggregated_feed.dart';
+import 'package:stream_feed/src/client/feed.dart' show FeedSubscriber;
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
@@ -8,20 +10,17 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/group.dart';
 import 'package:stream_feed/src/core/util/default.dart';
-
-import 'package:stream_feed/src/client/aggregated_feed.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:stream_feed/src/client/feed.dart' show FeedSubscriber;
 
 /// {@template notificationFeed}
 /// Notification Feed Groups extend the "Aggregated Feed Group" concept
-/// with additional features that make them well suited to notification systems:
+/// with additional features that make them well suited to notification systems.
 ///
-/// Notification Feeds contain Activity Groups,
-/// each with a seen and read status field.
+/// Notification Feeds contain Activity Groups, each with a seen and read
+/// status field.
 ///
-///  These fields can be updated to reflect
-/// how a user has interacted with a given notification.
+/// These fields can be updated to reflect how a user has interacted with a
+/// given notification.
 ///
 /// When retrieved, the Feed includes a real-time count of
 /// the total number of unseen and unread Activity Groups (notifications).
@@ -30,14 +29,14 @@ import 'package:stream_feed/src/client/feed.dart' show FeedSubscriber;
 ///
 /// If you click the notification icon, all notifications get marked as seen.
 ///
-///  However, an individual notification only gets marked as read
+/// However, an individual notification only gets marked as read
 /// when you click on it.
 ///
 /// You can create new Notification Feed Groups in the dashboard.
 /// {@endtemplate}
 class NotificationFeed extends AggregatedFeed {
   ///Initialize a [NotificationFeed] object
-  NotificationFeed(
+  const NotificationFeed(
     FeedId feedId,
     FeedAPI feed, {
     Token? userToken,
@@ -51,7 +50,7 @@ class NotificationFeed extends AggregatedFeed {
           subscriber: subscriber,
         );
 
-  ///Retrieves one activity from a feed
+  /// Retrieves one activity from a feed
   @override
   Future<NotificationGroup<Activity>> getActivityDetail(
       String activityId) async {
@@ -64,6 +63,7 @@ class NotificationFeed extends AggregatedFeed {
   }
 
   /// Retrieve feed of type notifications
+  ///
   /// # Example
   /// Mark all activities in the feed as seen
   /// ```dart
@@ -72,6 +72,8 @@ class NotificationFeed extends AggregatedFeed {
   ///   marker: ActivityMarker().allSeen(),
   /// );
   /// ```
+  ///
+  /// {@macro filter}
   @override
   Future<List<NotificationGroup<Activity>>> getActivities({
     int? limit,
@@ -97,6 +99,8 @@ class NotificationFeed extends AggregatedFeed {
   }
 
   /// Retrieve activities with reaction enrichment
+  ///
+  /// {@macro filter}
   @override
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedActivities({
     int? limit,

@@ -12,4 +12,8 @@ void main() {
   test('createActivityReference', () {
     expect(createActivityReference('id'), 'SA:id');
   });
+
+  test('createReactionReference', () {
+    expect(createReactionReference('id'), 'SR:id');
+  });
 }

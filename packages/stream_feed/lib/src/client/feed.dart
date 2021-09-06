@@ -1,4 +1,6 @@
+import 'package:faye_dart/faye_dart.dart';
 import 'package:meta/meta.dart';
+import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
@@ -10,27 +12,26 @@ import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
 import 'package:stream_feed/src/core/util/default.dart';
-
-import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:faye_dart/faye_dart.dart';
 
-///
+/// A type definition for the callback to be invoked when data is received.
 typedef MessageDataCallback = void Function(Map<String, dynamic>? data);
 
-///
+/// A type definition for the callback to be invoked when a message is received.
 typedef FeedSubscriber = Future<Subscription> Function(
   Token token,
   FeedId feedId,
   MessageDataCallback callback,
 );
 
-/// The feed object contains convenient functions
-/// such add activity, remove activity etc
+///{@template feed}
+/// The feed object contains convenient functions for manipulating feeds,
+/// such as add activity, remove activity, etc.
+///{@endtemplate}
 class Feed {
   ///Initialize a feed object
-  Feed(
+  const Feed(
     this.feedId,
     this.feed, {
     this.userToken,
@@ -56,7 +57,7 @@ class Feed {
   @protected
   final FeedId feedId;
 
-  ///The stream client this feed is constructed from
+  /// The stream client this feed is constructed from
   @protected
   final FeedAPI feed;
 
@@ -78,8 +79,9 @@ class Feed {
     });
   }
 
-  ///Retrieve the number of follower
-  ///and following feed stats of the current feed.
+  /// Retrieves the number of followers
+  /// and following feed stats of the current feed.
+  ///
   /// For each count, feed slugs can be provided to filter counts accordingly.
   /// Example:
   /// ```dart
@@ -107,16 +109,17 @@ class Feed {
   /// Adds the given [Activity] to the feed
   /// parameters:
   /// [activity] : The activity to add
-  /// Example
+  ///
+  /// # Example
   /// ```dart
   ///  final activity = Activity(
-  ///             actor: user.id,
-  ///             verb: 'tweet',
-  ///             object: '1',
-  ///             extraData: {
-  ///               'tweet': message,
-  ///             },
-  ///           );
+  ///    actor: user.id,
+  ///    verb: 'tweet',
+  ///    object: '1',
+  ///    extraData: {
+  ///      'tweet': message,
+  ///    },
+  ///  );
   /// await userFeed.addActivity(activity);
   /// ```
   ///
@@ -129,7 +132,7 @@ class Feed {
 
   /// Adds the given activities to the feed
   ///
-  /// Usage :
+  /// # Usage :
   /// ```dart
   /// final activities = <Activity>[
   ///   const Activity(
@@ -152,12 +155,12 @@ class Feed {
     return feed.addActivities(token, feedId, activities);
   }
 
-  /// Removes the activity by activityId or foreignId
+  /// Removes the activity by `activityId` or `foreignId`
   ///
   /// parameters
   /// [id] : activityId Identifier of activity to remove
   ///
-  /// Usage:
+  /// # Usage:
   /// ```dart
   /// await userFeed.removeActivityById('e561de8f-00f1-11e4-b400-0cc47a024be0');
   /// ```
@@ -168,13 +171,13 @@ class Feed {
     return feed.removeActivityById(token, feedId, id);
   }
 
-  /// Remove an Activity by referencing its foreign_id
+  /// Remove an [Activity] by referencing its `foreign_id`
   ///
   /// Parameters:
-  /// [foreignId]: Identifier of activity to remove
+  /// `foreignId`: Identifier of activity to remove
   ///
   /// For example :
-  ///```dart
+  /// ```dart
   /// final chris = client.flatFeed('user', 'chris');
   /// await chris.removeActivityByForeignId('picture:10');
   /// ```
@@ -193,7 +196,7 @@ class Feed {
   /// [flatFeet] : Slug of the target feed
   /// [activityCopyLimit] : Limit the amount of activities copied over on follow
   ///
-  /// For example to create a following relationship
+  /// For example, to create a following relationship
   /// between Jack's "timeline" feed and Chris' "user" feed
   /// you'd do the following
   /// ```dart
@@ -222,7 +225,7 @@ class Feed {
   ///
   /// Usage:
   /// ```dart
-  /// final followers = await userFeed.getFollowers(limit: 10, offset: 0);
+  /// final followers = await userFeed.followers(limit: 10, offset: 0);
   /// ```
   ///
   /// API docs: [reading-feed-followers](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-feed-followers)
@@ -243,21 +246,21 @@ class Feed {
   /// - Retrieve last 10 feeds followed by user
   /// ```dart
   /// var followed = await userFeed.getFollowed(limit: 10, offset: 0);
-  ///```
+  /// ```
   ///
   /// - Retrieve 10 feeds followed by user starting from the 11th
   /// ```dart
   /// followed = await userFeed.getFollowed(limit: 10, offset: 10);
-  ///```
+  /// ```
   ///
   /// - Check if user follows specific feeds
   /// ```dart
-  /// followed = await userFeed.getFollowed(limit: 2, offset: 0, feedIds: [
-  ///  FeedId.id('user:42'),
-  ///  FeedId.id('user:43'),
-  ///]);
-  ///```
-  ///
+  /// following = await userFeed.following(limit: 2, offset: 0, feedIds: [
+  ///   FeedId.id('user:42'),
+  ///   FeedId.id('user:43'),
+  /// ]);
+  /// ```
+  /// {@macro filter}
   /// API docs: [reading-followed-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#reading-followed-feeds)
   Future<List<Follow>> following({
     Iterable<FeedId>? filter,
@@ -365,12 +368,12 @@ class Feed {
   /// };
   /// ```
   /// Prepare the unset operations
-  ///  ```dart
+  /// ```dart
   /// final unset = ['daily_likes', 'popularity'];
   /// const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
   /// final update = ActivityUpdate.withId(id, set, unset);
   /// await userFeed.updateActivityById(update);
-  ///  ```
+  /// ```
   Future<Activity> updateActivityById({
     required String id,
     Map<String, Object>? set,
@@ -393,9 +396,9 @@ class Feed {
   /// Update [Activity.foreignId] By ForeignId
   ///
   /// Usage:
-  ///```dart
-  ///await userFeed.updateActivityByForeignId(update);
-  ///```
+  /// ```dart
+  /// await userFeed.updateActivityByForeignId(update);
+  /// ```
   Future<Activity> updateActivityByForeignId({
     required String foreignId,
     required DateTime time,

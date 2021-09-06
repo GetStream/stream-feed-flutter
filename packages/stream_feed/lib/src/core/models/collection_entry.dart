@@ -5,20 +5,23 @@ import 'package:stream_feed/stream_feed.dart';
 part 'collection_entry.g.dart';
 
 /// Collections enable you to store information to Stream.
-///  This allows you to use it inside your feeds,
-/// and to provide additional data for the personalized endpoints.
-/// Examples include products and articles,
-/// but any unstructured object (e.g. JSON) is a good match for collections.
-/// Collection entries can be embedded inside activities
-/// and used to store nested data inside activities. When doing so,
-/// Stream will automatically enrich your activities
-/// with the current version of the data (see later section).
-/// Collection endpoints can be used both client-side
-/// and server-side except the batch methods
-/// that are only available server-side.
+///
+/// This allows you to use it inside your feeds and to provide additional data
+/// for the personalized endpoints.
+///
+/// Examples include products and articles, but any unstructured object
+/// (e.g. JSON) is a good match for collections.
+///
+/// Collection entries can be embedded inside activities and used to store
+/// nested data inside activities. When doing so, Stream will automatically
+/// enrich your activities with the current version of the data
+/// (see later section).
+///
+/// Collection endpoints can be used both client-side and server-side except
+/// the batch methods that are only available server-side.
 @JsonSerializable()
 class CollectionEntry extends Equatable {
-  /// [CollectionEntry] constructor
+  /// Builds a [CollectionEntry].
   const CollectionEntry({
     this.id,
     this.collection,
@@ -28,7 +31,7 @@ class CollectionEntry extends Equatable {
     this.updatedAt,
   });
 
-  /// Create a new instance from a json
+  /// Create a new instance from a JSON object
   factory CollectionEntry.fromJson(Map<String, dynamic> json) =>
       _$CollectionEntryFromJson(json);
 
@@ -50,6 +53,7 @@ class CollectionEntry extends Equatable {
   /// When the collection object was last updated.
   final DateTime? updatedAt;
 
+  /// Handy getter to refer to the collection object for enrichment purposes
   String get ref => createCollectionReference(collection, id);
 
   @override
@@ -62,8 +66,7 @@ class CollectionEntry extends Equatable {
         updatedAt,
       ];
 
-  ///allows us to copy a CollectionEntry
-  ///and pass in arguments that overwrite settable values.
+  /// Copies this [CollectionEntry] to a new instance.
   CollectionEntry copyWith({
     String? id,
     String? collection,
@@ -81,6 +84,6 @@ class CollectionEntry extends Equatable {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  /// Serialize to json
+  /// Serialize to JSON
   Map<String, dynamic> toJson() => _$CollectionEntryToJson(this);
 }

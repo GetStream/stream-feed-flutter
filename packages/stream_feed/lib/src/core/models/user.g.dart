@@ -10,7 +10,7 @@ User _$UserFromJson(Map json) {
   return User(
     id: json['id'] as String?,
     data: (json['data'] as Map?)?.map(
-      (k, e) => MapEntry(k as String, e as Object),
+      (k, e) => MapEntry(k as String, e),
     ),
     createdAt: json['created_at'] == null
         ? null
