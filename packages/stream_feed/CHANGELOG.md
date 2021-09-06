@@ -8,6 +8,7 @@
 - fix: missing field ownChildren in `Reaction` model
 - breaking: change type of `Reaction` model field user from  `Map<String,dynamic>` to `User`
 - new: allow sending enrichment flags in `filter` mehod
+- improvement: const constructors when possible
   
 - ## 0.2.3: 03/08/2021
 
