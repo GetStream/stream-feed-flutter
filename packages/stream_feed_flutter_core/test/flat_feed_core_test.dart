@@ -41,31 +41,30 @@ main() {
     when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
     when(() => mockFeed.getEnrichedActivities())
         .thenAnswer((_) async => activities);
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: StreamFeedProvider(
-            analyticsClient: mockStreamAnalytics,
-            client: mockClient,
-            child: ActivitiesProvider(
-              bloc: ActivitiesBloc(client: mockClient),
-              child: FlatFeedCore(
-                feedGroup: 'user',
-                feedBuilder: (BuildContext context,
-                    List<EnrichedActivity> activities, int idx) {
-                  return Column(
-                    children: [
-                      Text(
-                          "${activities[idx].reactionCounts?['like']}") //counts
-                    ],
-                  );
-                },
-              ),
-            ),
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: StreamFeedProvider(
+          analyticsClient: mockStreamAnalytics,
+          client: mockClient,
+          // child: ActivitiesProvider(
+          // bloc: ActivitiesBloc(client: mockClient),
+          child: FlatFeedCore(
+            activitiesBloc: ActivitiesBloc(client: mockClient),
+            feedGroup: 'user',
+            feedBuilder: (BuildContext context,
+                List<EnrichedActivity> activities, int idx) {
+              return Column(
+                children: [
+                  Text("${activities[idx].reactionCounts?['like']}") //counts
+                ],
+              );
+            },
           ),
+          // ),
+          // ),
         ),
       ),
-    );
+    ));
 
     verify(() => mockClient.flatFeed('user')).called(1);
     verify(() => mockFeed.getEnrichedActivities()).called(1);

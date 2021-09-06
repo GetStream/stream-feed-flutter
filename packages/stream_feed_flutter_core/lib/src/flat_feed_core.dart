@@ -40,6 +40,7 @@ class FlatFeedCore extends StatefulWidget {
       {Key? key,
       required this.feedGroup,
       required this.feedBuilder,
+      required this.activitiesBloc,
       this.onErrorWidget = const ErrorStateWidget(),
       this.onProgressWidget = const ProgressStateWidget(),
       this.limit,
@@ -89,26 +90,35 @@ class FlatFeedCore extends StatefulWidget {
   /// The feed group to use for the request
   final String feedGroup;
 
+  final ActivitiesBloc activitiesBloc;
+
   @override
   State<FlatFeedCore> createState() => _FlatFeedCoreState();
 }
 
-class _FlatFeedCoreState extends State<FlatFeedCore>
-    with WidgetsBindingObserver {
-  late ActivitiesBloc _activitiesBloc;
+class _FlatFeedCoreState extends State<FlatFeedCore> {
+  //with WidgetsBindingObserver
+  // late ActivitiesBloc _activitiesBloc;
 
   @override
-  void didChangeDependencies() {
-    final newActivitiesBloc = ActivitiesProvider.of(context).bloc;
-    if (newActivitiesBloc != _activitiesBloc) {
-      _activitiesBloc = newActivitiesBloc;
-      loadData();
-    }
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    loadData();
   }
 
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   final newActivitiesBloc = ActivitiesProvider.of(context).bloc;
+  //   print("FLAT FEED CO");
+  //   if (newActivitiesBloc != _activitiesBloc) {
+  //     _activitiesBloc = newActivitiesBloc;
+  //     loadData();
+  //   }
+  // }
+
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => _activitiesBloc.queryEnrichedActivities(
+  Future<void> loadData() => widget.activitiesBloc.queryEnrichedActivities(
         feedGroup: widget.feedGroup,
         limit: widget.limit,
         offset: widget.offset,
@@ -122,7 +132,7 @@ class _FlatFeedCoreState extends State<FlatFeedCore>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<EnrichedActivity>>(
-      stream: _activitiesBloc.activitiesStream,
+      stream: widget.activitiesBloc.activitiesStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return widget
