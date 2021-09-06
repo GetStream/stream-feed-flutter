@@ -19,8 +19,8 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// - 'Julie and 14 others liked your photo'
 /// {@endtemplate}
 class AggregatedFeed extends Feed {
-  ///{@macro aggregatedFeed}
-  AggregatedFeed(
+  /// Initialize a [AggregatedFeed] object
+  const AggregatedFeed(
     FeedId feedId,
     FeedAPI feed, {
     Token? userToken,
