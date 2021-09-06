@@ -43,6 +43,7 @@ class ReactionListCore extends StatefulWidget {
     Key? key,
     required this.reactionsBuilder,
     required this.lookupValue,
+    required this.reactionsBloc,
     this.onErrorWidget = const ErrorStateWidget(),
     this.onProgressWidget = const ProgressStateWidget(),
     this.onEmptyWidget =
@@ -66,6 +67,7 @@ class ReactionListCore extends StatefulWidget {
   final EnrichmentFlags? flags;
   final int? limit;
   final String? kind;
+  final ReactionsBloc reactionsBloc;
 
   @override
   State<ReactionListCore> createState() => _ReactionListCoreState();
@@ -73,20 +75,26 @@ class ReactionListCore extends StatefulWidget {
 
 class _ReactionListCoreState extends State<ReactionListCore>
     with WidgetsBindingObserver {
-  late ReactionsBloc _reactionsBloc;
-
   @override
-  void didChangeDependencies() {
-    final newReactionsBloc = ReactionsProvider.of(context).bloc;
-    if (newReactionsBloc != _reactionsBloc) {
-      _reactionsBloc = newReactionsBloc;
-      loadData();
-    }
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    loadData();
   }
 
+  // late ReactionsBloc _reactionsBloc;
+
+  // @override
+  // void didChangeDependencies() {
+  //   final newReactionsBloc = ReactionsProvider.of(context).bloc;
+  //   if (newReactionsBloc != _reactionsBloc) {
+  //     _reactionsBloc = newReactionsBloc;
+  //     loadData();
+  //   }
+  //   super.didChangeDependencies();
+  // }
+
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => _reactionsBloc.queryReactions(
+  Future<void> loadData() => widget.reactionsBloc.queryReactions(
         widget.lookupAttr,
         widget.lookupValue,
         filter: widget.filter,
@@ -98,7 +106,7 @@ class _ReactionListCoreState extends State<ReactionListCore>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Reaction>>(
-        stream: _reactionsBloc.reactionsStream,
+        stream: widget.reactionsBloc.reactionsStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return widget.onErrorWidget; //snapshot.error
