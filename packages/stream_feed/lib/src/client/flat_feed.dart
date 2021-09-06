@@ -3,11 +3,13 @@ import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_marker.dart';
+import 'package:stream_feed/src/core/models/collection_entry.dart';
 import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
@@ -45,8 +47,9 @@ class FlatFeed extends Feed {
   }
 
   /// Retrieves one enriched activity from a feed
-  Future<EnrichedActivity> getEnrichedActivityDetail(String activityId) async {
-    final activities = await getEnrichedActivities(
+  Future<EnrichedActivity<A, Ob, T, Or>>
+      getEnrichedActivityDetail<A, Ob, T, Or>(String activityId) async {
+    final activities = await getEnrichedActivities<A, Ob, T, Or>(
         limit: 1,
         filter: Filter()
             .idLessThanOrEqual(activityId)
@@ -109,7 +112,8 @@ class FlatFeed extends Feed {
   /// ```
   ///
   /// {@macro filter}
-  Future<List<EnrichedActivity>> getEnrichedActivities({
+  Future<List<EnrichedActivity<A, Ob, T, Or>>>
+      getEnrichedActivities<A, Ob, T, Or>({
     int? limit,
     int? offset,
     String? session,
@@ -130,7 +134,7 @@ class FlatFeed extends Feed {
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
-        .map((e) => EnrichedActivity.fromJson(e))
+        .map((e) => EnrichedActivity<A, Ob, T, Or>.fromJson(e))
         .toList(growable: false);
     return data;
   }

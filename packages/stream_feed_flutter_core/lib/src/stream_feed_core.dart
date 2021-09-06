@@ -36,16 +36,16 @@ class StreamFeedCore extends StatefulWidget {
   ///
   /// [StreamFeedCore] is a stateful widget which reacts to system events and
   /// updates Stream's connection status accordingly.
-  StreamFeedCore(
-      {Key? key,
-      required this.client,
-      required this.child,
-      this.trackAnalytics = false,
-      // required this.feedGroup,
-      this.navigatorKey,
-      this.analyticsLocation,
-      this.analyticsClient})
-      : super(key: key);
+  const StreamFeedCore({
+    Key? key,
+    required this.client,
+    required this.child,
+    this.trackAnalytics = false,
+    // required this.feedGroup,
+    this.navigatorKey,
+    this.analyticsLocation,
+    this.analyticsClient,
+  }) : super(key: key);
 
   /// Instance of Stream Feed Client containing information about the current
   /// application.
@@ -54,7 +54,8 @@ class StreamFeedCore extends StatefulWidget {
   ///Analytics client
   final StreamAnalytics? analyticsClient;
 
-  ///wether or not you want to track analytics in your app (can be useful for customised feeds via ML)
+  /// Whether or not you want to track analytics in your app
+  /// (can be useful for customised feeds via ML)
   final bool trackAnalytics;
 
   /// The location that should be used for analytics when liking in the feed,
@@ -106,12 +107,13 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
   /// Add a new reaction to the feed.
-  Future<Reaction> onAddReaction(
-      {Map<String, Object>? data,
-      required String kind,
-      required EnrichedActivity activity,
-      List<FeedId>? targetFeeds,
-      required String feedGroup}) async {
+  Future<Reaction> onAddReaction({
+    Map<String, Object>? data,
+    required String kind,
+    required EnrichedActivity activity,
+    List<FeedId>? targetFeeds,
+    required String feedGroup,
+  }) async {
     final reaction = await reactions.add(kind, activity.id!,
         targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
@@ -120,12 +122,13 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }
 
   /// Add an activity to the feed.
-  Future<Activity> onAddActivity(
-      {required String feedGroup,
-      Map<String, String>? data,
-      required String verb,
-      required String object,
-      String? userId}) async {
+  Future<Activity> onAddActivity({
+    required String feedGroup,
+    Map<String, String>? data,
+    required String verb,
+    required String object,
+    String? userId,
+  }) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
       verb: verb,
@@ -144,31 +147,36 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }
 
   /// Remove reaction from the feed.
-  Future<void> onRemoveReaction(
-      {required String kind,
-      required EnrichedActivity activity,
-      required String id,
-      required String feedGroup}) async {
+  Future<void> onRemoveReaction({
+    required String kind,
+    required EnrichedActivity activity,
+    required String id,
+    required String feedGroup,
+  }) async {
     await reactions.delete(id);
     await trackAnalytics(
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
 
   ///Add child reaction
-  Future<Reaction> onAddChildReaction(
-      {required String kind,
-      required Reaction reaction,
-      Map<String, Object>? data,
-      String? userId,
-      List<FeedId>? targetFeeds}) async {
+  Future<Reaction> onAddChildReaction({
+    required String kind,
+    required Reaction reaction,
+    Map<String, Object>? data,
+    String? userId,
+    List<FeedId>? targetFeeds,
+  }) async {
     final childReaction = await reactions.addChild(kind, reaction.id!,
         data: data, userId: userId, targetFeeds: targetFeeds);
     return childReaction;
   }
 
   /// Remove child reaction
-  Future<void> onRemoveChildReaction(
-      {required String id, String? kind, Reaction? reaction}) async {
+  Future<void> onRemoveChildReaction({
+    required String id,
+    String? kind,
+    Reaction? reaction,
+  }) async {
     await reactions.delete(id);
   }
 
@@ -207,7 +215,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }
 
   ///Get enriched activities from the feed
-  Future<List<EnrichedActivity>> getEnrichedActivities({
+  Future<List<EnrichedActivity<A, Ob, T, Or>>>
+      getEnrichedActivities<A, Ob, T, Or>({
     required String feedGroup,
     int? limit,
     int? offset,
@@ -217,14 +226,16 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     String? ranking,
     String? userId,
   }) async =>
-      await client.flatFeed(feedGroup, userId).getEnrichedActivities(
-            limit: limit,
-            offset: offset,
-            session: session,
-            filter: filter,
-            flags: flags,
-            ranking: ranking,
-          );
+          await client
+              .flatFeed(feedGroup, userId)
+              .getEnrichedActivities<A, Ob, T, Or>(
+                limit: limit,
+                offset: offset,
+                session: session,
+                filter: filter,
+                flags: flags,
+                ranking: ranking,
+              );
 
   Future<List<NotificationGroup<EnrichedActivity>>> getEnrichedNotifications({
     required String feedGroup,

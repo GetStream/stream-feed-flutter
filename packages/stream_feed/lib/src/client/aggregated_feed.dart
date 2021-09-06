@@ -1,6 +1,7 @@
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_marker.dart';
 import 'package:stream_feed/src/core/models/enriched_activity.dart';
@@ -8,6 +9,7 @@ import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/group.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
@@ -74,7 +76,8 @@ class AggregatedFeed extends Feed {
   /// Retrieve activities with reaction enrichment
   ///
   /// {@macro filter}
-  Future<List<Group<EnrichedActivity>>> getEnrichedActivities({
+  Future<List<Group<EnrichedActivity<A, Ob, T, Or>>>>
+      getEnrichedActivities<A, Ob, T, Or>({
     int? limit,
     int? offset,
     String? session,
@@ -93,8 +96,12 @@ class AggregatedFeed extends Feed {
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
-        .map((e) => Group.fromJson(e,
-            (json) => EnrichedActivity.fromJson(json as Map<String, dynamic>?)))
+        .map((e) => Group.fromJson(
+              e,
+              (json) => EnrichedActivity<A, Ob, T, Or>.fromJson(
+                json! as Map<String, dynamic>?,
+              ),
+            ))
         .toList(growable: false);
     return data;
   }

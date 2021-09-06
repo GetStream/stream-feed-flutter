@@ -1,0 +1,95 @@
+{
+  "id": "test",
+  "actor": "test",
+  "object": {
+    "created_at": "2001-09-11T00:01:02.000",
+    "collection": "test",
+    "id": "test",
+    "data": {
+      "test": "test"
+    },
+    "foreign_id": "test",
+    "updated_at": "2001-09-11T00:01:03.000"
+  },
+  "verb": "test",
+  "target": "test",
+  "to": [
+    "test"
+  ],
+  "foreign_id": "test",
+  "time": "2001-09-11T00:01:02.000",
+  "analytics": {
+    "test": "test"
+  },
+  "extra_context": {
+    "test": "test"
+  },
+  "origin": "test",
+  "score": 1.0,
+  "reaction_counts": {
+    "test": 1
+  },
+  "own_reactions": {
+    "test": [
+      {
+        "id": "test",
+        "kind": "test",
+        "activity_id": "test",
+        "user_id": "test",
+        "parent": "test",
+        "updated_at": "2001-09-11T00:01:02.000",
+        "created_at": "2001-09-11T00:01:02.000",
+        "target_feeds": [
+          "slug:userId"
+        ],
+        "user": {
+          "id": "test",
+          "data": {
+            "test": "test"
+          }
+        },
+        "target_feeds_extra_data": {
+          "test": "test"
+        },
+        "data": {
+          "test": "test"
+        },
+        "children_counts": {
+          "test": 1
+        }
+      }
+    ]
+  },
+  "latest_reactions": {
+    "test": [
+      {
+        "id": "test",
+        "kind": "test",
+        "activity_id": "test",
+        "user_id": "test",
+        "parent": "test",
+        "updated_at": "2001-09-11T00:01:02.000",
+        "created_at": "2001-09-11T00:01:02.000",
+        "target_feeds": [
+          "slug:userId"
+        ],
+        "user": {
+          "id": "test",
+          "data": {
+            "test": "test"
+          }
+        },
+        "target_feeds_extra_data": {
+          "test": "test"
+        },
+        "data": {
+          "test": "test"
+        },
+        "children_counts": {
+          "test": 1
+        }
+      }
+    ]
+  },
+  "test": "test"
+}

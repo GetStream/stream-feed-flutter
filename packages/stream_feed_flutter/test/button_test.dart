@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/new_activities_notification.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'mock.dart';
 
@@ -99,23 +99,32 @@ void main() {
     expect(text, findsOneWidget);
   });
   testWidgets('LikeButton', (tester) async {
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) {
+          return StreamFeedTheme(
+            data: StreamFeedThemeData.light(),
+            child: child!,
+          );
+        },
         home: Scaffold(
-      body: LikeButton(
-        activity:
-            EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
-        // .add and .delete
-        reaction: Reaction(kind: 'like', childrenCounts: {
-          'like': 3
-        }, ownChildren: {
-          'like': [
-            Reaction(
-              kind: 'like',
-            )
-          ]
-        }),
+          body: LikeButton(
+            activity:
+                EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
+            // .add and .delete
+            reaction: Reaction(kind: 'like', childrenCounts: {
+              'like': 3
+            }, ownChildren: {
+              'like': [
+                Reaction(
+                  kind: 'like',
+                )
+              ]
+            }),
+          ),
+        ),
       ),
-    )));
+    );
 
     final icon = find.byType(StreamSvgIcon);
     final activeIcon = tester.widget<StreamSvgIcon>(icon);
@@ -125,23 +134,32 @@ void main() {
   });
 
   testWidgets('RepostButton', (tester) async {
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) {
+          return StreamFeedTheme(
+            data: StreamFeedThemeData.light(),
+            child: child!,
+          );
+        },
         home: Scaffold(
-      body: RepostButton(
-        activity:
-            EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
-        // .add and .delete
-        reaction: Reaction(kind: 'repost', childrenCounts: {
-          'repost': 3
-        }, ownChildren: {
-          'repost': [
-            Reaction(
-              kind: 'repost',
-            )
-          ]
-        }),
+          body: RepostButton(
+            activity:
+                EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
+            // .add and .delete
+            reaction: Reaction(kind: 'repost', childrenCounts: {
+              'repost': 3
+            }, ownChildren: {
+              'repost': [
+                Reaction(
+                  kind: 'repost',
+                )
+              ]
+            }),
+          ),
+        ),
       ),
-    )));
+    );
 
     final icon = find.byType(StreamSvgIcon);
     final activeIcon = tester.widget<StreamSvgIcon>(icon);
@@ -158,10 +176,14 @@ void main() {
     const foreignId = 'like:300';
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
-    final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+    const activity = EnrichedActivity(
+      id: activityId,
+      foreignId: foreignId,
+    );
     const reaction = Reaction(id: 'id', kind: kind, parent: activityId);
     const userId = 'user:300';
     final withoutOwnReactions = ChildReactionToggleIcon(
+      hoverColor: Colors.lightBlue,
       reaction: reaction,
       kind: kind,
       count: count,
@@ -169,6 +191,7 @@ void main() {
       activeIcon: activeIcon,
     );
     final withOwnReactions = ChildReactionToggleIcon(
+      hoverColor: Colors.lightBlue,
       reaction: reaction,
       kind: kind,
       count: count,
@@ -196,13 +219,23 @@ void main() {
         // when(() => mockStreamAnalytics.trackEngagement(engagement))
         //     .thenAnswer((_) async => Future.value());
 
-        await tester.pumpWidget(MaterialApp(
+        await tester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) {
+              return StreamFeedTheme(
+                data: StreamFeedThemeData(),
+                child: child!,
+              );
+            },
             home: Scaffold(
-          body: StreamFeedCore(
-              analyticsClient: mockStreamAnalytics,
-              client: mockClient,
-              child: withoutOwnReactions),
-        )));
+              body: StreamFeedCore(
+                analyticsClient: mockStreamAnalytics,
+                client: mockClient,
+                child: withoutOwnReactions,
+              ),
+            ),
+          ),
+        );
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
         await tester.tap(reactionIcon);
@@ -275,24 +308,31 @@ void main() {
     const foreignId = 'like:300';
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
-    final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+    const activity = EnrichedActivity(
+      id: activityId,
+      foreignId: foreignId,
+    );
     const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
     const userId = 'user:300';
     final withoutOwnReactions = ReactionToggleIcon(
-        activity: activity,
-        kind: kind,
-        count: count,
-        feedGroup: feedGroup,
-        inactiveIcon: inactiveIcon,
-        activeIcon: activeIcon);
+      activity: activity,
+      kind: kind,
+      count: count,
+      feedGroup: feedGroup,
+      inactiveIcon: inactiveIcon,
+      activeIcon: activeIcon,
+      hoverColor: Colors.lightBlue,
+    );
     final withOwnReactions = ReactionToggleIcon(
-        activity: activity,
-        kind: kind,
-        count: count,
-        feedGroup: feedGroup,
-        ownReactions: [reaction],
-        inactiveIcon: inactiveIcon,
-        activeIcon: activeIcon);
+      activity: activity,
+      kind: kind,
+      count: count,
+      feedGroup: feedGroup,
+      ownReactions: [reaction],
+      inactiveIcon: inactiveIcon,
+      activeIcon: activeIcon,
+      hoverColor: Colors.lightBlue,
+    );
     group('widget test', () {
       testWidgets('withoutOwnReactions: onAddReaction', (tester) async {
         final mockClient = MockStreamFeedClient();
@@ -387,14 +427,23 @@ void main() {
   group('ReactionIcon', () {
     testWidgets('onTap', (tester) async {
       var tapped = 0;
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeedTheme(
+              data: StreamFeedThemeData(),
+              child: child!,
+            );
+          },
           home: Scaffold(
-        body: ReactionIcon(
-          icon: StreamSvgIcon.repost(),
-          count: 23,
-          onTap: () => tapped++,
+            body: ReactionIcon(
+              icon: StreamSvgIcon.repost(),
+              count: 23,
+              onTap: () => tapped++,
+            ),
+          ),
         ),
-      )));
+      );
 
       final icon = find.byType(StreamSvgIcon);
       final activeIcon = tester.widget<StreamSvgIcon>(icon);
@@ -408,10 +457,13 @@ void main() {
 
     testGoldens('repost golden', (tester) async {
       await tester.pumpWidgetBuilder(
-        Center(
-          child: ReactionIcon(
-            icon: StreamSvgIcon.repost(),
-            count: 23,
+        StreamFeedTheme(
+          data: StreamFeedThemeData(),
+          child: Center(
+            child: ReactionIcon(
+              icon: StreamSvgIcon.repost(),
+              count: 23,
+            ),
           ),
         ),
         surfaceSize: const Size(100, 75),

@@ -17,25 +17,21 @@ main() {
         //   'repost': 23,
         // },
         time: DateTime.now(),
-        actor: EnrichableField(
-          User(data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          }).toJson(),
-        ),
+        actor: User(data: {
+          'name': 'Rosemary',
+          'handle': '@rosemary',
+          'subtitle': 'likes playing fresbee in the park',
+          'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+        }),
       ),
       EnrichedActivity(
         time: DateTime.now(),
-        actor: EnrichableField(
-          User(data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          }).toJson(),
-        ),
+        actor: User(data: {
+          'name': 'Rosemary',
+          'handle': '@rosemary',
+          'subtitle': 'likes playing fresbee in the park',
+          'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+        }),
       ),
     ];
     when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
@@ -50,7 +46,9 @@ main() {
             child: FlatFeedCore(
               feedGroup: 'user',
               feedBuilder: (BuildContext context,
-                  List<EnrichedActivity> activities, int idx) {
+                  List<EnrichedActivity<User, String, String, String>>
+                      activities,
+                  int idx) {
                 return Column(
                   children: [
                     Text("${activities[idx].reactionCounts?['like']}") //counts

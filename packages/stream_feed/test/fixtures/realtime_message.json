@@ -9,8 +9,8 @@
         "id": "f3de8328-be2d-11eb-bb18-128a130028af",
         "message": "@Jessica check out getstream.io it's so dang awesome.",
         "object": "tweet:id",
-        "origin": null,
-        "target": null,
+        "origin": "test",
+        "target": "test",
         "time": "2021-05-26T14:23:33.918391",
         "to": ["notification:jessica"],
         "verb": "tweet"

@@ -1,30 +1,54 @@
 import 'package:equatable/equatable.dart';
-import 'extensions.dart';
 import 'package:stream_feed/stream_feed.dart' show MapX;
+import 'package:stream_feed_flutter/src/utils/extensions.dart';
 
-enum Tag { hashtag, mention, normalText } //TODO: url
+/// TODO: document me
+enum Tag {
+  /// TODO: document me
+  hashtag,
 
+  /// TODO: document me
+  mention,
+
+  /// TODO: document me
+  normalText,
+} //TODO: url
+
+/// TODO: document me
 class TaggedText extends Equatable {
-  final Tag tag;
-  final String text;
+  /// Builds a [TaggedText].
+  const TaggedText({
+    required this.tag,
+    required this.text,
+  });
 
-  TaggedText({required this.tag, required this.text});
-
+  /// TODO: document me
   factory TaggedText.fromMapEntry(MapEntry<Tag, String> entry) =>
       TaggedText(tag: entry.key, text: entry.value);
+
+  /// TODO: document me
+  final Tag tag;
+
+  /// TODO: document me
+  final String text;
 
   @override
   List<Object?> get props => [tag, text];
 }
 
+/// TODO: document me
 class TagDetector {
+  /// Builds a [TagDetector].
   TagDetector();
 
+  /// TODO: document me
   final RegExp regExp = RegExp(buildRegex());
 
+  /// TODO: document me
   static String buildRegex() =>
       Tag.values.map((tag) => tag.toRegEx()).join('|');
 
+  /// TODO: document me
   List<TaggedText> parseText(String text) {
     final tags = regExp.allMatches(text).toList();
     final result = tags.map((tag) {
