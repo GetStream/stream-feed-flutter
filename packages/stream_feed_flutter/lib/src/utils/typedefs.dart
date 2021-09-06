@@ -44,6 +44,7 @@ typedef ActivityHeaderBuilder = Widget Function(
 
 typedef NotificationBuilder = Widget Function(
     BuildContext context, NotificationGroup<EnrichedActivity> notification);
+
 /// TODO: document me
 typedef ReactionBuilder = Widget Function(
     BuildContext context, Reaction reaction);
