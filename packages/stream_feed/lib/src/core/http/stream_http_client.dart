@@ -1,10 +1,10 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_feed/src/core/error/feeds_error_code.dart';
 import 'package:stream_feed/src/core/error/stream_feeds_error.dart';
-import 'package:stream_feed/src/core/exceptions.dart';
 import 'package:stream_feed/src/core/http/interceptor/logging_interceptor.dart';
+import 'package:stream_feed/src/core/http/typedefs.dart';
 import 'package:stream_feed/src/core/location.dart';
 import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
@@ -111,14 +111,18 @@ class StreamHttpClient {
     Object? data,
     Map<String, Object?>? queryParameters,
     Map<String, Object?>? headers,
+    OnSendProgress? onSendProgress,
+    OnReceiveProgress? onReceiveProgress,
+    CancelToken? cancelToken,
   }) async {
     try {
-      final response = await httpClient.post<T>(
-        enrichUrl(path, serviceName),
-        queryParameters: queryParameters?.nullProtected,
-        data: data,
-        options: Options(headers: headers?.nullProtected),
-      );
+      final response = await httpClient.post<T>(enrichUrl(path, serviceName),
+          queryParameters: queryParameters?.nullProtected,
+          data: data,
+          options: Options(headers: headers?.nullProtected),
+          onSendProgress: onSendProgress,
+          onReceiveProgress: onReceiveProgress,
+          cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {
       throw _parseError(error);
@@ -187,22 +191,23 @@ class StreamHttpClient {
   }
 
   /// Handy method to post files with error parsing.
-  Future<Response<T>> postFile<T>(
-    String path,
-    MultipartFile file, {
-    String serviceName = 'api',
-    Map<String, Object?>? queryParameters,
-    Map<String, Object?>? headers,
-  }) async {
+  Future<Response<T>> postFile<T>(String path, MultipartFile file,
+      {String serviceName = 'api',
+      Map<String, Object?>? queryParameters,
+      Map<String, Object?>? headers,
+      OnSendProgress? onSendProgress,
+      OnReceiveProgress? onReceiveProgress,
+      CancelToken? cancelToken}) async {
     try {
       final formData = FormData.fromMap({'file': file});
-      final response = await post<T>(
-        path,
-        serviceName: serviceName,
-        data: formData,
-        queryParameters: queryParameters,
-        headers: headers,
-      );
+      final response = await post<T>(path,
+          serviceName: serviceName,
+          data: formData,
+          queryParameters: queryParameters,
+          headers: headers,
+          onSendProgress: onSendProgress,
+          onReceiveProgress: onReceiveProgress,
+          cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {
       throw _parseError(error);
