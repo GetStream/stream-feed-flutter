@@ -1,14 +1,16 @@
 ## 0.3.0: 03/09/2021
 
+- improvements: 
+  - error handling and expose exeception type
+  - docs
+  - const constructors when possible
 - breaking: `UserClient user(String userId)` is now `StreamUser user(String userId)` for easier state management
+- breaking: change type of `Reaction` model field user from  `Map<String,dynamic>` to `User`
 - new: serverside methods for CRUD operations on User(getUser, createUser, updateUser, deleteUser)
 - new: `CancelToken`, `OnSendProgress` and `OnReceiveProgress` named parameters to support cancelling an up/download and tracking its progress
 - new: logger options to allow choosing the Logger level
-- improvements: error handling and expose exeception type
 - fix: missing field ownChildren in `Reaction` model
-- breaking: change type of `Reaction` model field user from  `Map<String,dynamic>` to `User`
 - new: allow sending enrichment flags in `filter` mehod
-- improvement: const constructors when possible
   
 - ## 0.2.3: 03/08/2021
 
