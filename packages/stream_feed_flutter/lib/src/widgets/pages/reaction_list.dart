@@ -58,10 +58,18 @@ class ReactionListPage extends StatelessWidget {
   /// The flags to use for the request
   final EnrichmentFlags? flags;
 
+  /// TODO: document me
   final LookupAttribute lookupAttr;
+
   final String _lookupValue;
+
+  /// TODO: document me
   final Filter? filter;
+
+  /// TODO: document me
   final int? limit;
+
+  /// TODO: document me
   final String? kind;
 
   @override

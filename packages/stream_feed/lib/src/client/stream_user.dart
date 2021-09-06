@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:stream_feed/src/core/api/users_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart' show User;
+import 'package:stream_feed/src/core/util/enrichment.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:stream_feed/stream_feed.dart';
 
 /// {@template user}
 /// Stream allows you to store user information

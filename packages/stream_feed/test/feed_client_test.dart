@@ -100,7 +100,7 @@ void main() {
       const offset = 0;
       final feed = FeedId('slug', 'userId');
       final feedIds = [FeedId('slug', 'userId')];
-      final date = DateTime.parse("2021-05-14T19:58:27.274792063Z");
+      final date = DateTime.parse('2021-05-14T19:58:27.274792063Z');
       final follows = <Follow>[
         Follow(
             feedId: 'timeline:1',
@@ -125,7 +125,7 @@ void main() {
       const offset = 0;
       final feed = FeedId('slug', 'userId');
       final feedIds = [FeedId('slug', 'userId')];
-      final date = DateTime.parse("2021-05-14T19:58:27.274792063Z");
+      final date = DateTime.parse('2021-05-14T19:58:27.274792063Z');
       final follows = <Follow>[
         Follow(
             feedId: 'timeline:1',

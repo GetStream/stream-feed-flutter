@@ -11,7 +11,7 @@ class EmojisAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
+    return const Icon(
       Icons.emoji_emotions_outlined, //TODO: svg icons
       color: Colors.blue,
       semanticLabel: 'Emojis', //TODO: i18n

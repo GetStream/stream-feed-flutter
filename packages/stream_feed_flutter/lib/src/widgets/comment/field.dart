@@ -11,6 +11,16 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// It displays the avatar, a text area and a button to submit the comment.
 ///{@endtemplate}
 class CommentField extends StatelessWidget {
+  /// Builds a [CommentField].
+  const CommentField({
+    Key? key,
+    required this.feedGroup,
+    this.activity,
+    this.targetFeeds,
+    required this.textEditingController,
+    this.enableButton = true,
+  }) : super(key: key);
+
   /// The activity on which the comment will be posted (reaction).
   ///
   /// If no activity is provided, the comment will be posted as a new activity.
@@ -29,16 +39,6 @@ class CommentField extends StatelessWidget {
   ///The feed group part of the feed
   final String feedGroup;
 
-  /// Builds a [CommentField].
-  const CommentField({
-    Key? key,
-    required this.feedGroup,
-    this.activity,
-    this.targetFeeds,
-    required this.textEditingController,
-    this.enableButton = true,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -47,8 +47,12 @@ class CommentField extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Avatar(), //TODO: User in core and onUserTap
+              padding: EdgeInsets.all(8),
+              //TODO: pass down User
+              child: Avatar(
+                // user: user,
+                size: UserBarTheme.of(context).avatarSize,
+              ), //TODO: User in core and onUserTap
             ),
             Expanded(
               child: TextArea(

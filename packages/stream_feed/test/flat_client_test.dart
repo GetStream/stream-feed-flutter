@@ -71,12 +71,14 @@ void main() {
                 path: '',
               ),
               statusCode: 200));
-      final activities = await client.getEnrichedActivityDetail(activityId);
+      final activities = await client.getEnrichedActivityDetail<String, String,
+          String, String>(activityId);
 
       expect(
           activities,
           rawActivities
-              .map((e) => EnrichedActivity.fromJson(e))
+              .map((e) =>
+                  EnrichedActivity<String, String, String, String>.fromJson(e))
               .toList(growable: false)
               .first);
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
@@ -170,17 +172,20 @@ void main() {
                 path: '',
               ),
               statusCode: 200));
-      final activities = await client.getEnrichedActivities(
-          limit: limit,
-          offset: offset,
-          filter: filter,
-          flags: flags,
-          ranking: ranking);
+      final activities =
+          await client.getEnrichedActivities<String, String, String, String>(
+        limit: limit,
+        offset: offset,
+        filter: filter,
+        flags: flags,
+        ranking: ranking,
+      );
 
       expect(
           activities,
           rawActivities
-              .map((e) => EnrichedActivity.fromJson(e))
+              .map((e) =>
+                  EnrichedActivity<String, String, String, String>.fromJson(e))
               .toList(growable: false));
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
     });

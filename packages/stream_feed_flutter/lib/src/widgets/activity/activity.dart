@@ -3,7 +3,6 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template activity_widget}
 /// A widget that displays a single activity.
@@ -15,6 +14,8 @@ class ActivityWidget extends StatelessWidget {
     Key? key,
     required this.activity,
     this.feedGroup = 'user',
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
@@ -25,7 +26,13 @@ class ActivityWidget extends StatelessWidget {
   }) : super(key: key);
 
   /// The activity to display.
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
+
+  /// TODO: document me
+  final String handleJsonKey;
+
+  /// TODO: document me
+  final String nameJsonKey;
 
   /// A callback to invoke when a mention is tapped.
   final OnMentionTap? onMentionTap;
@@ -58,9 +65,12 @@ class ActivityWidget extends StatelessWidget {
         onActivityTap?.call(context, activity);
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           activityHeaderBuilder?.call(context, activity) ??
               ActivityHeader(
+                nameJsonKey: nameJsonKey,
+                handleJsonKey: handleJsonKey,
                 activity: activity,
                 onUserTap: onUserTap,
               ),

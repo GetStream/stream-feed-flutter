@@ -1,12 +1,22 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:animations/animations.dart';
 
-enum TransitionType { material, cupertino, sharedAxisTransition }
+/// TODO: document me
+enum TransitionType {
+  /// TODO: document me
+  material,
+
+  /// TODO: document me
+  cupertino,
+
+  /// TODO: document me
+  sharedAxisTransition,
+}
 
 ///{@template flat_activity_list_page}
 /// Display a list of activities.
@@ -30,6 +40,8 @@ class FlatActivityListPage extends StatelessWidget {
     this.filter,
     this.flags,
     this.ranking,
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
     this.onProgressWidget = const ProgressStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
     this.onEmptyWidget =
@@ -93,9 +105,15 @@ class FlatActivityListPage extends StatelessWidget {
   /// The ranking to use for the request
   final String? ranking;
 
+  /// TODO: document me
+  final String handleJsonKey;
+
+  /// TODO: document me
+  final String nameJsonKey;
+
   @override
   Widget build(BuildContext context) {
-    return FlatFeedCore(
+    return FlatFeedCore<User, String, String, String>(
       flags: flags,
       limit: limit,
       offset: offset,
@@ -111,6 +129,8 @@ class FlatActivityListPage extends StatelessWidget {
         onHashtagTap: onHashtagTap,
         onMentionTap: onMentionTap,
         onUserTap: onUserTap,
+        nameJsonKey: nameJsonKey,
+        handleJsonKey: handleJsonKey,
         activityHeaderBuilder: activityHeaderBuilder,
         activityFooterBuilder: activityFooterBuilder,
         activityContentBuilder: activityContentBuilder,
@@ -118,8 +138,7 @@ class FlatActivityListPage extends StatelessWidget {
 
             // onActivityTap != null
             //     ? onActivityTap?.call(context, activity)
-            //     //TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
-// :
+            // TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
             pageRouteBuilder(
           activity: activity,
           context: context,
@@ -129,9 +148,12 @@ class FlatActivityListPage extends StatelessWidget {
             client: StreamFeedCore.of(context).client,
             child: Scaffold(
               appBar: AppBar(
-                title: Text('Post'),
+                // TODO: Parameterize me
+                title: const Text('Post'),
               ),
               body: CommentView(
+                nameJsonKey: nameJsonKey,
+                handleJsonKey: handleJsonKey,
                 activity: activity,
                 enableCommentFieldButton: true,
                 enableReactions: true,
@@ -146,11 +168,13 @@ class FlatActivityListPage extends StatelessWidget {
     );
   }
 
-  void pageRouteBuilder(
-      {required BuildContext context,
-      required TransitionType transitionType,
-      required EnrichedActivity activity,
-      required Widget page}) {
+  /// TODO: document me
+  void pageRouteBuilder({
+    required BuildContext context,
+    required TransitionType transitionType,
+    required EnrichedActivity activity,
+    required Widget page,
+  }) {
     final currentNavigator = StreamFeedCore.of(context).navigator;
     //TODO: assert navigator not null
     switch (transitionType) {
@@ -169,21 +193,23 @@ class FlatActivityListPage extends StatelessWidget {
         );
         break;
       default:
-        currentNavigator!.push(PageRouteBuilder(
-          pageBuilder: (_, __, ___) => page,
-          transitionsBuilder: (
-            _,
-            animation,
-            secondaryAnimation,
-            child,
-          ) =>
-              SharedAxisTransition(
-            animation: animation,
-            secondaryAnimation: secondaryAnimation,
-            transitionType: SharedAxisTransitionType.horizontal,
-            child: child,
+        currentNavigator!.push(
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => page,
+            transitionsBuilder: (
+              _,
+              animation,
+              secondaryAnimation,
+              child,
+            ) =>
+                SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              child: child,
+            ),
           ),
-        ));
+        );
     }
   }
 }

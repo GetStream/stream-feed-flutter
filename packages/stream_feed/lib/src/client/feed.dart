@@ -5,12 +5,14 @@ import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
+import 'package:stream_feed/src/core/models/collection_entry.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/realtime_message.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
@@ -63,8 +65,8 @@ class Feed {
 
   /// Subscribes to any changes in the feed, return a [Subscription]
   @experimental
-  Future<Subscription> subscribe(
-    void Function(RealtimeMessage? message) callback,
+  Future<Subscription> subscribe<A, Ob, T, Or>(
+    void Function(RealtimeMessage<A, Ob, T, Or>? message) callback,
   ) {
     checkNotNull(
       subscriber,
@@ -74,7 +76,9 @@ class Feed {
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
 
     return subscriber!(token, feedId, (data) {
-      final realtimeMessage = RealtimeMessage.fromJson(data!);
+      final realtimeMessage = RealtimeMessage<A, Ob, T, Or>.fromJson(
+        data!,
+      );
       callback(realtimeMessage);
     });
   }

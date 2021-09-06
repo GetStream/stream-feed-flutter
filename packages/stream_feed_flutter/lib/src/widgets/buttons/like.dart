@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template like_button}
@@ -18,6 +19,7 @@ class LikeButton extends StatelessWidget {
     this.onTap,
     this.activeIcon,
     this.inactiveIcon,
+    this.hoverColor,
   }) : super(key: key);
 
   /// The reaction received from Stream that should be liked when pressing
@@ -44,13 +46,18 @@ class LikeButton extends StatelessWidget {
   /// The feed group that this [LikeButton] is associated with.
   final String feedGroup;
 
+  final Color? hoverColor;
+
   @override
   Widget build(BuildContext context) {
     return ReactionButton(
       activity: activity,
       activeIcon: activeIcon ?? StreamSvgIcon.loveActive(),
-      inactiveIcon: inactiveIcon ?? StreamSvgIcon.loveInactive(),
-      hoverColor: Colors.red.shade100,
+      inactiveIcon: inactiveIcon ??
+          StreamSvgIcon.loveInactive(
+            color: StreamFeedTheme.of(context).primaryIconTheme.color,
+          ),
+      hoverColor: hoverColor ?? ReactionTheme.of(context).hoverColor,
 
       ///TODO: third state hover on desktop
       reaction: reaction,
