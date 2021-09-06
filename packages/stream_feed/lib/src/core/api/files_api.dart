@@ -15,7 +15,6 @@ class FilesAPI {
   /// Upload a File instance or a readable stream of data
   Future<String?> upload(Token token, AttachmentFile file,
       {OnSendProgress? onSendProgress,
-      OnReceiveProgress? onReceiveProgress,
       CancelToken? cancelToken}) async {
     final multiPartFile = await file.toMultipartFile();
     final result = await _client.postFile<Map>(
@@ -23,7 +22,6 @@ class FilesAPI {
       multiPartFile,
       headers: {'Authorization': '$token'},
       onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
       cancelToken: cancelToken,
     );
     return result.data!['file'];

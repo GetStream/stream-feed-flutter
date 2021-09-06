@@ -7,7 +7,7 @@
 - breaking: `UserClient user(String userId)` is now `StreamUser user(String userId)` for easier state management
 - breaking: change type of `Reaction` model field user from  `Map<String,dynamic>` to `User`
 - new: serverside methods for CRUD operations on User(getUser, createUser, updateUser, deleteUser)
-- new: `CancelToken`, `OnSendProgress` and `OnReceiveProgress` named parameters to support cancelling an up/download and tracking its progress
+- new: `CancelToken`, `OnSendProgress` named parameters to support cancelling an upload and tracking its progress
 - new: logger options to allow choosing the Logger level
 - fix: missing field ownChildren in `Reaction` model
 - new: allow sending enrichment flags in `filter` mehod

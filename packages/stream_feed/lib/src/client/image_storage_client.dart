@@ -41,29 +41,37 @@ class ImageStorageClient {
   ///
   /// # Example
   /// ```dart
-  /// final image = File('...');
-  /// var multipartFile = await MultipartFile.fromFile(
-  ///   image.path,
-  ///   filename: 'my-photo',
-  ///   contentType: MediaType('image', 'jpeg'),
-  /// );
+  /// final file = AttachmentFile(path: 'yourfilepath');
   /// await client.images.upload(multipartFile);
   /// ```
+  /// - To cancel the upload, call `token.cancel('cancelled)`. For example
+  /// ```dart
+  ///  var token = CancelToken();
+  ///   // In one minute, we cancel!
+  ///   Timer(Duration(milliseconds: 500), () {
+  ///     token.cancel('cancelled');
+  ///   });
+  ///   await images.upload(AttachmentFile(path: 'yourfilepath'), token);
+  /// ```
+  /// - To get upload progress:
+  /// ```dart
+  ///  await images.upload(AttachmentFile(path: 'yourfilepath'), onSendProgress:(sentBytes,totalBytes){
+  ///    if (totalBytes != -1) {
+  ///       print((sentBytes / total * 100).toStringAsFixed(0) + '%');
+  ///     }
+  ///  });
+  /// ```
+  ///
   /// API docs: https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?q=Image
   Future<String?> upload(
     AttachmentFile image, {
     OnSendProgress? onSendProgress,
-    OnReceiveProgress? onReceiveProgress,
     CancelToken? cancelToken,
   }) {
-    //TODO: params onSendProgress: onSendProgress,
-    // cancelToken: cancelToken,
     final token =
         userToken ?? TokenHelper.buildFilesToken(secret!, TokenAction.write);
     return _images.upload(token, image,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-        cancelToken: cancelToken);
+        onSendProgress: onSendProgress, cancelToken: cancelToken);
   }
 
   /// Images can be deleted using their URL.

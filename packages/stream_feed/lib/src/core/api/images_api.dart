@@ -17,15 +17,16 @@ class ImagesAPI {
     Token token,
     AttachmentFile image, {
     OnSendProgress? onSendProgress,
-    OnReceiveProgress? onReceiveProgress,
     CancelToken? cancelToken,
   }) async {
     final multiPartFile = await image.toMultipartFile();
-    final result = await _client.postFile<Map>(Routes.imagesUrl, multiPartFile,
-        headers: {'Authorization': '$token'},
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress);
+    final result = await _client.postFile<Map>(
+      Routes.imagesUrl,
+      multiPartFile,
+      headers: {'Authorization': '$token'},
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+    );
     return result.data!['file'];
   }
 

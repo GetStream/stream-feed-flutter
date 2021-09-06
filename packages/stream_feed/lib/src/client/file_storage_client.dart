@@ -58,7 +58,6 @@ class FileStorageClient {
   Future<String?> upload(
     AttachmentFile file, {
     OnSendProgress? onSendProgress,
-    OnReceiveProgress? onReceiveProgress,
     CancelToken? cancelToken,
   }) async {
     final token =
@@ -67,7 +66,6 @@ class FileStorageClient {
       token,
       file,
       onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
       cancelToken: cancelToken,
     );
   }
