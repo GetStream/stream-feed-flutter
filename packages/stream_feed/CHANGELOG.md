@@ -1,6 +1,7 @@
 ## 0.3.0: 03/09/2021
 
 - breaking: `UserClient user(String userId)` is now `StreamUser user(String userId)` for easier state management
+- new: serverside methods for CRUD operations on User(getUser, createUser, updateUser, deleteUser)
 - new: `CancelToken`, `OnSendProgress` and `OnReceiveProgress` named parameters to support cancelling an up/download and tracking its progress
 - new: logger options to allow choosing the Logger level
 - improvements: error handling and expose exeception type
