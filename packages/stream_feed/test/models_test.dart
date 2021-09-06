@@ -128,39 +128,76 @@ void main() {
   });
   group('RealtimeMessage', () {
     test('fromJson', () {
-      final fromJson =
-          RealtimeMessage.fromJson(jsonFixture('realtime_message.json'));
+      final fromJson = RealtimeMessage<String, String, String, String>.fromJson(
+          jsonFixture('realtime_message.json'));
 
       expect(
           fromJson,
-          RealtimeMessage(
+          RealtimeMessage<String, String, String, String>(
               deleted: [],
               deletedForeignIds: [],
               feed: FeedId.fromId('reward:1'),
               newActivities: [
-                EnrichedActivity(
-                    actor: const EnrichableField('reward:1'),
+                EnrichedActivity<String, String, String, String>(
+                    actor: 'reward:1',
                     id: 'f3de8328-be2d-11eb-bb18-128a130028af',
-                    extraData: {
+                    extraData: const {
                       'message':
                           "@Jessica check out getstream.io it's so dang awesome.",
                     },
-                    origin: const EnrichableField(null),
-                    target: const EnrichableField(null),
-                    object: const EnrichableField('tweet:id'),
+                    target: "test",
+                    origin: "test",
+                    object: 'tweet:id',
                     time: DateTime.parse('2021-05-26T14:23:33.918391'),
-                    to: ['notification:jessica'],
+                    to: const ['notification:jessica'],
                     verb: 'tweet')
               ]));
     });
 
     test('issue-89', () {
-      RealtimeMessage.fromJson(jsonFixture('realtime_message_issue89.json'));
+      final fixture = RealtimeMessage<User, String, String?, String?>.fromJson(
+        jsonFixture('realtime_message_issue89.json'),
+      );
+      expect(
+          fixture,
+          RealtimeMessage<User, String, String?, String?>(
+              deleted: [],
+              deletedForeignIds: [],
+              feed: FeedId.fromId("task:32db0f46-3593-4e14-aa57-f05af4887260"),
+              newActivities: [
+                EnrichedActivity(
+                  foreignId: null,
+                  id: "cff95542-c979-11eb-8080-80005abdd229",
+                  object: "task_situation_updated to true",
+                  time: DateTime.parse("2021-06-09T23:24:18.238189"),
+                  verb: "updated",
+                  actor: User(
+                      createdAt: DateTime.parse("2021-04-13T22:53:19.670051Z"),
+                      updatedAt: DateTime.parse("2021-04-13T22:53:19.670051Z"),
+                      id: "eTHVBnEm0FQB2HeaRKVlEfVf58B3personal",
+                      data: {
+                        "gender": "Male",
+                        "name": "Rickey Lee",
+                        "photo":
+                            "https://firebasestorage.googleapis.com/v0/b/fire-snab.appspot.com/o/profile-image-placeholder.png?alt=media&token=b17598bb-a510-4167-8354-ab75642ba89e"
+                      }),
+                  extraData: {
+                    "createdTask": {
+                      "id": "32db0f46-3593-4e14-aa57-f05af4887260",
+                      "title": "KeyPack",
+                      "isFinished": true
+                    },
+                    "group": "updated_2021-06-09",
+                  },
+                )
+              ]));
     });
   });
   test('EnrichedActivity issue 61', () {
-    final enrichedActivity = EnrichedActivity.fromJson(
-        jsonFixture('enriched_activity_issue61.json'));
+    final enrichedActivity =
+        EnrichedActivity<User, String, String, String?>.fromJson(
+      jsonFixture('enriched_activity_issue61.json'),
+    );
     expect(enrichedActivity.latestReactions, isNotNull);
     expect(enrichedActivity.ownReactions, isNotNull);
     expect(enrichedActivity.reactionCounts, isNotNull);
@@ -184,16 +221,16 @@ void main() {
         childrenCounts: const {'test': 1});
     final enrichedActivity = EnrichedActivity(
       id: 'test',
-      actor: const EnrichableField('test'),
-      object: const EnrichableField('test'),
+      actor: 'test',
+      object: 'test',
       verb: 'test',
-      target: const EnrichableField('test'),
+      target: 'test',
       to: const ['test'],
       foreignId: 'test',
       time: DateTime.parse('2001-09-11T00:01:02.000'),
       analytics: const {'test': 'test'},
       extraContext: const {'test': 'test'},
-      origin: const EnrichableField('test'),
+      origin: 'test',
       score: 1,
       extraData: const {'test': 'test'},
       reactionCounts: const {'test': 1},
@@ -206,7 +243,66 @@ void main() {
     );
     final enrichedActivityJson = json.decode(fixture('enriched_activity.json'));
     final enrichedActivityFromJson =
-        EnrichedActivity.fromJson(enrichedActivityJson);
+        EnrichedActivity<String, String, String, String>.fromJson(
+            enrichedActivityJson);
+    expect(enrichedActivityFromJson, enrichedActivity);
+    // we will never get “extra_data” from the api
+    //that's why it's not explicit in the json fixture
+    // all the extra data other than the default fields in json will ultimately
+    // gets collected as a field extra_data of type Map
+    expect(enrichedActivityFromJson.extraData, {'test': 'test'});
+  });
+  test('EnrichedActivity with CollectionEntry object', () {
+    final reaction1 = Reaction(
+        id: 'test',
+        kind: 'test',
+        activityId: 'test',
+        userId: 'test',
+        parent: 'test',
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        targetFeeds: [FeedId('slug', 'userId')],
+        user: const User(id: 'test', data: {'test': 'test'}),
+        targetFeedsExtraData: const {'test': 'test'},
+        data: const {'test': 'test'},
+        // latestChildren: {
+        //   "test": [reaction2]
+        // },
+        childrenCounts: const {'test': 1});
+    final enrichedActivity = EnrichedActivity(
+      id: 'test',
+      actor: 'test',
+      object: CollectionEntry(
+          createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+          collection: 'test',
+          id: 'test',
+          data: const {'test': 'test'},
+          updatedAt: DateTime.parse('2001-09-11T00:01:03.000'),
+          foreignId: 'test'),
+      verb: 'test',
+      target: 'test',
+      to: const ['test'],
+      foreignId: 'test',
+      time: DateTime.parse('2001-09-11T00:01:02.000'),
+      analytics: const {'test': 'test'},
+      extraContext: const {'test': 'test'},
+      origin: 'test',
+      score: 1,
+      extraData: const {'test': 'test'},
+      reactionCounts: const {'test': 1},
+      ownReactions: {
+        'test': [reaction1]
+      },
+      latestReactions: {
+        'test': [reaction1]
+      },
+    );
+    final enrichedActivityJson =
+        json.decode(fixture('enriched_activity_collection_entry.json'));
+    final enrichedActivityFromJson =
+        EnrichedActivity<String, CollectionEntry, String, String>.fromJson(
+      enrichedActivityJson,
+    );
     expect(enrichedActivityFromJson, enrichedActivity);
     // we will never get “extra_data” from the api
     //that's why it's not explicit in the json fixture
@@ -473,10 +569,11 @@ void main() {
       'results': [],
       'duration': '419.81ms'
     };
-    final personalizedFeed = PersonalizedFeed.fromJson(json);
+    final personalizedFeed =
+        PersonalizedFeed<String, String, String, String>.fromJson(json);
     expect(
         personalizedFeed,
-        const PersonalizedFeed(
+        const PersonalizedFeed<String, String, String, String>(
             limit: 25,
             offset: 0,
             version: 'user_1_1619210635',
@@ -503,16 +600,16 @@ void main() {
         childrenCounts: const {'test': 1});
     final enrichedActivity = EnrichedActivity(
       id: 'test',
-      actor: const EnrichableField('test'),
-      object: const EnrichableField('test'),
+      actor: 'test',
+      object: 'test',
       verb: 'test',
-      target: const EnrichableField('test'),
+      target: 'test',
       to: const ['test'],
       foreignId: 'test',
       time: DateTime.parse('2001-09-11T00:01:02.000'),
       analytics: const {'test': 'test'},
       extraContext: const {'test': 'test'},
-      origin: const EnrichableField('test'),
+      origin: 'test',
       score: 1,
       extraData: const {'test': 'test'},
       reactionCounts: const {'test': 1},
@@ -545,36 +642,46 @@ void main() {
     final paginatedReactionsJson =
         json.decode(fixture('paginated_reactions.json'));
     final paginatedReactionsFromJson =
-        PaginatedReactions.fromJson(paginatedReactionsJson);
+        PaginatedReactions<String, String, String, String>.fromJson(
+            paginatedReactionsJson);
     expect(paginatedReactionsFromJson, paginatedReactions);
-    expect(paginatedReactions.toJson(), {
-      'next': 'test',
-      'results': [
+    expect(
+        paginatedReactions.toJson(
+          (json) => json,
+          (json) => json,
+          (json) => json,
+          (json) => json,
+        ),
         {
-          'kind': 'test',
-          'activity_id': 'test',
-          'user_id': 'test',
-          'parent': 'test',
-          'created_at': '2001-09-11T00:01:02.000',
-          'target_feeds': ['slug:userId'],
-          'user': {
-            'id': 'test',
-            'data': {'test': 'test'}
-          },
-          'target_feeds_extra_data': {'test': 'test'},
-          'data': {'test': 'test'}
-        }
-      ],
-      'duration': 'duration',
-      'activity': {
-        'actor': 'test',
-        'verb': 'test',
-        'object': 'test',
-        'foreign_id': 'test',
-        'time': '2001-09-11T00:01:02.000',
-        'test': 'test'
-      }
-    });
+          'next': 'test',
+          'results': [
+            {
+              'kind': 'test',
+              'activity_id': 'test',
+              'user_id': 'test',
+              'parent': 'test',
+              'created_at': '2001-09-11T00:01:02.000',
+              'target_feeds': ['slug:userId'],
+              'user': {
+                'id': 'test',
+                'data': {'test': 'test'}
+              },
+              'target_feeds_extra_data': {'test': 'test'},
+              'data': {'test': 'test'}
+            }
+          ],
+          'duration': 'duration',
+          'activity': {
+            'actor': 'test',
+            'verb': 'test',
+            'target': 'test',
+            'object': 'test',
+            'origin': 'test',
+            'foreign_id': 'test',
+            'time': '2001-09-11T00:01:02.000',
+            'test': 'test'
+          }
+        });
   });
 
   group('Filter', () {
@@ -642,16 +749,16 @@ void main() {
 
   test('Follow', () {
     final followJson = {
-      "feed_id": "timeline:feedId",
-      "target_id": "user:userId",
-      "created_at": "2021-05-14T19:58:27.274792063Z",
-      "updated_at": "2021-05-14T19:58:27.274792063Z"
+      'feed_id': 'timeline:feedId',
+      'target_id': 'user:userId',
+      'created_at': '2021-05-14T19:58:27.274792063Z',
+      'updated_at': '2021-05-14T19:58:27.274792063Z'
     };
     final follow = Follow(
         feedId: 'timeline:feedId',
         targetId: 'user:userId',
-        createdAt: DateTime.parse("2021-05-14T19:58:27.274792063Z"),
-        updatedAt: DateTime.parse("2021-05-14T19:58:27.274792063Z"));
+        createdAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'),
+        updatedAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'));
 
     expect(follow, Follow.fromJson(followJson));
     expect(follow.toJson(), {
@@ -1040,20 +1147,22 @@ void main() {
 
       expect(
           openGraph,
-          OpenGraphData.fromJson({
-            'description':
-                'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
-            'title':
-                "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
-            'url':
-                'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
-            'images': [
-              {
-                'image':
-                    'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
-              },
-            ],
-          }));
+          OpenGraphData.fromJson(
+            const {
+              'description':
+                  'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+              'title':
+                  "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+              'url':
+                  'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+              'images': [
+                {
+                  'image':
+                      'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+                },
+              ],
+            },
+          ));
     });
   });
 

@@ -110,12 +110,13 @@ void main() {
                 path: '',
               ),
               statusCode: 200));
-      final activities = await client.getEnrichedActivities(
-          limit: limit,
-          offset: offset,
-          filter: filter,
-          marker: marker,
-          flags: flags);
+      final activities =
+          await client.getEnrichedActivities<String, String, String, String>(
+              limit: limit,
+              offset: offset,
+              filter: filter,
+              marker: marker,
+              flags: flags);
 
       expect(
           activities,
@@ -123,7 +124,8 @@ void main() {
               .map((e) => NotificationGroup.fromJson(
                   e,
                   (json) =>
-                      EnrichedActivity.fromJson(json as Map<String, dynamic>?)))
+                      EnrichedActivity<String, String, String, String>.fromJson(
+                          json as Map<String, dynamic>?)))
               .toList(growable: false));
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
     });

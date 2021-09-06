@@ -11,7 +11,7 @@ class MediasAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
+    return const Icon(
       Icons.collections_outlined, //TODO: svg icons
       color: Colors.blue,
       semanticLabel: 'Medias', //TODO: i18n

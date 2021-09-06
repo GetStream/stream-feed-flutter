@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/reaction_theme.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template reaction_button}
+/// {@template reaction_button}
 /// A widget that can be used to trigger a reaction.
 ///
 /// Displays the count of reactions it has received and the reaction
 /// it is currently displaying.
-///{@endtemplate}
+/// {@endtemplate}
 class ReactionButton extends StatelessWidget {
   /// Builds a [ReactionButton].
   const ReactionButton({
@@ -16,7 +17,7 @@ class ReactionButton extends StatelessWidget {
     required this.activeIcon,
     required this.inactiveIcon,
     this.feedGroup = 'user',
-    this.hoverColor = Colors.lightBlue,
+    this.hoverColor,
     this.reaction,
     this.onTap,
     this.data,
@@ -51,7 +52,7 @@ class ReactionButton extends StatelessWidget {
   /// The color to use when the user hovers over the button.
   ///
   /// Generally applies to desktop and web.
-  final Color hoverColor;
+  final Color? hoverColor;
 
   ///The group/slug of the feed to which this reaction will belong.
   final String feedGroup;
@@ -65,7 +66,7 @@ class ReactionButton extends StatelessWidget {
           reaction?.ownChildren?[kind] ?? activity.ownReactions?[kind],
       activeIcon: activeIcon,
       inactiveIcon: inactiveIcon,
-      hoverColor: hoverColor,
+      hoverColor: hoverColor ?? ReactionTheme.of(context).hoverColor,
       kind: kind,
       onTap: onTap,
       data: data,
@@ -74,8 +75,27 @@ class ReactionButton extends StatelessWidget {
   }
 }
 
+/// TODO: document me
 class ReactionToggleIcon extends StatefulWidget {
-  ///The reactions belongin to the current user
+  //TODO: see what we can extract from a parent widget and put in core
+  /// Builds a [ReactionToggleIcon].
+  const ReactionToggleIcon({
+    Key? key,
+    required this.activeIcon,
+    required this.inactiveIcon,
+    required this.kind,
+    required this.activity,
+    this.targetFeeds,
+    this.data,
+    this.onTap,
+    this.ownReactions,
+    this.feedGroup = 'user',
+    this.hoverColor,
+    this.count,
+    this.userId,
+  }) : super(key: key);
+
+  /// The reactions belonging to the current user
   final List<Reaction>? ownReactions;
 
   /// The icon to display if you already reacted, with this rreaction kind, to this activity
@@ -95,27 +115,21 @@ class ReactionToggleIcon extends StatefulWidget {
 
   /// The group/slug of the feed
   final String feedGroup;
+
+  /// TODO: document me
   final EnrichedActivity activity;
+
+  /// TODO: document me
   final String? userId;
+
+  /// TODO: document me
   final Map<String, Object>? data;
+
+  /// TODO: document me
   final List<FeedId>? targetFeeds;
-  final Color hoverColor;
-  //TODO: see what we can extract from a parent widget and put in core
-  const ReactionToggleIcon({
-    Key? key,
-    required this.activeIcon,
-    required this.inactiveIcon,
-    required this.kind,
-    required this.activity,
-    this.targetFeeds,
-    this.data,
-    this.onTap,
-    this.ownReactions,
-    this.feedGroup = 'user',
-    this.hoverColor = Colors.lightBlue,
-    this.count,
-    this.userId,
-  }) : super(key: key);
+
+  /// TODO: document me
+  final Color? hoverColor;
 
   @override
   State<ReactionToggleIcon> createState() => _ReactionToggleIconState();
@@ -142,7 +156,8 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   @override
   Widget build(BuildContext context) {
     return ReactionIcon(
-      hoverColor: widget.hoverColor,
+      hoverColor:
+          widget.hoverColor ?? ReactionTheme.of(context).toggleHoverColor!,
       icon: displayedIcon,
       count: count,
       onTap: () async {
@@ -181,40 +196,51 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   }
 }
 
+/// TODO: document me
 class ReactionIcon extends StatelessWidget {
+  /// Builds a [ReactionIcon].
   const ReactionIcon({
     Key? key,
     this.count,
     required this.icon,
     this.onTap,
-    this.hoverColor = Colors.lightBlue,
+    this.hoverColor,
   }) : super(key: key);
+
+  /// TODO: document me
   final int? count;
+
+  /// TODO: document me
   final Widget icon;
+
+  /// TODO: document me
   final VoidCallback? onTap;
-  final Color hoverColor;
+
+  /// TODO: document me
+  final Color? hoverColor;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        hoverColor: hoverColor,
-        borderRadius: BorderRadius.circular(18.0), //iconSize
-        onTap: onTap,
-        child: count != null && count! > 0
-            ? Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    icon,
-                    SizedBox(width: 6),
-                    Center(child: Text('$count'))
-                  ],
-                ),
-              )
-            : Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: icon,
-              ));
+      hoverColor: hoverColor ?? ReactionTheme.of(context).iconHoverColor,
+      borderRadius: BorderRadius.circular(18), //iconSize
+      onTap: onTap,
+      child: count != null && count! > 0
+          ? Padding(
+              padding: const EdgeInsets.all(4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  icon,
+                  const SizedBox(width: 6),
+                  Center(child: Text('$count'))
+                ],
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(4),
+              child: icon,
+            ),
+    );
   }
 }

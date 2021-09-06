@@ -26,7 +26,7 @@ void main() {
 
     test('getCropped', () async {
       const url = 'url';
-      final crop = const Crop(50, 50);
+      const crop = Crop(50, 50);
       when(() => api.get(token, url, options: crop.params))
           .thenAnswer((invocation) async => 'whatever');
 
@@ -36,7 +36,7 @@ void main() {
 
     test('getResized', () async {
       const url = 'url';
-      final resize = const Resize(50, 50);
+      const resize = Resize(50, 50);
       when(() => api.get(token, url, options: resize.params))
           .thenAnswer((invocation) async => 'whatever');
 

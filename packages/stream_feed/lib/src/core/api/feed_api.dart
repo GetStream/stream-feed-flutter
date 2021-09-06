@@ -330,7 +330,7 @@ class FeedAPI {
   }
 
   /// {@macro personalizedFeed}
-  Future<PersonalizedFeed> personalizedFeed(
+  Future<PersonalizedFeed<A, Ob, T, Or>> personalizedFeed<A, Ob, T, Or>(
     Token token,
     Map<String, Object> options,
   ) async {
@@ -339,6 +339,6 @@ class FeedAPI {
       headers: {'Authorization': '$token'},
       queryParameters: options,
     );
-    return PersonalizedFeed.fromJson(response.data!);
+    return PersonalizedFeed<A, Ob, T, Or>.fromJson(response.data!);
   }
 }
