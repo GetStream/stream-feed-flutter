@@ -9,11 +9,9 @@ import 'home.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  //final _key = String.fromEnvironment('key');
-  const _key = 'bm9v8gfybkht';
-  //final _user_token = String.fromEnvironment('user_token');
-  const _user_token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ3Jvb3ZpbiJ9.6uMlHDLHpiHubWbcTztZO7NbFFZozuhwgNdrGgObgTE';
+  final _key = String.fromEnvironment('key');
+  final _user_token = String.fromEnvironment('user_token');
+
   final client = StreamFeedClient.connect(_key, token: Token(_user_token));
   runApp(
     MyApp(
