@@ -148,7 +148,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   }
 
   Future<void> addReaction() async {
-    final reaction = await StreamFeedCore.of(context).onAddReaction(
+    final reaction = await StreamFeedProvider.of(context).onAddReaction(
         kind: widget.kind,
         activity: widget.activity,
         data: widget.data,
@@ -161,7 +161,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   }
 
   Future<void> removeReaction() async {
-    await StreamFeedCore.of(context).onRemoveReaction(
+    await StreamFeedProvider.of(context).onRemoveReaction(
         kind: widget.kind,
         activity: widget.activity,
         id: idToRemove!,

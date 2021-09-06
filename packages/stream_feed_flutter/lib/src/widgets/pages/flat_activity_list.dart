@@ -96,7 +96,7 @@ class FlatActivityListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActivitiesProvider(
-      bloc: ActivitiesBloc(),
+      bloc: ActivitiesBloc(client: StreamFeedProvider.of(context).client),
       child: FlatFeedCore(
         flags: flags,
         limit: limit,
@@ -126,9 +126,9 @@ class FlatActivityListPage extends StatelessWidget {
             activity: activity,
             context: context,
             transitionType: transitionType,
-            page: StreamFeedCore(
+            page: StreamFeedProvider(
               //TODO: let the user implement this
-              client: StreamFeedCore.of(context).client,
+              client: StreamFeedProvider.of(context).client,
               child: Scaffold(
                 appBar: AppBar(
                   title: Text('Post'),
@@ -154,7 +154,8 @@ class FlatActivityListPage extends StatelessWidget {
       required TransitionType transitionType,
       required EnrichedActivity activity,
       required Widget page}) {
-    final currentNavigator = StreamFeedCore.of(context).navigator;
+    final currentNavigator =
+        StreamFeedProvider.of(context).navigatorKey!.currentState;
     //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:

@@ -43,7 +43,7 @@ class PostCommentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveElevatedButton(
       onSend: (inputText) async {
-        final streamFeed = StreamFeedCore.of(context);
+        final streamFeed = StreamFeedProvider.of(context);
         final activities = ActivitiesProvider.of(context).bloc;
         final trimmedText = inputText.trim();
         activity != null

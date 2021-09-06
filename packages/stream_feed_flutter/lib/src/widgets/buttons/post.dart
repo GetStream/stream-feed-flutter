@@ -47,9 +47,9 @@ class PostButton extends StatelessWidget {
               builder: (_) {
                 return MediaQuery(
                     data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                    child: StreamFeedCore(
+                    child: StreamFeedProvider(
                       //TODO: there might be a better way to do this
-                      client: StreamFeedCore.of(context).client,
+                      client: StreamFeedProvider.of(context).client,
                       child: AlertDialogComment(
                         activity: activity,
                         feedGroup: feedGroup,

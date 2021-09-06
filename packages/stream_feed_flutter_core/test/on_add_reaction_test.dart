@@ -26,7 +26,7 @@ class _OnAddReactionWidgetState extends State<OnAddReactionWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await StreamFeedCore.of(context).onAddReaction(
+        await StreamFeedProvider.of(context).onAddReaction(
           activity: widget.activity,
           feedGroup: widget.feedGroup,
           kind: widget.kind,
@@ -66,7 +66,7 @@ main() {
 
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-      body: StreamFeedCore(
+      body: StreamFeedProvider(
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
           child: OnAddReactionWidget(

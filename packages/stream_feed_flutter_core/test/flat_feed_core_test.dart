@@ -44,18 +44,19 @@ main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: StreamFeedCore(
+          body: StreamFeedProvider(
             analyticsClient: mockStreamAnalytics,
             client: mockClient,
             child: ActivitiesProvider(
-              bloc: ActivitiesBloc(),
+              bloc: ActivitiesBloc(client: mockClient),
               child: FlatFeedCore(
                 feedGroup: 'user',
                 feedBuilder: (BuildContext context,
                     List<EnrichedActivity> activities, int idx) {
                   return Column(
                     children: [
-                      Text("${activities[idx].reactionCounts?['like']}") //counts
+                      Text(
+                          "${activities[idx].reactionCounts?['like']}") //counts
                     ],
                   );
                 },

@@ -59,7 +59,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("FlatFeed"),
       ),
-      body: StreamFeedCore(
+      body: StreamFeedProvider(
         client: client,
         navigatorKey: navigatorKey,
         child: FlatActivityListPage(

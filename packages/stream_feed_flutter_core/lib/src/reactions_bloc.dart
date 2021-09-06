@@ -3,6 +3,9 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ReactionsBloc {
+  ReactionsBloc({required this.client});
+  final StreamFeedClient client;
+
   /// The current reactions list
   List<Reaction>? get reactions => _reactionsController.valueOrNull;
 
@@ -16,8 +19,6 @@ class ReactionsBloc {
   /// The stream notifying the state of queryReactions call
   Stream<bool> get queryReactionsLoading =>
       _queryReactionsLoadingController.stream;
-
-  late StreamFeedCoreState _streamFeedCore;
 
   // Future<Reaction> onAddChildReaction(
   //     {required String kind,
@@ -44,8 +45,6 @@ class ReactionsBloc {
       int? limit,
       String? kind,
       EnrichmentFlags? flags}) async {
-    final client = _streamFeedCore.client;
-
     if (_queryReactionsLoadingController.value == true) return;
 
     if (_reactionsController.hasValue) {

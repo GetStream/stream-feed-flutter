@@ -40,11 +40,11 @@ main() {
         )).thenAnswer((_) async => reactions);
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-            body: StreamFeedCore(
+            body: StreamFeedProvider(
       analyticsClient: mockStreamAnalytics,
       client: mockClient,
       child: ReactionsProvider(
-        bloc: ReactionsBloc(),
+        bloc: ReactionsBloc(client: mockClient),
         child: ReactionListCore(
           reactionsBuilder: (context, reactions, idx) => Offstage(),
           lookupValue: lookupValue,

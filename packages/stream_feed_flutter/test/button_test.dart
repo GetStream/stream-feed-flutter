@@ -181,7 +181,7 @@ void main() {
 
         await tester.pumpWidget(MaterialApp(
             home: Scaffold(
-          body: StreamFeedCore(
+          body: StreamFeedProvider(
               analyticsClient: mockStreamAnalytics,
               client: mockClient,
               child: withoutOwnReactions),
@@ -217,7 +217,7 @@ void main() {
 
         await tester.pumpWidget(MaterialApp(
             home: Scaffold(
-          body: StreamFeedCore(
+          body: StreamFeedProvider(
               analyticsClient: mockStreamAnalytics,
               client: mockClient,
               child: withOwnReactions),
@@ -299,7 +299,7 @@ void main() {
 
         await tester.pumpWidget(MaterialApp(
             home: Scaffold(
-          body: StreamFeedCore(
+          body: StreamFeedProvider(
               analyticsClient: mockStreamAnalytics,
               client: mockClient,
               child: withoutOwnReactions),
@@ -334,7 +334,7 @@ void main() {
 
         await tester.pumpWidget(MaterialApp(
             home: Scaffold(
-          body: StreamFeedCore(
+          body: StreamFeedProvider(
               analyticsClient: mockStreamAnalytics,
               client: mockClient,
               child: withOwnReactions),

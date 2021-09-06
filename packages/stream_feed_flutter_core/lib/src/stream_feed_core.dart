@@ -32,21 +32,21 @@ import 'package:stream_feed_flutter_core/src/activities_bloc.dart';
 /// }
 /// ```
 ///
-class StreamFeedCore extends StatefulWidget {
+class StreamFeedProvider extends InheritedWidget {
   /// Constructor used for creating a new instance of [StreamFeedCore].
   ///
   /// [StreamFeedCore] is a stateful widget which reacts to system events and
   /// updates Stream's connection status accordingly.
-  StreamFeedCore({
+  StreamFeedProvider({
     Key? key,
     required this.client,
-    required this.child,
-    this.trackAnalytics = false,
+    required Widget child,
+    this.enableAnalytics = false,
     // required this.feedGroup,
     this.navigatorKey,
     this.analyticsLocation,
     this.analyticsClient,
-  }) : super(key: key);
+  }) : super(key: key, child: child);
 
   /// Instance of Stream Feed Client containing information about the current
   /// application.
@@ -56,7 +56,7 @@ class StreamFeedCore extends StatefulWidget {
   final StreamAnalytics? analyticsClient;
 
   ///wether or not you want to track analytics in your app (can be useful for customised feeds via ML)
-  final bool trackAnalytics;
+  final bool enableAnalytics;
 
   /// The location that should be used for analytics when liking in the feed,
   /// this is only useful when you have analytics enabled for your app.
@@ -65,46 +65,11 @@ class StreamFeedCore extends StatefulWidget {
   ///Your navigator key
   final GlobalKey<NavigatorState>? navigatorKey;
 
-  /// Widget descendant.
-  final Widget child;
-
-  @override
-  StreamFeedCoreState createState() => StreamFeedCoreState();
-
-  /// Use this method to get the current [StreamFeedCoreState] instance
-  static StreamFeedCoreState of(BuildContext context) {
-    StreamFeedCoreState? streamFeedState;
-
-    streamFeedState = context.findAncestorStateOfType<StreamFeedCoreState>();
-
-    assert(
-      streamFeedState != null,
-      'You must have a StreamFeed widget at the top of your widget tree',
-    );
-
-    return streamFeedState!;
-  }
-}
-
-/// State class associated with [StreamFeedCore].
-class StreamFeedCoreState extends State<StreamFeedCore>
-    with WidgetsBindingObserver {
-  /// Initialized client used throughout the application.
-  StreamFeedClient get client => widget.client;
-
-  Timer? _disconnectTimer;
-
-  @override
-  Widget build(BuildContext context) => widget.child;
-
   /// The current user
-  StreamUser? get user => client.currentUser;
+  // StreamUser? get user => client.currentUser;
 
-  /// The current user
+  // The current user
   ReactionsClient get reactions => client.reactions;
-
-  StreamAnalytics? get analyticsClient => widget.analyticsClient;
-  NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
   /// Add a new reaction to the feed.
   Future<Reaction> onAddReaction({
@@ -163,7 +128,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
       Map<String, Object>? data,
       String? userId,
       List<FeedId>? targetFeeds}) async {
-    final childReaction = await reactions.addChild(kind, reaction.id!,
+    final childReaction = await client.reactions.addChild(kind, reaction.id!,
         data: data, userId: userId, targetFeeds: targetFeeds);
     return childReaction;
   }
@@ -228,16 +193,17 @@ class StreamFeedCoreState extends State<StreamFeedCore>
             ranking: ranking,
           );
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+  static StreamFeedProvider of(BuildContext context) {
+    final StreamFeedProvider? result =
+        context.dependOnInheritedWidgetOfExactType<StreamFeedProvider>();
+    assert(result != null, 'No StreamFeedProvider found in context');
+    return result!;
   }
 
   @override
-  void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
-    _disconnectTimer?.cancel();
-    super.dispose();
-  }
+  bool updateShouldNotify(StreamFeedProvider old) =>
+      navigatorKey != old.navigatorKey ||
+      analyticsClient != old.analyticsClient ||
+      analyticsLocation != old.analyticsLocation ||
+      enableAnalytics != old.enableAnalytics;
 }

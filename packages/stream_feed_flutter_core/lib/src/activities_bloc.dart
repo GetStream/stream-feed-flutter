@@ -3,6 +3,12 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ActivitiesBloc {
+  ActivitiesBloc({required this.client, this.analyticsClient});
+
+  final StreamFeedClient client;
+
+  final StreamAnalytics? analyticsClient;
+
   /// The current reactions list
   List<EnrichedActivity>? get activities => _activitiesController.valueOrNull;
 
@@ -21,8 +27,6 @@ class ActivitiesBloc {
   Stream<bool> get queryActivitiesLoading =>
       _queryActivitiesLoadingController.stream;
 
-  late StreamFeedCoreState _streamFeedCore;
-
   /// Add a new reaction to the feed.
   Future<Reaction> onAddReaction({
     Map<String, Object>? data,
@@ -31,7 +35,6 @@ class ActivitiesBloc {
     List<FeedId>? targetFeeds,
     required String feedGroup,
   }) async {
-    final client = _streamFeedCore.client;
     final reaction = await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
@@ -70,9 +73,8 @@ class ActivitiesBloc {
       {required String label,
       String? foreignId,
       required String feedGroup}) async {
-    final analyticsClient = _streamFeedCore.analyticsClient;
     analyticsClient != null
-        ? await analyticsClient.trackEngagement(Engagement(
+        ? await analyticsClient!.trackEngagement(Engagement(
             content: Content(foreignId: FeedId.fromId(foreignId)),
             label: label,
             feedId: FeedId.fromId(feedGroup),
@@ -92,7 +94,6 @@ class ActivitiesBloc {
 
     //TODO: no way to parameterized marker?
   }) async {
-    final client = _streamFeedCore.client;
 
     if (_queryActivitiesLoadingController.value == true) return;
 
