@@ -11,6 +11,7 @@
 - new: logger options to allow choosing the Logger level
 - fix: missing field ownChildren in `Reaction` model
 - new: allow sending enrichment flags in `filter` mehod
+- new: createReactionReference
   
 - ## 0.2.3: 03/08/2021
 
