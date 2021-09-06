@@ -4,10 +4,11 @@
 - new: `CancelToken`, `OnSendProgress` and `OnReceiveProgress` named parameters to support cancelling an up/download and tracking its progress
 - new: logger options to allow choosing the Logger level
 - improvements: error handling and expose exeception type
-- fix: missing field ownChildren field `Reaction` model
+- fix: missing field ownChildren in `Reaction` model
 - breaking: change type of `Reaction` model field user from  `Map<String,dynamic>` to `User`
-
-## 0.2.3: 03/08/2021
+- new: allow sending enrichment flags in `filter` mehod
+  
+- ## 0.2.3: 03/08/2021
 
 - remove dead links in Readmes
   
