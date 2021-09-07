@@ -126,7 +126,7 @@ class StreamSvgIcon extends StatelessWidget {
     Color? color,
   }) =>
       StreamSvgIcon(
-        assetName: 'Icon_close.svg',
+        assetName: 'close.svg',
         color: color,
         width: size,
         height: size,
