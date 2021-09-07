@@ -61,7 +61,7 @@ class GalleryHeaderTheme extends InheritedTheme {
 /// {@endtemplate}
 class GalleryHeaderThemeData with Diagnosticable {
   /// Builds a [GalleryHeaderThemeData].
-  GalleryHeaderThemeData({
+  const GalleryHeaderThemeData({
     this.closeButtonColor,
     this.backgroundColor,
     this.titleTextStyle,
