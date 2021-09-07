@@ -23,10 +23,11 @@ class _OnAddChildReactionWidgetState extends State<OnAddChildReactionWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await StreamFeedProvider.of(context).onAddChildReaction(//TODO: get rid of mutations in StreamFeedProvider 
-          reaction: widget.reaction,
-          kind: widget.kind,
-        );
+        await ReactionsProvider.of(context).bloc.onAddChildReaction(
+              //TODO: get rid of mutations in StreamFeedProvider
+              reaction: widget.reaction,
+              kind: widget.kind,
+            );
       },
     );
   }
@@ -64,9 +65,16 @@ main() {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
       body: StreamFeedProvider(
-          analyticsClient: mockStreamAnalytics,
-          client: mockClient,
-          child: OnAddChildReactionWidget(reaction: reaction, kind: kind)),
+        analyticsClient: mockStreamAnalytics,
+        client: mockClient,
+        child: ReactionsProvider(
+          bloc: ReactionsBloc(client: mockClient),
+          child: OnAddChildReactionWidget(
+            reaction: reaction,
+            kind: kind,
+          ),
+        ),
+      ),
     )));
     final reactionIcon = find.byType(InkWell);
     expect(reactionIcon, findsOneWidget);

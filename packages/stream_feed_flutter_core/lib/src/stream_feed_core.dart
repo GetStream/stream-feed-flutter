@@ -121,18 +121,6 @@ class StreamFeedProvider extends InheritedWidget {
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
 
-  ///Add child reaction
-  Future<Reaction> onAddChildReaction(
-      {required String kind,
-      required Reaction reaction,
-      Map<String, Object>? data,
-      String? userId,
-      List<FeedId>? targetFeeds}) async {
-    final childReaction = await client.reactions.addChild(kind, reaction.id!,
-        data: data, userId: userId, targetFeeds: targetFeeds);
-    return childReaction;
-  }
-
   /// Remove child reaction
   Future<void> onRemoveChildReaction(
       {required String id, String? kind, Reaction? reaction}) async {
