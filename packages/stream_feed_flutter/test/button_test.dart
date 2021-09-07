@@ -352,9 +352,16 @@ void main() {
         await tester.pumpWidget(MaterialApp(
             home: Scaffold(
           body: StreamFeedProvider(
-              analyticsClient: mockStreamAnalytics,
-              client: mockClient,
-              child: withOwnReactions),
+            analyticsClient: mockStreamAnalytics,
+            client: mockClient,
+            child: ReactionsProvider(
+              bloc: ReactionsBloc(
+                client: mockClient,
+                analyticsClient: mockStreamAnalytics,
+              ),
+              child: withOwnReactions,
+            ),
+          ),
         )));
         final reactionIcon = find.byType(ReactionToggleIcon);
         expect(reactionIcon, findsOneWidget);

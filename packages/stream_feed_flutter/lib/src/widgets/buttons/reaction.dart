@@ -162,8 +162,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   }
 
   Future<void> removeReaction() async {
-    await StreamFeedProvider.of(context).onRemoveReaction(
-        //TODO: get rid of mutations in StreamFeedProvider
+    await ReactionsProvider.of(context).bloc.onRemoveReaction(
         kind: widget.kind,
         activity: widget.activity,
         id: idToRemove!,

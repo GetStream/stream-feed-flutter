@@ -71,16 +71,6 @@ class StreamFeedProvider extends InheritedWidget {
   // The current user
   ReactionsClient get reactions => client.reactions;
 
-  /// Remove reaction from the feed.
-  Future<void> onRemoveReaction(
-      {required String kind,
-      required EnrichedActivity activity,
-      required String id,
-      required String feedGroup}) async {
-    await reactions.delete(id);
-    await trackAnalytics(
-        label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
-  }
 
 
   ///Track analytics

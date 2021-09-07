@@ -28,12 +28,12 @@ class _OnAddReactionWidgetState extends State<OnRemoveReactionWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await StreamFeedProvider.of(context).onRemoveReaction(
-          id: widget.id,
-          activity: widget.activity,
-          feedGroup: widget.feedGroup,
-          kind: widget.kind,
-        );
+        await ReactionsProvider.of(context).bloc.onRemoveReaction(
+              id: widget.id,
+              activity: widget.activity,
+              feedGroup: widget.feedGroup,
+              kind: widget.kind,
+            );
       },
     );
   }
@@ -69,11 +69,17 @@ main() {
       body: StreamFeedProvider(
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
-          child: OnRemoveReactionWidget(
-            activity: activity,
-            feedGroup: feedGroup,
-            kind: kind,
-            id: reaction.id!,
+          child: ReactionsProvider(
+            bloc: ReactionsBloc(
+              client: mockClient,
+              analyticsClient: mockStreamAnalytics,
+            ),
+            child: OnRemoveReactionWidget(
+              activity: activity,
+              feedGroup: feedGroup,
+              kind: kind,
+              id: reaction.id!,
+            ),
           )),
     )));
     final reactionIcon = find.byType(InkWell);

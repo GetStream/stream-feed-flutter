@@ -36,12 +36,22 @@ class ReactionsBloc {
         : print('warning: analytics: not enabled'); //TODO:logger
   }
 
-    /// Remove child reaction
+  /// Remove reaction from the feed.
+  Future<void> onRemoveReaction(
+      {required String kind,
+      required EnrichedActivity activity,
+      required String id,
+      required String feedGroup}) async {
+    await client.reactions.delete(id);
+    await trackAnalytics(
+        label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
+  }
+
+  /// Remove child reaction
   Future<void> onRemoveChildReaction(
       {required String id, String? kind, Reaction? reaction}) async {
     await client.reactions.delete(id);
   }
-
 
   /// Add a new reaction to the feed.
   Future<Reaction> onAddReaction({
