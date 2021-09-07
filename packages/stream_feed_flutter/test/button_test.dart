@@ -184,7 +184,12 @@ void main() {
           body: StreamFeedProvider(
               analyticsClient: mockStreamAnalytics,
               client: mockClient,
-              child: withoutOwnReactions),
+              child: ReactionsProvider(
+                  bloc: ReactionsBloc(
+                    client: mockClient,
+                    analyticsClient: mockStreamAnalytics,
+                  ),
+                  child: withoutOwnReactions)),
         )));
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
@@ -302,7 +307,12 @@ void main() {
           body: StreamFeedProvider(
               analyticsClient: mockStreamAnalytics,
               client: mockClient,
-              child: withoutOwnReactions),
+              child: ReactionsProvider(
+                  bloc: ReactionsBloc(
+                    client: mockClient,
+                    analyticsClient: mockStreamAnalytics,
+                  ),
+                  child: withoutOwnReactions)),
         )));
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);

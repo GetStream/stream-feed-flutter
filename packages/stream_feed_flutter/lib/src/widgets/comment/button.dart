@@ -43,7 +43,7 @@ class PostCommentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveElevatedButton(
       onSend: (inputText) async {
-        final streamFeed = StreamFeedProvider.of(context);
+        // final streamFeed = StreamFeedProvider.of(context);
         final activities = ActivitiesProvider.of(context).bloc;
         final trimmedText = inputText.trim();
         activity != null
@@ -54,7 +54,7 @@ class PostCommentButton extends StatelessWidget {
                 targetFeeds: targetFeeds,
                 feedGroup: feedGroup,
               )
-            : await streamFeed.onAddActivity(
+            : await activities.onAddActivity(
                 feedGroup: feedGroup,
                 verb: 'post',
                 //data: TODO: attachments with upload controller thingy

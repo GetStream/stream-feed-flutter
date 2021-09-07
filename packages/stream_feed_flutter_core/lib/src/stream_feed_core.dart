@@ -71,45 +71,6 @@ class StreamFeedProvider extends InheritedWidget {
   // The current user
   ReactionsClient get reactions => client.reactions;
 
-  /// Add a new reaction to the feed.
-  Future<Reaction> onAddReaction({
-    Map<String, Object>? data,
-    required String kind,
-    required EnrichedActivity activity,
-    List<FeedId>? targetFeeds,
-    required String feedGroup,
-  }) async {
-    final reaction = await reactions.add(kind, activity.id!,
-        targetFeeds: targetFeeds, data: data);
-    await trackAnalytics(
-        label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
-    return reaction;
-  }
-
-  /// Add an activity to the feed.
-  Future<Activity> onAddActivity(
-      {required String feedGroup,
-      Map<String, String>? data,
-      required String verb,
-      required String object,
-      String? userId}) async {
-    final activity = Activity(
-      actor: client.currentUser?.ref,
-      verb: verb,
-      object: object,
-      extraData: data,
-    );
-
-    final addedActivity =
-        await client.flatFeed(feedGroup, userId).addActivity(activity);
-    await trackAnalytics(
-      label: 'post',
-      foreignId: activity.foreignId,
-      feedGroup: feedGroup,
-    ); //TODO: remove hardcoded value
-    return addedActivity;
-  }
-
   /// Remove reaction from the feed.
   Future<void> onRemoveReaction(
       {required String kind,

@@ -3,8 +3,9 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ReactionsBloc {
-  ReactionsBloc({required this.client});
+  ReactionsBloc({required this.client, this.analyticsClient});
   final StreamFeedClient client;
+  final StreamAnalytics? analyticsClient;
 
   /// The current reactions list
   List<Reaction>? get reactions => _reactionsController.valueOrNull;
@@ -19,6 +20,36 @@ class ReactionsBloc {
   /// The stream notifying the state of queryReactions call
   Stream<bool> get queryReactionsLoading =>
       _queryReactionsLoadingController.stream;
+
+  ///Track analytics
+  Future<void> trackAnalytics({
+    required String label,
+    required String feedGroup,
+    String? foreignId,
+  }) async {
+    analyticsClient != null
+        ? await analyticsClient!.trackEngagement(Engagement(
+            content: Content(foreignId: FeedId.fromId(foreignId)),
+            label: label,
+            feedId: FeedId.fromId(feedGroup),
+          ))
+        : print('warning: analytics: not enabled'); //TODO:logger
+  }
+
+  /// Add a new reaction to the feed.
+  Future<Reaction> onAddReaction({
+    Map<String, Object>? data,
+    required String kind,
+    required EnrichedActivity activity,
+    List<FeedId>? targetFeeds,
+    required String feedGroup,
+  }) async {
+    final reaction = await client.reactions
+        .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
+    await trackAnalytics(
+        label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
+    return reaction;
+  }
 
   ///Add child reaction
   Future<Reaction> onAddChildReaction(

@@ -121,11 +121,24 @@ main() {
       body: StreamFeedProvider(
         analyticsClient: mockStreamAnalytics,
         client: mockClient,
-        child: CommentField(
-          key: key,
-          feedGroup: feedGroup,
-          activity: activity,
-          textEditingController: textEditingController,
+        child: ActivitiesProvider(
+          //TODO: ugly
+          bloc: ActivitiesBloc(
+            client: mockClient,
+            analyticsClient: mockStreamAnalytics,
+          ),
+          child: ReactionsProvider(
+            bloc: ReactionsBloc(
+              client: mockClient,
+              analyticsClient: mockStreamAnalytics,
+            ),
+            child: CommentField(
+              key: key,
+              feedGroup: feedGroup,
+              activity: activity,
+              textEditingController: textEditingController,
+            ),
+          ),
         ),
       ),
     )));

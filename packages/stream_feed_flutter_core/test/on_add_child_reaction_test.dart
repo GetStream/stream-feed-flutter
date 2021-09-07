@@ -24,7 +24,6 @@ class _OnAddChildReactionWidgetState extends State<OnAddChildReactionWidget> {
     return InkWell(
       onTap: () async {
         await ReactionsProvider.of(context).bloc.onAddChildReaction(
-              //TODO: get rid of mutations in StreamFeedProvider
               reaction: widget.reaction,
               kind: widget.kind,
             );

@@ -27,6 +27,30 @@ class ActivitiesBloc {
   Stream<bool> get queryActivitiesLoading =>
       _queryActivitiesLoadingController.stream;
 
+  /// Add an activity to the feed.
+  Future<Activity> onAddActivity(
+      {required String feedGroup,
+      Map<String, String>? data,
+      required String verb,
+      required String object,
+      String? userId}) async {
+    final activity = Activity(
+      actor: client.currentUser?.ref,
+      verb: verb,
+      object: object,
+      extraData: data,
+    );
+
+    final addedActivity =
+        await client.flatFeed(feedGroup, userId).addActivity(activity);
+    await trackAnalytics(
+      label: 'post',
+      foreignId: activity.foreignId,
+      feedGroup: feedGroup,
+    ); //TODO: remove hardcoded value
+    return addedActivity;
+  }
+
   /// Add a new reaction to the feed.
   Future<Reaction> onAddReaction({
     Map<String, Object>? data,
@@ -35,36 +59,37 @@ class ActivitiesBloc {
     List<FeedId>? targetFeeds,
     required String feedGroup,
   }) async {
+    // print("HEY");
     final reaction = await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
-    final activityPath = activities!.getEnrichedActivityPath(activity);
-    print("ACTIVITY PATH: $activityPath");
-    final indexPath = activities!.indexOf(activity);
+    // final activityPath = activities!.getEnrichedActivityPath(activity);
+    // print("ACTIVITY PATH: $activityPath");
+    // final indexPath = activities!.indexOf(activity);
 
-    var ownReactions = activityPath.ownReactions;
-    var latestReactions = activityPath.latestReactions;
-    var reactionCounts = activityPath.reactionCounts;
+    // var ownReactions = activityPath.ownReactions;
+    // var latestReactions = activityPath.latestReactions;
+    // var reactionCounts = activityPath.reactionCounts;
 
-    final reactionsByKind = ownReactions![kind];
-    final latestReactionsByKind = latestReactions![kind];
-    final reactionCountsByKind = reactionCounts?[kind] ?? 0;
+    // final reactionsByKind = ownReactions![kind];
+    // final latestReactionsByKind = latestReactions![kind];
+    // final reactionCountsByKind = reactionCounts?[kind] ?? 0;
 
-    ownReactions[kind] = reactionsByKind!
-        .unshift(reaction); //List<Reaction>.from(reactionsByKind!)
-    latestReactions[kind] = latestReactionsByKind!
-        .unshift(reaction); //List<Reaction>.from(latestReactionsByKind!)
-    reactionCounts![kind] = reactionCountsByKind + 1;
+    // ownReactions[kind] = reactionsByKind!
+    //     .unshift(reaction); //List<Reaction>.from(reactionsByKind!)
+    // latestReactions[kind] = latestReactionsByKind!
+    //     .unshift(reaction); //List<Reaction>.from(latestReactionsByKind!)
+    // reactionCounts![kind] = reactionCountsByKind + 1;
 
-    final updatedActivity = activityPath.copyWith(
-      ownReactions: ownReactions,
-      latestReactions: latestReactions,
-      reactionCounts: reactionCounts,
-    );
+    // final updatedActivity = activityPath.copyWith(
+    //   ownReactions: ownReactions,
+    //   latestReactions: latestReactions,
+    //   reactionCounts: reactionCounts,
+    // );
 
-    _activitiesController.value = activities!
-        .updateIn(updatedActivity, indexPath); //List<EnrichedActivity>.from
+    // _activitiesController.value = activities!
+    //     .updateIn(updatedActivity, indexPath); //List<EnrichedActivity>.from
     return reaction;
   }
 
@@ -94,7 +119,6 @@ class ActivitiesBloc {
 
     //TODO: no way to parameterized marker?
   }) async {
-
     if (_queryActivitiesLoadingController.value == true) return;
 
     if (_activitiesController.hasValue) {
