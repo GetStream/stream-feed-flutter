@@ -108,7 +108,21 @@ class GalleryHeaderThemeData with Diagnosticable {
         titleTextStyle: TextStyle.lerp(a.titleTextStyle, b.titleTextStyle, t),
       );
 
-  //TODO: == and hashcode
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GalleryHeaderThemeData &&
+          runtimeType == other.runtimeType &&
+          closeButtonColor == other.closeButtonColor &&
+          backgroundColor == other.backgroundColor &&
+          titleTextStyle == other.titleTextStyle;
+
+  @override
+  int get hashCode =>
+      closeButtonColor.hashCode ^
+      backgroundColor.hashCode ^
+      titleTextStyle.hashCode;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
