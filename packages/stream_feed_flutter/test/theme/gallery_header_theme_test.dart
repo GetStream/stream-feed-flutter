@@ -45,26 +45,21 @@ void main() {
         home: Builder(
           builder: (context) {
             _context = context;
-            /*return const Scaffold(
+            return const Scaffold(
               appBar: GalleryHeader(),
-            );*/
-            return Scaffold(
-              body: Center(
-                child: StreamSvgIcon.close(),
-              ),
             );
           },
         ),
       ),
     );
 
-    /*final galleryHeaderTheme = GalleryHeaderTheme.of(_context);
+    final galleryHeaderTheme = GalleryHeaderTheme.of(_context);
     expect(galleryHeaderTheme.closeButtonColor,
         _galleryHeaderThemeDark.closeButtonColor);
     expect(galleryHeaderTheme.backgroundColor,
         _galleryHeaderThemeDark.backgroundColor);
     expect(galleryHeaderTheme.titleTextStyle,
-        _galleryHeaderThemeDark.titleTextStyle);*/
+        _galleryHeaderThemeDark.titleTextStyle);
   });
 }
 
