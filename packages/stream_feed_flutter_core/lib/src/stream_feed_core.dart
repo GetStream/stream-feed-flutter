@@ -82,11 +82,6 @@ class StreamFeedProvider extends InheritedWidget {
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
 
-  /// Remove child reaction
-  Future<void> onRemoveChildReaction(
-      {required String id, String? kind, Reaction? reaction}) async {
-    await reactions.delete(id);
-  }
 
   ///Track analytics
   Future<void> trackAnalytics({
