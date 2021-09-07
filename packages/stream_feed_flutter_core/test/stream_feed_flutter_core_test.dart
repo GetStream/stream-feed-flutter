@@ -51,7 +51,7 @@ void main() {
           () => StreamFeedProvider.of(childKey.currentState!.context),
           throwsA(predicate<AssertionError>((e) =>
               e.message ==
-              'You must have a StreamFeed widget at the top of your widget tree')));
+              'No StreamFeedProvider found in context')));
       // expect(find.byKey(childKey), findsOneWidget);
     },
   );
