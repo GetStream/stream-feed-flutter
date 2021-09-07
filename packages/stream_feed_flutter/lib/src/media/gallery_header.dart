@@ -13,6 +13,7 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
     this.currentIndex = 0,
     this.totalMedia,
     this.onBackButtonPressed,
+    this.backgroundColor,
   })  : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -32,6 +33,9 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
   /// The total amount of media being shown.
   final int? totalMedia;
 
+  /// The background color of this [GalleryHeader].
+  final Color? backgroundColor;
+
   @override
   final Size preferredSize;
 
@@ -39,6 +43,7 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 1,
+      backgroundColor: backgroundColor,
       leading: showBackButton
           ? IconButton(
               icon: StreamSvgIcon.close(
@@ -62,5 +67,6 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
         'onBackButtonPressed', onBackButtonPressed));
     properties.add(IntProperty('currentIndex', currentIndex));
     properties.add(IntProperty('totalMedia', totalMedia));
+    properties.add(ColorProperty('backgroundColor', backgroundColor));
   }
 }
