@@ -42,7 +42,6 @@ class StreamFeedProvider extends InheritedWidget {
     required this.client,
     required Widget child,
     this.enableAnalytics = false,
-    // required this.feedGroup,
     this.navigatorKey,
     this.analyticsLocation,
     this.analyticsClient,
@@ -68,64 +67,6 @@ class StreamFeedProvider extends InheritedWidget {
   /// The current user
   // StreamUser? get user => client.currentUser;
 
-  // The current user
-  ReactionsClient get reactions => client.reactions;
-
-
-
-  ///Track analytics
-  Future<void> trackAnalytics({
-    required String label,
-    required String feedGroup,
-    String? foreignId,
-  }) async {
-    analyticsClient != null
-        ? await analyticsClient!.trackEngagement(Engagement(
-            content: Content(foreignId: FeedId.fromId(foreignId)),
-            label: label,
-            feedId: FeedId.fromId(feedGroup),
-          ))
-        : print('warning: analytics: not enabled'); //TODO:logger
-  }
-
-  ///Get reactions form the activity
-  Future<List<Reaction>> getReactions(
-    LookupAttribute lookupAttr,
-    String lookupValue, {
-    Filter? filter,
-    int? limit,
-    String? kind,
-    EnrichmentFlags? flags,
-  }) async {
-    return await reactions.filter(
-      lookupAttr,
-      lookupValue,
-      filter: filter,
-      limit: limit,
-      kind: kind,
-      flags: flags,
-    );
-  }
-
-  ///Get enriched activities from the feed
-  Future<List<EnrichedActivity>> getEnrichedActivities({
-    required String feedGroup,
-    int? limit,
-    int? offset,
-    String? session,
-    Filter? filter,
-    EnrichmentFlags? flags,
-    String? ranking,
-    String? userId,
-  }) async =>
-      await client.flatFeed(feedGroup, userId).getEnrichedActivities(
-            limit: limit,
-            offset: offset,
-            session: session,
-            filter: filter,
-            flags: flags,
-            ranking: ranking,
-          );
 
   static StreamFeedProvider of(BuildContext context) {
     final StreamFeedProvider? result =
