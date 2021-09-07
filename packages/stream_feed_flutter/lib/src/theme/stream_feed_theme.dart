@@ -133,8 +133,8 @@ class StreamFeedThemeData with Diagnosticable {
 
     // Use the given galleryHeaderTheme or a default.
     galleryHeaderTheme ??= GalleryHeaderThemeData(
-      backgroundColor: isDark ? Colors.black : Colors.white,
-      closeButtonColor: isDark ? Colors.white : Colors.black,
+      backgroundColor: Colors.black,
+      closeButtonColor: Colors.white,
       titleTextStyle: const TextStyle(
         color: Colors.white,
       ),
