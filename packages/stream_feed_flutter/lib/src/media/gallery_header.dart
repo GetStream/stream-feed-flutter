@@ -43,7 +43,8 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 1,
-      backgroundColor: backgroundColor,
+      backgroundColor:
+          backgroundColor ?? GalleryHeaderTheme.of(context).backgroundColor,
       leading: showBackButton
           ? IconButton(
               icon: StreamSvgIcon.close(
@@ -54,7 +55,10 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
           : const SizedBox(),
       centerTitle: true,
       title: totalMedia != null
-          ? Text('${currentIndex! + 1} of $totalMedia')
+          ? Text(
+              '${currentIndex! + 1} of $totalMedia',
+              style: GalleryHeaderTheme.of(context).titleTextStyle,
+            )
           : null,
     );
   }

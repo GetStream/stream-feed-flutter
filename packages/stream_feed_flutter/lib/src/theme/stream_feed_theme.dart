@@ -50,6 +50,7 @@ class StreamFeedThemeData with Diagnosticable {
     GifDialogThemeData? gifDialogTheme,
     OgCardThemeData? ogCardTheme,
     UserBarThemeData? userBarTheme,
+    GalleryHeaderThemeData? galleryHeaderTheme,
   }) {
     // Use the given brightness, or a default
     final _brightness = brightness ?? Brightness.light;
@@ -130,6 +131,15 @@ class StreamFeedThemeData with Diagnosticable {
       avatarSize: 46,
     );
 
+    // Use the given galleryHeaderTheme or a default.
+    galleryHeaderTheme ??= GalleryHeaderThemeData(
+      backgroundColor: isDark ? Colors.black : Colors.white,
+      closeButtonColor: isDark ? Colors.white : Colors.black,
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+      ),
+    );
+
     return StreamFeedThemeData.raw(
       brightness: _brightness,
       childReactionTheme: childReactionTheme,
@@ -138,6 +148,7 @@ class StreamFeedThemeData with Diagnosticable {
       gifDialogTheme: gifDialogTheme,
       ogCardTheme: ogCardTheme,
       userBarTheme: userBarTheme,
+      galleryHeaderTheme: galleryHeaderTheme,
     );
   }
 
@@ -158,6 +169,7 @@ class StreamFeedThemeData with Diagnosticable {
     required this.gifDialogTheme,
     required this.ogCardTheme,
     required this.userBarTheme,
+    required this.galleryHeaderTheme,
   });
 
   /// The [Brightness] of this theme.
@@ -181,6 +193,9 @@ class StreamFeedThemeData with Diagnosticable {
   /// {@macro userBarThemeData}
   final UserBarThemeData userBarTheme;
 
+  /// {@macro galleryHeaderThemeData}
+  final GalleryHeaderThemeData galleryHeaderTheme;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -195,7 +210,8 @@ class StreamFeedThemeData with Diagnosticable {
       ..add(DiagnosticsProperty<GifDialogThemeData>(
           'gifDialogTheme', gifDialogTheme))
       ..add(DiagnosticsProperty<OgCardThemeData>('ogCardTheme', ogCardTheme))
-      ..add(
-          DiagnosticsProperty<UserBarThemeData>('userBarTheme', userBarTheme));
+      ..add(DiagnosticsProperty<UserBarThemeData>('userBarTheme', userBarTheme))
+      ..add(DiagnosticsProperty<GalleryHeaderThemeData>(
+          'galleryHeaderTheme', galleryHeaderTheme));
   }
 }
