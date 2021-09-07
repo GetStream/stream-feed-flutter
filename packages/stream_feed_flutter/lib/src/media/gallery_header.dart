@@ -29,6 +29,7 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
   /// The current index of the media being shown.
   final int? currentIndex;
 
+  /// The total amount of media being shown.
   final int? totalMedia;
 
   @override
@@ -60,5 +61,6 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
     properties.add(ObjectFlagProperty<VoidCallback?>.has(
         'onBackButtonPressed', onBackButtonPressed));
     properties.add(IntProperty('currentIndex', currentIndex));
+    properties.add(IntProperty('totalMedia', totalMedia));
   }
 }
