@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+
 class ActivitiesBloc {
   ActivitiesBloc({required this.client, this.analyticsClient});
 
@@ -69,23 +70,16 @@ class ActivitiesBloc {
     final indexPath = activities!.indexOf(activity);
 
     // var ownReactions = activityPath.ownReactions;
-    var latestReactions = activityPath.latestReactions;
-    var reactionCounts = activityPath.reactionCounts;
-
     // final reactionsByKind = ownReactions![kind];
-    final latestReactionsByKind = latestReactions?[kind] ?? [];
+    var reactionCounts = activityPath.reactionCounts;
+    var latestReactions =
+        activityPath.latestReactions.unshiftByKind(kind, reaction);
+
     final reactionCountsByKind = reactionCounts?[kind] ?? 0;
 
     // ownReactions[kind] = reactionsByKind!
     //     .unshift(reaction); //List<Reaction>.from(reactionsByKind!)
 //List<Reaction>.from(latestReactionsByKind!)
-    if (latestReactions != null) {//TODO: extract this logic to a convenient method
-      latestReactions[kind] = latestReactionsByKind.unshift(reaction);
-    } else {
-      latestReactions = {
-        kind: [reaction]
-      };
-    }
 
     if (reactionCounts != null) {
       reactionCounts[kind] = reactionCountsByKind + 1;
