@@ -59,34 +59,6 @@ class ActivityContent extends StatelessWidget {
                 .toList(),
           ),
           //TODO: handle Video + Audio + Gallery
-          GalleryPreview(
-            media: [
-              Media(
-                url:
-                    'https://i.picsum.photos/id/785/200/200.jpg?hmac=vvHnS4TgoGTRqwI2soaIhbOxE7Q-hhoZTTDe75h_fz4',
-              ),
-              Media(
-                url:
-                    'https://i.picsum.photos/id/665/200/200.jpg?hmac=hWcfvzYgHAwJFOUaHZa2oZpOOL7yx_x8Bnhq0dFVQRw',
-              ),
-              Media(
-                url:
-                    'https://i.picsum.photos/id/247/200/200.jpg?hmac=oKt3N5MCdI8hCrzIbokjpVNzUuywbK64CJn1bfRAxbA',
-              ),
-              Media(
-                url:
-                    'https://i.picsum.photos/id/533/200/200.jpg?hmac=HvhCl1BSaQrsbedBJm-X8gfnZGp_222QGZ-mYnstPiA',
-              ),
-              Media(
-                url:
-                    'https://i.picsum.photos/id/715/200/200.jpg?hmac=eR-80S6YYIV9vV26EYLSVACDM5HWe94Oz2hx0icP5vI',
-              ),
-              Media(
-                url:
-                    'https://i.picsum.photos/id/197/200/200.jpg?hmac=QpHQ9OiY_-qagHPzHZgTw7I_nE3LevYjH_1k3-xLpPk',
-              ),
-            ],
-          ),
           if (attachments != null)
             ActivityCard(
               og: OpenGraphData.fromJson(attachments as Map<String, dynamic>),
