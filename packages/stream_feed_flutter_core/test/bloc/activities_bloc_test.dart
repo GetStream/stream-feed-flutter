@@ -55,6 +55,9 @@ main() {
         latestReactions: {
           'like': [reaction]
         },
+        ownReactions: {
+          'like': [reaction]
+        },
         time: now,
         actor: EnrichableField(
           User(data: {
@@ -117,6 +120,8 @@ main() {
       final updatedActivity = firstActivity.copyWith(reactionCounts: {
         'like': 1
       }, latestReactions: {
+        'like': [reaction]
+      }, ownReactions: {
         'like': [reaction]
       });
       expect(updatedActivity, expectedResult.first);

@@ -73,6 +73,8 @@ class ActivitiesBloc {
     var reactionCounts = activityPath.reactionCounts;
     final latestReactions =
         activityPath.latestReactions.unshiftByKind(kind, reaction);
+    final ownReactions =
+        activityPath.ownReactions.unshiftByKind(kind, reaction);
 
     final reactionCountsByKind = reactionCounts?[kind] ?? 0;
 
@@ -87,7 +89,7 @@ class ActivitiesBloc {
     }
 
     final updatedActivity = activityPath.copyWith(
-      // ownReactions: ownReactions,
+      ownReactions: ownReactions,
       latestReactions: latestReactions,
       reactionCounts: reactionCounts,
     );
