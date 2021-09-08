@@ -76,5 +76,13 @@ void main() {
       );
       await screenMatchesGolden(tester, 'avatar_icon');
     });
+
+    testGoldens('close', (tester) async {
+      await tester.pumpWidgetBuilder(
+        Center(child: StreamSvgIcon.close()),
+        surfaceSize: const Size(50, 50),
+      );
+      await screenMatchesGolden(tester, 'close');
+    });
   });
 }
