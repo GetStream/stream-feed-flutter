@@ -108,7 +108,6 @@ class GalleryHeaderThemeData with Diagnosticable {
         titleTextStyle: TextStyle.lerp(a.titleTextStyle, b.titleTextStyle, t),
       );
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
