@@ -92,7 +92,7 @@ class ActivitiesBloc {
       reactionCounts: reactionCounts,
     );
 
-    _activitiesController.value = activities!
+    _activitiesController.value = activities!//TODO: handle null safety
         .updateIn(updatedActivity, indexPath); //List<EnrichedActivity>.from
     return reaction;
   }
