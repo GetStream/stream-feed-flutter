@@ -12,6 +12,7 @@ main() {
     final mockStreamAnalytics = MockStreamAnalytics();
     final activities = [
       EnrichedActivity(
+        id: "id",
         // reactionCounts: {
         //   'like': 139,
         //   'repost': 23,
@@ -27,6 +28,7 @@ main() {
         ),
       ),
       EnrichedActivity(
+        id: "id2",
         time: DateTime.now(),
         actor: EnrichableField(
           User(data: {
@@ -38,17 +40,35 @@ main() {
         ),
       ),
     ];
+
+    final bloc = ActivitiesBloc(client: mockClient);
+    final mockReactions = MockReactions();
+    final reactedActivity = activities.first;
+    final reaction =
+        Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
+    when(() => mockClient.reactions).thenReturn(mockReactions);
+
     when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
     when(() => mockFeed.getEnrichedActivities())
         .thenAnswer((_) async => activities);
-
-    final bloc = ActivitiesBloc(client: mockClient);
+    when(() => mockReactions.add(
+          'like',
+          'id',
+        )).thenAnswer((_) async => reaction);
 
     await bloc.queryEnrichedActivities(feedGroup: 'user');
     await expectLater(bloc.activitiesStream, emits(activities));
 
     verify(() => mockClient.flatFeed('user')).called(1);
     verify(() => mockFeed.getEnrichedActivities()).called(1);
+
+    await bloc.onAddReaction(
+        kind: 'like', activity: reactedActivity, feedGroup: 'user');
+
+    verify(() => mockClient.reactions.add(
+          'like',
+         'id',
+        )).called(1);
     //TODO: teardown
   });
 }
