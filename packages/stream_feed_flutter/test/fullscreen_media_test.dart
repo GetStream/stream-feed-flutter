@@ -21,6 +21,6 @@ void main() {
       ),
     );
 
-    expect(find.byType(FullscreenMedia), findsOneWidget);
+    expect(find.byType(GalleryHeader), findsOneWidget);
   });
 }
