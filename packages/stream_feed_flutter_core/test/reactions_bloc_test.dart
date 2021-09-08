@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed_flutter_core/src/reactions_list_core.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mocks.dart';
@@ -47,6 +45,7 @@ main() {
       limit: limit,
       kind: kind,
     );
+    await expectLater(bloc.reactionsStream, emits(reactions));
     verify(() => mockReactions.filter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind)).called(1);
   });
