@@ -48,7 +48,8 @@ class _PeopleScreenState extends State<PeopleScreen> {
       ],
     );
 
-    return Center(
+    return Container(
+        child: Center(
       child: ListView.separated(
         itemCount: users.length,
         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -78,7 +79,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
               ),
               title: Text(
                 user.name,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w300,
                 ),
@@ -87,6 +88,6 @@ class _PeopleScreenState extends State<PeopleScreen> {
           );
         },
       ),
-    );
+    ));
   }
 }

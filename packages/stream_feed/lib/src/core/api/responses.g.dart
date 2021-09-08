@@ -7,12 +7,13 @@ part of 'responses.dart';
 // **************************************************************************
 
 ErrorResponse _$ErrorResponseFromJson(Map json) {
-  return ErrorResponse()
-    ..duration = json['duration'] as String?
-    ..code = json['code'] as int?
-    ..message = json['message'] as String?
-    ..statusCode = json['StatusCode'] as int?
-    ..moreInfo = json['more_info'] as String?;
+  return ErrorResponse(
+    duration: json['duration'] as String?,
+    message: json['message'] as String?,
+    code: json['code'] as int?,
+    statusCode: json['status_code'] as int?,
+    moreInfo: json['more_info'] as String?,
+  );
 }
 
 Map<String, dynamic> _$ErrorResponseToJson(ErrorResponse instance) =>
@@ -20,6 +21,6 @@ Map<String, dynamic> _$ErrorResponseToJson(ErrorResponse instance) =>
       'duration': instance.duration,
       'code': instance.code,
       'message': instance.message,
-      'StatusCode': instance.statusCode,
+      'status_code': instance.statusCode,
       'more_info': instance.moreInfo,
     };
