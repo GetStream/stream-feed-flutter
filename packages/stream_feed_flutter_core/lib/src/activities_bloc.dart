@@ -69,17 +69,24 @@ class ActivitiesBloc {
     final indexPath = activities!.indexOf(activity);
 
     // var ownReactions = activityPath.ownReactions;
-    // var latestReactions = activityPath.latestReactions;
+    var latestReactions = activityPath.latestReactions;
     var reactionCounts = activityPath.reactionCounts;
 
     // final reactionsByKind = ownReactions![kind];
-    // final latestReactionsByKind = latestReactions![kind];
+    final latestReactionsByKind = latestReactions?[kind] ?? [];
     final reactionCountsByKind = reactionCounts?[kind] ?? 0;
 
     // ownReactions[kind] = reactionsByKind!
     //     .unshift(reaction); //List<Reaction>.from(reactionsByKind!)
-    // latestReactions[kind] = latestReactionsByKind!
-    //     .unshift(reaction); //List<Reaction>.from(latestReactionsByKind!)
+//List<Reaction>.from(latestReactionsByKind!)
+    if (latestReactions != null) {//TODO: extract this logic to a convenient method
+      latestReactions[kind] = latestReactionsByKind.unshift(reaction);
+    } else {
+      latestReactions = {
+        kind: [reaction]
+      };
+    }
+
     if (reactionCounts != null) {
       reactionCounts[kind] = reactionCountsByKind + 1;
     } else {
@@ -88,11 +95,11 @@ class ActivitiesBloc {
 
     final updatedActivity = activityPath.copyWith(
       // ownReactions: ownReactions,
-      // latestReactions: latestReactions,
+      latestReactions: latestReactions,
       reactionCounts: reactionCounts,
     );
 
-    _activitiesController.value = activities!//TODO: handle null safety
+    _activitiesController.value = activities! //TODO: handle null safety
         .updateIn(updatedActivity, indexPath); //List<EnrichedActivity>.from
     return reaction;
   }

@@ -41,11 +41,19 @@ main() {
         ),
       ),
     ];
+
+    final reactedActivity = activities.first;
+    final reaction =
+        Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
+
     final expectedResult = [
       EnrichedActivity(
         id: "id",
         reactionCounts: {
           'like': 1,
+        },
+        latestReactions: {
+          'like': [reaction]
         },
         time: now,
         actor: EnrichableField(
@@ -74,9 +82,7 @@ main() {
     test('onAddReaction', () async {
       final bloc = ActivitiesBloc(client: mockClient);
       final mockReactions = MockReactions();
-      final reactedActivity = activities.first;
-      final reaction =
-          Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
+
       when(() => mockClient.reactions).thenReturn(mockReactions);
 
       when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
@@ -108,8 +114,11 @@ main() {
       final firstActivity = activities.first;
       final indexPath = activities.indexOf(firstActivity);
       expect(indexPath, 0);
-      final updatedActivity =
-          firstActivity.copyWith(reactionCounts: {'like': 1});
+      final updatedActivity = firstActivity.copyWith(reactionCounts: {
+        'like': 1
+      }, latestReactions: {
+        'like': [reaction]
+      });
       expect(updatedActivity, expectedResult.first);
       final result = activities.updateIn(updatedActivity, indexPath);
       expect(result, expectedResult);
