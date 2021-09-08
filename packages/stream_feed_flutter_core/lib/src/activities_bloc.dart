@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-
 class ActivitiesBloc {
   ActivitiesBloc({required this.client, this.analyticsClient});
 
@@ -72,7 +71,7 @@ class ActivitiesBloc {
     // var ownReactions = activityPath.ownReactions;
     // final reactionsByKind = ownReactions![kind];
     var reactionCounts = activityPath.reactionCounts;
-    var latestReactions =
+    final latestReactions =
         activityPath.latestReactions.unshiftByKind(kind, reaction);
 
     final reactionCountsByKind = reactionCounts?[kind] ?? 0;
