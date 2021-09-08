@@ -79,7 +79,9 @@ void main() {
 
     testGoldens('close', (tester) async {
       await tester.pumpWidgetBuilder(
-        Center(child: StreamSvgIcon.close()),
+        Center(
+            child:
+                Container(color: Colors.black, child: StreamSvgIcon.close())),
         surfaceSize: const Size(50, 50),
       );
       await screenMatchesGolden(tester, 'close');
