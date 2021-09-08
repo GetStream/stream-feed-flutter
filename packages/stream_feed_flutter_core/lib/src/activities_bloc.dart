@@ -59,34 +59,19 @@ class ActivitiesBloc {
     List<FeedId>? targetFeeds,
     required String feedGroup,
   }) async {
-    // print("HEY");
     final reaction = await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
-    final activityPath = activities!.getEnrichedActivityPath(activity);
-    // print("ACTIVITY PATH: $activityPath");
-    final indexPath = activities!.indexOf(activity);
 
-    // var ownReactions = activityPath.ownReactions;
-    // final reactionsByKind = ownReactions![kind];
-    var reactionCounts = activityPath.reactionCounts;
+    final activityPath = activities!.getEnrichedActivityPath(activity);
+    final indexPath = activities!.indexOf(activity); //TODO: handle null safety
+
+    final reactionCounts = activityPath.reactionCounts.unshiftByKind(kind);
     final latestReactions =
         activityPath.latestReactions.unshiftByKind(kind, reaction);
     final ownReactions =
         activityPath.ownReactions.unshiftByKind(kind, reaction);
-
-    final reactionCountsByKind = reactionCounts?[kind] ?? 0;
-
-    // ownReactions[kind] = reactionsByKind!
-    //     .unshift(reaction); //List<Reaction>.from(reactionsByKind!)
-//List<Reaction>.from(latestReactionsByKind!)
-
-    if (reactionCounts != null) {
-      reactionCounts[kind] = reactionCountsByKind + 1;
-    } else {
-      reactionCounts = {kind: 1};
-    }
 
     final updatedActivity = activityPath.copyWith(
       ownReactions: ownReactions,

@@ -24,7 +24,7 @@ extension EnrichedActivityX on List<EnrichedActivity> {
   }
 }
 
-extension UnshiftMap on Map<String, List<Reaction>>? {
+extension UnshiftMapList on Map<String, List<Reaction>>? {
   Map<String, List<Reaction>> unshiftByKind(String kind, Reaction reaction) {
     Map<String, List<Reaction>>? result;
     result = this;
@@ -41,6 +41,19 @@ extension UnshiftMap on Map<String, List<Reaction>>? {
   }
 }
 
+extension UnshiftMapInt on Map<String, int>? {
+  Map<String, int> unshiftByKind(String kind) {
+    Map<String, int>? result;
+    result = this;
+    final reactionCountsByKind = result?[kind] ?? 0;
+    if (result != null) {
+      result[kind] = reactionCountsByKind + 1;
+    } else {
+      result = {kind: 1};
+    }
+    return result!;
+  }
+}
 
 extension Unshift<T> on List<T> {
   List<T> unshift(T item) => [item, ...this];
