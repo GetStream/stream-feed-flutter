@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-import 'mocks.dart';
+import '../mocks.dart';
 
 main() {
   test('ReactionBloc', () async {
@@ -48,5 +48,6 @@ main() {
     await expectLater(bloc.reactionsStream, emits(reactions));
     verify(() => mockReactions.filter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind)).called(1);
+    //TODO: teardown
   });
 }

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-import 'mocks.dart';
+import '../mocks.dart';
 
 main() {
   test('ActivitiesBloc', () async {
@@ -49,5 +49,6 @@ main() {
 
     verify(() => mockClient.flatFeed('user')).called(1);
     verify(() => mockFeed.getEnrichedActivities()).called(1);
+    //TODO: teardown
   });
 }
