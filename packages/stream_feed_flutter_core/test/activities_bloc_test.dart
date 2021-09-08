@@ -43,7 +43,9 @@ main() {
         .thenAnswer((_) async => activities);
 
     final bloc = ActivitiesBloc(client: mockClient);
+
     await bloc.queryEnrichedActivities(feedGroup: 'user');
+    await expectLater(bloc.activitiesStream, emits(activities));
 
     verify(() => mockClient.flatFeed('user')).called(1);
     verify(() => mockFeed.getEnrichedActivities()).called(1);
