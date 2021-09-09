@@ -28,7 +28,7 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBackButtonPressed;
 
   /// The current index of the media being shown.
-  final int? currentIndex;
+  final int currentIndex;
 
   /// The total amount of media being shown.
   final int? totalMedia;
@@ -56,7 +56,7 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: totalMedia != null
           ? Text(
-              '${currentIndex! + 1} of $totalMedia',
+              '${currentIndex + 1} of $totalMedia',
               style: GalleryHeaderTheme.of(context).titleTextStyle,
             )
           : null,
