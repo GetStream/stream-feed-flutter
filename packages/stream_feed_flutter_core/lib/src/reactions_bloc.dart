@@ -54,7 +54,7 @@ class ReactionsBloc {
   }
 
   /// Add a new reaction to the feed.
-  Future<Reaction> onAddReaction({
+  Future<Reaction> onAddReaction({//TODO: duplicate with activities bloc
     Map<String, Object>? data,
     required String kind,
     required EnrichedActivity activity,
