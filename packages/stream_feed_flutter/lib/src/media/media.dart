@@ -10,6 +10,9 @@ class Media {
   /// The URL for this media.
   final String url;
 
+  /// validate a string to check if it's a url or not
+  bool get isValidUrl => Uri.tryParse(url)?.hasAbsolutePath ?? false;
+
   /// Checks the [url] for specific file extensions and returns the
   /// appropriate [MediaType].
   MediaType get mediaType {
