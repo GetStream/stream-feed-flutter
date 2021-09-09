@@ -113,9 +113,9 @@ class ActivitiesBloc {
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
-
-    final activityPath = activities!.getEnrichedActivityPath(activity);
-    final indexPath = activities!.indexOf(activity); //TODO: handle null safety
+    final _activities = activities ?? [activity];
+    final activityPath = _activities.getEnrichedActivityPath(activity);
+    final indexPath = _activities.indexOf(activity); //TODO: handle null safety
 
     final reactionCounts = activityPath.reactionCounts.unshiftByKind(kind);
     final latestReactions =
@@ -132,7 +132,7 @@ class ActivitiesBloc {
     //adds reaction to the stream
     _reactionsControllers.unshiftById(activity.id!, reaction);
 
-    _activitiesController.value = activities! //TODO: handle null safety
+    _activitiesController.value = _activities //TODO: handle null safety
         .updateIn(updatedActivity, indexPath); //List<EnrichedActivity>.from
     return reaction;
   }
