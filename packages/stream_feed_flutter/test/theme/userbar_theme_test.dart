@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
@@ -14,6 +15,25 @@ void main() {
         const UserBarThemeData()
             .lerp(_userBarThemeDefault, _userBarThemeFullLerp, 0.5),
         _userBarThemeHalfLerp);
+  });
+
+  testWidgets('default UserBarThemeData debugFillProperties', (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const UserBarThemeData().debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toString())
+        .toList();
+
+    expect(
+      description,
+      [
+        'avatarSize: null',
+        'usernameTextStyle: null',
+        'timestampTextStyle: null',
+      ],
+    );
   });
 }
 
