@@ -18,17 +18,17 @@ class Media {
   MediaType get mediaType {
     final fileExt = url.split('.').last;
 
-    if (fileExt.contains('jpeg')) {
+    if (fileExt == 'jpeg') {
       return MediaType.image;
-    } else if (fileExt.contains('jpg')) {
+    } else if (fileExt == 'jpg') {
       return MediaType.image;
-    } else if (fileExt.contains('png')) {
+    } else if (fileExt == 'png') {
       return MediaType.image;
-    } else if (fileExt.contains('mp3')) {
+    } else if (fileExt == 'mp3') {
       return MediaType.audio;
-    } else if (fileExt.contains('wav')) {
+    } else if (fileExt == 'wav') {
       return MediaType.audio;
-    } else if (fileExt.contains('mp4')) {
+    } else if (fileExt == 'mp4') {
       return MediaType.video;
     } else {
       return MediaType.unknown;
