@@ -17,11 +17,9 @@ void main() {
               child: GalleryPreview(
                 media: [
                   Media(
-                      url:
-                          'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw'),
-                  /*Media(
                     url:
-                        'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys'),*/
+                        'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw',
+                  ),
                 ],
               ),
             ),
@@ -165,6 +163,52 @@ void main() {
 
         expect(find.byType(Text), findsOneWidget);
         expect(find.text('+ 1'), findsOneWidget);
+      });
+    });
+  });
+
+  group('FlexibleImage tests', () {
+    testWidgets('find one GestureDetector and one Image', (widgetTester) async {
+      await mockNetworkImages(() async {
+        await widgetTester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) => StreamFeedTheme(
+              data: StreamFeedThemeData.light(),
+              child: child!,
+            ),
+            home: Center(
+              child: Flex(
+                direction: Axis.vertical,
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Flex(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      direction: Axis.horizontal,
+                      children: [
+                        FlexibleImage(
+                          media: [
+                            Media(
+                              url:
+                                  'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw',
+                            ),
+                          ],
+                          child: Image.network(
+                            'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        expect(find.byType(GestureDetector), findsOneWidget);
+        expect(find.byType(Image), findsOneWidget);
       });
     });
   });
