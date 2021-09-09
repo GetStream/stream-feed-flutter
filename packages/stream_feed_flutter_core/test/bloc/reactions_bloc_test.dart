@@ -37,7 +37,7 @@ main() {
           kind: kind,
         )).thenAnswer((_) async => reactions);
 
-    final bloc = ReactionsBloc(client: mockClient);
+    final bloc = ActivitiesBloc(client: mockClient);
     await bloc.queryReactions(
       lookupAttr,
       lookupValue,
@@ -45,7 +45,7 @@ main() {
       limit: limit,
       kind: kind,
     );
-    await expectLater(bloc.reactionsStream, emits(reactions));
+    await expectLater(bloc.reactionsStreamFor(lookupValue), emits(reactions));
     verify(() => mockReactions.filter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind)).called(1);
     //TODO: teardown

@@ -34,6 +34,13 @@ class ActivitiesBloc {
 
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
+  final _queryReactionsLoadingControllers =
+      Map<String, BehaviorSubject<bool>>();
+
+  /// The stream notifying the state of queryReactions call
+  Stream<bool> queryReactionsLoadingFor(String activityId) =>
+      _queryReactionsLoadingControllers[activityId]!;
+
   /// The stream notifying the state of queryActivities call
   Stream<bool> get queryActivitiesLoading =>
       _queryActivitiesLoadingController.stream;
@@ -111,6 +118,41 @@ class ActivitiesBloc {
             feedId: FeedId.fromId(feedGroup),
           ))
         : print('warning: analytics: not enabled'); //TODO:logger
+  }
+
+  Future<void> queryReactions(LookupAttribute lookupAttr, String lookupValue,
+      {Filter? filter,
+      int? limit,
+      String? kind,
+      EnrichmentFlags? flags}) async {
+    // if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
+
+    // if (_reactionsControllers[lookupValue]?.hasValue != null) {
+    //   _queryReactionsLoadingControllers[lookupValue]!.add(true);
+    // }
+
+    try {
+      // final oldReactions = List<Reaction>.from(reactionsFor(lookupValue));
+      final reactionsResponse = await client.reactions.filter(
+        lookupAttr,
+        lookupValue,
+        filter: filter,
+        flags: flags,
+        limit: limit,
+        kind: kind,
+      );
+      // final temp = oldReactions + reactionsResponse;
+      _reactionsControllers[lookupValue] =
+          BehaviorSubject.seeded(reactionsResponse);
+    } catch (e, stk) {
+      // reset loading controller
+      _queryReactionsLoadingControllers[lookupValue]?.add(false);
+      if (_reactionsControllers[lookupValue]?.hasValue != null) {
+        _queryReactionsLoadingControllers[lookupValue]?.addError(e, stk);
+      } else {
+        _reactionsControllers[lookupValue]?.addError(e, stk);
+      }
+    }
   }
 
   Future<void> queryEnrichedActivities({
