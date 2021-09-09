@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
@@ -60,6 +61,26 @@ void main() {
         _galleryHeaderThemeDark.backgroundColor);
     expect(galleryHeaderTheme.titleTextStyle,
         _galleryHeaderThemeDark.titleTextStyle);
+  });
+
+  testWidgets('default GalleryHeaderThemeData debugFillProperties',
+      (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const GalleryHeaderThemeData().debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toString())
+        .toList();
+
+    expect(
+      description,
+      [
+        'closeButtonColor: null',
+        'backgroundColor: null',
+        'titleTextStyle: null'
+      ],
+    );
   });
 }
 
