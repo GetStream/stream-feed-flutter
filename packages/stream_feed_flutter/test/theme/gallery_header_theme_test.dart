@@ -78,7 +78,7 @@ void main() {
       [
         'closeButtonColor: null',
         'backgroundColor: null',
-        'titleTextStyle: null'
+        'titleTextStyle: null',
       ],
     );
   });
