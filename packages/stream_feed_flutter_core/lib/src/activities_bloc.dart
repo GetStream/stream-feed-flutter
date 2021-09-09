@@ -234,6 +234,9 @@ class ActivitiesBloc {
       value.close();
     });
     _queryActivitiesLoadingController.close();
+    _queryReactionsLoadingControllers.forEach((key, value) {
+      value.close();
+    });
   }
 }
 
