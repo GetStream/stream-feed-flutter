@@ -58,7 +58,7 @@ class _FullscreenMediaState extends State<FullscreenMedia>
 
   @override
   void dispose() {
-    //
+    _pageController.dispose();
     super.dispose();
   }
 
