@@ -78,7 +78,7 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                 },
                 itemBuilder: (context, index) {
                   final media = widget.media[index];
-                  if (media.mediaType == MediaType.image) {
+                  if (media.mediaType == MediaType.image && media.isValidUrl) {
                     return PhotoView(
                       imageProvider: NetworkImage(media.url),
                       maxScale: PhotoViewComputedScale.covered,
