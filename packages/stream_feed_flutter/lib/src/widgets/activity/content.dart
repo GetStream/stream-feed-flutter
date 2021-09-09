@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/media/media.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
+import 'package:stream_feed_flutter/src/media/gallery_preview.dart';
 import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
 import 'package:stream_feed_flutter/src/widgets/og/card.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
