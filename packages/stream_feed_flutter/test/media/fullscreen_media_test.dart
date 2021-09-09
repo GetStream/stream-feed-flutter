@@ -4,8 +4,8 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 void main() {
   group('fullscreen media', () {
-    testWidgets('find one GalleryHeader', (widgetTester) async {
-      await widgetTester.pumpWidget(
+    testWidgets('find one GalleryHeader', (tester) async {
+      await tester.pumpWidget(
         MaterialApp(
           builder: (context, child) => StreamFeedTheme(
             data: StreamFeedThemeData.light(),
@@ -25,8 +25,8 @@ void main() {
       expect(find.byType(GalleryHeader), findsOneWidget);
     });
 
-    testWidgets('find GalleryHeader text', (widgetTester) async {
-      await widgetTester.pumpWidget(
+    testWidgets('find GalleryHeader text', (tester) async {
+      await tester.pumpWidget(
         MaterialApp(
           builder: (context, child) => StreamFeedTheme(
             data: StreamFeedThemeData.light(),

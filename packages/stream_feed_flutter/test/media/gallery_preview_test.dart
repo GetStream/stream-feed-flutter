@@ -5,9 +5,9 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 void main() {
   group('GalleryPreview tests', () {
-    testWidgets('find one FlexibleImage', (widgetTester) async {
+    testWidgets('find one FlexibleImage', (tester) async {
       await mockNetworkImages(() async {
-        await widgetTester.pumpWidget(
+        await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) => StreamFeedTheme(
               data: StreamFeedThemeData.light(),
@@ -30,9 +30,9 @@ void main() {
       });
     });
 
-    testWidgets('find two FlexibleImages', (widgetTester) async {
+    testWidgets('find two FlexibleImages', (tester) async {
       await mockNetworkImages(() async {
-        await widgetTester.pumpWidget(
+        await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) => StreamFeedTheme(
               data: StreamFeedThemeData.light(),
@@ -57,9 +57,9 @@ void main() {
       });
     });
 
-    testWidgets('find three FlexibleImages', (widgetTester) async {
+    testWidgets('find three FlexibleImages', (tester) async {
       await mockNetworkImages(() async {
-        await widgetTester.pumpWidget(
+        await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) => StreamFeedTheme(
               data: StreamFeedThemeData.light(),
@@ -87,9 +87,9 @@ void main() {
       });
     });
 
-    testWidgets('find four FlexibleImages', (widgetTester) async {
+    testWidgets('find four FlexibleImages', (tester) async {
       await mockNetworkImages(() async {
-        await widgetTester.pumpWidget(
+        await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) => StreamFeedTheme(
               data: StreamFeedThemeData.light(),
@@ -124,9 +124,9 @@ void main() {
       });
     });
 
-    testWidgets('find + 1 text', (widgetTester) async {
+    testWidgets('find + 1 text', (tester) async {
       await mockNetworkImages(() async {
-        await widgetTester.pumpWidget(
+        await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) => StreamFeedTheme(
               data: StreamFeedThemeData.light(),
@@ -168,9 +168,9 @@ void main() {
   });
 
   group('FlexibleImage tests', () {
-    testWidgets('find one GestureDetector and one Image', (widgetTester) async {
+    testWidgets('find one GestureDetector and one Image', (tester) async {
       await mockNetworkImages(() async {
-        await widgetTester.pumpWidget(
+        await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) => StreamFeedTheme(
               data: StreamFeedThemeData.light(),

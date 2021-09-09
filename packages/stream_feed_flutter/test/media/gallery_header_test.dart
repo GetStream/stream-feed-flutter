@@ -4,8 +4,8 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 void main() {
   testWidgets('find GalleryHeader\'s AppBar and no back button',
-      (widgetTester) async {
-    await widgetTester.pumpWidget(
+      (tester) async {
+    await tester.pumpWidget(
       MaterialApp(
         builder: (context, child) => StreamFeedTheme(
           data: StreamFeedThemeData.light(),
@@ -22,8 +22,8 @@ void main() {
     expect(find.byType(AppBar), findsOneWidget);
   });
 
-  testWidgets('final GalleryHeader\'s back button', (widgetTester) async {
-    await widgetTester.pumpWidget(
+  testWidgets('final GalleryHeader\'s back button', (tester) async {
+    await tester.pumpWidget(
       MaterialApp(
         builder: (context, child) => StreamFeedTheme(
           data: StreamFeedThemeData.light(),
@@ -39,8 +39,8 @@ void main() {
     expect(find.byType(IconButton), findsOneWidget);
   });
 
-  testWidgets('find GalleryHeader title text', (widgetTester) async {
-    await widgetTester.pumpWidget(
+  testWidgets('find GalleryHeader title text', (tester) async {
+    await tester.pumpWidget(
       MaterialApp(
         builder: (context, child) => StreamFeedTheme(
           data: StreamFeedThemeData.light(),
