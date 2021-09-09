@@ -184,8 +184,8 @@ void main() {
           body: StreamFeedProvider(
               analyticsClient: mockStreamAnalytics,
               client: mockClient,
-              child: ReactionsProvider(
-                  bloc: ReactionsBloc(
+              child: ActivitiesProvider(
+                  bloc: ActivitiesBloc(
                     client: mockClient,
                     analyticsClient: mockStreamAnalytics,
                   ),
@@ -225,8 +225,8 @@ void main() {
           body: StreamFeedProvider(
             analyticsClient: mockStreamAnalytics,
             client: mockClient,
-            child: ReactionsProvider(
-              bloc: ReactionsBloc(
+            child: ActivitiesProvider(
+              bloc: ActivitiesBloc(
                 client: mockClient,
                 analyticsClient: mockStreamAnalytics,
               ),
@@ -314,8 +314,8 @@ void main() {
           body: StreamFeedProvider(
               analyticsClient: mockStreamAnalytics,
               client: mockClient,
-              child: ReactionsProvider(
-                  bloc: ReactionsBloc(
+              child: ActivitiesProvider(
+                  bloc: ActivitiesBloc(
                     client: mockClient,
                     analyticsClient: mockStreamAnalytics,
                   ),
@@ -354,8 +354,8 @@ void main() {
           body: StreamFeedProvider(
             analyticsClient: mockStreamAnalytics,
             client: mockClient,
-            child: ReactionsProvider(
-              bloc: ReactionsBloc(
+            child: ActivitiesProvider(
+              bloc: ActivitiesBloc(
                 client: mockClient,
                 analyticsClient: mockStreamAnalytics,
               ),

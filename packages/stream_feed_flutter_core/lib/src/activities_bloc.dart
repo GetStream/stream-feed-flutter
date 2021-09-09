@@ -70,6 +70,37 @@ class ActivitiesBloc {
     return addedActivity;
   }
 
+  /// Remove child reaction
+  Future<void> onRemoveChildReaction(
+      {required String id, String? kind, Reaction? reaction}) async {
+    await client.reactions.delete(id);
+    //TODO: handle state
+  }
+
+  Future<Reaction> onAddChildReaction(
+      {required String kind,
+      required Reaction reaction,
+      Map<String, Object>? data,
+      String? userId,
+      List<FeedId>? targetFeeds}) async {
+    final childReaction = await client.reactions.addChild(kind, reaction.id!,
+        data: data, userId: userId, targetFeeds: targetFeeds);
+    //TODO: handle state
+    return childReaction;
+  }
+
+  /// Remove reaction from the feed.
+  Future<void> onRemoveReaction(
+      {required String kind,
+      required EnrichedActivity activity,
+      required String id,
+      required String feedGroup}) async {
+    await client.reactions.delete(id);
+    //TODO: handle state / decrement
+    await trackAnalytics(
+        label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
+  }
+
   /// Add a new reaction to the feed.
   Future<Reaction> onAddReaction({
     Map<String, Object>? data,
@@ -125,14 +156,14 @@ class ActivitiesBloc {
       int? limit,
       String? kind,
       EnrichmentFlags? flags}) async {
-    // if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
+    if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
-    // if (_reactionsControllers[lookupValue]?.hasValue != null) {
-    //   _queryReactionsLoadingControllers[lookupValue]!.add(true);
-    // }
+    if (_reactionsControllers[lookupValue]?.hasValue != null) {
+      _queryReactionsLoadingControllers[lookupValue]!.add(true);
+    }
 
     try {
-      // final oldReactions = List<Reaction>.from(reactionsFor(lookupValue));
+      final oldReactions = List<Reaction>.from(reactionsFor(lookupValue));
       final reactionsResponse = await client.reactions.filter(
         lookupAttr,
         lookupValue,
@@ -141,9 +172,8 @@ class ActivitiesBloc {
         limit: limit,
         kind: kind,
       );
-      // final temp = oldReactions + reactionsResponse;
-      _reactionsControllers[lookupValue] =
-          BehaviorSubject.seeded(reactionsResponse);
+      final temp = oldReactions + reactionsResponse;
+      _reactionsControllers[lookupValue] = BehaviorSubject.seeded(temp);
     } catch (e, stk) {
       // reset loading controller
       _queryReactionsLoadingControllers[lookupValue]?.add(false);

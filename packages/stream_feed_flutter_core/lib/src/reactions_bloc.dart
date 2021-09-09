@@ -1,84 +1,84 @@
-import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+// import 'package:flutter/material.dart';
+// import 'package:rxdart/rxdart.dart';
+// import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class ReactionsBloc {
-  ReactionsBloc({required this.client, this.analyticsClient});
-  final StreamFeedClient client;
-  final StreamAnalytics? analyticsClient;
+// class ReactionsBloc {
+//   ReactionsBloc({required this.client, this.analyticsClient});
+//   final StreamFeedClient client;
+//   final StreamAnalytics? analyticsClient;
 
-  /// The current reactions list
-  List<Reaction>? get reactions => _reactionsController.valueOrNull;
+//   /// The current reactions list
+//   List<Reaction>? get reactions => _reactionsController.valueOrNull;
 
-  /// The current reactions list as a stream
-  Stream<List<Reaction>> get reactionsStream => _reactionsController.stream;
+//   /// The current reactions list as a stream
+//   Stream<List<Reaction>> get reactionsStream => _reactionsController.stream;
 
-  final _reactionsController = BehaviorSubject<List<Reaction>>();
+//   final _reactionsController = BehaviorSubject<List<Reaction>>();
 
-  final _queryReactionsLoadingController = BehaviorSubject.seeded(false);
+//   final _queryReactionsLoadingController = BehaviorSubject.seeded(false);
 
-  /// The stream notifying the state of queryReactions call
-  Stream<bool> get queryReactionsLoading =>
-      _queryReactionsLoadingController.stream;
+//   /// The stream notifying the state of queryReactions call
+//   Stream<bool> get queryReactionsLoading =>
+//       _queryReactionsLoadingController.stream;
 
-  ///Track analytics
-  Future<void> trackAnalytics({
-    required String label,
-    required String feedGroup,
-    String? foreignId,
-  }) async {
-    analyticsClient != null
-        ? await analyticsClient!.trackEngagement(Engagement(
-            content: Content(foreignId: FeedId.fromId(foreignId)),
-            label: label,
-            feedId: FeedId.fromId(feedGroup),
-          ))
-        : print('warning: analytics: not enabled'); //TODO:logger
-  }
+//   ///Track analytics
+//   Future<void> trackAnalytics({
+//     required String label,
+//     required String feedGroup,
+//     String? foreignId,
+//   }) async {
+//     analyticsClient != null
+//         ? await analyticsClient!.trackEngagement(Engagement(
+//             content: Content(foreignId: FeedId.fromId(foreignId)),
+//             label: label,
+//             feedId: FeedId.fromId(feedGroup),
+//           ))
+//         : print('warning: analytics: not enabled'); //TODO:logger
+//   }
 
-  /// Remove reaction from the feed.
-  Future<void> onRemoveReaction(
-      {required String kind,
-      required EnrichedActivity activity,
-      required String id,
-      required String feedGroup}) async {
-    await client.reactions.delete(id);
-    await trackAnalytics(
-        label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
-  }
+//   /// Remove reaction from the feed.
+//   Future<void> onRemoveReaction(
+//       {required String kind,
+//       required EnrichedActivity activity,
+//       required String id,
+//       required String feedGroup}) async {
+//     await client.reactions.delete(id);
+//     await trackAnalytics(
+//         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
+//   }
 
-  /// Remove child reaction
-  Future<void> onRemoveChildReaction(
-      {required String id, String? kind, Reaction? reaction}) async {
-    await client.reactions.delete(id);
-  }
+//   /// Remove child reaction
+//   Future<void> onRemoveChildReaction(
+//       {required String id, String? kind, Reaction? reaction}) async {
+//     await client.reactions.delete(id);
+//   }
 
-  /// Add a new reaction to the feed.
-  Future<Reaction> onAddReaction({//TODO: duplicate with activities bloc
-    Map<String, Object>? data,
-    required String kind,
-    required EnrichedActivity activity,
-    List<FeedId>? targetFeeds,
-    required String feedGroup,
-  }) async {
-    final reaction = await client.reactions
-        .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
-    await trackAnalytics(
-        label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
-    return reaction;
-  }
+//   /// Add a new reaction to the feed.
+//   Future<Reaction> onAddReaction({//TODO: duplicate with activities bloc
+//     Map<String, Object>? data,
+//     required String kind,
+//     required EnrichedActivity activity,
+//     List<FeedId>? targetFeeds,
+//     required String feedGroup,
+//   }) async {
+//     final reaction = await client.reactions
+//         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
+//     await trackAnalytics(
+//         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
+//     return reaction;
+//   }
 
-  ///Add child reaction
-  Future<Reaction> onAddChildReaction(
-      {required String kind,
-      required Reaction reaction,
-      Map<String, Object>? data,
-      String? userId,
-      List<FeedId>? targetFeeds}) async {
-    final childReaction = await client.reactions.addChild(kind, reaction.id!,
-        data: data, userId: userId, targetFeeds: targetFeeds);
-    return childReaction;
-  }
+//   ///Add child reaction
+//   Future<Reaction> onAddChildReaction(
+//       {required String kind,
+//       required Reaction reaction,
+//       Map<String, Object>? data,
+//       String? userId,
+//       List<FeedId>? targetFeeds}) async {
+//     final childReaction = await client.reactions.addChild(kind, reaction.id!,
+//         data: data, userId: userId, targetFeeds: targetFeeds);
+//     return childReaction;
+//   }
 
   // Future<Reaction> onAddChildReaction(
   //     {required String kind,
@@ -90,72 +90,72 @@ class ReactionsBloc {
   //   final childReaction = await client.reactions.addChild(kind, reaction.id!,
   //       data: data, userId: userId, targetFeeds: targetFeeds);
 
-  //   final path = getReactionPath(reaction);
-  //   var count = path.childrenCounts?[kind] ?? 0;
-  //   count += 1;
-  //   final ownReactions = reaction.ownChildren?[kind];
-  //   final reactionsKind = ownReactions?.filterByKind(kind);
-  //   var alreadyReacted = reactionsKind?.isNotEmpty != null;
-  //   var idToRemove = reactionsKind?.last?.id;
+//   //   final path = getReactionPath(reaction);
+//   //   var count = path.childrenCounts?[kind] ?? 0;
+//   //   count += 1;
+//   //   final ownReactions = reaction.ownChildren?[kind];
+//   //   final reactionsKind = ownReactions?.filterByKind(kind);
+//   //   var alreadyReacted = reactionsKind?.isNotEmpty != null;
+//   //   var idToRemove = reactionsKind?.last?.id;
 
-  // }
+//   // }
 
-  Future<void> queryReactions(LookupAttribute lookupAttr, String lookupValue,
-      {Filter? filter,
-      int? limit,
-      String? kind,
-      EnrichmentFlags? flags}) async {
-    if (_queryReactionsLoadingController.value == true) return;
+//   Future<void> queryReactions(LookupAttribute lookupAttr, String lookupValue,
+//       {Filter? filter,
+//       int? limit,
+//       String? kind,
+//       EnrichmentFlags? flags}) async {
+//     if (_queryReactionsLoadingController.value == true) return;
 
-    if (_reactionsController.hasValue) {
-      _queryReactionsLoadingController.add(true);
-    }
+//     if (_reactionsController.hasValue) {
+//       _queryReactionsLoadingController.add(true);
+//     }
 
-    try {
-      final oldReactions = List<Reaction>.from(reactions ?? []);
-      final reactionsResponse = await client.reactions.filter(
-        lookupAttr,
-        lookupValue,
-        filter: filter,
-        flags: flags,
-        limit: limit,
-        kind: kind,
-      );
-      final temp = oldReactions + reactionsResponse;
-      _reactionsController.add(temp);
-    } catch (e, stk) {
-      // reset loading controller
-      _queryReactionsLoadingController.add(false);
-      if (_reactionsController.hasValue) {
-        _queryReactionsLoadingController.addError(e, stk);
-      } else {
-        _reactionsController.addError(e, stk);
-      }
-    }
-  }
+//     try {
+//       final oldReactions = List<Reaction>.from(reactions ?? []);
+//       final reactionsResponse = await client.reactions.filter(
+//         lookupAttr,
+//         lookupValue,
+//         filter: filter,
+//         flags: flags,
+//         limit: limit,
+//         kind: kind,
+//       );
+//       final temp = oldReactions + reactionsResponse;
+//       _reactionsController.add(temp);
+//     } catch (e, stk) {
+//       // reset loading controller
+//       _queryReactionsLoadingController.add(false);
+//       if (_reactionsController.hasValue) {
+//         _queryReactionsLoadingController.addError(e, stk);
+//       } else {
+//         _reactionsController.addError(e, stk);
+//       }
+//     }
+//   }
 
-  void dispose() {
-    _reactionsController.close();
-    _queryReactionsLoadingController.close();
-  }
-}
+//   void dispose() {
+//     _reactionsController.close();
+//     _queryReactionsLoadingController.close();
+//   }
+// }
 
-class ReactionsProvider extends InheritedWidget {
-  const ReactionsProvider({
-    Key? key,
-    required this.bloc,
-    required Widget child,
-  }) : super(key: key, child: child);
+// class ReactionsProvider extends InheritedWidget {
+//   const ReactionsProvider({
+//     Key? key,
+//     required this.bloc,
+//     required Widget child,
+//   }) : super(key: key, child: child);
 
-  final ReactionsBloc bloc;
+//   final ReactionsBloc bloc;
 
-  static ReactionsProvider of(BuildContext context) {
-    final ReactionsProvider? result =
-        context.dependOnInheritedWidgetOfExactType<ReactionsProvider>();
-    assert(result != null, 'No ReactionsBloc found in context');
-    return result!;
-  }
+//   static ReactionsProvider of(BuildContext context) {
+//     final ReactionsProvider? result =
+//         context.dependOnInheritedWidgetOfExactType<ReactionsProvider>();
+//     assert(result != null, 'No ReactionsBloc found in context');
+//     return result!;
+//   }
 
-  @override
-  bool updateShouldNotify(ReactionsProvider old) => bloc != old.bloc;
-}
+//   @override
+//   bool updateShouldNotify(ReactionsProvider old) => bloc != old.bloc;
+// }

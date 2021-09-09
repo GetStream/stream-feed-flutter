@@ -127,8 +127,8 @@ main() {
             client: mockClient,
             analyticsClient: mockStreamAnalytics,
           ),
-          child: ReactionsProvider(
-            bloc: ReactionsBloc(
+          child: ActivitiesProvider(
+            bloc: ActivitiesBloc(
               client: mockClient,
               analyticsClient: mockStreamAnalytics,
             ),

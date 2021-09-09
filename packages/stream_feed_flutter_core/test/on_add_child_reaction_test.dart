@@ -23,7 +23,7 @@ class _OnAddChildReactionWidgetState extends State<OnAddChildReactionWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await ReactionsProvider.of(context).bloc.onAddChildReaction(
+        await ActivitiesProvider.of(context).bloc.onAddChildReaction(
               reaction: widget.reaction,
               kind: widget.kind,
             );
@@ -66,8 +66,8 @@ main() {
       body: StreamFeedProvider(
         analyticsClient: mockStreamAnalytics,
         client: mockClient,
-        child: ReactionsProvider(
-          bloc: ReactionsBloc(client: mockClient),
+        child: ActivitiesProvider(
+          bloc: ActivitiesBloc(client: mockClient),
           child: OnAddChildReactionWidget(
             reaction: reaction,
             kind: kind,

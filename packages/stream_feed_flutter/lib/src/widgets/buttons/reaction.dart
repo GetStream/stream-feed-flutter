@@ -148,7 +148,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   }
 
   Future<void> addReaction() async {
-    final reaction = await ReactionsProvider.of(context).bloc.onAddReaction(
+    final reaction = await ActivitiesProvider.of(context).bloc.onAddReaction(
         //TODO: get rid of mutations in StreamFeedProvider
         kind: widget.kind,
         activity: widget.activity,
@@ -162,7 +162,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   }
 
   Future<void> removeReaction() async {
-    await ReactionsProvider.of(context).bloc.onRemoveReaction(
+    await ActivitiesProvider.of(context).bloc.onRemoveReaction(
         kind: widget.kind,
         activity: widget.activity,
         id: idToRemove!,
