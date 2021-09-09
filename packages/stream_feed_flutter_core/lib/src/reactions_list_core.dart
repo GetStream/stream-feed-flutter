@@ -106,7 +106,7 @@ class _ReactionListCoreState extends State<ReactionListCore>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Reaction>>(
-        stream: widget.reactionsBloc.reactionsStream,
+        stream: widget.reactionsBloc.reactionsStream,//reactionsStreamFor(widget.lookupValue)
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return widget.onErrorWidget; //snapshot.error

@@ -9,8 +9,12 @@ class ActivitiesBloc {
 
   final StreamAnalytics? analyticsClient;
 
-  /// The current reactions list
+  /// The current activities list
   List<EnrichedActivity>? get activities => _activitiesController.valueOrNull;
+
+  /// The current reactions list
+  List<Reaction> reactionsFor(String activityId) =>
+      _reactionsControllers[activityId]?.valueOrNull ?? [];
 
   // void set updateactivities(List<EnrichedActivity> newActivities) =>
   //     _activitiesController.value = newActivities;
@@ -18,6 +22,13 @@ class ActivitiesBloc {
   /// The current activities list as a stream
   Stream<List<EnrichedActivity>> get activitiesStream =>
       _activitiesController.stream;
+
+  /// The current reactions list as a stream
+  Stream<List<Reaction>>? reactionsStreamFor(
+          String activityId) => //TODO: better name
+      _reactionsControllers[activityId]?.stream;
+
+  final _reactionsControllers = Map<String, BehaviorSubject<List<Reaction>>>();
 
   final _activitiesController = BehaviorSubject<List<EnrichedActivity>>();
 
@@ -43,6 +54,7 @@ class ActivitiesBloc {
 
     final addedActivity =
         await client.flatFeed(feedGroup, userId).addActivity(activity);
+    //TODO: add activity to the stream
     await trackAnalytics(
       label: 'post',
       foreignId: activity.foreignId,
@@ -78,6 +90,9 @@ class ActivitiesBloc {
       latestReactions: latestReactions,
       reactionCounts: reactionCounts,
     );
+
+    //adds reaction to the stream
+    _reactionsControllers.unshiftById(activity.id!, reaction);
 
     _activitiesController.value = activities! //TODO: handle null safety
         .updateIn(updatedActivity, indexPath); //List<EnrichedActivity>.from
@@ -143,6 +158,9 @@ class ActivitiesBloc {
 
   void dispose() {
     _activitiesController.close();
+    _reactionsControllers.forEach((key, value) {
+      value.close();
+    });
     _queryActivitiesLoadingController.close();
   }
 }

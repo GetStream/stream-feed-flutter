@@ -1,3 +1,4 @@
+import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 extension ReactionX on List<Reaction> {
@@ -5,13 +6,14 @@ extension ReactionX on List<Reaction> {
   List<Reaction?> filterByKind(String kind) =>
       where((reaction) => reaction.kind == kind).toList();
 
-  Reaction getReactionPath(Reaction reaction) =>
-      this.firstWhere((r) => r.id! == reaction.id!);
+  Reaction getReactionPath(Reaction reaction) => this
+      .firstWhere((r) => r.id! == reaction.id!); //TODO; handle doesn't exist
 }
 
 extension EnrichedActivityX on List<EnrichedActivity> {
   EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
-      this.firstWhere((e) => e.id! == enrichedActivity.id!);
+      this.firstWhere(
+          (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
   List<EnrichedActivity> updateIn(
       EnrichedActivity enrichedActivity, int indexPath) {
@@ -37,9 +39,31 @@ extension UnshiftMapList on Map<String, List<Reaction>>? {
         kind: [reaction]
       };
     }
-    return result!;
+    return result;
   }
 }
+
+extension UnshiftMapController
+    on Map<String, BehaviorSubject<List<Reaction>>>? {
+  Map<String, BehaviorSubject<List<Reaction>>> unshiftById(
+      String activityId, Reaction reaction) {
+    Map<String, BehaviorSubject<List<Reaction>>>? result;
+    result = this;
+    final latestReactionsById = this?[activityId]?.valueOrNull ?? [];
+    if (result != null) {
+      //TODO: extract this logic to a convenient method
+      result[activityId] =
+          BehaviorSubject.seeded(latestReactionsById.unshift(reaction));
+    } else {
+      result = {
+        activityId: BehaviorSubject.seeded([reaction])
+      };
+    }
+    return result;
+  }
+}
+
+// BehaviorSubject<List<Reaction>>
 
 extension UnshiftMapInt on Map<String, int>? {
   Map<String, int> unshiftByKind(String kind) {
@@ -47,11 +71,12 @@ extension UnshiftMapInt on Map<String, int>? {
     result = this;
     final reactionCountsByKind = result?[kind] ?? 0;
     if (result != null) {
-      result[kind] = reactionCountsByKind + 1;
+      result[kind] =
+          reactionCountsByKind + 1; //TODO: handle delete reaction / decrement
     } else {
       result = {kind: 1};
     }
-    return result!;
+    return result;
   }
 }
 

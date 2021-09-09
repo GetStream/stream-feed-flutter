@@ -104,6 +104,8 @@ main() {
 
       await bloc.onAddReaction(
           kind: 'like', activity: reactedActivity, feedGroup: 'user');
+      await expectLater(
+          bloc.reactionsStreamFor(reactedActivity.id!), emits([reaction]));
 
       verify(() => mockClient.reactions.add(
             'like',
