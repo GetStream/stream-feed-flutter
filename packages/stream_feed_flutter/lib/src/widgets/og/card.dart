@@ -60,7 +60,7 @@ class ActivityCard extends StatelessWidget {
       onTap: () async {
         await canLaunch(_url) //TODO: provide a callback
             ? await launch(_url)
-            : throw 'Could not launch $_url';
+            : throw Exception('Could not launch $_url');
       },
       child: Padding(
         padding: const EdgeInsets.all(8),
