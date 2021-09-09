@@ -46,5 +46,40 @@ void main() {
       expect(find.byType(Text), findsOneWidget);
       expect(find.text('1 of 1'), findsOneWidget);
     });
+
+    testWidgets('test dragging through image pages', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) => StreamFeedTheme(
+            data: StreamFeedThemeData.light(),
+            child: child!,
+          ),
+          home: FullscreenMedia(
+            media: [
+              Media(
+                url:
+                    'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw',
+              ),
+              Media(
+                url:
+                    'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys',
+              ),
+              Media(
+                url:
+                    'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8',
+              ),
+            ],
+          ),
+        ),
+      );
+
+      expect(find.text('1 of 3'), findsOneWidget);
+      await tester.drag(find.byType(PageView), const Offset(-401, 0));
+      await tester.pumpAndSettle();
+      expect(find.text('2 of 3'), findsOneWidget);
+      await tester.drag(find.byType(PageView), const Offset(-401, 0));
+      await tester.pumpAndSettle();
+      expect(find.text('3 of 3'), findsOneWidget);
+    });
   });
 }
