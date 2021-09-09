@@ -13,17 +13,19 @@ class Media {
   /// Checks the [url] for specific file extensions and returns the
   /// appropriate [MediaType].
   MediaType get mediaType {
-    if (url.contains('jpeg')) {
+    final fileExt = url.split('.').last;
+
+    if (fileExt.contains('jpeg')) {
       return MediaType.image;
-    } else if (url.contains('jpg')) {
+    } else if (fileExt.contains('jpg')) {
       return MediaType.image;
-    } else if (url.contains('png')) {
+    } else if (fileExt.contains('png')) {
       return MediaType.image;
-    } else if (url.contains('mp3')) {
+    } else if (fileExt.contains('mp3')) {
       return MediaType.audio;
-    } else if (url.contains('wav')) {
+    } else if (fileExt.contains('wav')) {
       return MediaType.audio;
-    } else if (url.contains('mp4')) {
+    } else if (fileExt.contains('mp4')) {
       return MediaType.video;
     } else {
       return MediaType.unknown;
