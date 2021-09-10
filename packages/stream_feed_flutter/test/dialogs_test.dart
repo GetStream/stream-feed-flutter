@@ -78,7 +78,11 @@ void main() {
           child: Material(
             child: Directionality(
               textDirection: TextDirection.ltr,
-              child: Stack(children: [LeftActions()]),
+              child: Stack(
+                children: const [
+                  LeftActions(),
+                ],
+              ),
             ),
           ),
         ),
