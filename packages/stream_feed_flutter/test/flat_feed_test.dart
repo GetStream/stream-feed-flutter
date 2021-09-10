@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/flat_activity_list.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/flat_activity_list.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
     hide FlatFeed;
+
 import 'mock.dart';
 
 void main() {
