@@ -166,7 +166,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
     await FeedBlocProvider.of(context).bloc.onRemoveReaction(
         kind: widget.kind,
         activity: widget.activity,
-        id: idToRemove!,
+        reaction: reactionsKind!.last!,
         feedGroup: widget.feedGroup);
     setState(() {
       alreadyReacted = !alreadyReacted;
