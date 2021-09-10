@@ -82,7 +82,7 @@ main() {
       ),
     ];
 
-    test('onAddReaction', () async {
+    test('getEnrichedActivities/onAddReaction/onRemoveReaction', () async {
       final bloc = FeedBloc(client: mockClient);
       final mockReactions = MockReactions();
 
@@ -95,6 +95,9 @@ main() {
             'like',
             'id',
           )).thenAnswer((_) async => reaction);
+      when(() => mockReactions.delete(
+            'id',
+          )).thenAnswer((_) async => reaction);
 
       await bloc.queryEnrichedActivities(feedGroup: 'user');
       await expectLater(bloc.activitiesStream, emits(activities));
@@ -104,14 +107,25 @@ main() {
 
       await bloc.onAddReaction(
           kind: 'like', activity: reactedActivity, feedGroup: 'user');
-      await expectLater(
-          bloc.reactionsStreamFor(reactedActivity.id!), emits([reaction]));
 
       verify(() => mockClient.reactions.add(
             'like',
             'id',
           )).called(1);
+      await expectLater(
+          bloc.reactionsStreamFor(reactedActivity.id!), emits([reaction]));
       await expectLater(bloc.activitiesStream, emits(expectedResult));
+      final newReactedActivity = expectedResult.first;
+      await bloc.onRemoveReaction(
+          kind: 'like',
+          activity: newReactedActivity,
+          feedGroup: 'user',
+          id: 'id');
+      verify(() => mockClient.reactions.delete(
+            'id',
+          )).called(1);
+      await expectLater(
+          bloc.reactionsStreamFor(reactedActivity.id!), emits([]));
     });
     //TODO: teardown
 

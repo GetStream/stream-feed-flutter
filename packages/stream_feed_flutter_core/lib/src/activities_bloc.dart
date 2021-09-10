@@ -96,9 +96,37 @@ class FeedBloc {
       required String id,
       required String feedGroup}) async {
     await client.reactions.delete(id);
-    //TODO: handle state / decrement
+    
     await trackAnalytics(
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
+    final _activities = activities ?? [activity];
+    final activityPath = _activities.getEnrichedActivityPath(activity);
+
+    final indexPath = _activities.indexOf(activity); //TODO: handle null safety
+
+    final reactionCounts =
+        activityPath.reactionCounts.unshiftByKind(kind, ShiftType.decrement);
+
+    final reaction =
+        reactionsFor(activity.id!).firstWhere((reaction) => reaction.id == id);
+    final latestReactions = activityPath.latestReactions
+        .unshiftByKind(kind, reaction, ShiftType.decrement);
+
+    final ownReactions = activityPath.ownReactions
+        .unshiftByKind(kind, reaction, ShiftType.decrement);
+
+    final updatedActivity = activityPath.copyWith(
+      ownReactions: ownReactions,
+      latestReactions: latestReactions,
+      reactionCounts: reactionCounts,
+    );
+
+    //adds reaction to the stream
+    _reactionsControllers.unshiftById(
+        activity.id!, reaction, ShiftType.decrement);
+
+    _activitiesController.value =
+        _activities.updateIn(updatedActivity, indexPath);
   }
 
   /// Add a new reaction to the feed.
@@ -240,7 +268,8 @@ class FeedBloc {
   }
 }
 
-class FeedBlocProvider extends InheritedWidget {//TODO: merge this with StreamFeedProvider ?
+class FeedBlocProvider extends InheritedWidget {
+  //TODO: merge this with StreamFeedProvider ?
   const FeedBlocProvider({
     Key? key,
     required this.bloc,
