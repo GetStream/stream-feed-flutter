@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/media/fullscreen_media.dart';
 import 'package:stream_feed_flutter/src/media/media.dart';
 
+// ignore_for_file: cascade_invocations
+
 /// A widget that displays image previews
 class GalleryPreview extends StatelessWidget {
   /// Builds a [GalleryPreview].
@@ -145,9 +147,16 @@ class FlexibleImage extends StatelessWidget {
     this.flexFit = FlexFit.tight,
   }) : super(key: key);
 
+  /// The child to display, ideally an image of some kind.
   final Widget? child;
+
+  /// How the child is inscribed into the available space.
   final FlexFit flexFit;
+
+  /// The current index of the media being shown.
   final int index;
+
+  /// The media being shown.
   final List<Media> media;
 
   @override
@@ -168,5 +177,13 @@ class FlexibleImage extends StatelessWidget {
         child: child,
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(EnumProperty<FlexFit>('flexFit', flexFit));
+    properties.add(IntProperty('index', index));
+    properties.add(IterableProperty<Media>('media', media));
   }
 }
