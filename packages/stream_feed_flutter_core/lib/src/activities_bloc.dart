@@ -93,10 +93,10 @@ class FeedBloc {
   Future<void> onRemoveReaction(
       {required String kind,
       required EnrichedActivity activity,
-      required String id,
+      required Reaction reaction,
       required String feedGroup}) async {
-    await client.reactions.delete(id);
-    
+    await client.reactions.delete(reaction.id!);
+
     await trackAnalytics(
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
     final _activities = activities ?? [activity];
@@ -107,8 +107,8 @@ class FeedBloc {
     final reactionCounts =
         activityPath.reactionCounts.unshiftByKind(kind, ShiftType.decrement);
 
-    final reaction =
-        reactionsFor(activity.id!).firstWhere((reaction) => reaction.id == id);
+    // final reaction =
+    //     reactionsFor(activity.id!).firstWhere((reaction) => reaction.id == id);
     final latestReactions = activityPath.latestReactions
         .unshiftByKind(kind, reaction, ShiftType.decrement);
 
@@ -121,7 +121,7 @@ class FeedBloc {
       reactionCounts: reactionCounts,
     );
 
-    //adds reaction to the stream
+    //remove reaction to the stream
     _reactionsControllers.unshiftById(
         activity.id!, reaction, ShiftType.decrement);
 

@@ -117,10 +117,11 @@ main() {
       await expectLater(bloc.activitiesStream, emits(expectedResult));
       final newReactedActivity = expectedResult.first;
       await bloc.onRemoveReaction(
-          kind: 'like',
-          activity: newReactedActivity,
-          feedGroup: 'user',
-          id: 'id');
+        kind: 'like',
+        activity: newReactedActivity,
+        feedGroup: 'user',
+        reaction: reaction,
+      );
       verify(() => mockClient.reactions.delete(
             'id',
           )).called(1);

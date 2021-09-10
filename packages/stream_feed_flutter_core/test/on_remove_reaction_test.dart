@@ -10,14 +10,14 @@ class OnRemoveReactionWidget extends StatefulWidget {
       {Key? key,
       required this.activity,
       required this.feedGroup,
-      required this.id,
+      required this.reaction,
       required this.kind})
       : super(key: key);
 
   final EnrichedActivity activity;
   final String feedGroup;
   final String kind;
-  final String id;
+  final Reaction reaction;
 
   @override
   _OnAddReactionWidgetState createState() => _OnAddReactionWidgetState();
@@ -29,7 +29,7 @@ class _OnAddReactionWidgetState extends State<OnRemoveReactionWidget> {
     return InkWell(
       onTap: () async {
         await FeedBlocProvider.of(context).bloc.onRemoveReaction(
-              id: widget.id,
+              reaction: widget.reaction,
               activity: widget.activity,
               feedGroup: widget.feedGroup,
               kind: widget.kind,
@@ -61,8 +61,8 @@ main() {
     when(() => mockReactions.delete(reaction.id!))
         .thenAnswer((_) async => reaction);
 
-    when(() => mockStreamAnalytics.trackEngagement(engagement))
-        .thenAnswer((_) async => Future.value());
+    // when(() => mockStreamAnalytics.trackEngagement(engagement))
+    //     .thenAnswer((_) async => Future.value());
 
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
@@ -72,13 +72,13 @@ main() {
           child: FeedBlocProvider(
             bloc: FeedBloc(
               client: mockClient,
-              analyticsClient: mockStreamAnalytics,
+              // analyticsClient: mockStreamAnalytics,
             ),
             child: OnRemoveReactionWidget(
               activity: activity,
               feedGroup: feedGroup,
               kind: kind,
-              id: reaction.id!,
+              reaction: reaction,
             ),
           )),
     )));
@@ -86,6 +86,6 @@ main() {
     expect(reactionIcon, findsOneWidget);
     await tester.tap(reactionIcon);
     verify(() => mockClient.reactions.delete(reaction.id!)).called(1);
-    verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+    // verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
   });
 }
