@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mocks.dart';
 
-main() {
+void main() {
   testWidgets('ReactionListCore', (tester) async {
     final mockClient = MockStreamFeedClient();
     final mockReactions = MockReactions();
@@ -44,7 +44,7 @@ main() {
       analyticsClient: mockStreamAnalytics,
       client: mockClient,
       child: ReactionListCore(
-        reactionsBuilder: (context, reactions, idx) => Offstage(),
+        reactionsBuilder: (context, reactions, idx) => const Offstage(),
         lookupValue: lookupValue,
         filter: filter,
         limit: limit,
