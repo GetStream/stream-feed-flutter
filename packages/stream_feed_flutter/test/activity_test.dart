@@ -65,9 +65,9 @@ void main() {
   testWidgets('ActivityContent', (tester) async {
     await mockNetworkImages(() async {
       const title =
-          "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'";
+          """'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'""";
       const description =
-          'Why choose one when you can wear both? These energizing pairings stand out from the crowd';
+          '''Why choose one when you can wear both? These energizing pairings stand out from the crowd''';
 
       final pressedHashtags = <String?>[];
       final pressedMentions = <String?>[];
@@ -150,7 +150,7 @@ void main() {
                   actor: const User(data: {
                     'name': 'Rosemary',
                     'handle': '@rosemary',
-                    'subtitle': 'likes playing fresbee in the park',
+                    'subtitle': 'likes playing frisbee in the park',
                     'profile_image':
                         'https://randomuser.me/api/portraits/women/20.jpg',
                   }),
