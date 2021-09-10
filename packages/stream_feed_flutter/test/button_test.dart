@@ -90,7 +90,7 @@ void main() {
             child: child!,
           );
         },
-        home: Scaffold(
+        home: const Scaffold(
           body: LikeButton(
             activity:
                 EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
@@ -125,7 +125,7 @@ void main() {
             child: child!,
           );
         },
-        home: Scaffold(
+        home: const Scaffold(
           body: RepostButton(
             activity:
                 EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
@@ -178,7 +178,7 @@ void main() {
       reaction: reaction,
       kind: kind,
       count: count,
-      ownReactions: [reaction],
+      ownReactions: const [reaction],
       inactiveIcon: inactiveIcon,
       activeIcon: activeIcon,
     );
@@ -311,7 +311,7 @@ void main() {
       kind: kind,
       count: count,
       feedGroup: feedGroup,
-      ownReactions: [reaction],
+      ownReactions: const [reaction],
       inactiveIcon: inactiveIcon,
       activeIcon: activeIcon,
       hoverColor: Colors.lightBlue,
