@@ -5,7 +5,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mocks.dart';
 
-main() {
+void main() {
   testWidgets('FlatFeed', (tester) async {
     final mockClient = MockStreamFeedClient();
     final mockFeed = MockFeedAPI();
@@ -17,26 +17,29 @@ main() {
         //   'repost': 23,
         // },
         time: DateTime.now(),
-        actor: User(data: {
-          'name': 'Rosemary',
-          'handle': '@rosemary',
-          'subtitle': 'likes playing fresbee in the park',
-          'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-        }),
+        actor: const User(
+          data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing fresbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          },
+        ),
       ),
       EnrichedActivity(
         time: DateTime.now(),
-        actor: User(data: {
-          'name': 'Rosemary',
-          'handle': '@rosemary',
-          'subtitle': 'likes playing fresbee in the park',
-          'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-        }),
+        actor: const User(
+          data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing fresbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          },
+        ),
       ),
     ];
     when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
-    when(() => mockFeed.getEnrichedActivities())
-        .thenAnswer((_) async => activities);
+    when(mockFeed.getEnrichedActivities).thenAnswer((_) async => activities);
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -62,6 +65,6 @@ main() {
     );
 
     verify(() => mockClient.flatFeed('user')).called(1);
-    verify(() => mockFeed.getEnrichedActivities()).called(1);
+    verify(mockFeed.getEnrichedActivities).called(1);
   });
 }
