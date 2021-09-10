@@ -26,9 +26,9 @@ void main() {
   testWidgets('Card', (tester) async {
     await mockNetworkImages(() async {
       const title =
-          "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'";
+          """'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'""";
       const description =
-          'Why choose one when you can wear both? These energizing pairings stand out from the crowd';
+          '''Why choose one when you can wear both? These energizing pairings stand out from the crowd''';
 
       await tester.pumpWidget(
         MaterialApp(
