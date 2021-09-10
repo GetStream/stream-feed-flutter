@@ -1,32 +1,32 @@
 import 'package:flutter/widgets.dart';
 import 'package:stream_feed_flutter_core/src/activities_bloc.dart';
 
-bool debugCheckHasActivitiesProvider(BuildContext context) {
+bool debugCheckHasFeedBlocProvider(BuildContext context) {
   assert(() {
-    if (context.findAncestorWidgetOfExactType<ActivitiesProvider>() == null) {
+    if (context.findAncestorWidgetOfExactType<FeedBlocProvider>() == null) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
-        ErrorSummary('No ActivitiesProvider widget found.'),
+        ErrorSummary('No FeedBlocProvider widget found.'),
         ErrorDescription(
-          '${context.widget.runtimeType} widgets require a ActivitiesProvider '
+          '${context.widget.runtimeType} widgets require a FeedBlocProvider '
           'widget ancestor.\n'
-          'In ActivitiesProvider design, most widgets are conceptually "printed" on '
-          "a sheet of ActivitiesProvider. In Flutter's ActivitiesProvider library, that "
-          'ActivitiesProvider is represented by the ActivitiesProvider widget. It is the '
-          'ActivitiesProvider widget that renders ink splashes, for instance. '
-          'Because of this, many ActivitiesProvider library widgets require that '
-          'there be a ActivitiesProvider widget in the tree above them.',
+          'In FeedBlocProvider design, most widgets are conceptually "printed" on '
+          "a sheet of FeedBlocProvider. In Flutter's FeedBlocProvider library, that "
+          'FeedBlocProvider is represented by the FeedBlocProvider widget. It is the '
+          'FeedBlocProvider widget that renders ink splashes, for instance. '
+          'Because of this, many FeedBlocProvider library widgets require that '
+          'there be a FeedBlocProvider widget in the tree above them.',
         ),
         ErrorHint(
-            'To introduce a ActivitiesProvider widget, you can either directly '
-            'ActivitiesProvider('
-            'bloc: ActivitiesBloc('
+            'To introduce a FeedBlocProvider widget, you can either directly '
+            'FeedBlocProvider('
+            'bloc: FeedBloc('
             'client: mockClient,'
             ' ),'
             'child: FlatActivityListPage('
             " feedGroup: 'user',"
             ' ))'),
         ...context.describeMissingAncestor(
-            expectedAncestorType: ActivitiesProvider),
+            expectedAncestorType: FeedBlocProvider),
       ]);
     }
     return true;

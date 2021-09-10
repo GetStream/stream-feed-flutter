@@ -37,7 +37,7 @@ main() {
           kind: kind,
         )).thenAnswer((_) async => reactions);
 
-    final bloc = ActivitiesBloc(client: mockClient);
+    final bloc = FeedBloc(client: mockClient);
     await bloc.queryReactions(
       lookupAttr,
       lookupValue,

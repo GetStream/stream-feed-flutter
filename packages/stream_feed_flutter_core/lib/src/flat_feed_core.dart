@@ -40,7 +40,7 @@ class FlatFeedCore extends StatefulWidget {
       {Key? key,
       required this.feedGroup,
       required this.feedBuilder,
-      required this.activitiesBloc,
+      required this.bloc,
       this.onErrorWidget = const ErrorStateWidget(),
       this.onProgressWidget = const ProgressStateWidget(),
       this.limit,
@@ -90,7 +90,7 @@ class FlatFeedCore extends StatefulWidget {
   /// The feed group to use for the request
   final String feedGroup;
 
-  final ActivitiesBloc activitiesBloc;
+  final FeedBloc bloc;
 
   @override
   State<FlatFeedCore> createState() => _FlatFeedCoreState();
@@ -98,7 +98,7 @@ class FlatFeedCore extends StatefulWidget {
 
 class _FlatFeedCoreState extends State<FlatFeedCore> {
   //with WidgetsBindingObserver
-  // late ActivitiesBloc _activitiesBloc;
+  // late FeedBloc _FeedBloc;
 
   @override
   void initState() {
@@ -109,16 +109,16 @@ class _FlatFeedCoreState extends State<FlatFeedCore> {
   // @override
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
-  //   final newActivitiesBloc = ActivitiesProvider.of(context).bloc;
+  //   final newFeedBloc = FeedBlocProvider.of(context).bloc;
   //   print("FLAT FEED CO");
-  //   if (newActivitiesBloc != _activitiesBloc) {
-  //     _activitiesBloc = newActivitiesBloc;
+  //   if (newFeedBloc != _FeedBloc) {
+  //     _FeedBloc = newFeedBloc;
   //     loadData();
   //   }
   // }
 
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => widget.activitiesBloc.queryEnrichedActivities(
+  Future<void> loadData() => widget.bloc.queryEnrichedActivities(
         feedGroup: widget.feedGroup,
         limit: widget.limit,
         offset: widget.offset,
@@ -132,7 +132,7 @@ class _FlatFeedCoreState extends State<FlatFeedCore> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<EnrichedActivity>>(
-      stream: widget.activitiesBloc.activitiesStream,
+      stream: widget.bloc.activitiesStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return widget

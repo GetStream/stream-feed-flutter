@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import '../mocks.dart';
 
 main() {
-  group('ActivitiesBloc', () {
+  group('FeedBloc', () {
     final mockClient = MockStreamFeedClient();
     final mockFeed = MockFeedAPI();
     final mockStreamAnalytics = MockStreamAnalytics();
@@ -83,7 +83,7 @@ main() {
     ];
 
     test('onAddReaction', () async {
-      final bloc = ActivitiesBloc(client: mockClient);
+      final bloc = FeedBloc(client: mockClient);
       final mockReactions = MockReactions();
 
       when(() => mockClient.reactions).thenReturn(mockReactions);

@@ -96,9 +96,9 @@ class FlatActivityListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugCheckHasActivitiesProvider(context);
+    debugCheckHasFeedBlocProvider(context);
     return FlatFeedCore(
-      activitiesBloc: ActivitiesProvider.of(context).bloc,
+      bloc: FeedBlocProvider.of(context).bloc,
       flags: flags,
       limit: limit,
       offset: offset,

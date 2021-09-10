@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class ActivitiesBloc {
-  ActivitiesBloc({required this.client, this.analyticsClient});
+class FeedBloc {
+  FeedBloc({required this.client, this.analyticsClient});
 
   final StreamFeedClient client;
 
@@ -240,22 +240,22 @@ class ActivitiesBloc {
   }
 }
 
-class ActivitiesProvider extends InheritedWidget {
-  const ActivitiesProvider({
+class FeedBlocProvider extends InheritedWidget {//TODO: merge this with StreamFeedProvider ?
+  const FeedBlocProvider({
     Key? key,
     required this.bloc,
     required Widget child,
   }) : super(key: key, child: child);
 
-  final ActivitiesBloc bloc;
+  final FeedBloc bloc;
 
-  static ActivitiesProvider of(BuildContext context) {
-    final ActivitiesProvider? result =
-        context.dependOnInheritedWidgetOfExactType<ActivitiesProvider>();
-    assert(result != null, 'No ActivitiesBloc found in context');
+  static FeedBlocProvider of(BuildContext context) {
+    final FeedBlocProvider? result =
+        context.dependOnInheritedWidgetOfExactType<FeedBlocProvider>();
+    assert(result != null, 'No FeedBloc found in context');
     return result!;
   }
 
   @override
-  bool updateShouldNotify(ActivitiesProvider old) => bloc != old.bloc;
+  bool updateShouldNotify(FeedBlocProvider old) => bloc != old.bloc;
 }

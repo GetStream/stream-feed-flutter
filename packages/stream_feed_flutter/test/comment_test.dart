@@ -121,14 +121,14 @@ main() {
       body: StreamFeedProvider(
         analyticsClient: mockStreamAnalytics,
         client: mockClient,
-        child: ActivitiesProvider(
+        child: FeedBlocProvider(
           //TODO: ugly
-          bloc: ActivitiesBloc(
+          bloc: FeedBloc(
             client: mockClient,
             analyticsClient: mockStreamAnalytics,
           ),
-          child: ActivitiesProvider(
-            bloc: ActivitiesBloc(
+          child: FeedBlocProvider(
+            bloc: FeedBloc(
               client: mockClient,
               analyticsClient: mockStreamAnalytics,
             ),

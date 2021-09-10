@@ -69,7 +69,7 @@ class ReactionListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //  debugCheckHasReactionsProvider(context);
     return ReactionListCore(
-      activitiesBloc: ActivitiesProvider.of(context).bloc,
+      bloc: FeedBlocProvider.of(context).bloc,
       lookupValue: _lookupValue, //TODO: handle null safety
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,

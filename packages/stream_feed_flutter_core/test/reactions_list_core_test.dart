@@ -46,7 +46,7 @@ main() {
         // child: ReactionsProvider(
         // bloc: ReactionsBloc(client: mockClient),
         child: ReactionListCore(
-          activitiesBloc: ActivitiesBloc(client: mockClient),
+          bloc: FeedBloc(client: mockClient),
           reactionsBuilder: (context, reactions, idx) => Offstage(),
           lookupValue: lookupValue,
           filter: filter,

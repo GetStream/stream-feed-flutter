@@ -28,7 +28,7 @@ class _OnAddReactionWidgetState extends State<OnRemoveReactionWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await ActivitiesProvider.of(context).bloc.onRemoveReaction(
+        await FeedBlocProvider.of(context).bloc.onRemoveReaction(
               id: widget.id,
               activity: widget.activity,
               feedGroup: widget.feedGroup,
@@ -69,8 +69,8 @@ main() {
       body: StreamFeedProvider(
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
-          child: ActivitiesProvider(
-            bloc: ActivitiesBloc(
+          child: FeedBlocProvider(
+            bloc: FeedBloc(
               client: mockClient,
               analyticsClient: mockStreamAnalytics,
             ),

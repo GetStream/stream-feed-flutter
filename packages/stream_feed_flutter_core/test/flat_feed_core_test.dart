@@ -46,10 +46,10 @@ main() {
         body: StreamFeedProvider(
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
-          // child: ActivitiesProvider(
-          // bloc: ActivitiesBloc(client: mockClient),
+          // child: FeedBlocProvider(
+          // bloc: FeedBloc(client: mockClient),
           child: FlatFeedCore(
-            activitiesBloc: ActivitiesBloc(client: mockClient),
+            bloc: FeedBloc(client: mockClient),
             feedGroup: 'user',
             feedBuilder: (BuildContext context,
                 List<EnrichedActivity> activities, int idx) {
