@@ -66,6 +66,7 @@ class ReactionButton extends StatelessWidget {
   }
 }
 
+//TODO: get rid of this now that it is reactive it should work
 class ReactionToggleIcon extends StatefulWidget {
   ///The reactions belongin to the current user
   final List<Reaction>? ownReactions;

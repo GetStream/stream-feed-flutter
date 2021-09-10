@@ -126,7 +126,7 @@ main() {
             'id',
           )).called(1);
       await expectLater(
-          bloc.reactionsStreamFor(reactedActivity.id!), emits([]));
+          bloc.reactionsStreamFor(newReactedActivity.id!), emits([]));
     });
     //TODO: teardown
 
