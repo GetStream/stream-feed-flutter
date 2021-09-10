@@ -9,26 +9,30 @@ void main() {
   group('Avatar', () {
     testWidgets('url', (tester) async {
       await mockNetworkImages(() async {
-        await tester.pumpWidget(Material(
-          child: Directionality(
-            textDirection: TextDirection.ltr,
-            child: Avatar(
-                user: User(
-              data: {
-                'name': 'Sloan Humfrey',
-                'profile_image':
-                    'https://randomuser.me/api/portraits/women/1.jpg',
-              },
-            )),
+        await tester.pumpWidget(
+          const Material(
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: Avatar(
+                  user: User(
+                data: {
+                  'name': 'Sloan Humfrey',
+                  'profile_image':
+                      'https://randomuser.me/api/portraits/women/1.jpg',
+                },
+              )),
+            ),
           ),
-        ));
+        );
         expect(find.byType(Image), findsOneWidget);
       });
     });
 
     testGoldens('avatar default', (tester) async {
       await tester.pumpWidgetBuilder(
-        Center(child: Avatar()),
+        const Center(
+          child: Avatar(),
+        ),
         surfaceSize: const Size(50, 50),
       );
       await screenMatchesGolden(tester, 'avatar');
