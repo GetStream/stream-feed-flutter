@@ -1,11 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template avatar}
+// ignore_for_file: cascade_invocations
+
+/// {@template avatar}
 /// An avatar for the user.
-///{@endtemplate}
+/// {@endtemplate}
 class Avatar extends StatelessWidget {
   /// Builds an [Avatar].
   const Avatar({
@@ -64,5 +67,14 @@ class Avatar extends StatelessWidget {
               ),
             ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<User?>('user', user));
+    properties.add(DoubleProperty('size', size));
+    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
+    properties.add(StringProperty('jsonKey', jsonKey));
   }
 }
