@@ -228,50 +228,13 @@ main() {
               childrenCounts: {
                 'like': 0,
               },
-              latestChildren: {
-                'like': []
-              },
-              ownChildren: {
-                'like': []
-              },
+              latestChildren: {'like': []},
+              ownChildren: {'like': []},
             )
           ]));
     });
     //TODO: teardown
 
-    test('updateIn reaction delete', () {
-      final reactionUpdate = Reaction(
-        id: 'id',
-        kind: 'like',
-        activityId: 'id',
-        childrenCounts: {
-          'like': 0,
-        },
-        latestChildren: {
-          'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
-        },
-        ownChildren: {
-          'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
-        },
-      );
-      final reactions = [
-        Reaction(
-          id: 'id',
-          kind: 'like',
-          activityId: 'id',
-          childrenCounts: {
-            'like': 1,
-          },
-          latestChildren: {
-            'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
-          },
-          ownChildren: {
-            'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
-          },
-        )
-      ];
-      expect(reactions.updateIn(reactionUpdate, 0), [reactionUpdate]);
-    });
     test('updateIn activities', () async {
       final firstActivity = activities.first;
       final indexPath = activities.indexOf(firstActivity);
