@@ -1,15 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/og_card_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-///{@template activity_card}
+// ignore_for_file: cascade_invocations
+
+/// {@template activity_card}
 /// A card used to diplay Open Graph medias.
 ///
 /// For now it displays an image and when clicked, it opens the media in
 /// the device's browser.
-///{@endtemplate}
+/// {@endtemplate}
 class ActivityCard extends StatelessWidget {
   /// Builds an [ActivityCard].
   const ActivityCard({
@@ -112,5 +115,17 @@ class ActivityCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('alt', alt));
+    properties.add(StringProperty('image', image));
+    properties.add(DiagnosticsProperty<OpenGraphData>('og', og));
+    properties.add(StringProperty('imageURL', imageURL));
+    properties.add(StringProperty('description', description));
+    properties.add(StringProperty('url', url));
+    properties.add(StringProperty('title', title));
   }
 }
