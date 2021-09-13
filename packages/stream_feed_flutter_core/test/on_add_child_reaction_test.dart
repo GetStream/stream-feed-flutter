@@ -7,11 +7,15 @@ import 'mocks.dart';
 
 class OnAddChildReactionWidget extends StatefulWidget {
   const OnAddChildReactionWidget(
-      {Key? key, required this.reaction, required this.kind})
+      {Key? key,
+      required this.reaction,
+      required this.kind,
+      required this.activity})
       : super(key: key);
 
   final Reaction reaction;
   final String kind;
+  final EnrichedActivity activity;
 
   @override
   _OnAddChildReactionWidgetState createState() =>
@@ -24,6 +28,7 @@ class _OnAddChildReactionWidgetState extends State<OnAddChildReactionWidget> {
     return InkWell(
       onTap: () async {
         await FeedBlocProvider.of(context).bloc.onAddChildReaction(
+              activity: widget.activity,
               reaction: widget.reaction,
               kind: widget.kind,
             );
@@ -69,6 +74,7 @@ main() {
         child: FeedBlocProvider(
           bloc: FeedBloc(client: mockClient),
           child: OnAddChildReactionWidget(
+            activity: activity,
             reaction: reaction,
             kind: kind,
           ),

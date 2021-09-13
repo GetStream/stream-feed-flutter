@@ -13,8 +13,9 @@ class FeedBloc {
   List<EnrichedActivity>? get activities => _activitiesController.valueOrNull;
 
   /// The current reactions list
-  List<Reaction> reactionsFor(String activityId) =>
-      _reactionsControllers[activityId]?.valueOrNull ?? [];
+  List<Reaction> reactionsFor(String activityId, [Reaction? reaction]) =>
+      _reactionsControllers[activityId]?.valueOrNull ??
+      (reaction != null ? [reaction] : []);
 
   // void set updateactivities(List<EnrichedActivity> newActivities) =>
   //     _activitiesController.value = newActivities;
@@ -46,7 +47,8 @@ class FeedBloc {
       _queryActivitiesLoadingController.stream;
 
   /// Add an activity to the feed.
-  Future<Activity> onAddActivity(//TODO: add this to the stream
+  Future<Activity> onAddActivity(
+      //TODO: add this to the stream
       {required String feedGroup,
       Map<String, String>? data,
       required String verb,
@@ -71,21 +73,48 @@ class FeedBloc {
   }
 
   /// Remove child reaction
-  Future<void> onRemoveChildReaction(//TODO: remove this to from the stream
-      {required String id, String? kind, Reaction? reaction}) async {
+  Future<void> onRemoveChildReaction(
+      //TODO: remove this to from the stream
+      {required String id,
+      String? kind,
+      Reaction? reaction}) async {
     await client.reactions.delete(id);
     //TODO: handle state
   }
 
-  Future<Reaction> onAddChildReaction(//TODO: add this to the stream
+  Future<Reaction> onAddChildReaction(
+      //TODO: add this to the stream
       {required String kind,
       required Reaction reaction,
+      required EnrichedActivity activity,
       Map<String, Object>? data,
       String? userId,
       List<FeedId>? targetFeeds}) async {
     final childReaction = await client.reactions.addChild(kind, reaction.id!,
         data: data, userId: userId, targetFeeds: targetFeeds);
-    //TODO: handle state
+    final _reactions = reactionsFor(activity.id!, reaction);
+    final reactionPath = _reactions.getReactionPath(reaction);
+    final indexPath = _reactions.indexOf(reaction); //TODO: handle null safety
+
+    final childrenCounts = reactionPath.childrenCounts.unshiftByKind(kind);
+    final latestChildren =
+        reactionPath.latestChildren.unshiftByKind(kind, reaction);
+    final ownChildren = reactionPath.ownChildren.unshiftByKind(kind, reaction);
+
+    final updatedReaction = reactionPath.copyWith(
+      ownChildren: ownChildren,
+      latestChildren: latestChildren,
+      childrenCounts: childrenCounts,
+    );
+
+    //adds reaction to the stream
+    // _reactionsControllers.unshiftById(activity.id!, reaction);
+
+    if (_reactionsControllers[activity.id!]?.hasValue != null) {
+      _reactionsControllers[activity.id!]!.value =
+          _reactions.updateIn(updatedReaction, indexPath);
+    }
+    // return reaction;
     return childReaction;
   }
 
@@ -121,7 +150,7 @@ class FeedBloc {
       reactionCounts: reactionCounts,
     );
 
-    //remove reaction to the stream
+    //remove reaction from the stream
     _reactionsControllers.unshiftById(
         activity.id!, reaction, ShiftType.decrement);
 

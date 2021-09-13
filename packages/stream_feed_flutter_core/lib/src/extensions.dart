@@ -17,9 +17,15 @@ extension EnrichedActivityX on List<EnrichedActivity> {
       this.firstWhere(
           (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
-  List<EnrichedActivity> updateIn(
-      EnrichedActivity enrichedActivity, int indexPath) {
-    var result = List<EnrichedActivity>.from(this);
+}
+extension UpdateIn<T> on List<T> {
+  // EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
+  //     this.firstWhere(
+  //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
+
+  List<T> updateIn(
+      T enrichedActivity, int indexPath) {
+    var result = List<T>.from(this);
     result.isNotEmpty
         ? result.removeAt(indexPath) //removes the item at index 1
         : null;

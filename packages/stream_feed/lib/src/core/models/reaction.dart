@@ -110,36 +110,37 @@ class Reaction extends Equatable {
 
   ///allows us to copy a Reaction
   ///and pass in arguments that overwrite settable values.
-  Reaction copyWith({
-    String? id,
-    String? kind,
-    String? activityId,
-    String? userId,
-    String? parent,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    List<FeedId>? targetFeeds,
-    User? user,
-    Map<String, Object>? targetFeedsExtraData,
-    Map<String, Object>? data,
-    Map<String, List<Reaction>>? latestChildren,
-    Map<String, int>? childrenCounts,
-  }) =>
+  Reaction copyWith(
+          {String? id,
+          String? kind,
+          String? activityId,
+          String? userId,
+          String? parent,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          List<FeedId>? targetFeeds,
+          User? user,
+          Map<String, Object>? targetFeedsExtraData,
+          Map<String, Object>? data,
+          Map<String, List<Reaction>>? latestChildren,
+          Map<String, int>? childrenCounts,
+          Map<String, List<Reaction>>? ownChildren}) =>
       Reaction(
-        id: id ?? this.id,
-        kind: kind ?? this.kind,
-        activityId: activityId ?? this.activityId,
-        userId: userId ?? this.userId,
-        parent: parent ?? this.parent,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        targetFeeds: targetFeeds ?? this.targetFeeds,
-        user: user ?? this.user,
-        targetFeedsExtraData: targetFeedsExtraData ?? this.targetFeedsExtraData,
-        data: data ?? this.data,
-        latestChildren: latestChildren ?? this.latestChildren,
-        childrenCounts: childrenCounts ?? this.childrenCounts,
-      );
+          id: id ?? this.id,
+          kind: kind ?? this.kind,
+          activityId: activityId ?? this.activityId,
+          userId: userId ?? this.userId,
+          parent: parent ?? this.parent,
+          createdAt: createdAt ?? this.createdAt,
+          updatedAt: updatedAt ?? this.updatedAt,
+          targetFeeds: targetFeeds ?? this.targetFeeds,
+          user: user ?? this.user,
+          targetFeedsExtraData:
+              targetFeedsExtraData ?? this.targetFeedsExtraData,
+          data: data ?? this.data,
+          latestChildren: latestChildren ?? this.latestChildren,
+          childrenCounts: childrenCounts ?? this.childrenCounts,
+          ownChildren: ownChildren ?? this.ownChildren);
 
   @override
   List<Object?> get props => [
@@ -156,6 +157,7 @@ class Reaction extends Equatable {
         data,
         latestChildren,
         childrenCounts,
+        ownChildren
       ];
 
   /// Serialize to json
