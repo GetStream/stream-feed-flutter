@@ -1,8 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-///{@template text_area}
+// ignore_for_file: cascade_invocations
+
+/// {@template text_area}
 /// A TextArea is a multiline text input.
-///{@endtemplate}
+/// {@endtemplate}
 class TextArea extends StatefulWidget {
   /// Builds a [TextArea].
   const TextArea({
@@ -47,10 +50,29 @@ class TextArea extends StatefulWidget {
 
   @override
   _TextAreaState createState() => _TextAreaState();
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<TextEditingController?>(
+        'textEditingController', textEditingController));
+    properties.add(DoubleProperty('maxHeight', maxHeight));
+    properties.add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode));
+    properties.add(DiagnosticsProperty<bool>('autofocus', autofocus));
+    properties
+        .add(DiagnosticsProperty<TextInputType>('keyboardType', keyboardType));
+    properties.add(StringProperty('hintText', hintText));
+    properties
+        .add(DiagnosticsProperty<TextStyle?>('inputTextStyle', inputTextStyle));
+    properties
+        .add(DiagnosticsProperty<TextStyle?>('hintTextStyle', hintTextStyle));
+    properties.add(ObjectFlagProperty<void Function(String p1)>.has(
+        'onSubmitted', onSubmitted));
+  }
 }
 
 class _TextAreaState extends State<TextArea> {
   /// The editing controller passed to the input TextField
+  // ignore: diagnostic_describe_all_properties
   late final TextEditingController textEditingController;
 
   late final FocusNode _focusNode;
