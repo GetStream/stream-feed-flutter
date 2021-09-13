@@ -60,6 +60,11 @@ class UserBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // If handle is null, show name. If both are null, show
+    // an empty string.
+    final displayName = user.data?[handleJsonKey] as String? ??
+        user.data?[nameJsonKey] as String?;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -83,16 +88,13 @@ class UserBar extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               if (afterUsername != null) afterUsername!,
-              if (showSubtitle)
-                subtitle ??
-                    ReactedBy(
-                      icon: reactionIcon ??
-                          ReactionByIcon(
-                            kind: kind,
-                          ),
-                      handleOrUsername: user.data?[handleJsonKey] as String? ??
-                          user.data?[nameJsonKey] as String,
-                    ),
+              if (showSubtitle && subtitle != null)
+                subtitle!
+              else if (displayName != null)
+                ReactedBy(
+                  icon: reactionIcon ?? ReactionByIcon(kind: kind),
+                  handleOrUsername: displayName,
+                ),
             ],
           ),
         ),
