@@ -1,12 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
 
-///{@template activity_header}
+// ignore_for_file: cascade_invocations
+
+/// {@template activity_header}
 /// Displays the user's name and a profile image.
-///{@endtemplate}
+/// {@endtemplate}
 class ActivityHeader extends StatelessWidget {
-  ///{@macro activity_header}
+  /// Builds an [ActivityHeader].
   const ActivityHeader({
     Key? key,
     required this.activity,
@@ -45,5 +48,17 @@ class ActivityHeader extends StatelessWidget {
       nameJsonKey: nameJsonKey,
       handleJsonKey: handleJsonKey,
     ); //TODO: display what instead of null timestamp?
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
+    properties.add(DiagnosticsProperty<bool>('showSubtitle', showSubtitle));
+    properties.add(StringProperty('handleJsonKey', handleJsonKey));
+    properties.add(StringProperty('nameJsonKey', nameJsonKey));
+    properties.add(StringProperty('activityKind', activityKind));
   }
 }
