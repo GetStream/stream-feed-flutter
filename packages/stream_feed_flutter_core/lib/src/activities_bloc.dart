@@ -75,11 +75,41 @@ class FeedBloc {
   /// Remove child reaction
   Future<void> onRemoveChildReaction(
       //TODO: remove this to from the stream
-      {required String id,
-      String? kind,
-      Reaction? reaction}) async {
-    await client.reactions.delete(id);
-    //TODO: handle state
+      {
+    required String kind,
+    required EnrichedActivity activity,
+    required Reaction reaction,
+  }) async {
+    await client.reactions.delete(reaction.id!);
+    print(reaction);
+    final _reactions = reactionsFor(activity.id!, reaction);
+    final reactionPath = _reactions.getReactionPath(reaction);
+    final indexPath = _reactions
+        .indexWhere((r) => r.id! == reaction.id); //TODO: handle null safety
+    print("indexPath: $indexPath");
+    print("_reactions: $_reactions");
+    final childrenCounts =
+        reactionPath.childrenCounts.unshiftByKind(kind, ShiftType.decrement);
+    print("childrenCounts: $childrenCounts");
+    final latestChildren = reactionPath.latestChildren
+        .unshiftByKind(kind, reaction, ShiftType.decrement);
+    final ownChildren = reactionPath.ownChildren
+        .unshiftByKind(kind, reaction, ShiftType.decrement);
+
+    final updatedReaction = reactionPath.copyWith(
+      ownChildren: ownChildren,
+      latestChildren: latestChildren,
+      childrenCounts: childrenCounts,
+    );
+    print("reaction: $updatedReaction");
+
+    //adds reaction to the stream
+    // _reactionsControllers.unshiftById(activity.id!, reaction);
+
+    if (_reactionsControllers[activity.id!]?.hasValue != null) {
+      _reactionsControllers[activity.id!]!.value =
+          _reactions.updateIn(updatedReaction, indexPath);
+    }
   }
 
   Future<Reaction> onAddChildReaction(
@@ -94,7 +124,8 @@ class FeedBloc {
         data: data, userId: userId, targetFeeds: targetFeeds);
     final _reactions = reactionsFor(activity.id!, reaction);
     final reactionPath = _reactions.getReactionPath(reaction);
-    final indexPath = _reactions.indexOf(reaction); //TODO: handle null safety
+    final indexPath = _reactions
+        .indexWhere((r) => r.id! == reaction.id); //TODO: handle null safety
 
     final childrenCounts = reactionPath.childrenCounts.unshiftByKind(kind);
     final latestChildren =
@@ -131,7 +162,7 @@ class FeedBloc {
     final _activities = activities ?? [activity];
     final activityPath = _activities.getEnrichedActivityPath(activity);
 
-    final indexPath = _activities.indexOf(activity); //TODO: handle null safety
+    final indexPath = _activities.indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
 
     final reactionCounts =
         activityPath.reactionCounts.unshiftByKind(kind, ShiftType.decrement);
@@ -172,7 +203,7 @@ class FeedBloc {
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
     final _activities = activities ?? [activity];
     final activityPath = _activities.getEnrichedActivityPath(activity);
-    final indexPath = _activities.indexOf(activity); //TODO: handle null safety
+    final indexPath = _activities.indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
 
     final reactionCounts = activityPath.reactionCounts.unshiftByKind(kind);
     final latestReactions =

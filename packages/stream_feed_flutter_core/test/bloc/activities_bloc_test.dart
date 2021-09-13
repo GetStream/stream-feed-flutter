@@ -1,4 +1,3 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -143,7 +142,7 @@ main() {
           bloc.reactionsStreamFor(newReactedActivity.id!), emits([]));
     });
 
-     test('onAddChildReaction', () async {
+    test('onAddChildReaction/onRemoveChildReaction', () async {
       final bloc = FeedBloc(client: mockClient);
       final mockReactions = MockReactions();
 
@@ -153,16 +152,20 @@ main() {
       when(() => mockFeed.getEnrichedActivities())
           .thenAnswer((_) async => activities);
       when(() => mockReactions.add(
-            'like',
-            'id',
-          )).thenAnswer((_) async => reaction);
+                'like',
+                'id',
+              ))
+          .thenAnswer(
+              (_) async => Reaction(id: 'id', kind: 'like', activityId: "id"));
       when(() => mockReactions.addChild(
             'like',
             'id',
           )).thenAnswer((_) async => updatedReactionWithChild);
       when(() => mockReactions.delete(
-            'id',
-          )).thenAnswer((_) async => reaction);
+                'id',
+              ))
+          .thenAnswer(
+              (_) async => Reaction(id: 'id', kind: 'like', activityId: "id"));
 
       await bloc.queryEnrichedActivities(feedGroup: 'user');
       await expectLater(bloc.activitiesStream, emits(activities));
@@ -170,7 +173,7 @@ main() {
       verify(() => mockClient.flatFeed('user')).called(1);
       verify(() => mockFeed.getEnrichedActivities()).called(1);
 
-      await bloc.onAddReaction(
+      final reaction = await bloc.onAddReaction(
           kind: 'like', activity: reactedActivity, feedGroup: 'user');
 
       verify(() => mockClient.reactions.add(
@@ -188,13 +191,87 @@ main() {
             'like',
             'id',
           )).called(1);
-      await expectLater(bloc.reactionsStreamFor(reactedActivity.id!),
-          emits([updatedReactionWithChild]));
-      await expectLater(bloc.activitiesStream, emits(expectedResult));
+      await expectLater(
+          bloc.reactionsStreamFor(reactedActivity.id!),
+          emits([
+            Reaction(
+              id: 'id',
+              kind: 'like',
+              activityId: reactedActivity.id,
+              childrenCounts: {
+                'like': 1,
+              },
+              latestChildren: {
+                'like': [reaction]
+              },
+              ownChildren: {
+                'like': [reaction]
+              },
+            )
+          ]));
 
-  });
+      //DELETE
+      await bloc.onRemoveChildReaction(
+          kind: 'like', activity: reactedActivity, reaction: reaction);
+
+      verify(() => mockClient.reactions.delete(
+            'id',
+          )).called(1);
+
+      await expectLater(
+          bloc.reactionsStreamFor(reactedActivity.id!),
+          emits([
+            Reaction(
+              id: 'id',
+              kind: 'like',
+              activityId: reactedActivity.id,
+              childrenCounts: {
+                'like': 0,
+              },
+              latestChildren: {
+                'like': []
+              },
+              ownChildren: {
+                'like': []
+              },
+            )
+          ]));
+    });
     //TODO: teardown
 
+    test('updateIn reaction delete', () {
+      final reactionUpdate = Reaction(
+        id: 'id',
+        kind: 'like',
+        activityId: 'id',
+        childrenCounts: {
+          'like': 0,
+        },
+        latestChildren: {
+          'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
+        },
+        ownChildren: {
+          'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
+        },
+      );
+      final reactions = [
+        Reaction(
+          id: 'id',
+          kind: 'like',
+          activityId: 'id',
+          childrenCounts: {
+            'like': 1,
+          },
+          latestChildren: {
+            'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
+          },
+          ownChildren: {
+            'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
+          },
+        )
+      ];
+      expect(reactions.updateIn(reactionUpdate, 0), [reactionUpdate]);
+    });
     test('updateIn activities', () async {
       final firstActivity = activities.first;
       final indexPath = activities.indexOf(firstActivity);
