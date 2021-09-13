@@ -268,5 +268,41 @@ void main() {
       expect(description[0]['description'],
           'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
+
+    testWidgets('Default ActivityFooter debugFillProperties',
+        (widgetTester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final activityFooter = ActivityFooter(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      // ignore: cascade_invocations
+      activityFooter.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'],
+          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+    });
   });
 }
