@@ -216,11 +216,13 @@ void main() {
         },
       ),
     );
+
+    // ignore: cascade_invocations
     activityWidget.debugFillProperties(builder);
 
     final description = builder.properties
         .where((node) => !node.isFiltered(DiagnosticLevel.info))
-        .map((node) => node.toJsonMap(DiagnosticsSerializationDelegate()))
+        .map((node) => node.toJsonMap(const DiagnosticsSerializationDelegate()))
         .toList();
 
     expect(description[0]['description'],
