@@ -46,7 +46,7 @@ class FeedBloc {
       _queryActivitiesLoadingController.stream;
 
   /// Add an activity to the feed.
-  Future<Activity> onAddActivity(
+  Future<Activity> onAddActivity(//TODO: add this to the stream
       {required String feedGroup,
       Map<String, String>? data,
       required String verb,
@@ -71,13 +71,13 @@ class FeedBloc {
   }
 
   /// Remove child reaction
-  Future<void> onRemoveChildReaction(
+  Future<void> onRemoveChildReaction(//TODO: remove this to from the stream
       {required String id, String? kind, Reaction? reaction}) async {
     await client.reactions.delete(id);
     //TODO: handle state
   }
 
-  Future<Reaction> onAddChildReaction(
+  Future<Reaction> onAddChildReaction(//TODO: add this to the stream
       {required String kind,
       required Reaction reaction,
       Map<String, Object>? data,
