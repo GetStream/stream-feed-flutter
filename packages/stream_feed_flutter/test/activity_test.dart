@@ -199,7 +199,7 @@ void main() {
   testWidgets('Default ActivityWidget debugFillProperties', (tester) async {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
-    ActivityWidget(
+    final activityWidget = ActivityWidget(
       activity: EnrichedActivity(
         time: now,
         actor: const User(
@@ -215,21 +215,15 @@ void main() {
               'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
         },
       ),
-    ).debugFillProperties(builder);
+    );
+    activityWidget.debugFillProperties(builder);
 
     final description = builder.properties
         .where((node) => !node.isFiltered(DiagnosticLevel.info))
-        .map((node) => node.toString())
+        .map((node) => node.toJsonMap(DiagnosticsSerializationDelegate()))
         .toList();
 
-    expect(
-      description,
-      [
-        'activity: EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image:https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null,null, null, $now, null, null, null, null, {image:https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)',
-        'handleJsonKey: "handle"',
-        'nameJsonKey: "name"',
-        'feedGroup: "user"'
-      ],
-    );
+    expect(description[0]['description'],
+        'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
   });
 }
