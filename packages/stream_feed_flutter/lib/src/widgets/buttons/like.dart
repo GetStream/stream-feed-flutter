@@ -49,7 +49,9 @@ class LikeButton extends StatelessWidget {
   /// The feed group that this [LikeButton] is associated with.
   final String feedGroup;
 
-  /// TODO: document me
+  /// The color to use when the user hovers over the button.
+  ///
+  /// Generally applies to desktop and web.
   final Color? hoverColor;
 
   @override
