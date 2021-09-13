@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/textarea.dart';
@@ -5,11 +6,13 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template comment_field}
+// ignore_for_file: cascade_invocations
+
+/// {@template comment_field}
 /// A field for adding comments to a feed.
 ///
 /// It displays the avatar, a text area and a button to submit the comment.
-///{@endtemplate}
+/// {@endtemplate}
 class CommentField extends StatelessWidget {
   /// Builds a [CommentField].
   const CommentField({
@@ -47,7 +50,7 @@ class CommentField extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               //TODO: pass down User
               child: Avatar(
                 // user: user,
@@ -70,5 +73,17 @@ class CommentField extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
+    properties.add(DiagnosticsProperty<TextEditingController>(
+        'textEditingController', textEditingController));
+    properties.add(DiagnosticsProperty<bool>('enableButton', enableButton));
+    properties.add(StringProperty('feedGroup', feedGroup));
   }
 }
