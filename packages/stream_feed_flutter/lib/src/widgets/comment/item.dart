@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/user_bar_theme.dart';
-import 'package:stream_feed_flutter/src/utils/display.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
@@ -11,7 +11,9 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/src/widgets/user/username.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template comment_item}
+// ignore_for_file: cascade_invocations
+
+/// {@template comment_item}
 /// Displays a single comment on an activity.
 ///
 /// Click on:
@@ -19,7 +21,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// - hashtags to view the activity feed for that tag.
 /// - mentions to view the activity feed for that user.
 ///
-///{@endtemplate}
+/// {@endtemplate}
 class CommentItem extends StatelessWidget {
   /// Builds a [CommentItem].
   const CommentItem({
@@ -40,13 +42,13 @@ class CommentItem extends StatelessWidget {
   /// The content of the comment reaction
   final Reaction reaction;
 
-  ///{@macro mention_callback}
+  /// {@macro mention_callback}
   final OnMentionTap? onMentionTap;
 
   /// A callback to invoke when the user clicks on a hashtag.
   final OnHashtagTap? onHashtagTap;
 
-  ///{@macro user_callback}
+  /// {@macro user_callback}
   final OnUserTap? onUserTap;
 
   /// The json key in [User.data].
@@ -60,14 +62,14 @@ class CommentItem extends StatelessWidget {
   /// By default it is 'text'.
   final String commentJsonKey;
 
-  ///{@macro reaction_callback}
+  /// {@macro reaction_callback}
   final OnReactionTap? onReactionTap;
 
   @override
   Widget build(BuildContext context) {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final taggedText = reaction.data?[commentJsonKey] != null
-        ? detector.parseText(reaction.data![commentJsonKey] as String)
+        ? detector.parseText(reaction.data![commentJsonKey]! as String)
         : <TaggedText>[];
     return InkWell(
       onTap: () {
@@ -137,5 +139,21 @@ class CommentItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<User?>('user', user));
+    properties.add(DiagnosticsProperty<Reaction>('reaction', reaction));
+    properties.add(
+        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
+    properties.add(
+        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
+    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
+    properties.add(StringProperty('nameJsonKey', nameJsonKey));
+    properties.add(StringProperty('commentJsonKey', commentJsonKey));
+    properties.add(
+        ObjectFlagProperty<OnReactionTap?>.has('onReactionTap', onReactionTap));
   }
 }
