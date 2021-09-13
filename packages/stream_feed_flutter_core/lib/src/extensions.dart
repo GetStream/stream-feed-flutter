@@ -34,7 +34,7 @@ extension UpdateIn<T> on List<T> {
   }
 }
 
-extension UnshiftMapList on Map<String, List<Reaction>>? {
+extension UnshiftMapList on Map<String, List<Reaction>>? {//TODO: maybe refactor to an operator maybe [Reaction] + Reaction
   Map<String, List<Reaction>> unshiftByKind(String kind, Reaction reaction,
       [ShiftType type = ShiftType.increment]) {
     Map<String, List<Reaction>>? result;
