@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -25,6 +26,23 @@ void main() {
           ),
         );
         expect(find.byType(Image), findsOneWidget);
+      });
+    });
+
+    testWidgets('Default Avatar debugFillProperties', (tester) async {
+      await mockNetworkImages(() async {
+        final builder = DiagnosticPropertiesBuilder();
+        const avatar = Avatar();
+        // ignore: cascade_invocations
+        avatar.debugFillProperties(builder);
+
+        final description = builder.properties
+            .where((node) => !node.isFiltered(DiagnosticLevel.info))
+            .map((node) =>
+                node.toJsonMap(const DiagnosticsSerializationDelegate()))
+            .toList();
+
+        expect(description[0]['description'], 'null');
       });
     });
 
