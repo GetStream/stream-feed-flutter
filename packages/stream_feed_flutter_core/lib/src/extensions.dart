@@ -35,10 +35,10 @@ extension UnshiftMapList on Map<String, List<Reaction>>? {
     result = this;
     final latestReactionsByKind = this?[kind] ?? [];
     if (result != null) {
-      //TODO: extract this logic to a convenient method
       result[kind] = latestReactionsByKind.unshift(reaction, type);
     } else {
       result = {
+        //TODO: handle decrement
         kind: [reaction]
       };
     }
@@ -55,11 +55,11 @@ extension UnshiftMapController
     result = this;
     final latestReactionsById = this?[activityId]?.valueOrNull ?? [];
     if (result != null) {
-      //TODO: extract this logic to a convenient method
       result[activityId] =
           BehaviorSubject.seeded(latestReactionsById.unshift(reaction, type));
     } else {
       result = {
+        //TODO: handle decrement
         activityId: BehaviorSubject.seeded([reaction])
       };
     }
