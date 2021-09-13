@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
@@ -5,11 +6,13 @@ import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
 import 'package:stream_feed_flutter/src/widgets/og/card.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template activity_content}
+// ignore_for_file: cascade_invocations
+
+/// {@template activity_content}
 /// Displays the content of an activity.
 ///
 /// This would be the actual text of the activity, the media, etc.
-///{@endtemplate}
+/// {@endtemplate}
 class ActivityContent extends StatelessWidget {
   /// Builds an [ActivityContent].
   const ActivityContent({
@@ -64,5 +67,17 @@ class ActivityContent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(
+        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
+    properties.add(
+        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
+    properties.add(StringProperty('commentJsonKey', commentJsonKey));
   }
 }
