@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -452,6 +453,37 @@ void main() {
         surfaceSize: const Size(100, 75),
       );
       await screenMatchesGolden(tester, 'repost');
+    });
+  });
+
+  group('debugFillProperties tests', () {
+    testWidgets('ChildReactionButton', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final childReactionButton = ChildReactionButton(
+        reaction: Reaction(
+          createdAt: now,
+          kind: 'comment',
+          data: const {
+            'text': 'this is a piece of text',
+          },
+        ),
+        kind: 'comment',
+        activeIcon: const Icon(Icons.favorite),
+        inactiveIcon: const Icon(Icons.favorite_border),
+      );
+
+      // ignore: cascade_invocations
+      childReactionButton.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'],
+          'Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null)');
     });
   });
 }
