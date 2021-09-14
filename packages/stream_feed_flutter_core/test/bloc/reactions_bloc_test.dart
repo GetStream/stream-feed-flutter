@@ -61,8 +61,9 @@ main() {
       limit: limit,
       kind: kind,
     );
-    await expectLater(bloc.reactionsStreamFor(lookupValue), emits(reactions));
-    verify(() => mockReactions.filter(lookupAttr, lookupValue,
+      verify(() => mockReactions.filter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind)).called(1);
+    await expectLater(bloc.reactionsStreamFor(lookupValue), emits(reactions));
+  
   });
 }
