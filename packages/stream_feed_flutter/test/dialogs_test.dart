@@ -1,3 +1,6 @@
+// ignore_for_file: cascade_invocations
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
@@ -218,6 +221,109 @@ void main() {
           });
         });
       });
+    });
+  });
+
+  group('debugFillProperties', () {
+    testWidgets('AlertDialogComment', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      const alertDialogComment = AlertDialogComment(
+        feedGroup: 'user',
+      );
+
+      alertDialogComment.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], '"user"');
+    });
+
+    testWidgets('CommentView', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      final commentView = CommentView(
+        textEditingController: TextEditingController(),
+      );
+
+      commentView.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
+    });
+
+    testWidgets('AlertDialogActions', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final alertDialogActions = AlertDialogActions(
+        feedGroup: 'user',
+        textEditingController: TextEditingController(),
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      alertDialogActions.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'],
+          'EnrichedActivity<dynamic, dynamic, dynamic, dynamic>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+    });
+
+    testWidgets('LeftActions', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      const LeftActions().debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], '60.0');
+    });
+
+    testWidgets('RightActions', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      final rightActions = RightActions(
+        feedGroup: 'user',
+        textEditingController: TextEditingController(),
+      );
+
+      rightActions.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
     });
   });
 }
