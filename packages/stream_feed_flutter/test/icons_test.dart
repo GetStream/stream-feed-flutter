@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -5,6 +6,22 @@ import 'package:stream_feed_flutter/src/widgets/icons.dart';
 
 void main() {
   group('Icons', () {
+    testWidgets('Default debugFillProperties', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      final icon = StreamSvgIcon.loveActive();
+
+      // ignore: cascade_invocations
+      icon.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], '"love_active.svg"');
+    });
+
     testGoldens('loveActive', (tester) async {
       await tester.pumpWidgetBuilder(
         Center(child: StreamSvgIcon.loveActive()),
