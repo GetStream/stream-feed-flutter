@@ -83,4 +83,39 @@ void main() {
 
     expect(description[0]['description'], 'true');
   });
+
+  testWidgets('Default ReactedBy debugFillProperties', (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const reactedBy = ReactedBy(
+      handleOrUsername: 'groovin',
+      icon: Icon(Icons.person),
+    );
+
+    // ignore: cascade_invocations
+    reactedBy.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toJsonMap(const DiagnosticsSerializationDelegate()))
+        .toList();
+
+    expect(description[0]['description'], '"groovin"');
+  });
+
+  testWidgets('Default ReactedByIcon debugFillProperties', (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const reactionByIcon = ReactionByIcon(
+      kind: 'test',
+    );
+
+    // ignore: cascade_invocations
+    reactionByIcon.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toJsonMap(const DiagnosticsSerializationDelegate()))
+        .toList();
+
+    expect(description[0]['description'], '"test"');
+  });
 }
