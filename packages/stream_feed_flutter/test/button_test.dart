@@ -487,6 +487,33 @@ void main() {
           'Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null)');
     });
 
+    testWidgets('ChildReactionToggleIcon', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final childReactionToggleIcon = ChildReactionToggleIcon(
+        reaction: Reaction(
+          createdAt: now,
+          kind: 'comment',
+          data: const {
+            'text': 'this is a piece of text',
+          },
+        ),
+        kind: 'comment',
+        activeIcon: const Icon(Icons.favorite),
+        inactiveIcon: const Icon(Icons.favorite_border),
+      );
+
+      childReactionToggleIcon.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+          node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
+    });
+
     testWidgets('Like button', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
