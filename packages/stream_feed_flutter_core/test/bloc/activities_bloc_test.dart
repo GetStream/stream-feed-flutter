@@ -6,99 +6,106 @@ import '../mocks.dart';
 
 main() {
   group('FeedBloc', () {
-    final mockClient = MockStreamFeedClient();
-    final mockFeed = MockFeedAPI();
-    final mockStreamAnalytics = MockStreamAnalytics();
-    final now = DateTime.now();
-    final activities = [
-      EnrichedActivity(
-        id: "id",
-        // reactionCounts: {
-        //   'like': 139,
-        //   'repost': 23,
-        // },
-        time: now,
-        actor: EnrichableField(
-          User(data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          }).toJson(),
+    late MockStreamFeedClient mockClient;
+    late MockFeedAPI mockFeed;
+    late MockStreamAnalytics mockStreamAnalytics;
+    late DateTime now;
+    late List<EnrichedActivity> activities;
+    late EnrichedActivity reactedActivity;
+    late Reaction reaction;
+    late Reaction updatedReactionWithChild;
+    late List<EnrichedActivity> expectedResult;
+    late FeedBloc bloc;
+    late MockReactions mockReactions;
+    setUp(() {
+      mockClient = MockStreamFeedClient();
+      mockFeed = MockFeedAPI();
+      mockStreamAnalytics = MockStreamAnalytics();
+      now = DateTime.now();
+      activities = [
+        EnrichedActivity(
+          id: "id",
+          time: now,
+          actor: EnrichableField(
+            User(data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing fresbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            }).toJson(),
+          ),
         ),
-      ),
-      EnrichedActivity(
-        id: "id2",
-        time: now,
-        actor: EnrichableField(
-          User(data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          }).toJson(),
+        EnrichedActivity(
+          id: "id2",
+          time: now,
+          actor: EnrichableField(
+            User(data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing fresbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            }).toJson(),
+          ),
         ),
-      ),
-    ];
-
-    final reactedActivity = activities.first;
-    final reaction =
-        Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
-    final updatedReactionWithChild = Reaction(
-      id: 'id',
-      kind: 'like',
-      activityId: reactedActivity.id,
-      childrenCounts: {
-        'like': 1,
-      },
-      latestChildren: {
-        'like': [reaction]
-      },
-      ownChildren: {
-        'like': [reaction]
-      },
-    );
-
-    final expectedResult = [
-      EnrichedActivity(
-        id: "id",
-        reactionCounts: {
+      ];
+      reactedActivity = activities.first;
+      reaction =
+          Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
+      updatedReactionWithChild = Reaction(
+        id: 'id',
+        kind: 'like',
+        activityId: reactedActivity.id,
+        childrenCounts: {
           'like': 1,
         },
-        latestReactions: {
+        latestChildren: {
           'like': [reaction]
         },
-        ownReactions: {
+        ownChildren: {
           'like': [reaction]
         },
-        time: now,
-        actor: EnrichableField(
-          User(data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          }).toJson(),
+      );
+      expectedResult = [
+        EnrichedActivity(
+          id: "id",
+          reactionCounts: {
+            'like': 1,
+          },
+          latestReactions: {
+            'like': [reaction]
+          },
+          ownReactions: {
+            'like': [reaction]
+          },
+          time: now,
+          actor: EnrichableField(
+            User(data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing fresbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            }).toJson(),
+          ),
         ),
-      ),
-      EnrichedActivity(
-        id: "id2",
-        time: now,
-        actor: EnrichableField(
-          User(data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          }).toJson(),
+        EnrichedActivity(
+          id: "id2",
+          time: now,
+          actor: EnrichableField(
+            User(data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing fresbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            }).toJson(),
+          ),
         ),
-      ),
-    ];
-
-    test('getEnrichedActivities/onAddReaction/onRemoveReaction', () async {
-      final bloc = FeedBloc(client: mockClient);
-      final mockReactions = MockReactions();
-
+      ];
+      bloc = FeedBloc(client: mockClient);
+      mockReactions = MockReactions();
       when(() => mockClient.reactions).thenReturn(mockReactions);
 
       when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
@@ -111,7 +118,13 @@ main() {
       when(() => mockReactions.delete(
             'id',
           )).thenAnswer((_) async => reaction);
+      when(() => mockReactions.addChild(
+            'like',
+            'id',
+          )).thenAnswer((_) async => updatedReactionWithChild);
+    });
 
+    test('getEnrichedActivities/onAddReaction/onRemoveReaction', () async {
       await bloc.queryEnrichedActivities(feedGroup: 'user');
       await expectLater(bloc.activitiesStream, emits(activities));
 
@@ -143,30 +156,6 @@ main() {
     });
 
     test('onAddChildReaction/onRemoveChildReaction', () async {
-      final bloc = FeedBloc(client: mockClient);
-      final mockReactions = MockReactions();
-
-      when(() => mockClient.reactions).thenReturn(mockReactions);
-
-      when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
-      when(() => mockFeed.getEnrichedActivities())
-          .thenAnswer((_) async => activities);
-      when(() => mockReactions.add(
-                'like',
-                'id',
-              ))
-          .thenAnswer(
-              (_) async => Reaction(id: 'id', kind: 'like', activityId: "id"));
-      when(() => mockReactions.addChild(
-            'like',
-            'id',
-          )).thenAnswer((_) async => updatedReactionWithChild);
-      when(() => mockReactions.delete(
-                'id',
-              ))
-          .thenAnswer(
-              (_) async => Reaction(id: 'id', kind: 'like', activityId: "id"));
-
       await bloc.queryEnrichedActivities(feedGroup: 'user');
       await expectLater(bloc.activitiesStream, emits(activities));
 
