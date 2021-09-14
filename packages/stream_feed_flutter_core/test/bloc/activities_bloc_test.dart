@@ -228,59 +228,60 @@ main() {
           ]));
     });
     //TODO: teardown
-
-    test('updateIn activities', () async {
-      final firstActivity = activities.first;
-      final indexPath = activities.indexOf(firstActivity);
-      expect(indexPath, 0);
-      final updatedActivity = firstActivity.copyWith(reactionCounts: {
-        'like': 1
-      }, latestReactions: {
-        'like': [reaction]
-      }, ownReactions: {
-        'like': [reaction]
+    group('updateIn', () {
+      test('activities', () async {
+        final firstActivity = activities.first;
+        final indexPath = activities.indexOf(firstActivity);
+        expect(indexPath, 0);
+        final updatedActivity = firstActivity.copyWith(reactionCounts: {
+          'like': 1
+        }, latestReactions: {
+          'like': [reaction]
+        }, ownReactions: {
+          'like': [reaction]
+        });
+        expect(updatedActivity, expectedResult.first);
+        final result = activities.updateIn(updatedActivity, indexPath);
+        expect(result, expectedResult);
       });
-      expect(updatedActivity, expectedResult.first);
-      final result = activities.updateIn(updatedActivity, indexPath);
-      expect(result, expectedResult);
-    });
 
-    test('updateIn reactions', () async {
-      final reactions = [
-        Reaction(
+      test('reactions', () async {
+        final reactions = [
+          Reaction(
+            id: 'id',
+            kind: 'like',
+            activityId: 'id',
+          )
+        ];
+        final expectedResultReaction = Reaction(
           id: 'id',
           kind: 'like',
           activityId: 'id',
-        )
-      ];
-      final expectedResultReaction = Reaction(
-        id: 'id',
-        kind: 'like',
-        activityId: 'id',
-        childrenCounts: {
-          'like': 1,
-        },
-        latestChildren: {
-          'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
-        },
-        ownChildren: {
-          'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
-        },
-      );
+          childrenCounts: {
+            'like': 1,
+          },
+          latestChildren: {
+            'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
+          },
+          ownChildren: {
+            'like': [Reaction(id: 'id', kind: 'like', activityId: 'id')]
+          },
+        );
 
-      final firstReaction = reactions.first;
-      final indexPath = reactions.indexOf(firstReaction);
-      expect(indexPath, 0);
-      final updatedReaction = firstReaction.copyWith(childrenCounts: {
-        'like': 1
-      }, latestChildren: {
-        'like': [reaction]
-      }, ownChildren: {
-        'like': [reaction]
+        final firstReaction = reactions.first;
+        final indexPath = reactions.indexOf(firstReaction);
+        expect(indexPath, 0);
+        final updatedReaction = firstReaction.copyWith(childrenCounts: {
+          'like': 1
+        }, latestChildren: {
+          'like': [reaction]
+        }, ownChildren: {
+          'like': [reaction]
+        });
+        expect(updatedReaction, expectedResultReaction);
+        final result = reactions.updateIn(updatedReaction, indexPath);
+        expect(result, [expectedResultReaction]);
       });
-      expect(updatedReaction, expectedResultReaction);
-      final result = reactions.updateIn(updatedReaction, indexPath);
-      expect(result, [expectedResultReaction]);
     });
   });
 }
