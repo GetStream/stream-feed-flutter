@@ -508,7 +508,7 @@ void main() {
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
           .map((node) =>
-          node.toJsonMap(const DiagnosticsSerializationDelegate()))
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
           .toList();
 
       expect(description[0]['description'], 'null');
