@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,6 +24,7 @@ void main() {
       }
     });
   });
+
   testWidgets('Card', (tester) async {
     await mockNetworkImages(() async {
       const title =
@@ -75,6 +77,34 @@ void main() {
       final richtexts = tester.widgetList<Text>(find.byType(Text));
       expect(richtexts.toList().map((e) => e.data), [title, description]);
     });
+  });
+
+  testWidgets('Default ActivityCard debugFillProperties', (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const activityCard = ActivityCard(
+      og: OpenGraphData(
+        title: 'Title',
+        url:
+            'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+        description: 'Description',
+        images: [
+          OgImage(
+            image:
+                'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+          )
+        ],
+      ),
+    );
+
+    // ignore: cascade_invocations
+    activityCard.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toJsonMap(const DiagnosticsSerializationDelegate()))
+        .toList();
+
+    expect(description[0]['description'], 'null');
   });
 
   tearDown(() {
