@@ -592,6 +592,23 @@ void main() {
       expect(description[0]['description'], 'null');
     });
 
+    testWidgets('ReactionIcon', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      const reactionIcon = ReactionIcon(
+        icon: Icon(Icons.favorite),
+      );
+
+      reactionIcon.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
+    });
+
     testWidgets('ReplyButton', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
