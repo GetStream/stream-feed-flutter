@@ -532,12 +532,12 @@ void main() {
               'handle': '@rosemary',
               'subtitle': 'likes playing frisbee in the park',
               'profile_image':
-              'https://randomuser.me/api/portraits/women/20.jpg',
+                  'https://randomuser.me/api/portraits/women/20.jpg',
             },
           ),
           extraData: const {
             'image':
-            'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
           },
         ),
         kind: 'comment',
@@ -551,11 +551,44 @@ void main() {
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
           .map((node) =>
-          node.toJsonMap(const DiagnosticsSerializationDelegate()))
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
           .toList();
 
-      expect(description[0]['description'],
-          'null');
+      expect(description[0]['description'], 'null');
+    });
+
+    testWidgets('ReplyButton', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final replyButton = ReplyButton(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      // ignore: cascade_invocations
+      replyButton.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], '"handle"');
     });
   });
 }
