@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:faye_dart/src/timeout_helper.dart';
 import 'package:test/test.dart';
 
@@ -8,7 +10,7 @@ void main() {
     timeoutHelper.setTimeout(const Duration(seconds: 3), () {});
     expect(timeoutHelper.hasTimeouts, isTrue);
 
-    addTearDown(() => timeoutHelper.cancelAllTimeout());
+    addTearDown(timeoutHelper.cancelAllTimeout);
   });
 
   test('cancelTimeout', () {
