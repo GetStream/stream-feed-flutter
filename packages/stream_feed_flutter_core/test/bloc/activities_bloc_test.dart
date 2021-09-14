@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
+import 'package:meta/meta.dart';
 import '../mocks.dart';
 
 main() {
@@ -17,6 +17,7 @@ main() {
     late List<EnrichedActivity> expectedResult;
     late FeedBloc bloc;
     late MockReactions mockReactions;
+
     setUp(() {
       mockClient = MockStreamFeedClient();
       mockFeed = MockFeedAPI();
@@ -124,12 +125,17 @@ main() {
           )).thenAnswer((_) async => updatedReactionWithChild);
     });
 
-    test('getEnrichedActivities/onAddReaction/onRemoveReaction', () async {
+    Future<void> testQueryEnrichedActivities(
+        List<EnrichedActivity> activities) async {
       await bloc.queryEnrichedActivities(feedGroup: 'user');
       await expectLater(bloc.activitiesStream, emits(activities));
 
       verify(() => mockClient.flatFeed('user')).called(1);
       verify(() => mockFeed.getEnrichedActivities()).called(1);
+    }
+
+    test('onAddReaction', () async {
+      await testQueryEnrichedActivities(activities);
 
       await bloc.onAddReaction(
           kind: 'like', activity: reactedActivity, feedGroup: 'user');
@@ -141,6 +147,9 @@ main() {
       await expectLater(
           bloc.reactionsStreamFor(reactedActivity.id!), emits([reaction]));
       await expectLater(bloc.activitiesStream, emits(expectedResult));
+    });
+    test('onRemoveReaction', () async {
+      await testQueryEnrichedActivities(activities);
       final newReactedActivity = expectedResult.first;
       await bloc.onRemoveReaction(
         kind: 'like',
@@ -156,11 +165,7 @@ main() {
     });
 
     test('onAddChildReaction/onRemoveChildReaction', () async {
-      await bloc.queryEnrichedActivities(feedGroup: 'user');
-      await expectLater(bloc.activitiesStream, emits(activities));
-
-      verify(() => mockClient.flatFeed('user')).called(1);
-      verify(() => mockFeed.getEnrichedActivities()).called(1);
+      await testQueryEnrichedActivities(activities);
 
       final reaction = await bloc.onAddReaction(
           kind: 'like', activity: reactedActivity, feedGroup: 'user');
