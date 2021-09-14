@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
@@ -22,13 +23,15 @@ void main() {
             body: UserBar(
               kind: 'like',
               timestamp: DateTime.now(),
-              user: const User(data: {
-                'name': 'Rosemary',
-                'handle': '@rosemary',
-                'subtitle': 'likes playing fresbee in the park',
-                'profile_image':
-                    'https://randomuser.me/api/portraits/women/20.jpg',
-              }),
+              user: const User(
+                data: {
+                  'name': 'Rosemary',
+                  'handle': '@rosemary',
+                  'subtitle': 'likes playing fresbee in the park',
+                  'profile_image':
+                      'https://randomuser.me/api/portraits/women/20.jpg',
+                },
+              ),
             ),
           ),
         ),
@@ -52,5 +55,32 @@ void main() {
       final handle = find.text('@rosemary').first;
       expect(handle, findsOneWidget);
     });
+  });
+
+  testWidgets('Default UserBar debugFillProperties', (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    final now = DateTime.now();
+    final userBar = UserBar(
+      kind: 'like',
+      timestamp: now,
+      user: const User(
+        data: {
+          'name': 'Rosemary',
+          'handle': '@rosemary',
+          'subtitle': 'likes playing fresbee in the park',
+          'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+        },
+      ),
+    );
+
+    // ignore: cascade_invocations
+    userBar.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toJsonMap(const DiagnosticsSerializationDelegate()))
+        .toList();
+
+    expect(description[0]['description'], 'true');
   });
 }
