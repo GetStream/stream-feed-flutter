@@ -519,5 +519,43 @@ void main() {
 
       expect(description[0]['description'], 'null');
     });
+
+    testWidgets('ReactionButton', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final reactionButton = ReactionButton(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+              'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+            'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+        kind: 'comment',
+        activeIcon: const Icon(Icons.favorite),
+        inactiveIcon: const Icon(Icons.favorite_border),
+      );
+
+      // ignore: cascade_invocations
+      reactionButton.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+          node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'],
+          'null');
+    });
   });
 }
