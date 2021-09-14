@@ -169,8 +169,6 @@ void main() {
       expect(
         fixture,
         RealtimeMessage<User, String, String?, String?>(
-          deleted: [],
-          deletedForeignIds: [],
           feed: FeedId.fromId('task:32db0f46-3593-4e14-aa57-f05af4887260'),
           newActivities: [
             EnrichedActivity(
