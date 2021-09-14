@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -62,6 +63,20 @@ void main() {
         await tester.pump();
         // expect(find.byType(FlatFeedInner), findsOneWidget);TODO:fix me
       });
+    });
+
+    testWidgets('Default FlatActivityListPage debugFillProperties',
+        (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      const FlatActivityListPage().debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], '"user"');
     });
   });
 }
