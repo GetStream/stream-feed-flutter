@@ -48,6 +48,12 @@ scripts:
       flutter: false
       dir-exists: test
 
+  docs:
+    run: |
+      npm install -g https://github.com/GetStream/stream-chat-docusaurus-cli && 
+      npx stream-chat-docusaurus -i -s 
+    description: Runs the docusaurus documentation locally.
+
   test:flutter:
     run: melos exec --dir-exists="test" -c 1 --fail-fast -- "flutter test --coverage"
     description: Run Flutter tests for a specific package in this project.
