@@ -13,7 +13,9 @@ enum ResizeType {
   fill,
 }
 
+/// Extensions for [ResizeType].
 extension ResizeX on ResizeType {
+  /// Gets the [ResizeType] as a String.
   String get name => {
         ResizeType.clip: 'clip',
         ResizeType.crop: 'crop',

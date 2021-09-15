@@ -5,9 +5,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template reaction_list_page}
 /// Renders a list of reactions to a post.
-/// {@endtemplate}
+///{@endtemplate}
 class ReactionListPage extends StatelessWidget {
-  ///{@macro reaction_list_page}
+  /// Builds a [ReactionListPage].
   ReactionListPage({
     Key? key,
     required this.activity,
@@ -29,7 +29,7 @@ class ReactionListPage extends StatelessWidget {
   })  : _lookupValue = lookupValue ?? activity.id!,
         super(key: key);
 
-  /// The activity we want to display notifications for.
+  /// The activity to display notifications for.
   final EnrichedActivity activity;
 
   ///{@macro reaction_callback}
@@ -47,22 +47,30 @@ class ReactionListPage extends StatelessWidget {
   /// The callback to invoke when a reaction is added.
   final ReactionBuilder reactionBuilder;
 
-  /// The error widget to display if there is an error.
+  /// The widget to display if there is an error.
   final Widget onErrorWidget;
 
-  /// The progress widget to display if there is a progress.
+  /// The widget to display while loading is in progress.
   final Widget onProgressWidget;
 
-  /// The empty widget to display if there is no data.
+  /// The widget to display if there is no data.
   final Widget onEmptyWidget;
 
   /// The flags to use for the request
   final EnrichmentFlags? flags;
 
+  /// TODO: document me
   final LookupAttribute lookupAttr;
+
   final String _lookupValue;
+
+  /// TODO: document me
   final Filter? filter;
+
+  /// TODO: document me
   final int? limit;
+
+  /// TODO: document me
   final String? kind;
 
   @override

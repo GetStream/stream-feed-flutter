@@ -1,6 +1,10 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:stream_feed/src/core/exceptions.dart';
+import 'package:stream_feed/src/core/error/feeds_error_code.dart';
+import 'package:stream_feed/src/core/error/stream_feeds_error.dart';
+import 'package:stream_feed/src/core/http/interceptor/logging_interceptor.dart';
+import 'package:stream_feed/src/core/http/typedefs.dart';
 import 'package:stream_feed/src/core/location.dart';
 import 'package:stream_feed/src/core/platform_detector/platform_detector.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
@@ -8,14 +12,15 @@ import 'package:stream_feed/version.dart';
 
 part 'stream_http_client_options.dart';
 
-/// This is where we configure the base url, headers,
-///  query parameters and convenient methods for http verbs with error parsing.
+/// This is where we configure the base url, headers, query parameters and
+/// convenience methods for http verbs with error parsing.
 class StreamHttpClient {
   /// [StreamHttpClient] constructor
   StreamHttpClient(
     this.apiKey, {
     Dio? dio,
     StreamHttpClientOptions? options,
+    Logger? logger,
   })  : options = options ?? const StreamHttpClientOptions(),
         httpClient = dio ?? Dio() {
     httpClient
@@ -29,41 +34,58 @@ class StreamHttpClient {
         'stream-auth-type': 'jwt',
         'x-stream-client': this.options._userAgent,
       }
-      ..interceptors.add(LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ));
+      ..interceptors.addAll([
+        if (logger != null && logger.level != Level.OFF)
+          LoggingInterceptor(
+            requestHeader: true,
+            logPrint: (step, message) {
+              switch (step) {
+                case InterceptStep.request:
+                  return logger.info(message);
+                case InterceptStep.response:
+                  return logger.info(message);
+                case InterceptStep.error:
+                  return logger.severe(message);
+              }
+            },
+          ),
+      ]);
   }
 
   /// Your project Stream Chat api key.
-  /// Find your API keys here https://getstream.io/dashboard/
-  /// The API key, it can be safely shared with untrusted entities
+  ///
+  /// Find your API keys here https://getstream.io/dashboard/.
+  ///
+  /// An API key can be safely shared with untrusted entities.
   final String apiKey;
 
   /// Your project Stream Feed clientOptions.
   final StreamHttpClientOptions options;
 
-  /// [Dio] httpClient
-  /// It's been chosen because it's easy to use
-  /// and supports interesting features out of the box
-  /// (Interceptors, Global configuration, FormData, File downloading etc.)
+  /// [Dio] `httpClient`.
+  ///
+  /// Dio was chosen because it's easy to use and supports interesting features
+  /// out of the box (Interceptors, Global configuration, FormData, File
+  /// downloading etc.)
   @visibleForTesting
   final Dio httpClient;
 
-  Exception _parseError(DioError error) {
-    if (error.type == DioErrorType.response) {
-      final apiError = StreamApiException(
-          error.response?.data?.toString(), error.response?.statusCode);
-      return apiError;
+  StreamFeedsNetworkError _parseError(DioError dioError) {
+    StreamFeedsNetworkError feedsError;
+    if (dioError is FeedsError) {
+      feedsError = dioError.error;
+    } else {
+      feedsError = StreamFeedsNetworkError.fromDioError(dioError);
     }
-    return error;
+    print(feedsError.errorCode);
+    return feedsError..stackTrace = dioError.stackTrace;
   }
 
   /// Combines the base url with the [relativeUrl]
   String enrichUrl(String relativeUrl, String serviceName) =>
       '${options._getBaseUrl(serviceName)}/$relativeUrl';
 
-  /// Handy method to make http GET request with error parsing.
+  /// Handy method to make an http GET request with error parsing.
   Future<Response<T>> get<T>(
     String path, {
     String serviceName = 'api',
@@ -82,28 +104,32 @@ class StreamHttpClient {
     }
   }
 
-  /// Handy method to make http POST request with error parsing.
+  /// Handy method to make an http POST request with error parsing.
   Future<Response<T>> post<T>(
     String path, {
     String serviceName = 'api',
     Object? data,
     Map<String, Object?>? queryParameters,
     Map<String, Object?>? headers,
+    OnSendProgress? onSendProgress,
+    OnReceiveProgress? onReceiveProgress,
+    CancelToken? cancelToken,
   }) async {
     try {
-      final response = await httpClient.post<T>(
-        enrichUrl(path, serviceName),
-        queryParameters: queryParameters?.nullProtected,
-        data: data,
-        options: Options(headers: headers?.nullProtected),
-      );
+      final response = await httpClient.post<T>(enrichUrl(path, serviceName),
+          queryParameters: queryParameters?.nullProtected,
+          data: data,
+          options: Options(headers: headers?.nullProtected),
+          onSendProgress: onSendProgress,
+          onReceiveProgress: onReceiveProgress,
+          cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {
       throw _parseError(error);
     }
   }
 
-  /// Handy method to make http DELETE request with error parsing.
+  /// Handy method to make an http DELETE request with error parsing.
   Future<Response<T>> delete<T>(
     String path, {
     String serviceName = 'api',
@@ -122,7 +148,7 @@ class StreamHttpClient {
     }
   }
 
-  /// Handy method to make http PATCH request with error parsing.
+  /// Handy method to make an http PATCH request with error parsing.
   Future<Response<T>> patch<T>(
     String path, {
     String serviceName = 'api',
@@ -143,7 +169,7 @@ class StreamHttpClient {
     }
   }
 
-  /// Handy method to make http PUT request with error parsing.
+  /// Handy method to make an http PUT request with error parsing.
   Future<Response<T>> put<T>(
     String path, {
     String serviceName = 'api',
@@ -165,22 +191,23 @@ class StreamHttpClient {
   }
 
   /// Handy method to post files with error parsing.
-  Future<Response<T>> postFile<T>(
-    String path,
-    MultipartFile file, {
-    String serviceName = 'api',
-    Map<String, Object?>? queryParameters,
-    Map<String, Object?>? headers,
-  }) async {
+  Future<Response<T>> postFile<T>(String path, MultipartFile file,
+      {String serviceName = 'api',
+      Map<String, Object?>? queryParameters,
+      Map<String, Object?>? headers,
+      OnSendProgress? onSendProgress,
+      OnReceiveProgress? onReceiveProgress,
+      CancelToken? cancelToken}) async {
     try {
       final formData = FormData.fromMap({'file': file});
-      final response = await post<T>(
-        path,
-        serviceName: serviceName,
-        data: formData,
-        queryParameters: queryParameters,
-        headers: headers,
-      );
+      final response = await post<T>(path,
+          serviceName: serviceName,
+          data: formData,
+          queryParameters: queryParameters,
+          headers: headers,
+          onSendProgress: onSendProgress,
+          onReceiveProgress: onReceiveProgress,
+          cancelToken: cancelToken);
       return response;
     } on DioError catch (error) {
       throw _parseError(error);

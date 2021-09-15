@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 ///Opens file explorer to select a media file.
 ///{@endtemplate}
 class MediasAction extends StatelessWidget {
-  ///{@macro medias_action}
+  /// Builds a [MediasAction].
   const MediasAction({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
+    return const Icon(
       Icons.collections_outlined, //TODO: svg icons
       color: Colors.blue,
       semanticLabel: 'Medias', //TODO: i18n

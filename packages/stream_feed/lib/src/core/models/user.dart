@@ -4,17 +4,15 @@ import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'user.g.dart';
 
-///{@template user}
-/// Stream allows you to store user information
-/// and embed them inside activities or use them for personalization.
+/// {@template user}
+/// Stream allows you to store user information and embed them inside
+/// activities or use them for personalization.
 ///
 /// When stored in activities, users are automatically enriched by Stream.
-///{@endtemplate}
+/// {@endtemplate}
 @JsonSerializable()
 class User extends Equatable {
-  /// [User] constructor
-  ///
-  /// {@macro user}
+  /// Builds a [User].
   const User({
     this.id,
     this.data,
@@ -24,11 +22,13 @@ class User extends Equatable {
     this.followingCount,
   });
 
-  /// Create a new instance from a json
+  /// Create a new instance from a JSON object
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   ///	The unique identifier for the new user (eg. username, user id, etc.).
-  /// The value is restricted to alphanumeric characters, dashes and underscore symbols.
+  ///
+  /// The value is restricted to alphanumeric characters, dashes and
+  /// underscore symbols.
   final String? id;
 
   /// User additional data.

@@ -1,45 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/item.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/textarea.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'mock.dart';
 
-main() {
+void main() {
   testWidgets('CommentItem', (tester) async {
     await mockNetworkImages(() async {
-      var pressedHashtags = <String?>[];
-      var pressedMentions = <String?>[];
+      final pressedHashtags = <String?>[];
+      final pressedMentions = <String?>[];
 
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeedTheme(
+              data: StreamFeedThemeData.light(),
+              child: child!,
+            );
+          },
           home: Scaffold(
-        body: CommentItem(
-          user: User(data: {
-            'name': 'Rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          }),
-          reaction: Reaction(
-            createdAt: DateTime.now(),
-            kind: 'comment',
-            data: {
-              'text': 'Snowboarding is awesome! #snowboarding #winter @sacha',
-            },
+            body: CommentItem(
+              user: const User(data: {
+                'name': 'Rosemary',
+                'subtitle': 'likes playing fresbee in the park',
+                'profile_image':
+                    'https://randomuser.me/api/portraits/women/20.jpg',
+              }),
+              reaction: Reaction(
+                createdAt: DateTime.now(),
+                kind: 'comment',
+                data: const {
+                  'text':
+                      'Snowboarding is awesome! #snowboarding #winter @sacha',
+                },
+              ),
+              onMentionTap: pressedMentions.add,
+              onHashtagTap: pressedHashtags.add,
+            ),
           ),
-          onMentionTap: (String? mention) {
-            pressedMentions.add(mention);
-          },
-          onHashtagTap: (String? hashtag) {
-            pressedHashtags.add(hashtag);
-          },
         ),
-      )));
+      );
 
       final avatar = find.byType(Avatar);
 
@@ -57,23 +64,41 @@ main() {
         ' @sacha',
       ]);
       expect(richtexts.toList().map((e) => e.style), [
-        TextStyle(
-            inherit: true,
-            color: Color(0xff0ba8e0),
-            fontSize: 14.0,
-            fontWeight: FontWeight.w700),
-        TextStyle(
-            inherit: true,
-            color: Color(0xff7a8287),
-            fontSize: 14.0,
-            fontWeight: FontWeight.w400,
-            height: 1.5),
-        TextStyle(inherit: true, color: Color(0xff000000), fontSize: 14.0),
-        TextStyle(inherit: true, color: Color(0xff000000), fontSize: 14.0),
-        TextStyle(inherit: true, color: Color(0xff000000), fontSize: 14.0),
-        TextStyle(inherit: true, color: Color(0xff0076ff), fontSize: 14.0),
-        TextStyle(inherit: true, color: Color(0xff0076ff), fontSize: 14.0),
-        TextStyle(inherit: true, color: Color(0xff0076ff), fontSize: 14.0)
+        const TextStyle(
+          color: Color(0xff0ba8e0),
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
+        const TextStyle(
+          color: Color(0xff7a8287),
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          height: 1.5,
+        ),
+        const TextStyle(
+          color: Color(0xff000000),
+          fontSize: 14,
+        ),
+        const TextStyle(
+          color: Color(0xff000000),
+          fontSize: 14,
+        ),
+        const TextStyle(
+          color: Color(0xff000000),
+          fontSize: 14,
+        ),
+        const TextStyle(
+          color: Color(0xff0076ff),
+          fontSize: 14,
+        ),
+        const TextStyle(
+          color: Color(0xff0076ff),
+          fontSize: 14,
+        ),
+        const TextStyle(
+          color: Color(0xff0076ff),
+          fontSize: 14,
+        ),
       ]);
 
       await tester.tap(find.widgetWithText(InkWell, ' #winter').first);
@@ -82,7 +107,6 @@ main() {
       expect(pressedMentions, ['sacha']);
     });
   });
-
   testWidgets('CommentField', (WidgetTester tester) async {
     final key = GlobalKey();
     final mockClient = MockStreamFeedClient();
@@ -99,7 +123,10 @@ main() {
       activityId: activityId,
       data: {'text': textInput},
     );
-    final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+    const activity = EnrichedActivity(
+      id: activityId,
+      foreignId: foreignId,
+    );
     const label = kind;
     final engagement = Engagement(
         content: Content(foreignId: FeedId.fromId(activity.foreignId)),
@@ -116,7 +143,14 @@ main() {
         .thenAnswer((_) async => Future.value());
     final textEditingController = TextEditingController();
 
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) {
+          return StreamFeedTheme(
+            data: StreamFeedThemeData.light(),
+            child: child!,
+          );
+        },
         home: Scaffold(
       body: StreamFeedProvider(
         analyticsClient: mockStreamAnalytics,
@@ -141,7 +175,7 @@ main() {
           ),
         ),
       ),
-    )));
+    );
 
     final avatar = find.byType(Avatar);
     final textArea = find.byType(TextArea);
@@ -168,12 +202,12 @@ main() {
     final hintStyle = TextStyle(
       inherit: false,
       color: Colors.pink[500],
-      fontSize: 10.0,
+      fontSize: 10,
     );
     final inputTextStyle = TextStyle(
       inherit: false,
       color: Colors.green[500],
-      fontSize: 12.0,
+      fontSize: 12,
       textBaseline: TextBaseline.alphabetic,
     );
     var _value = '';

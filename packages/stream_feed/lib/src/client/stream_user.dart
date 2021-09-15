@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:stream_feed/src/core/api/users_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart' show User;
+import 'package:stream_feed/src/core/util/enrichment.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
-import 'package:stream_feed/stream_feed.dart';
 
 /// {@template user}
 /// Stream allows you to store user information
@@ -12,7 +12,7 @@ import 'package:stream_feed/stream_feed.dart';
 /// When stored in activities, users are automatically enriched by Stream.
 /// {@endtemplate}
 class StreamUser with EquatableMixin {
-  ///Initialize a [UsersClient] session object
+  /// Initializes a [UsersClient] session object
   StreamUser(
     this._users,
     this.id, {
@@ -21,13 +21,15 @@ class StreamUser with EquatableMixin {
   })  : _secret = secret,
         _userToken = userToken;
 
-  ///User id
+  /// User id
   final String id;
 
-  ///User JWT token
+  /// {@template jwt}
+  /// User JWT
+  /// {@endtemplate}
   final Token? _userToken;
 
-  ///The users client
+  /// The users client
   final UsersAPI _users;
 
   /// You API secret
@@ -71,7 +73,7 @@ class StreamUser with EquatableMixin {
 
   /// Create a new user in stream
   ///
-  /// Usage
+  /// # Usage
   ///
   /// ```dart
   /// await user('john-doe').create( {
@@ -92,28 +94,30 @@ class StreamUser with EquatableMixin {
     return this;
   }
 
-  ///Get or Create a new user in stream
+  /// Get or Create a new user in stream
   Future<StreamUser> getOrCreate(Map<String, Object?> data) =>
       create(data, getOrCreate: true);
 
   /// Delete the user
-  /// Usage:
-  ///```dart
-  ///await user('123').delete();
-  ///```
-  ///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
+  ///
+  /// # Usage:
+  /// ```dart
+  /// await user('123').delete();
+  /// ```
+  /// API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
   Future<void> delete() {
     final token =
         _userToken ?? TokenHelper.buildUsersToken(_secret!, TokenAction.delete);
     return _users.delete(token, id);
   }
 
-  ///  Get the user profile, it includes the follow counts by default
+  /// Get the user profile, it includes the follow counts by default
   Future<StreamUser> profile({bool withFollowCounts = true}) =>
       get(withFollowCounts: withFollowCounts);
 
   /// Get the user data
-  /// Usage
+  ///
+  /// # Usage
   /// ```dart
   /// await user('123').get();
   /// ```
@@ -130,6 +134,7 @@ class StreamUser with EquatableMixin {
   }
 
   /// Update the user
+  ///
   /// # Usage:
   /// ```dart
   ///   await user('123').update({

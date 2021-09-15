@@ -3,18 +3,16 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'open_graph_data.g.dart';
 
-///{@template open_graph}
+/// {@template open_graph}
 /// Open graph data from a website.
+///
 /// An Open Graph data object is a set of key-value pairs that describe a
-/// web page.
-/// It can be used to describe the content of a page, the author of the page,
-/// or the page itself.
-///{@endtemplate}
+/// web page. It can be used to describe the content of a page, the author of
+/// the page, or the page itself.
+/// {@endtemplate}
 @JsonSerializable(createToJson: true)
 class OpenGraphData extends Equatable {
-  /// [OpenGraphData] constructor
-  ///
-  /// {@macro open_graph}
+  /// Builds an [OpenGraphData].
   const OpenGraphData({
     this.title,
     this.type,
@@ -34,10 +32,12 @@ class OpenGraphData extends Equatable {
       _$OpenGraphDataFromJson(json);
 
   ///	Value of the title OG field.
+  ///
   /// The title is usually short and descriptive.
   final String? title;
 
   /// Value of the OG field `type`
+  ///
   /// The type can be one of the following:
   /// - Article
   /// - ArticlePage
@@ -48,20 +48,24 @@ class OpenGraphData extends Equatable {
   final String? type;
 
   /// URL to scrape.
+  ///
   /// The URL is used to scrape the page.
   final String? url;
 
   /// Value of the site OG field
+  ///
   /// The site is the name of the website.
   /// It is used to identify the website.
   /// It is usually the domain name of the website.
   final String? site;
 
   /// Value of the site_name OG field.
+  ///
   /// It is usually the domain name of the website.
   final String? siteName;
 
   ///	Value of the description OG field.
+  ///
   /// It is used to describe the content of a page, the author of the page,
   /// or the page itself.
   final String? description;
@@ -70,6 +74,7 @@ class OpenGraphData extends Equatable {
   final String? determiner;
 
   /// Value of the locale OG field.
+  ///
   /// It is used to describe the language of the content.
   final String? locale;
 
@@ -104,7 +109,7 @@ class OpenGraphData extends Equatable {
 /// OG Image object
 @JsonSerializable(createToJson: true)
 class OgImage extends Equatable {
-  /// [Image] constructor
+  /// Builds an [OgImage].
   const OgImage({
     this.image,
     this.url,
@@ -113,7 +118,7 @@ class OgImage extends Equatable {
     this.height,
     this.type,
     this.alt,
-  }); //TODO: rename this to OG Image
+  });
 
   /// Create a new instance from a json
   factory OgImage.fromJson(Map<String, dynamic> json) =>
@@ -135,13 +140,13 @@ class OgImage extends Equatable {
   final String? height;
 
   /// Value of the type OG field.
+  ///
   /// It is used to describe the type of an image.
   /// It can be one of the following:
   /// - icon
   /// - logo
   /// - photo
   /// - etc
-  ///
   final String? type;
 
   /// Value of the alt OG field.
@@ -165,7 +170,7 @@ class OgImage extends Equatable {
 /// OG Video object
 @JsonSerializable(createToJson: true)
 class OgVideo extends Equatable {
-  /// [Video] constructor
+  /// Builds an [OgVideo].
   const OgVideo({
     this.image,
     this.url,
@@ -196,6 +201,7 @@ class OgVideo extends Equatable {
   final String? height;
 
   /// Value of the type OG field.
+  ///
   /// It is used to describe the type of a video.
   /// It can be one of the following:
   /// - mp4
@@ -224,7 +230,7 @@ class OgVideo extends Equatable {
 /// OG Audio object
 @JsonSerializable(createToJson: true)
 class OgAudio extends Equatable {
-  /// [Audio] constructor
+  /// Builds an [OgAudio].
   const OgAudio({
     this.audio,
     this.url,
@@ -249,6 +255,7 @@ class OgAudio extends Equatable {
   final String? secureUrl;
 
   /// Value of the type OG field.
+  ///
   /// It is used to describe the type of an audio.
   /// It can be one of the following:
   /// - mp3

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template activity_footer}
-/// The Activity Footer is a widget that is used to display the activity footer.
-/// i.e. reaction buttons,post,repost,like buttons, etc.
+/// Displays the footer content for an activity.
+///
+/// This would be reaction buttons, the post, repost, and like buttons, etc.
 ///{@endtemplate}
 class ActivityFooter extends StatelessWidget {
   ///{@macro activity_footer}
@@ -13,17 +14,21 @@ class ActivityFooter extends StatelessWidget {
     required this.activity,
     this.feedGroup = 'user',
   }) : super(key: key);
-  final EnrichedActivity activity;
+
+  /// TODO: document me
+  final DefaultEnrichedActivity activity;
+
+  /// TODO: document me
   final String feedGroup;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          PostButton(
+          ReplyButton(
             activity: activity,
             feedGroup: feedGroup,
           ),

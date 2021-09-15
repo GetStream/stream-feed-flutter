@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/debug.dart';
@@ -5,17 +6,26 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:animations/animations.dart';
 
-enum TransitionType { material, cupertino, sharedAxisTransition }
+/// TODO: document me
+enum TransitionType {
+  /// TODO: document me
+  material,
+
+  /// TODO: document me
+  cupertino,
+
+  /// TODO: document me
+  sharedAxisTransition,
+}
 
 ///{@template flat_activity_list_page}
-///The Page to display a list of activities
-///This page is the main page of the app
-///It displays a list of activities
+/// Display a list of activities.
+///
+/// Best used as the main page of an app.
 ///{@endtemplate}
 class FlatActivityListPage extends StatelessWidget {
-  ///{@macro flat_activity_list_page}
+  /// Builds a [FlatActivityListPage].
   const FlatActivityListPage({
     Key? key,
     this.feedGroup = 'user',
@@ -31,6 +41,8 @@ class FlatActivityListPage extends StatelessWidget {
     this.filter,
     this.flags,
     this.ranking,
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
     this.onProgressWidget = const ProgressStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
     this.onEmptyWidget =
@@ -52,28 +64,28 @@ class FlatActivityListPage extends StatelessWidget {
   /// A feed group to fetch activities for
   final String feedGroup;
 
-  /// A builder to build the activity footer
+  /// Builds the activity footer
   final ActivityFooterBuilder? activityFooterBuilder;
 
-  /// A builder to build the activity content
+  /// Builds the activity content
   final ActivityContentBuilder? activityContentBuilder;
 
-  /// A builder to build the activity header
+  /// Builds the activity header
   final ActivityHeaderBuilder? activityHeaderBuilder;
 
   ///{@macro activity_callback}
   final OnActivityTap? onActivityTap;
 
-  /// A widget to display when theire is an error in the request
+  /// A widget to display when there is an error in the request
   final Widget onErrorWidget;
 
-  /// A widget to display to show a loading progress
+  /// A widget to display loading progress
   final Widget onProgressWidget;
 
   /// A widget to display when there are no activities
   final Widget onEmptyWidget;
 
-  ///Customise the transition
+  /// Customises the transition
   final TransitionType transitionType;
 
   /// The limit of activities to fetch
@@ -94,11 +106,15 @@ class FlatActivityListPage extends StatelessWidget {
   /// The ranking to use for the request
   final String? ranking;
 
+  /// TODO: document me
+  final String handleJsonKey;
+
+  /// TODO: document me
+  final String nameJsonKey;
+
   @override
   Widget build(BuildContext context) {
-    debugCheckHasFeedBlocProvider(context);
-    return FlatFeedCore(
-      bloc: FeedBlocProvider.of(context).bloc,
+    return FlatFeedCore<User, String, String, String>(
       flags: flags,
       limit: limit,
       offset: offset,
@@ -114,6 +130,8 @@ class FlatActivityListPage extends StatelessWidget {
         onHashtagTap: onHashtagTap,
         onMentionTap: onMentionTap,
         onUserTap: onUserTap,
+        nameJsonKey: nameJsonKey,
+        handleJsonKey: handleJsonKey,
         activityHeaderBuilder: activityHeaderBuilder,
         activityFooterBuilder: activityFooterBuilder,
         activityContentBuilder: activityContentBuilder,
@@ -121,8 +139,7 @@ class FlatActivityListPage extends StatelessWidget {
 
             // onActivityTap != null
             //     ? onActivityTap?.call(context, activity)
-            //     //TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
-            // :
+            // TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
             pageRouteBuilder(
           activity: activity,
           context: context,
@@ -132,9 +149,12 @@ class FlatActivityListPage extends StatelessWidget {
             client: StreamFeedProvider.of(context).client,
             child: Scaffold(
               appBar: AppBar(
-                title: Text('Post'),
+                // TODO: Parameterize me
+                title: const Text('Post'),
               ),
               body: CommentView(
+                nameJsonKey: nameJsonKey,
+                handleJsonKey: handleJsonKey,
                 activity: activity,
                 enableCommentFieldButton: true,
                 enableReactions: true,
@@ -173,21 +193,23 @@ class FlatActivityListPage extends StatelessWidget {
         );
         break;
       default:
-        currentNavigator!.push(PageRouteBuilder(
-          pageBuilder: (_, __, ___) => page,
-          transitionsBuilder: (
-            _,
-            animation,
-            secondaryAnimation,
-            child,
-          ) =>
-              SharedAxisTransition(
-            animation: animation,
-            secondaryAnimation: secondaryAnimation,
-            transitionType: SharedAxisTransitionType.horizontal,
-            child: child,
+        currentNavigator!.push(
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => page,
+            transitionsBuilder: (
+              _,
+              animation,
+              secondaryAnimation,
+              child,
+            ) =>
+                SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              child: child,
+            ),
           ),
-        ));
+        );
     }
   }
 }

@@ -88,7 +88,7 @@ class NotificationGroup<T> extends Group<T> {
   /// True if the notification group is read.
   final bool? isRead;
 
-  ///  True if the notification group is seen.
+  /// True if the notification group is seen.
   final bool? isSeen;
 
   @override

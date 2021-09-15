@@ -35,7 +35,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
 /// information about the activities.
-class FlatFeedCore extends StatefulWidget {
+class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
   const FlatFeedCore(
       {Key? key,
       required this.feedGroup,
@@ -55,7 +55,7 @@ class FlatFeedCore extends StatefulWidget {
       : super(key: key);
 
   /// A builder that let you build a ListView of EnrichedActivity based Widgets
-  final EnrichedFeedBuilder feedBuilder;
+  final EnrichedFeedBuilder<A, Ob, T, Or> feedBuilder;
 
   /// An error widget to show when an error occurs
   final Widget onErrorWidget;
@@ -118,7 +118,7 @@ class _FlatFeedCoreState extends State<FlatFeedCore> {
   // }
 
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => widget.bloc.queryEnrichedActivities(
+  Future<void> loadData() => widget.bloc.queryEnrichedActivities<A, Ob, T, Or>(
         feedGroup: widget.feedGroup,
         limit: widget.limit,
         offset: widget.offset,
@@ -131,7 +131,7 @@ class _FlatFeedCoreState extends State<FlatFeedCore> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<EnrichedActivity>>(
+    return StreamBuilder<List<EnrichedActivity<A, Ob, T, Or>>>(
       stream: widget.bloc.activitiesStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {

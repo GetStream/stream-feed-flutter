@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 /// Icon set of stream feed
 class StreamSvgIcon extends StatelessWidget {
-  /// Constructor for creating a [StreamSvgIcon]
+  /// Builds a [StreamSvgIcon]
   const StreamSvgIcon({
     Key? key,
     required this.assetName,
@@ -11,18 +11,6 @@ class StreamSvgIcon extends StatelessWidget {
     this.width = 14,
     this.height = 14,
   }) : super(key: key);
-
-  /// Name of icon asset
-  final String assetName;
-
-  /// Width of icon
-  final double? width;
-
-  /// Height of icon
-  final double? height;
-
-  /// Color of icon
-  final Color? color;
 
   /// [StreamSvgIcon] loveActive icon
   factory StreamSvgIcon.loveActive({
@@ -131,6 +119,19 @@ class StreamSvgIcon extends StatelessWidget {
         width: size,
         height: size,
       );
+
+  /// The name of the icon asset
+  final String assetName;
+
+  /// The width of the icon
+  final double? width;
+
+  /// The height of the icon
+  final double? height;
+
+  /// The color of the icon
+  final Color? color;
+
   @override
   Widget build(BuildContext context) {
     final key = Key('StreamSvgIcon-$assetName');

@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
-    hide Image;
-
-import '../../utils/typedefs.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template avatar}
 /// An avatar for the user.
 ///{@endtemplate}
 class Avatar extends StatelessWidget {
-  ///The User whose avatar we are displaying.
-  final User? user;
-
-  ///The size of the avatar.
-  final double size;
-
-  ///{@macro user_callback}
-  final OnUserTap? onUserTap;
-
-  ///{@macro avatar}
+  /// Builds an [Avatar].
   const Avatar({
     Key? key,
     this.user,
@@ -27,7 +16,16 @@ class Avatar extends StatelessWidget {
     this.onUserTap,
   }) : super(key: key);
 
-  /// A jsonKey if you want to override the profile url of [User.data]
+  /// The User whose avatar we are displaying.
+  final User? user;
+
+  /// The size of the avatar.
+  final double? size;
+
+  ///{@macro user_callback}
+  final OnUserTap? onUserTap;
+
+  /// A jsonKey for overriding the profile url of [User.data]
   final String jsonKey;
 
   @override
@@ -61,8 +59,10 @@ class Avatar extends StatelessWidget {
             )
           : ClipOval(
               child: StreamSvgIcon.avatar(
-                  //TODO: provide a way to cusomize default avatar
-                  size: size)),
+                //TODO: provide a way to customize default avatar
+                size: size,
+              ),
+            ),
     );
   }
 }

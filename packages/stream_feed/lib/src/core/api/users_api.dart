@@ -29,7 +29,7 @@ class UsersAPI {
     return User.fromJson(result.data!);
   }
 
-  /// Get the user data
+  /// Get data for a single user
   Future<User> get(
     Token token,
     String id, {
@@ -44,7 +44,7 @@ class UsersAPI {
     return User.fromJson(result.data);
   }
 
-  ///Update the user
+  /// Update a single user
   Future<User> update(Token token, String id, Map<String, Object?> data) async {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     final updatedUser = User(id: id, data: data);
@@ -56,7 +56,7 @@ class UsersAPI {
     return User.fromJson(result.data);
   }
 
-  ///Delete the user
+  /// Delete a single user
   Future<void> delete(Token token, String id) {
     checkArgument(id.isNotEmpty, 'Missing user ID');
     return _client.delete(

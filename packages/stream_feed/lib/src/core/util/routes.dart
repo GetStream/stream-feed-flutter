@@ -1,5 +1,6 @@
 import 'package:stream_feed/src/core/models/feed_id.dart';
 
+/// TODO: document me
 class Routes {
   static const _addToManyPath = 'feed/add_to_many';
   static const _followManyPath = 'follow_many';
@@ -27,8 +28,8 @@ class Routes {
   static String buildFeedUrl(FeedId feed, [String path = '']) =>
       '$_feedPath/${feed.slug}/${feed.userId}/$path';
 
-  /// Handy method to build a url for a personalization resource for a given path
-  /// and resource
+  /// Handy method to build a url for a personalization resource for a given
+  /// path and resource
   static String buildPersonalizationURL(String resource, [String path = '']) =>
       '$_personalizationPath/$_feedPath/$resource/$path';
 
@@ -37,6 +38,7 @@ class Routes {
   static String buildEnrichedFeedUrl(FeedId feed, [String path = '']) =>
       '$_enrichedFeedPath/${feed.slug}/${feed.userId}/$path';
 
+  /// TODO: document me
   static String get enrichedActivitiesUrl => _enrichActivitiesPath;
 
   /// Handy method to build a url for a Collection resource for a given path
@@ -51,36 +53,36 @@ class Routes {
   static String buildRefreshCDNUrl([String? path = '']) =>
       '$path/$_refreshPath/';
 
-  ///Handy method to build a URL for the users resource for a given path
+  /// Handy method to build a URL for the users resource for a given path
   static String buildUsersUrl([String path = '']) => '$_usersPath/$path';
 
-  ///Url for the files resource
+  /// Url for the files resource
   static String get filesUrl => _filesPath;
 
-  ///Url for the images resource
+  /// Url for the images resource
   static String get imagesUrl => _imagesPath;
 
-  ///Url for the open graph resource
+  /// Url for the open graph resource
   static String get openGraphUrl => _openGraphPath;
 
-  ///Url for the activity update url
+  /// Url for the activity update url
   static String get activityUpdateUrl => _activityUpdatePath;
 
-  ///Url for the personalization feed resource
+  /// Url for the personalization feed resource
   static String get personalizedFeedUrl => _personalizationFeedPath;
 
-  ///Url for the add to many resource
+  /// Url for the add to many resource
   static String get addToManyUrl => _addToManyPath;
 
-  ///Url for the follow many resource
+  /// Url for the follow many resource
   static String get followManyUrl => _followManyPath;
 
-  ///Url for the unfollow many resource
+  /// Url for the unfollow many resource
   static String get unfollowManyUrl => _unfollowManyPath;
 
-  ///Url for the activities resource
+  /// Url for the activities resource
   static String get activitesUrl => _activitiesPath;
 
-  ///Url for stats follow resource
+  /// Url for stats follow resource
   static String get statsFollowUrl => _statsFollowPath;
 }

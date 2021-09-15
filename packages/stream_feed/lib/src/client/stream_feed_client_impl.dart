@@ -18,7 +18,6 @@ import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
-
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
@@ -34,7 +33,7 @@ final _levelEmojiMapper = {
 
 ///{@macro stream_feed_client}
 class StreamFeedClientImpl implements StreamFeedClient {
-  /// [StreamFeedClientImpl] constructor
+  /// Builds a [StreamFeedClientImpl].
   ///{@macro stream_feed_client}
   StreamFeedClientImpl(
     this.apiKey, {
@@ -49,10 +48,11 @@ class StreamFeedClientImpl implements StreamFeedClient {
     StreamHttpClientOptions? options,
   }) {
     assert(_ensureCredentials(), '');
-    _api = api ?? StreamApiImpl(apiKey, options: options);
     _logger = Logger.detached('📜')..level = logLevel;
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
     _logger.info('instantiating new client');
+
+    _api = api ?? StreamApiImpl(apiKey, logger: _logger, options: options);
 
     if (userToken != null) {
       final jwtBody = jwtDecode(userToken!);

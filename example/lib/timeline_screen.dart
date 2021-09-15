@@ -1,16 +1,28 @@
-import 'extension.dart';
+import 'package:example/activity_item.dart';
+import 'package:example/extension.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-import 'activity_item.dart';
-
+//ignore: public_member_api_docs
 class TimelineScreen extends StatefulWidget {
-  final StreamUser currentUser;
+  //ignore: public_member_api_docs
+  const TimelineScreen({
+    required this.currentUser,
+    Key? key,
+  }) : super(key: key);
 
-  const TimelineScreen({Key? key, required this.currentUser}) : super(key: key);
+  //ignore: public_member_api_docs
+  final StreamUser currentUser;
 
   @override
   _TimelineScreenState createState() => _TimelineScreenState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<StreamUser>('currentUser', currentUser));
+  }
 }
 
 class _TimelineScreenState extends State<TimelineScreen> {
@@ -18,10 +30,21 @@ class _TimelineScreenState extends State<TimelineScreen> {
   bool _isLoading = true;
   List<Activity> activities = <Activity>[];
 
+  late final Subscription _feedSubscription;
+
+  Future<void> _listenToFeed() async {
+    _feedSubscription = await _client
+        .flatFeed('timeline', widget.currentUser.id)
+        .subscribe((message) {
+      print(message);
+    });
+  }
+
   Future<void> _loadActivities({bool pullToRefresh = false}) async {
     if (!pullToRefresh) setState(() => _isLoading = true);
     final userFeed = _client.flatFeed('timeline', widget.currentUser.id);
     final data = await userFeed.getActivities();
+    final data2 = await userFeed.getEnrichedActivities();
     if (!pullToRefresh) _isLoading = false;
     setState(() => activities = data);
   }
@@ -30,7 +53,14 @@ class _TimelineScreenState extends State<TimelineScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _client = context.client;
+    // _listenToFeed();
     _loadActivities();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _feedSubscription.cancel();
   }
 
   @override
@@ -39,14 +69,14 @@ class _TimelineScreenState extends State<TimelineScreen> {
       body: RefreshIndicator(
         onRefresh: () => _loadActivities(pullToRefresh: true),
         child: _isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : activities.isEmpty
                 ? Column(
                     children: [
-                      Text('No activities yet!'),
-                      RaisedButton(
+                      const Text('No activities yet!'),
+                      ElevatedButton(
                         onPressed: _loadActivities,
-                        child: Text('Reload'),
+                        child: const Text('Reload'),
                       )
                     ],
                   )
@@ -61,5 +91,11 @@ class _TimelineScreenState extends State<TimelineScreen> {
                   ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<Activity>('activities', activities));
   }
 }

@@ -1,6 +1,7 @@
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
+import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_marker.dart';
 import 'package:stream_feed/src/core/models/enriched_activity.dart';
@@ -8,19 +9,20 @@ import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/group.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// {@template aggregatedFeed}
-/// Aggregated feeds are helpful if you want to group activities.
+/// Aggregated feeds are helpful for grouping activities.
 ///
 /// Here are some examples of what you can achieve using aggregated feeds:
 /// - 'Eric followed 10 people'
 /// - 'Julie and 14 others liked your photo'
 /// {@endtemplate}
 class AggregatedFeed extends Feed {
-  ///{@macro aggregatedFeed}
-  AggregatedFeed(
+  /// Initialize a [AggregatedFeed] object
+  const AggregatedFeed(
     FeedId feedId,
     FeedAPI feed, {
     Token? userToken,
@@ -34,7 +36,7 @@ class AggregatedFeed extends Feed {
           subscriber: subscriber,
         );
 
-  ///Retrieves one activity from a feed
+  /// Retrieves one activity from a feed
   Future<Group<Activity>> getActivityDetail(String activityId) async {
     final activities = await getActivities(
         limit: 1,
@@ -74,7 +76,8 @@ class AggregatedFeed extends Feed {
   /// Retrieve activities with reaction enrichment
   ///
   /// {@macro filter}
-  Future<List<Group<EnrichedActivity>>> getEnrichedActivities({
+  Future<List<Group<EnrichedActivity<A, Ob, T, Or>>>>
+      getEnrichedActivities<A, Ob, T, Or>({
     int? limit,
     int? offset,
     String? session,
@@ -93,8 +96,12 @@ class AggregatedFeed extends Feed {
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
-        .map((e) => Group.fromJson(e,
-            (json) => EnrichedActivity.fromJson(json as Map<String, dynamic>?)))
+        .map((e) => Group.fromJson(
+              e,
+              (json) => EnrichedActivity<A, Ob, T, Or>.fromJson(
+                json! as Map<String, dynamic>?,
+              ),
+            ))
         .toList(growable: false);
     return data;
   }

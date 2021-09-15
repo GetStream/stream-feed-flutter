@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template like_button}
-///The Like Button is a reaction button that displays a like icon.
-/// It is used to like a post when pressed
+/// A reaction button that displays a like icon.
+///
+/// It is used to like a post when pressed.
 ///{@endtemplate}
 class LikeButton extends StatelessWidget {
-  ///{@macro like_button}
+  /// Builds a [LikeButton].
   const LikeButton({
     Key? key,
     required this.activity,
@@ -17,33 +19,45 @@ class LikeButton extends StatelessWidget {
     this.onTap,
     this.activeIcon,
     this.inactiveIcon,
+    this.hoverColor,
   }) : super(key: key);
 
-  ///The reaction received from stream that should be liked when pressing the LikeButton.
+  /// The reaction received from Stream that should be liked when pressing
+  /// the [LikeButton].
   final Reaction? reaction;
 
-  /// The activity received from stream that should be liked when pressing the LikeButton.
+  /// The activity received from Stream that should be liked when pressing
+  /// the [LikeButton].
   final EnrichedActivity activity;
 
-  ///If you want to override on tap for some reasons
+  /// The callback to be performed on tap.
+  ///
+  /// This is generally not to be overridden, but can be done if developers
+  /// wish.
   final VoidCallback? onTap;
 
-  ///If you want to override the activeIcon
+  /// The icon to display when a post has been liked by the current user.
   final Widget? activeIcon;
 
-  ///If you want to override the inactiveIcon
+  /// The icon to display when a post has not yet been liked by the current
+  /// user.
   final Widget? inactiveIcon;
 
-  /// The feed group that the LikeButton is associated with.
+  /// The feed group that this [LikeButton] is associated with.
   final String feedGroup;
+
+  final Color? hoverColor;
 
   @override
   Widget build(BuildContext context) {
     return ReactionButton(
       activity: activity,
       activeIcon: activeIcon ?? StreamSvgIcon.loveActive(),
-      inactiveIcon: inactiveIcon ?? StreamSvgIcon.loveInactive(),
-      hoverColor: Colors.red.shade100,
+      inactiveIcon: inactiveIcon ??
+          StreamSvgIcon.loveInactive(
+            color: StreamFeedTheme.of(context).primaryIconTheme.color,
+          ),
+      hoverColor: hoverColor ?? ReactionTheme.of(context).hoverColor,
 
       ///TODO: third state hover on desktop
       reaction: reaction,

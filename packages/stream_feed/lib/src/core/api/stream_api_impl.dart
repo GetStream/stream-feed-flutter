@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:stream_feed/src/core/api/batch_api.dart';
 import 'package:stream_feed/src/core/api/collections_api.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
@@ -17,9 +18,15 @@ class StreamApiImpl implements StreamAPI {
   /// [StreamApiImpl] constructor
   StreamApiImpl(
     String apiKey, {
+    Logger? logger,
     StreamHttpClient? client,
     StreamHttpClientOptions? options,
-  }) : _client = client ?? StreamHttpClient(apiKey, options: options);
+  }) : _client = client ??
+            StreamHttpClient(
+              apiKey,
+              logger: logger,
+              options: options,
+            );
 
   final StreamHttpClient _client;
 

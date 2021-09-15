@@ -7,15 +7,16 @@ import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/reaction.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 /// The http layer api for CRUD operations on Reactions
 class ReactionsAPI {
-  /// [ReactionsAPI] constructor
+  /// Builds a [ReactionsAPI].
   const ReactionsAPI(this._client);
 
   final StreamHttpClient _client;
 
-  ///Add reaction
+  /// Add reaction
   Future<Reaction> add(Token token, Reaction reaction) async {
     checkArgument(reaction.activityId != null || reaction.parent != null,
         'Reaction has to either have an activity ID or parent');
@@ -58,7 +59,8 @@ class ReactionsAPI {
     );
   }
 
-  ///read reactions and filter them
+  /// Read reactions and filter them
+  ///
   /// Parameters:
   /// - [lookupAttr]: name of the reaction attribute to paginate on.
   /// Can be activity_id, reaction_id or user_id.
@@ -87,8 +89,8 @@ class ReactionsAPI {
     return data;
   }
 
-  ///paginated reactions and filter them
-  Future<PaginatedReactions> paginatedFilter(
+  /// Paginated reactions and filter them
+  Future<PaginatedReactions<A, Ob, T, Or>> paginatedFilter<A, Ob, T, Or>(
     Token token,
     LookupAttribute lookupAttr,
     String lookupValue,
@@ -107,21 +109,23 @@ class ReactionsAPI {
         'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
-    return PaginatedReactions.fromJson(result.data);
+    return PaginatedReactions<A, Ob, T, Or>.fromJson(result.data);
   }
 
   /// Next reaction pagination returned by [PaginatedReactions].next
-  Future<PaginatedReactions> nextPaginatedFilter(
-      Token token, String next) async {
+  Future<PaginatedReactions<A, Ob, T, Or>> nextPaginatedFilter<A, Ob, T, Or>(
+    Token token,
+    String next,
+  ) async {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
     final result = await _client.get(
       next,
       headers: {'Authorization': '$token'},
     );
-    return PaginatedReactions.fromJson(result.data);
+    return PaginatedReactions<A, Ob, T, Or>.fromJson(result.data);
   }
 
-  /// update a reaction
+  /// Update a reaction
   Future<Reaction> update(Token token, Reaction updatedReaction) async {
     checkArgument(updatedReaction.id!.isNotEmpty, "Reaction id can't be empty");
     final targetFeedIds = updatedReaction.targetFeeds

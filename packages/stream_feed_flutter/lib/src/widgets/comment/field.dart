@@ -6,27 +6,12 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///{@template comment_field}
-/// A Comment Field widget is a field for adding comments to a feed
-/// It displays the avatar, a textarea and a button to submit the comment.
+/// A field for adding comments to a feed.
+///
+/// It displays the avatar, a text area and a button to submit the comment.
 ///{@endtemplate}
 class CommentField extends StatelessWidget {
-  /// The activity on which the comment will be posted (reaction)
-  /// if none is provided, the comment will be posted as new activity.
-  final EnrichedActivity? activity;
-
-  /// The target feed on which the comment will be posted.
-  final List<FeedId>? targetFeeds;
-
-  /// Text Editing Controller used by both the comment textarea and the submit button.
-  final TextEditingController textEditingController;
-
-  /// Wether or not you want to display the comment button.
-  final bool enableButton;
-
-  ///The feed group part of the feed
-  final String feedGroup;
-
-  ///{@macro comment_field}
+  /// Builds a [CommentField].
   const CommentField({
     Key? key,
     required this.feedGroup,
@@ -36,6 +21,24 @@ class CommentField extends StatelessWidget {
     this.enableButton = true,
   }) : super(key: key);
 
+  /// The activity on which the comment will be posted (reaction).
+  ///
+  /// If no activity is provided, the comment will be posted as a new activity.
+  final EnrichedActivity? activity;
+
+  /// The target feed on which the comment will be posted.
+  final List<FeedId>? targetFeeds;
+
+  /// [TextEditingController] used by both the comment text area and the
+  /// submit button.
+  final TextEditingController textEditingController;
+
+  /// Whether or not to display the comment button.
+  final bool enableButton;
+
+  ///The feed group part of the feed
+  final String feedGroup;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,8 +47,12 @@ class CommentField extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Avatar(), //TODO: User in core and onUserTap
+              padding: EdgeInsets.all(8),
+              //TODO: pass down User
+              child: Avatar(
+                // user: user,
+                size: UserBarTheme.of(context).avatarSize,
+              ), //TODO: User in core and onUserTap
             ),
             Expanded(
               child: TextArea(

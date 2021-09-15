@@ -5,12 +5,18 @@ import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'activity.g.dart';
 
-/// "In its simplest form, an activity consists of
-/// an actor, a verb, and an object.
-/// It tells the story of a person performing an action on or with an object."
+/// In its simplest form, an activity consists of an `actor`, a `verb`,
+/// an `object`, and a `target`.
+///
+/// It tells the story of a person performing an action on or with an object --
+/// "Geraldine posted a photo to her album" or "John shared a video".
+/// In most cases these components will be explicit, but they may also be
+/// implied.
+///
+/// Read more about Activities [here](https://getstream.io/activity-feeds/docs/flutter-dart/adding_activities/?language=dart) and [here](https://activitystrea.ms/specs/json/1.0/).
 @JsonSerializable()
 class Activity extends Equatable {
-  /// Instantiate a new [Activity]
+  /// Builds an [Activity].
   const Activity({
     required this.actor,
     required this.verb,
@@ -27,29 +33,60 @@ class Activity extends Equatable {
     this.extraData,
   });
 
-  /// Create a new instance from a json
+  /// Create a new [Activity] instance from a JSON object.
   factory Activity.fromJson(Map<String, dynamic>? json) =>
       _$ActivityFromJson(Serializer.moveKeysToRoot(json, topLevelFields)!);
 
-  /// Activity id: an unique identifier for the activity.
+  /// Provides a permanent, universally unique identifier for the activity in
+  /// the form of an absolute IRI.
+  ///
+  /// An activity SHOULD contain a single id property. If an activity does not
+  /// contain an id property, consumers MAY use the value of the url property
+  /// as a less-reliable, non-unique identifier.
   @JsonKey(includeIfNull: false)
   final String? id;
 
-  /// the thing or service that was the actor in the interaction.
+  /// Describes the entity that performed the activity.
+  ///
+  /// An activity MUST contain one actor property whose value is a single
+  /// Object.
   final String? actor;
 
-  ///	The verb of the activity i.e. what the actor did.
+  ///	Identifies the action that the activity describes.
+  ///
+  /// An activity SHOULD contain a verb property whose value is a JSON String
+  /// that is non-empty and matches either the "isegment-nz-nc" or the "IRI"
+  /// production in.. Note that the use of a relative reference other than a
+  /// simple name is not allowed. If the verb is not specified, or if the
+  /// value is null, the verb is assumed to be "post".
   final String? verb;
 
-  /// The object of the activity i.e the thing or service
-  /// that was acted upon or with.
+  /// Describes the primary object of the activity.
+  ///
+  /// For instance, in the activity, "John saved a movie to his wishlist",
+  /// the object of the activity is "movie". An activity SHOULD contain an
+  /// object property whose value is a single Object. If the object property
+  /// is not contained, the primary object of the activity MAY be implied by
+  /// context.
   final String? object;
 
-  /// A unique ID from your application for this activity. i.e. : pin:1 or like:300
+  /// A unique ID from your application for this activity.
+  ///
+  /// Examples: "pin:1" or "like:300"
   @JsonKey(includeIfNull: false)
   final String? foreignId;
 
-  /// The optional target of the activity i.e. meant for another thing or service.
+  /// Describes the target of the activity.
+  ///
+  /// The precise meaning of the activity's target is dependent on the
+  /// activities verb, but will often be the object the English preposition
+  /// "to".
+  ///
+  /// For instance, in the activity, "John saved a movie to his wishlist",
+  /// the target of the activity is "wishlist". The activity target MUST NOT
+  /// be used to identity an indirect object that is not a target of the
+  /// activity. An activity MAY contain a target property whose value is a
+  /// single Object.
   @JsonKey(includeIfNull: false)
   final String? target;
 
@@ -62,9 +99,12 @@ class Activity extends Equatable {
   final String? origin;
 
   /// The recipients of the action.
+  ///
   /// The TO field allows you to specify a list of feeds
   /// to which the activity should be copied.
-  ///  One way to think about it is as the CC functionality of email.
+  ///
+  /// One way to think about it is as the CC functionality of email.
+  ///
   /// # Use Cases
   /// - ## Mentions
   /// Targeting is useful
@@ -113,13 +153,13 @@ class Activity extends Equatable {
   @JsonKey(includeIfNull: false)
   final double? score;
 
-  ///  This allows you to gain a better understanding of that user's interests.
-  ///  Common examples include:
-  ///     Clicking on a link
-  ///     Liking or commenting
-  ///     Sharing an activity
-  ///     Viewing another user's profile page
-  ///     Searching for a certain user/content/topic/etc.
+  /// This allows you to gain a better understanding of that user's interests.
+  /// Common examples include:
+  ///   - Clicking on a link
+  ///   - Liking or commenting
+  ///   - Sharing an activity
+  ///   - Viewing another user's profile page
+  ///   - Searching for a certain user/content/topic/etc.
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? analytics;
 
@@ -152,8 +192,7 @@ class Activity extends Equatable {
   Map<String, dynamic> toJson() =>
       Serializer.moveKeysToMapInPlace(_$ActivityToJson(this), topLevelFields);
 
-  ///  allows us to copy an Activity
-  ///and pass in arguments that overwrite settable values.
+  /// Copies this [Activity] to a new instance.
   Activity copyWith({
     String? id,
     String? actor,

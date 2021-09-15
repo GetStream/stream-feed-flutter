@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:stream_feed/src/client/aggregated_feed.dart';
 import 'package:stream_feed/src/client/batch_operations_client.dart';
 import 'package:stream_feed/src/client/collections_client.dart';
@@ -9,6 +10,7 @@ import 'package:stream_feed/src/client/personalization_client.dart';
 import 'package:stream_feed/src/client/reactions_client.dart';
 import 'package:stream_feed/src/client/stream_feed_client_impl.dart';
 import 'package:stream_feed/src/client/stream_user.dart';
+import 'package:stream_feed/src/core/api/stream_api.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
@@ -22,18 +24,21 @@ enum Runner {
   client,
 }
 
-///{@template stream_feed_client}
-/// The client class that manages API calls and authentication
+/// {@template stream_feed_client}
+/// The client class that manages API calls and authentication.
+///
 /// To instantiate the client you need an API key and secret.
-/// You can find the key and secret on the dashboard.
+/// You can find the key and secret on the Stream dashboard.
+///
 /// If you want to use the API client directly on your web/mobile app
 /// you need to generate a user token server-side and pass it.
 ///
+/// There are a few different ways to use a [StreamFeedClient]:
 ///
-///{@macro connect}
-///{@endtemplate}
+/// {@macro connect}
+/// {@endtemplate}
 abstract class StreamFeedClient {
-  ///{@template connect}
+  /// {@template connect}
   /// - Instantiate a new client (server side) with [StreamFeedClient.connect]
   /// using your api [secret] parameter and [apiKey]
   /// ```dart
@@ -49,7 +54,7 @@ abstract class StreamFeedClient {
   /// ```dart
   /// var client = connect('YOUR_API_KEY',token: Token('userToken'));
   /// ```
-  ///{@endtemplate}
+  /// {@endtemplate}
   factory StreamFeedClient.connect(
     String apiKey, {
     Token? token,
@@ -57,6 +62,10 @@ abstract class StreamFeedClient {
     String? appId,
     StreamHttpClientOptions? options,
     Runner runner = Runner.client,
+    StreamAPI? api,
+    String fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
+    Level logLevel = Level.WARNING,
+    LogHandlerFunction? logHandlerFunction,
   }) =>
       StreamFeedClientImpl(
         apiKey,
@@ -65,6 +74,10 @@ abstract class StreamFeedClient {
         appId: appId,
         options: options,
         runner: runner,
+        api: api,
+        fayeUrl: fayeUrl,
+        logLevel: logLevel,
+        logHandlerFunction: logHandlerFunction,
       );
 
   /// Returns the currentUser assigned to [StreamFeedClient]
@@ -123,23 +136,23 @@ abstract class StreamFeedClient {
   /// {@macro notificationFeed}
   NotificationFeed notificationFeed(String slug, [String? userId]);
 
-  /// Generate a JWT tokens that include the [userId] as payload
-  /// and that are signed using your Stream API Secret.
+  /// Generate a JWT that includes the [userId] as payload and that is signed
+  /// using your Stream API Secret.
   ///
-  /// Optionally you can have tokens expire after a certain amount of time.
+  /// Optionally, you can have tokens expire after a certain amount of time.
   ///
-  /// By default all SDK libraries generate user tokens
-  /// without an expiration time.
+  /// By default, all SDK libraries generate user tokens without an expiration
+  /// time.
   Token frontendToken(
     String userId, {
     DateTime? expiresAt,
   });
 
-  ///This endpoint allows you to retrieve open graph information from a URL
-  ///which you can then use to add images and a description to activities.
+  /// This endpoint allows you to retrieve open graph information from a URL,
+  /// which you can then use to add images and a description to activities.
   ///
-  ///For example:
-  ///```dart
+  /// For example:
+  /// ```dart
   /// final urlPreview = await client.og(
   ///   'http://www.imdb.com/title/tt0117500/',
   /// );
@@ -148,7 +161,7 @@ abstract class StreamFeedClient {
 
   /// Create a new user in stream
   ///
-  /// Usage
+  /// # Usage
   ///
   /// ```dart
   /// await createUser('john-doe', {
@@ -165,7 +178,8 @@ abstract class StreamFeedClient {
   });
 
   /// Get the user data
-  /// Usage
+  ///
+  /// # Usage
   /// ```dart
   /// await getUser('123');
   /// ```
@@ -185,10 +199,11 @@ abstract class StreamFeedClient {
   Future<User> updateUser(String id, Map<String, Object?> data);
 
   /// Delete the user
-  /// Usage:
-  ///```dart
-  ///await deleteUser('123');
-  ///```
-  ///API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
+  ///
+  /// # Usage:
+  /// ```dart
+  /// await deleteUser('123');
+  /// ```
+  /// API docs: [removing-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#removing-users)
   Future<void> deleteUser(String id);
 }
