@@ -1,0 +1,43 @@
+---
+slug: /
+id: activities
+sidebar_position: 2
+title: Activities
+---
+# Activities
+## Basics
+In Stream Feeds, an item in a feed is called an `activity`. In its simplest form, an `activity` consists of an `actor`, a `verb`, and an `object`. It tells the story of a person performing an action on or with an object.
+
+In its simplest form, adding an activity to a feed means passing an object with the following basic properties:
+* `actor`
+* `verb`
+* `object`
+
+It is also recommended to pass a foreign ID and the Time.
+
+Let's take a look at the following example:
+
+_“Erik is pinning Hawaii to his Places to Visit board.”_
+
+We can identify the components of this activity as follows:
+* The `actor` is "Eric" (User:1)
+* The `verb` is "pin"
+* The `object` is "Hawaii" (Place:42)
+* The foreign ID is Eric's "Places to visit board"  (Activity:1)
+* The time (for this example) would be `2017-07-01T20:30:45.123`
+
+NOTE: As seen above, the timestamp does not contain any timezone data. However, all Stream timestamps are in UTC time.
+
+## Adding an Activity
+Below is an example of adding an activity to a flat feed using our low-level client package, `stream_feed`:
+
+```dart
+// Instantiate a feed using feed group 'user' and user id '1' 
+var user1 = client.flatFeed('user', '1'); 
+ 
+// Create an activity object 
+const activity = Activity(actor: 'User:1', verb: 'pin', object: 'Place:42'); 
+ 
+// Add an activity to the feed 
+await user1.addActivity(activity); 
+```
