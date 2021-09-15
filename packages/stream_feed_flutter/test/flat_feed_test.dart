@@ -44,7 +44,7 @@ void main() {
         final mockFeed = MockFeedAPI();
         final mockStreamAnalytics = MockStreamAnalytics();
         when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
-        when(mockFeed.getEnrichedActivities)
+        when(() => mockFeed.getEnrichedActivities())
             .thenAnswer((_) async => activities);
         await tester.pumpWidget(
           MaterialApp(
