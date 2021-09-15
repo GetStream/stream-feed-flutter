@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
@@ -51,6 +52,25 @@ void main() {
         _childReactionThemeDefault.hoverColor);
     expect(childReactionThemeData.toggleColor,
         _childReactionThemeDefault.toggleColor);
+  });
+
+  testWidgets('default ChildReactionThemeData debugFillProperties',
+      (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const ChildReactionThemeData().debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toString())
+        .toList();
+
+    expect(
+      description,
+      [
+        'hoverColor: null',
+        'toggleColor: null',
+      ],
+    );
   });
 }
 
