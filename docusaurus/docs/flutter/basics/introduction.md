@@ -9,7 +9,7 @@ The Stream Feeds Flutter SDK comprises of three different packages to choose fro
 
 The packages that make up the Stream Feeds Flutter SDK are:
 
-1. <b>Low Level Client (stream_feed)</b>: a pure Dart package that can be used in any Dart project. It provides a low-level client to access the Stream Chat service. It contains no UI or Flutter widgets.
+1. <b>Low Level Client (stream_feed)</b>: a pure Dart package that can be used in any Dart project. It provides a low-level client to access the Stream Feeds service. It contains no UI or Flutter widgets.
 2. <b>Core (stream_feed_flutter_core)</b>: provides business-logic oriented Flutter widgets and classes to fetch common things required for integrating Stream Feeds into your application. Contains no UI.
 3. <b>UI (stream_feed_flutter)</b>: includes both a low-level feeds client and a set of reusable and customizable UI components.
 
