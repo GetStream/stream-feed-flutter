@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-typedef DefaultFeedBloc
-    = FeedBloc<User, String, String, String>;
+typedef DefaultFeedBloc = FeedBloc<User, String, String, String>;
 
 class FeedBloc<A, Ob, T, Or> {
   FeedBloc({required this.client, this.analyticsClient});

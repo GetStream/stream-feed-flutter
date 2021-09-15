@@ -47,8 +47,7 @@ main() {
           child: FlatFeedCore(
             bloc: FeedBloc(client: mockClient),
             feedGroup: 'user',
-            feedBuilder: (BuildContext context,
-                 activities, int idx) {
+            feedBuilder: (BuildContext context, activities, int idx) {
               return Column(
                 children: [
                   Text("${activities[idx].reactionCounts?['like']}") //counts

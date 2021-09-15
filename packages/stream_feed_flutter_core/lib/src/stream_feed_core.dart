@@ -67,7 +67,6 @@ class StreamFeedProvider extends InheritedWidget {
   /// The current user
   // StreamUser? get user => client.currentUser;
 
-
   static StreamFeedProvider of(BuildContext context) {
     final StreamFeedProvider? result =
         context.dependOnInheritedWidgetOfExactType<StreamFeedProvider>();

@@ -202,8 +202,7 @@ void main() {
         // when(() => mockStreamAnalytics.trackEngagement(engagement))
         //     .thenAnswer((_) async => Future.value());
 
-        await tester.pumpWidget(
-          MaterialApp(
+        await tester.pumpWidget(MaterialApp(
             builder: (context, child) {
               return StreamFeedTheme(
                 data: StreamFeedThemeData(),
@@ -211,16 +210,16 @@ void main() {
               );
             },
             home: Scaffold(
-          body: StreamFeedProvider(
-              analyticsClient: mockStreamAnalytics,
-              client: mockClient,
-              child: FeedBlocProvider(
-                  bloc: FeedBloc(
-                    client: mockClient,
-                    analyticsClient: mockStreamAnalytics,
-                  ),
-                  child: withoutOwnReactions)),
-        )));
+              body: StreamFeedProvider(
+                  analyticsClient: mockStreamAnalytics,
+                  client: mockClient,
+                  child: FeedBlocProvider(
+                      bloc: FeedBloc(
+                        client: mockClient,
+                        analyticsClient: mockStreamAnalytics,
+                      ),
+                      child: withoutOwnReactions)),
+            )));
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
         await tester.tap(reactionIcon);

@@ -12,8 +12,10 @@ extension ReactionX on List<Reaction> {
       .firstWhere((r) => r.id! == reaction.id!); //TODO; handle doesn't exist
 }
 
-extension EnrichedActivityX<A, Ob, T, Or> on List<EnrichedActivity<A, Ob, T, Or>> {
-  EnrichedActivity<A, Ob, T, Or> getEnrichedActivityPath(EnrichedActivity<A, Ob, T, Or> enrichedActivity) =>
+extension EnrichedActivityX<A, Ob, T, Or>
+    on List<EnrichedActivity<A, Ob, T, Or>> {
+  EnrichedActivity<A, Ob, T, Or> getEnrichedActivityPath(
+          EnrichedActivity<A, Ob, T, Or> enrichedActivity) =>
       this.firstWhere(
           (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
@@ -24,7 +26,8 @@ extension UpdateIn<A, Ob, T, Or> on List<EnrichedActivity<A, Ob, T, Or>> {
   //     this.firstWhere(
   //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
-  List<EnrichedActivity<A, Ob, T, Or>> updateIn(EnrichedActivity<A, Ob, T, Or> enrichedActivity, int indexPath) {
+  List<EnrichedActivity<A, Ob, T, Or>> updateIn(
+      EnrichedActivity<A, Ob, T, Or> enrichedActivity, int indexPath) {
     var result = List<EnrichedActivity<A, Ob, T, Or>>.from(this);
     result.isNotEmpty
         ? result.removeAt(indexPath) //removes the item at index 1
@@ -39,8 +42,7 @@ extension UpdateInReaction on List<Reaction> {
   //     this.firstWhere(
   //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
-  List<Reaction> updateIn(
-      Reaction enrichedActivity, int indexPath) {
+  List<Reaction> updateIn(Reaction enrichedActivity, int indexPath) {
     var result = List<Reaction>.from(this);
     result.isNotEmpty
         ? result.removeAt(indexPath) //removes the item at index 1
@@ -49,7 +51,6 @@ extension UpdateInReaction on List<Reaction> {
     return result;
   }
 }
-
 
 extension UnshiftMapList on Map<String, List<Reaction>>? {
   //TODO: maybe refactor to an operator maybe [Reaction] + Reaction

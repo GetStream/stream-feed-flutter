@@ -4,7 +4,9 @@ import 'package:stream_feed_flutter_core/src/states/empty.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
 typedef DefaultFlatFeedCore = FlatFeedCore<User, String, String, String>;
+
 /// [FlatFeedCore] is a simplified class that allows fetching a list of
 /// enriched activities (flat) while exposing UI builders.
 ///
@@ -96,7 +98,8 @@ class FlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   State<FlatFeedCore> createState() => _FlatFeedCoreState();
 }
 
-class _FlatFeedCoreState<A, Ob, T, Or> extends State<FlatFeedCore<A, Ob, T, Or>> {
+class _FlatFeedCoreState<A, Ob, T, Or>
+    extends State<FlatFeedCore<A, Ob, T, Or>> {
   //with WidgetsBindingObserver
   // late FeedBloc _FeedBloc;
 

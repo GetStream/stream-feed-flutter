@@ -36,8 +36,8 @@ void main() {
 
       expect(find.byKey(streamFeedCoreKey), findsOneWidget);
       expect(find.byKey(childKey), findsOneWidget);
-      expect(
-          StreamFeedProvider.of(childKey.currentState!.context).client, isNotNull);
+      expect(StreamFeedProvider.of(childKey.currentState!.context).client,
+          isNotNull);
     },
   );
   testWidgets(
@@ -49,9 +49,8 @@ void main() {
 
       expect(
           () => StreamFeedProvider.of(childKey.currentState!.context),
-          throwsA(predicate<AssertionError>((e) =>
-              e.message ==
-              'No StreamFeedProvider found in context')));
+          throwsA(predicate<AssertionError>(
+              (e) => e.message == 'No StreamFeedProvider found in context')));
       // expect(find.byKey(childKey), findsOneWidget);
     },
   );
