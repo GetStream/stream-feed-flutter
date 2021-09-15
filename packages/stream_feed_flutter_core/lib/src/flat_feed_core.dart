@@ -4,7 +4,7 @@ import 'package:stream_feed_flutter_core/src/states/empty.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
+typedef DefaultFlatFeedCore = FlatFeedCore<User, String, String, String>;
 /// [FlatFeedCore] is a simplified class that allows fetching a list of
 /// enriched activities (flat) while exposing UI builders.
 ///
@@ -35,7 +35,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
 /// information about the activities.
-class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
+class FlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   const FlatFeedCore(
       {Key? key,
       required this.feedGroup,
@@ -90,13 +90,13 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
   /// The feed group to use for the request
   final String feedGroup;
 
-  final FeedBloc bloc;
+  final FeedBloc<A, Ob, T, Or> bloc;
 
   @override
   State<FlatFeedCore> createState() => _FlatFeedCoreState();
 }
 
-class _FlatFeedCoreState extends State<FlatFeedCore> {
+class _FlatFeedCoreState<A, Ob, T, Or> extends State<FlatFeedCore<A, Ob, T, Or>> {
   //with WidgetsBindingObserver
   // late FeedBloc _FeedBloc;
 
@@ -118,7 +118,7 @@ class _FlatFeedCoreState extends State<FlatFeedCore> {
   // }
 
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => widget.bloc.queryEnrichedActivities<A, Ob, T, Or>(
+  Future<void> loadData() => widget.bloc.queryEnrichedActivities(
         feedGroup: widget.feedGroup,
         limit: widget.limit,
         offset: widget.offset,

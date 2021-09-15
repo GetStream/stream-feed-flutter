@@ -27,29 +27,23 @@ main() {
         EnrichedActivity(
           id: "id",
           time: now,
-          actor: EnrichableField(
-            User(data: {
-              'name': 'Rosemary',
-              'handle': '@rosemary',
-              'subtitle': 'likes playing fresbee in the park',
-              'profile_image':
-                  'https://randomuser.me/api/portraits/women/20.jpg',
-            }).toJson(),
-          ),
+          actor: User(data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing fresbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          }),
         ),
         EnrichedActivity(
-          id: "id2",
-          time: now,
-          actor: EnrichableField(
-            User(data: {
+            id: "id2",
+            time: now,
+            actor: User(data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
               'subtitle': 'likes playing fresbee in the park',
               'profile_image':
                   'https://randomuser.me/api/portraits/women/20.jpg',
-            }).toJson(),
-          ),
-        ),
+            })),
       ];
       reactedActivity = activities.first;
       reaction =
@@ -70,39 +64,33 @@ main() {
       );
       expectedResult = [
         EnrichedActivity(
-          id: "id",
-          reactionCounts: {
-            'like': 1,
-          },
-          latestReactions: {
-            'like': [reaction]
-          },
-          ownReactions: {
-            'like': [reaction]
-          },
-          time: now,
-          actor: EnrichableField(
-            User(data: {
+            id: "id",
+            reactionCounts: {
+              'like': 1,
+            },
+            latestReactions: {
+              'like': [reaction]
+            },
+            ownReactions: {
+              'like': [reaction]
+            },
+            time: now,
+            actor: User(data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
               'subtitle': 'likes playing fresbee in the park',
               'profile_image':
                   'https://randomuser.me/api/portraits/women/20.jpg',
-            }).toJson(),
-          ),
-        ),
+            })),
         EnrichedActivity(
           id: "id2",
           time: now,
-          actor: EnrichableField(
-            User(data: {
-              'name': 'Rosemary',
-              'handle': '@rosemary',
-              'subtitle': 'likes playing fresbee in the park',
-              'profile_image':
-                  'https://randomuser.me/api/portraits/women/20.jpg',
-            }).toJson(),
-          ),
+          actor: User(data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing fresbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          }),
         ),
       ];
       bloc = FeedBloc(client: mockClient);

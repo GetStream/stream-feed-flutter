@@ -12,20 +12,20 @@ extension ReactionX on List<Reaction> {
       .firstWhere((r) => r.id! == reaction.id!); //TODO; handle doesn't exist
 }
 
-extension EnrichedActivityX on List<EnrichedActivity> {
-  EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
+extension EnrichedActivityX<A, Ob, T, Or> on List<EnrichedActivity<A, Ob, T, Or>> {
+  EnrichedActivity<A, Ob, T, Or> getEnrichedActivityPath(EnrichedActivity<A, Ob, T, Or> enrichedActivity) =>
       this.firstWhere(
           (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
 }
-extension UpdateIn<T> on List<T> {
+
+extension UpdateIn<A, Ob, T, Or> on List<EnrichedActivity<A, Ob, T, Or>> {
   // EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
   //     this.firstWhere(
   //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
-  List<T> updateIn(
-      T enrichedActivity, int indexPath) {
-    var result = List<T>.from(this);
+  List<EnrichedActivity<A, Ob, T, Or>> updateIn(EnrichedActivity<A, Ob, T, Or> enrichedActivity, int indexPath) {
+    var result = List<EnrichedActivity<A, Ob, T, Or>>.from(this);
     result.isNotEmpty
         ? result.removeAt(indexPath) //removes the item at index 1
         : null;
@@ -34,7 +34,25 @@ extension UpdateIn<T> on List<T> {
   }
 }
 
-extension UnshiftMapList on Map<String, List<Reaction>>? {//TODO: maybe refactor to an operator maybe [Reaction] + Reaction
+extension UpdateInReaction on List<Reaction> {
+  // EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
+  //     this.firstWhere(
+  //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
+
+  List<Reaction> updateIn(
+      Reaction enrichedActivity, int indexPath) {
+    var result = List<Reaction>.from(this);
+    result.isNotEmpty
+        ? result.removeAt(indexPath) //removes the item at index 1
+        : null;
+    result.insert(indexPath, enrichedActivity);
+    return result;
+  }
+}
+
+
+extension UnshiftMapList on Map<String, List<Reaction>>? {
+  //TODO: maybe refactor to an operator maybe [Reaction] + Reaction
   Map<String, List<Reaction>> unshiftByKind(String kind, Reaction reaction,
       [ShiftType type = ShiftType.increment]) {
     Map<String, List<Reaction>>? result;

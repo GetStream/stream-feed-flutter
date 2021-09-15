@@ -176,25 +176,25 @@ class EnrichedActivity<A, Ob, T, Or> extends Equatable {
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? extraData;
 
-  EnrichedActivity copyWith({
-    EnrichableField? actor,
-    EnrichableField? object,
+  EnrichedActivity<A, Ob, T, Or> copyWith({
+    A? actor,
+    Ob? object,
     String? verb,
-    EnrichableField? target,
+    T? target,
     List<String>? to,
     String? foreignId,
     String? id,
     DateTime? time,
     Map<String, Object>? analytics,
     Map<String, Object>? extraContext,
-    EnrichableField? origin,
+    Or? origin,
     double? score,
     Map<String, Object>? extraData,
     Map<String, int>? reactionCounts,
     Map<String, List<Reaction>>? ownReactions,
     Map<String, List<Reaction>>? latestReactions,
   }) =>
-      EnrichedActivity(
+      EnrichedActivity<A, Ob, T, Or>(
         actor: actor ?? this.actor,
         object: object ?? this.object,
         verb: verb ?? this.verb,

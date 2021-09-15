@@ -40,6 +40,7 @@ class FlatActivityListPage extends StatelessWidget {
     this.session,
     this.filter,
     this.flags,
+    required this.bloc,
     this.ranking,
     this.handleJsonKey = 'handle',
     this.nameJsonKey = 'name',
@@ -54,6 +55,8 @@ class FlatActivityListPage extends StatelessWidget {
 
   ///{@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
+//TODO:document me
+  final DefaultFeedBloc bloc;
 
   ///{@macro mention_callback}
   final OnMentionTap? onMentionTap;
@@ -114,7 +117,8 @@ class FlatActivityListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatFeedCore<User, String, String, String>(
+    return DefaultFlatFeedCore(
+      bloc:bloc,
       flags: flags,
       limit: limit,
       offset: offset,

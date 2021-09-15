@@ -30,15 +30,15 @@ typedef OnActivityTap = void Function(
 
 /// TODO: document me
 typedef ActivityFooterBuilder = Widget Function(
-    BuildContext context, EnrichedActivity activity);
+    BuildContext context, DefaultEnrichedActivity activity);
 
 /// TODO: document me
 typedef ActivityContentBuilder = Widget Function(
-    BuildContext context, EnrichedActivity activity);
+    BuildContext context, DefaultEnrichedActivity activity);
 
 /// TODO: document me
 typedef ActivityHeaderBuilder = Widget Function(
-    BuildContext context, EnrichedActivity activity);
+    BuildContext context, DefaultEnrichedActivity activity);
 
 /// TODO: document me
 typedef ReactionBuilder = Widget Function(

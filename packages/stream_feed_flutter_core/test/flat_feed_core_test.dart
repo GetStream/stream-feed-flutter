@@ -48,7 +48,7 @@ main() {
             bloc: FeedBloc(client: mockClient),
             feedGroup: 'user',
             feedBuilder: (BuildContext context,
-                List<EnrichedActivity<User, String, String, String>> activities, int idx) {
+                 activities, int idx) {
               return Column(
                 children: [
                   Text("${activities[idx].reactionCounts?['like']}") //counts

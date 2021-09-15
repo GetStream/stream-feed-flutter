@@ -64,6 +64,7 @@ class ChildReactionButton extends StatelessWidget {
     );
   }
 }
+
 //TODO: get rid of this now that it is reactive it should work
 class ChildReactionToggleIcon extends StatefulWidget {
   //TODO: see what we can extract from a parent widget and put in core
@@ -177,7 +178,7 @@ class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
     await FeedBlocProvider.of(context).bloc.onRemoveChildReaction(
           kind: widget.kind,
           reaction: widget.reaction,
-          id: idToRemove!,
+          // activity: idToRemove!,
         );
     setState(() {
       alreadyReacted = !alreadyReacted;

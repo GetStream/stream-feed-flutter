@@ -143,8 +143,7 @@ void main() {
         .thenAnswer((_) async => Future.value());
     final textEditingController = TextEditingController();
 
-    await tester.pumpWidget(
-      MaterialApp(
+    await tester.pumpWidget(MaterialApp(
         builder: (context, child) {
           return StreamFeedTheme(
             data: StreamFeedThemeData.light(),
@@ -152,30 +151,30 @@ void main() {
           );
         },
         home: Scaffold(
-      body: StreamFeedProvider(
-        analyticsClient: mockStreamAnalytics,
-        client: mockClient,
-        child: FeedBlocProvider(
-          //TODO: ugly
-          bloc: FeedBloc(
-            client: mockClient,
+          body: StreamFeedProvider(
             analyticsClient: mockStreamAnalytics,
-          ),
-          child: FeedBlocProvider(
-            bloc: FeedBloc(
-              client: mockClient,
-              analyticsClient: mockStreamAnalytics,
+            client: mockClient,
+            child: FeedBlocProvider(
+              //TODO: ugly
+              bloc: FeedBloc(
+                client: mockClient,
+                analyticsClient: mockStreamAnalytics,
+              ),
+              child: FeedBlocProvider(
+                bloc: FeedBloc(
+                  client: mockClient,
+                  analyticsClient: mockStreamAnalytics,
+                ),
+                child: CommentField(
+                  key: key,
+                  feedGroup: feedGroup,
+                  activity: activity,
+                  textEditingController: textEditingController,
+                ),
+              ),
             ),
-            child: CommentField(
-              key: key,
-              feedGroup: feedGroup,
-              activity: activity,
-              textEditingController: textEditingController,
-            ),
           ),
-        ),
-      ),
-    );
+        )));
 
     final avatar = find.byType(Avatar);
     final textArea = find.byType(TextArea);

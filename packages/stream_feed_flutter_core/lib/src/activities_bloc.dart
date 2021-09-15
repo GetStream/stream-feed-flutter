@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class FeedBloc {
+typedef DefaultFeedBloc
+    = FeedBloc<User, String, String, String>;
+
+class FeedBloc<A, Ob, T, Or> {
   FeedBloc({required this.client, this.analyticsClient});
 
   final StreamFeedClient client;
@@ -10,7 +13,8 @@ class FeedBloc {
   final StreamAnalytics? analyticsClient;
 
   /// The current activities list
-  List<EnrichedActivity>? get activities => _activitiesController.valueOrNull;
+  List<EnrichedActivity<A, Ob, T, Or>>? get activities =>
+      _activitiesController.valueOrNull;
 
   /// The current reactions list
   List<Reaction> reactionsFor(String activityId, [Reaction? reaction]) =>
@@ -21,7 +25,7 @@ class FeedBloc {
   //     _activitiesController.value = newActivities;
 
   /// The current activities list as a stream
-  Stream<List<EnrichedActivity>> get activitiesStream =>
+  Stream<List<EnrichedActivity<A, Ob, T, Or>>> get activitiesStream =>
       _activitiesController.stream;
 
   /// The current reactions list as a stream
@@ -31,7 +35,8 @@ class FeedBloc {
 
   final _reactionsControllers = Map<String, BehaviorSubject<List<Reaction>>>();
 
-  final _activitiesController = BehaviorSubject<List<EnrichedActivity>>();
+  final _activitiesController =
+      BehaviorSubject<List<EnrichedActivity<A, Ob, T, Or>>>();
 
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
@@ -152,7 +157,7 @@ class FeedBloc {
   /// Remove reaction from the feed.
   Future<void> onRemoveReaction(
       {required String kind,
-      required EnrichedActivity activity,
+      required EnrichedActivity<A, Ob, T, Or> activity,
       required Reaction reaction,
       required String feedGroup}) async {
     await client.reactions.delete(reaction.id!);
@@ -162,7 +167,8 @@ class FeedBloc {
     final _activities = activities ?? [activity];
     final activityPath = _activities.getEnrichedActivityPath(activity);
 
-    final indexPath = _activities.indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
+    final indexPath = _activities
+        .indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
 
     final reactionCounts =
         activityPath.reactionCounts.unshiftByKind(kind, ShiftType.decrement);
@@ -193,7 +199,7 @@ class FeedBloc {
   Future<Reaction> onAddReaction({
     Map<String, Object>? data,
     required String kind,
-    required EnrichedActivity activity,
+    required EnrichedActivity<A, Ob, T, Or> activity,
     List<FeedId>? targetFeeds,
     required String feedGroup,
   }) async {
@@ -203,7 +209,8 @@ class FeedBloc {
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
     final _activities = activities ?? [activity];
     final activityPath = _activities.getEnrichedActivityPath(activity);
-    final indexPath = _activities.indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
+    final indexPath = _activities
+        .indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
 
     final reactionCounts = activityPath.reactionCounts.unshiftByKind(kind);
     final latestReactions =
@@ -292,16 +299,18 @@ class FeedBloc {
     }
 
     try {
-      final oldActivities = List<EnrichedActivity>.from(activities ?? []);
-      final activitiesResponse =
-          await client.flatFeed(feedGroup, userId).getEnrichedActivities(
-                limit: limit,
-                offset: offset,
-                session: session,
-                filter: filter,
-                flags: flags,
-                ranking: ranking,
-              );
+      final oldActivities =
+          List<EnrichedActivity<A, Ob, T, Or>>.from(activities ?? []);
+      final activitiesResponse = await client
+          .flatFeed(feedGroup, userId)
+          .getEnrichedActivities<A, Ob, T, Or>(
+            limit: limit,
+            offset: offset,
+            session: session,
+            filter: filter,
+            flags: flags,
+            ranking: ranking,
+          );
 
       final temp = oldActivities + activitiesResponse;
       _activitiesController.add(temp);

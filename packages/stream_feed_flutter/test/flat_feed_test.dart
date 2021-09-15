@@ -45,12 +45,10 @@ void main() {
               body: StreamFeedProvider(
                 analyticsClient: mockStreamAnalytics,
                 client: mockClient,
-                child: FeedBlocProvider(
-                  bloc: FeedBloc(
+                child: FlatActivityListPage(
+                  feedGroup: 'user',
+                  bloc: DefaultFeedBloc(
                     client: mockClient,
-                  ),
-                  child: FlatActivityListPage(
-                    feedGroup: 'user',
                   ),
                 ),
               ),
