@@ -31,5 +31,10 @@ Let's take a look at the following example:
 _“Erik is pinning Hawaii to his Places to Visit board.”_
 
 We can identify the components of this activity as follows:
-* The `actor` is "Eric"
-* 
+* The `actor` is "Eric" (User:1)
+* The `verb` is "pin"
+* The `object` is "Hawaii" (Place:42)
+* The foreign ID is Eric's "Places to visit board"  (Activity:1)
+* The time (for this example) would be `2017-07-01T20:30:45.123`
+
+NOTE: As seen above, the timestamp does not contain any timezone data. However, all Stream timestamps are in UTC time.
