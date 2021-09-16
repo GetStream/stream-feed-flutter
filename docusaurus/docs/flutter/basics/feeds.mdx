@@ -59,3 +59,56 @@ Stream infers from your token.
 You can name your feed anything you want. Just remember to create it in the dashboard
 for your application.
 
+### Following a Flat Feed
+To follow a flat feed, you need to call the `follow()` function on your feed. This is an
+asynchronous function, so you will need to await it. Take the following example:
+
+```dart
+final chris = client.flatFeed('user', 'chris');
+final jacksTimeline = client.flatFeed('timeline', 'jack');
+
+await chris.follow(jacksTimeline);
+```
+
+In this example, we are creating two `FlatFeed`s to represent two different entities, Chris
+and Jack, and Chris follows Jack's `FlatFeed`, which in this case is his timeline.
+
+It should be noted that if you would like to follow a single feed in the absence of other feeds,
+no action needs to be taken.
+
+You can also subscribe to realtime changes in the feed by calling the `subscribe()` function
+on your feed. Here's an example for how to subscribe to realtime changes in a Flutter app:
+
+```dart
+late StreamFeedClient _client;
+late final Subscription _feedSubscription;
+
+Future<void> _listenToFeed() async {
+  _feedSubscription = await _client
+    .flatFeed('timeline', widget.currentUser.id)
+    .subscribe((message) {
+      print(message);
+  });
+}
+
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  _client = context.client; // This is an extension! See below.
+  _listenToFeed();
+}
+
+@override
+void dispose() {
+  super.dispose();
+  // Be sure to cancel your subscription!
+  _feedSubscription.cancel();
+}
+
+...
+
+extension ProviderX on BuildContext {
+  StreamFeedClient get client => ClientProvider.of(this).client;
+}
+
+```
