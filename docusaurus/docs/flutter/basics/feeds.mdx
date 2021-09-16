@@ -59,7 +59,7 @@ Stream infers from your token.
 You can name your feed anything you want. Just remember to create it in the dashboard
 for your application.
 
-Read more about feed groups [here]()
+Read more about feed groups [here](https://getstream.zendesk.com/hc/en-us/articles/1500000978901-What-s-the-Difference-Between-Feeds-and-Feed-Groups-)
 
 ### Following a Flat Feed
 To follow a flat feed, you need to call the `follow()` function on your feed. This is an
@@ -112,5 +112,70 @@ void dispose() {
 extension ProviderX on BuildContext {
   StreamFeedClient get client => ClientProvider.of(this).client;
 }
-
 ```
+
+### Getting Activities From a Flat Feed
+In order to get the activities in a flat feed you must call the `getActivities()`
+function. Let's take a look at this `_loadActivities` function from a Flutter
+application:
+
+```dart
+Future<void> _loadActivities({bool pullToRefresh = false}) async {
+  if (!pullToRefresh) setState(() => _isLoading = true);
+
+  final userFeed = _client.flatFeed('user', widget.currentUser.id);
+  final data = await userFeed.getActivities();
+  if (!pullToRefresh) _isLoading = false;
+  setState(() => activities = data);
+}
+```
+
+Let's analyze what is happening in this function:
+
+* A boolean `pullToRefresh` value is passed into the function from a `RefreshIndicator`
+widget's `onRefresh` callback. This tells the application whether we are loading activities
+from an initial load or a refresh event
+* If this is not a refresh event, we set an `_isLoading` value to `true`.
+* We declare our instance of a flat feed. Its feed group is 'user' and the id of the
+feed is the user's id.
+* We call `getActivities()` and set the result to a value called `data`
+* We set `_isLoading` to `false` to indicate that we are not loading any activities
+any more.
+* We set the value of an `activities` value to `data`, which is our activities.
+
+### Adding Activities to a Flat Feed
+The content of Flat Feeds will be Activities. Let's take at an example from a 
+Flutter application:
+
+```dart
+late StreamFeedClient _client;
+
+@override
+  void didChangeDependencies() {
+  super.didChangeDependencies();
+  _client = context.client;
+  _loadActivities();
+}
+...
+
+final user = widget.currentUser;
+
+...
+
+final activity = Activity(
+  actor: user.ref,
+  verb: 'post',
+  object: '1',
+  extraData: {'post': message},
+);
+
+final userFeed = _client.flatFeed('timeline', user.id);
+await userFeed.addActivity(activity);
+```
+
+Let's break apart what is happening here:
+* We are getting our current user via `widget.currentUser`. (This means we are dealing
+with a stateful widget).
+* We create an instance of `Activity` called `activity`, and populate its fields.
+* We create an instance of our "timeline" flat feed.
+* We add the activity to the feed by calling `await userFeed.addActivity(activity)`
