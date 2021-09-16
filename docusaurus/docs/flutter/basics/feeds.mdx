@@ -36,11 +36,11 @@ you enable it for your application.
 You can create a flat feed like so:
 
 ```dart
-final chris = clientWithSecret.flatFeed('user', 'chris');
+final chris = client.flatFeed('user', 'chris');
 ```
 
 Let's break this apart:
-* `clientWithSecret` is an instance of `StreamFeedClient` (defined in a different
+* `client` is an instance of `StreamFeedClient` (defined in a different
 piece of code)
 * the `flatFeed` method creates an instance of `FlatFeed` and assigns it to the 
 variable `chris`
@@ -58,3 +58,4 @@ Stream infers from your token.
 
 You can name your feed anything you want. Just remember to create it in the dashboard
 for your application.
+
