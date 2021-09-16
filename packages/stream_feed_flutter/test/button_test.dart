@@ -175,7 +175,7 @@ void main() {
       activeIcon: activeIcon,
     );
     final withOwnReactions = ChildReactionToggleIcon(
-      activity:EnrichedActivity(),
+      activity: EnrichedActivity(),
       hoverColor: Colors.lightBlue,
       reaction: reaction,
       kind: kind,
