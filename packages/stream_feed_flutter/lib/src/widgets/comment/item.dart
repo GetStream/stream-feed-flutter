@@ -25,6 +25,7 @@ class CommentItem extends StatelessWidget {
   const CommentItem({
     Key? key,
     required this.reaction,
+    required this.activity,
     this.user,
     this.onMentionTap,
     this.onHashtagTap,
@@ -62,6 +63,7 @@ class CommentItem extends StatelessWidget {
 
   ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
+  final EnrichedActivity activity;
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +127,7 @@ class CommentItem extends StatelessWidget {
             ),
           ),
           ChildReactionButton(
+            activity:activity,
             //TODO: refactor LikeButton to accept a reaction
             activeIcon: StreamSvgIcon.loveActive(),
             inactiveIcon: StreamSvgIcon.loveInactive(),

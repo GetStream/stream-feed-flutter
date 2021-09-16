@@ -166,6 +166,7 @@ void main() {
     const reaction = Reaction(id: 'id', kind: kind, parent: activityId);
     const userId = 'user:300';
     final withoutOwnReactions = ChildReactionToggleIcon(
+      activity: EnrichedActivity(),
       hoverColor: Colors.lightBlue,
       reaction: reaction,
       kind: kind,
@@ -174,6 +175,7 @@ void main() {
       activeIcon: activeIcon,
     );
     final withOwnReactions = ChildReactionToggleIcon(
+      activity:EnrichedActivity(),
       hoverColor: Colors.lightBlue,
       reaction: reaction,
       kind: kind,

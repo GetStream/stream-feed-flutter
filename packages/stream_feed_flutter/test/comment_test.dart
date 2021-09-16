@@ -27,6 +27,7 @@ void main() {
           },
           home: Scaffold(
             body: CommentItem(
+              activity: EnrichedActivity(),
               user: const User(data: {
                 'name': 'Rosemary',
                 'subtitle': 'likes playing fresbee in the park',

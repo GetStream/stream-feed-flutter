@@ -146,6 +146,7 @@ class CommentView extends StatelessWidget {
                     .withOwnChildren()
                     .withOwnReactions(), //TODO: refactor this?
                 reactionBuilder: (context, reaction) => CommentItem(
+                      activity: activity!,
                       user: reaction.user,
                       reaction: reaction,
                       onReactionTap: onReactionTap,

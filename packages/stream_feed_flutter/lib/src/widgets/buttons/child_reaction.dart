@@ -17,6 +17,7 @@ class ChildReactionButton extends StatelessWidget {
     required this.activeIcon,
     required this.inactiveIcon,
     required this.reaction,
+    required this.activity,
     this.hoverColor,
     this.onTap,
     this.data,
@@ -49,10 +50,13 @@ class ChildReactionButton extends StatelessWidget {
   /// Generally applies to desktop and web.
   final Color? hoverColor;
 
+  final EnrichedActivity activity;
+
   @override
   Widget build(BuildContext context) {
     return ChildReactionToggleIcon(
-      count: reaction.childrenCounts?[kind],
+      activity: activity,
+      count: reaction.childrenCounts?[kind] ?? 0,
       ownReactions: reaction.ownChildren?[kind],
       reaction: reaction,
       activeIcon: activeIcon,
@@ -66,7 +70,7 @@ class ChildReactionButton extends StatelessWidget {
 }
 
 //TODO: get rid of this now that it is reactive it should work
-class ChildReactionToggleIcon extends StatefulWidget {
+class ChildReactionToggleIcon extends StatelessWidget {
   //TODO: see what we can extract from a parent widget and put in core
   /// Builds a [ChildReactionToggleIcon].
   const ChildReactionToggleIcon({
@@ -75,12 +79,13 @@ class ChildReactionToggleIcon extends StatefulWidget {
     required this.inactiveIcon,
     required this.kind,
     required this.reaction,
+    required this.activity,
     this.targetFeeds,
     this.data,
     this.onTap,
     this.ownReactions,
     this.hoverColor,
-    this.count,
+    required this.count,
     this.userId,
   }) : super(key: key);
 
@@ -99,7 +104,10 @@ class ChildReactionToggleIcon extends StatefulWidget {
   final String kind;
 
   /// The reaction count
-  final int? count;
+  final int count;
+
+  //TODO:document me
+  final EnrichedActivity activity;
 
   /// The callback to be performed when the user clicks on the reaction icon.
   final VoidCallback? onTap;
@@ -119,70 +127,42 @@ class ChildReactionToggleIcon extends StatefulWidget {
   /// TODO: document me
   final Reaction reaction;
 
-  @override
-  State<ChildReactionToggleIcon> createState() =>
-      _ChildReactionToggleIconState();
-}
+  bool get alreadyReacted => reactionsKind?.isNotEmpty != null;
+  List<Reaction?>? get reactionsKind => ownReactions?.filterByKind(kind);
 
-class _ChildReactionToggleIconState extends State<ChildReactionToggleIcon> {
-  late bool alreadyReacted;
-  late List<Reaction?>? reactionsKind;
-  late String? idToRemove;
-  late int count;
-
-  @override
-  void initState() {
-    super.initState();
-    reactionsKind = widget.ownReactions?.filterByKind(widget.kind);
-    alreadyReacted = reactionsKind?.isNotEmpty != null;
-    idToRemove = reactionsKind?.last?.id;
-    count = widget.count ?? 0;
-  }
-
-  Widget get displayedIcon =>
-      alreadyReacted ? widget.activeIcon : widget.inactiveIcon;
+  Widget get displayedIcon => alreadyReacted ? activeIcon : inactiveIcon;
 
   @override
   Widget build(BuildContext context) {
     return ReactionIcon(
-      hoverColor:
-          widget.hoverColor ?? ChildReactionTheme.of(context).toggleColor,
+      hoverColor: hoverColor ?? ChildReactionTheme.of(context).toggleColor,
       icon: displayedIcon,
       count: count,
       onTap: () async {
-        widget.onTap?.call ?? await onToggleChildReaction();
+        onTap?.call ?? await onToggleChildReaction(context);
       },
     );
   }
 
-  Future<void> onToggleChildReaction() async {
-    alreadyReacted ? await onRemoveChildReaction() : await onAddChildReaction();
+  Future<void> onToggleChildReaction(BuildContext context) async {
+    alreadyReacted
+        ? await onRemoveChildReaction(context)
+        : await onAddChildReaction(context);
   }
 
-  Future<void> onAddChildReaction() async {
-    final reaction = await FeedBlocProvider.of(context).bloc.onAddChildReaction(
-          //TODO: get rid of mutations in StreamFeedProvider
-          reaction: widget.reaction,
-          kind: widget.kind,
-          data: widget.data,
-        );
-
-    setState(() {
-      alreadyReacted = !alreadyReacted;
-      idToRemove = reaction.id;
-      count += 1;
-    });
+  Future<void> onAddChildReaction(BuildContext context) async {
+    await FeedBlocProvider.of(context).bloc.onAddChildReaction(
+        //TODO: get rid of mutations in StreamFeedProvider
+        reaction: reaction,
+        kind: kind,
+        data: data,
+        activity: activity);
   }
 
-  Future<void> onRemoveChildReaction() async {
+  Future<void> onRemoveChildReaction(BuildContext context) async {
     await FeedBlocProvider.of(context).bloc.onRemoveChildReaction(
-          kind: widget.kind,
-          reaction: widget.reaction,
-          // activity: idToRemove!,
+        kind: kind, reaction: reaction, activity: activity
+        // activity: idToRemove!,
         );
-    setState(() {
-      alreadyReacted = !alreadyReacted;
-      count -= 1;
-    });
   }
 }

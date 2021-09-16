@@ -61,7 +61,9 @@ class ReactionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactionToggleIcon(
       activity: activity,
-      count: reaction?.childrenCounts?[kind] ?? activity.reactionCounts?[kind],
+      count: reaction?.childrenCounts?[kind] ??
+          activity.reactionCounts?[kind] ??
+          0,
       ownReactions:
           reaction?.ownChildren?[kind] ?? activity.ownReactions?[kind],
       activeIcon: activeIcon,
@@ -76,7 +78,7 @@ class ReactionButton extends StatelessWidget {
 }
 
 //TODO: get rid of this now that it is reactive it should work
-class ReactionToggleIcon extends StatefulWidget {
+class ReactionToggleIcon extends StatelessWidget {
   //TODO: see what we can extract from a parent widget and put in core
   /// Builds a [ReactionToggleIcon].
   const ReactionToggleIcon({
@@ -91,7 +93,7 @@ class ReactionToggleIcon extends StatefulWidget {
     this.ownReactions,
     this.feedGroup = 'user',
     this.hoverColor,
-    this.count,
+    required this.count,
     this.userId,
   }) : super(key: key);
 
@@ -108,7 +110,7 @@ class ReactionToggleIcon extends StatefulWidget {
   final String kind;
 
   /// The reaction count
-  final int? count;
+  final int count;
 
   /// A callback that will be called when the user clicks on the reaction icon
   final VoidCallback? onTap;
@@ -131,69 +133,42 @@ class ReactionToggleIcon extends StatefulWidget {
   /// TODO: document me
   final Color? hoverColor;
 
-  @override
-  State<ReactionToggleIcon> createState() => _ReactionToggleIconState();
-}
+  bool get alreadyReacted => reactionsKind?.isNotEmpty != null;
+  List<Reaction?>? get reactionsKind => ownReactions?.filterByKind(kind);
 
-class _ReactionToggleIconState extends State<ReactionToggleIcon> {
-  late bool alreadyReacted;
-  late List<Reaction?>? reactionsKind;
-  late String? idToRemove;
-  late int count;
-
-  @override
-  void initState() {
-    super.initState();
-    reactionsKind = widget.ownReactions?.filterByKind(widget.kind);
-    alreadyReacted = reactionsKind?.isNotEmpty != null;
-    idToRemove = reactionsKind?.last?.id;
-    count = widget.count ?? 0;
-  }
-
-  Widget get displayedIcon =>
-      alreadyReacted ? widget.activeIcon : widget.inactiveIcon;
+  Widget get displayedIcon => alreadyReacted ? activeIcon : inactiveIcon;
 
   @override
   Widget build(BuildContext context) {
     return ReactionIcon(
-      hoverColor:
-          widget.hoverColor ?? ReactionTheme.of(context).toggleHoverColor!,
+      hoverColor: hoverColor ?? ReactionTheme.of(context).toggleHoverColor!,
       icon: displayedIcon,
       count: count,
       onTap: () async {
-        widget.onTap?.call ?? await onToggleReaction();
+        onTap?.call ?? await onToggleReaction(context);
       },
     );
   }
 
-  Future<void> onToggleReaction() async {
-    alreadyReacted ? await removeReaction() : await addReaction();
+  Future<void> onToggleReaction(BuildContext context) async {
+    alreadyReacted ? await removeReaction(context) : await addReaction(context);
   }
 
-  Future<void> addReaction() async {
+  Future<void> addReaction(BuildContext context) async {
     final reaction = await FeedBlocProvider.of(context).bloc.onAddReaction(
         //TODO: get rid of mutations in StreamFeedProvider
-        kind: widget.kind,
-        activity: widget.activity,
-        data: widget.data,
-        feedGroup: widget.feedGroup);
-    setState(() {
-      alreadyReacted = !alreadyReacted;
-      idToRemove = reaction.id;
-      count += 1;
-    });
+        kind: kind,
+        activity: activity,
+        data: data,
+        feedGroup: feedGroup);
   }
 
-  Future<void> removeReaction() async {
+  Future<void> removeReaction(BuildContext context) async {
     await FeedBlocProvider.of(context).bloc.onRemoveReaction(
-        kind: widget.kind,
-        activity: widget.activity,
+        kind: kind,
+        activity: activity,
         reaction: reactionsKind!.last!,
-        feedGroup: widget.feedGroup);
-    setState(() {
-      alreadyReacted = !alreadyReacted;
-      count -= 1;
-    });
+        feedGroup: feedGroup);
   }
 }
 
