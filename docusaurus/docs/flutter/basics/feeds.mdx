@@ -30,3 +30,31 @@ It's not possible to follow either aggregated or notification feeds.
 Flat feeds are things like Twitter's timeline - a stream of activity that you 
 can subscribe to. You can also get realtime notifications for flat feeds, if 
 you enable it for your application.
+
+### Creating a Flat Feed
+
+You can create a flat feed like so:
+
+```dart
+final chris = clientWithSecret.flatFeed('user', 'chris');
+```
+
+Let's break this apart:
+* `clientWithSecret` is an instance of `StreamFeedClient` (defined in a different
+piece of code)
+* the `flatFeed` method creates an instance of `FlatFeed` and assigns it to the 
+variable `chris`
+
+Now, let's examine the `flatFeed` function. This function is defined as a function
+of `StreamFeedClient` like so:
+
+```dart
+FlatFeed flatFeed(String slug, [String? userId]);
+```
+
+A "slug" is a human-readable, unique identifier - basically, an ID. So we are "ID'ing"
+our feed as a 'user' feed. You can optionally pass a `userId` to override the `userId`
+Stream infers from your token.
+
+You can name your feed anything you want. Just remember to create it in the dashboard
+for your application.
