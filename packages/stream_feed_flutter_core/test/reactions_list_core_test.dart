@@ -60,7 +60,7 @@ void main() {
       analyticsClient: mockStreamAnalytics,
       client: mockClient,
       child: ReactionListCore(
-        reactionsBuilder: (context, reactions, idx) => const Offstage(),
+        reactionsBuilder: (context, reactions, idx) => const Offstage(),//TODO improve this
         lookupValue: lookupValue,
         filter: filter,
         limit: limit,
@@ -73,7 +73,7 @@ void main() {
 
   test('Default ReactionListCore debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
-    final flatFeedCore = ReactionListCore(
+    final reactionListCore = ReactionListCore(
       reactionsBuilder: (context, reactions, idx) => const Offstage(),
       lookupValue: lookupValue,
       filter: filter,
@@ -82,7 +82,7 @@ void main() {
     );
 
     // ignore: cascade_invocations
-    flatFeedCore.debugFillProperties(builder);
+    reactionListCore.debugFillProperties(builder);
 
     final description = builder.properties
         .where((node) => !node.isFiltered(DiagnosticLevel.info))
