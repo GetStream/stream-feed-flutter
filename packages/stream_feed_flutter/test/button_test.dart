@@ -602,7 +602,7 @@ void main() {
       expect(description[0]['description'], 'null');
     });
 
-    tets('ReactionIcon', () {
+    test('ReactionIcon', () {
       final builder = DiagnosticPropertiesBuilder();
       const reactionIcon = ReactionIcon(
         icon: Icon(Icons.favorite),
