@@ -45,7 +45,7 @@ main() {
           // child: FeedBlocProvider(
           // bloc: FeedBloc(client: mockClient),
           child: FlatFeedCore(
-            bloc: FeedBloc(client: mockClient),
+            bloc: DefaultFeedBloc(client: mockClient),
             feedGroup: 'user',
             feedBuilder: (BuildContext context, activities, int idx) {
               return Column(

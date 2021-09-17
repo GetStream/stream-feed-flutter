@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 Future<void> main() async {
-  final env = Platform.environment;
-  final secret = env['secret'];
-  final apiKey = env['apiKey'];
-  final appId = env['appId'];
-  final frontendToken = env['frontendToken'];
+  const secret = String.fromEnvironment('secret');
+  const apiKey = String.fromEnvironment('apiKey');
+  const appId = String.fromEnvironment('appId');
+  const frontendToken = String.fromEnvironment('frontendToken');
   final clientForScret = StreamFeedClient.connect(
-    apiKey!,
+    apiKey,
     secret: secret,
     runner: Runner.server,
   );
@@ -62,18 +61,24 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("FlatFeed"),
       ),
-      body: StreamFeedCore(
+      body: StreamFeedProvider(
         client: client,
         navigatorKey: navigatorKey,
-        child: FlatActivityListPage(
-          flags: EnrichmentFlags()
-              .withReactionCounts()
-              .withOwnChildren()
-              .withOwnReactions(),
-          feedGroup: 'user',
-          onHashtagTap: (hashtag) => print('hashtag pressed: $hashtag'),
-          onUserTap: (user) => print('hashtag pressed: ${user!.toJson()}'),
-          onMentionTap: (mention) => print('hashtag pressed: $mention'),
+        child: StreamFeedTheme(
+          data: StreamFeedThemeData.dark(),
+          child: FlatActivityListPage(
+            bloc: DefaultFeedBloc(
+              client: client,
+            ),
+            flags: EnrichmentFlags()
+                .withReactionCounts()
+                .withOwnChildren()
+                .withOwnReactions(),
+            feedGroup: 'user',
+            onHashtagTap: (hashtag) => print('hashtag pressed: $hashtag'),
+            onUserTap: (user) => print('hashtag pressed: ${user!.toJson()}'),
+            onMentionTap: (mention) => print('hashtag pressed: $mention'),
+          ),
         ),
       ),
     );

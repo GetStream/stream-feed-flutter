@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/utils/debug.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
@@ -144,26 +145,32 @@ class FlatActivityListPage extends StatelessWidget {
             // onActivityTap != null
             //     ? onActivityTap?.call(context, activity)
             // TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
-            pageRouteBuilder(
+            _pageRouteBuilder(
           activity: activity,
           context: context,
           transitionType: transitionType,
           page: StreamFeedProvider(
             //TODO: let the user implement this
             client: StreamFeedProvider.of(context).client,
-            child: Scaffold(
-              appBar: AppBar(
-                // TODO: Parameterize me
-                title: const Text('Post'),
-              ),
-              body: CommentView(
-                nameJsonKey: nameJsonKey,
-                handleJsonKey: handleJsonKey,
-                activity: activity,
-                enableCommentFieldButton: true,
-                enableReactions: true,
-                textEditingController:
-                    TextEditingController(), //TODO: move this into props for customisation like buildSpans
+            child: FeedBlocProvider(
+              bloc: FeedBlocProvider.of(context).bloc,
+              child: StreamFeedTheme(
+                data: StreamFeedTheme.of(context),
+                child: Scaffold(
+                  appBar: AppBar(
+                    // TODO: Parameterize me
+                    title: const Text('Post'),
+                  ),
+                  body: CommentView(
+                    nameJsonKey: nameJsonKey,
+                    handleJsonKey: handleJsonKey,
+                    activity: activity,
+                    enableCommentFieldButton: true,
+                    enableReactions: true,
+                    textEditingController:
+                        TextEditingController(), //TODO: move this into props for customisation like buildSpans
+                  ),
+                ),
               ),
             ),
           ),
@@ -173,7 +180,7 @@ class FlatActivityListPage extends StatelessWidget {
     );
   }
 
-  void pageRouteBuilder(
+  void _pageRouteBuilder(
       {required BuildContext context,
       required TransitionType transitionType,
       required EnrichedActivity activity,
