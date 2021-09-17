@@ -7,7 +7,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'mocks.dart';
 
 void main() {
-  testWidgets('FlatFeed', (tester) async {
+  testWidgets('FlatFeedCore', (tester) async {
     final mockClient = MockStreamFeedClient();
     final mockFeed = MockFeedAPI();
     final mockStreamAnalytics = MockStreamAnalytics();
@@ -69,7 +69,7 @@ void main() {
     verify(() => mockFeed.getEnrichedActivities()).called(1);
   });
 
-  test('Default ActivityContent debugFillProperties', () {
+  test('Default FlatFeedCore debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
     final flatFeedCore = FlatFeedCore(
       feedGroup: 'user',
