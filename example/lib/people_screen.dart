@@ -5,15 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-//ignore: public_member_api_docs
+// ignore_for_file: public_member_api_docs
+
 class PeopleScreen extends StatefulWidget {
-  //ignore: public_member_api_docs
   const PeopleScreen({
     required this.currentUser,
     Key? key,
   }) : super(key: key);
 
-  //ignore: public_member_api_docs
   final StreamUser currentUser;
 
   @override
@@ -48,8 +47,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
       ],
     );
 
-    return Container(
-        child: Center(
+    return Center(
       child: ListView.separated(
         itemCount: users.length,
         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -79,7 +77,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
               ),
               title: Text(
                 user.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w300,
                 ),
@@ -88,6 +86,6 @@ class _PeopleScreenState extends State<PeopleScreen> {
           );
         },
       ),
-    ));
+    );
   }
 }

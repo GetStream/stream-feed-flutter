@@ -1,18 +1,22 @@
 import 'package:example/app_user.dart';
 import 'package:example/client_provider.dart';
 import 'package:example/extension.dart';
+import 'package:example/home.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-import 'client_provider.dart';
-import 'home.dart';
+//ignore_for_file: public_member_api_docs
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final _key = String.fromEnvironment('key');
-  final _user_token = String.fromEnvironment('user_token');
+  const _key = String.fromEnvironment('key');
+  const _userToken = String.fromEnvironment('user_token');
 
-  final client = StreamFeedClient.connect(_key, token: Token(_user_token));
+  final client = StreamFeedClient.connect(
+    _key,
+    token: const Token(_userToken),
+  );
+
   runApp(
     MyApp(
       client: client,
@@ -20,19 +24,16 @@ void main() {
   );
 }
 
-//ignore: public_member_api_docs
 class MyApp extends StatelessWidget {
-  //ignore: public_member_api_docs
   const MyApp({
     required this.client,
     Key? key,
   }) : super(key: key);
 
-  //ignore: public_member_api_docs
+  // ignore: diagnostic_describe_all_properties
   final StreamFeedClient client;
 
   @override
-  //ignore: prefer_expression_function_bodies
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Stream Feed Demo',
@@ -45,10 +46,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//ignore: public_member_api_docs
 class LoginScreen extends StatefulWidget {
-  //ignore: public_member_api_docs
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({
+    Key? key,
+  }) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -59,7 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
     final _client = context.client;
     return Scaffold(
-      // backgroundColor: Colors.grey.shade100,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: SizedBox(
@@ -131,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                )
+                ),
             ],
           ),
         ),

@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/states/empty.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
+// ignore_for_file: cascade_invocations
 
 /// [FlatFeedCore] is a simplified class that allows fetching a list of
 /// enriched activities (flat) while exposing UI builders.
@@ -16,7 +19,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///     return Scaffold(
 ///       body: FlatFeedCore(
 ///         onErrorWidget: Center(
-///             child: Text('An error has occured'),
+///             child: Text('An error has occurred'),
 ///         ),
 ///         onEmptyWidget: Center(
 ///             child: Text('Nothing here...'),
@@ -24,7 +27,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///         onProgressWidget: Center(
 ///             child: CircularProgressIndicator(),
 ///         ),
-///         feedBuilder: (context, activties, idx) {
+///         feedBuilder: (context, activities, idx) {
 ///           return YourActivityWidget(activity: activities[idx]);
 ///         }
 ///       ),
@@ -36,6 +39,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
 /// information about the activities.
 class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
+  /// Builds a [FlatFeedCore].
   const FlatFeedCore(
       {Key? key,
       required this.feedGroup,
@@ -50,7 +54,7 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
       this.ranking,
       this.userId,
       this.onEmptyWidget =
-          const EmptyStateWidget(message: 'No activties to display')})
+          const EmptyStateWidget(message: 'No activities to display')})
       : super(key: key);
 
   /// A builder that let you build a ListView of EnrichedActivity based Widgets
@@ -88,6 +92,7 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
 
   /// The feed group to use for the request
   final String feedGroup;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -123,5 +128,24 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<EnrichedFeedBuilder<A, Ob, T, Or>>.has(
+      'feedBuilder',
+      feedBuilder,
+    ));
+    properties.add(IntProperty('limit', limit, defaultValue: null));
+    properties.add(IntProperty('offset', offset, defaultValue: null));
+    properties.add(StringProperty('session', session, defaultValue: null));
+    properties.add(
+        DiagnosticsProperty<Filter?>('filter', filter, defaultValue: null));
+    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags,
+        defaultValue: null));
+    properties.add(StringProperty('ranking', ranking, defaultValue: null));
+    properties.add(StringProperty('userId', userId, defaultValue: null));
+    properties.add(StringProperty('feedGroup', feedGroup));
   }
 }

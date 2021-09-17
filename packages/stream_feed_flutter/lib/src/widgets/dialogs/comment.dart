@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
@@ -8,9 +9,11 @@ import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
 import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template alert_dialog}
+// ignore_for_file: cascade_invocations
+
+/// {@template alert_dialog}
 /// An Alert Dialog that displays an activity and a comment field.
-///{@endtemplate}
+/// {@endtemplate}
 class AlertDialogComment extends StatelessWidget {
   /// Builds an [AlertDialogComment].
   const AlertDialogComment({
@@ -53,14 +56,25 @@ class AlertDialogComment extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(
+        DiagnosticsProperty<DefaultEnrichedActivity?>('activity', activity));
+    properties.add(StringProperty('handleJsonKey', handleJsonKey));
+    properties.add(StringProperty('nameJsonKey', nameJsonKey));
+  }
 }
 
-///{@template comment_view}
-/// A Comment View is a widget that shows the activity and a comment field and reactions (if enabled)
-///{@endtemplate}
+/// {@template comment_view}
+/// A Comment View is a widget that shows the activity and a comment field and
+/// reactions (if enabled).
+/// {@endtemplate}
 class CommentView extends StatelessWidget {
   //TODO: merge this with StreamFeedActivity
-  ///{@macro comment_view}
+  /// Builds a [CommentView].
   const CommentView({
     Key? key,
     required this.textEditingController,
@@ -88,16 +102,16 @@ class CommentView extends StatelessWidget {
   /// TODO: document me
   final bool enableReactions;
 
-  ///{@macro reaction_callback}
+  /// {@macro reaction_callback}
   final OnReactionTap? onReactionTap;
 
-  ///{@macro hashtag_callback}
+  /// {@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
 
-  ///{@macro mention_callback}
+  /// {@macro mention_callback}
   final OnMentionTap? onMentionTap;
 
-  ///{@macro user_callback}
+  /// {@macro user_callback}
   final OnUserTap? onUserTap;
 
   /// TODO: document me
@@ -157,13 +171,36 @@ class CommentView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+        DiagnosticsProperty<DefaultEnrichedActivity?>('activity', activity));
+    properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(DiagnosticsProperty<TextEditingController>(
+        'textEditingController', textEditingController));
+    properties
+        .add(DiagnosticsProperty<bool>('enableReactions', enableReactions));
+    properties.add(
+        ObjectFlagProperty<OnReactionTap?>.has('onReactionTap', onReactionTap));
+    properties.add(
+        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
+    properties.add(
+        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
+    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
+    properties.add(DiagnosticsProperty<bool>(
+        'enableCommentFieldButton', enableCommentFieldButton));
+    properties.add(StringProperty('handleJsonKey', handleJsonKey));
+    properties.add(StringProperty('nameJsonKey', nameJsonKey));
+  }
 }
 
-///{@template alert_dialog_actions}
+/// {@template alert_dialog_actions}
 /// The Actions displayed in the dialog i.e. medias, gif, emojis etc.
-///{@endtemplate}
+/// {@endtemplate}
 class AlertDialogActions extends StatelessWidget {
-  ///{@macro alert_dialog_actions}
+  /// Builds an [AlertDialogActions].
   const AlertDialogActions({
     Key? key,
     this.activity,
@@ -201,13 +238,24 @@ class AlertDialogActions extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
+    properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(DiagnosticsProperty<TextEditingController>(
+        'textEditingController', textEditingController));
+  }
 }
 
-///{@template left_actions}
+/// {@template left_actions}
 /// Actions on the left side of the dialog i.e. medias, gif, emojis etc.
 /// {@endtemplate}
 class LeftActions extends StatelessWidget {
-  ///{@macro left_actions}
+  /// Builds a [LeftActions].
   const LeftActions({
     Key? key,
     this.spaceBefore = 60,
@@ -220,6 +268,7 @@ class LeftActions extends StatelessWidget {
   /// TODO: document me
   //useful for reddit style clone
   final double spaceBetween;
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -236,13 +285,20 @@ class LeftActions extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DoubleProperty('spaceBefore', spaceBefore));
+    properties.add(DoubleProperty('spaceBetween', spaceBetween));
+  }
 }
 
-///{@template right_actions}
+/// {@template right_actions}
 /// Actions on the right side of the dialog i.e. "Post" button.
 /// {@endtemplate}
 class RightActions extends StatelessWidget {
-  ///{@macro right_actions}
+  /// Builds a [RighActions].
   const RightActions({
     Key? key,
     required this.textEditingController,
@@ -274,5 +330,16 @@ class RightActions extends StatelessWidget {
           targetFeeds: targetFeeds,
           textEditingController: textEditingController,
         ));
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(DiagnosticsProperty<TextEditingController>(
+        'textEditingController', textEditingController));
+    properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
   }
 }

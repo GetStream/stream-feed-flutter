@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// The default circular progress indicator.
@@ -32,5 +33,12 @@ class StreamCircularProgressIndicator extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ImageChunkEvent?>(
+        'loadingProgress', loadingProgress));
   }
 }
