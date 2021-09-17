@@ -29,7 +29,7 @@ void main() {
       });
     });
 
-    testWidgets('Default Avatar debugFillProperties', (tester) async {
+    test('Default Avatar debugFillProperties', () async {
       await mockNetworkImages(() async {
         final builder = DiagnosticPropertiesBuilder();
         const avatar = Avatar();

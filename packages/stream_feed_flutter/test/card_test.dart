@@ -79,7 +79,7 @@ void main() {
     });
   });
 
-  testWidgets('Default ActivityCard debugFillProperties', (tester) async {
+  test('Default ActivityCard debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
     const activityCard = ActivityCard(
       og: OpenGraphData(

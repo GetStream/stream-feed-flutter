@@ -134,14 +134,18 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ObjectFlagProperty<EnrichedFeedBuilder<A, Ob, T, Or>>.has(
-        'feedBuilder', feedBuilder));
-    properties.add(IntProperty('limit', limit));
-    properties.add(IntProperty('offset', offset));
-    properties.add(StringProperty('session', session));
-    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
-    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
-    properties.add(StringProperty('ranking', ranking));
-    properties.add(StringProperty('userId', userId));
+      'feedBuilder',
+      feedBuilder,
+    ));
+    properties.add(IntProperty('limit', limit, defaultValue: null));
+    properties.add(IntProperty('offset', offset, defaultValue: null));
+    properties.add(StringProperty('session', session, defaultValue: null));
+    properties.add(
+        DiagnosticsProperty<Filter?>('filter', filter, defaultValue: null));
+    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags,
+        defaultValue: null));
+    properties.add(StringProperty('ranking', ranking, defaultValue: null));
+    properties.add(StringProperty('userId', userId, defaultValue: null));
     properties.add(StringProperty('feedGroup', feedGroup));
   }
 }

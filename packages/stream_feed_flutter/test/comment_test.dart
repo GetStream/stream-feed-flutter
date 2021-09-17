@@ -232,7 +232,7 @@ void main() {
     expect(hintText.style, hintStyle);
   });
 
-  testWidgets('Default CommentField debugFillProperties', (tester) async {
+  test('Default CommentField debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
     final commentField = CommentField(
@@ -266,7 +266,7 @@ void main() {
         'EnrichedActivity<dynamic, dynamic, dynamic, dynamic>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
   });
 
-  testWidgets('Default CommentItem debugFillProperties', (tester) async {
+  test('Default CommentItem debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
     final commentItem = CommentItem(

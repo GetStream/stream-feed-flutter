@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -66,5 +67,31 @@ void main() {
 
     verify(() => mockClient.flatFeed('user')).called(1);
     verify(() => mockFeed.getEnrichedActivities()).called(1);
+  });
+
+  test('Default ActivityContent debugFillProperties', () {
+    final builder = DiagnosticPropertiesBuilder();
+    final flatFeedCore = FlatFeedCore(
+      feedGroup: 'user',
+      feedBuilder: (BuildContext context,
+          List<EnrichedActivity<User, String, String, String>> activities,
+          int idx) {
+        return Column(
+          children: [
+            Text("${activities[idx].reactionCounts?['like']}") //counts
+          ],
+        );
+      },
+    );
+
+    // ignore: cascade_invocations
+    flatFeedCore.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toDescription())
+        .toList();
+
+    expect(description, ['has feedBuilder', '"user"']);
   });
 }

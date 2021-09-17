@@ -198,7 +198,7 @@ void main() {
   });
 
   group('debugFillProperties tests', () {
-    testWidgets('Default ActivityWidget debugFillProperties', (tester) async {
+    test('Default ActivityWidget debugFillProperties', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityWidget = ActivityWidget(
@@ -233,8 +233,7 @@ void main() {
           'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
-    testWidgets('Default ActivityContent debugFillProperties',
-        (widgetTester) async {
+    test('Default ActivityContent debugFillProperties', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityContent = ActivityContent(
@@ -269,8 +268,7 @@ void main() {
           'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
-    testWidgets('Default ActivityFooter debugFillProperties',
-        (widgetTester) async {
+    test('Default ActivityFooter debugFillProperties', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityFooter = ActivityFooter(
@@ -305,8 +303,7 @@ void main() {
           'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
-    testWidgets('Default ActivityHeader debugFillProperties',
-        (widgetTester) async {
+    test('Default ActivityHeader debugFillProperties', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityHeader = ActivityHeader(

@@ -442,7 +442,7 @@ void main() {
   });
 
   group('debugFillProperties tests', () {
-    testWidgets('ChildReactionButton', (tester) async {
+    test('ChildReactionButton', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final childReactionButton = ChildReactionButton(
@@ -470,7 +470,7 @@ void main() {
           'Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null)');
     });
 
-    testWidgets('ChildReactionToggleIcon', (tester) async {
+    test('ChildReactionToggleIcon', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final childReactionToggleIcon = ChildReactionToggleIcon(
@@ -497,7 +497,7 @@ void main() {
       expect(description[0]['description'], 'null');
     });
 
-    testWidgets('Like button', (tester) async {
+    test('Like button', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final likeButton = LikeButton(
@@ -530,7 +530,7 @@ void main() {
       expect(description[0]['description'], 'null');
     });
 
-    testWidgets('ReactionButton', (tester) async {
+    test('ReactionButton', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final reactionButton = ReactionButton(
@@ -566,7 +566,7 @@ void main() {
       expect(description[0]['description'], 'null');
     });
 
-    testWidgets('ReactionToggleIcon', (tester) async {
+    test('ReactionToggleIcon', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final reactionToggleIcon = ReactionToggleIcon(
@@ -602,7 +602,7 @@ void main() {
       expect(description[0]['description'], 'null');
     });
 
-    testWidgets('ReactionIcon', (tester) async {
+    tets('ReactionIcon', () {
       final builder = DiagnosticPropertiesBuilder();
       const reactionIcon = ReactionIcon(
         icon: Icon(Icons.favorite),
@@ -619,7 +619,7 @@ void main() {
       expect(description[0]['description'], 'null');
     });
 
-    testWidgets('ReplyButton', (tester) async {
+    test('ReplyButton', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final replyButton = ReplyButton(
@@ -652,7 +652,7 @@ void main() {
       expect(description[0]['description'], '"handle"');
     });
 
-    testWidgets('RepostButton', (tester) async {
+    test('RepostButton', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final repostButton = RepostButton(
