@@ -179,3 +179,24 @@ with a stateful widget).
 * We create an instance of `Activity` called `activity`, and populate its fields.
 * We create an instance of our "timeline" flat feed.
 * We add the activity to the feed by calling `await userFeed.addActivity(activity)`
+
+## Aggregated Feeds
+Aggregated feeds are feeds that group activities from different feed groups. 
+A good example of an aggregated feed is a global social media
+
+## Notification Feeds
+Notification Feed Groups extend the "Aggregated Feed Group" concept with 
+additional features that make them well suited to notification systems:
+
+* Notification Feeds contain Activity Groups, each with a `seen` and `read` status 
+field. These fields can be updated to reflect how a user has interacted with a 
+given notification.
+
+* When retrieved, the Feed includes a real-time count of the total number of 
+unseen and unread Activity Groups (notifications).
+
+For example, take the notification system on Facebook. If you click the 
+notification icon, all notifications get marked as seen. However, an 
+individual notification only gets marked as read when you click on it.
+
+You can create new Notification Feed Groups for your appplication in the dashboard.
