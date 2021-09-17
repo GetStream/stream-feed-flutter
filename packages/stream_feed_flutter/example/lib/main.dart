@@ -65,7 +65,7 @@ class MyHomePage extends StatelessWidget {
         client: client,
         navigatorKey: navigatorKey,
         child: StreamFeedTheme(
-          data: StreamFeedThemeData.dark(),
+          data: StreamFeedThemeData.light(),
           child: FlatActivityListPage(
             bloc: DefaultFeedBloc(
               client: client,

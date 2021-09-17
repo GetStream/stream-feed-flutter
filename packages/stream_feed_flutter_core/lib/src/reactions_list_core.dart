@@ -72,8 +72,7 @@ class ReactionListCore extends StatefulWidget {
   State<ReactionListCore> createState() => _ReactionListCoreState();
 }
 
-class _ReactionListCoreState extends State<ReactionListCore>
-    with WidgetsBindingObserver {
+class _ReactionListCoreState extends State<ReactionListCore> {
   @override
   void initState() {
     super.initState();
