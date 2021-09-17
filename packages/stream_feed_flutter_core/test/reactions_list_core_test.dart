@@ -60,7 +60,8 @@ void main() {
       analyticsClient: mockStreamAnalytics,
       client: mockClient,
       child: ReactionListCore(
-        reactionsBuilder: (context, reactions, idx) => const Offstage(),//TODO improve this
+        reactionsBuilder: (context, reactions, idx) =>
+            const Offstage(), //TODO improve this
         lookupValue: lookupValue,
         filter: filter,
         limit: limit,
