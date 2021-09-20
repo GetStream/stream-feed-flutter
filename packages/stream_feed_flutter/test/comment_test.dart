@@ -1,3 +1,6 @@
+// ignore_for_file: cascade_invocations
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -238,5 +241,62 @@ void main() {
     expect(focusNode.hasPrimaryFocus, isFalse);
     final hintText = tester.widget<Text>(find.text('Placeholder'));
     expect(hintText.style, hintStyle);
+  });
+
+  test('Default CommentField debugFillProperties', () {
+    final builder = DiagnosticPropertiesBuilder();
+    final now = DateTime.now();
+    final commentField = CommentField(
+      feedGroup: 'whatever:300',
+      textEditingController: TextEditingController(),
+      activity: EnrichedActivity(
+        time: now,
+        actor: const User(
+          data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing frisbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          },
+        ),
+        extraData: const {
+          'image':
+              'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+        },
+      ),
+    );
+
+    commentField.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toJsonMap(const DiagnosticsSerializationDelegate()))
+        .toList();
+
+    expect(description[0]['description'],
+        'EnrichedActivity<dynamic, dynamic, dynamic, dynamic>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+  });
+
+  test('Default CommentItem debugFillProperties', () {
+    final builder = DiagnosticPropertiesBuilder();
+    final now = DateTime.now();
+    final commentItem = CommentItem(
+      reaction: Reaction(
+        createdAt: now,
+        kind: 'comment',
+        data: const {
+          'text': 'this is a piece of text',
+        },
+      ),
+    );
+
+    commentItem.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toJsonMap(const DiagnosticsSerializationDelegate()))
+        .toList();
+
+    expect(description[0]['description'], 'null');
   });
 }

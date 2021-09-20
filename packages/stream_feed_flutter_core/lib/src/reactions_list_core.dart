@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:rxdart/rxdart.dart';
+
+// ignore_for_file: cascade_invocations
 
 //TODO: other things to add to core: FollowListCore, UserListCore
 
@@ -18,7 +21,7 @@ import 'package:rxdart/rxdart.dart';
 ///     return Scaffold(
 ///       body: ReactionListCore(
 ///         onErrorWidget: Center(
-///             child: Text('An error has occured'),
+///             child: Text('An error has occurred'),
 ///         ),
 ///         onEmptyWidget: Center(
 ///             child: Text('Nothing here...'),
@@ -56,15 +59,32 @@ class ReactionListCore extends StatefulWidget {
 
   /// A builder that allows building a ListView of Reaction based Widgets
   final ReactionsBuilder reactionsBuilder;
+
+  /// A builder for building widgets to show on error
   final Widget onErrorWidget;
+
+  /// A builder for building widgets to show on progress
   final Widget onProgressWidget;
+
+  /// A builder for building widgets to show on empty
   final Widget onEmptyWidget;
 
+  /// Lookup objects based on attributes
   final LookupAttribute lookupAttr;
+
+  /// TODO: document me
   final String lookupValue;
+
+  /// {@macro filter}
   final Filter? filter;
+
+  /// The flags to use for the request
   final EnrichmentFlags? flags;
+
+  /// The limit of activities to fetch
   final int? limit;
+
+  /// The kind of reaction
   final String? kind;
   final FeedBloc bloc;
 

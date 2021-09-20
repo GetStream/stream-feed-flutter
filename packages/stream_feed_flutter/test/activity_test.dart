@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -65,9 +66,9 @@ void main() {
   testWidgets('ActivityContent', (tester) async {
     await mockNetworkImages(() async {
       const title =
-          "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'";
+          """'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'""";
       const description =
-          'Why choose one when you can wear both? These energizing pairings stand out from the crowd';
+          '''Why choose one when you can wear both? These energizing pairings stand out from the crowd''';
 
       final pressedHashtags = <String?>[];
       final pressedMentions = <String?>[];
@@ -111,6 +112,7 @@ void main() {
         ),
       );
       final card = find.byType(ActivityCard);
+
       expect(card, findsOneWidget);
       final richtexts = tester.widgetList<Text>(find.byType(Text));
 
@@ -150,7 +152,7 @@ void main() {
                   actor: const User(data: {
                     'name': 'Rosemary',
                     'handle': '@rosemary',
-                    'subtitle': 'likes playing fresbee in the park',
+                    'subtitle': 'likes playing frisbee in the park',
                     'profile_image':
                         'https://randomuser.me/api/portraits/women/20.jpg',
                   }),
@@ -193,5 +195,147 @@ void main() {
       surfaceSize: const Size(200, 200),
     );
     await screenMatchesGolden(tester, 'activity_footer');
+  });
+
+  group('debugFillProperties tests', () {
+    test('Default ActivityWidget debugFillProperties', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final activityWidget = ActivityWidget(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      // ignore: cascade_invocations
+      activityWidget.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'],
+          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+    });
+
+    test('Default ActivityContent debugFillProperties', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final activityContent = ActivityContent(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      // ignore: cascade_invocations
+      activityContent.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'],
+          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+    });
+
+    test('Default ActivityFooter debugFillProperties', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final activityFooter = ActivityFooter(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      // ignore: cascade_invocations
+      activityFooter.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'],
+          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+    });
+
+    test('Default ActivityHeader debugFillProperties', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final activityHeader = ActivityHeader(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      // ignore: cascade_invocations
+      activityHeader.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'],
+          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+    });
   });
 }

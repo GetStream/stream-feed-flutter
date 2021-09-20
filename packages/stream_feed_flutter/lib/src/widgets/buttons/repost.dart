@@ -1,13 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template repost_button}
+// ignore_for_file: cascade_invocations
+
+/// {@template repost_button}
 /// A Repost Button is a widget that allows a user to repost a feed item.
 /// When pressed it will post a new item with the same content as the original
-///{@endtemplate}
+/// {@endtemplate}
 class RepostButton extends StatelessWidget {
   /// Builds a [RepostButton].
   const RepostButton({
@@ -59,5 +62,14 @@ class RepostButton extends StatelessWidget {
       onTap: onTap,
       feedGroup: feedGroup,
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
+    properties.add(StringProperty('feedGroup', feedGroup));
   }
 }

@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template post_comment_button}
+// ignore_for_file: cascade_invocations
+
+/// {@template post_comment_button}
 /// Allows the current user to comment on a post.
 ///
 /// When pressed, the comment in the post will be sent to the server.
@@ -15,7 +18,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///   textEditingController: textEditingController,
 /// ),
 /// ```
-///{@endtemplate}
+/// {@endtemplate}
 class PostCommentButton extends StatelessWidget {
   /// Builds a [PostCommentButton].
   const PostCommentButton({
@@ -69,6 +72,17 @@ class PostCommentButton extends StatelessWidget {
       textEditingController: textEditingController,
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(DiagnosticsProperty<TextEditingController>(
+        'textEditingController', textEditingController));
+    properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
+  }
 }
 
 /// TODO: document me
@@ -95,6 +109,15 @@ class ReactiveElevatedButton extends StatefulWidget {
 
   @override
   _ReactiveElevatedButtonState createState() => _ReactiveElevatedButtonState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<TextEditingController>(
+        'textEditingController', textEditingController));
+    properties.add(ObjectFlagProperty<OnSend>.has('onSend', onSend));
+    properties.add(StringProperty('label', label));
+  }
 }
 
 class _ReactiveElevatedButtonState extends State<ReactiveElevatedButton> {

@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+
+// ignore_for_file: cascade_invocations
 
 /// TODO: document me
 class Username extends StatelessWidget {
@@ -13,9 +16,10 @@ class Username extends StatelessWidget {
   /// The user to show a username for
   final User? user;
 
-  /// TODO: document me
+  /// The json key for the user's name.
   final String nameJsonKey;
 
+  /// Username
   String? get username => user?.data?[nameJsonKey] as String?;
 
   @override
@@ -24,5 +28,13 @@ class Username extends StatelessWidget {
       username ?? 'anonymous',
       style: UserBarTheme.of(context).usernameTextStyle,
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('username', username));
+    properties.add(DiagnosticsProperty<User?>('user', user));
+    properties.add(StringProperty('nameJsonKey', nameJsonKey));
   }
 }

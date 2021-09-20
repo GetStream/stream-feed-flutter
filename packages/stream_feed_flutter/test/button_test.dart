@@ -1,86 +1,72 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
+import 'package:stream_feed_flutter/src/widgets/comment/item.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 import 'mock.dart';
 
+// ignore_for_file: cascade_invocations
+
 void main() {
-  //TODO:fix me
-  // testWidgets('ReactionList', (tester) async {
-  //   await mockNetworkImages(() async {
-  //     var pressedHashtags = <String?>[];
-  //     var pressedMentions = <String?>[];
-  //     var pressedReactions = <Reaction?>[];
-  //     var pressedUsers = <User?>[];
-  //     final reactions = [
-  //       Reaction(
-  //         createdAt: DateTime.now(),
-  //         kind: 'comment',
-  //         data: {
-  //           'text':
-  //               'Woohoo Snowboarding is awesome! #snowboarding #winter @sacha',
-  //         },
-  //       ),
-  //       Reaction(
-  //         createdAt: DateTime.now(),
-  //         kind: 'comment',
-  //         data: {
-  //           'text': 'Ikr! #vacations #winter @sahil',
-  //         },
-  //       ),
-  //     ];
-  //     await tester.pumpWidget(MaterialApp(
-  //         home: Scaffold(
-  //       body: ReactionListInner(
-  //           onUserTap: (user) => pressedUsers.add(user),
-  //           onReactionTap: (reaction) => pressedReactions.add(reaction),
-  //           onMentionTap: (mention) => pressedMentions.add(mention),
-  //           onHashtagTap: (hashtag) => pressedHashtags.add(hashtag),
-  //           reactions: reactions),
-  //     )));
+  testWidgets('ReactionListPage', (tester) async {
+    final mockClient = MockStreamFeedClient();
+    final mockReactions = MockReactions();
+    final mockStreamAnalytics = MockStreamAnalytics();
+    when(() => mockClient.reactions).thenReturn(mockReactions);
+    const lookupAttr = LookupAttribute.activityId;
+    const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
+    final filter =
+        Filter().idGreaterThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+    const kind = 'like';
+    const limit = 5;
+    const activityId = 'activityId';
+    const userId = 'john-doe';
+    const targetFeeds = <FeedId>[];
+    const data = {'text': 'awesome post!'};
+    const reactions = [
+      Reaction(
+        kind: kind,
+        activityId: activityId,
+        userId: userId,
+        data: data,
+        targetFeeds: targetFeeds,
+      )
+    ];
+    when(() => mockReactions.filter(
+          lookupAttr,
+          lookupValue,
+          filter: filter,
+          limit: limit,
+          kind: kind,
+        )).thenAnswer((_) async => reactions);
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+            body: StreamFeedCore(
+      analyticsClient: mockStreamAnalytics,
+      client: mockClient,
+      child: ReactionListPage(
+        activity: EnrichedActivity(id: 'id'),
+        reactionBuilder: (context, reaction) => const Offstage(),
+        lookupValue: lookupValue,
+        filter: filter,
+        limit: limit,
+        kind: kind,
+      ),
+    ))));
+    verify(() => mockReactions.filter(lookupAttr, lookupValue,
+        filter: filter, limit: limit, kind: kind)).called(1);
+  });
 
-  //     final avatar = find.byType(Avatar);
-
-  //     expect(avatar, findsNWidgets(2));
-  //     final richtexts = tester.widgetList<Text>(find.byType(Text));
-
-  //     expect(richtexts.toList().map((e) => e.data), [
-  //       'a moment ago',
-  //       'Woohoo ',
-  //       'Snowboarding ',
-  //       'is ',
-  //       'awesome! ',
-  //       ' #snowboarding',
-  //       ' #winter',
-  //       ' @sacha',
-  //       'a moment ago',
-  //       'Ikr! ',
-  //       ' #vacations',
-  //       ' #winter',
-  //       ' @sahil'
-  //     ]);
-
-  //     await tester.tap(find.widgetWithText(InkWell, ' #winter').first);
-  //     await tester.tap(find.widgetWithText(InkWell, ' @sacha').first);
-  //     await tester.tap(find.widgetWithText(InkWell, ' #vacations').first);
-  //     await tester.tap(find.widgetWithText(InkWell, ' @sahil').first);
-  //     final firstReaction = find.byType(InkWell).first;
-  //     final firstReactionUser = find.byType(Avatar).first;
-  //     await tester.tap(firstReaction);
-  //     await tester.tap(firstReactionUser);
-  //     expect(pressedHashtags, ['winter', 'vacations']);
-  //     expect(pressedMentions, ['sacha', 'sahil']);
-  //     expect(pressedReactions, [reactions.first]);
-  //     expect(pressedUsers, [reactions.first.user]);
-  //   });
-  // });
   testWidgets('LikeButton', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -90,7 +76,7 @@ void main() {
             child: child!,
           );
         },
-        home: Scaffold(
+        home: const Scaffold(
           body: LikeButton(
             activity:
                 EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
@@ -125,7 +111,7 @@ void main() {
             child: child!,
           );
         },
-        home: Scaffold(
+        home: const Scaffold(
           body: RepostButton(
             activity:
                 EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
@@ -180,7 +166,7 @@ void main() {
       reaction: reaction,
       kind: kind,
       count: count,
-      ownReactions: [reaction],
+      ownReactions: const [reaction],
       inactiveIcon: inactiveIcon,
       activeIcon: activeIcon,
     );
@@ -321,7 +307,7 @@ void main() {
       kind: kind,
       count: count,
       feedGroup: feedGroup,
-      ownReactions: [reaction],
+      ownReactions: const [reaction],
       inactiveIcon: inactiveIcon,
       activeIcon: activeIcon,
       hoverColor: Colors.lightBlue,
@@ -474,6 +460,251 @@ void main() {
         surfaceSize: const Size(100, 75),
       );
       await screenMatchesGolden(tester, 'repost');
+    });
+  });
+
+  group('debugFillProperties tests', () {
+    test('ChildReactionButton', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final childReactionButton = ChildReactionButton(
+        reaction: Reaction(
+          createdAt: now,
+          kind: 'comment',
+          data: const {
+            'text': 'this is a piece of text',
+          },
+        ),
+        kind: 'comment',
+        activeIcon: const Icon(Icons.favorite),
+        inactiveIcon: const Icon(Icons.favorite_border),
+      );
+
+      childReactionButton.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'],
+          'Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null)');
+    });
+
+    test('ChildReactionToggleIcon', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final childReactionToggleIcon = ChildReactionToggleIcon(
+        reaction: Reaction(
+          createdAt: now,
+          kind: 'comment',
+          data: const {
+            'text': 'this is a piece of text',
+          },
+        ),
+        kind: 'comment',
+        activeIcon: const Icon(Icons.favorite),
+        inactiveIcon: const Icon(Icons.favorite_border),
+      );
+
+      childReactionToggleIcon.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
+    });
+
+    test('Like button', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final likeButton = LikeButton(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      likeButton.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
+    });
+
+    test('ReactionButton', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final reactionButton = ReactionButton(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+        kind: 'comment',
+        activeIcon: const Icon(Icons.favorite),
+        inactiveIcon: const Icon(Icons.favorite_border),
+      );
+
+      reactionButton.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
+    });
+
+    test('ReactionToggleIcon', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final reactionToggleIcon = ReactionToggleIcon(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+        kind: 'comment',
+        activeIcon: const Icon(Icons.favorite),
+        inactiveIcon: const Icon(Icons.favorite_border),
+      );
+
+      reactionToggleIcon.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
+    });
+
+    test('ReactionIcon', () {
+      final builder = DiagnosticPropertiesBuilder();
+      const reactionIcon = ReactionIcon(
+        icon: Icon(Icons.favorite),
+      );
+
+      reactionIcon.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
+    });
+
+    test('ReplyButton', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final replyButton = ReplyButton(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      replyButton.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], '"handle"');
+    });
+
+    test('RepostButton', () {
+      final builder = DiagnosticPropertiesBuilder();
+      final now = DateTime.now();
+      final repostButton = RepostButton(
+        activity: EnrichedActivity(
+          time: now,
+          actor: const User(
+            data: {
+              'name': 'Rosemary',
+              'handle': '@rosemary',
+              'subtitle': 'likes playing frisbee in the park',
+              'profile_image':
+                  'https://randomuser.me/api/portraits/women/20.jpg',
+            },
+          ),
+          extraData: const {
+            'image':
+                'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+          },
+        ),
+      );
+
+      repostButton.debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], 'null');
     });
   });
 }

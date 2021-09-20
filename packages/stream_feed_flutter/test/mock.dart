@@ -1,5 +1,5 @@
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class MockReactions extends Mock implements ReactionsClient {}
 

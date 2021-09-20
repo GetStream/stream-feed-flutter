@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,12 +24,13 @@ void main() {
       }
     });
   });
+
   testWidgets('Card', (tester) async {
     await mockNetworkImages(() async {
       const title =
-          "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'";
+          """'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'""";
       const description =
-          'Why choose one when you can wear both? These energizing pairings stand out from the crowd';
+          '''Why choose one when you can wear both? These energizing pairings stand out from the crowd''';
 
       await tester.pumpWidget(
         MaterialApp(
@@ -75,6 +77,34 @@ void main() {
       final richtexts = tester.widgetList<Text>(find.byType(Text));
       expect(richtexts.toList().map((e) => e.data), [title, description]);
     });
+  });
+
+  test('Default ActivityCard debugFillProperties', () {
+    final builder = DiagnosticPropertiesBuilder();
+    const activityCard = ActivityCard(
+      og: OpenGraphData(
+        title: 'Title',
+        url:
+            'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
+        description: 'Description',
+        images: [
+          OgImage(
+            image:
+                'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+          )
+        ],
+      ),
+    );
+
+    // ignore: cascade_invocations
+    activityCard.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toJsonMap(const DiagnosticsSerializationDelegate()))
+        .toList();
+
+    expect(description[0]['description'], 'null');
   });
 
   tearDown(() {

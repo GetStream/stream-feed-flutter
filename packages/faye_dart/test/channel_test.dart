@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 import 'mock.dart';
 
-main() {
+void main() {
   group('channel', () {
     test('channels should be equal if name is same', () {
       final channelOne = Channel('id');
@@ -15,31 +15,31 @@ main() {
 
     test('expand returns all patterns that match a channel",', () {
       expect(
-        ["/**", "/foo", "/*"],
-        Channel.expand("/foo"),
+        ['/**', '/foo', '/*'],
+        Channel.expand('/foo'),
       );
       expect(
-        ["/**", "/foo/bar", "/foo/*", "/foo/**"],
-        Channel.expand("/foo/bar"),
+        ['/**', '/foo/bar', '/foo/*', '/foo/**'],
+        Channel.expand('/foo/bar'),
       );
       expect(
-        ["/**", "/foo/bar/qux", "/foo/bar/*", "/foo/**", "/foo/bar/**"],
-        Channel.expand("/foo/bar/qux"),
+        ['/**', '/foo/bar/qux', '/foo/bar/*', '/foo/**', '/foo/bar/**'],
+        Channel.expand('/foo/bar/qux'),
       );
     });
 
     test('channel should be subscribable', () {
-      const channelName = "/fo_o/\$@()bar";
+      const channelName = '/fo_o/\$@()bar';
       expect(Channel.isSubscribable(channelName), isTrue);
     });
 
     test('meta channels should not be subscribable', () {
-      const channelName = "/meta/fo_o/\$@()bar";
+      const channelName = '/meta/fo_o/\$@()bar';
       expect(Channel.isSubscribable(channelName), isFalse);
     });
 
     test('service channels should not be subscribable', () {
-      const channelName = "/service/fo_o/\$@()bar";
+      const channelName = '/service/fo_o/\$@()bar';
       expect(Channel.isSubscribable(channelName), isFalse);
     });
   });
@@ -48,7 +48,7 @@ main() {
     test('subscribes and un-subscribes', () {
       final client = MockClient();
       final channels = <String, Channel>{};
-      final channel = "/foo/**";
+      const channel = '/foo/**';
       final subscription = Subscription(client, channel);
       channels.subscribe(channel, subscription);
 
@@ -61,7 +61,7 @@ main() {
       () {
         final client = MockClient();
         final channels = <String, Channel>{};
-        final channel = "/foo/**";
+        const channel = '/foo/**';
 
         var callbackInvoked = false;
         final subscription = Subscription(client, channel, callback: (_) {

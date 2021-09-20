@@ -1,14 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/child_reaction_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-///{@template child_reaction_button}
+// ignore_for_file: cascade_invocations
+
+/// {@template child_reaction_button}
 /// Used to trigger a reaction.
 ///
 /// It displays the number of reactions it has received and the reaction
 /// it is currently displaying.
-///{@endtemplate}
+/// {@endtemplate}
 class ChildReactionButton extends StatelessWidget {
   /// Builds a [ChildReactionButton].
   const ChildReactionButton({
@@ -66,6 +69,16 @@ class ChildReactionButton extends StatelessWidget {
       onTap: onTap,
       data: data,
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Reaction>('reaction', reaction));
+    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
+    properties.add(StringProperty('kind', kind));
+    properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
+    properties.add(ColorProperty('hoverColor', hoverColor));
   }
 }
 
@@ -164,5 +177,19 @@ class ChildReactionToggleIcon extends StatelessWidget {
         kind: kind, reaction: reaction, activity: activity
         // activity: idToRemove!,
         );
+  }
+  
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<Reaction>('ownReactions', ownReactions));
+    properties.add(StringProperty('kind', kind));
+    properties.add(IntProperty('count', count));
+    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
+    properties.add(StringProperty('userId', userId));
+    properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
+    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
+    properties.add(ColorProperty('hoverColor', hoverColor));
+    properties.add(DiagnosticsProperty<Reaction>('reaction', reaction));
   }
 }

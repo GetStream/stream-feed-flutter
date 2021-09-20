@@ -58,4 +58,7 @@ class Filter {
     _filters[_Filter.idLessThan] = id;
     return this;
   }
+
+  @override
+  String toString() => _filters.toString();
 }

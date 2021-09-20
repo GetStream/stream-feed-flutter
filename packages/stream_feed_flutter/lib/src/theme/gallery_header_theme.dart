@@ -46,6 +46,12 @@ class GalleryHeaderTheme extends InheritedTheme {
   @override
   bool updateShouldNotify(GalleryHeaderTheme oldWidget) =>
       data != oldWidget.data;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<GalleryHeaderThemeData>('data', data));
+  }
 }
 
 /// {@template galleryHeaderThemeData}

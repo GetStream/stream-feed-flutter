@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 
 part 'constants.dart';
