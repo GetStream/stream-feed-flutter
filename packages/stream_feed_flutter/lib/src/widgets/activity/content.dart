@@ -26,13 +26,13 @@ class ActivityContent extends StatelessWidget {
   /// The activity that is being displayed.
   final DefaultEnrichedActivity activity;
 
-  /// {@macro mention_callback}
+  /// A callback to handle mention taps
   final OnMentionTap? onMentionTap;
 
-  /// A callback that is invoked when the user clicks on hashtag
+  /// A callback to handle hashtag taps
   final OnHashtagTap? onHashtagTap;
 
-  /// TODO: document me
+  /// The json key for the comment
   final String commentJsonKey;
 
   @override
