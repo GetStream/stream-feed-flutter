@@ -490,7 +490,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null)');
+          'Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null, null)');
     });
 
     test('ChildReactionToggleIcon', () {
