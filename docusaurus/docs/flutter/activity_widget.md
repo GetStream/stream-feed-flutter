@@ -29,7 +29,7 @@ An activity must be passed in, but everything else is optional. Let's go through
 /// The activity to display.
 final DefaultEnrichedActivity activity;
 ```
-This is the activity to display. Read more about `DefaultEnrichedActivity` [here]().
+This is the activity to display. Read more about `DefaultEnrichedActivity` [here](). <!--TODO: add link -->
 
 ---
 
