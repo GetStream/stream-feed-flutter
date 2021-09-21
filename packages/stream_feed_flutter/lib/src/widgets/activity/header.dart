@@ -26,7 +26,7 @@ class ActivityHeader extends StatelessWidget {
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
-  /// TODO: document me
+  /// Whether to show the widget subtitle or not.
   final bool showSubtitle;
 
   /// The json key for the user's handle.
