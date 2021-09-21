@@ -35,8 +35,11 @@ class ActivityHeader extends StatelessWidget {
   /// The json key for the user's name.
   final String nameJsonKey;
 
-  /// Whether you want to display like activities or repost activities
+  /// The kind of activity to display.
+  ///
+  /// Can be 'like', 'repost', 'post', etc.
   final String activityKind;
+  
   @override
   Widget build(BuildContext context) {
     return UserBar(
