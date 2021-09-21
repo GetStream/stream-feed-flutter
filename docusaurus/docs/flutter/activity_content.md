@@ -2,8 +2,6 @@
 
 A widget that displays the content of an activity
 
-## Background
-
 ## Constructor
 ```dart
 const ActivityContent({
