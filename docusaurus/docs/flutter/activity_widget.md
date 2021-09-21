@@ -149,10 +149,11 @@ typedef ActivityHeaderBuilder = Widget Function(
 final String feedGroup;
 ```
 
-This is the feed group that the activity belongs to.
+This is the feed group that the activity belongs to. If you have created a feed in your dashboard that has an ID other than 'timeline' or 'user', you'll want to include that feed ID as the `feedGroup`
 
 
 ---
 
 `ActivityWidget()` source code
+
 `ActivityWidget()` pub.dev documentation
