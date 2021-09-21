@@ -127,17 +127,18 @@ void main() {
     });
 
     group('AlertDialog', () {
+      late MockFeedBloc mockFeedBloc;
+      setUp(() {
+        mockFeedBloc = MockFeedBloc();
+        when(() => mockFeedBloc.activitiesStream)
+            .thenAnswer((_) => Stream.value([EnrichedActivity(actor: User())]));
+      });
       testWidgets('Comment', (tester) async {
         await mockNetworkImages(() async {
           await tester.pumpWidget(
-            MaterialApp(
-              builder: (context, child) {
-                return StreamFeedTheme(
-                  data: StreamFeedThemeData.light(),
-                  child: child!,
-                );
-              },
-              home: Scaffold(
+            StreamFeedApp(
+              bloc: mockFeedBloc,
+              widget: Scaffold(
                 body: AlertDialogComment(
                   feedGroup: 'user',
                   activity: EnrichedActivity(
@@ -166,14 +167,9 @@ void main() {
         testWidgets('with an activity', (tester) async {
           await mockNetworkImages(() async {
             await tester.pumpWidget(
-              MaterialApp(
-                builder: (context, child) {
-                  return StreamFeedTheme(
-                    data: StreamFeedThemeData.light(),
-                    child: child!,
-                  );
-                },
-                home: Scaffold(
+              StreamFeedApp(
+                bloc: mockFeedBloc,
+                widget: Scaffold(
                   body: CommentView(
                     activity: EnrichedActivity(
                       time: DateTime.now(),
@@ -202,23 +198,11 @@ void main() {
         });
 
         testWidgets('without an activity', (tester) async {
-          final mockFeedBloc = MockFeedBloc();
-          when(() => mockFeedBloc.activitiesStream).thenAnswer(
-              (_) => Stream.value([EnrichedActivity(actor: User())]));
-
           await mockNetworkImages(() async {
             await tester.pumpWidget(
-              MaterialApp(
-                builder: (context, child) {
-                  return FeedBlocProvider(
-                    bloc: mockFeedBloc,
-                    child: StreamFeedTheme(
-                      data: StreamFeedThemeData.light(),
-                      child: child!,
-                    ),
-                  );
-                },
-                home: Scaffold(
+              StreamFeedApp(
+                bloc: mockFeedBloc,
+                widget: Scaffold(
                   body: CommentView(
                     textEditingController: TextEditingController(),
                   ),
@@ -336,4 +320,27 @@ void main() {
       expect(description[0]['description'], 'null');
     });
   });
+}
+
+class StreamFeedApp extends StatelessWidget {
+  const StreamFeedApp({Key? key, required this.bloc, required this.widget})
+      : super(key: key);
+
+  final FeedBloc bloc;
+  final Widget widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        builder: (context, child) {
+          return FeedBlocProvider(
+            bloc: bloc,
+            child: StreamFeedTheme(
+              data: StreamFeedThemeData.light(),
+              child: child!,
+            ),
+          );
+        },
+        home: widget);
+  }
 }
