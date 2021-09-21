@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/user_bar_theme.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -19,5 +20,11 @@ class HumanReadableTimestamp extends StatelessWidget {
       timeago.format(timestamp),
       style: UserBarTheme.of(context).timestampTextStyle,
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<DateTime>('timestamp', timestamp));
   }
 }

@@ -1,14 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///{@template like_button}
+// ignore_for_file: cascade_invocations
+
+/// {@template like_button}
 /// A reaction button that displays a like icon.
 ///
 /// It is used to like a post when pressed.
-///{@endtemplate}
+/// {@endtemplate}
 class LikeButton extends StatelessWidget {
   /// Builds a [LikeButton].
   const LikeButton({
@@ -46,6 +49,9 @@ class LikeButton extends StatelessWidget {
   /// The feed group that this [LikeButton] is associated with.
   final String feedGroup;
 
+  /// The color to use when the user hovers over the button.
+  ///
+  /// Generally applies to desktop and web.
   final Color? hoverColor;
 
   @override
@@ -64,5 +70,15 @@ class LikeButton extends StatelessWidget {
       kind: 'like',
       onTap: onTap,
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
+    properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(ColorProperty('hoverColor', hoverColor));
   }
 }

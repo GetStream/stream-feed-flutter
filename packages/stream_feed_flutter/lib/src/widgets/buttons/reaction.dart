@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/reaction_theme.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
+// ignore_for_file: cascade_invocations
 
 /// {@template reaction_button}
 /// A widget that can be used to trigger a reaction.
@@ -73,6 +76,18 @@ class ReactionButton extends StatelessWidget {
       feedGroup: feedGroup,
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
+    properties.add(StringProperty('kind', kind));
+    properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
+    properties.add(ColorProperty('hoverColor', hoverColor));
+    properties.add(StringProperty('feedGroup', feedGroup));
+  }
 }
 
 /// TODO: document me
@@ -98,10 +113,12 @@ class ReactionToggleIcon extends StatefulWidget {
   /// The reactions belonging to the current user
   final List<Reaction>? ownReactions;
 
-  /// The icon to display if you already reacted, with this rreaction kind, to this activity
+  /// The icon to display if you already reacted, with this reaction kind,
+  /// to this activity
   final Widget activeIcon;
 
-  /// The icon to display if you did not reacted yet, with this rreaction kind, to this activity
+  /// The icon to display if you did not reacted yet, with this reaction kind,
+  /// to this activity
   final Widget inactiveIcon;
 
   /// The kind of reaction
@@ -133,6 +150,21 @@ class ReactionToggleIcon extends StatefulWidget {
 
   @override
   State<ReactionToggleIcon> createState() => _ReactionToggleIconState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<Reaction>('ownReactions', ownReactions));
+    properties.add(StringProperty('kind', kind));
+    properties.add(IntProperty('count', count));
+    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
+    properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(StringProperty('userId', userId));
+    properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
+    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
+    properties.add(ColorProperty('hoverColor', hoverColor));
+  }
 }
 
 class _ReactionToggleIconState extends State<ReactionToggleIcon> {
@@ -178,7 +210,7 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
         feedGroup: widget.feedGroup);
     setState(() {
       alreadyReacted = !alreadyReacted;
-      idToRemove = reaction.id!;
+      idToRemove = reaction.id;
       count += 1;
     });
   }
@@ -193,6 +225,15 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
       alreadyReacted = !alreadyReacted;
       count -= 1;
     });
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<bool>('alreadyReacted', alreadyReacted));
+    properties.add(IterableProperty<Reaction?>('reactionsKind', reactionsKind));
+    properties.add(StringProperty('idToRemove', idToRemove));
+    properties.add(IntProperty('count', count));
   }
 }
 
@@ -242,5 +283,13 @@ class ReactionIcon extends StatelessWidget {
               child: icon,
             ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IntProperty('count', count));
+    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
+    properties.add(ColorProperty('hoverColor', hoverColor));
   }
 }

@@ -1,12 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 
-///{@template activity_footer}
+// ignore_for_file: cascade_invocations
+
+/// {@template activity_footer}
 /// Displays the footer content for an activity.
 ///
 /// This would be reaction buttons, the post, repost, and like buttons, etc.
-///{@endtemplate}
+/// {@endtemplate}
 class ActivityFooter extends StatelessWidget {
   ///{@macro activity_footer}
   const ActivityFooter({
@@ -43,5 +46,13 @@ class ActivityFooter extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(StringProperty('feedGroup', feedGroup));
   }
 }

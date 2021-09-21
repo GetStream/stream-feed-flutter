@@ -5,6 +5,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mocks.dart';
 
+// ignore_for_file: diagnostic_describe_all_properties
+
 class OnAddChildReactionWidget extends StatefulWidget {
   const OnAddChildReactionWidget(
       {Key? key, required this.reaction, required this.kind})
@@ -32,12 +34,12 @@ class _OnAddChildReactionWidgetState extends State<OnAddChildReactionWidget> {
   }
 }
 
-main() {
+void main() {
   const kind = 'like';
   const foreignId = 'like:300';
   const activityId = 'activityId';
   const feedGroup = 'timeline:300';
-  final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+  const activity = EnrichedActivity(id: activityId, foreignId: foreignId);
   const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
 
   testWidgets('OnAddReaction', (tester) async {
@@ -61,13 +63,20 @@ main() {
     // when(() => mockStreamAnalytics.trackEngagement(engagement))
     //     .thenAnswer((_) async => Future.value());
 
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(
+      MaterialApp(
         home: Scaffold(
-      body: StreamFeedCore(
-          analyticsClient: mockStreamAnalytics,
-          client: mockClient,
-          child: OnAddChildReactionWidget(reaction: reaction, kind: kind)),
-    )));
+          body: StreamFeedCore(
+            analyticsClient: mockStreamAnalytics,
+            client: mockClient,
+            child: const OnAddChildReactionWidget(
+              reaction: reaction,
+              kind: kind,
+            ),
+          ),
+        ),
+      ),
+    );
     final reactionIcon = find.byType(InkWell);
     expect(reactionIcon, findsOneWidget);
     await tester.tap(reactionIcon);

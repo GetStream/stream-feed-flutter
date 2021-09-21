@@ -4,15 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-//ignore: public_member_api_docs
+// ignore_for_file: public_member_api_docs
+
 class TimelineScreen extends StatefulWidget {
-  //ignore: public_member_api_docs
   const TimelineScreen({
     required this.currentUser,
     Key? key,
   }) : super(key: key);
 
-  //ignore: public_member_api_docs
   final StreamUser currentUser;
 
   @override
@@ -35,9 +34,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
   Future<void> _listenToFeed() async {
     _feedSubscription = await _client
         .flatFeed('timeline', widget.currentUser.id)
-        .subscribe((message) {
-      print(message);
-    });
+        .subscribe(print);
   }
 
   Future<void> _loadActivities({bool pullToRefresh = false}) async {

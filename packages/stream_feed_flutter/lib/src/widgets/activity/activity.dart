@@ -1,13 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 
-///{@template activity_widget}
+// ignore_for_file: cascade_invocations
+
+/// {@template activity_widget}
 /// A widget that displays a single activity.
 /// i.e. a single post in a feed
-///{@endtemplate}
+/// {@endtemplate}
 class ActivityWidget extends StatelessWidget {
   ///{@macro activity_widget}
   const ActivityWidget({
@@ -28,22 +31,22 @@ class ActivityWidget extends StatelessWidget {
   /// The activity to display.
   final DefaultEnrichedActivity activity;
 
-  /// TODO: document me
+  /// The json key for the user's handle.
   final String handleJsonKey;
 
-  /// TODO: document me
+  /// The json key for the user's name.
   final String nameJsonKey;
 
   /// A callback to invoke when a mention is tapped.
   final OnMentionTap? onMentionTap;
 
-  ///{@macro mention_callback}
+  /// {@macro mention_callback}
   final OnHashtagTap? onHashtagTap;
 
-  ///{@macro user_callback}
+  /// {@macro user_callback}
   final OnUserTap? onUserTap;
 
-  ///{@macro activity_callback}
+  /// {@macro activity_callback}
   final OnActivityTap? onActivityTap;
 
   /// A builder for the activity footer.
@@ -88,5 +91,28 @@ class ActivityWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(StringProperty('handleJsonKey', handleJsonKey));
+    properties.add(StringProperty('nameJsonKey', nameJsonKey));
+    properties.add(
+        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
+    properties.add(
+        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
+    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
+    properties.add(
+        ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
+    properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
+        'activityFooterBuilder', activityFooterBuilder));
+    properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
+        'activityContentBuilder', activityContentBuilder));
+    properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
+        'activityHeaderBuilder', activityHeaderBuilder));
+    properties.add(StringProperty('feedGroup', feedGroup));
   }
 }

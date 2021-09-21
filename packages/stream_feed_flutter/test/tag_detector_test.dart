@@ -1,19 +1,19 @@
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:test/test.dart';
 
-main() {
+void main() {
   test('TagDetector', () {
     final detector = TagDetector();
     final result = detector
         .parseText('Snowboarding is awesome! #snowboarding #winter @sacha');
 
     expect(result, [
-      TaggedText(tag: Tag.normalText, text: 'Snowboarding'),
-      TaggedText(tag: Tag.normalText, text: 'is'),
-      TaggedText(tag: Tag.normalText, text: 'awesome!'),
-      TaggedText(tag: Tag.hashtag, text: ' #snowboarding'),
-      TaggedText(tag: Tag.hashtag, text: ' #winter'),
-      TaggedText(tag: Tag.mention, text: ' @sacha')
+      const TaggedText(tag: Tag.normalText, text: 'Snowboarding'),
+      const TaggedText(tag: Tag.normalText, text: 'is'),
+      const TaggedText(tag: Tag.normalText, text: 'awesome!'),
+      const TaggedText(tag: Tag.hashtag, text: ' #snowboarding'),
+      const TaggedText(tag: Tag.hashtag, text: ' #winter'),
+      const TaggedText(tag: Tag.mention, text: ' @sacha')
     ]);
   });
 }

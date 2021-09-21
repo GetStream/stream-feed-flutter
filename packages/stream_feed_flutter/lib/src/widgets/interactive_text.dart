@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/reaction_theme.dart';
-import 'package:stream_feed_flutter/src/utils/extensions.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
+
+// ignore_for_file: cascade_invocations
 
 /// A widget used for interactive text like mentions, hashtags, and links.
 class InteractiveText extends StatelessWidget {
@@ -14,7 +16,7 @@ class InteractiveText extends StatelessWidget {
     this.onMentionTap,
   }) : super(key: key);
 
-  ///{@macro mention_callback}
+  /// {@macro mention_callback}
   final OnMentionTap? onMentionTap;
 
   /// A callback that is invoked when the user clicks on a hashtag.
@@ -57,5 +59,15 @@ class InteractiveText extends StatelessWidget {
           style: ReactionTheme.of(context).normalTextStyle,
         );
     }
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
+    properties.add(
+        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
+    properties.add(DiagnosticsProperty<TaggedText>('tagged', tagged));
   }
 }

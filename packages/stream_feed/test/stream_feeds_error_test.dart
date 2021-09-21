@@ -20,8 +20,11 @@ void main() {
       const statusCode = 666;
       const message = 'test-error-message';
       final options = RequestOptions(path: 'test-path');
-      final data =
-          ErrorResponse(code: code, message: message, statusCode: statusCode);
+      const data = ErrorResponse(
+        code: code,
+        message: message,
+        statusCode: statusCode,
+      );
 
       final dioError = DioError(
         requestOptions: options,

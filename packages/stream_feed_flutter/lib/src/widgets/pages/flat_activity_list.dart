@@ -1,10 +1,13 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
+// ignore_for_file: cascade_invocations
 
 /// TODO: document me
 enum TransitionType {
@@ -18,11 +21,11 @@ enum TransitionType {
   sharedAxisTransition,
 }
 
-///{@template flat_activity_list_page}
+/// {@template flat_activity_list_page}
 /// Display a list of activities.
 ///
 /// Best used as the main page of an app.
-///{@endtemplate}
+/// {@endtemplate}
 class FlatActivityListPage extends StatelessWidget {
   /// Builds a [FlatActivityListPage].
   const FlatActivityListPage({
@@ -51,13 +54,13 @@ class FlatActivityListPage extends StatelessWidget {
         TransitionType.material, //TODO: move this to core or theme
   }) : super(key: key);
 
-  ///{@macro hashtag_callback}
+  /// {@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
 
-  ///{@macro mention_callback}
+  /// {@macro mention_callback}
   final OnMentionTap? onMentionTap;
 
-  ///{@macro user_callback}
+  /// {@macro user_callback}
   final OnUserTap? onUserTap;
 
   /// A feed group to fetch activities for
@@ -72,7 +75,7 @@ class FlatActivityListPage extends StatelessWidget {
   /// Builds the activity header
   final ActivityHeaderBuilder? activityHeaderBuilder;
 
-  ///{@macro activity_callback}
+  /// {@macro activity_callback}
   final OnActivityTap? onActivityTap;
 
   /// A widget to display when there is an error in the request
@@ -211,5 +214,34 @@ class FlatActivityListPage extends StatelessWidget {
           ),
         );
     }
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
+    properties.add(
+        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
+    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
+    properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
+        'activityFooterBuilder', activityFooterBuilder));
+    properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
+        'activityContentBuilder', activityContentBuilder));
+    properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
+        'activityHeaderBuilder', activityHeaderBuilder));
+    properties.add(
+        ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
+    properties
+        .add(EnumProperty<TransitionType>('transitionType', transitionType));
+    properties.add(IntProperty('limit', limit));
+    properties.add(IntProperty('offset', offset));
+    properties.add(StringProperty('session', session));
+    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
+    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
+    properties.add(StringProperty('ranking', ranking));
+    properties.add(StringProperty('handleJsonKey', handleJsonKey));
+    properties.add(StringProperty('nameJsonKey', nameJsonKey));
   }
 }

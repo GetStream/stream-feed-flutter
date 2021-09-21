@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mocks.dart';
@@ -51,7 +50,7 @@ void main() {
           () => StreamFeedCore.of(childKey.currentState!.context),
           throwsA(predicate<AssertionError>((e) =>
               e.message ==
-              'You must have a StreamFeed widget at the top of your widget tree')));
+              '''You must have a StreamFeed widget at the top of your widget tree''')));
       // expect(find.byKey(childKey), findsOneWidget);
     },
   );

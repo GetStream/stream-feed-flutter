@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
+// ignore_for_file: cascade_invocations
+
 /// Widget used to provide information about the feed to the widget tree.
 /// This Widget is used to react to life cycle changes and system updates.
 /// When the app goes into the background, the websocket connection is kept
@@ -51,7 +53,7 @@ class StreamFeedCore extends StatefulWidget {
   /// application.
   final StreamFeedClient client;
 
-  ///Analytics client
+  /// Analytics client
   final StreamAnalytics? analyticsClient;
 
   /// Whether or not you want to track analytics in your app
@@ -84,6 +86,18 @@ class StreamFeedCore extends StatefulWidget {
 
     return streamFeedState!;
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<StreamFeedClient>('client', client));
+    properties.add(DiagnosticsProperty<StreamAnalytics?>(
+        'analyticsClient', analyticsClient));
+    properties.add(DiagnosticsProperty<bool>('trackAnalytics', trackAnalytics));
+    properties.add(StringProperty('analyticsLocation', analyticsLocation));
+    properties.add(DiagnosticsProperty<GlobalKey<NavigatorState>?>(
+        'navigatorKey', navigatorKey));
+  }
 }
 
 /// State class associated with [StreamFeedCore].
@@ -103,7 +117,10 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   /// The current user
   ReactionsClient get reactions => client.reactions;
 
+  /// Analytics client
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
+
+  /// Navigator state
   NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
   /// Add a new reaction to the feed.
@@ -183,7 +200,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   ///Track analytics
   Future<void> trackAnalytics({
     required String label,
-    required foreignId,
+    required String? foreignId,
     required String feedGroup,
   }) async {
     analyticsClient != null
@@ -204,7 +221,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     String? kind,
     EnrichmentFlags? flags,
   }) async {
-    return await reactions.filter(
+    return reactions.filter(
       lookupAttr,
       lookupValue,
       filter: filter,
@@ -215,8 +232,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }
 
   ///Get enriched activities from the feed
-  Future<List<EnrichedActivity<A, Ob, T, Or>>>
-      getEnrichedActivities<A, Ob, T, Or>({
+  Future<List<EnrichedActivity<A, Ob, T, Or>>> getEnrichedActivities<A, Ob, T,
+          Or>({
     required String feedGroup,
     int? limit,
     int? offset,
@@ -226,16 +243,14 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     String? ranking,
     String? userId,
   }) async =>
-          await client
-              .flatFeed(feedGroup, userId)
-              .getEnrichedActivities<A, Ob, T, Or>(
-                limit: limit,
-                offset: offset,
-                session: session,
-                filter: filter,
-                flags: flags,
-                ranking: ranking,
-              );
+      client.flatFeed(feedGroup, userId).getEnrichedActivities<A, Ob, T, Or>(
+            limit: limit,
+            offset: offset,
+            session: session,
+            filter: filter,
+            flags: flags,
+            ranking: ranking,
+          );
 
   @override
   void initState() {
@@ -248,5 +263,18 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     WidgetsBinding.instance?.removeObserver(this);
     _disconnectTimer?.cancel();
     super.dispose();
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<StreamUser?>('user', user));
+    properties
+        .add(DiagnosticsProperty<ReactionsClient>('reactions', reactions));
+    properties.add(DiagnosticsProperty<StreamAnalytics?>(
+        'analyticsClient', analyticsClient));
+    properties
+        .add(DiagnosticsProperty<NavigatorState?>('navigator', navigator));
+    properties.add(DiagnosticsProperty<StreamFeedClient>('client', client));
   }
 }

@@ -5,6 +5,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mocks.dart';
 
+// ignore_for_file: diagnostic_describe_all_properties
+
 class OnRemoveReactionWidget extends StatefulWidget {
   const OnRemoveReactionWidget(
       {Key? key,
@@ -39,12 +41,12 @@ class _OnAddReactionWidgetState extends State<OnRemoveReactionWidget> {
   }
 }
 
-main() {
+void main() {
   const kind = 'like';
   const foreignId = 'like:300';
   const activityId = 'activityId';
   const feedGroup = 'timeline:300';
-  final activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+  const activity = EnrichedActivity(id: activityId, foreignId: foreignId);
   const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
   testWidgets('onRemoveReaction', (tester) async {
     final mockClient = MockStreamFeedClient();
