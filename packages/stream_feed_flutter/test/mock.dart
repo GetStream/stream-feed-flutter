@@ -8,3 +8,5 @@ class MockStreamAnalytics extends Mock implements StreamAnalytics {}
 class MockStreamFeedClient extends Mock implements StreamFeedClient {}
 
 class MockFeedAPI extends Mock implements FlatFeed {}
+
+class MockFeedBloc extends Mock implements FeedBloc {}
