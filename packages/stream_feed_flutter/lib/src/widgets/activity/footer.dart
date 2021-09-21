@@ -18,10 +18,10 @@ class ActivityFooter extends StatelessWidget {
     this.feedGroup = 'user',
   }) : super(key: key);
 
-  /// TODO: document me
+  /// The activity to display
   final DefaultEnrichedActivity activity;
 
-  /// TODO: document me
+  /// The feed group that this activity belongs to
   final String feedGroup;
 
   @override
