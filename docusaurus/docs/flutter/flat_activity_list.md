@@ -72,6 +72,12 @@ A `Filter` allows you to specify what kinds of activities should be displayed. A
 
 ### Other Properties
 
+* `transitionType` - An experimental enum that customizes the type of animation used when navigating to and from activities. Can be `material`, `cupertino`, or `sharedAxisTransition`.
+* `limit` - The limit of activities to fetch
+* `offset` - The offset of activities to fetch. By specifying the offset, you retrieve a subset of records starting with the offset value. Offset normally works with length , which determines how many records to retrieve starting from the offset.
+* `session` - <!--TODO: session -->
+* `ranking`- <!--TODO: ranking -->
+
 Check out our [pub.dev documentation]() for more information on the remaining properties.
 
 ## Basic Example
