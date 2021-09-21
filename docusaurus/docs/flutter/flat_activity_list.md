@@ -63,3 +63,5 @@ class MyHomePage extends StatelessWidget {
   }
 }
 ```
+
+If there are no activities in your feed group, you will get a blank screen saying there are no activities. Otherwise, you will see a list of `ActivityWidget()`s.
