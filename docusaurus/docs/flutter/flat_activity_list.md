@@ -65,7 +65,10 @@ final EnrichmentFlags? flags;
 A `Filter` allows you to specify what kinds of activities should be displayed. An example of a `filter` is:
 
 ```dart
-// TODO: Filter example
+FlatActivityListPage(
+  limit: 5,
+  filter: Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0',
+),
 ```
 
 `EnrichmentFlag`s indicate to the API that activities should be enriched with additional information, like user reactions and count. Read more about activity enrichment [here](https://getstream.io/activity-feeds/docs/flutter-dart/enrichment/).
