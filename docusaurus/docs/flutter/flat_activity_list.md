@@ -8,6 +8,36 @@ Activities are fundamental to Stream Feed. In Stream Feeds, an item in a feed is
 
 Read more about activities [here]().
 
+## Constructor
+
+Let's take a look at the constructor for `FlatActivityList()`:
+```dart
+  const FlatActivityListPage({
+    Key? key,
+    this.feedGroup = 'user',
+    this.onHashtagTap,
+    this.onMentionTap,
+    this.onUserTap,
+    this.activityFooterBuilder,
+    this.activityContentBuilder,
+    this.activityHeaderBuilder,
+    this.limit,
+    this.offset,
+    this.session,
+    this.filter,
+    this.flags,
+    this.ranking,
+    this.handleJsonKey = 'handle',
+    this.nameJsonKey = 'name',
+    this.onProgressWidget = const ProgressStateWidget(),
+    this.onErrorWidget = const ErrorStateWidget(),
+    this.onEmptyWidget =
+        const EmptyStateWidget(message: 'No activities to display'),
+    this.onActivityTap,
+    this.transitionType = TransitionType.material,
+  }) : super(key: key);
+```
+
 ## Basic Example
 
 Below is a basic example of the `FlatActivityList()` widget. It uses the [FlatFeedCore]() widget to build a list of [ActivityWidget]()s, which in turn uses a `FutureBuilder()` to fetch the activities. It must be wrapped in a [StreamFeedCore]() widget in order to work.
