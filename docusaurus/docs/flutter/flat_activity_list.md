@@ -38,6 +38,42 @@ Let's take a look at the constructor for `FlatActivityList()`:
   }) : super(key: key);
 ```
 
+As you can see, by default the `feedGroup` is `user`. If you have would like to use this widget for any other feed you've created in the dashboard you'll need to specify that feed's ID as the `feedGroup`.
+
+## Properties
+
+Let's go through the properties seen in [constructor](#constructor) and describe their purpose.
+
+### Builders
+
+`onHashtagTap`, `onMentionTap`, and `onUserTap` are callbacks that allow you to customize what happens when you tap a hashtag, mention, or user in an activity. 
+
+`activityFooterBuilder`, `activityContentBuilder`, and `activityHeaderBuilder` are Widget builders that allow you to build the widgets representing an activity to your own specification.
+
+`onErrorWidget`, `onProgressWidget`, and `onEmptyWidget` are Widget builders that allow you to customize the UI according to specific events - an error, loading, and when there are no activities to display.
+
+### Filters and Flags
+
+```dart
+/// The filter to use for the request
+final Filter? filter;
+
+/// The flags to use for the request
+final EnrichmentFlags? flags;
+```
+
+A `Filter` allows you to specify what kinds of activities should be displayed. An example of a `filter` is:
+
+```dart
+// TODO: Filter example
+```
+
+`EnrichmentFlag`s indicate to the API that activities should be enriched with additional information, like user reactions and count. Read more about activity enrichment [here](https://getstream.io/activity-feeds/docs/flutter-dart/enrichment/).
+
+### Other Properties
+
+Check out our [pub.dev documentation]() for more information on the remaining properties.
+
 ## Basic Example
 
 Below is a basic example of the `FlatActivityList()` widget. It uses the [FlatFeedCore]() widget to build a list of [ActivityWidget]()s, which in turn uses a `FutureBuilder()` to fetch the activities. It must be wrapped in a [StreamFeedCore]() widget in order to work.
