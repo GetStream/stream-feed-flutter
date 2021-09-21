@@ -108,10 +108,10 @@ class FlatActivityListPage extends StatelessWidget {
   /// The ranking to use for the request
   final String? ranking;
 
-  /// TODO: document me
+  /// The json key for the user's handle.
   final String handleJsonKey;
 
-  /// TODO: document me
+  /// The json key for the user's name.
   final String nameJsonKey;
 
   @override
