@@ -4,6 +4,8 @@ A widget that represents the heading of an activity. Contains the user's name an
 
 ## Background
 
+This widget builds a `UserBar()`, which is a custom widget for displaying a user's username and profile image. To learn more about `UserBar()`, click [here]().
+
 ## Constructor
 
 Let's take a look at the constructor for `ActivityHeader`:
@@ -30,7 +32,6 @@ final DefaultEnrichedActivity activity;
 
 This is the activity to display. Read more about `DefaultEnrichedActivity` [here](). <!--TODO: add link -->
 
----
 
 ```dart
 /// A callback to handle username taps
@@ -47,4 +48,9 @@ final String nameJsonKey;
 
 /// Whether you want to display like activities or repost activities
 final String activityKind;
+```
+
+The `typedef` definition for `OnUserTap` is 
+```dart
+typedef OnUserTap = void Function(User? user);
 ```
