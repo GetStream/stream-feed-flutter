@@ -70,29 +70,29 @@ void main() {
     verify(() => mockFeed.getEnrichedActivities()).called(1);
   });
 
-  test('Default FlatFeedCore debugFillProperties', () {
-    final builder = DiagnosticPropertiesBuilder();
-    final flatFeedCore = FlatFeedCore(
-      feedGroup: 'user',
-      feedBuilder: (BuildContext context,
-          List<EnrichedActivity<User, String, String, String>> activities,
-          int idx) {
-        return Column(
-          children: [
-            Text("${activities[idx].reactionCounts?['like']}") //counts
-          ],
-        );
-      },
-    );
+  // test('Default FlatFeedCore debugFillProperties', () {
+  //   final builder = DiagnosticPropertiesBuilder();
+  //   final flatFeedCore = FlatFeedCore(
+  //     feedGroup: 'user',
+  //     feedBuilder: (BuildContext context,
+  //         List<EnrichedActivity<User, String, String, String>> activities,
+  //         int idx) {
+  //       return Column(
+  //         children: [
+  //           Text("${activities[idx].reactionCounts?['like']}") //counts
+  //         ],
+  //       );
+  //     },
+  //   );
 
-    // ignore: cascade_invocations
-    flatFeedCore.debugFillProperties(builder);
+  //   // ignore: cascade_invocations
+  //   flatFeedCore.debugFillProperties(builder);
 
-    final description = builder.properties
-        .where((node) => !node.isFiltered(DiagnosticLevel.info))
-        .map((node) => node.toDescription())
-        .toList();
+  //   final description = builder.properties
+  //       .where((node) => !node.isFiltered(DiagnosticLevel.info))
+  //       .map((node) => node.toDescription())
+  //       .toList();
 
-    expect(description, ['has feedBuilder', '"user"']);
-  });
+  //   expect(description, ['has feedBuilder', '"user"']);
+  // });
 }

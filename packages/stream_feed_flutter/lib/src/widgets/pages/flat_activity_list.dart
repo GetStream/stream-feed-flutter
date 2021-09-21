@@ -227,32 +227,32 @@ class FlatActivityListPage extends StatelessWidget {
     }
   }
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
-    properties.add(
-        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
-    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-    properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
-        'activityFooterBuilder', activityFooterBuilder));
-    properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
-        'activityContentBuilder', activityContentBuilder));
-    properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
-        'activityHeaderBuilder', activityHeaderBuilder));
-    properties.add(
-        ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
-    properties
-        .add(EnumProperty<TransitionType>('transitionType', transitionType));
-    properties.add(IntProperty('limit', limit));
-    properties.add(IntProperty('offset', offset));
-    properties.add(StringProperty('session', session));
-    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
-    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
-    properties.add(StringProperty('ranking', ranking));
-    properties.add(StringProperty('handleJsonKey', handleJsonKey));
-    properties.add(StringProperty('nameJsonKey', nameJsonKey));
-  }
+  // @override
+  // void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  //   super.debugFillProperties(properties);
+  //   properties.add(
+  //       ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
+  //   properties.add(
+  //       ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
+  //   properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
+  //   properties.add(StringProperty('feedGroup', feedGroup));
+  //   properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
+  //       'activityFooterBuilder', activityFooterBuilder));
+  //   properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
+  //       'activityContentBuilder', activityContentBuilder));
+  //   properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
+  //       'activityHeaderBuilder', activityHeaderBuilder));
+  //   properties.add(
+  //       ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
+  //   properties
+  //       .add(EnumProperty<TransitionType>('transitionType', transitionType));
+  //   properties.add(IntProperty('limit', limit));
+  //   properties.add(IntProperty('offset', offset));
+  //   properties.add(StringProperty('session', session));
+  //   properties.add(DiagnosticsProperty<Filter?>('filter', filter));
+  //   properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
+  //   properties.add(StringProperty('ranking', ranking));
+  //   properties.add(StringProperty('handleJsonKey', handleJsonKey));
+  //   properties.add(StringProperty('nameJsonKey', nameJsonKey));
+  // }
 }

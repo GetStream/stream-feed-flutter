@@ -70,18 +70,18 @@ void main() {
       });
     });
 
-    testWidgets('Default FlatActivityListPage debugFillProperties',
-        (tester) async {
-      final builder = DiagnosticPropertiesBuilder();
-      const FlatActivityListPage().debugFillProperties(builder);
+    // testWidgets('Default FlatActivityListPage debugFillProperties',
+    //     (tester) async {
+    //   final builder = DiagnosticPropertiesBuilder();
+    //   const FlatActivityListPage().debugFillProperties(builder);
 
-      final description = builder.properties
-          .where((node) => !node.isFiltered(DiagnosticLevel.info))
-          .map((node) =>
-              node.toJsonMap(const DiagnosticsSerializationDelegate()))
-          .toList();
+    //   final description = builder.properties
+    //       .where((node) => !node.isFiltered(DiagnosticLevel.info))
+    //       .map((node) =>
+    //           node.toJsonMap(const DiagnosticsSerializationDelegate()))
+    //       .toList();
 
-      expect(description[0]['description'], '"user"');
-    });
+    //   expect(description[0]['description'], '"user"');
+    // });
   });
 }

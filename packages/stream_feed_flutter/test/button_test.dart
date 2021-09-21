@@ -51,7 +51,7 @@ void main() {
         )).thenAnswer((_) async => reactions);
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-            body: StreamFeedCore(
+            body: StreamFeedProvider(
       analyticsClient: mockStreamAnalytics,
       client: mockClient,
       child: ReactionListPage(
@@ -468,6 +468,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final childReactionButton = ChildReactionButton(
+        activity: EnrichedActivity(),
         reaction: Reaction(
           createdAt: now,
           kind: 'comment',
@@ -496,6 +497,8 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final childReactionToggleIcon = ChildReactionToggleIcon(
+        count:1,
+        activity: EnrichedActivity(),
         reaction: Reaction(
           createdAt: now,
           kind: 'comment',
@@ -592,6 +595,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final reactionToggleIcon = ReactionToggleIcon(
+        count:1,
         activity: EnrichedActivity(
           time: now,
           actor: const User(

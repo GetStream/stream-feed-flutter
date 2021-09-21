@@ -281,6 +281,7 @@ void main() {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
     final commentItem = CommentItem(
+      activity: EnrichedActivity(),
       reaction: Reaction(
         createdAt: now,
         kind: 'comment',
