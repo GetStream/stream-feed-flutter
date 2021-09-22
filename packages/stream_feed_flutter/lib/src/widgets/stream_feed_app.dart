@@ -3,13 +3,19 @@ import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class StreamFeedApp extends StatelessWidget {
-  const StreamFeedApp(
-      {Key? key, required this.bloc, required this.home, this.navigatorKey})
-      : super(key: key);
+  StreamFeedApp(
+      {Key? key,
+      required this.bloc,
+      required this.home,
+      this.navigatorKey,
+      StreamFeedThemeData? themeData})
+      : _themeData = themeData ?? StreamFeedThemeData.light(),
+        super(key: key);
 
   final DefaultFeedBloc bloc;
   final Widget home;
   final GlobalKey<NavigatorState>? navigatorKey;
+  late StreamFeedThemeData _themeData;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +26,7 @@ class StreamFeedApp extends StatelessWidget {
             navigatorKey: navigatorKey,
             bloc: bloc,
             child: StreamFeedTheme(
-              data: StreamFeedThemeData.light(),
+              data: _themeData, //TODO: provide a way to override theme
               child: child!,
             ),
           );
