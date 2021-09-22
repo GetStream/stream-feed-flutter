@@ -15,3 +15,4 @@ export 'src/widgets/comment/field.dart';
 export 'src/widgets/icons.dart';
 export 'src/widgets/pages/flat_activity_list.dart';
 export 'src/widgets/user/avatar.dart';
+export 'src/widgets/stream_feed_app.dart';

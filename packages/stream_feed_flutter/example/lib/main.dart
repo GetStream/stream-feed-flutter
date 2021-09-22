@@ -33,12 +33,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _navigatorKey = GlobalKey<NavigatorState>();
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return StreamFeedApp(
       navigatorKey: _navigatorKey,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      bloc: DefaultFeedBloc(client: client),
+      // title: 'Flutter Demo',//TODO: pass down those props
+      // navigatorKey: _navigatorKey,
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      // ),
       home: MyHomePage(
           title: 'Flutter Demo Home Page',
           client: client,
@@ -61,25 +63,15 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("FlatFeed"),
       ),
-      body: StreamFeedProvider(
-        client: client,
-        navigatorKey: navigatorKey,
-        child: StreamFeedTheme(
-          data: StreamFeedThemeData.light(),
-          child: FlatActivityListPage(
-            bloc: DefaultFeedBloc(
-              client: client,
-            ),
-            flags: EnrichmentFlags()
-                .withReactionCounts()
-                .withOwnChildren()
-                .withOwnReactions(),
-            feedGroup: 'user',
-            onHashtagTap: (hashtag) => print('hashtag pressed: $hashtag'),
-            onUserTap: (user) => print('hashtag pressed: ${user!.toJson()}'),
-            onMentionTap: (mention) => print('hashtag pressed: $mention'),
-          ),
-        ),
+      body: FlatActivityListPage(
+        flags: EnrichmentFlags()
+            .withReactionCounts()
+            .withOwnChildren()
+            .withOwnReactions(),
+        feedGroup: 'user',
+        onHashtagTap: (hashtag) => print('hashtag pressed: $hashtag'),
+        onUserTap: (user) => print('hashtag pressed: ${user!.toJson()}'),
+        onMentionTap: (mention) => print('hashtag pressed: $mention'),
       ),
     );
   }

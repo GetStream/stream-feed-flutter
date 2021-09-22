@@ -70,10 +70,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-      body: StreamFeedProvider(
-        analyticsClient: mockStreamAnalytics,
-        client: mockClient,
-        child: FeedBlocProvider(
+      body:  FeedBlocProvider(
           bloc: FeedBloc(
             client: mockClient,
             analyticsClient: mockStreamAnalytics,
@@ -85,7 +82,7 @@ void main() {
           ),
         ),
       ),
-    )));
+    ));
     final reactionIcon = find.byType(InkWell);
     expect(reactionIcon, findsOneWidget);
     await tester.tap(reactionIcon);

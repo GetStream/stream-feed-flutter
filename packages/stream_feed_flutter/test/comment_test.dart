@@ -155,9 +155,9 @@ void main() {
           );
         },
         home: Scaffold(
-          body: StreamFeedProvider(
-            analyticsClient: mockStreamAnalytics,
-            client: mockClient,
+          body: DefaultFeedBlocProvider(
+            bloc: FeedBloc(
+                analyticsClient: mockStreamAnalytics, client: mockClient),
             child: FeedBlocProvider(
               //TODO: ugly
               bloc: FeedBloc(

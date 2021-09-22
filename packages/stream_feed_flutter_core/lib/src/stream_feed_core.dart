@@ -32,52 +32,52 @@ import 'package:stream_feed_flutter_core/src/activities_bloc.dart';
 /// }
 /// ```
 ///
-class StreamFeedProvider extends InheritedWidget {
-  /// Constructor used for creating a new instance of [StreamFeedCore].
-  ///
-  /// [StreamFeedCore] is a stateful widget which reacts to system events and
-  /// updates Stream's connection status accordingly.
-  StreamFeedProvider({
-    Key? key,
-    required this.client,
-    required Widget child,
-    this.enableAnalytics = false,
-    this.navigatorKey,
-    this.analyticsLocation,
-    this.analyticsClient,
-  }) : super(key: key, child: child);
+// class StreamFeedProvider extends InheritedWidget {
+//   /// Constructor used for creating a new instance of [StreamFeedCore].
+//   ///
+//   /// [StreamFeedCore] is a stateful widget which reacts to system events and
+//   /// updates Stream's connection status accordingly.
+//   StreamFeedProvider({
+//     Key? key,
+//     // required this.client,
+//     required Widget child,
+//     this.enableAnalytics = false,
+//     this.navigatorKey,
+//     this.analyticsLocation,
+//     this.analyticsClient,
+//   }) : super(key: key, child: child);
 
-  /// Instance of Stream Feed Client containing information about the current
-  /// application.
-  final StreamFeedClient client;
+//   /// Instance of Stream Feed Client containing information about the current
+//   /// application.
+//   // final StreamFeedClient client;
 
-  ///Analytics client
-  final StreamAnalytics? analyticsClient;
+//   ///Analytics client
+//   // final StreamAnalytics? analyticsClient;
 
-  ///wether or not you want to track analytics in your app (can be useful for customised feeds via ML)
-  final bool enableAnalytics;
+//   ///wether or not you want to track analytics in your app (can be useful for customised feeds via ML)
+//   final bool enableAnalytics;
 
-  /// The location that should be used for analytics when liking in the feed,
-  /// this is only useful when you have analytics enabled for your app.
-  final String? analyticsLocation;
+//   /// The location that should be used for analytics when liking in the feed,
+//   /// this is only useful when you have analytics enabled for your app.
+//   final String? analyticsLocation;
 
-  ///Your navigator key
-  final GlobalKey<NavigatorState>? navigatorKey;
+//   ///Your navigator key
+//   final GlobalKey<NavigatorState>? navigatorKey;
 
-  /// The current user
-  // StreamUser? get user => client.currentUser;
+//   /// The current user
+//   // StreamUser? get user => client.currentUser;
 
-  static StreamFeedProvider of(BuildContext context) {
-    final StreamFeedProvider? result =
-        context.dependOnInheritedWidgetOfExactType<StreamFeedProvider>();
-    assert(result != null, 'No StreamFeedProvider found in context');
-    return result!;
-  }
+//   static StreamFeedProvider of(BuildContext context) {
+//     final StreamFeedProvider? result =
+//         context.dependOnInheritedWidgetOfExactType<StreamFeedProvider>();
+//     assert(result != null, 'No StreamFeedProvider found in context');
+//     return result!;
+//   }
 
-  @override
-  bool updateShouldNotify(StreamFeedProvider old) =>
-      navigatorKey != old.navigatorKey ||
-      analyticsClient != old.analyticsClient ||
-      analyticsLocation != old.analyticsLocation ||
-      enableAnalytics != old.enableAnalytics;
-}
+//   @override
+//   bool updateShouldNotify(StreamFeedProvider old) =>
+//       navigatorKey != old.navigatorKey ||
+//       // analyticsClient != old.analyticsClient ||
+//       // analyticsLocation != old.analyticsLocation ||
+//       // enableAnalytics != old.enableAnalytics;
+// }

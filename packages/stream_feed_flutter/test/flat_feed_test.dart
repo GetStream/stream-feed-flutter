@@ -49,14 +49,13 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: StreamFeedProvider(
-                analyticsClient: mockStreamAnalytics,
-                client: mockClient,
+              body: FeedBlocProvider(
+                bloc: FeedBloc(
+                  analyticsClient: mockStreamAnalytics,
+                  client: mockClient,
+                ),
                 child: FlatActivityListPage(
                   feedGroup: 'user',
-                  bloc: DefaultFeedBloc(
-                    client: mockClient,
-                  ),
                 ),
               ),
             ),

@@ -335,24 +335,26 @@ class FeedBloc<A, Ob, T, Or> {
     });
   }
 }
-typedef DefaultFeedBlocProvider = FeedBlocProvider<User, String, String, String>;
+
+typedef DefaultFeedBlocProvider
+    = FeedBlocProvider<User, String, String, String>;
+
 class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
   //TODO: merge this with StreamFeedProvider ?
-  const FeedBlocProvider({
-    Key? key,
-    required this.bloc,
-    required Widget child,
-  }) : super(key: key, child: child);
+  const FeedBlocProvider(
+      {Key? key, required this.bloc, required Widget child, this.navigatorKey})
+      : super(key: key, child: child);
 
   final FeedBloc<A, Ob, T, Or> bloc;
-
+  final GlobalKey<NavigatorState>? navigatorKey;
   factory FeedBlocProvider.of(BuildContext context) {
-    final FeedBlocProvider<A, Ob, T, Or>? result =
-        context.dependOnInheritedWidgetOfExactType<FeedBlocProvider<A, Ob, T, Or>>();
+    final FeedBlocProvider<A, Ob, T, Or>? result = context
+        .dependOnInheritedWidgetOfExactType<FeedBlocProvider<A, Ob, T, Or>>();
     assert(result != null, 'No FeedBloc found in context');
     return result!;
   }
 
   @override
-  bool updateShouldNotify(FeedBlocProvider old) => bloc != old.bloc;
+  bool updateShouldNotify(FeedBlocProvider old) =>
+      navigatorKey != old.navigatorKey || bloc != old.bloc;
 }

@@ -67,23 +67,20 @@ void main() {
     //     .thenAnswer((_) async => Future.value());
 
     await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-      body: StreamFeedProvider(
+      home: Scaffold(
+          body: FeedBlocProvider(
+        bloc: FeedBloc(
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
-          child: FeedBlocProvider(
-            bloc: FeedBloc(
-              client: mockClient,
-              // analyticsClient: mockStreamAnalytics,
-            ),
-            child: OnRemoveReactionWidget(
-              activity: activity,
-              feedGroup: feedGroup,
-              kind: kind,
-              reaction: reaction,
-            ),
-          )),
-    )));
+        ),
+        child: OnRemoveReactionWidget(
+          activity: activity,
+          feedGroup: feedGroup,
+          kind: kind,
+          reaction: reaction,
+        ),
+      )),
+    ));
     final reactionIcon = find.byType(InkWell);
     expect(reactionIcon, findsOneWidget);
     await tester.tap(reactionIcon);

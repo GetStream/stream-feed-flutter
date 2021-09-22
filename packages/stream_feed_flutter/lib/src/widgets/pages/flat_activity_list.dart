@@ -44,7 +44,7 @@ class FlatActivityListPage extends StatelessWidget {
     this.session,
     this.filter,
     this.flags,
-    required this.bloc,
+    // required this.bloc,
     this.ranking,
     this.handleJsonKey = 'handle',
     this.nameJsonKey = 'name',
@@ -60,7 +60,7 @@ class FlatActivityListPage extends StatelessWidget {
   /// {@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
 //TODO:document me
-  final DefaultFeedBloc bloc;
+  // final DefaultFeedBloc bloc;
 
   /// {@macro mention_callback}
   final OnMentionTap? onMentionTap;
@@ -152,27 +152,23 @@ class FlatActivityListPage extends StatelessWidget {
           activity: activity,
           context: context,
           transitionType: transitionType,
-          page: StreamFeedProvider(
-            //TODO: let the user implement this
-            client: StreamFeedProvider.of(context).client,
-            child: FeedBlocProvider(
-              bloc: FeedBlocProvider.of(context).bloc,
-              child: StreamFeedTheme(
-                data: StreamFeedTheme.of(context),
-                child: Scaffold(
-                  appBar: AppBar(
-                    // TODO: Parameterize me
-                    title: const Text('Post'),
-                  ),
-                  body: CommentView(
-                    nameJsonKey: nameJsonKey,
-                    handleJsonKey: handleJsonKey,
-                    activity: activity,
-                    enableCommentFieldButton: true,
-                    enableReactions: true,
-                    textEditingController:
-                        TextEditingController(), //TODO: move this into props for customisation like buildSpans
-                  ),
+          page: FeedBlocProvider(
+            bloc: FeedBlocProvider.of(context).bloc,
+            child: StreamFeedTheme(
+              data: StreamFeedTheme.of(context),
+              child: Scaffold(
+                appBar: AppBar(
+                  // TODO: Parameterize me
+                  title: const Text('Post'),
+                ),
+                body: CommentView(
+                  nameJsonKey: nameJsonKey,
+                  handleJsonKey: handleJsonKey,
+                  activity: activity,
+                  enableCommentFieldButton: true,
+                  enableReactions: true,
+                  textEditingController:
+                      TextEditingController(), //TODO: move this into props for customisation like buildSpans
                 ),
               ),
             ),
@@ -189,7 +185,7 @@ class FlatActivityListPage extends StatelessWidget {
       required EnrichedActivity activity,
       required Widget page}) {
     final currentNavigator =
-        StreamFeedProvider.of(context).navigatorKey!.currentState;
+        FeedBlocProvider.of(context).navigatorKey!.currentState;
     //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:

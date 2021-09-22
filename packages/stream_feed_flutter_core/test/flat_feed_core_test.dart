@@ -44,12 +44,12 @@ void main() {
         .thenAnswer((_) async => activities);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-        body: StreamFeedProvider(
-          analyticsClient: mockStreamAnalytics,
-          client: mockClient,
-          // child: FeedBlocProvider(
-          // bloc: FeedBloc(client: mockClient),
-          child: FlatFeedCore(
+        // body: StreamFeedProvider(
+         
+          body: FeedBlocProvider(
+          bloc: FeedBloc(client: mockClient),
+          child:
+          FlatFeedCore(
             bloc: DefaultFeedBloc(client: mockClient),
             feedGroup: 'user',
             feedBuilder: (BuildContext context, activities, int idx) {

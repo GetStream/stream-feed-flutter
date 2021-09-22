@@ -63,15 +63,11 @@ class ReplyButton extends StatelessWidget {
               builder: (_) {
                 return MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-                  child: StreamFeedProvider(
-                    //TODO: there might be a better way to do this
-                    client: StreamFeedProvider.of(context).client,
-                    child: AlertDialogComment(
-                      activity: activity,
-                      feedGroup: feedGroup,
-                      nameJsonKey: nameJsonKey,
-                      handleJsonKey: handleJsonKey,
-                    ),
+                  child: AlertDialogComment(
+                    activity: activity,
+                    feedGroup: feedGroup,
+                    nameJsonKey: nameJsonKey,
+                    handleJsonKey: handleJsonKey,
                   ),
                 );
               },

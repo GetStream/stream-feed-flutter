@@ -139,7 +139,7 @@ void main() {
           await tester.pumpWidget(
             StreamFeedApp(
               bloc: mockFeedBloc,
-              widget: Scaffold(
+              home: Scaffold(
                 body: AlertDialogComment(
                   feedGroup: 'user',
                   activity: EnrichedActivity(
@@ -170,7 +170,7 @@ void main() {
             await tester.pumpWidget(
               StreamFeedApp(
                 bloc: mockFeedBloc,
-                widget: Scaffold(
+                home: Scaffold(
                   body: CommentView(
                     activity: EnrichedActivity(
                       time: DateTime.now(),
@@ -203,7 +203,7 @@ void main() {
             await tester.pumpWidget(
               StreamFeedApp(
                 bloc: mockFeedBloc,
-                widget: Scaffold(
+                home: Scaffold(
                   body: CommentView(
                     textEditingController: TextEditingController(),
                   ),
@@ -322,4 +322,3 @@ void main() {
     });
   });
 }
-

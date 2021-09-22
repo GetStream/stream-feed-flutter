@@ -55,14 +55,12 @@ void main() {
   });
   testWidgets('ReactionListCore', (tester) async {
     await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-      body: StreamFeedProvider(
-        analyticsClient: mockStreamAnalytics,
-        client: mockClient,
-        // child: ReactionsProvider(
-        // bloc: ReactionsBloc(client: mockClient),
-        child: ReactionListCore(
-          bloc: FeedBloc(client: mockClient),
+      home: Scaffold(
+        body: ReactionListCore(
+          bloc: FeedBloc(
+            analyticsClient: mockStreamAnalytics,
+            client: mockClient,
+          ),
           reactionsBuilder: (context, reactions, idx) => Offstage(),
           lookupValue: lookupValue,
           filter: filter,
@@ -71,7 +69,7 @@ void main() {
         ),
       ),
       // ))
-    )));
+    ));
     verify(() => mockReactions.filter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind)).called(1);
   });

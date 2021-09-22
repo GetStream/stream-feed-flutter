@@ -49,9 +49,11 @@ void main() {
           kind: kind,
         )).thenAnswer((_) async => reactions);
     await tester.pumpWidget(StreamFeedApp(
-        bloc: DefaultFeedBloc(
-            client: mockClient, analyticsClient: mockStreamAnalytics),
-        widget: Scaffold(
+        bloc: FeedBloc(
+          client: mockClient,
+          analyticsClient: mockStreamAnalytics,
+        ),
+        home: Scaffold(
             body: ReactionListPage(
           activity: EnrichedActivity(id: 'id'),
           reactionBuilder: (context, reaction) => const Offstage(),
@@ -188,11 +190,11 @@ void main() {
         //     .thenAnswer((_) async => Future.value());
 
         await tester.pumpWidget(StreamFeedApp(
-            bloc: DefaultFeedBloc(
+            bloc: FeedBloc(
               analyticsClient: mockStreamAnalytics,
               client: mockClient,
             ),
-            widget: Scaffold(
+            home: Scaffold(
               body: withoutOwnReactions,
             )));
         final reactionIcon = find.byType(ReactionIcon);
@@ -226,16 +228,12 @@ void main() {
 
         await tester.pumpWidget(MaterialApp(
             home: Scaffold(
-          body: StreamFeedProvider(
-            analyticsClient: mockStreamAnalytics,
-            client: mockClient,
-            child: FeedBlocProvider(
-              bloc: FeedBloc(
-                client: mockClient,
-                analyticsClient: mockStreamAnalytics,
-              ),
-              child: withOwnReactions,
+          body: FeedBlocProvider(
+            bloc: FeedBloc(
+              client: mockClient,
+              analyticsClient: mockStreamAnalytics,
             ),
+            child: withOwnReactions,
           ),
         )));
         final reactionIcon = find.byType(ReactionIcon);
@@ -321,17 +319,14 @@ void main() {
             .thenAnswer((_) async => Future.value());
 
         await tester.pumpWidget(MaterialApp(
-            home: Scaffold(
-          body: StreamFeedProvider(
-              analyticsClient: mockStreamAnalytics,
-              client: mockClient,
-              child: FeedBlocProvider(
+          home: Scaffold(
+              body: FeedBlocProvider(
                   bloc: FeedBloc(
                     client: mockClient,
                     analyticsClient: mockStreamAnalytics,
                   ),
                   child: withoutOwnReactions)),
-        )));
+        ));
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
         await tester.tap(reactionIcon);
@@ -361,11 +356,8 @@ void main() {
             .thenAnswer((_) async => Future.value());
 
         await tester.pumpWidget(MaterialApp(
-            home: Scaffold(
-          body: StreamFeedProvider(
-            analyticsClient: mockStreamAnalytics,
-            client: mockClient,
-            child: FeedBlocProvider(
+          home: Scaffold(
+            body: FeedBlocProvider(
               bloc: FeedBloc(
                 client: mockClient,
                 analyticsClient: mockStreamAnalytics,
@@ -373,7 +365,7 @@ void main() {
               child: withOwnReactions,
             ),
           ),
-        )));
+        ));
         final reactionIcon = find.byType(ReactionToggleIcon);
         expect(reactionIcon, findsOneWidget);
 
