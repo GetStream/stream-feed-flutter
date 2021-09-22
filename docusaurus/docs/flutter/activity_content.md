@@ -2,6 +2,9 @@
 
 A widget that displays the content of an activity
 
+## Background
+When displaying an activity you're sure to want to display the content. That's what this widget does! The content can contain text and images.
+
 ## Constructor
 ```dart
 const ActivityContent({
