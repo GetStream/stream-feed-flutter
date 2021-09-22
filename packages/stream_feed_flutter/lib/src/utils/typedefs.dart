@@ -44,6 +44,13 @@ typedef ActivityHeaderBuilder = Widget Function(
 typedef ReactionBuilder = Widget Function(
     BuildContext context, Reaction reaction);
 
-/// TODO: document me
+/// A convenient `typedef` that helps to
+/// restrict the type of values accepted by `EnrichedActivity`.
+/// 
+/// `EnrichedActivity` is generic over its generic fields `actor`,
+/// `object`, `target`, and `origin`. Since it is not yet possible
+/// in Dart to allow a type parameter to have a default value,
+/// `DefaultEnrichedActivity` is a convenient `typedef` that helps to
+/// restrict the type of values accepted by this class.
 typedef DefaultEnrichedActivity
     = EnrichedActivity<User, String, String, String>;
