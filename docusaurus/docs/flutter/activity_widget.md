@@ -3,7 +3,9 @@
 A widget that displays a single activity.
 
 ## Background
-`stream_feed_flutter` provides an out-of-the-box visual representation of an activity for you that you can customize to your preference. Let's take a look at the constructor for `ActivityWidget()`:
+`stream_feed_flutter` provides an out-of-the-box visual representation of an activity for you that you can customize to your preference.
+
+## Constructor
 
 ```dart
 const ActivityWidget({
@@ -21,8 +23,6 @@ const ActivityWidget({
   this.onActivityTap,
 }) : super(key: key);
 ```
-
-An activity must be passed in, but everything else is optional. Let's go through each of the properties and see what they are for.
 
 ## Properties
 ```dart
