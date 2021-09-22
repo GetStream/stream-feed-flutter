@@ -13,7 +13,8 @@ const ActivityFooter({
 
 ## Properties
 ```dart
-/// The activity to display
+/// A convenient `typedef` that helps to
+/// restrict the type of values accepted by `EnrichedActivity`.
 final DefaultEnrichedActivity activity;
 
 /// The feed group that this activity belongs to
