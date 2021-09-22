@@ -152,8 +152,8 @@ final String feedGroup;
 This is the feed group that the activity belongs to. If you have created a feed in your dashboard that has an ID other than 'timeline' or 'user', you'll want to include that feed ID as the `feedGroup`
 
 
----
+## Source Code and More Documentation
 
-`ActivityWidget()` source code
+You can view the `ActivityWidget()` source code [here]()
 
-`ActivityWidget()` pub.dev documentation
+You can view the pub.dev documentation for `ActivityWidget()` [here]()
