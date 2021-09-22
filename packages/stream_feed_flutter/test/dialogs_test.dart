@@ -128,7 +128,7 @@ void main() {
     });
 
     group('AlertDialog', () {
-      late MockFeedBloc mockFeedBloc;
+      late MockFeedBloc<User,String,String,String> mockFeedBloc;
       setUp(() {
         mockFeedBloc = MockFeedBloc();
         when(() => mockFeedBloc.activitiesStream)

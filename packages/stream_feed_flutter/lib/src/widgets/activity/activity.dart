@@ -63,6 +63,7 @@ class ActivityWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print("onActivityTap != null ${onActivityTap != null}");
     return InkWell(
       onTap: () {
         onActivityTap?.call(context, activity);

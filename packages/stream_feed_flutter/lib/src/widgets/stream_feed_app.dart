@@ -3,24 +3,21 @@ import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class StreamFeedApp extends StatelessWidget {
-  StreamFeedApp(
-      {Key? key,
-      required this.bloc,
-      required this.home,
-      GlobalKey<NavigatorState>? navigatorKey})
-      : _navigatorKey = navigatorKey ?? GlobalKey<NavigatorState>(),
-        super(key: key);
+  const StreamFeedApp(
+      {Key? key, required this.bloc, required this.home, this.navigatorKey})
+      : super(key: key);
 
-  final FeedBloc bloc;
+  final DefaultFeedBloc bloc;
   final Widget home;
-  final GlobalKey<NavigatorState>? _navigatorKey;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        navigatorKey: navigatorKey,
         builder: (context, child) {
-          return FeedBlocProvider(
-            navigatorKey: _navigatorKey,
+          return DefaultFeedBlocProvider(
+            navigatorKey: navigatorKey,
             bloc: bloc,
             child: StreamFeedTheme(
               data: StreamFeedThemeData.light(),

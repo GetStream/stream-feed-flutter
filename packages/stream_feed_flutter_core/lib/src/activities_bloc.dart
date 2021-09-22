@@ -347,6 +347,7 @@ class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
 
   final FeedBloc<A, Ob, T, Or> bloc;
   final GlobalKey<NavigatorState>? navigatorKey;
+
   factory FeedBlocProvider.of(BuildContext context) {
     final FeedBlocProvider<A, Ob, T, Or>? result = context
         .dependOnInheritedWidgetOfExactType<FeedBlocProvider<A, Ob, T, Or>>();
@@ -356,5 +357,5 @@ class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
 
   @override
   bool updateShouldNotify(FeedBlocProvider old) =>
-      navigatorKey != old.navigatorKey || bloc != old.bloc;
+      navigatorKey != old.navigatorKey || bloc != old.bloc; //
 }

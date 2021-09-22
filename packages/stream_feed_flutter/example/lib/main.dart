@@ -23,17 +23,20 @@ Future<void> main() async {
     'subtitle': 'likes playing fresbee in the park',
     'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
   });
-
-  runApp(MyApp(client: client));
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  runApp(MyApp(client: client, navigatorKey: _navigatorKey));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.client}) : super(key: key);
+  const MyApp({Key? key, required this.client, required this.navigatorKey})
+      : super(key: key);
   final StreamFeedClient client;
+  final GlobalKey<NavigatorState> navigatorKey;
   @override
   Widget build(BuildContext context) {
     return StreamFeedApp(
       bloc: DefaultFeedBloc(client: client),
+      navigatorKey: navigatorKey,
       // title: 'Flutter Demo',//TODO: pass down those props
       // navigatorKey: _navigatorKey,
       // theme: ThemeData(

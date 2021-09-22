@@ -121,6 +121,8 @@ class FlatActivityListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(
+    //     "bloc: ${DefaultFeedBlocProvider.of(context).navigatorKey!.currentState}");
     return DefaultFlatFeedCore(
       bloc: DefaultFeedBlocProvider.of(context).bloc,
       flags: flags,
@@ -132,31 +134,33 @@ class FlatActivityListPage extends StatelessWidget {
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       //TODO: activity type Flat?
-      feedBuilder: (context, activities, idx) => ActivityWidget(
-        activity: activities[idx],
-        feedGroup: feedGroup,
-        onHashtagTap: onHashtagTap,
-        onMentionTap: onMentionTap,
-        onUserTap: onUserTap,
-        nameJsonKey: nameJsonKey,
-        handleJsonKey: handleJsonKey,
-        activityHeaderBuilder: activityHeaderBuilder,
-        activityFooterBuilder: activityFooterBuilder,
-        activityContentBuilder: activityContentBuilder,
-        onActivityTap: (context, activity) =>
-
+      feedBuilder: (context, activities, idx) {
+        // print("feedBuilder ${activities[idx]}");
+        return ActivityWidget(
+          activity: activities[idx],
+          feedGroup: feedGroup,
+          onHashtagTap: onHashtagTap,
+          onMentionTap: onMentionTap,
+          onUserTap: onUserTap,
+          nameJsonKey: nameJsonKey,
+          handleJsonKey: handleJsonKey,
+          activityHeaderBuilder: activityHeaderBuilder,
+          activityFooterBuilder: activityFooterBuilder,
+          activityContentBuilder: activityContentBuilder,
+          onActivityTap: (context, activity) {
             // onActivityTap != null
             //     ? onActivityTap?.call(context, activity)
             // TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
             _pageRouteBuilder(
-          activity: activity,
-          context: context,
-          transitionType: transitionType,
-          page: FeedBlocProvider(
-            bloc: FeedBlocProvider.of(context).bloc,
-            child: StreamFeedTheme(
-              data: StreamFeedTheme.of(context),
-              child: Scaffold(
+              activity: activity,
+              context: context,
+              transitionType: transitionType,
+              currentNavigator: Navigator.of(context),
+              //  DefaultFeedBlocProvider.of(context)
+              //     .navigatorKey!
+              //     .currentState!
+              //TODO: hmm doesnt work
+              page: Scaffold(
                 appBar: AppBar(
                   // TODO: Parameterize me
                   title: const Text('Post'),
@@ -171,10 +175,10 @@ class FlatActivityListPage extends StatelessWidget {
                       TextEditingController(), //TODO: move this into props for customisation like buildSpans
                 ),
               ),
-            ),
-          ),
-        ),
-      ),
+            );
+          },
+        );
+      },
       feedGroup: feedGroup,
     );
   }
@@ -183,27 +187,26 @@ class FlatActivityListPage extends StatelessWidget {
       {required BuildContext context,
       required TransitionType transitionType,
       required EnrichedActivity activity,
-      required Widget page}) {
-    final currentNavigator =
-        FeedBlocProvider.of(context).navigatorKey!.currentState;
+      required Widget page,
+      required NavigatorState currentNavigator}) {
     //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:
-        currentNavigator!.push(
+        currentNavigator.push(
           MaterialPageRoute<void>(
             builder: (BuildContext context) => page,
           ),
         );
         break;
       case TransitionType.cupertino:
-        currentNavigator!.push(
+        currentNavigator.push(
           CupertinoPageRoute<void>(
             builder: (BuildContext context) => page,
           ),
         );
         break;
       default:
-        currentNavigator!.push(
+        currentNavigator.push(
           PageRouteBuilder(
             pageBuilder: (_, __, ___) => page,
             transitionsBuilder: (

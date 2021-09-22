@@ -9,4 +9,4 @@ class MockStreamFeedClient extends Mock implements StreamFeedClient {}
 
 class MockFeedAPI extends Mock implements FlatFeed {}
 
-class MockFeedBloc extends Mock implements FeedBloc {}
+class MockFeedBloc<A, Ob, T, Or> extends Mock implements FeedBloc<A, Ob, T, Or> {}

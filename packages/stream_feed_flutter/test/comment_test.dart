@@ -147,38 +147,20 @@ void main() {
         .thenAnswer((_) async => Future.value());
     final textEditingController = TextEditingController();
 
-    await tester.pumpWidget(MaterialApp(
-        builder: (context, child) {
-          return StreamFeedTheme(
-            data: StreamFeedThemeData.light(),
-            child: child!,
-          );
-        },
+    await tester.pumpWidget(
+      StreamFeedApp(
+        bloc:
+            FeedBloc(analyticsClient: mockStreamAnalytics, client: mockClient),
         home: Scaffold(
-          body: DefaultFeedBlocProvider(
-            bloc: FeedBloc(
-                analyticsClient: mockStreamAnalytics, client: mockClient),
-            child: FeedBlocProvider(
-              //TODO: ugly
-              bloc: FeedBloc(
-                client: mockClient,
-                analyticsClient: mockStreamAnalytics,
-              ),
-              child: FeedBlocProvider(
-                bloc: FeedBloc(
-                  client: mockClient,
-                  analyticsClient: mockStreamAnalytics,
-                ),
-                child: CommentField(
-                  key: key,
-                  feedGroup: feedGroup,
-                  activity: activity,
-                  textEditingController: textEditingController,
-                ),
-              ),
-            ),
+          body: CommentField(
+            key: key,
+            feedGroup: feedGroup,
+            activity: activity,
+            textEditingController: textEditingController,
           ),
-        )));
+        ),
+      ),
+    );
 
     final avatar = find.byType(Avatar);
     final textArea = find.byType(TextArea);
