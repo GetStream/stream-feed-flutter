@@ -335,8 +335,8 @@ class FeedBloc<A, Ob, T, Or> {
     });
   }
 }
-
-class FeedBlocProvider extends InheritedWidget {
+typedef DefaultFeedBlocProvider = FeedBlocProvider<User, String, String, String>;
+class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
   //TODO: merge this with StreamFeedProvider ?
   const FeedBlocProvider({
     Key? key,
@@ -344,11 +344,11 @@ class FeedBlocProvider extends InheritedWidget {
     required Widget child,
   }) : super(key: key, child: child);
 
-  final FeedBloc bloc;
+  final FeedBloc<A, Ob, T, Or> bloc;
 
-  static FeedBlocProvider of(BuildContext context) {
-    final FeedBlocProvider? result =
-        context.dependOnInheritedWidgetOfExactType<FeedBlocProvider>();
+  factory FeedBlocProvider.of(BuildContext context) {
+    final FeedBlocProvider<A, Ob, T, Or>? result =
+        context.dependOnInheritedWidgetOfExactType<FeedBlocProvider<A, Ob, T, Or>>();
     assert(result != null, 'No FeedBloc found in context');
     return result!;
   }

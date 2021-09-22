@@ -122,7 +122,7 @@ class FlatActivityListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultFlatFeedCore(
-      bloc: bloc,
+      bloc: DefaultFeedBlocProvider.of(context).bloc,
       flags: flags,
       limit: limit,
       offset: offset,
