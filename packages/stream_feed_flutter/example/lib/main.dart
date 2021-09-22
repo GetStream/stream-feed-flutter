@@ -32,9 +32,7 @@ class MyApp extends StatelessWidget {
   final StreamFeedClient client;
   @override
   Widget build(BuildContext context) {
-    final _navigatorKey = GlobalKey<NavigatorState>();
     return StreamFeedApp(
-      navigatorKey: _navigatorKey,
       bloc: DefaultFeedBloc(client: client),
       // title: 'Flutter Demo',//TODO: pass down those props
       // navigatorKey: _navigatorKey,
@@ -42,20 +40,18 @@ class MyApp extends StatelessWidget {
       //   primarySwatch: Colors.blue,
       // ),
       home: MyHomePage(
-          title: 'Flutter Demo Home Page',
-          client: client,
-          navigatorKey: _navigatorKey),
+        title: 'Flutter Demo Home Page',
+      ),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage(
-      {Key? key, this.title, required this.client, required this.navigatorKey})
-      : super(key: key);
-  final StreamFeedClient client;
+  const MyHomePage({
+    Key? key,
+    this.title,
+  }) : super(key: key);
   final String? title;
-  final GlobalKey<NavigatorState> navigatorKey;
 
   @override
   Widget build(BuildContext context) {
