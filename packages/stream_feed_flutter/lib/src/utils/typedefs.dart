@@ -47,3 +47,6 @@ typedef ReactionBuilder = Widget Function(
 /// TODO: document me
 typedef DefaultEnrichedActivity
     = EnrichedActivity<User, String, String, String>;
+
+/// TODO: document me
+typedef OnSend = Function(String inputText);

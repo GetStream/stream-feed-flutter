@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-typedef DefaultFeedBloc = FeedBloc<User, String, String, String>;
-
 class FeedBloc<A, Ob, T, Or> {
   FeedBloc({required this.client, this.analyticsClient});
 
@@ -335,9 +333,6 @@ class FeedBloc<A, Ob, T, Or> {
     });
   }
 }
-
-typedef DefaultFeedBlocProvider
-    = FeedBlocProvider<User, String, String, String>;
 
 class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
   //TODO: merge this with StreamFeedProvider ?

@@ -11,3 +11,10 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
 /// TODO: document me
 typedef ReactionsBuilder = Widget Function(
     BuildContext context, List<Reaction> reactions, int idx);
+
+typedef DefaultFlatFeedCore = FlatFeedCore<User, String, String, String>;
+
+typedef DefaultFeedBlocProvider
+    = FeedBlocProvider<User, String, String, String>;
+
+typedef DefaultFeedBloc = FeedBloc<User, String, String, String>;
