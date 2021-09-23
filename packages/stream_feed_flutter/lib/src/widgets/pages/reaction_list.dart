@@ -61,7 +61,11 @@ class ReactionListPage extends StatelessWidget {
   /// The flags to use for the request
   final EnrichmentFlags? flags;
 
-  /// TODO: document me
+  /// The attribute to perform "lookups" with.
+  /// 
+  /// "Lookups" are when you want to retrieve all reactions to a post
+  /// that meet a specific criteria. See [LookupAttribute] for the types of
+  /// criteria you can use.
   final LookupAttribute lookupAttr;
 
   final String _lookupValue;
@@ -72,7 +76,8 @@ class ReactionListPage extends StatelessWidget {
   /// The limit of activities to fetch
   final int? limit;
 
-  /// TODO: document me
+  /// All reactions being displayed will be of the same type when `kind` 
+  /// is specified.
   final String? kind;
 
   @override

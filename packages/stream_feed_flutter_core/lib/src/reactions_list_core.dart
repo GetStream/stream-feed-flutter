@@ -83,7 +83,8 @@ class ReactionListCore extends StatelessWidget {
   /// The limit of activities to fetch
   final int? limit;
 
-  /// The kind of reaction
+  /// All reactions being displayed will be of the same type when `kind` 
+  /// is specified.
   final String? kind;
 
   @override
