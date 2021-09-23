@@ -318,15 +318,14 @@ void main() {
         when(() => mockStreamAnalytics.trackEngagement(engagement))
             .thenAnswer((_) async => Future.value());
 
-        await tester.pumpWidget(MaterialApp(
-          home: Scaffold(
-              body: FeedBlocProvider(
-                  bloc: FeedBloc(
-                    client: mockClient,
-                    analyticsClient: mockStreamAnalytics,
-                  ),
-                  child: withoutOwnReactions)),
-        ));
+        await tester.pumpWidget(
+          StreamFeedApp(
+              bloc: DefaultFeedBloc(
+                client: mockClient,
+                analyticsClient: mockStreamAnalytics,
+              ),
+              home: Scaffold(body: withoutOwnReactions)),
+        );
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
         await tester.tap(reactionIcon);
