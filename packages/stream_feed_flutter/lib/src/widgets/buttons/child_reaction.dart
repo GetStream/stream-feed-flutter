@@ -53,7 +53,7 @@ class ChildReactionButton extends StatelessWidget {
   /// Generally applies to desktop and web.
   final Color? hoverColor;
 
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +120,7 @@ class ChildReactionToggleIcon extends StatelessWidget {
   final int count;
 
   //TODO:document me
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   /// The callback to be performed when the user clicks on the reaction icon.
   final VoidCallback? onTap;

@@ -65,7 +65,7 @@ class CommentItem extends StatelessWidget {
 
   /// {@macro reaction_callback}
   final OnReactionTap? onReactionTap;
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +128,7 @@ class CommentItem extends StatelessWidget {
               ),
             ),
           ),
-          ChildReactionButton(
+          ChildReactionButton(//TODO: hardcoded -> refactor this
             activity: activity,
             //TODO: refactor LikeButton to accept a reaction
             activeIcon: StreamSvgIcon.loveActive(),

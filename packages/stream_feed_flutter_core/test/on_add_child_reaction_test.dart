@@ -17,7 +17,7 @@ class OnAddChildReactionWidget extends StatefulWidget {
 
   final Reaction reaction;
   final String kind;
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   @override
   _OnAddChildReactionWidgetState createState() =>
@@ -44,7 +44,7 @@ void main() {
   const foreignId = 'like:300';
   const activityId = 'activityId';
   const feedGroup = 'timeline:300';
-  const activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+  const activity = DefaultEnrichedActivity(id: activityId, foreignId: foreignId);
   const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
 
   testWidgets('OnAddReaction', (tester) async {
@@ -70,8 +70,8 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-      body: FeedBlocProvider(
-        bloc: FeedBloc(
+      body: DefaultFeedBlocProvider(
+        bloc: DefaultFeedBloc(
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
         ),
