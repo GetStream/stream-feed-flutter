@@ -251,7 +251,7 @@ class FeedBloc<A, Ob, T, Or> {
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
     if (_reactionsControllers[lookupValue]?.hasValue != null) {
-      _queryReactionsLoadingControllers[lookupValue]!.add(true);
+      _queryReactionsLoadingControllers[lookupValue]!.add(true);//TODO: fix null
     }
 
     try {

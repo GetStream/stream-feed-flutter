@@ -33,7 +33,7 @@ class ReactionListPage extends StatelessWidget {
         super(key: key);
 
   /// The activity to display notifications for.
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
