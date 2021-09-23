@@ -2,6 +2,10 @@
 
 Displays footer content for an activity
 
+## Background
+
+When displaying an activity it is useful to include buttons to perform various actions. This widget includes three buttons: a "like" button, a "repost" button and a "reply" button.
+
 ## Constructor
 ```dart
 const ActivityFooter({
