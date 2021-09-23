@@ -66,10 +66,10 @@ class ReactionListPage extends StatelessWidget {
 
   final String _lookupValue;
 
-  /// TODO: document me
+  /// The filter to use for the request
   final Filter? filter;
 
-  /// TODO: document me
+  /// The limit of activities to fetch
   final int? limit;
 
   /// TODO: document me
