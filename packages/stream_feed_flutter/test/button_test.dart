@@ -272,7 +272,7 @@ void main() {
     const foreignId = 'like:300';
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
-    const activity = EnrichedActivity(
+    const activity = DefaultEnrichedActivity(
       id: activityId,
       foreignId: foreignId,
     );

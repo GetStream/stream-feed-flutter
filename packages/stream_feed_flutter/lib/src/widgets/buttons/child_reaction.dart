@@ -164,7 +164,7 @@ class ChildReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> onAddChildReaction(BuildContext context) async {
-    await FeedBlocProvider.of(context).bloc.onAddChildReaction(
+    await DefaultFeedBlocProvider.of(context).bloc.onAddChildReaction(
         //TODO: get rid of mutations in StreamFeedProvider
         reaction: reaction,
         kind: kind,

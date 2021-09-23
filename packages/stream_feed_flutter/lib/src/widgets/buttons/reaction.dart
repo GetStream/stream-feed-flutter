@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/reaction_theme.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
 // ignore_for_file: cascade_invocations
 
 /// {@template reaction_button}
@@ -32,7 +32,7 @@ class ReactionButton extends StatelessWidget {
 
   /// The activity received from Stream that should be liked when pressing
   /// the [LikeButton].
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   /// The callback to be performed on tap.
   ///
@@ -136,7 +136,7 @@ class ReactionToggleIcon extends StatelessWidget {
   final String feedGroup;
 
   /// TODO: document me
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   /// TODO: document me
   final String? userId;
@@ -172,7 +172,7 @@ class ReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> addReaction(BuildContext context) async {
-    final reaction = await FeedBlocProvider.of(context).bloc.onAddReaction(
+    final reaction = await DefaultFeedBlocProvider.of(context).bloc.onAddReaction(
         //TODO: get rid of mutations in StreamFeedProvider
         kind: kind,
         activity: activity,
@@ -181,7 +181,7 @@ class ReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> removeReaction(BuildContext context) async {
-    await FeedBlocProvider.of(context).bloc.onRemoveReaction(
+    await DefaultFeedBlocProvider.of(context).bloc.onRemoveReaction(
         kind: kind,
         activity: activity,
         reaction: reactionsKind!.last!,

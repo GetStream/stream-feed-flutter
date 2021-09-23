@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
 // ignore_for_file: cascade_invocations
 
 /// {@template like_button}
@@ -31,7 +31,7 @@ class LikeButton extends StatelessWidget {
 
   /// The activity received from Stream that should be liked when pressing
   /// the [LikeButton].
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   /// The callback to be performed on tap.
   ///

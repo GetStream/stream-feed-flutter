@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
 // ignore_for_file: cascade_invocations
 
 /// {@template repost_button}
@@ -36,7 +37,7 @@ class RepostButton extends StatelessWidget {
 
   /// The activity received from Stream that should be liked when pressing
   /// the [LikeButton].
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
 
   /// The callback to be performed on tap.
   ///
