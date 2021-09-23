@@ -167,7 +167,6 @@ class ReactionToggleIcon extends StatelessWidget {
     );
   }
 
-
   Future<void> onToggleReaction(BuildContext context) async {
     alreadyReacted ? await removeReaction(context) : await addReaction(context);
   }

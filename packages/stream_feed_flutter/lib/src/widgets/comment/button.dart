@@ -86,8 +86,6 @@ class PostCommentButton extends StatelessWidget {
   }
 }
 
-
-
 /// TODO: document me
 class ReactiveElevatedButton extends StatefulWidget {
   /// Builds a [ReactiveElevatedButton].

@@ -6,7 +6,6 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-
 /// [FlatFeedCore] is a simplified class that allows fetching a list of
 /// enriched activities (flat) while exposing UI builders.
 ///

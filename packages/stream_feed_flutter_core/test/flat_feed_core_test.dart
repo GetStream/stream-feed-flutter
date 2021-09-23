@@ -45,11 +45,10 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         // body: StreamFeedProvider(
-         
-          body: FeedBlocProvider(
+
+        body: FeedBlocProvider(
           bloc: FeedBloc(client: mockClient),
-          child:
-          FlatFeedCore(
+          child: FlatFeedCore(
             bloc: DefaultFeedBloc(client: mockClient),
             feedGroup: 'user',
             feedBuilder: (BuildContext context, activities, int idx) {

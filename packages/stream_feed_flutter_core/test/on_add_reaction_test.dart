@@ -67,10 +67,9 @@ void main() {
     when(() => mockStreamAnalytics.trackEngagement(engagement))
         .thenAnswer((_) async => Future.value());
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-      body:  FeedBlocProvider(
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: FeedBlocProvider(
           bloc: FeedBloc(
             client: mockClient,
             analyticsClient: mockStreamAnalytics,

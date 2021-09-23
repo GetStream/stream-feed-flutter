@@ -132,13 +132,13 @@ class CommentView extends StatelessWidget {
           if (activity != null) ...[
             StreamBuilder(
               stream: DefaultFeedBlocProvider.of(context).bloc.activitiesStream,
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {  
-              return ActivityWidget(
-                activity: activity!,
-                feedGroup: feedGroup,
-                nameJsonKey: nameJsonKey,
-                handleJsonKey: handleJsonKey,
-              );
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                return ActivityWidget(
+                  activity: activity!,
+                  feedGroup: feedGroup,
+                  nameJsonKey: nameJsonKey,
+                  handleJsonKey: handleJsonKey,
+                );
               },
             )
             //TODO: analytics

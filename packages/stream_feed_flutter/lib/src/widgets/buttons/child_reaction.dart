@@ -178,7 +178,7 @@ class ChildReactionToggleIcon extends StatelessWidget {
         // activity: idToRemove!,
         );
   }
-  
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
