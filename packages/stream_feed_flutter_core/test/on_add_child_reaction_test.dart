@@ -29,7 +29,7 @@ class _OnAddChildReactionWidgetState extends State<OnAddChildReactionWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await FeedBlocProvider.of(context).bloc.onAddChildReaction(
+        await DefaultFeedBlocProvider.of(context).bloc.onAddChildReaction(
               activity: widget.activity,
               reaction: widget.reaction,
               kind: widget.kind,

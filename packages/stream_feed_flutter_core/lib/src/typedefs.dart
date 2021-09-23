@@ -18,3 +18,7 @@ typedef DefaultFeedBlocProvider
     = FeedBlocProvider<User, String, String, String>;
 
 typedef DefaultFeedBloc = FeedBloc<User, String, String, String>;
+
+/// TODO: document me
+typedef DefaultEnrichedActivity
+    = EnrichedActivity<User, String, String, String>;

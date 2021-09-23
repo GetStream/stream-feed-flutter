@@ -27,7 +27,7 @@ class CommentField extends StatelessWidget {
   /// The activity on which the comment will be posted (reaction).
   ///
   /// If no activity is provided, the comment will be posted as a new activity.
-  final EnrichedActivity? activity;
+  final DefaultEnrichedActivity? activity;
 
   /// The target feed on which the comment will be posted.
   final List<FeedId>? targetFeeds;

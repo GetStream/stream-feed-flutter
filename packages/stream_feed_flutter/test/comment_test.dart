@@ -127,7 +127,7 @@ void main() {
       activityId: activityId,
       data: {'text': textInput},
     );
-    const activity = EnrichedActivity(
+    const activity = DefaultEnrichedActivity(
       id: activityId,
       foreignId: foreignId,
     );

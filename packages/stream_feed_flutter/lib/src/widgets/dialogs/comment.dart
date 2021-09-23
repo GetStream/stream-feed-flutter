@@ -216,7 +216,7 @@ class AlertDialogActions extends StatelessWidget {
   }) : super(key: key);
 
   /// TODO: document me
-  final EnrichedActivity? activity;
+  final DefaultEnrichedActivity? activity;
 
   /// TODO: document me
   final List<FeedId>? targetFeeds;
@@ -314,7 +314,7 @@ class RightActions extends StatelessWidget {
   }) : super(key: key);
 
   /// TODO: document me
-  final EnrichedActivity? activity;
+  final DefaultEnrichedActivity? activity;
 
   /// TODO: document me
   final TextEditingController textEditingController;

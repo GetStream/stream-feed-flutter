@@ -16,7 +16,7 @@ class OnRemoveReactionWidget extends StatefulWidget {
       required this.kind})
       : super(key: key);
 
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
   final String feedGroup;
   final String kind;
   final Reaction reaction;
@@ -30,7 +30,7 @@ class _OnAddReactionWidgetState extends State<OnRemoveReactionWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await FeedBlocProvider.of(context).bloc.onRemoveReaction(
+        await DefaultFeedBlocProvider.of(context).bloc.onRemoveReaction(
               reaction: widget.reaction,
               activity: widget.activity,
               feedGroup: widget.feedGroup,
@@ -46,7 +46,7 @@ void main() {
   const foreignId = 'like:300';
   const activityId = 'activityId';
   const feedGroup = 'timeline:300';
-  const activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+  const activity = DefaultEnrichedActivity(id: activityId, foreignId: foreignId);
   const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
   testWidgets('onRemoveReaction', (tester) async {
     final mockClient = MockStreamFeedClient();

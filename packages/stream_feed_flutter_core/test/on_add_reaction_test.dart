@@ -15,7 +15,7 @@ class OnAddReactionWidget extends StatefulWidget {
       required this.kind})
       : super(key: key);
 
-  final EnrichedActivity activity;
+  final DefaultEnrichedActivity activity;
   final String feedGroup;
   final String kind;
 
@@ -28,7 +28,7 @@ class _OnAddReactionWidgetState extends State<OnAddReactionWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await FeedBlocProvider.of(context).bloc.onAddReaction(
+        await DefaultFeedBlocProvider.of(context).bloc.onAddReaction(
               //TODO: add convenient method onAddReaction to ReactionsProvider
               activity: widget.activity,
               feedGroup: widget.feedGroup,
@@ -44,7 +44,7 @@ void main() {
   const foreignId = 'like:300';
   const activityId = 'activityId';
   const feedGroup = 'timeline:300';
-  const activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+  const activity = DefaultEnrichedActivity(id: activityId, foreignId: foreignId);
   const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
 
   testWidgets('OnAddReaction', (tester) async {

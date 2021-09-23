@@ -173,7 +173,7 @@ class ChildReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> onRemoveChildReaction(BuildContext context) async {
-    await FeedBlocProvider.of(context).bloc.onRemoveChildReaction(
+    await DefaultFeedBlocProvider.of(context).bloc.onRemoveChildReaction(
         kind: kind, reaction: reaction, activity: activity
         // activity: idToRemove!,
         );
