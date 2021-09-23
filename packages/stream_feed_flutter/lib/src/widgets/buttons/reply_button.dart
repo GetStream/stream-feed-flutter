@@ -25,10 +25,10 @@ class ReplyButton extends StatelessWidget {
     this.nameJsonKey = 'name',
   }) : super(key: key);
 
-  /// TODO: document me
+  /// The json key for the user's handle.
   final String handleJsonKey;
 
-  /// TODO: document me
+  /// The json key for the user's name.
   final String nameJsonKey;
 
   /// The group or slug of the feed to post to.
