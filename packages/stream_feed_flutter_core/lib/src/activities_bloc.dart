@@ -51,11 +51,13 @@ class FeedBloc<A, Ob, T, Or> {
   /// Add an activity to the feed.
   Future<Activity> onAddActivity(
       //TODO: add this to the stream
-      {required String feedGroup,
-      Map<String, String>? data,
-      required String verb,
-      required String object,
-      String? userId}) async {
+      {
+    required String feedGroup,
+    Map<String, String>? data,
+    required String verb,
+    required String object,
+    String? userId,
+  }) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
       verb: verb,
@@ -251,7 +253,8 @@ class FeedBloc<A, Ob, T, Or> {
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
     if (_reactionsControllers[lookupValue]?.hasValue != null) {
-      _queryReactionsLoadingControllers[lookupValue]!.add(true);//TODO: fix null
+      _queryReactionsLoadingControllers[lookupValue]!
+          .add(true); //TODO: fix null
     }
 
     try {
