@@ -125,6 +125,7 @@ class FlatActivityListPage extends StatelessWidget {
       ranking: ranking,
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
+      onEmptyWidget: onEmptyWidget,
       //TODO: activity type Flat?
       feedBuilder: (context, activities, idx) => ActivityWidget(
         activity: activities[idx],
