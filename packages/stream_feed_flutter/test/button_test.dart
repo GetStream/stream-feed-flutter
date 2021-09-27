@@ -356,8 +356,8 @@ void main() {
 
         await tester.pumpWidget(MaterialApp(
           home: Scaffold(
-            body: FeedBlocProvider(
-              bloc: FeedBloc(
+            body: DefaultFeedBlocProvider(
+              bloc: DefaultFeedBloc(
                 client: mockClient,
                 analyticsClient: mockStreamAnalytics,
               ),
