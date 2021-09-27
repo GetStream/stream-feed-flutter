@@ -30,15 +30,15 @@ class FeedBloc<A, Ob, T, Or> {
           String activityId) => //TODO: better name
       _reactionsControllers[activityId]?.stream;
 
-  final _reactionsControllers = Map<String, BehaviorSubject<List<Reaction>>>();
+  final Map<String, BehaviorSubject<List<Reaction>>> _reactionsControllers = {};
 
   final _activitiesController =
       BehaviorSubject<List<EnrichedActivity<A, Ob, T, Or>>>();
 
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
-  final _queryReactionsLoadingControllers =
-      Map<String, BehaviorSubject<bool>>();
+  final Map<String, BehaviorSubject<bool>> _queryReactionsLoadingControllers =
+      {};
 
   /// The stream notifying the state of queryReactions call
   Stream<bool> queryReactionsLoadingFor(String activityId) =>
@@ -248,6 +248,9 @@ class FeedBloc<A, Ob, T, Or> {
       int? limit,
       String? kind,
       EnrichmentFlags? flags}) async {
+    _reactionsControllers[lookupValue] = BehaviorSubject<List<Reaction>>();
+    _queryReactionsLoadingControllers[lookupValue] =
+        BehaviorSubject.seeded(false);
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
     if (_reactionsControllers[lookupValue]?.hasValue != null) {
@@ -266,7 +269,7 @@ class FeedBloc<A, Ob, T, Or> {
         kind: kind,
       );
       final temp = oldReactions + reactionsResponse;
-      _reactionsControllers[lookupValue] = BehaviorSubject.seeded(temp);
+      _reactionsControllers[lookupValue]!.add(temp);
     } catch (e, stk) {
       // reset loading controller
       _queryReactionsLoadingControllers[lookupValue]?.add(false);
