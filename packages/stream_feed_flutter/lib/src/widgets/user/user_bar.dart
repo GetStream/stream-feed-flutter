@@ -109,7 +109,7 @@ class UserBar extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8),
           child: HumanReadableTimestamp(timestamp: timestamp),
-        )
+        ),
       ],
     );
   }
