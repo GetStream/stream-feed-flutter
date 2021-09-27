@@ -85,6 +85,7 @@ class FeedBloc<A, Ob, T, Or> {
     required Reaction reaction,
   }) async {
     await client.reactions.delete(reaction.id!);
+    print("HERE onRemoveChildReaction");
     final _reactions = reactionsFor(activity.id!, reaction);
     final reactionPath = _reactions.getReactionPath(reaction);
     final indexPath = _reactions
@@ -125,6 +126,7 @@ class FeedBloc<A, Ob, T, Or> {
       List<FeedId>? targetFeeds}) async {
     final childReaction = await client.reactions.addChild(kind, reaction.id!,
         data: data, userId: userId, targetFeeds: targetFeeds);
+    print("onAddChildReaction");
     final _reactions = reactionsFor(activity.id!, reaction);
     final reactionPath = _reactions.getReactionPath(reaction);
     final indexPath = _reactions
@@ -141,8 +143,8 @@ class FeedBloc<A, Ob, T, Or> {
       childrenCounts: childrenCounts,
     );
 
-    //adds reaction to the stream
-    // _reactionsControllers.unshiftById(activity.id!, reaction);
+    // adds reaction to the stream
+    _reactionsControllers.unshiftById(activity.id!, reaction);
 
     if (_reactionsControllers[activity.id!]?.hasValue != null) {
       _reactionsControllers[activity.id!]!.value =

@@ -94,8 +94,7 @@ extension UnshiftMapController
     result = this;
     final latestReactionsById = this?[activityId]?.valueOrNull ?? [];
     if (result != null) {
-      result[activityId] =
-          BehaviorSubject.seeded(latestReactionsById.unshift(reaction, type));
+      result[activityId]!.add(latestReactionsById.unshift(reaction, type));
     } else {
       result = {
         //TODO: handle decrement

@@ -146,7 +146,9 @@ class _ReactiveElevatedButtonState extends State<ReactiveElevatedButton> {
               // Dis/enabled button if textInputValue.length> 0
               onPressed: snapshot.hasData && snapshot.data!.isNotEmpty
                   ? () async {
-                      await widget.onSend(snapshot.data!);
+                      await widget.onSend(snapshot
+                          .data!); //TODO clear controller once future done
+                      widget.textEditingController.clear();
                     }
                   : null,
 
