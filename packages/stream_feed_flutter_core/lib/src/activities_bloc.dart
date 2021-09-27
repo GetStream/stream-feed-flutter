@@ -85,7 +85,6 @@ class FeedBloc<A, Ob, T, Or> {
     required Reaction reaction,
   }) async {
     await client.reactions.delete(reaction.id!);
-    print(reaction);
     final _reactions = reactionsFor(activity.id!, reaction);
     final reactionPath = _reactions.getReactionPath(reaction);
     final indexPath = _reactions
@@ -160,7 +159,6 @@ class FeedBloc<A, Ob, T, Or> {
       required Reaction reaction,
       required String feedGroup}) async {
     await client.reactions.delete(reaction.id!);
-
     await trackAnalytics(
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
     final _activities = activities ?? [activity];

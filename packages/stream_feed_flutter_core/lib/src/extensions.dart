@@ -3,13 +3,19 @@ import 'package:stream_feed/stream_feed.dart';
 
 //TODO: find a better than shift
 
-extension AlreadyReacted on Reaction {
-  bool alreadyReactedTo(String kind) {
-    final ownReactions = ownChildren?[kind];
-    return ownReactions != null && ownReactions.isNotEmpty;
-  }
-}
+// extension AlreadyReacted on Reaction {
+//   bool alreadyReactedTo(String kind) {
+//     final ownReactions = ownChildren?[kind];
+//     return ownReactions != null && ownReactions.isNotEmpty;
+//   }
+// }
 
+// extension AlreadyReactedEnrichedActivity on EnrichedActivity {
+//   bool alreadyReactedTo(String kind) {
+//     final _ownReactions = ownReactions?[kind];
+//     return _ownReactions != null && _ownReactions.isNotEmpty;
+//   }
+// }
 
 extension ReactionX on List<Reaction> {
   ///Filter reactions by reaction kind

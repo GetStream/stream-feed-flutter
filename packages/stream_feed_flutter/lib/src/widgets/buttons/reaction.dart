@@ -150,8 +150,8 @@ class ReactionToggleIcon extends StatelessWidget {
   /// TODO: document me
   final Color? hoverColor;
 
-  bool get alreadyReacted => reactionsKind?.isNotEmpty != null;
-  List<Reaction?>? get reactionsKind => ownReactions?.filterByKind(kind);
+  bool get alreadyReacted => ownReactions != null && ownReactions!.isNotEmpty;
+  // List<Reaction?>? get reactionsKind => ownReactions?.filterByKind(kind);
 
   Widget get displayedIcon => alreadyReacted ? activeIcon : inactiveIcon;
 
@@ -172,19 +172,20 @@ class ReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> addReaction(BuildContext context) async {
-    final reaction = await DefaultFeedBlocProvider.of(context).bloc.onAddReaction(
-        //TODO: get rid of mutations in StreamFeedProvider
-        kind: kind,
-        activity: activity,
-        data: data,
-        feedGroup: feedGroup);
+    final reaction =
+        await DefaultFeedBlocProvider.of(context).bloc.onAddReaction(
+            //TODO: get rid of mutations in StreamFeedProvider
+            kind: kind,
+            activity: activity,
+            data: data,
+            feedGroup: feedGroup);
   }
 
   Future<void> removeReaction(BuildContext context) async {
     await DefaultFeedBlocProvider.of(context).bloc.onRemoveReaction(
         kind: kind,
         activity: activity,
-        reaction: reactionsKind!.last!,
+        reaction: ownReactions!.last,
         feedGroup: feedGroup);
   }
 

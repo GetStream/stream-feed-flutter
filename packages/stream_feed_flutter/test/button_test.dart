@@ -165,7 +165,7 @@ void main() {
       reaction: reaction,
       kind: kind,
       count: count,
-      ownReactions: const [reaction],
+      // ownReactions: const [reaction],
       inactiveIcon: inactiveIcon,
       activeIcon: activeIcon,
     );

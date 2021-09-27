@@ -26,25 +26,6 @@ main() {
       late Map<String, List<Reaction>> ownChildren;
       late Map<String, List<Reaction>> expectedResult;
 
-      test('alreadyReactedTo', () {
-        ownChildren = {
-          'like': [Reaction(id: 'id')],
-          'post': [Reaction(id: 'id2')],
-          'claps': []
-        };
-        expectedResult = {
-          'like': [Reaction(id: 'id3'), Reaction(id: 'id')],
-          'post': [Reaction(id: 'id2')],
-        };
-
-        expect(
-            Reaction(ownChildren: ownChildren).alreadyReactedTo('like'), true);
-        expect(Reaction(ownChildren: ownChildren).alreadyReactedTo('repost'),
-            false);
-        expect(Reaction(ownChildren: ownChildren).alreadyReactedTo('claps'),
-            false);
-      });
-
       group('increment', () {
         test('not null', () {
           ownChildren = {
