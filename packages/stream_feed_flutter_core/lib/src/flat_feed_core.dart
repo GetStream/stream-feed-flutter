@@ -40,22 +40,22 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// information about the activities.
 class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
   /// Builds a [FlatFeedCore].
-  const FlatFeedCore(
-      {Key? key,
-      required this.feedGroup,
-      required this.feedBuilder,
-      this.onErrorWidget = const ErrorStateWidget(),
-      this.onProgressWidget = const ProgressStateWidget(),
-      this.limit,
-      this.offset,
-      this.session,
-      this.filter,
-      this.flags,
-      this.ranking,
-      this.userId,
-      this.onEmptyWidget =
-          const EmptyStateWidget(message: 'No activities to display')})
-      : super(key: key);
+  const FlatFeedCore({
+    Key? key,
+    required this.feedGroup,
+    required this.feedBuilder,
+    this.onErrorWidget = const ErrorStateWidget(),
+    this.onProgressWidget = const ProgressStateWidget(),
+    this.limit,
+    this.offset,
+    this.session,
+    this.filter,
+    this.flags,
+    this.ranking,
+    this.userId,
+    this.onEmptyWidget =
+        const EmptyStateWidget(message: 'No activities to display'),
+  }) : super(key: key);
 
   /// A builder that let you build a ListView of EnrichedActivity based Widgets
   final EnrichedFeedBuilder<A, Ob, T, Or> feedBuilder;
