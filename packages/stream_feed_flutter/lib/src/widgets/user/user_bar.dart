@@ -26,6 +26,7 @@ class UserBar extends StatelessWidget {
     this.nameJsonKey = 'name',
     this.subtitle,
     this.showSubtitle = true,
+    this.showReactedBy = false,
   }) : super(key: key);
 
   /// The User whose bar is being displayed.
@@ -57,6 +58,11 @@ class UserBar extends StatelessWidget {
 
   /// Whether or not to show the subtitle.
   final bool showSubtitle;
+
+  /// Whether to show the "reacted by" widget or not.
+  ///
+  /// Defaults to `false`.
+  final bool showReactedBy;
 
   @override
   Widget build(BuildContext context) {
@@ -90,10 +96,10 @@ class UserBar extends StatelessWidget {
               if (afterUsername != null) afterUsername!,
               if (showSubtitle && subtitle != null)
                 subtitle!
-              else if (displayName != null)
+              else if (showReactedBy)
                 ReactedBy(
                   icon: reactionIcon ?? ReactionByIcon(kind: kind),
-                  handleOrUsername: displayName,
+                  handleOrUsername: displayName ?? '',
                 ),
             ],
           ),
@@ -118,6 +124,7 @@ class UserBar extends StatelessWidget {
     properties.add(StringProperty('handleJsonKey', handleJsonKey));
     properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
     properties.add(DiagnosticsProperty<User>('user', user));
+    properties.add(DiagnosticsProperty<bool>('showReactedBy', showReactedBy));
   }
 }
 
