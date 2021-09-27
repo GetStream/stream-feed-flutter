@@ -39,6 +39,22 @@ main() {
         await expectLater(
             ownChildren['like']!.stream, emits(expectedResult['like']));
       });
+
+      test('decrement', () async {
+        ownChildren = {
+          'like':
+              BehaviorSubject.seeded([Reaction(id: 'id3'), Reaction(id: 'id')]),
+          'post': BehaviorSubject.seeded([Reaction(id: 'id2')])
+        };
+        expectedResult = {
+          'like': [Reaction(id: 'id')],
+          'post': [Reaction(id: 'id2')]
+        };
+        ownChildren.unshiftById(
+            'like', Reaction(id: 'id3'), ShiftType.decrement);
+        await expectLater(
+            ownChildren['like']!.stream, emits(expectedResult['like']));
+      });
     });
     group('Map<String, List<Reaction>>', () {
       late Map<String, List<Reaction>> ownChildren;
