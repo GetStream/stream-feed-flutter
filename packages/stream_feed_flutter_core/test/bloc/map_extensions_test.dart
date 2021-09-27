@@ -1,3 +1,4 @@
+import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 import 'package:test/test.dart';
@@ -22,6 +23,23 @@ main() {
       //TODO: null
     });
 
+    group('Map<String, BehaviorSubject<List<Reaction>>>', () {
+      late Map<String, BehaviorSubject<List<Reaction>>> ownChildren;
+      late Map<String, List<Reaction>> expectedResult;
+
+      test('increment', () async {
+        ownChildren = {
+          'like': BehaviorSubject.seeded([Reaction(id: 'id')]),
+          'post': BehaviorSubject.seeded([Reaction(id: 'id2')]),
+        };
+        expectedResult = {
+          'like': [Reaction(id: 'id3'), Reaction(id: 'id')]
+        };
+        ownChildren.unshiftById('like', Reaction(id: 'id3'));
+        await expectLater(
+            ownChildren['like']!.stream, emits(expectedResult['like']));
+      });
+    });
     group('Map<String, List<Reaction>>', () {
       late Map<String, List<Reaction>> ownChildren;
       late Map<String, List<Reaction>> expectedResult;
