@@ -3,6 +3,14 @@ import 'package:stream_feed/stream_feed.dart';
 
 //TODO: find a better than shift
 
+extension AlreadyReacted on Reaction {
+  bool alreadyReactedTo(String kind) {
+    final ownReactions = ownChildren?[kind];
+    return ownReactions != null && ownReactions.isNotEmpty;
+  }
+}
+
+
 extension ReactionX on List<Reaction> {
   ///Filter reactions by reaction kind
   List<Reaction?> filterByKind(String kind) =>
@@ -63,7 +71,7 @@ extension UnshiftMapList on Map<String, List<Reaction>>? {
       result[kind] = latestReactionsByKind.unshift(reaction, type);
     } else {
       result = {
-        //TODO: handle decrement
+        //TODO: handle decrement: should we throw?
         kind: [reaction]
       };
     }

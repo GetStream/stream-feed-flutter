@@ -23,23 +23,61 @@ main() {
     });
 
     group('Map<String, List<Reaction>>', () {
-      late Map<String, List<Reaction>> latestChildren;
+      late Map<String, List<Reaction>> ownChildren;
       late Map<String, List<Reaction>> expectedResult;
-      test('increment', () {
-        latestChildren = {
+
+      test('alreadyReactedTo', () {
+        ownChildren = {
           'like': [Reaction(id: 'id')],
-          'post': [Reaction(id: 'id2')]
+          'post': [Reaction(id: 'id2')],
+          'claps': []
         };
         expectedResult = {
           'like': [Reaction(id: 'id3'), Reaction(id: 'id')],
-          'post': [Reaction(id: 'id2')]
+          'post': [Reaction(id: 'id2')],
         };
-        expect(latestChildren.unshiftByKind('like', Reaction(id: 'id3')),
-            expectedResult);
+
+        expect(
+            Reaction(ownChildren: ownChildren).alreadyReactedTo('like'), true);
+        expect(Reaction(ownChildren: ownChildren).alreadyReactedTo('repost'),
+            false);
+        expect(Reaction(ownChildren: ownChildren).alreadyReactedTo('claps'),
+            false);
+      });
+
+      group('increment', () {
+        test('not null', () {
+          ownChildren = {
+            'like': [Reaction(id: 'id')],
+            'post': [Reaction(id: 'id2')],
+          };
+          expectedResult = {
+            'like': [Reaction(id: 'id3'), Reaction(id: 'id')],
+            'post': [Reaction(id: 'id2')]
+          };
+
+          expect(ownChildren.unshiftByKind('like', Reaction(id: 'id3')),
+              expectedResult);
+        });
+
+        test('null', () {
+          ownChildren = {
+            'like': [Reaction(id: 'id')],
+            'post': [Reaction(id: 'id2')],
+          };
+          expectedResult = {
+            'like': [Reaction(id: 'id')],
+            'post': [Reaction(id: 'id2')],
+            'repost': [Reaction(id: 'id3')]
+          };
+
+          expect(ownChildren.unshiftByKind('repost', Reaction(id: 'id3')),
+              expectedResult);
+        });
       });
 
       test('decrement', () {
-        latestChildren = {
+        ownChildren = {
           'like': [Reaction(id: 'id3'), Reaction(id: 'id')],
           'post': [Reaction(id: 'id2')]
         };
@@ -48,7 +86,7 @@ main() {
           'post': [Reaction(id: 'id2')]
         };
         expect(
-            latestChildren.unshiftByKind(
+            ownChildren.unshiftByKind(
                 'like', Reaction(id: 'id3'), ShiftType.decrement),
             expectedResult);
       });

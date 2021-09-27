@@ -140,8 +140,9 @@ class ChildReactionToggleIcon extends StatelessWidget {
   /// TODO: document me
   final Reaction reaction;
 
-  bool get alreadyReacted => reactionsKind?.isNotEmpty != null;
-  List<Reaction?>? get reactionsKind => ownReactions?.filterByKind(kind);
+  // bool get alreadyReacted => ownReactions?[kind] != null ? true : false;
+  bool get alreadyReacted =>
+      ownReactions?.where((reaction) => reaction.kind == kind).toList() != null;
 
   Widget get displayedIcon => alreadyReacted ? activeIcon : inactiveIcon;
 
