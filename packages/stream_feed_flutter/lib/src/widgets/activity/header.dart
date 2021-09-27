@@ -47,6 +47,7 @@ class ActivityHeader extends StatelessWidget {
       showSubtitle: showSubtitle,
       nameJsonKey: nameJsonKey,
       handleJsonKey: handleJsonKey,
+      subtitle: Text(activity.actor!.data![handleJsonKey].toString()),
     ); //TODO: display what instead of null timestamp?
   }
 
