@@ -24,6 +24,7 @@ void main() {
               kind: 'like',
               timestamp: DateTime.now(),
               user: const User(
+                id: 'user-id',
                 data: {
                   'name': 'Rosemary',
                   'handle': '@rosemary',
@@ -64,6 +65,7 @@ void main() {
       kind: 'like',
       timestamp: now,
       user: const User(
+        id: 'user-id',
         data: {
           'name': 'Rosemary',
           'handle': '@rosemary',

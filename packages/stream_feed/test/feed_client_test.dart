@@ -52,12 +52,21 @@ void main() {
       verify(() => api.addActivities(token, feedId, activities)).called(1);
     });
 
+    test('follow', () async {
+      final targetFeedId = FeedId('user', 'target-user-id');
+      when(() => api.follow(token, token, client.feedId, targetFeedId, 10))
+          .thenAnswer((_) async => dummyResponse);
+      await client.follow(targetFeedId, activityCopyLimit: 10);
+      verify(() => api.follow(token, token, client.feedId, targetFeedId, 10))
+          .called(1);
+    });
+
     test('unfollow', () async {
       final flatFeed = FlatFeed(feedId, api, userToken: token);
       // ignore: invalid_use_of_protected_member
       when(() => api.unfollow(token, feedId, feedId, keepHistory: true))
           .thenAnswer((_) async => dummyResponse);
-      await client.unfollow(flatFeed, keepHistory: true);
+      await client.unfollow(flatFeed.feedId, keepHistory: true);
       // ignore: invalid_use_of_protected_member
       verify(() => api.unfollow(token, feedId, feedId, keepHistory: true))
           .called(1);

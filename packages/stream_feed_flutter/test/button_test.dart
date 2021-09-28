@@ -504,6 +504,7 @@ void main() {
         activity: EnrichedActivity(
           time: now,
           actor: const User(
+            id: 'user-id',
             data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
@@ -537,6 +538,7 @@ void main() {
         activity: EnrichedActivity(
           time: now,
           actor: const User(
+            id: 'user-id',
             data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
@@ -573,6 +575,7 @@ void main() {
         activity: EnrichedActivity(
           time: now,
           actor: const User(
+            id: 'user-id',
             data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
@@ -626,6 +629,7 @@ void main() {
         activity: EnrichedActivity(
           time: now,
           actor: const User(
+            id: 'user-id',
             data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
@@ -659,6 +663,7 @@ void main() {
         activity: EnrichedActivity(
           time: now,
           actor: const User(
+            id: 'user-id',
             data: {
               'name': 'Rosemary',
               'handle': '@rosemary',

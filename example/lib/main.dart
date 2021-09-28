@@ -7,15 +7,15 @@ import 'package:stream_feed/stream_feed.dart';
 
 //ignore_for_file: public_member_api_docs
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   const _key = String.fromEnvironment('key');
+  const _userId = String.fromEnvironment('user_id');
   const _userToken = String.fromEnvironment('user_token');
 
-  final client = StreamFeedClient.connect(
-    _key,
-    token: const Token(_userToken),
-  );
+  final client = StreamFeedClient(_key);
+
+  await client.setCurrentUser(const User(id: _userId), const Token(_userToken));
 
   runApp(
     MyApp(

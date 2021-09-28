@@ -1,6 +1,5 @@
 import 'package:faye_dart/faye_dart.dart';
 import 'package:meta/meta.dart';
-import 'package:stream_feed/src/client/flat_feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
@@ -18,7 +17,9 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// A type definition for the callback to be invoked when data is received.
 typedef MessageDataCallback = void Function(Map<String, dynamic>? data);
 
+/// {@template feed_subscriber}
 /// A type definition for the callback to be invoked when a message is received.
+/// {@endtemplate}
 typedef FeedSubscriber = Future<Subscription> Function(
   Token token,
   FeedId feedId,
@@ -27,8 +28,9 @@ typedef FeedSubscriber = Future<Subscription> Function(
 
 ///{@template feed}
 /// The feed object contains convenient functions for manipulating feeds,
-/// such as add activity, remove activity, etc.
+/// such as: add activity, remove activity, etc.
 ///{@endtemplate}
+@immutable
 class Feed {
   ///Initialize a feed object
   const Feed(
@@ -42,7 +44,7 @@ class Feed {
           'At least a secret or userToken must be provided',
         );
 
-  /// TODO: document me
+  /// {@macro feed_subscriber}
   final FeedSubscriber? subscriber;
 
   /// Your API secret
@@ -50,19 +52,19 @@ class Feed {
   final String? secret;
 
   /// Your user token obtain via the dashboard.
-  /// Required if you are using the sdk client side
+  ///
+  /// Required if you are using the SDK client side.
   @protected
   final Token? userToken;
 
-  /// The feed id
-  @protected
+  /// The Feed ID.
   final FeedId feedId;
 
-  /// The stream client this feed is constructed from
+  /// The stream client this Feed is constructed from.
   @protected
   final FeedAPI feed;
 
-  /// Subscribes to any changes in the feed, return a [Subscription]
+  /// Subscribes to any changes in the feed, returns a [Subscription].
   @experimental
   Future<Subscription> subscribe<A, Ob, T, Or>(
     void Function(RealtimeMessage<A, Ob, T, Or>? message) callback,
@@ -82,13 +84,17 @@ class Feed {
     });
   }
 
-  /// Retrieves the number of followers
-  /// and following feed stats of the current feed.
+  /// Retrieves the number of followers and "following" feed stats of the
+  /// current feed.
   ///
   /// For each count, feed slugs can be provided to filter counts accordingly.
-  /// Example:
+  ///
+  /// ### Example:
   /// ```dart
-  /// await client.feed.followStats(followerSlugs:['user', 'news'], followingSlugs:['timeline']);
+  /// await client.feed.followStats(
+  ///    followerSlugs:['user', 'news'],
+  ///    followingSlugs:['timeline'],
+  /// );
   /// ```
   Future<FollowStats> followStats({
     List<String>? followingSlugs,
@@ -109,11 +115,9 @@ class Feed {
     return feed.followStats(token, options.toJson());
   }
 
-  /// Adds the given [Activity] to the feed
-  /// parameters:
-  /// [activity] : The activity to add
+  /// Adds the given [activity] to the feed.
   ///
-  /// # Example
+  /// ### Example
   /// ```dart
   ///  final activity = Activity(
   ///    actor: user.id,
@@ -135,7 +139,7 @@ class Feed {
 
   /// Adds the given activities to the feed
   ///
-  /// # Usage :
+  /// ### Example
   /// ```dart
   /// final activities = <Activity>[
   ///   const Activity(
@@ -163,7 +167,7 @@ class Feed {
   /// parameters
   /// [id] : activityId Identifier of activity to remove
   ///
-  /// # Usage:
+  /// # Example
   /// ```dart
   /// await userFeed.removeActivityById('e561de8f-00f1-11e4-b400-0cc47a024be0');
   /// ```
@@ -177,9 +181,10 @@ class Feed {
   /// Remove an [Activity] by referencing its `foreign_id`
   ///
   /// Parameters:
+  ///
   /// `foreignId`: Identifier of activity to remove
   ///
-  /// For example :
+  /// ### Example
   /// ```dart
   /// final chris = client.flatFeed('user', 'chris');
   /// await chris.removeActivityByForeignId('picture:10');
@@ -196,27 +201,29 @@ class Feed {
   ///
   /// Parameters:
   ///
-  /// [flatFeet] : Slug of the target feed
-  /// [activityCopyLimit] : Limit the amount of activities copied over on follow
+  /// - [FeedId] : Slug of the target feed and user-id.
+  /// - [activityCopyLimit] : Limit the amount of activities copied over on
+  /// follow
   ///
-  /// For example, to create a following relationship
+  /// ### Example
+  /// To create a following relationship
   /// between Jack's "timeline" feed and Chris' "user" feed
-  /// you'd do the following
+  /// you'd do the following:
   /// ```dart
   /// final jack = client.flatFeed('timeline', 'jack');
-  /// await jack.follow(chris);
+  /// await jack.follow(FeedId('user', 'chris'));
   /// ```
   ///
   /// API docs: [following](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart)
   Future<void> follow(
-    FlatFeed flatFeed, {
+    FeedId feedId, {
     int? activityCopyLimit,
   }) async {
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.write, feedId);
     final targetToken = userToken ??
-        TokenHelper.buildFeedToken(secret!, TokenAction.read, flatFeed.feedId);
-    await feed.follow(token, targetToken, feedId, flatFeed.feedId,
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
+    await feed.follow(token, targetToken, this.feedId, feedId,
         activityCopyLimit ?? Default.activityCopyLimit);
   }
 
@@ -244,7 +251,7 @@ class Feed {
         offset ?? Default.offset, feedIds ?? []);
   }
 
-  /// List which feeds this feed is following
+  /// List which feeds this feed is following.
   ///
   /// - Retrieve last 10 feeds followed by user
   /// ```dart
@@ -280,31 +287,31 @@ class Feed {
   /// Unfollow the given feed
   ///
   /// Parameters:
-  /// - [flatFeet] : Slug of the target feed
+  /// - [FeedId] : Slug of the target feed and user-id.
   /// - [keepHistory] when provided the activities from target
-  /// feed will not be kept in the feed
+  /// feed will be kept in the feed history.
   ///
   /// For example:
   /// - Stop following feed user:user_42
   /// ```dart
-  /// await timeline.unfollow(user);
+  /// await timeline.unfollow(FeedId('user', 'user_42'));
   /// ```
   /// - Stop following feed user:user_42 but keep history of activities
   /// ```dart
-  /// await timeline.unfollow(user, keepHistory: true);
+  /// await timeline.unfollow(FeedId('user', 'user_42'), keepHistory: true);
   /// ```
   ///
   /// API docs: [unfollowing-feeds](https://getstream.io/activity-feeds/docs/flutter-dart/following/?language=dart#unfollowing-feeds)
   Future<void> unfollow(
-    FlatFeed flatFeet, {
+    FeedId feedId, {
     bool keepHistory = false,
   }) {
     final token = userToken ??
         TokenHelper.buildFollowToken(secret!, TokenAction.delete, feedId);
     return feed.unfollow(
       token,
+      this.feedId,
       feedId,
-      flatFeet.feedId,
       keepHistory: keepHistory,
     );
   }

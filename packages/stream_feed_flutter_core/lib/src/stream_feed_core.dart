@@ -144,7 +144,6 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     Map<String, String>? data,
     required String verb,
     required String object,
-    String? userId,
   }) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
@@ -154,7 +153,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     );
 
     final addedActivity =
-        await client.flatFeed(feedGroup, userId).addActivity(activity);
+        await client.flatFeed(feedGroup).addActivity(activity);
     await trackAnalytics(
       label: 'post',
       foreignId: activity.foreignId,
@@ -232,8 +231,8 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   }
 
   ///Get enriched activities from the feed
-  Future<List<EnrichedActivity<A, Ob, T, Or>>> getEnrichedActivities<A, Ob, T,
-          Or>({
+  Future<List<EnrichedActivity<A, Ob, T, Or>>>
+      getEnrichedActivities<A, Ob, T, Or>({
     required String feedGroup,
     int? limit,
     int? offset,
@@ -241,16 +240,15 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     Filter? filter,
     EnrichmentFlags? flags,
     String? ranking,
-    String? userId,
   }) async =>
-      client.flatFeed(feedGroup, userId).getEnrichedActivities<A, Ob, T, Or>(
-            limit: limit,
-            offset: offset,
-            session: session,
-            filter: filter,
-            flags: flags,
-            ranking: ranking,
-          );
+          client.flatFeed(feedGroup).getEnrichedActivities<A, Ob, T, Or>(
+                limit: limit,
+                offset: offset,
+                session: session,
+                filter: filter,
+                flags: flags,
+                ranking: ranking,
+              );
 
   @override
   void initState() {

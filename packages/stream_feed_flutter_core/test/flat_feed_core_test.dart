@@ -19,6 +19,7 @@ void main() {
         // },
         time: DateTime.now(),
         actor: const User(
+          id: 'user-id',
           data: {
             'name': 'Rosemary',
             'handle': '@rosemary',
@@ -30,6 +31,7 @@ void main() {
       EnrichedActivity(
         time: DateTime.now(),
         actor: const User(
+          id: 'user-id',
           data: {
             'name': 'Rosemary',
             'handle': '@rosemary',

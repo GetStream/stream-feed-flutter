@@ -13,20 +13,19 @@ void main() async {
     final appId = env['appId'];
     final apiKey = env['apiKey'];
 
-    final client = StreamFeedClient.connect(
+    final server = StreamFeedServer(
       apiKey!,
-      secret: secret,
+      secret: secret!,
       appId: appId,
-      runner: Runner.server,
     );
 
     const userId = '1';
     const slug = 'reward';
-    final userFeed = client.flatFeed(slug, userId);
+    final rewardFeed = server.flatFeed(slug, userId: userId);
 
     RealtimeMessage? realTimeMessage;
     final subscription =
-        await userFeed.subscribe((message) => realTimeMessage = message);
+        await rewardFeed.subscribe((message) => realTimeMessage = message);
 
     var activity = Activity(
       actor: '$slug:$userId',
@@ -37,7 +36,7 @@ void main() async {
         'message': "@Jessica check out getstream.io it's so dang awesome.",
       },
     );
-    activity = await userFeed.addActivity(activity);
+    activity = await rewardFeed.addActivity(activity);
 
     await Future.delayed(const Duration(seconds: 3));
 

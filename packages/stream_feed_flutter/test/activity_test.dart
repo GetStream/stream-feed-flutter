@@ -29,6 +29,7 @@ void main() {
               activity: EnrichedActivity(
                 time: DateTime.now(),
                 actor: const User(
+                  id: 'user-id',
                   data: {
                     'name': 'Rosemary',
                     'handle': '@rosemary',
@@ -97,6 +98,7 @@ void main() {
                       ]).toJson(),
                 },
                 actor: const User(
+                  id: 'user-id',
                   data: {
                     'name': 'Nora Ferguson',
                     'profile_image':
@@ -148,18 +150,22 @@ void main() {
           home: Scaffold(
             body: ActivityWidget(
               activity: EnrichedActivity(
-                  time: DateTime.now(),
-                  actor: const User(data: {
+                time: DateTime.now(),
+                actor: const User(
+                  id: 'user-id',
+                  data: {
                     'name': 'Rosemary',
                     'handle': '@rosemary',
                     'subtitle': 'likes playing frisbee in the park',
                     'profile_image':
                         'https://randomuser.me/api/portraits/women/20.jpg',
-                  }),
-                  extraData: const {
-                    'image':
-                        'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
-                  }),
+                  },
+                ),
+                extraData: const {
+                  'image':
+                      'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+                },
+              ),
             ),
           ),
         ),
@@ -205,6 +211,7 @@ void main() {
         activity: EnrichedActivity(
           time: now,
           actor: const User(
+            id: 'user-id',
             data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
@@ -230,7 +237,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'EnrichedActivity<User, String, String, String>(User(user-id, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     test('Default ActivityContent debugFillProperties', () {
@@ -240,6 +247,7 @@ void main() {
         activity: EnrichedActivity(
           time: now,
           actor: const User(
+            id: 'user-id',
             data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
@@ -265,7 +273,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'EnrichedActivity<User, String, String, String>(User(user-id, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     test('Default ActivityFooter debugFillProperties', () {
@@ -275,6 +283,7 @@ void main() {
         activity: EnrichedActivity(
           time: now,
           actor: const User(
+            id: 'user-id',
             data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
@@ -300,7 +309,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'EnrichedActivity<User, String, String, String>(User(user-id, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     test('Default ActivityHeader debugFillProperties', () {
@@ -310,6 +319,7 @@ void main() {
         activity: EnrichedActivity(
           time: now,
           actor: const User(
+            id: 'user-id',
             data: {
               'name': 'Rosemary',
               'handle': '@rosemary',
@@ -335,7 +345,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'EnrichedActivity<User, String, String, String>(User(user-id, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
   });
 }

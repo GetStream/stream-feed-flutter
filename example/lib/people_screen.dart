@@ -63,10 +63,8 @@ class _PeopleScreenState extends State<PeopleScreen> {
               if (result != null) {
                 context.showSnackBar('Following User...');
 
-                final currentUserFeed =
-                    _client.flatFeed('timeline', widget.currentUser.id);
-                final selectedUserFeed = _client.flatFeed('user', user.id);
-                await currentUserFeed.follow(selectedUserFeed);
+                final currentUserFeed = _client.flatFeed('timeline');
+                await currentUserFeed.follow(FeedId('user', user.id));
 
                 context.showSnackBar('Followed User');
               }

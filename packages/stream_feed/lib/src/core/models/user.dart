@@ -14,7 +14,7 @@ part 'user.g.dart';
 class User extends Equatable {
   /// Builds a [User].
   const User({
-    this.id,
+    required this.id,
     this.data,
     this.createdAt,
     this.updatedAt,
@@ -29,7 +29,7 @@ class User extends Equatable {
   ///
   /// The value is restricted to alphanumeric characters, dashes and
   /// underscore symbols.
-  final String? id;
+  final String? id; //TODO(Gordon): non null?
 
   /// User additional data.
   final Map<String, Object?>? data;

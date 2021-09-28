@@ -52,7 +52,6 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
       this.filter,
       this.flags,
       this.ranking,
-      this.userId,
       this.onEmptyWidget =
           const EmptyStateWidget(message: 'No activities to display')})
       : super(key: key);
@@ -87,9 +86,6 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
   /// The ranking to use for the request
   final String? ranking;
 
-  /// The user id to use for the request
-  final String? userId;
-
   /// The feed group to use for the request
   final String feedGroup;
 
@@ -104,7 +100,6 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
         filter: filter,
         flags: flags,
         ranking: ranking,
-        userId: userId,
       ),
       builder: (context,
           AsyncSnapshot<List<EnrichedActivity<A, Ob, T, Or>>> snapshot) {
@@ -145,7 +140,6 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
     properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags,
         defaultValue: null));
     properties.add(StringProperty('ranking', ranking, defaultValue: null));
-    properties.add(StringProperty('userId', userId, defaultValue: null));
     properties.add(StringProperty('feedGroup', feedGroup));
   }
 }

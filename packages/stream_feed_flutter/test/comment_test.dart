@@ -30,12 +30,15 @@ void main() {
           },
           home: Scaffold(
             body: CommentItem(
-              user: const User(data: {
-                'name': 'Rosemary',
-                'subtitle': 'likes playing fresbee in the park',
-                'profile_image':
-                    'https://randomuser.me/api/portraits/women/20.jpg',
-              }),
+              user: const User(
+                id: 'user-id',
+                data: {
+                  'name': 'Rosemary',
+                  'subtitle': 'likes playing fresbee in the park',
+                  'profile_image':
+                      'https://randomuser.me/api/portraits/women/20.jpg',
+                },
+              ),
               reaction: Reaction(
                 createdAt: DateTime.now(),
                 kind: 'comment',
@@ -241,6 +244,7 @@ void main() {
       activity: EnrichedActivity(
         time: now,
         actor: const User(
+          id: 'user-id',
           data: {
             'name': 'Rosemary',
             'handle': '@rosemary',
@@ -263,7 +267,7 @@ void main() {
         .toList();
 
     expect(description[0]['description'],
-        'EnrichedActivity<dynamic, dynamic, dynamic, dynamic>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+        'EnrichedActivity<dynamic, dynamic, dynamic, dynamic>(User(user-id, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
   });
 
   test('Default CommentItem debugFillProperties', () {

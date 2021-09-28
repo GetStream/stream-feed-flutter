@@ -7,13 +7,12 @@ Future<void> main() async {
   final secret = env['secret'];
   final apiKey = env['apiKey'];
   final appId = env['appId'];
-  final clientWithSecret = StreamFeedClient.connect(
+  var server = StreamFeedServer(
     apiKey!,
-    secret: secret,
-    runner: Runner.server,
+    secret: secret!,
   );
 
-  final chris = clientWithSecret.flatFeed('user', 'chris');
+  final chris = server.flatFeed('user', userId: 'chris');
 
   // Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
   final addedPicture = await chris.addActivity(
@@ -27,8 +26,8 @@ Future<void> main() async {
   );
 
   // Create a following relationship between Jack's "timeline" feed and Chris' "user" feed:
-  final jack = clientWithSecret.flatFeed('timeline', 'jack');
-  await jack.follow(chris);
+  final jack = server.flatFeed('timeline', userId: 'jack');
+  await jack.follow(chris.feedId);
 
 // Read Jack's timeline and Chris' post appears in the feed:
   final results = await jack.getActivities(limit: 10);
@@ -37,7 +36,7 @@ Future<void> main() async {
   await chris.removeActivityByForeignId('picture:10');
 
   // Instantiate a feed using feed group 'user' and user id '1'
-  final user1 = clientWithSecret.flatFeed('user', '1');
+  final user1 = server.flatFeed('user', userId: '1');
 
 // Create an activity object
   var activity = Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
@@ -72,22 +71,22 @@ Future<void> main() async {
   // response = await userFeed.getActivities(limit: 5, ranking: "popularity");//must be enabled
 
 // Server-side
-  var client = StreamFeedClient.connect(
+  server = StreamFeedServer(
     apiKey,
     secret: secret,
     appId: appId,
-    runner: Runner.server,
-    options: StreamHttpClientOptions(location: Location.usEast),
+    options: const StreamHttpClientOptions(location: Location.usEast),
   );
 
-  final userToken = client.frontendToken('user.id');
+  final userToken = server.frontendToken('user.id');
 
 // Client-side
-  client = StreamFeedClient.connect(
+  var client = StreamFeedClient(
     apiKey,
-    token: userToken,
     appId: appId,
   );
+
+  await client.setCurrentUser(const User(id: 'user.id'), userToken);
 
   // Remove an activity by its id
   await user1.removeActivityById(addedPicture.id!);
@@ -98,12 +97,12 @@ Future<void> main() async {
   final now = DateTime.now();
 
   activity = Activity(
-      actor: "1",
-      verb: "like",
-      object: "3",
+      actor: '1',
+      verb: 'like',
+      object: '3',
       time: now,
-      foreignId: "like:3",
-      extraData: {
+      foreignId: 'like:3',
+      extraData: const {
         'popularity': 100,
       });
 
@@ -161,20 +160,19 @@ Future<void> main() async {
 
   //Following Feeds
   // timeline:timeline_feed_1 follows user:user_42:
-  final timelineFeed1 =
-      clientWithSecret.flatFeed('timeline', 'timeline_feed_1');
-  final user42feed = clientWithSecret.flatFeed('user', 'user_42');
-  await timelineFeed1.follow(user42feed);
+  final timelineFeed1 = server.flatFeed('timeline', userId: 'timeline_feed_1');
+  final user42feed = server.flatFeed('user', userId: 'user_42');
+  await timelineFeed1.follow(user42feed.feedId);
 
 // Follow feed without copying the activities:
-  await timelineFeed1.follow(user42feed, activityCopyLimit: 0);
+  await timelineFeed1.follow(user42feed.feedId, activityCopyLimit: 0);
 
   //Unfollowing feeds
   // Stop following feed user_42 - purging history:
-  await timelineFeed1.unfollow(user42feed);
+  await timelineFeed1.unfollow(user42feed.feedId);
 
 // Stop following feed user_42 but keep history of activities:
-  await timelineFeed1.unfollow(user42feed, keepHistory: true);
+  await timelineFeed1.unfollow(user42feed.feedId, keepHistory: true);
 
 //Reading Feed Followers
   // List followers
@@ -192,16 +190,16 @@ Future<void> main() async {
       filter: [FeedId.id('user:42'), FeedId.id('user:43')]);
 
   // get follower and following stats of the feed
-  await clientWithSecret.flatFeed('user', 'me').followStats();
+  await server.flatFeed('user', userId: 'me').followStats();
 
 // get follower and following stats of the feed but also filter with given slugs
 // count by how many timelines follow me
 // count by how many markets are followed
-  await clientWithSecret
-      .flatFeed('user', 'me')
+  await server
+      .flatFeed('user', userId: 'me')
       .followStats(followerSlugs: ['timeline'], followingSlugs: ['market']);
 //Realtime
-  final frontendToken = clientWithSecret.frontendToken('john-doe');
+  final frontendToken = server.frontendToken('john-doe');
 
 //Use Case: Mentions
   // Add the activity to Eric's feed and to Jessica's notification feed
@@ -218,35 +216,34 @@ Future<void> main() async {
   final tweet = await user1.addActivity(activity);
 
   // add a like reaction to the activity with id activityId
-  await clientWithSecret.reactions.add('like', tweet.id!, userId: 'userId');
+  await server.reactions.add('like', tweet.id!, userId: 'userId');
 
 // adds a comment reaction to the activity with id activityId
-  await clientWithSecret.reactions.add('comment', tweet.id!,
+  await server.reactions.add('comment', tweet.id!,
       data: {'text': 'awesome post!'}, userId: 'userId');
 
 // for server side auth, userId is required
-  final comment = await clientWithSecret.reactions.add('comment', tweet.id!,
+  final comment = await server.reactions.add('comment', tweet.id!,
       data: {'text': 'awesome post!'}, userId: 'userId');
 
 // first let's read current user's timeline feed and pick one activity
-  final activities =
-      await clientWithSecret.flatFeed('user', '1').getActivities();
+  final activities = await server.flatFeed('user', userId: '1').getActivities();
 
 // then let's add a like reaction to that activity
-  final otherLike = await clientWithSecret.reactions
+  final otherLike = await server.reactions
       .add('like', activities.first.id!, userId: 'userId');
 
 // retrieve all kind of reactions for an activity
-  await clientWithSecret.reactions.filter(
+  await server.reactions.filter(
       LookupAttribute.activityId, '5de5e4ba-add2-11eb-8529-0242ac130003');
 
 // retrieve first 10 likes for an activity
-  await clientWithSecret.reactions.filter(
+  await server.reactions.filter(
       LookupAttribute.activityId, '5de5e4ba-add2-11eb-8529-0242ac130003',
       kind: 'like', limit: 10);
 
 // retrieve the next 10 likes using the id_lt param
-  await clientWithSecret.reactions.filter(
+  await server.reactions.filter(
     LookupAttribute.activityId,
     '5de5e4ba-add2-11eb-8529-0242ac130003',
     kind: 'like',
@@ -257,26 +254,24 @@ Future<void> main() async {
   //     .update(comment.id!, data: {'text': 'love it!'});
 
 // read bob's timeline and include most recent reactions to all activities and their total count
-  await clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
+  await server.flatFeed('timeline', userId: 'bob').getEnrichedActivities(
         flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
       );
 
 // read bob's timeline and include most recent reactions to all activities and her own reactions
-  await clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
+  await server.flatFeed('timeline', userId: 'bob').getEnrichedActivities(
         flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
       );
 
 // adds a comment reaction to the activity and notifies Thierry's notification feed
-  await clientWithSecret.reactions.add(
-      'comment', '5de5e4ba-add2-11eb-8529-0242ac130003',
+  await server.reactions.add('comment', '5de5e4ba-add2-11eb-8529-0242ac130003',
       data: {'text': "@thierry great post!"},
       userId: 'userId',
       targetFeeds: [FeedId.id('notification:thierry')]);
 
   // adds a like to the previously created comment
-  await clientWithSecret.reactions
-      .addChild('like', comment.id!, userId: 'userId');
-  await clientWithSecret.reactions.delete(comment.id!);
+  await server.reactions.addChild('like', comment.id!, userId: 'userId');
+  await server.reactions.delete(comment.id!);
 //Adding Collections
   // await client.collections.add(
   //   'food',
@@ -285,15 +280,15 @@ Future<void> main() async {
   // );//will throw an error if entry-id already exists
 
 // if you don't have an id on your side, just use null as the ID and Stream will generate a unique ID
-  final entry = await clientWithSecret.collections
+  final entry = await server.collections
       .add('food', {'name': 'Cheese Burger', 'rating': '4 stars'});
-  await clientWithSecret.collections.get('food', entry.id!);
-  await clientWithSecret.collections.update(
+  await server.collections.get('food', entry.id!);
+  await server.collections.update(
       entry.copyWith(data: {'name': 'Cheese Burger', 'rating': '1 star'}));
-  await clientWithSecret.collections.delete('food', entry.id!);
+  await server.collections.delete('food', entry.id!);
 
   // first we add our object to the food collection
-  final cheeseBurger = await clientWithSecret.collections.add('food', {
+  final cheeseBurger = await server.collections.add('food', {
     'name': 'Cheese Burger',
     'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
   });
@@ -309,42 +304,45 @@ Future<void> main() async {
   await user1.getEnrichedActivities();
 
 // we can then update the object and Stream will propagate the change to all activities
-  await clientWithSecret.collections.update(cheeseBurger.copyWith(data: {
+  await server.collections.update(cheeseBurger.copyWith(data: {
     'name': 'Amazing Cheese Burger',
     'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
   }));
 
   // First create a collection entry with upsert api
-  await clientWithSecret.collections.upsert('food', [
+  await server.collections.upsert('food', [
     CollectionEntry(id: 'cheese-burger', data: {'name': 'Cheese Burger'}),
   ]);
 
 // Then create a user
-  await clientWithSecret.user('john-doe').getOrCreate({
+  await server.user('john-doe').getOrCreate({
     'name': 'John Doe',
     'occupation': 'Software Engineer',
     'gender': 'male',
   });
 
 // Since we know their IDs we can create references to both without reading from APIs
-  final cheeseBurgerRef =
-      clientWithSecret.collections.entry('food', 'cheese-burger').ref;
-  final johnDoeRef = clientWithSecret.user('john-doe').ref;
+  final cheeseBurgerRef = server.collections.entry('food', 'cheese-burger').ref;
+  final johnDoeRef = server.user('john-doe').ref;
 
 // And then add an activity with these references
-  await clientWithSecret.flatFeed('user', 'john').addActivity(Activity(
+  await server.flatFeed('user', userId: 'john').addActivity(Activity(
         actor: johnDoeRef,
         verb: 'eat',
         object: cheeseBurgerRef,
       ));
 
-  client = StreamFeedClient.connect(apiKey, token: frontendToken);
+  client = StreamFeedClient(apiKey);
 // ensure the user data is stored on Stream
-  await client.setUser({
-    'name': 'John Doe',
-    'occupation': 'Software Engineer',
-    'gender': 'male'
-  });
+  await client.setCurrentUser(
+    const User(id: 'john-doe'),
+    frontendToken,
+    extraData: {
+      'name': 'John Doe',
+      'occupation': 'Software Engineer',
+      'gender': 'male'
+    },
+  );
 
   // create a new user, if the user already exist an error is returned
   // await client.user('john-doe').create({

@@ -1,5 +1,6 @@
 import 'package:faye_dart/faye_dart.dart';
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 import 'package:stream_feed/src/client/aggregated_feed.dart';
 import 'package:stream_feed/src/client/batch_operations_client.dart';
 import 'package:stream_feed/src/client/collections_client.dart';
@@ -32,16 +33,181 @@ final _levelEmojiMapper = {
 };
 
 ///{@macro stream_feed_client}
-class StreamFeedClientImpl implements StreamFeedClient {
+class StreamFeedClientImpl extends StreamFeedBaseImpl
+    implements StreamFeedClient {
   /// Builds a [StreamFeedClientImpl].
+  ///
   ///{@macro stream_feed_client}
   StreamFeedClientImpl(
+    String apiKey, {
+    String? appId,
+    StreamHttpClientOptions? options,
+    StreamAPI? api,
+    required String fayeUrl,
+    Level logLevel = Level.WARNING,
+    LogHandlerFunction? logHandlerFunction,
+  }) : super(
+          apiKey,
+          appId: appId,
+          options: options,
+          runner: Runner.client,
+          api: api,
+          fayeUrl: fayeUrl,
+          logLevel: logLevel,
+          logHandlerFunction: logHandlerFunction,
+        );
+
+  late StreamUser _currentUser;
+
+  /// Determines if the [_currentUser] is connected by validating that
+  /// `StreamUser.createdAt` is not null.
+  bool get _userConnected => _currentUser.createdAt != null;
+
+  String _getUserId() {
+    _validateCurrentUserIsSet();
+    return currentUser!.id;
+  }
+
+  void _validateCurrentUserIsSet() {
+    if (!_userConnected || userToken == null) {
+      throw AssertionError(
+        'No user connected, call `setCurrentUser` before creating feeds',
+      );
+    }
+  }
+
+  @override
+  Future<StreamUser> setCurrentUser(
+    User user,
+    Token userToken, {
+    Map<String, Object?>? extraData,
+  }) async {
+    this.userToken = userToken;
+    return _currentUser = await this.user(user.id!).getOrCreate(extraData);
+  }
+
+  @override
+  StreamUser? get currentUser => _currentUser;
+
+  @override
+  FlatFeed flatFeed(
+    String slug,
+  ) {
+    return flatFeedBase(slug, userId: _getUserId());
+  }
+
+  @override
+  AggregatedFeed aggregatedFeed(
+    String slug,
+  ) {
+    return aggregatedFeedBase(slug, userId: _getUserId());
+  }
+
+  @override
+  NotificationFeed notificationFeed(String slug, {String? userId}) {
+    return notificationFeedBase(slug, userId: _getUserId());
+  }
+
+  @override
+  Future<User> createUser(String id, Map<String, Object?> data,
+      {bool getOrCreate = false}) {
+    _logger.warning('We advice using `createUser` only server-side');
+    _validateCurrentUserIsSet();
+    return super.createUser(id, data, getOrCreate: getOrCreate);
+  }
+
+  @override
+  Future<User> getUser(String id, {bool withFollowCounts = false}) {
+    _logger.warning('We advice using `getUser` only server-side');
+    _validateCurrentUserIsSet();
+    return super.getUser(id, withFollowCounts: withFollowCounts);
+  }
+
+  @override
+  Future<User> updateUser(String id, Map<String, Object?> data) {
+    _logger.warning('We advice using `updateUser` only server-side');
+    _validateCurrentUserIsSet();
+    return super.updateUser(id, data);
+  }
+
+  @override
+  Future<void> deleteUser(String id) {
+    _logger.warning('We advice using `deleteUser` only server-side');
+    _validateCurrentUserIsSet();
+    return super.deleteUser(id);
+  }
+}
+
+/// {@macro stream_feed_server}
+class StreamFeedServerImpl extends StreamFeedBaseImpl
+    implements StreamFeedServer {
+  /// Builds a [StreamFeedServerImpl].
+  ///
+  /// {@macro stream_feed_server}
+  StreamFeedServerImpl(
+    String apiKey, {
+    required String secret,
+    String? appId,
+    StreamHttpClientOptions? options,
+    StreamAPI? api,
+    required String fayeUrl,
+    Level logLevel = Level.WARNING,
+    LogHandlerFunction? logHandlerFunction,
+  }) : super(
+          apiKey,
+          secret: secret,
+          appId: appId,
+          options: options,
+          runner: Runner.server,
+          api: api,
+          fayeUrl: fayeUrl,
+          logLevel: logLevel,
+          logHandlerFunction: logHandlerFunction,
+        );
+
+  @override
+  BatchOperationsClient get batch =>
+      BatchOperationsClient(_api.batch, secret: secret!);
+
+  @override
+  Token frontendToken(
+    String userId, {
+    DateTime? expiresAt,
+  }) {
+    return TokenHelper.buildFrontendToken(
+      secret!,
+      userId,
+      expiresAt: expiresAt,
+    );
+  }
+
+  @override
+  FlatFeed flatFeed(String slug, {required String userId}) {
+    return flatFeedBase(slug, userId: userId);
+  }
+
+  @override
+  AggregatedFeed aggregatedFeed(String slug, {required String userId}) {
+    return aggregatedFeedBase(slug, userId: userId);
+  }
+
+  @override
+  NotificationFeed notificationFeed(String slug, {required String userId}) {
+    return notificationFeedBase(slug, userId: userId);
+  }
+}
+
+///{@macro stream_feed_base}
+class StreamFeedBaseImpl implements StreamFeedBase {
+  /// Builds a [StreamFeedClientImpl].
+  ///
+  ///{@macro stream_feed_base}
+  StreamFeedBaseImpl(
     this.apiKey, {
     this.secret,
-    this.userToken,
     this.appId,
-    this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
-    this.runner = Runner.client,
+    required this.fayeUrl,
+    required this.runner,
     Level logLevel = Level.WARNING,
     LogHandlerFunction? logHandlerFunction,
     StreamAPI? api,
@@ -50,40 +216,22 @@ class StreamFeedClientImpl implements StreamFeedClient {
     assert(_ensureCredentials(), '');
     _logger = Logger.detached('📜')..level = logLevel;
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
-    _logger.info('instantiating new client');
+    _logger.info('instantiating new client: $runner');
 
     _api = api ?? StreamApiImpl(apiKey, logger: _logger, options: options);
-
-    if (userToken != null) {
-      final jwtBody = jwtDecode(userToken!);
-      final userId = jwtBody.claims.getTyped('user_id');
-      assert(
-        userId != null,
-        'Invalid `userToken`, It should contain `user_id`',
-      );
-      _currentUser = user(userId);
-    }
   }
 
   bool _ensureCredentials() {
     assert(() {
-      if (secret == null && userToken == null) {
-        throw AssertionError('At least a secret or userToken must be provided');
-      }
       switch (runner) {
         case Runner.server:
           if (secret == null) {
             throw AssertionError(
-              '`secret` must be provided while running on server-side',
+              '`secret` must be provided while running server-side',
             );
           }
           break;
         case Runner.client:
-          if (userToken == null) {
-            throw AssertionError(
-              '`userToken` must be provided while running on client-side',
-            );
-          }
           if (secret != null) {
             throw AssertionError(
               'You are publicly sharing your App Secret. '
@@ -98,12 +246,35 @@ class StreamFeedClientImpl implements StreamFeedClient {
     return true;
   }
 
+  /// Stream Feed App API Key.
+  ///
+  /// A unique identifier for each app. Can be retrieved from the Stream
+  /// Dashboard.
   final String apiKey;
+
+  /// Stream Feed App ID.
+  ///
+  /// Can be retrieved from the Stream Dashboard.
   final String? appId;
-  final Token? userToken;
+
+  /// Stream Feed API User Auth Token. Used to perform operations on behalf
+  /// of a user.
+  ///
+  /// Tokens can be generated using any Stream server-side SDK.
+  Token? userToken;
+
+  /// Stream Feed API secret. Used to perform sensitive operations.
+  ///
+  /// Can be retrieved from the Stream Dashboard.
   final String? secret;
+
+  /// {@macro faye_url}
   final String fayeUrl;
+
+  /// {@macro runner}
+  @override
   final Runner runner;
+
   late final StreamAPI _api;
   late final Logger _logger;
 
@@ -115,10 +286,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
     );
     if (record.stackTrace != null) print(record.stackTrace);
   }
-
-  StreamUser? _currentUser;
-
-  bool get _userConnected => _currentUser?.createdAt != null;
 
   late final _authExtension = <String, MessageHandler>{
     'outgoing': (message) {
@@ -139,28 +306,33 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   late final _subscriptions = <String, _FeedSubscription>{};
 
-  @override
-  StreamUser? get currentUser => _currentUser;
-
-  @override
-  Future<StreamUser> setUser(Map<String, Object> data) async {
-    assert(
-      runner == Runner.client,
-      'This method can only be used client-side using a user token',
+  Future<Subscription> _feedSubscriber(
+    Token token,
+    FeedId feedId,
+    MessageDataCallback callback,
+  ) async {
+    checkNotNull(
+      appId,
+      'Missing app id, which is needed in order to subscribe to a feed',
     );
-    final body = <String, Object>{...data}..remove('id');
-    return _currentUser!.getOrCreate(body);
+    final claim = feedId.claim;
+    final notificationChannel = 'site-$appId-feed-$claim';
+    _subscriptions['/$notificationChannel'] = _FeedSubscription(
+      token: token.toString(),
+      userId: notificationChannel,
+    );
+    final subscription = await _faye.subscribe(
+      '/$notificationChannel',
+      callback: callback,
+    );
+    _subscriptions.update(
+      '/$notificationChannel',
+      (it) => it.copyWith(fayeSubscription: subscription),
+    );
+    return subscription;
   }
 
-  @override
-  BatchOperationsClient get batch {
-    assert(
-      runner == Runner.server,
-      "You can't use batch operations client side",
-    );
-    return BatchOperationsClient(_api.batch, secret: secret!);
-  }
-
+  // TODO(Gordon): Should these be cached once created.
   @override
   CollectionsClient get collections =>
       CollectionsClient(_api.collections, userToken: userToken, secret: secret);
@@ -186,48 +358,14 @@ class StreamFeedClientImpl implements StreamFeedClient {
   ImageStorageClient get images =>
       ImageStorageClient(_api.images, userToken: userToken, secret: secret);
 
-  Future<Subscription> _feedSubscriber(
-    Token token,
-    FeedId feedId,
-    MessageDataCallback callback,
-  ) async {
-    checkNotNull(
-      appId,
-      'Missing app id, which is needed in order to subscribe feed',
-    );
-    final claim = feedId.claim;
-    final notificationChannel = 'site-$appId-feed-$claim';
-    _subscriptions['/$notificationChannel'] = _FeedSubscription(
-      token: token.toString(),
-      userId: notificationChannel,
-    );
-    final subscription = await _faye.subscribe(
-      '/$notificationChannel',
-      callback: callback,
-    );
-    _subscriptions.update(
-      '/$notificationChannel',
-      (it) => it.copyWith(fayeSubscription: subscription),
-    );
-    return subscription;
-  }
-
-  String _getUserId([String? userId]) {
-    assert(
-      _userConnected || userId != null,
-      'Provide a `userId` if you are using it server-side '
-      'or call `setUser` before creating feeds',
-    );
-    return userId ??= currentUser!.id;
-  }
-
+  @protected
   @override
-  AggregatedFeed aggregatedFeed(
-    String slug, [
-    String? userId,
+  AggregatedFeed aggregatedFeedBase(
+    String slug, {
+    required String userId,
     Token? userToken,
-  ]) {
-    final id = FeedId(slug, _getUserId(userId));
+  }) {
+    final id = FeedId(slug, userId);
     return AggregatedFeed(
       id,
       _api.feed,
@@ -237,13 +375,14 @@ class StreamFeedClientImpl implements StreamFeedClient {
     );
   }
 
+  @protected
   @override
-  FlatFeed flatFeed(
-    String slug, [
+  FlatFeed flatFeedBase(
+    String slug, {
     String? userId,
     Token? userToken,
-  ]) {
-    final id = FeedId(slug, _getUserId(userId));
+  }) {
+    final id = FeedId(slug, userId!);
     return FlatFeed(
       id,
       _api.feed,
@@ -253,13 +392,14 @@ class StreamFeedClientImpl implements StreamFeedClient {
     );
   }
 
+  @protected
   @override
-  NotificationFeed notificationFeed(
-    String slug, [
-    String? userId,
+  NotificationFeed notificationFeedBase(
+    String slug, {
+    required String userId,
     Token? userToken,
-  ]) {
-    final id = FeedId(slug, _getUserId(userId));
+  }) {
+    final id = FeedId(slug, userId);
     return NotificationFeed(
       id,
       _api.feed,
@@ -267,19 +407,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
       secret: secret,
       subscriber: _feedSubscriber,
     );
-  }
-
-  @override
-  Token frontendToken(
-    String userId, {
-    DateTime? expiresAt,
-  }) {
-    assert(
-      runner == Runner.server,
-      "You can't use the `frontendToken` method client side",
-    );
-    return TokenHelper.buildFrontendToken(secret!, userId,
-        expiresAt: expiresAt);
   }
 
   @override
@@ -294,9 +421,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
     Map<String, Object?> data, {
     bool getOrCreate = false,
   }) {
-    if (runner == Runner.client) {
-      _logger.warning('We advice using `client.createUser` only server-side');
-    }
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
     return _api.users.create(token, id, data, getOrCreate: getOrCreate);
@@ -304,9 +428,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   Future<User> getUser(String id, {bool withFollowCounts = false}) {
-    if (runner == Runner.client) {
-      _logger.warning('We advice using `client.getUser` only server-side');
-    }
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
     return _api.users.get(token, id, withFollowCounts: withFollowCounts);
@@ -314,9 +435,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   Future<User> updateUser(String id, Map<String, Object?> data) {
-    if (runner == Runner.client) {
-      _logger.warning('We advice using `client.updateUser` only server-side');
-    }
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.write);
     return _api.users.update(token, id, data);
@@ -324,9 +442,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   Future<void> deleteUser(String id) {
-    if (runner == Runner.client) {
-      _logger.warning('We advice using `client.deleteUser` only server-side');
-    }
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
     return _api.users.delete(token, id);

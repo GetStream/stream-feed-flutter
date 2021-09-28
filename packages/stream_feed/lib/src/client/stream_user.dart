@@ -84,7 +84,7 @@ class StreamUser with EquatableMixin {
   /// ```
   /// API docs: [adding-users](https://getstream.io/activity-feeds/docs/flutter-dart/users_introduction/?language=dart#adding-users)
   Future<StreamUser> create(
-    Map<String, Object?> data, {
+    Map<String, Object?>? data, {
     bool getOrCreate = false,
   }) async {
     final token =
@@ -95,7 +95,7 @@ class StreamUser with EquatableMixin {
   }
 
   /// Get or Create a new user in stream
-  Future<StreamUser> getOrCreate(Map<String, Object?> data) =>
+  Future<StreamUser> getOrCreate(Map<String, Object?>? data) =>
       create(data, getOrCreate: true);
 
   /// Delete the user

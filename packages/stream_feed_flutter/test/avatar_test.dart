@@ -15,13 +15,15 @@ void main() {
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: Avatar(
-                  user: User(
-                data: {
-                  'name': 'Sloan Humfrey',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/women/1.jpg',
-                },
-              )),
+                user: User(
+                  id: 'user-id',
+                  data: {
+                    'name': 'Sloan Humfrey',
+                    'profile_image':
+                        'https://randomuser.me/api/portraits/women/1.jpg',
+                  },
+                ),
+              ),
             ),
           ),
         );

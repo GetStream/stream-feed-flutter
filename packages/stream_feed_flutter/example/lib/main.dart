@@ -9,51 +9,59 @@ Future<void> main() async {
   final apiKey = env['apiKey'];
   final appId = env['appId'];
   final frontendToken = env['frontendToken'];
-  final clientForScret = StreamFeedClient.connect(
+  final server = StreamFeedServer(
     apiKey!,
-    secret: secret,
-    runner: Runner.server,
+    secret: secret!,
+    appId: appId,
   );
-  final client = StreamFeedClient.connect(
-    apiKey,
-    token: clientForScret.frontendToken('sachaid'), //Token(frontendToken!)
-  );
-  await client.setUser({
-    'name': 'Rosemary',
-    'handle': '@rosemary',
-    'subtitle': 'likes playing fresbee in the park',
-    'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-  });
+  final client = StreamFeedClient(apiKey);
+
+  await client.setCurrentUser(
+      const User(id: 'sachaid'), server.frontendToken('sachaid'),
+      extraData: {
+        'name': 'Rosemary',
+        'handle': '@rosemary',
+        'subtitle': 'likes playing fresbee in the park',
+        'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+      });
 
   runApp(MyApp(client: client));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key, required this.client}) : super(key: key);
   final StreamFeedClient client;
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
-    final _navigatorKey = GlobalKey<NavigatorState>();
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Feeds Demo',
       navigatorKey: _navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(
-          title: 'Flutter Demo Home Page',
-          client: client,
-          navigatorKey: _navigatorKey),
+        client: widget.client,
+        navigatorKey: _navigatorKey,
+      ),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage(
-      {Key? key, this.title, required this.client, required this.navigatorKey})
-      : super(key: key);
+  const MyHomePage({
+    Key? key,
+    required this.client,
+    required this.navigatorKey,
+  }) : super(key: key);
   final StreamFeedClient client;
-  final String? title;
   final GlobalKey<NavigatorState> navigatorKey;
 
   @override
@@ -62,18 +70,30 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("FlatFeed"),
       ),
-      body: StreamFeedCore(
-        client: client,
-        navigatorKey: navigatorKey,
-        child: FlatActivityListPage(
-          flags: EnrichmentFlags()
-              .withReactionCounts()
-              .withOwnChildren()
-              .withOwnReactions(),
-          feedGroup: 'user',
-          onHashtagTap: (hashtag) => print('hashtag pressed: $hashtag'),
-          onUserTap: (user) => print('hashtag pressed: ${user!.toJson()}'),
-          onMentionTap: (mention) => print('hashtag pressed: $mention'),
+      body: StreamFeedTheme(
+        data: StreamFeedThemeData(),
+        child: StreamFeedCore(
+          client: client,
+          navigatorKey: navigatorKey,
+          child: FlatActivityListPage(
+            flags: EnrichmentFlags()
+                .withReactionCounts()
+                .withOwnChildren()
+                .withOwnReactions(),
+            feedGroup: 'FlatFeed',
+            onHashtagTap: (hashtag) => print('hashtag pressed: $hashtag'),
+            onUserTap: (user) => print('hashtag pressed: ${user!.toJson()}'),
+            onMentionTap: (mention) => print('hashtag pressed: $mention'),
+            onEmptyWidget: ElevatedButton(
+              onPressed: () {
+                client.flatFeed('FlatFeed').addActivity(Activity(
+                    actor: client.currentUser!.ref,
+                    verb: 'verb',
+                    object: 'object'));
+              },
+              child: const Text('Add activity'),
+            ),
+          ),
         ),
       ),
     );
