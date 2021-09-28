@@ -162,6 +162,7 @@ class UserBar extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<String>('activityId', activityId));
     properties.add(DiagnosticsProperty<bool>('showSubtitle', showSubtitle));
     properties.add(StringProperty('kind', kind));
     properties.add(DiagnosticsProperty<DateTime>('timestamp', timestamp));
