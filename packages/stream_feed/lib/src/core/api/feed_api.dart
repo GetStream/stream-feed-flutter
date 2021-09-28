@@ -52,6 +52,7 @@ class FeedAPI {
   }
 
   /// Follows the given target feed
+  // TODO(Gordon): change to named parameters.
   Future<Response> follow(
     Token token,
     Token targetToken,

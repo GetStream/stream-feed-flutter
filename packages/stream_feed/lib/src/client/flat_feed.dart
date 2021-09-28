@@ -11,7 +11,7 @@ import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
-/// {@template flatFeed}
+/// {@template flat_feed}
 /// Flat is the default feed type - and the only feed type that you can follow.
 ///
 /// It's not possible to follow either aggregated or notification feeds.

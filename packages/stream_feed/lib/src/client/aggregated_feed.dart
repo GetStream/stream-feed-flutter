@@ -16,11 +16,13 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// Aggregated feeds are helpful for grouping activities.
 ///
 /// Here are some examples of what you can achieve using aggregated feeds:
-/// - 'Eric followed 10 people'
-/// - 'Julie and 14 others liked your photo'
+/// - Eric followed 10 people
+/// - Julie and 14 others liked your photo
 /// {@endtemplate}
 class AggregatedFeed extends Feed {
   /// Initialize a [AggregatedFeed] object
+  ///
+  /// {@macro aggregatedFeed}
   const AggregatedFeed(
     FeedId feedId,
     FeedAPI feed, {
@@ -35,7 +37,7 @@ class AggregatedFeed extends Feed {
           subscriber: subscriber,
         );
 
-  /// Retrieves one activity from a feed
+  /// Retrieves one activity from a feed.
   Future<Group<Activity>> getActivityDetail(String activityId) async {
     final activities = await getActivities(
         limit: 1,
@@ -45,7 +47,7 @@ class AggregatedFeed extends Feed {
     return activities.first;
   }
 
-  /// Retrieve activities of type Aggregated feed
+  /// Retrieve activities of type Aggregated feed.
   ///
   /// {@macro filter}
   Future<List<Group<Activity>>> getActivities({
@@ -72,7 +74,7 @@ class AggregatedFeed extends Feed {
     return data;
   }
 
-  /// Retrieve activities with reaction enrichment
+  /// Retrieve activities with reaction enrichment.
   ///
   /// {@macro filter}
   Future<List<Group<EnrichedActivity<A, Ob, T, Or>>>>

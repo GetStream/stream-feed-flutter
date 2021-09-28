@@ -35,7 +35,9 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// You can create new Notification Feed Groups in the dashboard.
 /// {@endtemplate}
 class NotificationFeed extends AggregatedFeed {
-  ///Initialize a [NotificationFeed] object
+  /// Initialize a [NotificationFeed] object.
+  ///
+  /// {@macro notificationFeed}
   const NotificationFeed(
     FeedId feedId,
     FeedAPI feed, {

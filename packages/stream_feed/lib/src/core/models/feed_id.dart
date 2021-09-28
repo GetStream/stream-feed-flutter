@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 /// A feed identifier based on [slug] and [userId].
+@immutable
 class FeedId extends Equatable {
   /// Builds a [FeedId]
   FeedId(this.slug, this.userId)
