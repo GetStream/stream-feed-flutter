@@ -61,14 +61,17 @@ void main() {
     });
 
     testWidgets('Right', (tester) async {
-      await tester.pumpWidget(Material(
+      await tester.pumpWidget(
+        Material(
           child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: RightActions(
-          feedGroup: 'user',
-          textEditingController: TextEditingController(),
+            textDirection: TextDirection.ltr,
+            child: RightActions(
+              feedGroup: 'user',
+              textEditingController: TextEditingController(),
+            ),
+          ),
         ),
-      )));
+      );
 
       final postCommentButton = find.byType(PostCommentButton);
       expect(postCommentButton, findsOneWidget);
@@ -138,6 +141,7 @@ void main() {
                 body: AlertDialogComment(
                   feedGroup: 'user',
                   activity: EnrichedActivity(
+                    id: '1',
                     time: DateTime.now(),
                     actor: const User(data: {
                       'name': 'Rosemary',
@@ -173,6 +177,7 @@ void main() {
                 home: Scaffold(
                   body: CommentView(
                     activity: EnrichedActivity(
+                      id: '1',
                       time: DateTime.now(),
                       actor: const User(data: {
                         'name': 'Rosemary',
