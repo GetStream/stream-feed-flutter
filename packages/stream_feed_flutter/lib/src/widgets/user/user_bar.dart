@@ -127,10 +127,31 @@ class UserBar extends StatelessWidget {
           ],
           onSelected: (value) {
             if (value == 'delete') {
-              StreamFeedCore.of(context)
-                  .client
-                  .flatFeed('timeline')
-                  .removeActivityById(activityId);
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: const Text('Delete'),
+                  content:
+                      const Text('Do you really want to delete this activity?'),
+                  actions: [
+                    TextButton(
+                      child: const Text('Yes'),
+                      onPressed: () {
+                        StreamFeedCore.of(context)
+                            .client
+                            .flatFeed('timeline')
+                            .removeActivityById(activityId);
+                      },
+                    ),
+                    TextButton(
+                      child: const Text('No'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              );
             }
           },
         ),
