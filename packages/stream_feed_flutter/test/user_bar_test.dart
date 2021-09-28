@@ -21,6 +21,8 @@ void main() {
           },
           home: Scaffold(
             body: UserBar(
+              showReactedBy: true,
+              activityId: '1',
               kind: 'like',
               timestamp: DateTime.now(),
               user: const User(
@@ -61,6 +63,7 @@ void main() {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
     final userBar = UserBar(
+      activityId: '1',
       kind: 'like',
       timestamp: now,
       user: const User(
@@ -81,7 +84,7 @@ void main() {
         .map((node) => node.toJsonMap(const DiagnosticsSerializationDelegate()))
         .toList();
 
-    expect(description[0]['description'], 'true');
+    expect(description[0]['description'], '1');
   });
 
   testWidgets('Default ReactedBy debugFillProperties', (tester) async {
