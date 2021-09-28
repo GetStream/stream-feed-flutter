@@ -8,9 +8,8 @@ import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
-import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/og/card.dart';
-import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
+import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 void main() {
@@ -27,6 +26,7 @@ void main() {
           home: Scaffold(
             body: ActivityHeader(
               activity: EnrichedActivity(
+                id: '1',
                 time: DateTime.now(),
                 actor: const User(
                   data: {
@@ -43,23 +43,8 @@ void main() {
         ),
       );
 
-      final avatar = find.byType(Avatar);
-      expect(avatar, findsOneWidget);
-
-      final username = find.text('Rosemary').first;
-      expect(username, findsOneWidget);
-
-      final timeago = find.text('a moment ago').first;
-      expect(timeago, findsOneWidget);
-
-      final icon = find.byType(StreamSvgIcon);
-      final activeIcon = tester.widget<StreamSvgIcon>(icon);
-      expect(activeIcon.assetName, StreamSvgIcon.loveActive().assetName);
-
-      final by = find.text('by ').first;
-      expect(by, findsOneWidget);
-      final handle = find.text('@rosemary').first;
-      expect(handle, findsOneWidget);
+      final userBar = find.byType(UserBar);
+      expect(userBar, findsOneWidget);
     });
   });
 
@@ -83,6 +68,7 @@ void main() {
           home: Scaffold(
             body: ActivityContent(
               activity: EnrichedActivity(
+                id: '1',
                 extraData: {
                   'attachments': const OpenGraphData(
                       title: title,
@@ -148,18 +134,20 @@ void main() {
           home: Scaffold(
             body: ActivityWidget(
               activity: EnrichedActivity(
-                  time: DateTime.now(),
-                  actor: const User(data: {
-                    'name': 'Rosemary',
-                    'handle': '@rosemary',
-                    'subtitle': 'likes playing frisbee in the park',
-                    'profile_image':
-                        'https://randomuser.me/api/portraits/women/20.jpg',
-                  }),
-                  extraData: const {
-                    'image':
-                        'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
-                  }),
+                id: '1',
+                time: DateTime.now(),
+                actor: const User(data: {
+                  'name': 'Rosemary',
+                  'handle': '@rosemary',
+                  'subtitle': 'likes playing frisbee in the park',
+                  'profile_image':
+                      'https://randomuser.me/api/portraits/women/20.jpg',
+                }),
+                extraData: const {
+                  'image':
+                      'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
+                },
+              ),
             ),
           ),
         ),
@@ -178,16 +166,20 @@ void main() {
           child: Padding(
             padding: EdgeInsets.all(8),
             child: ActivityFooter(
-              activity: EnrichedActivity(reactionCounts: {
-                'like': 139,
-                'repost': 23,
-              }, ownReactions: {
-                'like': [
-                  Reaction(
-                    kind: 'like',
-                  )
-                ]
-              }),
+              activity: EnrichedActivity(
+                id: '1',
+                reactionCounts: {
+                  'like': 139,
+                  'repost': 23,
+                },
+                ownReactions: {
+                  'like': [
+                    Reaction(
+                      kind: 'like',
+                    )
+                  ]
+                },
+              ),
             ),
           ),
         ),
@@ -203,6 +195,7 @@ void main() {
       final now = DateTime.now();
       final activityWidget = ActivityWidget(
         activity: EnrichedActivity(
+          id: '1',
           time: now,
           actor: const User(
             data: {
@@ -230,7 +223,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     test('Default ActivityContent debugFillProperties', () {
@@ -238,6 +231,7 @@ void main() {
       final now = DateTime.now();
       final activityContent = ActivityContent(
         activity: EnrichedActivity(
+          id: '1',
           time: now,
           actor: const User(
             data: {
@@ -265,7 +259,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     test('Default ActivityFooter debugFillProperties', () {
@@ -273,6 +267,7 @@ void main() {
       final now = DateTime.now();
       final activityFooter = ActivityFooter(
         activity: EnrichedActivity(
+          id: '1',
           time: now,
           actor: const User(
             data: {
@@ -300,7 +295,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     test('Default ActivityHeader debugFillProperties', () {
@@ -308,6 +303,7 @@ void main() {
       final now = DateTime.now();
       final activityHeader = ActivityHeader(
         activity: EnrichedActivity(
+          id: '1',
           time: now,
           actor: const User(
             data: {
@@ -335,7 +331,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
   });
 }
