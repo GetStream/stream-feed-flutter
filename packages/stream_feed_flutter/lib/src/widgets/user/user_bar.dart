@@ -16,6 +16,7 @@ class UserBar extends StatelessWidget {
   /// Builds a [UserBar].
   const UserBar({
     Key? key,
+    required this.activityId,
     required this.timestamp,
     required this.kind,
     required this.user,
@@ -28,6 +29,9 @@ class UserBar extends StatelessWidget {
     this.showSubtitle = true,
     this.showReactedBy = false,
   }) : super(key: key);
+
+  /// The ID of the activity deing displayed.
+  final String activityId;
 
   /// The User whose bar is being displayed.
   final User user;
@@ -109,6 +113,26 @@ class UserBar extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8),
           child: HumanReadableTimestamp(timestamp: timestamp),
+        ),
+        PopupMenuButton(
+          icon: const Icon(
+            Icons.more_vert,
+            size: 18,
+          ),
+          itemBuilder: (_) => [
+            const PopupMenuItem(
+              value: 'delete',
+              child: Text('Delete'),
+            ),
+          ],
+          onSelected: (value) {
+            if (value == 'delete') {
+              StreamFeedCore.of(context)
+                  .client
+                  .flatFeed('timeline')
+                  .removeActivityById(activityId);
+            }
+          },
         ),
       ],
     );
