@@ -5,9 +5,6 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 Future<void> main() async {
   final env = Platform.environment;
-  // const secret =
-  //     'qfv6c8a3xw3f8nhv9s64zcfwvg8drkwefq85eeca9w6nhm9u4gkj53ayncnd4ees';
-  // const apiKey = 'xrqbqb3dbpyb';
   final secret = env['secret'];
   final apiKey = env['apiKey'];
   final appId = env['appId'];
