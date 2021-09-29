@@ -1,5 +1,7 @@
 // ignore_for_file: cascade_invocations
 
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -143,13 +145,15 @@ void main() {
                   activity: EnrichedActivity(
                     id: '1',
                     time: DateTime.now(),
-                    actor: const User(data: {
-                      'name': 'Rosemary',
-                      'handle': '@rosemary',
-                      'subtitle': 'likes playing fresbee in the park',
-                      'profile_image':
-                          'https://randomuser.me/api/portraits/women/20.jpg',
-                    }),
+                    actor: const User(
+                      data: {
+                        'name': 'Rosemary',
+                        'handle': '@rosemary',
+                        'subtitle': 'likes playing fresbee in the park',
+                        'profile_image':
+                            'https://randomuser.me/api/portraits/women/20.jpg',
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -329,6 +333,62 @@ void main() {
           .toList();
 
       expect(description[0]['description'], 'null');
+    });
+  });
+
+  group('Delete Activity Dialog', () {
+    testWidgets('Open the dialog', (tester) async {
+      await mockNetworkImages(() async {
+        //final targetKey = UniqueKey();
+        await tester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) {
+              return StreamFeedTheme(
+                data: StreamFeedThemeData.light(),
+                child: child!,
+              );
+            },
+            home: Scaffold(
+              body: ActivityHeader(
+                activity: EnrichedActivity(
+                  id: '1',
+                  time: DateTime.now(),
+                  actor: const User(
+                    data: {
+                      'name': 'Rosemary',
+                      'handle': '@rosemary',
+                      'subtitle': 'likes playing fresbee in the park',
+                      'profile_image':
+                          'https://randomuser.me/api/portraits/women/20.jpg',
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        final popupMenuButton = find.byIcon(Icons.more_vert);
+        expect(popupMenuButton, findsOneWidget);
+
+        await tester.tap(popupMenuButton);
+        await tester.pumpAndSettle();
+
+        final deleteButton = find.text('Delete');
+        expect(deleteButton, findsOneWidget);
+
+        await tester.tap(deleteButton);
+        await tester.pumpAndSettle();
+
+        final deleteDialog = find.byType(AlertDialog);
+        expect(deleteDialog, findsOneWidget);
+
+        final yesButton = find.text('Yes');
+        expect(yesButton, findsOneWidget);
+
+        final noButton = find.text('No');
+        expect(noButton, findsOneWidget);
+      });
     });
   });
 }
