@@ -161,7 +161,7 @@ void main() {
         Colors.white);
   });
 
-  testWidgets('GalleryHeaderTheme', (tester) async {
+  testWidgets('GalleryHeaderTheme updateShouldNotify', (tester) async {
     TestGalleryHeaderTheme? result;
     final builder = Builder(
       builder: (context) {
