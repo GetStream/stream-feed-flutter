@@ -337,9 +337,9 @@ void main() {
   });
 
   group('Delete Activity Dialog', () {
-    testWidgets('Open the dialog', (tester) async {
+    testWidgets('Open the dialog and make sure all components are there',
+        (tester) async {
       await mockNetworkImages(() async {
-        //final targetKey = UniqueKey();
         await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) {
