@@ -72,6 +72,76 @@ void main() {
       ],
     );
   });
+
+  testWidgets('default ChildReactionTheme debugFillProperties', (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const childReactionTheme = ChildReactionTheme(
+      data: ChildReactionThemeData(),
+      child: SizedBox(),
+    );
+    // ignore: cascade_invocations
+    childReactionTheme.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toString())
+        .toList();
+
+    expect(
+      description,
+      [
+        'data: ChildReactionThemeData#00000(hoverColor: null, toggleColor: null)',
+      ],
+    );
+  });
+
+  testWidgets('ChildReactionTheme wrap', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) {
+            final navigator = Navigator.of(context);
+
+            final themes =
+                InheritedTheme.capture(from: context, to: navigator.context);
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext _) {
+                      // Wrap the actual child of the route in the previously
+                      // captured themes.
+                      return themes.wrap(
+                        ChildReactionTheme(
+                          data: const ChildReactionThemeData(),
+                          child: Container(
+                            alignment: Alignment.center,
+                            color: Colors.white,
+                            child: const Text('Hello World'),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+              child: const Center(child: Text('Tap Here')),
+            );
+          },
+        ),
+      ),
+    );
+
+    final tapButton = find.text('Tap Here');
+    expect(tapButton, findsOneWidget);
+
+    await tester.tap(tapButton);
+    await tester.pumpAndSettle();
+
+    expect((tester.firstWidget(find.byType(Container)) as Container).color,
+        Colors.white);
+  });
 }
 
 const _childReactionThemeDefault = ChildReactionThemeData(
