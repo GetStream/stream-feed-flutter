@@ -115,10 +115,18 @@ void main() {
                       return themes.wrap(
                         ChildReactionTheme(
                           data: const ChildReactionThemeData(),
-                          child: Container(
-                            alignment: Alignment.center,
-                            color: Colors.white,
-                            child: const Text('Hello World'),
+                          child: Builder(
+                            builder: (context) {
+                              final theme = ChildReactionTheme.of(context);
+                              return InheritedTheme.captureAll(
+                                context,
+                                Container(
+                                  alignment: Alignment.center,
+                                  color: Colors.white,
+                                  child: const Text('Hello World'),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       );
@@ -142,6 +150,62 @@ void main() {
     expect((tester.firstWidget(find.byType(Container)) as Container).color,
         Colors.white);
   });
+
+  testWidgets('ChildReactionTheme updateShouldNotify', (tester) async {
+    TestChildReactionTheme? result;
+    final builder = Builder(
+      builder: (context) {
+        result = context
+            .dependOnInheritedWidgetOfExactType<TestChildReactionTheme>();
+        return Container();
+      },
+    );
+
+    final first = TestChildReactionTheme(
+      shouldNotify: true,
+      data: const ChildReactionThemeData(),
+      child: builder,
+    );
+
+    final second = TestChildReactionTheme(
+      shouldNotify: false,
+      data: const ChildReactionThemeData(),
+      child: builder,
+    );
+
+    final third = TestChildReactionTheme(
+      shouldNotify: true,
+      data: const ChildReactionThemeData(),
+      child: builder,
+    );
+
+    await tester.pumpWidget(first);
+    expect(result, equals(first));
+
+    await tester.pumpWidget(second);
+    expect(result, equals(first));
+
+    await tester.pumpWidget(third);
+    expect(result, equals(third));
+  });
+}
+
+class TestChildReactionTheme extends ChildReactionTheme {
+  const TestChildReactionTheme({
+    Key? key,
+    required ChildReactionThemeData data,
+    required Widget child,
+    required this.shouldNotify,
+  }) : super(key: key, data: data, child: child);
+
+  // ignore: diagnostic_describe_all_properties
+  final bool shouldNotify;
+
+  @override
+  bool updateShouldNotify(covariant ChildReactionTheme oldWidget) {
+    super.updateShouldNotify(oldWidget);
+    return shouldNotify;
+  }
 }
 
 const _childReactionThemeDefault = ChildReactionThemeData(
