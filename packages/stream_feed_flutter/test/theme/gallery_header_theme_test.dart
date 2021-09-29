@@ -82,6 +82,140 @@ void main() {
       ],
     );
   });
+
+  testWidgets('default GalleryHeaderTheme debugFillProperties', (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const childReactionTheme = GalleryHeaderTheme(
+      data: GalleryHeaderThemeData(),
+      child: SizedBox(),
+    );
+    // ignore: cascade_invocations
+    childReactionTheme.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toString())
+        .toList();
+
+    expect(
+      description,
+      [
+        'data: GalleryHeaderThemeData#007db(closeButtonColor: null, backgroundColor: null, titleTextStyle: null)',
+      ],
+    );
+  });
+
+  testWidgets('GalleryHeaderTheme wrap', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) {
+            final navigator = Navigator.of(context);
+
+            final themes =
+                InheritedTheme.capture(from: context, to: navigator.context);
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext _) {
+                      // Wrap the actual child of the route in the previously
+                      // captured themes.
+                      return themes.wrap(
+                        GalleryHeaderTheme(
+                          data: const GalleryHeaderThemeData(),
+                          child: Builder(
+                            builder: (context) {
+                              final theme = GalleryHeaderTheme.of(context);
+                              return InheritedTheme.captureAll(
+                                context,
+                                Container(
+                                  alignment: Alignment.center,
+                                  color: Colors.white,
+                                  child: const Text('Hello World'),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+              child: const Center(child: Text('Tap Here')),
+            );
+          },
+        ),
+      ),
+    );
+
+    final tapButton = find.text('Tap Here');
+    expect(tapButton, findsOneWidget);
+
+    await tester.tap(tapButton);
+    await tester.pumpAndSettle();
+
+    expect((tester.firstWidget(find.byType(Container)) as Container).color,
+        Colors.white);
+  });
+
+  testWidgets('GalleryHeaderTheme', (tester) async {
+    TestGalleryHeaderTheme? result;
+    final builder = Builder(
+      builder: (context) {
+        result = context
+            .dependOnInheritedWidgetOfExactType<TestGalleryHeaderTheme>();
+        return Container();
+      },
+    );
+
+    final first = TestGalleryHeaderTheme(
+      shouldNotify: true,
+      data: const GalleryHeaderThemeData(),
+      child: builder,
+    );
+
+    final second = TestGalleryHeaderTheme(
+      shouldNotify: false,
+      data: const GalleryHeaderThemeData(),
+      child: builder,
+    );
+
+    final third = TestGalleryHeaderTheme(
+      shouldNotify: true,
+      data: const GalleryHeaderThemeData(),
+      child: builder,
+    );
+
+    await tester.pumpWidget(first);
+    expect(result, equals(first));
+
+    await tester.pumpWidget(second);
+    expect(result, equals(first));
+
+    await tester.pumpWidget(third);
+    expect(result, equals(third));
+  });
+}
+
+class TestGalleryHeaderTheme extends GalleryHeaderTheme {
+  const TestGalleryHeaderTheme({
+    Key? key,
+    required GalleryHeaderThemeData data,
+    required Widget child,
+    required this.shouldNotify,
+  }) : super(key: key, data: data, child: child);
+
+  // ignore: diagnostic_describe_all_properties
+  final bool shouldNotify;
+
+  @override
+  bool updateShouldNotify(covariant GalleryHeaderTheme oldWidget) {
+    super.updateShouldNotify(oldWidget);
+    return shouldNotify;
+  }
 }
 
 // Light theme test control.
