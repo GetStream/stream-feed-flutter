@@ -23,4 +23,13 @@ void main() {
       MediaType.unknown,
     ]);
   });
+
+  test('isValidUrl', () {
+    final media = Media(
+      url:
+          'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8',
+    );
+
+    expect(media.isValidUrl, true);
+  });
 }
