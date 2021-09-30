@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
@@ -165,6 +166,23 @@ void main() {
         expect(find.text('+ 1'), findsOneWidget);
       });
     });
+
+    testWidgets('debugFillProperties', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      const GalleryPreview(media: []).debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) => node.toString())
+          .toList();
+
+      expect(
+        description,
+        [
+          'media: []',
+        ],
+      );
+    });
   });
 
   group('FlexibleImage tests', () {
@@ -210,6 +228,25 @@ void main() {
         expect(find.byType(GestureDetector), findsOneWidget);
         expect(find.byType(Image), findsOneWidget);
       });
+    });
+
+    testWidgets('debugFillProperties', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      const FlexibleImage(media: []).debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) => node.toString())
+          .toList();
+
+      expect(
+        description,
+        [
+          'flexFit: tight',
+          'index: 0',
+          'media: []',
+        ],
+      );
     });
   });
 }
