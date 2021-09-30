@@ -143,17 +143,11 @@ void main() {
 
     await tester.pumpWidget(buildFrame());
 
-    // Show the route which contains primaryBox which was wrapped with
+    // Show the route which contains InkWell which was wrapped with
     // InheritedTheme.captureAll().
     await tester.tap(find.text('push wrapped'));
     await tester.pumpAndSettle(); // route animation
     expect(inkWellColor(), Colors.red);
-
-    // await tester.tap(tapButton);
-    // await tester.pumpAndSettle();
-
-    // expect((tester.firstWidget(find.byType(Container)) as Container).color,
-    //     Colors.white);
   });
 
   testWidgets('ChildReactionTheme updateShouldNotify', (tester) async {
