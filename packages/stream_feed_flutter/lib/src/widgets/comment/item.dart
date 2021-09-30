@@ -11,8 +11,6 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/src/widgets/user/username.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template comment_item}
 /// Displays a single comment on an activity.
 ///
@@ -67,7 +65,8 @@ class CommentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final detector = TagDetector(); //TODO: move this higher in the widget tree
+    final detector =
+        TagDetector(); //TODO (Sacha): move this higher in the widget tree
     final taggedText = reaction.data?[commentJsonKey] != null
         ? detector.parseText(reaction.data![commentJsonKey]! as String)
         : <TaggedText>[];
@@ -112,7 +111,7 @@ class CommentItem extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(2),
                     child: Wrap(
-                      //TODO: move to Text.rich(WidgetSpans)
+                      //TODO (Groovin): move to Text.rich(WidgetSpans)
                       children: taggedText
                           .map((it) => InteractiveText(
                                 tagged: it,
@@ -127,12 +126,12 @@ class CommentItem extends StatelessWidget {
             ),
           ),
           ChildReactionButton(
-            //TODO: refactor LikeButton to accept a reaction
+            //TODO (Sacha): refactor LikeButton to accept a reaction
             activeIcon: StreamSvgIcon.loveActive(),
             inactiveIcon: StreamSvgIcon.loveInactive(),
             hoverColor: Colors.red.shade100,
 
-            ///TODO: third state hover on desktop
+            ///TODO (Sacha): third state hover on desktop
             reaction: reaction,
             kind: 'like',
           ),
@@ -144,16 +143,15 @@ class CommentItem extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<User?>('user', user));
-    properties.add(DiagnosticsProperty<Reaction>('reaction', reaction));
-    properties.add(
-        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
-    properties.add(
-        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
-    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-    properties.add(StringProperty('nameJsonKey', nameJsonKey));
-    properties.add(StringProperty('commentJsonKey', commentJsonKey));
-    properties.add(
-        ObjectFlagProperty<OnReactionTap?>.has('onReactionTap', onReactionTap));
+    properties
+      ..add(DiagnosticsProperty<User?>('user', user))
+      ..add(DiagnosticsProperty<Reaction>('reaction', reaction))
+      ..add(ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap))
+      ..add(ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap))
+      ..add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap))
+      ..add(StringProperty('nameJsonKey', nameJsonKey))
+      ..add(StringProperty('commentJsonKey', commentJsonKey))
+      ..add(ObjectFlagProperty<OnReactionTap?>.has(
+          'onReactionTap', onReactionTap));
   }
 }

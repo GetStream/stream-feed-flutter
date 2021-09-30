@@ -27,5 +27,6 @@ class Default {
 
   /// The max amount of activities that should be copied from the target feed
   static const int maxActivityCopyLimit = 1000;
-  //TODO: time now ?
+
+  //TODO (Sacha): time now ?
 }

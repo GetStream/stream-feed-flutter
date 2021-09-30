@@ -5,8 +5,6 @@ import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template like_button}
 /// A reaction button that displays a like icon.
 ///
@@ -65,7 +63,7 @@ class LikeButton extends StatelessWidget {
           ),
       hoverColor: hoverColor ?? ReactionTheme.of(context).hoverColor,
 
-      ///TODO: third state hover on desktop
+      /// TODO (Sacha): third state hover on desktop
       reaction: reaction,
       kind: 'like',
       onTap: onTap,
@@ -75,10 +73,11 @@ class LikeButton extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(ColorProperty('hoverColor', hoverColor));
+    properties
+      ..add(DiagnosticsProperty<Reaction?>('reaction', reaction))
+      ..add(DiagnosticsProperty<EnrichedActivity>('activity', activity))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(StringProperty('feedGroup', feedGroup))
+      ..add(ColorProperty('hoverColor', hoverColor));
   }
 }

@@ -4,8 +4,6 @@ import 'package:photo_view/photo_view.dart';
 import 'package:stream_feed_flutter/src/media/gallery_header.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Displays [Media] from a Feed in fullscreen.
 class FullscreenMedia extends StatefulWidget {
   /// Builds a [FullscreenMedia].
@@ -29,8 +27,9 @@ class FullscreenMedia extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<Media>('media', media));
-    properties.add(IntProperty('startIndex', startIndex));
+    properties
+      ..add(IterableProperty<Media>('media', media))
+      ..add(IntProperty('startIndex', startIndex));
   }
 }
 

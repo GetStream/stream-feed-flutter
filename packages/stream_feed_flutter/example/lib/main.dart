@@ -5,25 +5,31 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 Future<void> main() async {
   final env = Platform.environment;
+
   final secret = env['secret'];
   final apiKey = env['apiKey'];
   final appId = env['appId'];
   final frontendToken = env['frontendToken'];
-  final server = StreamFeedServer(
-    apiKey!,
-    secret: secret!,
-    appId: appId,
-  );
-  final client = StreamFeedClient(apiKey);
 
-  await client.setCurrentUser(
-      const User(id: 'sachaid'), server.frontendToken('sachaid'),
-      extraData: {
-        'name': 'Rosemary',
-        'handle': '@rosemary',
-        'subtitle': 'likes playing fresbee in the park',
-        'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-      });
+  late final Token token;
+  if (frontendToken != null) {
+    token = Token(frontendToken);
+  } else {
+    final server = StreamFeedServer(
+      apiKey!,
+      secret: secret!,
+      appId: appId,
+    );
+    token = server.frontendToken('sachaid');
+  }
+  final client = StreamFeedClient(apiKey!);
+
+  await client.setCurrentUser(const User(id: 'sachaid'), token, extraData: {
+    'name': 'Rosemary',
+    'handle': '@rosemary',
+    'subtitle': 'likes playing fresbee in the park',
+    'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+  });
 
   runApp(MyApp(client: client));
 }

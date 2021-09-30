@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Icon set of stream feed
 class StreamSvgIcon extends StatelessWidget {
   /// Builds a [StreamSvgIcon]
@@ -163,9 +161,10 @@ class StreamSvgIcon extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('assetName', assetName));
-    properties.add(DoubleProperty('width', width));
-    properties.add(DoubleProperty('height', height));
-    properties.add(ColorProperty('color', color));
+    properties
+      ..add(StringProperty('assetName', assetName))
+      ..add(DoubleProperty('width', width))
+      ..add(DoubleProperty('height', height))
+      ..add(ColorProperty('color', color));
   }
 }

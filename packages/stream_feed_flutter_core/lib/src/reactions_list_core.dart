@@ -5,8 +5,6 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 //TODO: other things to add to core: FollowListCore, UserListCore
 
 /// [ReactionListCore] is a simplified class that allows fetching a list of
@@ -56,34 +54,34 @@ class ReactionListCore extends StatelessWidget {
     this.limit,
   }) : super(key: key);
 
-  /// A builder that allows building a ListView of Reaction based Widgets
+  /// A builder that allows building a list of Reaction based Widgets.
   final ReactionsBuilder reactionsBuilder;
 
-  /// A builder for building widgets to show on error
+  /// A builder to display on error.
   final Widget onErrorWidget;
 
-  /// A builder for building widgets to show on progress
+  /// A builder to display on progress.
   final Widget onProgressWidget;
 
-  /// A builder for building widgets to show on empty
+  /// A builder to display on empty.
   final Widget onEmptyWidget;
 
-  /// Lookup objects based on attributes
+  /// Lookup objects based on attributes.
   final LookupAttribute lookupAttr;
 
-  /// TODO: document me
+  /// Lookup objects based on string value.
   final String lookupValue;
 
   /// {@macro filter}
   final Filter? filter;
 
-  /// The flags to use for the request
+  /// The flags to use for the request.
   final EnrichmentFlags? flags;
 
-  /// The limit of activities to fetch
+  /// The limit of activities to fetch.
   final int? limit;
 
-  /// The kind of reaction
+  /// The kind of reaction.
   final String? kind;
 
   @override
@@ -124,13 +122,14 @@ class ReactionListCore extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<ReactionsBuilder>.has(
-        'reactionsBuilder', reactionsBuilder));
-    properties.add(EnumProperty<LookupAttribute>('lookupAttr', lookupAttr));
-    properties.add(StringProperty('lookupValue', lookupValue));
-    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
-    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
-    properties.add(IntProperty('limit', limit));
-    properties.add(StringProperty('kind', kind));
+    properties
+      ..add(ObjectFlagProperty<ReactionsBuilder>.has(
+          'reactionsBuilder', reactionsBuilder))
+      ..add(EnumProperty<LookupAttribute>('lookupAttr', lookupAttr))
+      ..add(StringProperty('lookupValue', lookupValue))
+      ..add(DiagnosticsProperty<Filter?>('filter', filter))
+      ..add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags))
+      ..add(IntProperty('limit', limit))
+      ..add(StringProperty('kind', kind));
   }
 }

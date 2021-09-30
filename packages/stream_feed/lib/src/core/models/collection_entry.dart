@@ -4,6 +4,7 @@ import 'package:stream_feed/stream_feed.dart';
 
 part 'collection_entry.g.dart';
 
+/// {@template collections}
 /// Collections enable you to store information to Stream.
 ///
 /// This allows you to use it inside your feeds and to provide additional data
@@ -19,9 +20,10 @@ part 'collection_entry.g.dart';
 ///
 /// Collection endpoints can be used both client-side and server-side except
 /// the batch methods that are only available server-side.
+/// {@endtemplate}
 @JsonSerializable()
 class CollectionEntry extends Equatable {
-  /// Builds a [CollectionEntry].
+  /// {@macro collections}
   const CollectionEntry({
     this.id,
     this.collection,

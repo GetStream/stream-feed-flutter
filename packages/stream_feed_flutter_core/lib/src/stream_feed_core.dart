@@ -4,8 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Widget used to provide information about the feed to the widget tree.
 /// This Widget is used to react to life cycle changes and system updates.
 /// When the app goes into the background, the websocket connection is kept
@@ -53,18 +51,18 @@ class StreamFeedCore extends StatefulWidget {
   /// application.
   final StreamFeedClient client;
 
-  /// Analytics client
+  /// Analytics client.
   final StreamAnalytics? analyticsClient;
 
   /// Whether or not you want to track analytics in your app
-  /// (can be useful for customised feeds via ML)
+  /// (can be useful for customised feeds via ML).
   final bool trackAnalytics;
 
   /// The location that should be used for analytics when liking in the feed,
   /// this is only useful when you have analytics enabled for your app.
   final String? analyticsLocation;
 
-  ///Your navigator key
+  /// [NavigatorState] key.
   final GlobalKey<NavigatorState>? navigatorKey;
 
   /// Widget descendant.
@@ -73,7 +71,7 @@ class StreamFeedCore extends StatefulWidget {
   @override
   StreamFeedCoreState createState() => StreamFeedCoreState();
 
-  /// Use this method to get the current [StreamFeedCoreState] instance
+  /// Use this method to get the current [StreamFeedCoreState] instance.
   static StreamFeedCoreState of(BuildContext context) {
     StreamFeedCoreState? streamFeedState;
 
@@ -90,13 +88,14 @@ class StreamFeedCore extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<StreamFeedClient>('client', client));
-    properties.add(DiagnosticsProperty<StreamAnalytics?>(
-        'analyticsClient', analyticsClient));
-    properties.add(DiagnosticsProperty<bool>('trackAnalytics', trackAnalytics));
-    properties.add(StringProperty('analyticsLocation', analyticsLocation));
-    properties.add(DiagnosticsProperty<GlobalKey<NavigatorState>?>(
-        'navigatorKey', navigatorKey));
+    properties
+      ..add(DiagnosticsProperty<StreamFeedClient>('client', client))
+      ..add(DiagnosticsProperty<StreamAnalytics?>(
+          'analyticsClient', analyticsClient))
+      ..add(DiagnosticsProperty<bool>('trackAnalytics', trackAnalytics))
+      ..add(StringProperty('analyticsLocation', analyticsLocation))
+      ..add(DiagnosticsProperty<GlobalKey<NavigatorState>?>(
+          'navigatorKey', navigatorKey));
   }
 }
 
@@ -111,16 +110,16 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   @override
   Widget build(BuildContext context) => widget.child;
 
-  /// The current user
+  /// The current user.
   StreamUser? get user => client.currentUser;
 
-  /// The current user
+  /// Reactions client.
   ReactionsClient get reactions => client.reactions;
 
-  /// Analytics client
+  /// Analytics client.
   StreamAnalytics? get analyticsClient => widget.analyticsClient;
 
-  /// Navigator state
+  /// Navigator state.
   NavigatorState? get navigator => widget.navigatorKey?.currentState;
 
   /// Add a new reaction to the feed.
@@ -174,7 +173,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
   }
 
-  ///Add child reaction
+  /// Add child reaction.
   Future<Reaction> onAddChildReaction({
     required String kind,
     required Reaction reaction,
@@ -187,7 +186,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     return childReaction;
   }
 
-  /// Remove child reaction
+  /// Remove child reaction.
   Future<void> onRemoveChildReaction({
     required String id,
     String? kind,
@@ -196,7 +195,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     await reactions.delete(id);
   }
 
-  ///Track analytics
+  /// Track analytics.
   Future<void> trackAnalytics({
     required String label,
     required String? foreignId,
@@ -211,7 +210,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
         : print('warning: analytics: not enabled'); //TODO:logger
   }
 
-  ///Get reactions form the activity
+  /// Get reactions form the activity.
   Future<List<Reaction>> getReactions(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -230,7 +229,7 @@ class StreamFeedCoreState extends State<StreamFeedCore>
     );
   }
 
-  ///Get enriched activities from the feed
+  /// Get enriched activities from the feed.
   Future<List<EnrichedActivity<A, Ob, T, Or>>>
       getEnrichedActivities<A, Ob, T, Or>({
     required String feedGroup,
@@ -266,13 +265,12 @@ class StreamFeedCoreState extends State<StreamFeedCore>
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<StreamUser?>('user', user));
     properties
-        .add(DiagnosticsProperty<ReactionsClient>('reactions', reactions));
-    properties.add(DiagnosticsProperty<StreamAnalytics?>(
-        'analyticsClient', analyticsClient));
-    properties
-        .add(DiagnosticsProperty<NavigatorState?>('navigator', navigator));
-    properties.add(DiagnosticsProperty<StreamFeedClient>('client', client));
+      ..add(DiagnosticsProperty<StreamUser?>('user', user))
+      ..add(DiagnosticsProperty<ReactionsClient>('reactions', reactions))
+      ..add(DiagnosticsProperty<StreamAnalytics?>(
+          'analyticsClient', analyticsClient))
+      ..add(DiagnosticsProperty<NavigatorState?>('navigator', navigator))
+      ..add(DiagnosticsProperty<StreamFeedClient>('client', client));
   }
 }

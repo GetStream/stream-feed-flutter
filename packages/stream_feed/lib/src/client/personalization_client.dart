@@ -52,19 +52,21 @@ class PersonalizationClient {
           'At least a secret or userToken must be provided',
         );
 
-  /// TODO: document me
+  /// User JWT token.
   final Token? userToken;
 
-  /// TODO: document me
+  /// Stream Feed App secret.
   final String? secret;
 
-  /// TODO: document me
+  /// Personalization API.
+  ///
+  /// {@macro personalization}
   final PersonalizationAPI _personalization;
 
   /// {@template personalizationGet}
-  /// Reads the personalized feed for a given user
+  /// Reads the personalized feed for a given user.
   ///
-  /// Our data science team will typically tell you which endpoint to use
+  /// Our data science team will typically tell you which endpoint to use.
   /// {@endtemplate}
   Future<Map> get(
     String resource, {

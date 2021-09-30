@@ -39,7 +39,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
     if (!pullToRefresh) setState(() => _isLoading = true);
     final userFeed = _client.flatFeed('timeline');
     final data = await userFeed.getActivities();
-    final data2 = await userFeed.getEnrichedActivities();
+    // final data2 = await userFeed.getEnrichedActivities();
     if (!pullToRefresh) _isLoading = false;
     setState(() => activities = data);
   }
@@ -48,7 +48,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _client = context.client;
-    // _listenToFeed();
+    _listenToFeed();
     _loadActivities();
   }
 

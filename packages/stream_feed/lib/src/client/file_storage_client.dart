@@ -46,11 +46,12 @@ class FileStorageClient {
   /// ```
   /// - To get upload progress:
   /// ```dart
-  ///  await files.upload(AttachmentFile(path: 'yourfilepath'), onSendProgress:(sentBytes,totalBytes){
-  ///    if (totalBytes != -1) {
-  ///       print((sentBytes / total * 100).toStringAsFixed(0) + '%');
-  ///     }
-  ///  });
+  /// await files.upload(AttachmentFile(path: 'yourfilepath'),
+  ///     onSendProgress: (sentBytes, totalBytes) {
+  ///   if (totalBytes != -1) {
+  ///     print((sentBytes / total * 100).toStringAsFixed(0) + '%');
+  ///   }
+  /// });
   /// ```
   ///
   /// API docs: [upload](https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?language=dart#upload)

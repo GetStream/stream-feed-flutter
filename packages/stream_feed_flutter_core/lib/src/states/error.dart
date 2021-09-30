@@ -1,8 +1,8 @@
-//TODO: improve this
+// TODO (anyone): improve this
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// The default Error State Widget to display errors
+/// The default Error State Widget to display errors.
 class ErrorStateWidget extends StatelessWidget {
   /// Builds an [ErrorStateWidget].
   const ErrorStateWidget({
@@ -10,7 +10,7 @@ class ErrorStateWidget extends StatelessWidget {
     this.message = 'Sorry an error has occured',
   }) : super(key: key);
 
-  /// The error message to display
+  /// The error message to display.
   final String message;
 
   @override

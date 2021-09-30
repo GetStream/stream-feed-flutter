@@ -72,7 +72,7 @@ void main() {
       expect(logs, [
         'canLaunch',
         'launch'
-      ]); //TODO: hmm there might be a better way to do this
+      ]); //TODO (Sacha): hmm there might be a better way to do this
 
       final richtexts = tester.widgetList<Text>(find.byType(Text));
       expect(richtexts.toList().map((e) => e.data), [title, description]);

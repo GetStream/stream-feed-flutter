@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Header/AppBar widget for media display screen
 class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
   /// Builds a [GalleryHeader].
@@ -66,11 +64,12 @@ class GalleryHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('showBackButton', showBackButton));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has(
-        'onBackButtonPressed', onBackButtonPressed));
-    properties.add(IntProperty('currentIndex', currentIndex));
-    properties.add(IntProperty('totalMedia', totalMedia));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
+    properties
+      ..add(DiagnosticsProperty<bool>('showBackButton', showBackButton))
+      ..add(ObjectFlagProperty<VoidCallback?>.has(
+          'onBackButtonPressed', onBackButtonPressed))
+      ..add(IntProperty('currentIndex', currentIndex))
+      ..add(IntProperty('totalMedia', totalMedia))
+      ..add(ColorProperty('backgroundColor', backgroundColor));
   }
 }

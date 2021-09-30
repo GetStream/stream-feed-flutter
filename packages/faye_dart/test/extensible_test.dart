@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'package:faye_dart/src/extensible.dart';
 import 'package:faye_dart/src/message.dart';
 import 'package:test/test.dart';
@@ -33,9 +31,9 @@ void main() {
       'outgoing': (message) => message..id = newMessageId,
     };
 
-    // adding extension
+    // Adding extension
     extensible.addExtension(extension);
-    // removing extension
+    // Removing extension
     extensible.removeExtension(extension);
 
     late Message newMessage;

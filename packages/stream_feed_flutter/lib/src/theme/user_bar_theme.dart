@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Overrides the default style of [UserBar] and [CommentItem] descendants.
 ///
 /// See also:
@@ -128,10 +126,11 @@ class UserBarThemeData with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DoubleProperty('avatarSize', avatarSize));
-    properties.add(DiagnosticsProperty<TextStyle?>(
-        'usernameTextStyle', usernameTextStyle));
-    properties.add(DiagnosticsProperty<TextStyle?>(
-        'timestampTextStyle', timestampTextStyle));
+    properties
+      ..add(DoubleProperty('avatarSize', avatarSize))
+      ..add(DiagnosticsProperty<TextStyle?>(
+          'usernameTextStyle', usernameTextStyle))
+      ..add(DiagnosticsProperty<TextStyle?>(
+          'timestampTextStyle', timestampTextStyle));
   }
 }

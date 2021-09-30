@@ -4,8 +4,6 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template avatar}
 /// An avatar for the user.
 /// {@endtemplate}
@@ -47,7 +45,7 @@ class Avatar extends StatelessWidget {
                   if (loadingProgress == null) return child;
                   return Center(
                     child: CircularProgressIndicator(
-                      //TODO: provide a way to customize progress indicator
+                      // TODO (Anyone): provide a way to customize progress indicator
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
                               loadingProgress.expectedTotalBytes!
@@ -62,7 +60,7 @@ class Avatar extends StatelessWidget {
             )
           : ClipOval(
               child: StreamSvgIcon.avatar(
-                //TODO: provide a way to customize default avatar
+                // TODO (Anyone): provide a way to customize default avatar
                 size: size,
               ),
             ),
@@ -72,9 +70,10 @@ class Avatar extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<User?>('user', user));
-    properties.add(DoubleProperty('size', size));
-    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-    properties.add(StringProperty('jsonKey', jsonKey));
+    properties
+      ..add(DiagnosticsProperty<User?>('user', user))
+      ..add(DoubleProperty('size', size))
+      ..add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap))
+      ..add(StringProperty('jsonKey', jsonKey));
   }
 }

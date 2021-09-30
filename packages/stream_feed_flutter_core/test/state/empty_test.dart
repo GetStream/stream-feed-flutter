@@ -5,20 +5,17 @@ import 'package:stream_feed_flutter_core/src/states/empty.dart';
 
 void main() {
   testWidgets('EmptyStateWidget', (tester) async {
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(const MaterialApp(
         home: Scaffold(
       body: EmptyStateWidget(),
     )));
-    final text = find.text("Nothing here...").first;
+    final text = find.text('Nothing here...').first;
     expect(text, findsOneWidget);
   });
 
   test('Default EmptyStateWidget debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
-    final emptyStateWidget = EmptyStateWidget();
-
-    // ignore: cascade_invocations
-    emptyStateWidget.debugFillProperties(builder);
+    const EmptyStateWidget().debugFillProperties(builder);
 
     final description = builder.properties
         .where((node) => !node.isFiltered(DiagnosticLevel.info))

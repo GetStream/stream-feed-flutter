@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Overrides the default style of [GalleryHeader] descendants.
 ///
 /// See also:
@@ -132,9 +130,9 @@ class GalleryHeaderThemeData with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ColorProperty('closeButtonColor', closeButtonColor));
-    properties.add(ColorProperty('backgroundColor', backgroundColor));
     properties
-        .add(DiagnosticsProperty<TextStyle?>('titleTextStyle', titleTextStyle));
+      ..add(ColorProperty('closeButtonColor', closeButtonColor))
+      ..add(ColorProperty('backgroundColor', backgroundColor))
+      ..add(DiagnosticsProperty<TextStyle?>('titleTextStyle', titleTextStyle));
   }
 }

@@ -5,8 +5,6 @@ import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template activity_widget}
 /// A widget that displays a single activity.
 /// i.e. a single post in a feed
@@ -96,23 +94,21 @@ class ActivityWidget extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
-    properties.add(StringProperty('handleJsonKey', handleJsonKey));
-    properties.add(StringProperty('nameJsonKey', nameJsonKey));
-    properties.add(
-        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
-    properties.add(
-        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
-    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-    properties.add(
-        ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
-    properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
-        'activityFooterBuilder', activityFooterBuilder));
-    properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
-        'activityContentBuilder', activityContentBuilder));
-    properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
-        'activityHeaderBuilder', activityHeaderBuilder));
-    properties.add(StringProperty('feedGroup', feedGroup));
+    properties
+      ..add(DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity))
+      ..add(StringProperty('handleJsonKey', handleJsonKey))
+      ..add(StringProperty('nameJsonKey', nameJsonKey))
+      ..add(ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap))
+      ..add(ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap))
+      ..add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap))
+      ..add(ObjectFlagProperty<OnActivityTap?>.has(
+          'onActivityTap', onActivityTap))
+      ..add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
+          'activityFooterBuilder', activityFooterBuilder))
+      ..add(ObjectFlagProperty<ActivityContentBuilder?>.has(
+          'activityContentBuilder', activityContentBuilder))
+      ..add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
+          'activityHeaderBuilder', activityHeaderBuilder))
+      ..add(StringProperty('feedGroup', feedGroup));
   }
 }

@@ -28,7 +28,7 @@ class BatchOperationsClient {
   ///
   /// API docs: [batch-activity-add](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-activity-add)
   Future<void> addToMany(Activity activity, List<FeedId> feedIds) {
-    //TODO: why is this void vs Future<APIResponse> compared to js client
+    // TODO (Sacha): why is this void vs Future<APIResponse> compared to js client
     final token = TokenHelper.buildFeedToken(_secret, TokenAction.write);
     return _batch.addToMany(token, activity, feedIds);
   }
@@ -61,7 +61,7 @@ class BatchOperationsClient {
   /// API docs : [batch-unfollow](https://getstream.io/activity-feeds/docs/flutter-dart/add_many_activities/?language=dart#batch-unfollow)
   Future<void> unfollowMany(
     Iterable<UnFollowRelation> unfollows, {
-    // TODO: seems to be Iterable<UnFollow> unfollows here
+    // TODO (Sacha): seems to be Iterable<UnFollow> unfollows here
     required bool keepHistory,
   }) {
     final token = TokenHelper.buildFollowToken(_secret, TokenAction.write);

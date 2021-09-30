@@ -2,7 +2,8 @@ import 'dart:convert';
 
 /// Exception related to api calls
 class StreamApiException implements Exception {
-  //TODO: test this
+  // TODO (Sacha): test this
+
   /// Creates a new ApiError instance using the response body and status code
   StreamApiException(this.body, this.status) : jsonData = _decode(body) {
     if (jsonData != null && jsonData!.containsKey('code')) {

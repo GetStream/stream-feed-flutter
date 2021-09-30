@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'dart:async';
 
 import 'package:faye_dart/src/event_emitter.dart';

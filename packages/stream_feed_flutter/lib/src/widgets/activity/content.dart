@@ -6,8 +6,6 @@ import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
 import 'package:stream_feed_flutter/src/widgets/og/card.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template activity_content}
 /// Displays the content of an activity.
 ///
@@ -72,12 +70,10 @@ class ActivityContent extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
-    properties.add(
-        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
-    properties.add(
-        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
-    properties.add(StringProperty('commentJsonKey', commentJsonKey));
+    properties
+      ..add(DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity))
+      ..add(ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap))
+      ..add(ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap))
+      ..add(StringProperty('commentJsonKey', commentJsonKey));
   }
 }

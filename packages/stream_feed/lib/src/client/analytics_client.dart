@@ -32,12 +32,16 @@ class StreamAnalytics {
         _analytics = analytics ?? AnalyticsAPI(apiKey, options: options);
 
   final AnalyticsAPI _analytics;
+
+  /// Stread Feed app secret.
   final String? secret;
+
+  /// Stream Feed user token.
   final Token? userToken;
 
   /// Data related to the user
   UserData? userData;
-  //TODO: get user?
+  //TODO (Sacha): get user?
 
   /// Set user id and alias
   void setUser({required String id, required String alias}) =>

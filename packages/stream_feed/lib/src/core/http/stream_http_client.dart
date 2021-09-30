@@ -12,10 +12,14 @@ import 'package:stream_feed/version.dart';
 
 part 'stream_http_client_options.dart';
 
-/// This is where we configure the base url, headers, query parameters and
+/// {@template stream_http_client}
+/// Configure the base url, headers, query parameters and
 /// convenience methods for http verbs with error parsing.
+/// {@endtemplate}
 class StreamHttpClient {
-  /// [StreamHttpClient] constructor
+  /// [StreamHttpClient] constructor.
+  ///
+  /// {@macro stream_http_client}
   StreamHttpClient(
     this.apiKey, {
     Dio? dio,

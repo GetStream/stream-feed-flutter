@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -233,11 +231,9 @@ void main() {
   group('debugFillProperties', () {
     testWidgets('AlertDialogComment', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
-      const alertDialogComment = AlertDialogComment(
+      const AlertDialogComment(
         feedGroup: 'user',
-      );
-
-      alertDialogComment.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -250,11 +246,9 @@ void main() {
 
     testWidgets('CommentView', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
-      final commentView = CommentView(
+      CommentView(
         textEditingController: TextEditingController(),
-      );
-
-      commentView.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -268,7 +262,7 @@ void main() {
     testWidgets('AlertDialogActions', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
-      final alertDialogActions = AlertDialogActions(
+      AlertDialogActions(
         feedGroup: 'user',
         textEditingController: TextEditingController(),
         activity: EnrichedActivity(
@@ -288,9 +282,7 @@ void main() {
                 'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
           },
         ),
-      );
-
-      alertDialogActions.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -317,12 +309,10 @@ void main() {
 
     testWidgets('RightActions', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
-      final rightActions = RightActions(
+      RightActions(
         feedGroup: 'user',
         textEditingController: TextEditingController(),
-      );
-
-      rightActions.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))

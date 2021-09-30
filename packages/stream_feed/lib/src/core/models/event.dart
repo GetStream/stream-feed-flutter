@@ -149,13 +149,14 @@ class Engagement extends Event {
           userData: userData,
         );
 
-  /// Create a new instance from a json
+  /// Create a new instance from a json.
   factory Engagement.fromJson(Map<String, dynamic> json) =>
       _$EngagementFromJson(json);
 
-  /// The ID of the content that the user clicked
+  /// The ID of the content that the user clicked.
+  ///
   /// Activity ID
-  final Content content; //TODO: content
+  final Content content; // TODO (Sacha): content
 
   /// The type of event (i.e. click, share, search, etc.)
   final String label;
@@ -243,7 +244,7 @@ class Impression extends Event {
   /// The list of content the user is looking at.
   ///
   /// Either a list of IDs or objects.
-  final List<Content> contentList; //TODO:List<Content>
+  final List<Content> contentList; // TODO (Sacha):List<Content>
 
   /// The time at which this event as been tracked
   @JsonKey(includeIfNull: false)
@@ -285,7 +286,7 @@ class Impression extends Event {
 /// `RuntimeException`.
 @JsonSerializable()
 class Content extends Equatable {
-  //TODO: attribute: https://github.com/GetStream/stream-analytics-android/blob/62f624f6da5ded03bd4d10d9b169c8c6ddd59984/stream-analytics/src/main/java/io/getstream/analytics/beans/ContentAttribute.java#L39
+  // TODO (Sacha): attribute: https://github.com/GetStream/stream-analytics-android/blob/62f624f6da5ded03bd4d10d9b169c8c6ddd59984/stream-analytics/src/main/java/io/getstream/analytics/beans/ContentAttribute.java#L39
 
   /// Builds a [Content].
   const Content({required this.foreignId, this.data});
@@ -306,5 +307,6 @@ class Content extends Equatable {
   @override
   List<Object?> get props => [foreignId, data];
 
+  /// Converts this class to JSON.
   Map<String, dynamic> toJson() => _$ContentToJson(this);
 }

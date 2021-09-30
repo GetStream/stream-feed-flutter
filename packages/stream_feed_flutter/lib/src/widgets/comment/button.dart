@@ -4,8 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template post_comment_button}
 /// Allows the current user to comment on a post.
 ///
@@ -32,7 +30,7 @@ class PostCommentButton extends StatelessWidget {
   /// The activity that the reaction created by this [PostCommentButton] will
   /// be attached to.
   ///
-  /// If no activity is supplied, this will be a new activity.
+  /// If no activity is supplied, this will be a new activity instead.
   final EnrichedActivity? activity;
 
   /// The Text Editing Controller used to edit the comment text.
@@ -63,7 +61,7 @@ class PostCommentButton extends StatelessWidget {
             : await streamFeed.onAddActivity(
                 feedGroup: feedGroup,
                 verb: 'post',
-                //data: TODO: attachments with upload controller thingy
+                //data: TODO (Sacha): attachments with upload controller thingy
                 object: trimmedText);
       },
 
@@ -76,11 +74,11 @@ class PostCommentButton extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
-    properties.add(DiagnosticsProperty<TextEditingController>(
-        'textEditingController', textEditingController));
-    properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
+      ..add(DiagnosticsProperty<EnrichedActivity?>('activity', activity))
+      ..add(DiagnosticsProperty<TextEditingController>(
+          'textEditingController', textEditingController))
+      ..add(StringProperty('feedGroup', feedGroup))
+      ..add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
   }
 }
 
@@ -112,10 +110,11 @@ class ReactiveElevatedButton extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<TextEditingController>(
-        'textEditingController', textEditingController));
-    properties.add(ObjectFlagProperty<OnSend>.has('onSend', onSend));
-    properties.add(StringProperty('label', label));
+    properties
+      ..add(DiagnosticsProperty<TextEditingController>(
+          'textEditingController', textEditingController))
+      ..add(ObjectFlagProperty<OnSend>.has('onSend', onSend))
+      ..add(StringProperty('label', label));
   }
 }
 

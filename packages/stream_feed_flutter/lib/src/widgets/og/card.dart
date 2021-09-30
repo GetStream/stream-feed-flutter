@@ -5,8 +5,6 @@ import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template activity_card}
 /// A card used to diplay Open Graph medias.
 ///
@@ -120,12 +118,13 @@ class ActivityCard extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('alt', alt));
-    properties.add(StringProperty('image', image));
-    properties.add(DiagnosticsProperty<OpenGraphData>('og', og));
-    properties.add(StringProperty('imageURL', imageURL));
-    properties.add(StringProperty('description', description));
-    properties.add(StringProperty('url', url));
-    properties.add(StringProperty('title', title));
+    properties
+      ..add(StringProperty('alt', alt))
+      ..add(StringProperty('image', image))
+      ..add(DiagnosticsProperty<OpenGraphData>('og', og))
+      ..add(StringProperty('imageURL', imageURL))
+      ..add(StringProperty('description', description))
+      ..add(StringProperty('url', url))
+      ..add(StringProperty('title', title));
   }
 }

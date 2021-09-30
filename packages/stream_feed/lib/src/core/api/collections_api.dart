@@ -115,7 +115,7 @@ class CollectionsAPI {
 
   /// Upserts one or more items within a collection.
   Future<List<CollectionEntry>> upsert(
-      //TODO: Map<String, Iterable<CollectionEntry>>
+      // TODO (Sacha): Map<String, Iterable<CollectionEntry>>
       Token token,
       String collection,
       Iterable<CollectionEntry> entries) async {

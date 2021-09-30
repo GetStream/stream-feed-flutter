@@ -8,12 +8,14 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/src/widgets/user/username.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
+/// {@template userBar}
 /// Displays the user's name, profile picture, and a timestamp at which the
 /// user posted the message.
+/// {@endtemplate}
 class UserBar extends StatelessWidget {
   /// Builds a [UserBar].
+  ///
+  /// {@macro userBar}
   const UserBar({
     Key? key,
     required this.timestamp,
@@ -28,34 +30,52 @@ class UserBar extends StatelessWidget {
     this.showSubtitle = true,
   }) : super(key: key);
 
-  /// The User whose bar is being displayed.
+  /// {@template userBar.user}
+  /// The user whose bar is being displayed.
+  /// {@endtemplate}
   final User user;
 
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
+  /// {@template userBar.reactionIcon}
   /// The reaction icon to display next to the user's name (if any)
+  /// {@endtemplate}
   final Widget? reactionIcon;
 
+  /// {@template userBar.afterUsername}
   /// The widget to display after the user's name.
+  /// {@endtemplate}
   final Widget? afterUsername;
 
-  /// The subtitle of the user bar if any
+  /// {@template userBar.subtitle}
+  /// The subtitle of the user bar if any.
+  /// {@endtemplate}
   final Widget? subtitle;
 
+  /// {@template userBar.handleJsonKey}
   /// The json key for the user's handle.
+  /// {@endtemplate}
   final String handleJsonKey;
 
+  /// {@template userBar.nameJsonKey}
   /// The json key for the user's name.
+  /// {@endtemplate}
   final String nameJsonKey;
 
+  /// {@template userBar.timestamp}
   /// The time at which the user posted the message.
+  /// {@endtemplate}
   final DateTime timestamp;
 
+  /// {@template userBar.kind}
   /// The reaction kind to display.
+  /// {@endtemplate}
   final String kind;
 
+  /// {@template userBar.showSubtitle}
   /// Whether or not to show the subtitle.
+  /// {@endtemplate}
   final bool showSubtitle;
 
   @override
@@ -111,29 +131,32 @@ class UserBar extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('showSubtitle', showSubtitle));
-    properties.add(StringProperty('kind', kind));
-    properties.add(DiagnosticsProperty<DateTime>('timestamp', timestamp));
-    properties.add(StringProperty('nameJsonKey', nameJsonKey));
-    properties.add(StringProperty('handleJsonKey', handleJsonKey));
-    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-    properties.add(DiagnosticsProperty<User>('user', user));
+    properties
+      ..add(DiagnosticsProperty<bool>('showSubtitle', showSubtitle))
+      ..add(StringProperty('kind', kind))
+      ..add(DiagnosticsProperty<DateTime>('timestamp', timestamp))
+      ..add(StringProperty('nameJsonKey', nameJsonKey))
+      ..add(StringProperty('handleJsonKey', handleJsonKey))
+      ..add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap))
+      ..add(DiagnosticsProperty<User>('user', user));
   }
 }
 
-/// TODO: document me
+/// {@template reactedBy}
+/// Creates a widget to display the user who reacted to an activity/reaction.
+/// {@endtemplate}
 class ReactedBy extends StatelessWidget {
-  /// Builds a [ReactedBy].
+  /// {@macro reactedBy}
   const ReactedBy({
     Key? key,
     required this.icon,
     required this.handleOrUsername,
   }) : super(key: key);
 
-  /// TODO: document me
+  /// Icon widget to display.
   final Widget icon;
 
-  /// TODO: document me
+  /// User's handle or username to display.
   final String handleOrUsername;
 
   @override
@@ -146,8 +169,8 @@ class ReactedBy extends StatelessWidget {
           const SizedBox(
             width: 4,
           ),
-          const Text('by '), //TODO: padding?
-          Text(handleOrUsername) //TODO: padding?
+          const Text('by '), // TODO (anyone): padding?
+          Text(handleOrUsername) // TODO (anyone): padding?
         ],
       ),
     );
@@ -160,15 +183,24 @@ class ReactedBy extends StatelessWidget {
   }
 }
 
-/// TODO: document me
+/// The reaction icon to display on the kind of reaction.
+///
+/// {@macro kind_of_reactions_icons}
 class ReactionByIcon extends StatelessWidget {
-  /// Builds a [ReactionByIcon].
+  /// The reaction icon to display on the kind of reaction.
+  ///
+  /// {@macro kind_of_reactions_icons}
   const ReactionByIcon({
     Key? key,
     required this.kind,
   }) : super(key: key);
 
-  /// TODO: document me
+  /// {@template kind_of_reactions_icons}
+  /// Displays a different icon depending on the reaction kind.
+  ///
+  /// - 'like' : [StreamSvgIcon.loveActive()]
+  /// - 'repost' : [StreamSvgIcon.repost()]
+  /// {@endtemplate}
   final String kind;
 
   @override

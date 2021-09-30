@@ -6,8 +6,6 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// [FlatFeedCore] is a simplified class that allows fetching a list of
 /// enriched activities (flat) while exposing UI builders.
 ///
@@ -128,18 +126,18 @@ class FlatFeedCore<A, Ob, T, Or> extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<EnrichedFeedBuilder<A, Ob, T, Or>>.has(
-      'feedBuilder',
-      feedBuilder,
-    ));
-    properties.add(IntProperty('limit', limit, defaultValue: null));
-    properties.add(IntProperty('offset', offset, defaultValue: null));
-    properties.add(StringProperty('session', session, defaultValue: null));
-    properties.add(
-        DiagnosticsProperty<Filter?>('filter', filter, defaultValue: null));
-    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags,
-        defaultValue: null));
-    properties.add(StringProperty('ranking', ranking, defaultValue: null));
-    properties.add(StringProperty('feedGroup', feedGroup));
+    properties
+      ..add(ObjectFlagProperty<EnrichedFeedBuilder<A, Ob, T, Or>>.has(
+        'feedBuilder',
+        feedBuilder,
+      ))
+      ..add(IntProperty('limit', limit, defaultValue: null))
+      ..add(IntProperty('offset', offset, defaultValue: null))
+      ..add(StringProperty('session', session, defaultValue: null))
+      ..add(DiagnosticsProperty<Filter?>('filter', filter, defaultValue: null))
+      ..add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags,
+          defaultValue: null))
+      ..add(StringProperty('ranking', ranking, defaultValue: null))
+      ..add(StringProperty('feedGroup', feedGroup));
   }
 }

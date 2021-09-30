@@ -7,8 +7,6 @@ import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// TODO: document me
 enum TransitionType {
   /// TODO: document me
@@ -220,29 +218,27 @@ class FlatActivityListPage extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
-    properties.add(
-        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
-    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-    properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
-        'activityFooterBuilder', activityFooterBuilder));
-    properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
-        'activityContentBuilder', activityContentBuilder));
-    properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
-        'activityHeaderBuilder', activityHeaderBuilder));
-    properties.add(
-        ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
     properties
-        .add(EnumProperty<TransitionType>('transitionType', transitionType));
-    properties.add(IntProperty('limit', limit));
-    properties.add(IntProperty('offset', offset));
-    properties.add(StringProperty('session', session));
-    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
-    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
-    properties.add(StringProperty('ranking', ranking));
-    properties.add(StringProperty('handleJsonKey', handleJsonKey));
-    properties.add(StringProperty('nameJsonKey', nameJsonKey));
+      ..add(ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap))
+      ..add(ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap))
+      ..add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap))
+      ..add(StringProperty('feedGroup', feedGroup))
+      ..add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
+          'activityFooterBuilder', activityFooterBuilder))
+      ..add(ObjectFlagProperty<ActivityContentBuilder?>.has(
+          'activityContentBuilder', activityContentBuilder))
+      ..add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
+          'activityHeaderBuilder', activityHeaderBuilder))
+      ..add(ObjectFlagProperty<OnActivityTap?>.has(
+          'onActivityTap', onActivityTap))
+      ..add(EnumProperty<TransitionType>('transitionType', transitionType))
+      ..add(IntProperty('limit', limit))
+      ..add(IntProperty('offset', offset))
+      ..add(StringProperty('session', session))
+      ..add(DiagnosticsProperty<Filter?>('filter', filter))
+      ..add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags))
+      ..add(StringProperty('ranking', ranking))
+      ..add(StringProperty('handleJsonKey', handleJsonKey))
+      ..add(StringProperty('nameJsonKey', nameJsonKey));
   }
 }

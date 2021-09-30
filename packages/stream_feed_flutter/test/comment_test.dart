@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -238,7 +236,7 @@ void main() {
   test('Default CommentField debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
-    final commentField = CommentField(
+    CommentField(
       feedGroup: 'whatever:300',
       textEditingController: TextEditingController(),
       activity: EnrichedActivity(
@@ -257,9 +255,7 @@ void main() {
               'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
         },
       ),
-    );
-
-    commentField.debugFillProperties(builder);
+    ).debugFillProperties(builder);
 
     final description = builder.properties
         .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -273,7 +269,7 @@ void main() {
   test('Default CommentItem debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
-    final commentItem = CommentItem(
+    CommentItem(
       reaction: Reaction(
         createdAt: now,
         kind: 'comment',
@@ -281,9 +277,7 @@ void main() {
           'text': 'this is a piece of text',
         },
       ),
-    );
-
-    commentItem.debugFillProperties(builder);
+    ).debugFillProperties(builder);
 
     final description = builder.properties
         .where((node) => !node.isFiltered(DiagnosticLevel.info))

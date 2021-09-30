@@ -8,6 +8,7 @@ import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'enriched_activity.g.dart';
 
+/// {@template enrichment}
 /// Enrichment is a concept in Stream that enables our API to work quickly
 /// and efficiently.
 ///
@@ -28,12 +29,16 @@ part 'enriched_activity.g.dart';
 /// * Ob = [object]
 /// * T = [target]
 /// * Or = [origin]
+/// {@endtemplate}
 @JsonSerializable(genericArgumentFactories: true)
 class EnrichedActivity<A, Ob, T, Or> extends Equatable {
-  //TODO: improve this
+  // TODO (Sacha): improve this
   // when type parameter to can a default type in Dart
   //i.e. https://github.com/dart-lang/language/issues/283#issuecomment-839603127
+
   /// Builds an [EnrichedActivity].
+  ///
+  /// {@macro enrichment}
   const EnrichedActivity({
     this.id,
     this.actor,

@@ -36,10 +36,11 @@ class _OnAddChildReactionWidgetState extends State<OnAddChildReactionWidget> {
 
 void main() {
   const kind = 'like';
-  const foreignId = 'like:300';
+  // TODO (sacha): use ore remove commented code (from Gordon)
+  // const foreignId = 'like:300';
   const activityId = 'activityId';
-  const feedGroup = 'timeline:300';
-  const activity = EnrichedActivity(id: activityId, foreignId: foreignId);
+  // const feedGroup = 'timeline:300';
+  // const activity = EnrichedActivity(id: activityId, foreignId: foreignId);
   const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
 
   testWidgets('OnAddReaction', (tester) async {
@@ -48,8 +49,8 @@ void main() {
     final mockStreamAnalytics = MockStreamAnalytics();
     when(() => mockClient.reactions).thenReturn(mockReactions);
 
-    const label = kind;
-    //TODO analytics?
+    // const label = kind;
+    // TODO (Sacha): analytics?
     // final engagement = Engagement(
     //     content: Content(foreignId: FeedId.fromId(activity.foreignId)),
     //     label: label,

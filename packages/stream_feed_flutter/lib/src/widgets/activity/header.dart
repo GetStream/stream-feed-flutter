@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template activity_header}
 /// Displays the user's name and a profile image.
 /// {@endtemplate}
@@ -20,23 +18,29 @@ class ActivityHeader extends StatelessWidget {
     this.nameJsonKey = 'name',
   }) : super(key: key);
 
-  /// TODO: document me
+  /// The default enriched activity ([DefaultEnrichedActivity]).
+  ///
+  /// The following information will be taken from the activity:
+  /// - activity.actor
+  /// - activity.time
+  ///
   final DefaultEnrichedActivity activity;
 
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
 
-  /// TODO: document me
+  /// {@macro userBar.showSubtitle}
   final bool showSubtitle;
 
-  /// The json key for the user's handle.
+  /// {@macro userBar.handleJsonKey}
   final String handleJsonKey;
 
-  /// The json key for the user's name.
+  /// {@macro userBar.nameJsonKey}
   final String nameJsonKey;
 
-  /// Whether you want to display like activities or repost activities
+  /// {@macro userBar.activityKind}
   final String activityKind;
+
   @override
   Widget build(BuildContext context) {
     return UserBar(
@@ -53,12 +57,12 @@ class ActivityHeader extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
-    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-    properties.add(DiagnosticsProperty<bool>('showSubtitle', showSubtitle));
-    properties.add(StringProperty('handleJsonKey', handleJsonKey));
-    properties.add(StringProperty('nameJsonKey', nameJsonKey));
-    properties.add(StringProperty('activityKind', activityKind));
+    properties
+      ..add(DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity))
+      ..add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap))
+      ..add(DiagnosticsProperty<bool>('showSubtitle', showSubtitle))
+      ..add(StringProperty('handleJsonKey', handleJsonKey))
+      ..add(StringProperty('nameJsonKey', nameJsonKey))
+      ..add(StringProperty('activityKind', activityKind));
   }
 }

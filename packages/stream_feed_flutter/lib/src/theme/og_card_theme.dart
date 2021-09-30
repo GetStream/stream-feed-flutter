@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Overrides the default style of [ActivityCard] descendants.
 ///
 /// See also:
@@ -117,8 +115,8 @@ class OgCardThemeData with Diagnosticable {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-        .add(DiagnosticsProperty<TextStyle?>('titleTextStyle', titleTextStyle));
-    properties.add(DiagnosticsProperty<TextStyle?>(
-        'descriptionTextStyle', descriptionTextStyle));
+      ..add(DiagnosticsProperty<TextStyle?>('titleTextStyle', titleTextStyle))
+      ..add(DiagnosticsProperty<TextStyle?>(
+          'descriptionTextStyle', descriptionTextStyle));
   }
 }

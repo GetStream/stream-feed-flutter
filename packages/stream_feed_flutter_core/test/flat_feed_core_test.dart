@@ -68,7 +68,7 @@ void main() {
     );
 
     verify(() => mockClient.flatFeed('user')).called(1);
-    verify(() => mockFeed.getEnrichedActivities()).called(1);
+    verify(mockFeed.getEnrichedActivities).called(1);
   });
 
   test('Default FlatFeedCore debugFillProperties', () {

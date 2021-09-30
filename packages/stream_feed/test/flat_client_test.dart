@@ -58,7 +58,7 @@ void main() {
       const ranking = 'popularity';
       final options = {
         'limit': limit,
-        'offset': Default.offset, //TODO:add session everywhere
+        'offset': Default.offset, // TODO (sacha):add session everywhere
         ...filter.params,
         ...Default.marker.params,
       };

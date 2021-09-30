@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template reaction_list_page}
 /// Renders a list of reactions to a post.
 /// {@endtemplate}
@@ -50,35 +48,37 @@ class ReactionListPage extends StatelessWidget {
   final ReactionBuilder reactionBuilder;
 
   /// The widget to display if there is an error.
+  /// {@macro reactionListCore.onErrorWidget}
   final Widget onErrorWidget;
 
-  /// The widget to display while loading is in progress.
+  /// {@macro reactionListCore.onProgressWidget}
   final Widget onProgressWidget;
 
   /// The widget to display if there is no data.
   final Widget onEmptyWidget;
 
-  /// The flags to use for the request
+  /// The flags to use for the request.
   final EnrichmentFlags? flags;
 
-  /// TODO: document me
+  /// Lookup objects based on attributes.
   final LookupAttribute lookupAttr;
 
+  /// Lookup objects based on string value.
   final String _lookupValue;
 
-  /// TODO: document me
+  /// {@macro filter}
   final Filter? filter;
 
-  /// TODO: document me
+  /// The limit of activities to fetch.
   final int? limit;
 
-  /// TODO: document me
+  /// The kind of reaction.
   final String? kind;
 
   @override
   Widget build(BuildContext context) {
     return ReactionListCore(
-      lookupValue: _lookupValue, //TODO: handle null safety
+      lookupValue: _lookupValue, // TODO (Sacha): handle null safety
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       onEmptyWidget: onEmptyWidget,
@@ -95,20 +95,19 @@ class ReactionListPage extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
-    properties.add(
-        ObjectFlagProperty<OnReactionTap?>.has('onReactionTap', onReactionTap));
-    properties.add(
-        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
-    properties.add(
-        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
-    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-    properties.add(ObjectFlagProperty<ReactionBuilder>.has(
-        'reactionBuilder', reactionBuilder));
-    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
-    properties.add(EnumProperty<LookupAttribute>('lookupAttr', lookupAttr));
-    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
-    properties.add(IntProperty('limit', limit));
-    properties.add(StringProperty('kind', kind));
+    properties
+      ..add(DiagnosticsProperty<EnrichedActivity>('activity', activity))
+      ..add(ObjectFlagProperty<OnReactionTap?>.has(
+          'onReactionTap', onReactionTap))
+      ..add(ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap))
+      ..add(ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap))
+      ..add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap))
+      ..add(ObjectFlagProperty<ReactionBuilder>.has(
+          'reactionBuilder', reactionBuilder))
+      ..add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags))
+      ..add(EnumProperty<LookupAttribute>('lookupAttr', lookupAttr))
+      ..add(DiagnosticsProperty<Filter?>('filter', filter))
+      ..add(IntProperty('limit', limit))
+      ..add(StringProperty('kind', kind));
   }
 }

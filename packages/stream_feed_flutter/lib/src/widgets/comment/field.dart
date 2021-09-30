@@ -6,8 +6,6 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template comment_field}
 /// A field for adding comments to a feed.
 ///
@@ -79,11 +77,11 @@ class CommentField extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
-    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
-    properties.add(DiagnosticsProperty<TextEditingController>(
-        'textEditingController', textEditingController));
-    properties.add(DiagnosticsProperty<bool>('enableButton', enableButton));
-    properties.add(StringProperty('feedGroup', feedGroup));
+      ..add(DiagnosticsProperty<EnrichedActivity?>('activity', activity))
+      ..add(IterableProperty<FeedId>('targetFeeds', targetFeeds))
+      ..add(DiagnosticsProperty<TextEditingController>(
+          'textEditingController', textEditingController))
+      ..add(DiagnosticsProperty<bool>('enableButton', enableButton))
+      ..add(StringProperty('feedGroup', feedGroup));
   }
 }

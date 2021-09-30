@@ -41,6 +41,7 @@ class CollectionsClient {
   final String? secret;
   final CollectionsAPI _collections;
 
+  /// TODO (Sacha): what is the point of this? From Gordon.
   CollectionEntry entry(String collection, String entryId) =>
       CollectionEntry(collection: collection, id: entryId);
 

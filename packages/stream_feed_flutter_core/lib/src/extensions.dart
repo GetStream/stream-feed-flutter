@@ -1,8 +1,8 @@
 import 'package:stream_feed/stream_feed.dart';
 
-/// TODO: Document me
+/// Extensions methods on [List<Reaction>].
 extension ReactionX on List<Reaction> {
-  ///Filter reactions by reaction kind
+  ///Filter reactions by reaction kind.
   List<Reaction?> filterByKind(String kind) =>
       where((reaction) => reaction.kind == kind).toList();
 }

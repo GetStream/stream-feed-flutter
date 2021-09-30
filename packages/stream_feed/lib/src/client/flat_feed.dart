@@ -117,11 +117,11 @@ class FlatFeed extends Feed {
     String? session,
     Filter? filter,
     EnrichmentFlags? flags,
-    String? ranking, //TODO: no way to parameterized marker?
+    String? ranking, // TODO (Sacha): no way to parameterized marker?
   }) async {
     final options = {
       'limit': limit ?? Default.limit,
-      'offset': offset ?? Default.offset, //TODO:add session everywhere
+      'offset': offset ?? Default.offset, // TODO (Sacha):add session everywhere
       ...filter?.params ?? Default.filter.params,
       ...Default.marker.params,
       if (flags != null) ...flags.params,

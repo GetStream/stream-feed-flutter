@@ -2,24 +2,23 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-// ignore_for_file: cascade_invocations
-
-/// TODO: document me
+/// Text widget to display a user's username.
 class Username extends StatelessWidget {
-  /// Builds a [Username].
+  /// Text widget to display a user's username.
+
   const Username({
     Key? key,
     this.user,
-    required this.nameJsonKey,
+    required this.nameJsonKey, // TODO (Gordon): create certain user parameters on [User], similar to Chat.
   }) : super(key: key);
 
-  /// The user to show a username for
+  /// The user to show a username for.
   final User? user;
 
   /// The json key for the user's name.
   final String nameJsonKey;
 
-  /// Username
+  /// Get the user's username.
   String? get username => user?.data?[nameJsonKey] as String?;
 
   @override
@@ -33,8 +32,9 @@ class Username extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('username', username));
-    properties.add(DiagnosticsProperty<User?>('user', user));
-    properties.add(StringProperty('nameJsonKey', nameJsonKey));
+    properties
+      ..add(StringProperty('username', username))
+      ..add(DiagnosticsProperty<User?>('user', user))
+      ..add(StringProperty('nameJsonKey', nameJsonKey));
   }
 }

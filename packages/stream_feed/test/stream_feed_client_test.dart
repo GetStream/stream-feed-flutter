@@ -1,5 +1,4 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed/src/client/stream_feed_client_impl.dart';
 import 'package:stream_feed/src/core/api/stream_api.dart';
 import 'package:stream_feed/src/core/api/users_api.dart';
 import 'package:stream_feed/src/core/index.dart';

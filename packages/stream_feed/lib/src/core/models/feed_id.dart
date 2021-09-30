@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 class FeedId extends Equatable {
   /// Builds a [FeedId]
   FeedId(this.slug, this.userId)
-      : assert(!slug.contains(':'), 'Invalid slug'), //TODO:
+      : assert(!slug.contains(':'), 'Invalid slug'), // TODO (Sacha):
         // validate feed slug stream-python style using regex
         assert(!userId.contains(':'), 'Invalid userId');
 

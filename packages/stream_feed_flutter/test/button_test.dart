@@ -4,18 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
-import 'package:stream_feed_flutter/src/widgets/comment/item.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 import 'mock.dart';
-
-// ignore_for_file: cascade_invocations
 
 void main() {
   testWidgets('ReactionListPage', (tester) async {
@@ -55,7 +51,7 @@ void main() {
       analyticsClient: mockStreamAnalytics,
       client: mockClient,
       child: ReactionListPage(
-        activity: EnrichedActivity(id: 'id'),
+        activity: const EnrichedActivity(id: 'id'),
         reactionBuilder: (context, reaction) => const Offstage(),
         lookupValue: lookupValue,
         filter: filter,
@@ -175,6 +171,7 @@ void main() {
         final mockStreamAnalytics = MockStreamAnalytics();
 
         const label = kind;
+        // TODO (Sacha): re-add theses commented tests or remove. Also remove unneeded vars
         // final engagement = Engagement(
         //     content: Content(foreignId: FeedId.fromId(activity.foreignId)),
         //     label: label,
@@ -223,6 +220,8 @@ void main() {
         when(() => mockClient.reactions).thenReturn(mockReactions);
 
         const label = kind;
+
+        /// TODO (Sacha): re-add these tests or remove. Also remove unneeded vars
         // final engagement = Engagement(
         //     content: Content(foreignId: FeedId.fromId(activity.foreignId)),
         //     label: 'un$label',
@@ -473,7 +472,7 @@ void main() {
     test('ChildReactionToggleIcon', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
-      final childReactionToggleIcon = ChildReactionToggleIcon(
+      ChildReactionToggleIcon(
         reaction: Reaction(
           createdAt: now,
           kind: 'comment',
@@ -484,9 +483,7 @@ void main() {
         kind: 'comment',
         activeIcon: const Icon(Icons.favorite),
         inactiveIcon: const Icon(Icons.favorite_border),
-      );
-
-      childReactionToggleIcon.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -500,7 +497,7 @@ void main() {
     test('Like button', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
-      final likeButton = LikeButton(
+      LikeButton(
         activity: EnrichedActivity(
           time: now,
           actor: const User(
@@ -518,9 +515,7 @@ void main() {
                 'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
           },
         ),
-      );
-
-      likeButton.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -534,7 +529,7 @@ void main() {
     test('ReactionButton', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
-      final reactionButton = ReactionButton(
+      ReactionButton(
         activity: EnrichedActivity(
           time: now,
           actor: const User(
@@ -555,9 +550,7 @@ void main() {
         kind: 'comment',
         activeIcon: const Icon(Icons.favorite),
         inactiveIcon: const Icon(Icons.favorite_border),
-      );
-
-      reactionButton.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -571,7 +564,7 @@ void main() {
     test('ReactionToggleIcon', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
-      final reactionToggleIcon = ReactionToggleIcon(
+      ReactionToggleIcon(
         activity: EnrichedActivity(
           time: now,
           actor: const User(
@@ -592,9 +585,7 @@ void main() {
         kind: 'comment',
         activeIcon: const Icon(Icons.favorite),
         inactiveIcon: const Icon(Icons.favorite_border),
-      );
-
-      reactionToggleIcon.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -607,11 +598,9 @@ void main() {
 
     test('ReactionIcon', () {
       final builder = DiagnosticPropertiesBuilder();
-      const reactionIcon = ReactionIcon(
+      const ReactionIcon(
         icon: Icon(Icons.favorite),
-      );
-
-      reactionIcon.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -625,7 +614,7 @@ void main() {
     test('ReplyButton', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
-      final replyButton = ReplyButton(
+      ReplyButton(
         activity: EnrichedActivity(
           time: now,
           actor: const User(
@@ -643,9 +632,7 @@ void main() {
                 'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
           },
         ),
-      );
-
-      replyButton.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -659,7 +646,7 @@ void main() {
     test('RepostButton', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
-      final repostButton = RepostButton(
+      RepostButton(
         activity: EnrichedActivity(
           time: now,
           actor: const User(
@@ -677,9 +664,7 @@ void main() {
                 'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
           },
         ),
-      );
-
-      repostButton.debugFillProperties(builder);
+      ).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))

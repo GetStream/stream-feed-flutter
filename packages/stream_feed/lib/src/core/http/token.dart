@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-//TODO change this to typedef in dart 2.13
+// TODO (Sacha): change this to typedef in dart 2.13
+
 ///	The JWT auth token for a specific feed.
 ///
 /// It is created by signing the base 64 encoded JWT header and payload with

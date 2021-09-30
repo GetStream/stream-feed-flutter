@@ -358,7 +358,7 @@ class Feed {
   /// Update Activities By Id
   Future<List<Activity>> updateActivitiesById(
       Iterable<ActivityUpdate> updates) {
-    //TODO: further document that thing
+    //TODO (Sacha): further document that thing
     final token =
         userToken ?? TokenHelper.buildActivityToken(secret!, TokenAction.write);
     return feed.updateActivitiesById(token, updates);

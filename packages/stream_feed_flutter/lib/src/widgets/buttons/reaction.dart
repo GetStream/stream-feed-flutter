@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/reaction_theme.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template reaction_button}
 /// A widget that can be used to trigger a reaction.
 ///
@@ -80,13 +78,14 @@ class ReactionButton extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(StringProperty('kind', kind));
-    properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
-    properties.add(ColorProperty('hoverColor', hoverColor));
-    properties.add(StringProperty('feedGroup', feedGroup));
+    properties
+      ..add(DiagnosticsProperty<Reaction?>('reaction', reaction))
+      ..add(DiagnosticsProperty<EnrichedActivity>('activity', activity))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(StringProperty('kind', kind))
+      ..add(DiagnosticsProperty<Map<String, Object>?>('data', data))
+      ..add(ColorProperty('hoverColor', hoverColor))
+      ..add(StringProperty('feedGroup', feedGroup));
   }
 }
 
@@ -154,16 +153,17 @@ class ReactionToggleIcon extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<Reaction>('ownReactions', ownReactions));
-    properties.add(StringProperty('kind', kind));
-    properties.add(IntProperty('count', count));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
-    properties.add(StringProperty('userId', userId));
-    properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
-    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
-    properties.add(ColorProperty('hoverColor', hoverColor));
+    properties
+      ..add(IterableProperty<Reaction>('ownReactions', ownReactions))
+      ..add(StringProperty('kind', kind))
+      ..add(IntProperty('count', count))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(StringProperty('feedGroup', feedGroup))
+      ..add(DiagnosticsProperty<EnrichedActivity>('activity', activity))
+      ..add(StringProperty('userId', userId))
+      ..add(DiagnosticsProperty<Map<String, Object>?>('data', data))
+      ..add(IterableProperty<FeedId>('targetFeeds', targetFeeds))
+      ..add(ColorProperty('hoverColor', hoverColor));
   }
 }
 
@@ -230,10 +230,11 @@ class _ReactionToggleIconState extends State<ReactionToggleIcon> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('alreadyReacted', alreadyReacted));
-    properties.add(IterableProperty<Reaction?>('reactionsKind', reactionsKind));
-    properties.add(StringProperty('idToRemove', idToRemove));
-    properties.add(IntProperty('count', count));
+    properties
+      ..add(DiagnosticsProperty<bool>('alreadyReacted', alreadyReacted))
+      ..add(IterableProperty<Reaction?>('reactionsKind', reactionsKind))
+      ..add(StringProperty('idToRemove', idToRemove))
+      ..add(IntProperty('count', count));
   }
 }
 
@@ -288,8 +289,9 @@ class ReactionIcon extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IntProperty('count', count));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(ColorProperty('hoverColor', hoverColor));
+    properties
+      ..add(IntProperty('count', count))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(ColorProperty('hoverColor', hoverColor));
   }
 }

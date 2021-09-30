@@ -638,7 +638,7 @@ void main() {
       data: const {'test': 'test'},
       // latestChildren: {
       //   "test": [reaction2]
-      // },//TODO: test this
+      // },//TODO (Sacha): test this
       childrenCounts: const {'test': 1},
     );
     final enrichedActivity = EnrichedActivity(
@@ -677,7 +677,7 @@ void main() {
       data: const {'test': 'test'},
       // latestChildren: {
       //   "test": [reaction2]
-      // },//TODO: test this
+      // },//TODO (Sachas): test this
       childrenCounts: const {'test': 1},
     );
     final paginatedReactions =

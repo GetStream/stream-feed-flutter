@@ -39,7 +39,7 @@ class ImageStorageClient {
   /// Uploading an image
   /// input is a [MultipartFile]
   ///
-  /// # Example
+  /// ### Example
   /// ```dart
   /// final file = AttachmentFile(path: 'yourfilepath');
   /// await client.images.upload(multipartFile);
@@ -55,11 +55,14 @@ class ImageStorageClient {
   /// ```
   /// - To get upload progress:
   /// ```dart
-  ///  await images.upload(AttachmentFile(path: 'yourfilepath'), onSendProgress:(sentBytes,totalBytes){
-  ///    if (totalBytes != -1) {
+  /// await images.upload(
+  ///   AttachmentFile(path: 'yourfilepath'),
+  ///   onSendProgress: (sentBytes, totalBytes) {
+  ///     if (totalBytes != -1) {
   ///       print((sentBytes / total * 100).toStringAsFixed(0) + '%');
   ///     }
-  ///  });
+  ///   },
+  /// );
   /// ```
   ///
   /// API docs: https://getstream.io/activity-feeds/docs/flutter-dart/files_introduction/?q=Image

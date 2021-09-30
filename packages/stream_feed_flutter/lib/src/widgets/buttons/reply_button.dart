@@ -6,8 +6,6 @@ import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template reply_button}
 /// A reaction button that displays a post icon.
 ///
@@ -89,13 +87,13 @@ class ReplyButton extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('handleJsonKey', handleJsonKey));
-    properties.add(StringProperty('nameJsonKey', nameJsonKey));
-    properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
-    properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
-    properties.add(DoubleProperty('iconSize', iconSize));
-    properties.add(IntProperty('count', count));
+    properties
+      ..add(StringProperty('handleJsonKey', handleJsonKey))
+      ..add(StringProperty('nameJsonKey', nameJsonKey))
+      ..add(StringProperty('feedGroup', feedGroup))
+      ..add(DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity))
+      ..add(DiagnosticsProperty<Reaction?>('reaction', reaction))
+      ..add(DoubleProperty('iconSize', iconSize))
+      ..add(IntProperty('count', count));
   }
 }

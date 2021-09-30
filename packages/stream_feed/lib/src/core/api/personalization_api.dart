@@ -7,9 +7,14 @@ import 'package:stream_feed/src/core/util/extension.dart';
 
 /// {@macro personalization}
 class PersonalizationAPI {
-  /// Builds a [PersonalizationAPI].
+  /// Creates a [PersonalizationAPI].
+  ///
+  /// {@macro personalization}
   const PersonalizationAPI(this.client);
 
+  /// The Stream HTTP Client.
+  ///
+  /// {@macro stream_http_client}
   final StreamHttpClient client;
 
   /// {@macro personalizationGet}

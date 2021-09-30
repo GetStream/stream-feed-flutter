@@ -4,8 +4,6 @@ import 'package:stream_feed_flutter/src/theme/child_reaction_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template child_reaction_button}
 /// Used to trigger a reaction.
 ///
@@ -70,11 +68,12 @@ class ChildReactionButton extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Reaction>('reaction', reaction));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(StringProperty('kind', kind));
-    properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
-    properties.add(ColorProperty('hoverColor', hoverColor));
+    properties
+      ..add(DiagnosticsProperty<Reaction>('reaction', reaction))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(StringProperty('kind', kind))
+      ..add(DiagnosticsProperty<Map<String, Object>?>('data', data))
+      ..add(ColorProperty('hoverColor', hoverColor));
   }
 }
 
@@ -138,15 +137,16 @@ class ChildReactionToggleIcon extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<Reaction>('ownReactions', ownReactions));
-    properties.add(StringProperty('kind', kind));
-    properties.add(IntProperty('count', count));
-    properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
-    properties.add(StringProperty('userId', userId));
-    properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
-    properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
-    properties.add(ColorProperty('hoverColor', hoverColor));
-    properties.add(DiagnosticsProperty<Reaction>('reaction', reaction));
+    properties
+      ..add(IterableProperty<Reaction>('ownReactions', ownReactions))
+      ..add(StringProperty('kind', kind))
+      ..add(IntProperty('count', count))
+      ..add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap))
+      ..add(StringProperty('userId', userId))
+      ..add(DiagnosticsProperty<Map<String, Object>?>('data', data))
+      ..add(IterableProperty<FeedId>('targetFeeds', targetFeeds))
+      ..add(ColorProperty('hoverColor', hoverColor))
+      ..add(DiagnosticsProperty<Reaction>('reaction', reaction));
   }
 }
 

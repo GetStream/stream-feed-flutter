@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template text_area}
 /// A TextArea is a multiline text input.
 /// {@endtemplate}
@@ -53,20 +51,18 @@ class TextArea extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<TextEditingController?>(
-        'textEditingController', textEditingController));
-    properties.add(DoubleProperty('maxHeight', maxHeight));
-    properties.add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode));
-    properties.add(DiagnosticsProperty<bool>('autofocus', autofocus));
     properties
-        .add(DiagnosticsProperty<TextInputType>('keyboardType', keyboardType));
-    properties.add(StringProperty('hintText', hintText));
-    properties
-        .add(DiagnosticsProperty<TextStyle?>('inputTextStyle', inputTextStyle));
-    properties
-        .add(DiagnosticsProperty<TextStyle?>('hintTextStyle', hintTextStyle));
-    properties.add(ObjectFlagProperty<void Function(String p1)>.has(
-        'onSubmitted', onSubmitted));
+      ..add(DiagnosticsProperty<TextEditingController?>(
+          'textEditingController', textEditingController))
+      ..add(DoubleProperty('maxHeight', maxHeight))
+      ..add(DiagnosticsProperty<FocusNode?>('focusNode', focusNode))
+      ..add(DiagnosticsProperty<bool>('autofocus', autofocus))
+      ..add(DiagnosticsProperty<TextInputType>('keyboardType', keyboardType))
+      ..add(StringProperty('hintText', hintText))
+      ..add(DiagnosticsProperty<TextStyle?>('inputTextStyle', inputTextStyle))
+      ..add(DiagnosticsProperty<TextStyle?>('hintTextStyle', hintTextStyle))
+      ..add(ObjectFlagProperty<void Function(String p1)>.has(
+          'onSubmitted', onSubmitted));
   }
 }
 
