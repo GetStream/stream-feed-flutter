@@ -97,6 +97,8 @@ void main() {
 
   testWidgets('ChildReactionTheme wrap', (tester) async {
     final Key inkWellKey = UniqueKey();
+    const hoverColor = Colors.red;
+    const toggleColor = Colors.red;
     final Widget childReaction = MaterialApp(home: Scaffold(body: Builder(
       builder: (BuildContext context) {
         return InkWell(
@@ -113,7 +115,7 @@ void main() {
         home: Scaffold(
           body: ChildReactionTheme(
             data: const ChildReactionThemeData(
-                hoverColor: Colors.red, toggleColor: Colors.red),
+                hoverColor: hoverColor, toggleColor: toggleColor),
             child: Builder(
               builder: (context) {
                 navigatorContext = context;
@@ -147,7 +149,7 @@ void main() {
     // InheritedTheme.captureAll().
     await tester.tap(find.text('push wrapped'));
     await tester.pumpAndSettle(); // route animation
-    expect(inkWellColor(), Colors.red);
+    expect(inkWellColor(), hoverColor);
   });
 
   testWidgets('ChildReactionTheme updateShouldNotify', (tester) async {
