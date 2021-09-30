@@ -106,5 +106,61 @@ void main() {
 
       expect(() => StreamFeedTheme.of(capturedContext), throwsAssertionError);
     });
+
+    testWidgets('StreamFeedTheme updateShouldNotify', (tester) async {
+      TestStreamFeedTheme? result;
+      final builder = Builder(
+        builder: (context) {
+          result =
+              context.dependOnInheritedWidgetOfExactType<TestStreamFeedTheme>();
+          return Container();
+        },
+      );
+
+      final first = TestStreamFeedTheme(
+        shouldNotify: true,
+        data: StreamFeedThemeData.light(),
+        child: builder,
+      );
+
+      final second = TestStreamFeedTheme(
+        shouldNotify: false,
+        data: StreamFeedThemeData.light(),
+        child: builder,
+      );
+
+      final third = TestStreamFeedTheme(
+        shouldNotify: true,
+        data: StreamFeedThemeData.light(),
+        child: builder,
+      );
+
+      await tester.pumpWidget(first);
+      expect(result, equals(first));
+
+      await tester.pumpWidget(second);
+      expect(result, equals(first));
+
+      await tester.pumpWidget(third);
+      expect(result, equals(third));
+    });
   });
+}
+
+class TestStreamFeedTheme extends StreamFeedTheme {
+  const TestStreamFeedTheme({
+    Key? key,
+    required StreamFeedThemeData data,
+    required Widget child,
+    required this.shouldNotify,
+  }) : super(key: key, data: data, child: child);
+
+  // ignore: diagnostic_describe_all_properties
+  final bool shouldNotify;
+
+  @override
+  bool updateShouldNotify(covariant StreamFeedTheme oldWidget) {
+    super.updateShouldNotify(oldWidget);
+    return shouldNotify;
+  }
 }
