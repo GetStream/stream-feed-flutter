@@ -60,7 +60,7 @@ class ChildReactionButton extends StatelessWidget {
     return ChildReactionToggleIcon(
       activity: activity,
       count: reaction.childrenCounts?[kind] ?? 0,
-      ownReactions: reaction.ownChildren?[kind],
+      ownReactions: reaction.ownChildren?[kind], //?? [],
       reaction: reaction,
       activeIcon: activeIcon,
       inactiveIcon: inactiveIcon,
@@ -174,7 +174,10 @@ class ChildReactionToggleIcon extends StatelessWidget {
 
   Future<void> onRemoveChildReaction(BuildContext context) async {
     await DefaultFeedBlocProvider.of(context).bloc.onRemoveChildReaction(
-        kind: kind, reaction: reaction, activity: activity
+        kind: kind,
+        parentReaction: reaction,
+        childReaction: ownReactions!.last, //.ownChildren!['like']!.last,
+        activity: activity
         // activity: idToRemove!,
         );
   }

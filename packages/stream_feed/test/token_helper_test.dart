@@ -113,7 +113,7 @@ void main() {
 
     test('buildActivityToken', () async {
       final activityToken =
-          TokenHelper.buildActivityToken(secret, TokenAction.any);
+          TokenHelper.buildActivityToken(secret, TokenAction.write);
       final jwt = JsonWebToken.unverified(activityToken.token);
       final verified = await jwt.verify(keyStore);
       expect(verified, true);

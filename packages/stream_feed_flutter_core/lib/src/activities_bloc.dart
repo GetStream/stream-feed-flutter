@@ -82,33 +82,31 @@ class FeedBloc<A, Ob, T, Or> {
       {
     required String kind,
     required EnrichedActivity activity,
-    required Reaction reaction,
+    required Reaction childReaction,
+    required Reaction parentReaction
   }) async {
-    await client.reactions.delete(reaction.id!);
-    print("HERE onRemoveChildReaction");
-    final _reactions = reactionsFor(activity.id!, reaction);
-    final reactionPath = _reactions.getReactionPath(reaction);
+    await client.reactions.delete(childReaction.id!);
+    final _reactions = reactionsFor(activity.id!, parentReaction);
+    final reactionPath = _reactions.getReactionPath(parentReaction);
     final indexPath = _reactions
-        .indexWhere((r) => r.id! == reaction.id); //TODO: handle null safety
-    print("indexPath: $indexPath");
-    print("_reactions: $_reactions");
+        .indexWhere((r) => r.id! == parentReaction.id); //TODO: handle null safety
+
     final childrenCounts =
         reactionPath.childrenCounts.unshiftByKind(kind, ShiftType.decrement);
-    print("childrenCounts: $childrenCounts");
     final latestChildren = reactionPath.latestChildren
-        .unshiftByKind(kind, reaction, ShiftType.decrement);
+        .unshiftByKind(kind, childReaction, ShiftType.decrement);
     final ownChildren = reactionPath.ownChildren
-        .unshiftByKind(kind, reaction, ShiftType.decrement);
+        .unshiftByKind(kind, childReaction, ShiftType.decrement);
 
     final updatedReaction = reactionPath.copyWith(
       ownChildren: ownChildren,
       latestChildren: latestChildren,
       childrenCounts: childrenCounts,
     );
-    print("reaction: $updatedReaction");
 
-    //adds reaction to the stream
-    // _reactionsControllers.unshiftById(activity.id!, reaction);
+    //remove reaction from rxstream
+    _reactionsControllers.unshiftById(
+        activity.id!, childReaction, ShiftType.decrement);
 
     if (_reactionsControllers[activity.id!]?.hasValue != null) {
       _reactionsControllers[activity.id!]!.value =
@@ -126,7 +124,6 @@ class FeedBloc<A, Ob, T, Or> {
       List<FeedId>? targetFeeds}) async {
     final childReaction = await client.reactions.addChild(kind, reaction.id!,
         data: data, userId: userId, targetFeeds: targetFeeds);
-    print("onAddChildReaction");
     final _reactions = reactionsFor(activity.id!, reaction);
     final reactionPath = _reactions.getReactionPath(reaction);
     final indexPath = _reactions
@@ -134,8 +131,9 @@ class FeedBloc<A, Ob, T, Or> {
 
     final childrenCounts = reactionPath.childrenCounts.unshiftByKind(kind);
     final latestChildren =
-        reactionPath.latestChildren.unshiftByKind(kind, reaction);
-    final ownChildren = reactionPath.ownChildren.unshiftByKind(kind, reaction);
+        reactionPath.latestChildren.unshiftByKind(kind, childReaction);
+    final ownChildren =
+        reactionPath.ownChildren.unshiftByKind(kind, childReaction);
 
     final updatedReaction = reactionPath.copyWith(
       ownChildren: ownChildren,
@@ -143,8 +141,8 @@ class FeedBloc<A, Ob, T, Or> {
       childrenCounts: childrenCounts,
     );
 
-    // adds reaction to the stream
-    _reactionsControllers.unshiftById(activity.id!, reaction);
+    // adds reaction to the rxstream
+    _reactionsControllers.unshiftById(activity.id!, childReaction);
 
     if (_reactionsControllers[activity.id!]?.hasValue != null) {
       _reactionsControllers[activity.id!]!.value =

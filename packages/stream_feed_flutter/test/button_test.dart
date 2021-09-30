@@ -152,6 +152,7 @@ void main() {
     const userId = 'user:300';
     final withoutOwnReactions = ChildReactionToggleIcon(
       activity: EnrichedActivity(),
+      ownReactions: [],
       hoverColor: Colors.lightBlue,
       reaction: reaction,
       kind: kind,
@@ -160,6 +161,7 @@ void main() {
       activeIcon: activeIcon,
     );
     final withOwnReactions = ChildReactionToggleIcon(
+      ownReactions: [],
       activity: EnrichedActivity(),
       hoverColor: Colors.lightBlue,
       reaction: reaction,
@@ -476,6 +478,7 @@ void main() {
       final now = DateTime.now();
       final childReactionToggleIcon = ChildReactionToggleIcon(
         count: 1,
+        ownReactions: [],
         activity: EnrichedActivity(),
         reaction: Reaction(
           createdAt: now,
