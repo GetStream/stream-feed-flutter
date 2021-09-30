@@ -99,14 +99,18 @@ void main() {
     final Key inkWellKey = UniqueKey();
     const hoverColor = Colors.red;
     const toggleColor = Colors.red;
-    final Widget childReaction = MaterialApp(home: Scaffold(body: Builder(
-      builder: (BuildContext context) {
-        return InkWell(
-          key: inkWellKey,
-          hoverColor: ChildReactionTheme.of(context).hoverColor,
-        );
-      },
-    )));
+    final Widget childReaction = MaterialApp(
+      home: Scaffold(
+        body: Builder(
+          builder: (BuildContext context) {
+            return InkWell(
+              key: inkWellKey,
+              hoverColor: ChildReactionTheme.of(context).hoverColor,
+            );
+          },
+        ),
+      ),
+    );
 
     late BuildContext navigatorContext;
 
@@ -121,7 +125,8 @@ void main() {
                 navigatorContext = context;
 
                 return ElevatedButton(
-                  child: const Text('push wrapped'),//TODO(sacha): push unwrapped
+                  child:
+                      const Text('push wrapped'), //TODO(sacha): push unwrapped
                   onPressed: () {
                     Navigator.of(context).push<void>(
                       MaterialPageRoute<void>(
