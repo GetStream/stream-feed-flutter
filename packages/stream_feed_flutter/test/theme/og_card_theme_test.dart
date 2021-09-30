@@ -111,14 +111,13 @@ void main() {
 
     expect((tester.firstWidget(find.byType(Container)) as Container).color,
         Colors.white);
-  }); 
+  });
 
   testWidgets('OgCardTheme updateShouldNotify', (tester) async {
     TestOgCardTheme? result;
     final builder = Builder(
       builder: (context) {
-        result = context
-            .dependOnInheritedWidgetOfExactType<TestOgCardTheme>();
+        result = context.dependOnInheritedWidgetOfExactType<TestOgCardTheme>();
         return Container();
       },
     );

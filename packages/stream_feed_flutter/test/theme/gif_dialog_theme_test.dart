@@ -111,14 +111,14 @@ void main() {
 
     expect((tester.firstWidget(find.byType(Container)) as Container).color,
         Colors.white);
-  }); 
+  });
 
   testWidgets('GalleryHeaderTheme updateShouldNotify', (tester) async {
     TestGifDialogTheme? result;
     final builder = Builder(
       builder: (context) {
-        result = context
-            .dependOnInheritedWidgetOfExactType<TestGifDialogTheme>();
+        result =
+            context.dependOnInheritedWidgetOfExactType<TestGifDialogTheme>();
         return Container();
       },
     );

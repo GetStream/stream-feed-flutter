@@ -328,7 +328,7 @@ void main() {
         final backButton = find.byType(StreamSvgIcon);
         expect(backButton, findsOneWidget);
 
-        expect(() => tester.tap(backButton), returnsNormally); 
+        expect(() => tester.tap(backButton), returnsNormally);
       });
     });
 
