@@ -104,7 +104,7 @@ void main() {
         ),
       );
 
-      expect(StreamFeedTheme.of(capturedContext), throwsAssertionError);
+      expect(() => StreamFeedTheme.of(capturedContext), throwsAssertionError);
     });
   });
 }
