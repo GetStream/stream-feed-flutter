@@ -32,4 +32,13 @@ void main() {
 
     expect(media.isValidUrl, true);
   });
+
+  test('isValidUrl is false', () {
+    final media = Media(
+      url:
+          'someurl.com/images/test',
+    );
+
+    expect(media.isValidUrl, false);
+  });
 }
