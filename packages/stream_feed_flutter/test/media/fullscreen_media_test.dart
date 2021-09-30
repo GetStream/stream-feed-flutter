@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
@@ -80,6 +81,24 @@ void main() {
       await tester.drag(find.byType(PageView), const Offset(-401, 0));
       await tester.pumpAndSettle();
       expect(find.text('3 of 3'), findsOneWidget);
+    });
+
+    testWidgets('FullscreenMedia debugFillProperties', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      const FullscreenMedia(media: []).debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) => node.toString())
+          .toList();
+
+      expect(
+        description,
+        [
+          'media: []',
+          'startIndex: 0',
+        ],
+      );
     });
   });
 }
