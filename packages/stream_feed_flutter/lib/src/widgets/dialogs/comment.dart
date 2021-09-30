@@ -160,6 +160,7 @@ class CommentView extends StatelessWidget {
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,
                 onUserTap: onUserTap,
+                kind: 'comment',
                 flags: EnrichmentFlags()
                     .withReactionCounts()
                     .withOwnChildren()

@@ -26,9 +26,15 @@ class FeedBloc<A, Ob, T, Or> {
       _activitiesController.stream;
 
   /// The current reactions list as a stream
-  Stream<List<Reaction>>? reactionsStreamFor(
-          String activityId) => //TODO: better name
-      _reactionsControllers[activityId]?.stream;
+  Stream<List<Reaction>>? reactionsStreamFor(String activityId,
+      [String? kind]) {
+    //TODO: better name
+    final reactionStream = _reactionsControllers[activityId]?.stream;
+    return kind != null
+        ? reactionStream?.map((reactions) =>
+            reactions.where((reaction) => reaction.kind == kind).toList())
+        : reactionStream;
+  }
 
   final Map<String, BehaviorSubject<List<Reaction>>> _reactionsControllers = {};
 
@@ -79,17 +85,15 @@ class FeedBloc<A, Ob, T, Or> {
   /// Remove child reaction
   Future<void> onRemoveChildReaction(
       //TODO: remove this to from the stream
-      {
-    required String kind,
-    required EnrichedActivity activity,
-    required Reaction childReaction,
-    required Reaction parentReaction
-  }) async {
+      {required String kind,
+      required EnrichedActivity activity,
+      required Reaction childReaction,
+      required Reaction parentReaction}) async {
     await client.reactions.delete(childReaction.id!);
     final _reactions = reactionsFor(activity.id!, parentReaction);
     final reactionPath = _reactions.getReactionPath(parentReaction);
-    final indexPath = _reactions
-        .indexWhere((r) => r.id! == parentReaction.id); //TODO: handle null safety
+    final indexPath = _reactions.indexWhere(
+        (r) => r.id! == parentReaction.id); //TODO: handle null safety
 
     final childrenCounts =
         reactionPath.childrenCounts.unshiftByKind(kind, ShiftType.decrement);
