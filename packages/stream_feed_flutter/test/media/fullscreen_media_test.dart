@@ -83,6 +83,38 @@ void main() {
       expect(find.text('3 of 3'), findsOneWidget);
     });
 
+    testWidgets('Tap back button', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) => StreamFeedTheme(
+            data: StreamFeedThemeData.light(),
+            child: child!,
+          ),
+          home: FullscreenMedia(
+            media: [
+              Media(
+                url:
+                    'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw',
+              ),
+              Media(
+                url:
+                    'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys',
+              ),
+              Media(
+                url:
+                    'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8',
+              ),
+            ],
+          ),
+        ),
+      );
+
+      final backButton = find.byType(StreamSvgIcon);
+      expect(backButton, findsOneWidget);
+
+      expect(() => tester.tap(backButton), returnsNormally);
+    });
+
     testWidgets('FullscreenMedia debugFillProperties', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
       const FullscreenMedia(media: []).debugFillProperties(builder);
