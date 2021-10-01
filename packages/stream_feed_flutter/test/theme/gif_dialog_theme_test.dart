@@ -104,7 +104,7 @@ void main() {
           ),
         ),
       );
-    };
+    }
 
     Color inkWellColor() {
       return tester.widget<InkWell>(find.byKey(inkWellKey)).hoverColor!;
