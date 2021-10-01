@@ -3,7 +3,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
@@ -12,10 +11,7 @@ import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/delete_activity_dialog.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/flat_activity_list.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
-import 'mock.dart';
 
 void main() {
   group('Actions', () {
