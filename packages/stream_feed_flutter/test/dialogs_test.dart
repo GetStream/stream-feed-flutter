@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
@@ -12,6 +13,8 @@ import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/delete_activity_dialog.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
+import 'mock.dart';
 
 void main() {
   group('Actions', () {
@@ -457,10 +460,49 @@ void main() {
     });
 
     testWidgets('Open the dialog and tap "yes"', (tester) async {
-      await mockNetworkImages(() async {
-        //
-      });
-    }, skip: true);
+      const activityId = '1';
+      const feedGroup = 'timeline';
+      final mockClient = MockStreamFeedClient();
+      final mockFeed = MockFlatFeed();
+      when(() => mockClient.flatFeed(feedGroup)).thenReturn(mockFeed);
+      when(() => mockFeed.removeActivityById(activityId))
+          .thenAnswer((_) async => Future.value());
+
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeedCore(
+              client: mockClient,
+              child: StreamFeedTheme(
+                data: StreamFeedThemeData.light(),
+                child: child!,
+              ),
+            );
+          },
+          home: const Scaffold(
+            body: DeleteActivityDialog(
+              activityId: activityId,
+              feedGroup: feedGroup,
+            ),
+          ),
+        ),
+      );
+
+      final deleteDialog = find.byType(AlertDialog);
+      expect(deleteDialog, findsOneWidget);
+
+      final yesButton = find.text('Yes');
+      expect(yesButton, findsOneWidget);
+
+      final noButton = find.text('No');
+      expect(noButton, findsOneWidget);
+
+      await tester.tap(yesButton);
+      await tester.pumpAndSettle();
+
+      verify(() => mockClient.flatFeed(feedGroup)).called(1);
+      verify(() => mockFeed.removeActivityById(activityId)).called(1);
+    });
 
     testWidgets('debugFillProperties', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
@@ -479,3 +521,5 @@ void main() {
     });
   });
 }
+
+class MockFlatFeed extends Mock implements FlatFeed {}
