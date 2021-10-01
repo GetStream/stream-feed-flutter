@@ -23,10 +23,12 @@ void main() {
       await tester.pumpWidget(
         StreamFeedTheme(
           data: StreamFeedThemeData.light(),
-          child: const Material(
+          child: Material(
             child: Directionality(
               textDirection: TextDirection.ltr,
-              child: EmojisAction(),
+              child: EmojisAction(
+                key: UniqueKey(),
+              ),
             ),
           ),
         ),
