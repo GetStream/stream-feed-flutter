@@ -62,17 +62,15 @@ class StreamFeedThemeData with Diagnosticable {
           color: Color(0xff0076ff),
           fontSize: 14,
         ),
-        hashtagTextStyle: const TextStyle(
+        hashtagTextStyle: TextStyle(
           color: Color(0xff0076ff),
           fontSize: 14,
         )),
     this.gifDialogTheme = const GifDialogThemeData(
       boxDecoration: BoxDecoration(
-        borderRadius: BorderRadius.all(const Radius.circular(6)),
+        borderRadius: BorderRadius.all(Radius.circular(6)),
         border: Border.fromBorderSide(BorderSide(
           color: Color(0xFF2196F3),
-          width: 1.0,
-          style: BorderStyle.solid,
         )),
       ),
       iconColor: Colors.blue,
@@ -103,10 +101,10 @@ class StreamFeedThemeData with Diagnosticable {
 
   /// A default light theme.
   factory StreamFeedThemeData.light() =>
-      StreamFeedThemeData(brightness: Brightness.light);
+      const StreamFeedThemeData(brightness: Brightness.light);
 
   /// A default dark theme.
-  factory StreamFeedThemeData.dark() => StreamFeedThemeData(
+  factory StreamFeedThemeData.dark() => const StreamFeedThemeData(
         brightness: Brightness.dark,//TODO(sacha): copyWith reaction
       );
 
