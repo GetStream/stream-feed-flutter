@@ -113,7 +113,7 @@ void main() {
 
     await tester.pumpWidget(buildFrame());
 
-// Show the route which contains InkWell which was wrapped with
+    // Show the route which contains InkWell which was wrapped with
     // InheritedTheme.captureAll().
     await tester.tap(find.text('push wrapped'));
     await tester.pumpAndSettle(); // route animation
