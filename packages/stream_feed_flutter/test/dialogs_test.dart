@@ -90,8 +90,10 @@ void main() {
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: Stack(
-                children: const [
-                  LeftActions(),
+                children: [
+                  LeftActions(
+                    key: UniqueKey(),
+                  ),
                 ],
               ),
             ),
