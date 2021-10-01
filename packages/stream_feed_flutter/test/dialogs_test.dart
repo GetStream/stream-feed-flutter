@@ -521,5 +521,3 @@ void main() {
     });
   });
 }
-
-class MockFlatFeed extends Mock implements FlatFeed {}
