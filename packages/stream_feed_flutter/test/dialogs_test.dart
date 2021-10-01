@@ -10,6 +10,7 @@ import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
+import 'package:stream_feed_flutter/src/widgets/dialogs/delete_activity_dialog.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
 import 'package:stream_feed_flutter/src/widgets/pages/flat_activity_list.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -456,5 +457,21 @@ void main() {
         //
       });
     }, skip: true);
+
+    testWidgets('debugFillProperties', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      const DeleteActivityDialog(
+        activityId: '1',
+        feedGroup: 'timeline',
+      ).debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], '"1"');
+    });
   });
 }
