@@ -119,7 +119,9 @@ void main() {
         home: Scaffold(
           body: ChildReactionTheme(
             data: const ChildReactionThemeData(
-                hoverColor: hoverColor, toggleColor: toggleColor),
+              hoverColor: hoverColor,
+              toggleColor: toggleColor,
+            ),
             child: Builder(
               builder: (context) {
                 navigatorContext = context;
