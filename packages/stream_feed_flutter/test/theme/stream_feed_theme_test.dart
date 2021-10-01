@@ -33,7 +33,7 @@ void main() {
     testWidgets('default StreamFeedThemeData debugFillProperties',
         (tester) async {
       final builder = DiagnosticPropertiesBuilder();
-      const StreamFeedThemeData(
+      const StreamFeedThemeData.raw(
         brightness: Brightness.light,
         childReactionTheme: ChildReactionThemeData(),
         galleryHeaderTheme: GalleryHeaderThemeData(),
