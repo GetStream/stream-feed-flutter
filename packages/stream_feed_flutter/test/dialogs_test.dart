@@ -35,10 +35,12 @@ void main() {
     });
     testWidgets('MediasAction', (tester) async {
       await tester.pumpWidget(
-        const Material(
+        Material(
           child: Directionality(
             textDirection: TextDirection.ltr,
-            child: MediasAction(),
+            child: MediasAction(
+              key: UniqueKey(),
+            ),
           ),
         ),
       );
@@ -50,10 +52,12 @@ void main() {
       await tester.pumpWidget(
         StreamFeedTheme(
           data: StreamFeedThemeData.light(),
-          child: const Material(
+          child: Material(
             child: Directionality(
               textDirection: TextDirection.ltr,
-              child: GIFAction(),
+              child: GIFAction(
+                key: UniqueKey(),
+              ),
             ),
           ),
         ),
