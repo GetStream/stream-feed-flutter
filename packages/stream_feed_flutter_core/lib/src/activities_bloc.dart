@@ -18,17 +18,15 @@ class FeedBloc<A, Ob, T, Or> {
       _reactionsControllers[activityId]?.valueOrNull ??
       (reaction != null ? [reaction] : []);
 
-  // void set updateactivities(List<EnrichedActivity> newActivities) =>
-  //     _activitiesController.value = newActivities;
-
   /// The current activities list as a stream
   Stream<List<EnrichedActivity<A, Ob, T, Or>>> get activitiesStream =>
       _activitiesController.stream;
 
   /// The current reactions list as a stream
-  Stream<List<Reaction>>? reactionsStreamFor(String activityId,
+  Stream<List<Reaction>>? reactionsStreamFor(
+      //TODO: better name?
+      String activityId,
       [String? kind]) {
-    //TODO: better name
     final reactionStream = _reactionsControllers[activityId]?.stream;
     return kind != null
         ? reactionStream?.map((reactions) =>
@@ -73,7 +71,6 @@ class FeedBloc<A, Ob, T, Or> {
 
     final addedActivity =
         await client.flatFeed(feedGroup, userId).addActivity(activity);
-    //TODO: add activity to the stream
     await trackAnalytics(
       label: 'post',
       foreignId: activity.foreignId,
@@ -84,7 +81,6 @@ class FeedBloc<A, Ob, T, Or> {
 
   /// Remove child reaction
   Future<void> onRemoveChildReaction(
-      //TODO: remove this to from the stream
       {required String kind,
       required EnrichedActivity activity,
       required Reaction childReaction,
@@ -119,7 +115,6 @@ class FeedBloc<A, Ob, T, Or> {
   }
 
   Future<Reaction> onAddChildReaction(
-      //TODO: add this to the stream
       {required String kind,
       required Reaction reaction,
       required EnrichedActivity activity,
@@ -157,11 +152,12 @@ class FeedBloc<A, Ob, T, Or> {
   }
 
   /// Remove reaction from the feed.
-  Future<void> onRemoveReaction(
-      {required String kind,
-      required EnrichedActivity<A, Ob, T, Or> activity,
-      required Reaction reaction,
-      required String feedGroup}) async {
+  Future<void> onRemoveReaction({
+    required String kind,
+    required EnrichedActivity<A, Ob, T, Or> activity,
+    required Reaction reaction,
+    required String feedGroup,
+  }) async {
     await client.reactions.delete(reaction.id!);
     await trackAnalytics(
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
@@ -247,11 +243,14 @@ class FeedBloc<A, Ob, T, Or> {
         : print('warning: analytics: not enabled'); //TODO:logger
   }
 
-  Future<void> queryReactions(LookupAttribute lookupAttr, String lookupValue,
-      {Filter? filter,
-      int? limit,
-      String? kind,
-      EnrichmentFlags? flags}) async {
+  Future<void> queryReactions(
+    LookupAttribute lookupAttr,
+    String lookupValue, {
+    Filter? filter,
+    int? limit,
+    String? kind,
+    EnrichmentFlags? flags,
+  }) async {
     _reactionsControllers[lookupValue] = BehaviorSubject<List<Reaction>>();
     _queryReactionsLoadingControllers[lookupValue] =
         BehaviorSubject.seeded(false);
@@ -343,7 +342,6 @@ class FeedBloc<A, Ob, T, Or> {
 }
 
 class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
-  //TODO: merge this with StreamFeedProvider ?
   const FeedBlocProvider(
       {Key? key, required this.bloc, required Widget child, this.navigatorKey})
       : super(key: key, child: child);
@@ -354,7 +352,7 @@ class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
   factory FeedBlocProvider.of(BuildContext context) {
     final FeedBlocProvider<A, Ob, T, Or>? result = context
         .dependOnInheritedWidgetOfExactType<FeedBlocProvider<A, Ob, T, Or>>();
-    assert(result != null, 'No FeedBloc found in context');
+    assert(result != null, 'No FeedBlocProvider found in context');
     return result!;
   }
 
