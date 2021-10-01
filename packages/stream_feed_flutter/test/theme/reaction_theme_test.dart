@@ -100,59 +100,66 @@ void main() {
   });
 
   testWidgets('ReactionTheme wrap', (tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Builder(
+    final Key inkWellKey = UniqueKey();
+    const hoverColor = Colors.red;
+
+    final Widget result = MaterialApp(
+      home: Scaffold(
+        body: Builder(
           builder: (context) {
-            final navigator = Navigator.of(context);
-
-            final themes =
-                InheritedTheme.capture(from: context, to: navigator.context);
-
-            return GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext _) {
-                      // Wrap the actual child of the route in the previously
-                      // captured themes.
-                      return themes.wrap(
-                        ReactionTheme(
-                          data: const ReactionThemeData(),
-                          child: Builder(
-                            builder: (context) {
-                              final theme = ReactionTheme.of(context);
-                              return InheritedTheme.captureAll(
-                                context,
-                                Container(
-                                  alignment: Alignment.center,
-                                  color: Colors.white,
-                                  child: const Text('Hello World'),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
-              child: const Center(child: Text('Tap Here')),
+            return InkWell(
+              key: inkWellKey,
+              hoverColor: ReactionTheme.of(context).hoverColor,
             );
           },
         ),
       ),
     );
 
-    final tapButton = find.text('Tap Here');
-    expect(tapButton, findsOneWidget);
+    late BuildContext navigatorContext;
 
-    await tester.tap(tapButton);
-    await tester.pumpAndSettle();
+    MaterialApp buildFrame() {
+      return MaterialApp(
+        home: Scaffold(
+          body: ReactionTheme(
+            data: const ReactionThemeData(
+              hoverColor: hoverColor,
+            ),
+            child: Builder(
+              builder: (context) {
+                navigatorContext = context;
 
-    expect((tester.firstWidget(find.byType(Container)) as Container).color,
-        Colors.white);
+                return ElevatedButton(
+                  child:
+                      const Text('push wrapped'), //TODO(sacha): push unwrapped
+                  onPressed: () {
+                    Navigator.of(context).push<void>(
+                      MaterialPageRoute<void>(
+                        // Capture the shadow ChildReactionTheme.
+                        builder: (BuildContext _) =>
+                            InheritedTheme.captureAll(context, result),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      );
+    }
+
+    Color inkWellColor() {
+      return tester.widget<InkWell>(find.byKey(inkWellKey)).hoverColor!;
+    }
+
+    await tester.pumpWidget(buildFrame());
+
+    // Show the route which contains InkWell which was wrapped with
+    // InheritedTheme.captureAll().
+    await tester.tap(find.text('push wrapped'));
+    await tester.pumpAndSettle(); // route animation
+    expect(inkWellColor(), hoverColor);
   });
 
   testWidgets('ReactionTheme updateShouldNotify', (tester) async {
