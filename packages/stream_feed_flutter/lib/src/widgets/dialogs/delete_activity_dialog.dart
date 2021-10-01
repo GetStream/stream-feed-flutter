@@ -17,7 +17,7 @@ class DeleteActivityDialog extends StatelessWidget {
   final String activityId;
 
   /// The feed group that the activity being deleted belongs to.
-  /// 
+  ///
   /// Ex: 'timeline'.
   final String feedGroup;
 

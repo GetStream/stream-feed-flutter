@@ -35,8 +35,7 @@ void main() {
 
   test('isValidUrl is false', () {
     final media = Media(
-      url:
-          'someurl.com/images/test',
+      url: 'someurl.com/images/test',
     );
 
     expect(media.isValidUrl, false);

@@ -71,7 +71,7 @@ class UserBar extends StatelessWidget {
   final bool showReactedBy;
 
   /// The feed group that this activity belongs to.
-  /// 
+  ///
   /// Ex: 'timeline'.
   final String feedGroup;
 
