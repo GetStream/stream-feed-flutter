@@ -30,6 +30,8 @@ class DeleteActivityDialog extends StatelessWidget {
         TextButton(
           child: const Text('Yes'),
           onPressed: () {
+            // Keep in mind that we might need to refactor this so that
+            // users pass in their own logic.
             StreamFeedCore.of(context)
                 .client
                 .flatFeed(feedGroup)
