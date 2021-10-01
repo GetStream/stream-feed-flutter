@@ -25,6 +25,7 @@ void main() {
           },
           home: Scaffold(
             body: ActivityHeader(
+              feedGroup: 'timeline',
               activity: EnrichedActivity(
                 id: '1',
                 time: DateTime.now(),
@@ -302,6 +303,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityHeader = ActivityHeader(
+        feedGroup: 'timeline',
         activity: EnrichedActivity(
           id: '1',
           time: now,

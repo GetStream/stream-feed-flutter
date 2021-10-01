@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/user_bar_theme.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
+import 'package:stream_feed_flutter/src/widgets/dialogs/delete_activity_dialog.dart';
 import 'package:stream_feed_flutter/src/widgets/human_readable_timestamp.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
@@ -20,6 +21,7 @@ class UserBar extends StatelessWidget {
     required this.timestamp,
     required this.kind,
     required this.user,
+    required this.feedGroup,
     this.onUserTap,
     this.reactionIcon,
     this.afterUsername,
@@ -67,6 +69,11 @@ class UserBar extends StatelessWidget {
   ///
   /// Defaults to `false`.
   final bool showReactedBy;
+
+  /// The feed group that this activity belongs to.
+  /// 
+  /// Ex: 'timeline'.
+  final String feedGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -129,27 +136,9 @@ class UserBar extends StatelessWidget {
             if (value == 'delete') {
               showDialog(
                 context: context,
-                builder: (_) => AlertDialog(
-                  title: const Text('Delete'),
-                  content:
-                      const Text('Do you really want to delete this activity?'),
-                  actions: [
-                    TextButton(
-                      child: const Text('Yes'),
-                      onPressed: () {
-                        StreamFeedCore.of(context)
-                            .client
-                            .flatFeed('timeline')
-                            .removeActivityById(activityId);
-                      },
-                    ),
-                    TextButton(
-                      child: const Text('No'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
+                builder: (_) => DeleteActivityDialog(
+                  activityId: activityId,
+                  feedGroup: feedGroup,
                 ),
               );
             }

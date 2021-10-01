@@ -1,10 +1,9 @@
 // ignore_for_file: cascade_invocations
 
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
@@ -12,7 +11,10 @@ import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/flat_activity_list.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
+import 'mock.dart';
 
 void main() {
   group('Actions', () {
@@ -350,6 +352,7 @@ void main() {
             },
             home: Scaffold(
               body: ActivityHeader(
+                feedGroup: 'timeline',
                 activity: EnrichedActivity(
                   id: '1',
                   time: DateTime.now(),
@@ -390,5 +393,68 @@ void main() {
         expect(noButton, findsOneWidget);
       });
     });
+
+    testWidgets('Open the dialog and tap "no"', (tester) async {
+      await mockNetworkImages(() async {
+        await tester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) {
+              return StreamFeedTheme(
+                data: StreamFeedThemeData.light(),
+                child: child!,
+              );
+            },
+            home: Scaffold(
+              body: ActivityHeader(
+                feedGroup: 'timeline',
+                activity: EnrichedActivity(
+                  id: '1',
+                  time: DateTime.now(),
+                  actor: const User(
+                    data: {
+                      'name': 'Rosemary',
+                      'handle': '@rosemary',
+                      'subtitle': 'likes playing fresbee in the park',
+                      'profile_image':
+                          'https://randomuser.me/api/portraits/women/20.jpg',
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        final popupMenuButton = find.byIcon(Icons.more_vert);
+        expect(popupMenuButton, findsOneWidget);
+
+        await tester.tap(popupMenuButton);
+        await tester.pumpAndSettle();
+
+        final deleteButton = find.text('Delete');
+        expect(deleteButton, findsOneWidget);
+
+        await tester.tap(deleteButton);
+        await tester.pumpAndSettle();
+
+        final deleteDialog = find.byType(AlertDialog);
+        expect(deleteDialog, findsOneWidget);
+
+        final yesButton = find.text('Yes');
+        expect(yesButton, findsOneWidget);
+
+        final noButton = find.text('No');
+        expect(noButton, findsOneWidget);
+
+        await tester.tap(noButton);
+        await tester.pumpAndSettle();
+      });
+    });
+
+    testWidgets('Open the dialog and tap "yes"', (tester) async {
+      await mockNetworkImages(() async {
+        //
+      });
+    }, skip: true);
   });
 }

@@ -72,6 +72,7 @@ class ActivityWidget extends StatelessWidget {
         children: [
           activityHeaderBuilder?.call(context, activity) ??
               ActivityHeader(
+                feedGroup: feedGroup,
                 nameJsonKey: nameJsonKey,
                 handleJsonKey: handleJsonKey,
                 activity: activity,

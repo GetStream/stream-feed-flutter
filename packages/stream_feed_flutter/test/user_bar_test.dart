@@ -21,6 +21,7 @@ void main() {
           },
           home: Scaffold(
             body: UserBar(
+              feedGroup: 'timeline',
               showReactedBy: true,
               activityId: '1',
               kind: 'like',
@@ -64,6 +65,7 @@ void main() {
     final now = DateTime.now();
     final userBar = UserBar(
       activityId: '1',
+      feedGroup: 'timeline',
       kind: 'like',
       timestamp: now,
       user: const User(
