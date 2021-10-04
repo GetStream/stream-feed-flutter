@@ -10,8 +10,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
 import 'mock.dart';
 
 void main() {
-  group('ActivityListPage', () {
-    testWidgets('ActivityListPage', (tester) async {
+  group('FlatActivityListPage', () {
+    testWidgets('widget', (tester) async {
       await mockNetworkImages(() async {
         final activities = [
           EnrichedActivity(
@@ -49,8 +49,8 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: FeedBlocProvider(
-                bloc: FeedBloc(
+              body: DefaultFeedBlocProvider(
+                bloc: DefaultFeedBloc(
                   analyticsClient: mockStreamAnalytics,
                   client: mockClient,
                 ),
