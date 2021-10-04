@@ -110,5 +110,38 @@ main() {
             })
           ]));
     });
+    test('onRemoveReaction', () async {
+      const reactionId = 'reactionId';
+      final reaction = Reaction(id: reactionId);
+      bloc.reactionsControllers = mockReactionControllers;
+      when(() => mockReactionControllers[activityId])
+          .thenAnswer((_) => BehaviorSubject.seeded(reactions));
+      expect(bloc.reactionsControllers[activityId]!.value, reactions);
+      when(() => mockReactions.delete(reactionId))
+          .thenAnswer((invocation) => Future.value());
+
+      await bloc.onRemoveReaction(
+        activity: EnrichedActivity(id: activityId, reactionCounts: {
+          'like': 1
+        }, ownReactions: {
+          'like': [reaction]
+        }, latestReactions: {
+          'like': [reaction]
+        }),
+        feedGroup: feedGroup,
+        kind: kind,
+        reaction: reaction,
+      );
+      verify(() => mockReactions.delete(reactionId)).called(1);
+      await expectLater(
+          bloc.activitiesStream,
+          emits([
+            EnrichedActivity(
+                id: activityId,
+                reactionCounts: {'like': 0},
+                ownReactions: {'like': []},
+                latestReactions: {'like': []})
+          ]));
+    });
   });
 }
