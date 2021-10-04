@@ -50,8 +50,7 @@ void main() {
           () => StreamFeedCore.of(childKey.currentState!.context),
           throwsA(predicate<AssertionError>((e) =>
               e.message ==
-              '''You must have a StreamFeed widget at the top of your widget tree''')));
-      // expect(find.byKey(childKey), findsOneWidget);
+              '''You must have a StreamFeedCore widget at the top of your widget tree''')));
     },
   );
 }
