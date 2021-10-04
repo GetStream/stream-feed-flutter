@@ -109,6 +109,8 @@ main() {
               'like': [addedReaction]
             })
           ]));
+
+      //TODO: test reaction Stream
     });
     test('onRemoveReaction', () async {
       const reactionId = 'reactionId';
@@ -142,6 +144,8 @@ main() {
                 ownReactions: {'like': []},
                 latestReactions: {'like': []})
           ]));
+
+      //TODO: test reaction Stream
     });
   });
 }
