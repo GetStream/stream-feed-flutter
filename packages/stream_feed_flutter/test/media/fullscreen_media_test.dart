@@ -59,15 +59,15 @@ void main() {
             media: [
               Media(
                 url:
-                    'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw',
+                    'https://cdn.pixabay.com/photo/2015/03/16/10/59/sunset-675847_960_720.jpg',
               ),
               Media(
                 url:
-                    'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys',
+                    'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg',
               ),
               Media(
                 url:
-                    'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8',
+                    'https://randomwordgenerator.com/img/picture-generator/52e8dd474e56a814f1dc8460962e33791c3ad6e04e507441722978d6904ec2_640.jpg',
               ),
             ],
           ),
