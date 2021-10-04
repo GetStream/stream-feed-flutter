@@ -10,7 +10,8 @@ void main() {
       'https://someurl.com/audio/test.mp3',
       'https://someurl.com/audio/test.wav',
       'https://someurl.com/video/test.mp4',
-      'https://someurl.com/media/test.mov'
+      'https://someurl.com/media/test.mov',
+      'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw'
     ];
     final mediaTypes = urls.map((url) => Media(url: url).mediaType).toList();
     expect(mediaTypes, [
@@ -21,6 +22,7 @@ void main() {
       MediaType.audio,
       MediaType.video,
       MediaType.unknown,
+      MediaType.image,
     ]);
   });
 

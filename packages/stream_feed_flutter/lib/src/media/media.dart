@@ -16,7 +16,7 @@ class Media {
   /// Checks the [url] for specific file extensions and returns the
   /// appropriate [MediaType].
   MediaType get mediaType {
-    final fileExt = url.split('.').last;
+    final fileExt = Uri.parse(url).pathSegments.last.split('.').last;
 
     if (fileExt == 'jpeg') {
       return MediaType.image;
