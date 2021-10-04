@@ -85,6 +85,7 @@ main() {
     });
 
     test('onAddReaction', () async {
+      final addedReaction = Reaction();
       bloc.reactionsControllers = mockReactionControllers;
       when(() => mockReactionControllers[activityId])
           .thenAnswer((_) => BehaviorSubject.seeded(reactions));
@@ -92,7 +93,7 @@ main() {
       when(() => mockReactions.add(
             kind,
             activityId,
-          )).thenAnswer((_) async => Reaction());
+          )).thenAnswer((_) async => addedReaction);
 
       await bloc.onAddReaction(
           activity: EnrichedActivity(id: activityId),
@@ -102,6 +103,17 @@ main() {
             kind,
             activityId,
           )).called(1);
+      await expectLater(
+          bloc.activitiesStream,
+          emits([
+            EnrichedActivity(id: activityId, reactionCounts: {
+              'like': 1
+            }, ownReactions: {
+              'like': [addedReaction]
+            }, latestReactions: {
+              'like': [addedReaction]
+            })
+          ]));
     });
   });
 }
