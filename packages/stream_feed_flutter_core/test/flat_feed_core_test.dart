@@ -46,21 +46,16 @@ void main() {
       home: Scaffold(
         // body: StreamFeedProvider(
 
-        body: FeedBlocProvider(
-          bloc: FeedBloc(client: mockClient),
-          child: FlatFeedCore(
-            bloc: DefaultFeedBloc(client: mockClient),
-            feedGroup: 'user',
-            feedBuilder: (BuildContext context, activities, int idx) {
-              return Column(
-                children: [
-                  Text("${activities[idx].reactionCounts?['like']}") //counts
-                ],
-              );
-            },
-          ),
-          // ),
-          // ),
+        body: DefaultFlatFeedCore(
+          bloc: DefaultFeedBloc(client: mockClient),
+          feedGroup: 'user',
+          feedBuilder: (BuildContext context, activities, int idx) {
+            return Column(
+              children: [
+                Text("${activities[idx].reactionCounts?['like']}") //counts
+              ],
+            );
+          },
         ),
       ),
     ));
