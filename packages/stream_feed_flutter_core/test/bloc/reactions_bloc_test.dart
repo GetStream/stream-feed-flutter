@@ -56,15 +56,8 @@ main() {
     when(() => mockClient.reactions).thenReturn(mockReactions);
 
     bloc = FeedBloc(client: mockClient);
-    // bloc.reactionsControllers = mockReactionControllers;
   });
 
-  // test('hey', () {
-  //   expect(bloc.reactionsControllers[lookupValue]!.value, <Reaction>[]);
-  // });
-
-  // when(() => mockReactionControllers[lookupValue])
-  //     .thenAnswer((_) => BehaviorSubject.seeded(reactions));
   group('ReactionBloc', () {
     test('queryReactions', () async {
       when(() => mockReactions.filter(
