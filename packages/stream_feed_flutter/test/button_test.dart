@@ -500,7 +500,7 @@ void main() {
               node.toJsonMap(const DiagnosticsSerializationDelegate()))
           .toList();
 
-      expect(description[0]['description'], 'null');
+      expect(description[0]['description'], '[]');
     });
 
     test('Like button', () {
