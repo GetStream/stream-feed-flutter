@@ -23,6 +23,8 @@ main() {
   late MockReactionControllers mockReactionControllers;
   late String feedGroup;
 
+  tearDown(() => bloc.dispose());
+
   setUp(() {
     mockReactions = MockReactions();
     mockReactionControllers = MockReactionControllers();
