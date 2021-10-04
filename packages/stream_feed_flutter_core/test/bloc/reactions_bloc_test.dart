@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import '../mocks.dart';
@@ -19,9 +20,12 @@ main() {
   late List<FeedId> targetFeeds;
   late Map<String, String> data;
   late FeedBloc bloc;
+  late MockReactionControllers mockReactionControllers;
+  late String feedGroup;
 
   setUp(() {
     mockReactions = MockReactions();
+    mockReactionControllers = MockReactionControllers();
     mockStreamAnalytics = MockStreamAnalytics();
     mockClient = MockStreamFeedClient();
     lookupAttr = LookupAttribute.activityId;
@@ -34,35 +38,70 @@ main() {
     userId = 'john-doe';
     targetFeeds = <FeedId>[];
     data = {'text': 'awesome post!'};
+    feedGroup = 'user';
     reactions = [
       Reaction(
-        kind: kind,
+        id: 'id',
+        kind: 'like',
         activityId: activityId,
-        userId: userId,
-        data: data,
-        targetFeeds: targetFeeds,
+        childrenCounts: {
+          'like': 0,
+        },
+        latestChildren: {'like': []},
+        ownChildren: {'like': []},
       )
     ];
     when(() => mockClient.reactions).thenReturn(mockReactions);
-    when(() => mockReactions.filter(
-          lookupAttr,
-          lookupValue,
-          filter: filter,
-          limit: limit,
-          kind: kind,
-        )).thenAnswer((_) async => reactions);
+
     bloc = FeedBloc(client: mockClient);
+    // bloc.reactionsControllers = mockReactionControllers;
   });
-  test('ReactionBloc', () async {
-    await bloc.queryReactions(
-      lookupAttr,
-      lookupValue,
-      filter: filter,
-      limit: limit,
-      kind: kind,
-    );
-    verify(() => mockReactions.filter(lookupAttr, lookupValue,
-        filter: filter, limit: limit, kind: kind)).called(1);
-    await expectLater(bloc.reactionsStreamFor(lookupValue), emits(reactions));
+
+  // test('hey', () {
+  //   expect(bloc.reactionsControllers[lookupValue]!.value, <Reaction>[]);
+  // });
+
+  // when(() => mockReactionControllers[lookupValue])
+  //     .thenAnswer((_) => BehaviorSubject.seeded(reactions));
+  group('ReactionBloc', () {
+    test('queryReactions', () async {
+      when(() => mockReactions.filter(
+            lookupAttr,
+            lookupValue,
+            filter: filter,
+            limit: limit,
+            kind: kind,
+          )).thenAnswer((_) async => reactions);
+      await bloc.queryReactions(
+        lookupAttr,
+        lookupValue,
+        filter: filter,
+        limit: limit,
+        kind: kind,
+      );
+      verify(() => mockReactions.filter(lookupAttr, lookupValue,
+          filter: filter, limit: limit, kind: kind)).called(1);
+      await expectLater(bloc.reactionsStreamFor(lookupValue), emits(reactions));
+    });
+
+    test('onAddReaction', () async {
+      bloc.reactionsControllers = mockReactionControllers;
+      when(() => mockReactionControllers[activityId])
+          .thenAnswer((_) => BehaviorSubject.seeded(reactions));
+      expect(bloc.reactionsControllers[activityId]!.value, reactions);
+      when(() => mockReactions.add(
+            kind,
+            activityId,
+          )).thenAnswer((_) async => Reaction());
+
+      await bloc.onAddReaction(
+          activity: EnrichedActivity(id: activityId),
+          feedGroup: feedGroup,
+          kind: kind);
+      verify(() => mockReactions.add(
+            kind,
+            activityId,
+          )).called(1);
+    });
   });
 }

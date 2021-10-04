@@ -15,7 +15,7 @@ class FeedBloc<A, Ob, T, Or> {
 
   /// The current reactions list
   List<Reaction> reactionsFor(String activityId, [Reaction? reaction]) =>
-      _reactionsControllers[activityId]?.valueOrNull ??
+      reactionsControllers[activityId]?.valueOrNull ??
       (reaction != null ? [reaction] : []);
 
   /// The current activities list as a stream
@@ -27,14 +27,15 @@ class FeedBloc<A, Ob, T, Or> {
       //TODO: better name?
       String activityId,
       [String? kind]) {
-    final reactionStream = _reactionsControllers[activityId]?.stream;
+    final reactionStream = reactionsControllers[activityId]?.stream;
     return kind != null
         ? reactionStream?.map((reactions) =>
             reactions.where((reaction) => reaction.kind == kind).toList())
         : reactionStream;
   }
 
-  final Map<String, BehaviorSubject<List<Reaction>>> _reactionsControllers = {};
+  @visibleForTesting
+  late Map<String, BehaviorSubject<List<Reaction>>> reactionsControllers = {};
 
   final _activitiesController =
       BehaviorSubject<List<EnrichedActivity<A, Ob, T, Or>>>();
@@ -105,11 +106,11 @@ class FeedBloc<A, Ob, T, Or> {
     );
 
     //remove reaction from rxstream
-    _reactionsControllers.unshiftById(
+    reactionsControllers.unshiftById(
         activity.id!, childReaction, ShiftType.decrement);
 
-    if (_reactionsControllers[activity.id!]?.hasValue != null) {
-      _reactionsControllers[activity.id!]!.value =
+    if (reactionsControllers[activity.id!]?.hasValue != null) {
+      reactionsControllers[activity.id!]!.value =
           _reactions.updateIn(updatedReaction, indexPath);
     }
   }
@@ -141,10 +142,10 @@ class FeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the rxstream
-    _reactionsControllers.unshiftById(activity.id!, childReaction);
+    reactionsControllers.unshiftById(activity.id!, childReaction);
 
-    if (_reactionsControllers[activity.id!]?.hasValue != null) {
-      _reactionsControllers[activity.id!]!.value =
+    if (reactionsControllers[activity.id!]?.hasValue != null) {
+      reactionsControllers[activity.id!]!.value =
           _reactions.updateIn(updatedReaction, indexPath);
     }
     // return reaction;
@@ -185,7 +186,7 @@ class FeedBloc<A, Ob, T, Or> {
     );
 
     //remove reaction from the stream
-    _reactionsControllers.unshiftById(
+    reactionsControllers.unshiftById(
         activity.id!, reaction, ShiftType.decrement);
 
     _activitiesController.value =
@@ -222,7 +223,7 @@ class FeedBloc<A, Ob, T, Or> {
     );
 
     //adds reaction to the stream
-    _reactionsControllers.unshiftById(activity.id!, reaction);
+    reactionsControllers.unshiftById(activity.id!, reaction);
 
     _activitiesController.value = _activities //TODO: handle null safety
         .updateIn(updatedActivity, indexPath); //List<EnrichedActivity>.from
@@ -251,12 +252,12 @@ class FeedBloc<A, Ob, T, Or> {
     String? kind,
     EnrichmentFlags? flags,
   }) async {
-    _reactionsControllers[lookupValue] = BehaviorSubject<List<Reaction>>();
+    reactionsControllers[lookupValue] = BehaviorSubject<List<Reaction>>();
     _queryReactionsLoadingControllers[lookupValue] =
         BehaviorSubject.seeded(false);
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
-    if (_reactionsControllers[lookupValue]?.hasValue != null) {
+    if (reactionsControllers[lookupValue]?.hasValue != null) {
       _queryReactionsLoadingControllers[lookupValue]!
           .add(true); //TODO: fix null
     }
@@ -272,14 +273,14 @@ class FeedBloc<A, Ob, T, Or> {
         kind: kind,
       );
       final temp = oldReactions + reactionsResponse;
-      _reactionsControllers[lookupValue]!.add(temp);
+      reactionsControllers[lookupValue]!.add(temp);
     } catch (e, stk) {
       // reset loading controller
       _queryReactionsLoadingControllers[lookupValue]?.add(false);
-      if (_reactionsControllers[lookupValue]?.hasValue != null) {
+      if (reactionsControllers[lookupValue]?.hasValue != null) {
         _queryReactionsLoadingControllers[lookupValue]?.addError(e, stk);
       } else {
-        _reactionsControllers[lookupValue]?.addError(e, stk);
+        reactionsControllers[lookupValue]?.addError(e, stk);
       }
     }
   }
@@ -331,7 +332,7 @@ class FeedBloc<A, Ob, T, Or> {
 
   void dispose() {
     _activitiesController.close();
-    _reactionsControllers.forEach((key, value) {
+    reactionsControllers.forEach((key, value) {
       value.close();
     });
     _queryActivitiesLoadingController.close();
