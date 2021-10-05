@@ -323,7 +323,8 @@ void main() {
         expect(gestureDetector, findsOneWidget);
 
         await tester.tap(gestureDetector);
-        await tester.pumpAndSettle();
+        await tester.pump();
+        await tester.pump();
 
         final backButton = find.byType(StreamSvgIcon);
         expect(backButton, findsOneWidget);
