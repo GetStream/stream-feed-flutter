@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mocks.dart';
@@ -39,56 +40,87 @@ class _OnAddReactionWidgetState extends State<OnAddReactionWidget> {
   }
 }
 
-void main() {
-  const kind = 'like';
-  const foreignId = 'like:300';
-  const activityId = 'activityId';
-  const feedGroup = 'timeline:300';
-  const activity = DefaultEnrichedActivity(id: activityId, foreignId: foreignId);
-  const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
+Future<void> main() async {
+  late MockStreamFeedClient mockClient;
+  late MockReactions mockReactions;
+  late MockStreamAnalytics mockStreamAnalytics;
+  late LookupAttribute lookupAttr;
+  late String lookupValue;
+  late Filter filter;
+  late int limit;
+  late String kind;
+  late List<Reaction> reactions;
+  late String activityId;
+  late String userId;
+  late List<FeedId> targetFeeds;
+  late Map<String, String> data;
+  late DefaultFeedBloc bloc;
+  late MockReactionControllers mockReactionControllers;
+  late String feedGroup;
 
-  testWidgets('OnAddReaction', (tester) async {
-    final mockClient = MockStreamFeedClient();
-    final mockReactions = MockReactions();
-    final mockStreamAnalytics = MockStreamAnalytics();
+  tearDown(() => bloc.dispose());
+
+  setUp(() {
+    mockReactions = MockReactions();
+    mockReactionControllers = MockReactionControllers();
+    mockStreamAnalytics = MockStreamAnalytics();
+    mockClient = MockStreamFeedClient();
+    lookupAttr = LookupAttribute.activityId;
+    lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
+    filter = Filter().idGreaterThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+
+    limit = 5;
+    kind = 'like';
+    activityId = 'activityId';
+    userId = 'john-doe';
+    targetFeeds = <FeedId>[];
+    data = {'text': 'awesome post!'};
+    feedGroup = 'user';
+    reactions = [
+      Reaction(
+        id: 'id',
+        kind: 'like',
+        activityId: activityId,
+        childrenCounts: {
+          'like': 0,
+        },
+        latestChildren: {'like': []},
+        ownChildren: {'like': []},
+      )
+    ];
     when(() => mockClient.reactions).thenReturn(mockReactions);
 
-    const label = kind;
-    final engagement = Engagement(
-        content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-        label: label,
-        feedId: FeedId.fromId(feedGroup));
-
+    bloc = FeedBloc(client: mockClient);
+  });
+  testWidgets('onAddReaction', (tester) async {
+    final addedReaction = Reaction();
+    bloc.reactionsControllers = mockReactionControllers;
+    when(() => mockReactionControllers[activityId])
+        .thenAnswer((_) => BehaviorSubject.seeded(reactions));
+    expect(bloc.reactionsControllers[activityId]!.value, reactions);
     when(() => mockReactions.add(
           kind,
           activityId,
-        )).thenAnswer((_) async => reaction);
-
-    when(() => mockStreamAnalytics.trackEngagement(engagement))
-        .thenAnswer((_) async => Future.value());
-
+        )).thenAnswer((_) async => addedReaction);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-        body: FeedBlocProvider(
-          bloc: FeedBloc(
-            client: mockClient,
-            analyticsClient: mockStreamAnalytics,
-          ),
-          child: OnAddReactionWidget(
-            activity: activity,
-            feedGroup: feedGroup,
-            kind: kind,
-          ),
+          body: DefaultFeedBlocProvider(
+        bloc: bloc,
+        child: OnAddReactionWidget(
+          activity: EnrichedActivity(id: activityId),
+          feedGroup: feedGroup,
+          kind: kind,
         ),
-      ),
+      )),
     ));
     final reactionIcon = find.byType(InkWell);
     expect(reactionIcon, findsOneWidget);
     await tester.tap(reactionIcon);
-    verify(() => mockClient.reactions.add(
+    verify(() => mockReactions.add(
           kind,
           activityId,
         )).called(1);
-    verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+
+    //TODO: test reaction Stream
   });
 }
