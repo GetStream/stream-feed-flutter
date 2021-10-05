@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 void main() {
@@ -48,6 +50,26 @@ void main() {
       expect(find.text('1 of 1'), findsOneWidget);
     });
 
+    testWidgets('Returns container when passed unknown media', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) => StreamFeedTheme(
+            data: StreamFeedThemeData.light(),
+            child: child!,
+          ),
+          home: FullscreenMedia(
+            media: [
+              Media(
+                url: 'dsfgsdfgsdfg',
+              ),
+            ],
+          ),
+        ),
+      );
+
+      expect(find.byType(Container), findsOneWidget);
+    });
+
     testWidgets('test dragging through image pages', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
@@ -59,7 +81,7 @@ void main() {
             media: [
               Media(
                 url:
-                    'https://cdn.pixabay.com/photo/2015/03/16/10/59/sunset-675847_960_720.jpg',
+                    'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg',
               ),
               Media(
                 url:
@@ -81,6 +103,41 @@ void main() {
       await tester.drag(find.byType(PageView), const Offset(-401, 0));
       await tester.pumpAndSettle();
       expect(find.text('3 of 3'), findsOneWidget);
+    });
+
+    testWidgets('trigger PhotoView onTapUp', (tester) async {
+      final fullscreenMediaKey = GlobalKey<FullscreenMediaState>();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) => StreamFeedTheme(
+            data: StreamFeedThemeData.light(),
+            child: child!,
+          ),
+          home: FullscreenMedia(
+            key: fullscreenMediaKey,
+            media: [
+              Media(
+                url:
+                    'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg',
+              ),
+              Media(
+                url:
+                    'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg',
+              ),
+              Media(
+                url:
+                    'https://randomwordgenerator.com/img/picture-generator/52e8dd474e56a814f1dc8460962e33791c3ad6e04e507441722978d6904ec2_640.jpg',
+              ),
+            ],
+          ),
+        ),
+      );
+      final photoView = find.byType(PhotoView);
+      await tester.tap(photoView);
+      await tester.pumpAndSettle();
+
+      expect(fullscreenMediaKey.currentState!.optionsShown, false);
     });
 
     testWidgets('Tap back button', (tester) async {
