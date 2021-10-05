@@ -146,6 +146,19 @@ void main() {
             tester.state<FullscreenMediaState>(find.byType(FullscreenMedia));
 
         expect(fullScreenMediaState.optionsShown, false);
+
+        photoView.onTapUp?.call(
+          FakeBuildContext(),
+          FakeTapUpDetails(),
+          FakePhotoViewControllerValue(),
+        );
+
+        await tester.pump(const Duration(milliseconds: 500));
+
+        final fullScreenMediaState2 =
+            tester.state<FullscreenMediaState>(find.byType(FullscreenMedia));
+
+        expect(fullScreenMediaState2.optionsShown, true);
       });
     });
 
