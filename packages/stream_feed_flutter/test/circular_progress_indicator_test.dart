@@ -2,6 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart';
+import 'package:mocktail/mocktail.dart';
+
+class MockImageChunkEvent extends Mock implements ImageChunkEvent {
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return super.toString();
+  }
+}
 
 void main() {
   group('CircularProgressIndicator tests', () {
@@ -18,6 +26,25 @@ void main() {
       );
 
       expect(find.byType(SizedBox), findsOneWidget);
+    });
+
+    testWidgets('Show CircularProgressIndicator on image load', (tester) async {
+      const imageChunkEvent = ImageChunkEvent(
+        cumulativeBytesLoaded: 50,
+        expectedTotalBytes: 100,
+      );
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Center(
+            child: StreamCircularProgressIndicator(
+              loadingProgress: imageChunkEvent,
+              child: SizedBox.shrink(),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
     testWidgets('debugFillProperties', (tester) async {
