@@ -12,7 +12,8 @@ class MockStreamAnalytics extends Mock implements StreamAnalytics {}
 
 class MockFeedAPI extends Mock implements FlatFeed {}
 
-class MockReactionControllers extends Mock implements Map<String, BehaviorSubject<List<Reaction>>>{}
+class MockReactionControllers extends Mock
+    implements Map<String, BehaviorSubject<List<Reaction>>> {}
 
 class MockClient extends Mock implements StreamFeedClient {
   final Logger logger = MockLogger();

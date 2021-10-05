@@ -128,7 +128,8 @@ class CommentItem extends StatelessWidget {
               ),
             ),
           ),
-          ChildReactionButton(//TODO: hardcoded -> refactor this
+          ChildReactionButton(
+            //TODO: hardcoded -> refactor this
             activity: activity,
             //TODO: refactor LikeButton to accept a reaction
             activeIcon: StreamSvgIcon.loveActive(),

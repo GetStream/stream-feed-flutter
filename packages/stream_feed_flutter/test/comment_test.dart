@@ -149,8 +149,8 @@ void main() {
 
     await tester.pumpWidget(
       StreamFeedApp(
-        bloc:
-            DefaultFeedBloc(analyticsClient: mockStreamAnalytics, client: mockClient),
+        bloc: DefaultFeedBloc(
+            analyticsClient: mockStreamAnalytics, client: mockClient),
         home: Scaffold(
           body: CommentField(
             key: key,
