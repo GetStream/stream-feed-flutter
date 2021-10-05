@@ -44,10 +44,11 @@ void main() {
   const foreignId = 'like:300';
   const activityId = 'activityId';
   const feedGroup = 'timeline:300';
-  const activity = DefaultEnrichedActivity(id: activityId, foreignId: foreignId);
+  const activity =
+      DefaultEnrichedActivity(id: activityId, foreignId: foreignId);
   const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
 
-  testWidgets('OnAddReaction', (tester) async {
+  testWidgets('OnAddChildReaction', (tester) async {
     final mockClient = MockStreamFeedClient();
     final mockReactions = MockReactions();
     final mockStreamAnalytics = MockStreamAnalytics();

@@ -8,40 +8,6 @@ import 'mocks.dart';
 
 // ignore_for_file: diagnostic_describe_all_properties
 
-class OnRemoveReactionWidget extends StatefulWidget {
-  const OnRemoveReactionWidget(
-      {Key? key,
-      required this.activity,
-      required this.feedGroup,
-      required this.reaction,
-      required this.kind})
-      : super(key: key);
-
-  final DefaultEnrichedActivity activity;
-  final String feedGroup;
-  final String kind;
-  final Reaction reaction;
-
-  @override
-  _OnAddReactionWidgetState createState() => _OnAddReactionWidgetState();
-}
-
-class _OnAddReactionWidgetState extends State<OnRemoveReactionWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        await DefaultFeedBlocProvider.of(context).bloc.onRemoveReaction(
-              reaction: widget.reaction,
-              activity: widget.activity,
-              feedGroup: widget.feedGroup,
-              kind: widget.kind,
-            );
-      },
-    );
-  }
-}
-
 Future<void> main() async {
   late MockStreamFeedClient mockClient;
   late MockReactions mockReactions;
@@ -92,7 +58,7 @@ Future<void> main() async {
     ];
     when(() => mockClient.reactions).thenReturn(mockReactions);
 
-    bloc = FeedBloc(client: mockClient);
+    bloc = DefaultFeedBloc(client: mockClient);
   });
   testWidgets('onRemoveReaction', (tester) async {
     const reactionId = 'reactionId';
@@ -128,4 +94,38 @@ Future<void> main() async {
 
     //TODO: test reaction Stream
   });
+}
+
+class OnRemoveReactionWidget extends StatefulWidget {
+  const OnRemoveReactionWidget(
+      {Key? key,
+      required this.activity,
+      required this.feedGroup,
+      required this.reaction,
+      required this.kind})
+      : super(key: key);
+
+  final DefaultEnrichedActivity activity;
+  final String feedGroup;
+  final String kind;
+  final Reaction reaction;
+
+  @override
+  _OnAddReactionWidgetState createState() => _OnAddReactionWidgetState();
+}
+
+class _OnAddReactionWidgetState extends State<OnRemoveReactionWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        await DefaultFeedBlocProvider.of(context).bloc.onRemoveReaction(
+              reaction: widget.reaction,
+              activity: widget.activity,
+              feedGroup: widget.feedGroup,
+              kind: widget.kind,
+            );
+      },
+    );
+  }
 }
