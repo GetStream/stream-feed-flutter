@@ -7,6 +7,7 @@ import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'enriched_activity.g.dart';
+
 //TODO: mark this as immutable maybe?
 /// Enrichment is a concept in Stream that enables our API to work quickly
 /// and efficiently.
@@ -68,7 +69,8 @@ class EnrichedActivity<A, Ob, T, Or> extends Equatable {
                 ? User.fromJson(jsonA! as Map<String, dynamic>) as A
                 : jsonA as A,
         fromJsonOb ??
-            (jsonOb) => (Ob == CollectionEntry)//TODO: can be a list of collection entry and a list of activities
+            (jsonOb) => (Ob ==
+                    CollectionEntry) //TODO: can be a list of collection entry and a list of activities
                 ? CollectionEntry.fromJson(jsonOb! as Map<String, dynamic>)
                     as Ob
                 : jsonOb as Ob,
