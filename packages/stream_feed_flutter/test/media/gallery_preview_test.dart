@@ -208,7 +208,8 @@ void main() {
         expect(plusOneButton, findsOneWidget);
 
         await tester.tap(plusOneButton);
-        await tester.pumpAndSettle();
+        await tester.pump();
+        await tester.pump();
 
         final backButton = find.byType(StreamSvgIcon);
         expect(backButton, findsOneWidget);
