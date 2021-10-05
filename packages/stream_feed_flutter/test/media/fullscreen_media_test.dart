@@ -106,38 +106,47 @@ void main() {
     });
 
     testWidgets('trigger PhotoView onTapUp', (tester) async {
-      final fullscreenMediaKey = GlobalKey<FullscreenMediaState>();
-
-      await tester.pumpWidget(
-        MaterialApp(
-          builder: (context, child) => StreamFeedTheme(
-            data: StreamFeedThemeData.light(),
-            child: child!,
+      await mockNetworkImages(() async {
+        await tester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) => StreamFeedTheme(
+              data: StreamFeedThemeData.light(),
+              child: child!,
+            ),
+            home: FullscreenMedia(
+              media: [
+                Media(
+                  url:
+                      'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg',
+                ),
+                Media(
+                  url:
+                      'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg',
+                ),
+                Media(
+                  url:
+                      'https://randomwordgenerator.com/img/picture-generator/52e8dd474e56a814f1dc8460962e33791c3ad6e04e507441722978d6904ec2_640.jpg',
+                ),
+              ],
+            ),
           ),
-          home: FullscreenMedia(
-            key: fullscreenMediaKey,
-            media: [
-              Media(
-                url:
-                    'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg',
-              ),
-              Media(
-                url:
-                    'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg',
-              ),
-              Media(
-                url:
-                    'https://randomwordgenerator.com/img/picture-generator/52e8dd474e56a814f1dc8460962e33791c3ad6e04e507441722978d6904ec2_640.jpg',
-              ),
-            ],
-          ),
-        ),
-      );
-      final photoView = find.byType(PhotoView);
-      await tester.tap(photoView);
-      await tester.pumpAndSettle();
+        );
+        final photoView = tester.widget<PhotoView>(
+          find.byType(PhotoView),
+        );
+        photoView.onTapUp?.call(
+          FakeBuildContext(),
+          FakeTapUpDetails(),
+          FakePhotoViewControllerValue(),
+        );
 
-      expect(fullscreenMediaKey.currentState!.optionsShown, false);
+        await tester.pump();
+
+        final fullScreenMediaState =
+            tester.state<FullscreenMediaState>(find.byType(FullscreenMedia));
+
+        expect(fullScreenMediaState.optionsShown, false);
+      });
     });
 
     testWidgets('Tap back button', (tester) async {
@@ -191,3 +200,10 @@ void main() {
     });
   });
 }
+
+class FakeBuildContext extends Fake implements BuildContext {}
+
+class FakeTapUpDetails extends Fake implements TapUpDetails {}
+
+class FakePhotoViewControllerValue extends Fake
+    implements PhotoViewControllerValue {}
