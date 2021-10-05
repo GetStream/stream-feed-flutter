@@ -81,7 +81,7 @@ class StreamFeedCore extends StatefulWidget {
 
     assert(
       streamFeedState != null,
-      'You must have a StreamFeed widget at the top of your widget tree',
+      'You must have a StreamFeedCore widget at the top of your widget tree',
     );
 
     return streamFeedState!;

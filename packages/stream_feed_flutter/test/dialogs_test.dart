@@ -3,14 +3,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
+import 'package:stream_feed_flutter/src/widgets/dialogs/delete_activity_dialog.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
+import 'mock.dart';
 
 void main() {
   group('Actions', () {
@@ -18,10 +22,12 @@ void main() {
       await tester.pumpWidget(
         StreamFeedTheme(
           data: StreamFeedThemeData.light(),
-          child: const Material(
+          child: Material(
             child: Directionality(
               textDirection: TextDirection.ltr,
-              child: EmojisAction(),
+              child: EmojisAction(
+                key: UniqueKey(),
+              ),
             ),
           ),
         ),
@@ -32,10 +38,12 @@ void main() {
     });
     testWidgets('MediasAction', (tester) async {
       await tester.pumpWidget(
-        const Material(
+        Material(
           child: Directionality(
             textDirection: TextDirection.ltr,
-            child: MediasAction(),
+            child: MediasAction(
+              key: UniqueKey(),
+            ),
           ),
         ),
       );
@@ -47,10 +55,12 @@ void main() {
       await tester.pumpWidget(
         StreamFeedTheme(
           data: StreamFeedThemeData.light(),
-          child: const Material(
+          child: Material(
             child: Directionality(
               textDirection: TextDirection.ltr,
-              child: GIFAction(),
+              child: GIFAction(
+                key: UniqueKey(),
+              ),
             ),
           ),
         ),
@@ -61,14 +71,17 @@ void main() {
     });
 
     testWidgets('Right', (tester) async {
-      await tester.pumpWidget(Material(
+      await tester.pumpWidget(
+        Material(
           child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: RightActions(
-          feedGroup: 'user',
-          textEditingController: TextEditingController(),
+            textDirection: TextDirection.ltr,
+            child: RightActions(
+              feedGroup: 'user',
+              textEditingController: TextEditingController(),
+            ),
+          ),
         ),
-      )));
+      );
 
       final postCommentButton = find.byType(PostCommentButton);
       expect(postCommentButton, findsOneWidget);
@@ -82,8 +95,10 @@ void main() {
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: Stack(
-                children: const [
-                  LeftActions(),
+                children: [
+                  LeftActions(
+                    key: UniqueKey(),
+                  ),
                 ],
               ),
             ),
@@ -138,14 +153,17 @@ void main() {
                 body: AlertDialogComment(
                   feedGroup: 'user',
                   activity: EnrichedActivity(
+                    id: '1',
                     time: DateTime.now(),
-                    actor: const User(data: {
-                      'name': 'Rosemary',
-                      'handle': '@rosemary',
-                      'subtitle': 'likes playing fresbee in the park',
-                      'profile_image':
-                          'https://randomuser.me/api/portraits/women/20.jpg',
-                    }),
+                    actor: const User(
+                      data: {
+                        'name': 'Rosemary',
+                        'handle': '@rosemary',
+                        'subtitle': 'likes playing fresbee in the park',
+                        'profile_image':
+                            'https://randomuser.me/api/portraits/women/20.jpg',
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -173,6 +191,7 @@ void main() {
                 home: Scaffold(
                   body: CommentView(
                     activity: EnrichedActivity(
+                      id: '1',
                       time: DateTime.now(),
                       actor: const User(data: {
                         'name': 'Rosemary',
@@ -324,6 +343,181 @@ void main() {
           .toList();
 
       expect(description[0]['description'], 'null');
+    });
+  });
+
+  group('Delete Activity Dialog', () {
+    testWidgets('Open the dialog and make sure all components are there',
+        (tester) async {
+      await mockNetworkImages(() async {
+        await tester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) {
+              return StreamFeedTheme(
+                data: StreamFeedThemeData.light(),
+                child: child!,
+              );
+            },
+            home: Scaffold(
+              body: ActivityHeader(
+                feedGroup: 'timeline',
+                activity: EnrichedActivity(
+                  id: '1',
+                  time: DateTime.now(),
+                  actor: const User(
+                    data: {
+                      'name': 'Rosemary',
+                      'handle': '@rosemary',
+                      'subtitle': 'likes playing fresbee in the park',
+                      'profile_image':
+                          'https://randomuser.me/api/portraits/women/20.jpg',
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        final popupMenuButton = find.byIcon(Icons.more_vert);
+        expect(popupMenuButton, findsOneWidget);
+
+        await tester.tap(popupMenuButton);
+        await tester.pumpAndSettle();
+
+        final deleteButton = find.text('Delete');
+        expect(deleteButton, findsOneWidget);
+
+        await tester.tap(deleteButton);
+        await tester.pumpAndSettle();
+
+        final deleteDialog = find.byType(AlertDialog);
+        expect(deleteDialog, findsOneWidget);
+
+        final yesButton = find.text('Yes');
+        expect(yesButton, findsOneWidget);
+
+        final noButton = find.text('No');
+        expect(noButton, findsOneWidget);
+      });
+    });
+
+    testWidgets('Open the dialog and tap "no"', (tester) async {
+      await mockNetworkImages(() async {
+        await tester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) {
+              return StreamFeedTheme(
+                data: StreamFeedThemeData.light(),
+                child: child!,
+              );
+            },
+            home: Scaffold(
+              body: ActivityHeader(
+                feedGroup: 'timeline',
+                activity: EnrichedActivity(
+                  id: '1',
+                  time: DateTime.now(),
+                  actor: const User(
+                    data: {
+                      'name': 'Rosemary',
+                      'handle': '@rosemary',
+                      'subtitle': 'likes playing fresbee in the park',
+                      'profile_image':
+                          'https://randomuser.me/api/portraits/women/20.jpg',
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        final popupMenuButton = find.byIcon(Icons.more_vert);
+        expect(popupMenuButton, findsOneWidget);
+
+        await tester.tap(popupMenuButton);
+        await tester.pumpAndSettle();
+
+        final deleteButton = find.text('Delete');
+        expect(deleteButton, findsOneWidget);
+
+        await tester.tap(deleteButton);
+        await tester.pumpAndSettle();
+
+        final deleteDialog = find.byType(AlertDialog);
+        expect(deleteDialog, findsOneWidget);
+
+        final yesButton = find.text('Yes');
+        expect(yesButton, findsOneWidget);
+
+        final noButton = find.text('No');
+        expect(noButton, findsOneWidget);
+
+        await tester.tap(noButton);
+        await tester.pumpAndSettle();
+      });
+    });
+
+    testWidgets('Open the dialog and tap "yes"', (tester) async {
+      const activityId = '1';
+      const feedGroup = 'timeline';
+      final mockClient = MockStreamFeedClient();
+      final mockFeed = MockFlatFeed();
+      when(() => mockClient.flatFeed(feedGroup)).thenReturn(mockFeed);
+      when(() => mockFeed.removeActivityById(activityId))
+          .thenAnswer((_) async => Future.value());
+
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeedCore(
+              client: mockClient,
+              child: StreamFeedTheme(
+                data: StreamFeedThemeData.light(),
+                child: child!,
+              ),
+            );
+          },
+          home: const Scaffold(
+            body: DeleteActivityDialog(
+              activityId: activityId,
+              feedGroup: feedGroup,
+            ),
+          ),
+        ),
+      );
+
+      final deleteDialog = find.byType(AlertDialog);
+      expect(deleteDialog, findsOneWidget);
+
+      final yesButton = find.text('Yes');
+      expect(yesButton, findsOneWidget);
+
+      final noButton = find.text('No');
+      expect(noButton, findsOneWidget);
+
+      await tester.tap(yesButton);
+      await tester.pumpAndSettle();
+
+      verify(() => mockClient.flatFeed(feedGroup)).called(1);
+      verify(() => mockFeed.removeActivityById(activityId)).called(1);
+    });
+
+    testWidgets('debugFillProperties', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+      const DeleteActivityDialog(
+        activityId: '1',
+        feedGroup: 'timeline',
+      ).debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) =>
+              node.toJsonMap(const DiagnosticsSerializationDelegate()))
+          .toList();
+
+      expect(description[0]['description'], '"1"');
     });
   });
 }
