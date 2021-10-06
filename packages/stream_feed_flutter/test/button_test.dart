@@ -271,16 +271,9 @@ void main() {
     late MockStreamFeedClient mockClient;
     late MockReactions mockReactions;
     late MockStreamAnalytics mockStreamAnalytics;
-    late LookupAttribute lookupAttr;
-    late String lookupValue;
-    late Filter filter;
-    late int limit;
     late String kind;
     late List<Reaction> reactions;
     late String activityId;
-    late String userId;
-    late List<FeedId> targetFeeds;
-    late Map<String, String> data;
     late DefaultFeedBloc bloc;
     late MockReactionControllers mockReactionControllers;
     late String feedGroup;
@@ -295,7 +288,6 @@ void main() {
       mockStreamAnalytics = MockStreamAnalytics();
       mockClient = MockStreamFeedClient();
 
-      limit = 5;
       kind = 'like';
       activityId = 'activityId';
       feedGroup = 'user';
