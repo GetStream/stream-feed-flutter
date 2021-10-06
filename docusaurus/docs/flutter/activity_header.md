@@ -1,6 +1,6 @@
 # `ActivityHeader`
 
-A widget that represents the heading of an activity. Contains the user's name and profile image.
+This widget represents the heading of an activity and contains the user's name and profile image.
 
 ## Background
 
