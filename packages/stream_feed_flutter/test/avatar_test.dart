@@ -31,6 +31,13 @@ void main() {
     });
 
     testWidgets('tap on avatar', (tester) async {
+      final log = <User>[];
+      const user = User(
+        data: {
+          'name': 'Sloan Humfrey',
+          'profile_image': 'https://randomuser.me/api/portraits/women/1.jpg',
+        },
+      );
       await mockNetworkImages(() async {
         await tester.pumpWidget(
           Material(
@@ -38,7 +45,7 @@ void main() {
               textDirection: TextDirection.ltr,
               child: Avatar(
                 onUserTap: (user) {
-                  print('tapped');
+                  log.add(user!);
                 },
                 user: const User(
                   data: {
@@ -52,7 +59,8 @@ void main() {
           ),
         );
         final theLastAirbender = find.byType(Avatar);
-        expect(() async => tester.tap(theLastAirbender), returnsNormally);
+        await tester.tap(theLastAirbender);
+        expect(log, [user]);
       });
     });
 
