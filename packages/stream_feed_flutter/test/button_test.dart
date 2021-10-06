@@ -309,6 +309,39 @@ void main() {
 
       bloc = DefaultFeedBloc(client: mockClient);
     });
+
+    testWidgets('onAddReaction', (tester) async {
+      final addedReaction = Reaction();
+      bloc.reactionsControllers = mockReactionControllers;
+      when(() => mockReactionControllers[activityId])
+          .thenAnswer((_) => BehaviorSubject.seeded(reactions));
+      expect(bloc.reactionsControllers[activityId]!.value, reactions);
+      when(() => mockReactions.add(
+            kind,
+            activityId,
+          )).thenAnswer((_) async => addedReaction);
+      await tester.pumpWidget(StreamFeedApp(
+        bloc: bloc,
+        home: Scaffold(
+            body: ReactionToggleIcon(
+          activity: EnrichedActivity(id: activityId),
+          feedGroup: feedGroup,
+          kind: kind,
+          activeIcon: activeIcon,
+          count: 1,
+          inactiveIcon: inactiveIcon,
+        )),
+      ));
+      final reactionIcon = find.byType(InkWell);
+      expect(reactionIcon, findsOneWidget);
+      await tester.tap(reactionIcon);
+      verify(() => mockReactions.add(
+            kind,
+            activityId,
+          )).called(1);
+
+      //TODO: test reaction Stream
+    });
     testWidgets('onRemoveReaction', (tester) async {
       const reactionId = 'reactionId';
       final reaction = Reaction(id: reactionId);
