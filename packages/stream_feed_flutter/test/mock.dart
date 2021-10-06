@@ -1,4 +1,5 @@
 import 'package:mocktail/mocktail.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class MockReactions extends Mock implements ReactionsClient {}
@@ -11,3 +12,5 @@ class MockFeedAPI extends Mock implements FlatFeed {}
 
 class MockFeedBloc<A, Ob, T, Or> extends Mock
     implements FeedBloc<A, Ob, T, Or> {}
+
+class MockReactionControllers extends Mock implements Map<String, BehaviorSubject<List<Reaction>>>{}

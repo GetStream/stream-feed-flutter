@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
@@ -267,132 +268,103 @@ void main() {
   });
 
   group('ReactionToggleIcon', () {
-    const kind = 'like';
-    const count = 1300;
-    final inactiveIcon = StreamSvgIcon.loveInactive();
-    final activeIcon = StreamSvgIcon.loveActive();
-    const foreignId = 'like:300';
-    const activityId = 'activityId';
-    const feedGroup = 'timeline:300';
-    const activity = DefaultEnrichedActivity(
-      id: activityId,
-      foreignId: foreignId,
-    );
-    const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
-    const userId = 'user:300';
-    final withoutOwnReactions = ReactionToggleIcon(
-      activity: activity,
-      kind: kind,
-      count: count,
-      feedGroup: feedGroup,
-      inactiveIcon: inactiveIcon,
-      activeIcon: activeIcon,
-      hoverColor: Colors.lightBlue,
-    );
-    final withOwnReactions = ReactionToggleIcon(
-      activity: activity,
-      kind: kind,
-      count: count,
-      feedGroup: feedGroup,
-      ownReactions: const [reaction],
-      inactiveIcon: inactiveIcon,
-      activeIcon: activeIcon,
-      hoverColor: Colors.lightBlue,
-    );
-    group('widget test', () {
-      testWidgets('withoutOwnReactions: onAddReaction', (tester) async {
-        final mockClient = MockStreamFeedClient();
-        final mockReactions = MockReactions();
-        final mockStreamAnalytics = MockStreamAnalytics();
-        when(() => mockClient.reactions).thenReturn(mockReactions);
+    late MockStreamFeedClient mockClient;
+    late MockReactions mockReactions;
+    late MockStreamAnalytics mockStreamAnalytics;
+    late LookupAttribute lookupAttr;
+    late String lookupValue;
+    late Filter filter;
+    late int limit;
+    late String kind;
+    late List<Reaction> reactions;
+    late String activityId;
+    late String userId;
+    late List<FeedId> targetFeeds;
+    late Map<String, String> data;
+    late DefaultFeedBloc bloc;
+    late MockReactionControllers mockReactionControllers;
+    late String feedGroup;
+    late StreamSvgIcon inactiveIcon;
+    late StreamSvgIcon activeIcon;
 
-        const label = kind;
-        final engagement = Engagement(
-            content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-            label: label,
-            feedId: FeedId.fromId(feedGroup));
+    tearDown(() => bloc.dispose());
 
-        when(() => mockReactions.add(
-              kind,
-              activityId,
-            )).thenAnswer((_) async => reaction);
+    setUp(() {
+      mockReactions = MockReactions();
+      mockReactionControllers = MockReactionControllers();
+      mockStreamAnalytics = MockStreamAnalytics();
+      mockClient = MockStreamFeedClient();
 
-        when(() => mockStreamAnalytics.trackEngagement(engagement))
-            .thenAnswer((_) async => Future.value());
+      limit = 5;
+      kind = 'like';
+      activityId = 'activityId';
+      feedGroup = 'user';
+      inactiveIcon = inactiveIcon = StreamSvgIcon.loveInactive();
+      activeIcon = inactiveIcon = StreamSvgIcon.loveActive();
+      reactions = [
+        Reaction(
+          id: 'id',
+          kind: 'like',
+          activityId: activityId,
+          childrenCounts: {
+            'like': 0,
+          },
+          latestChildren: {'like': []},
+          ownChildren: {'like': []},
+        )
+      ];
+      when(() => mockClient.reactions).thenReturn(mockReactions);
 
-        await tester.pumpWidget(
-          StreamFeedApp(
-              bloc: DefaultFeedBloc(
-                client: mockClient,
-                analyticsClient: mockStreamAnalytics,
-              ),
-              home: Scaffold(body: withoutOwnReactions)),
-        );
-        final reactionIcon = find.byType(ReactionIcon);
-        expect(reactionIcon, findsOneWidget);
-        await tester.tap(reactionIcon);
-        verify(() => mockClient.reactions.add(
-              kind,
-              activityId,
-            )).called(1);
-        verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
-      });
+      bloc = DefaultFeedBloc(client: mockClient);
+    });
+    testWidgets('onRemoveReaction', (tester) async {
+      const reactionId = 'reactionId';
+      final reaction = Reaction(id: reactionId);
+      bloc.reactionsControllers = mockReactionControllers;
+      when(() => mockReactionControllers[activityId])
+          .thenAnswer((_) => BehaviorSubject.seeded(reactions));
+      when(() => mockReactions.delete(reactionId))
+          .thenAnswer((invocation) => Future.value());
 
-      testWidgets('withOwnReactions: onRemoveReaction', (tester) async {
-        final mockClient = MockStreamFeedClient();
-        final mockReactions = MockReactions();
-        final mockStreamAnalytics = MockStreamAnalytics();
-        when(() => mockClient.reactions).thenReturn(mockReactions);
+      await tester.pumpWidget(StreamFeedApp(
+        bloc: bloc,
+        home: Scaffold(
+            body: ReactionToggleIcon(
+          ownReactions: [reaction],
+          activity: EnrichedActivity(id: activityId, reactionCounts: {
+            'like': 1
+          }, ownReactions: {
+            'like': [reaction]
+          }, latestReactions: {
+            'like': [reaction]
+          }),
+          feedGroup: feedGroup,
+          kind: kind,
+          activeIcon: activeIcon,
+          count: 1,
+          inactiveIcon: inactiveIcon,
+        )),
+      ));
+      final reactionIcon = find.byType(InkWell);
+      expect(reactionIcon, findsOneWidget);
+      await tester.tap(reactionIcon);
+      await tester.pumpAndSettle();
+      verify(() => mockReactions.delete(reactionId)).called(1);
 
-        const label = kind;
-        final engagement = Engagement(
-            content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-            label: 'un$label',
-            feedId: FeedId.fromId(feedGroup));
-
-        when(() => mockReactions.delete(reaction.id!))
-            .thenAnswer((_) async => reaction);
-
-        when(() => mockStreamAnalytics.trackEngagement(engagement))
-            .thenAnswer((_) async => Future.value());
-
-        await tester.pumpWidget(MaterialApp(
-          home: Scaffold(
-            body: DefaultFeedBlocProvider(
-              bloc: DefaultFeedBloc(
-                client: mockClient,
-                analyticsClient: mockStreamAnalytics,
-              ),
-              child: withOwnReactions,
-            ),
-          ),
-        ));
-        final reactionIcon = find.byType(ReactionToggleIcon);
-        expect(reactionIcon, findsOneWidget);
-
-        final count = find.text('1300');
-        expect(count, findsOneWidget);
-
-        await tester.tap(reactionIcon);
-        await tester.pumpAndSettle();
-        // final newCount = find.text('1299');
-        // expect(newCount, findsOneWidget); TODO: fix me
-        verify(() => mockClient.reactions.delete(reaction.id!)).called(1);
-        verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
-      });
+      //TODO: test reaction Stream
     });
 
-    testGoldens('golden', (tester) async {
-      final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
-        ..addScenario('without own reactions', withoutOwnReactions)
-        ..addScenario('with own reactions', withOwnReactions);
+    // testGoldens('golden', (tester) async {
+    //   final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
+    //     ..addScenario('without own reactions', withoutOwnReactions)
+    //     ..addScenario('with own reactions', withOwnReactions);
 
-      await tester.pumpWidgetBuilder(
-        builder.build(),
-        surfaceSize: const Size(250, 100),
-      );
-      await screenMatchesGolden(tester, 'reaction_toggle_icon_grid');
-    });
+    //   await tester.pumpWidgetBuilder(
+    //     builder.build(),
+    //     surfaceSize: const Size(250, 100),
+    //   );
+    //   await screenMatchesGolden(tester, 'reaction_toggle_icon_grid');
+    // });
   });
 
   group('ReactionIcon', () {
