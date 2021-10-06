@@ -41,7 +41,7 @@ void main() {
         ];
 
         final mockClient = MockStreamFeedClient();
-        final mockFeed = MockFeedAPI();
+        final mockFeed = MockFlatFeed();
         final mockStreamAnalytics = MockStreamAnalytics();
         when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
         when(() => mockFeed.getEnrichedActivities())

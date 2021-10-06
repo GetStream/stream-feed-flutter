@@ -13,6 +13,7 @@ class ActivityHeader extends StatelessWidget {
   const ActivityHeader({
     Key? key,
     required this.activity,
+    required this.feedGroup,
     this.onUserTap,
     this.activityKind = 'like', //TODO: enum that thing
     this.showSubtitle = true,
@@ -39,10 +40,17 @@ class ActivityHeader extends StatelessWidget {
   ///
   /// Can be 'like', 'repost', 'post', etc.
   final String activityKind;
-  
+
+  /// The feed group that the activity belongs to.
+  ///
+  /// Ex: 'timeline'.
+  final String feedGroup;
+
   @override
   Widget build(BuildContext context) {
     return UserBar(
+      activityId: activity.id!,
+      feedGroup: feedGroup,
       user: activity.actor!, //TODO: actor will be non nullable in the future
       onUserTap: onUserTap,
       timestamp: activity.time!, //TODO: time will be non nullable in the future
@@ -50,6 +58,7 @@ class ActivityHeader extends StatelessWidget {
       showSubtitle: showSubtitle,
       nameJsonKey: nameJsonKey,
       handleJsonKey: handleJsonKey,
+      subtitle: Text(activity.actor!.data![handleJsonKey].toString()),
     ); //TODO: display what instead of null timestamp?
   }
 
