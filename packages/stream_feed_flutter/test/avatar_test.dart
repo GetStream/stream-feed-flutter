@@ -15,17 +15,52 @@ void main() {
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: Avatar(
-                  user: User(
-                data: {
-                  'name': 'Sloan Humfrey',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/women/1.jpg',
-                },
-              )),
+                user: User(
+                  data: {
+                    'name': 'Sloan Humfrey',
+                    'profile_image':
+                        'https://randomuser.me/api/portraits/women/1.jpg',
+                  },
+                ),
+              ),
             ),
           ),
         );
         expect(find.byType(Image), findsOneWidget);
+      });
+    });
+
+    testWidgets('tap on avatar', (tester) async {
+      final log = <User>[];
+      const user = User(
+        data: {
+          'name': 'Sloan Humfrey',
+          'profile_image': 'https://randomuser.me/api/portraits/women/1.jpg',
+        },
+      );
+      await mockNetworkImages(() async {
+        await tester.pumpWidget(
+          Material(
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: Avatar(
+                onUserTap: (user) {
+                  log.add(user!);
+                },
+                user: const User(
+                  data: {
+                    'name': 'Sloan Humfrey',
+                    'profile_image':
+                        'https://randomuser.me/api/portraits/women/1.jpg',
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+        final theLastAirbender = find.byType(Avatar);
+        await tester.tap(theLastAirbender);
+        expect(log, [user]);
       });
     });
 

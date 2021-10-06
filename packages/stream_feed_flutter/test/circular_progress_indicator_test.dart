@@ -20,6 +20,25 @@ void main() {
       expect(find.byType(SizedBox), findsOneWidget);
     });
 
+    testWidgets('Show CircularProgressIndicator on image load', (tester) async {
+      const imageChunkEvent = ImageChunkEvent(
+        cumulativeBytesLoaded: 50,
+        expectedTotalBytes: 100,
+      );
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Center(
+            child: StreamCircularProgressIndicator(
+              loadingProgress: imageChunkEvent,
+              child: SizedBox.shrink(),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
     testWidgets('debugFillProperties', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
       const StreamCircularProgressIndicator(
