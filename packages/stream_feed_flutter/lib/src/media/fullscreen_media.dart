@@ -1,7 +1,9 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:stream_feed_flutter/src/media/gallery_header.dart';
+import 'package:stream_feed_flutter/src/media/video_package.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 // ignore_for_file: cascade_invocations
@@ -38,12 +40,15 @@ class FullscreenMediaState extends State<FullscreenMedia>
     with SingleTickerProviderStateMixin {
   // Whether to display the image options to the user by default or not.
   @visibleForTesting
+  // ignore: diagnostic_describe_all_properties, public_member_api_docs
   bool optionsShown = true;
 
   late final AnimationController _controller;
   late final PageController _pageController;
 
   late int _currentPage;
+
+  final videoPackages = <String, VideoPackage>{};
 
   @override
   void initState() {
@@ -54,12 +59,28 @@ class FullscreenMediaState extends State<FullscreenMedia>
     );
     _pageController = PageController(initialPage: widget.startIndex);
     _currentPage = widget.startIndex;
+    for (final media in widget.media) {
+      if (media.mediaType != MediaType.video) continue;
+      final package = VideoPackage(media, showControls: true);
+      videoPackages[media.url] = package;
+    }
+    _initializePlayers();
+  }
+
+  Future<void> _initializePlayers() async {
+    await Future.wait(videoPackages.values.map(
+      (it) => it.initialize(),
+    ));
+    setState(() {});
   }
 
   @override
   void dispose() {
     _pageController.dispose();
     _controller.dispose();
+    for (final package in videoPackages.values) {
+      package.dispose();
+    }
     super.dispose();
   }
 
@@ -98,6 +119,35 @@ class FullscreenMediaState extends State<FullscreenMedia>
                           child: CircularProgressIndicator(),
                         );
                       },
+                    );
+                  } else if (media.mediaType == MediaType.video &&
+                      media.isValidUrl) {
+                    final controller = videoPackages[media.url];
+                    if (controller != null && !controller.initialized) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return InkWell(
+                      onTap: () {
+                        print(optionsShown);
+                        setState(() {
+                          optionsShown = !optionsShown;
+                        });
+                        if (_controller.isCompleted) {
+                          _controller.reverse();
+                        } else {
+                          _controller.forward();
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 50,
+                        ),
+                        child: Chewie(
+                          controller: controller!.chewieController!,
+                        ),
+                      ),
                     );
                   } else {
                     // TODO: handle other media types
