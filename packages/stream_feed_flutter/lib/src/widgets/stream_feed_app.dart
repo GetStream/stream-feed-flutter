@@ -8,6 +8,7 @@ class StreamFeedApp extends StatelessWidget {
       required this.bloc,
       required this.home,
       this.navigatorKey,
+      this.debugShowCheckedModeBanner = false,
       StreamFeedThemeData? themeData})
       : _themeData = themeData ?? StreamFeedThemeData.light(),
         super(key: key);
@@ -16,10 +17,12 @@ class StreamFeedApp extends StatelessWidget {
   final Widget home;
   final GlobalKey<NavigatorState>? navigatorKey;
   late StreamFeedThemeData _themeData;
+  final bool debugShowCheckedModeBanner;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: debugShowCheckedModeBanner,
         navigatorKey: navigatorKey,
         builder: (context, child) {
           return DefaultFeedBlocProvider(

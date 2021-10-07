@@ -291,8 +291,8 @@ void main() {
       kind = 'like';
       activityId = 'activityId';
       feedGroup = 'user';
-      inactiveIcon = inactiveIcon = StreamSvgIcon.loveInactive();
-      activeIcon = inactiveIcon = StreamSvgIcon.loveActive();
+      inactiveIcon = StreamSvgIcon.loveInactive();
+      activeIcon = StreamSvgIcon.loveActive();
       reactions = [
         Reaction(
           id: 'id',
@@ -310,7 +310,7 @@ void main() {
       bloc = DefaultFeedBloc(client: mockClient);
     });
 
-    testWidgets('onAddReaction', (tester) async {
+    testGoldens('onAddReaction', (tester) async {
       final addedReaction = Reaction();
       bloc.reactionsControllers = mockReactionControllers;
       when(() => mockReactionControllers[activityId])
@@ -320,18 +320,22 @@ void main() {
             kind,
             activityId,
           )).thenAnswer((_) async => addedReaction);
-      await tester.pumpWidget(StreamFeedApp(
-        bloc: bloc,
-        home: Scaffold(
-            body: ReactionToggleIcon(
-          activity: EnrichedActivity(id: activityId),
-          feedGroup: feedGroup,
-          kind: kind,
-          activeIcon: activeIcon,
-          count: 1,
-          inactiveIcon: inactiveIcon,
-        )),
-      ));
+      await tester.pumpWidgetBuilder(
+        StreamFeedApp(
+          bloc: bloc,
+          home: Scaffold(
+              body: ReactionToggleIcon(
+            activity: EnrichedActivity(id: activityId),
+            feedGroup: feedGroup,
+            kind: kind,
+            activeIcon: activeIcon,
+            count: 1300,
+            inactiveIcon: inactiveIcon,
+          )),
+        ),
+        surfaceSize: const Size(125, 100),
+      );
+      await screenMatchesGolden(tester, 'reaction_toggle_onAddReaction');
       final reactionIcon = find.byType(InkWell);
       expect(reactionIcon, findsOneWidget);
       await tester.tap(reactionIcon);
@@ -342,7 +346,7 @@ void main() {
 
       //TODO: test reaction Stream
     });
-    testWidgets('onRemoveReaction', (tester) async {
+    testGoldens('onRemoveReaction', (tester) async {
       const reactionId = 'reactionId';
       final reaction = Reaction(id: reactionId);
       bloc.reactionsControllers = mockReactionControllers;
@@ -351,25 +355,29 @@ void main() {
       when(() => mockReactions.delete(reactionId))
           .thenAnswer((invocation) => Future.value());
 
-      await tester.pumpWidget(StreamFeedApp(
-        bloc: bloc,
-        home: Scaffold(
-            body: ReactionToggleIcon(
-          ownReactions: [reaction],
-          activity: EnrichedActivity(id: activityId, reactionCounts: {
-            'like': 1
-          }, ownReactions: {
-            'like': [reaction]
-          }, latestReactions: {
-            'like': [reaction]
-          }),
-          feedGroup: feedGroup,
-          kind: kind,
-          activeIcon: activeIcon,
-          count: 1,
-          inactiveIcon: inactiveIcon,
-        )),
-      ));
+      await tester.pumpWidgetBuilder(
+        StreamFeedApp(
+          bloc: bloc,
+          home: Scaffold(
+              body: ReactionToggleIcon(
+            ownReactions: [reaction],
+            activity: EnrichedActivity(id: activityId, reactionCounts: {
+              'like': 1300
+            }, ownReactions: {
+              'like': [reaction]
+            }, latestReactions: {
+              'like': [reaction]
+            }),
+            feedGroup: feedGroup,
+            kind: kind,
+            activeIcon: activeIcon,
+            count: 1300,
+            inactiveIcon: inactiveIcon,
+          )),
+        ),
+        surfaceSize: const Size(125, 100),
+      );
+      await screenMatchesGolden(tester, 'reaction_toggle_onRemoveReaction');
       final reactionIcon = find.byType(InkWell);
       expect(reactionIcon, findsOneWidget);
       await tester.tap(reactionIcon);
@@ -378,18 +386,6 @@ void main() {
 
       //TODO: test reaction Stream
     });
-
-    // testGoldens('golden', (tester) async {
-    //   final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
-    //     ..addScenario('without own reactions', withoutOwnReactions)
-    //     ..addScenario('with own reactions', withOwnReactions);
-
-    //   await tester.pumpWidgetBuilder(
-    //     builder.build(),
-    //     surfaceSize: const Size(250, 100),
-    //   );
-    //   await screenMatchesGolden(tester, 'reaction_toggle_icon_grid');
-    // });
   });
 
   group('ReactionIcon', () {
