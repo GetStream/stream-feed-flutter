@@ -130,7 +130,6 @@ class FullscreenMediaState extends State<FullscreenMedia>
                     }
                     return InkWell(
                       onTap: () {
-                        print(optionsShown);
                         setState(() {
                           optionsShown = !optionsShown;
                         });
