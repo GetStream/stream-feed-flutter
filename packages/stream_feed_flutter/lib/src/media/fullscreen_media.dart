@@ -48,6 +48,7 @@ class FullscreenMediaState extends State<FullscreenMedia>
 
   late int _currentPage;
 
+  // ignore: diagnostic_describe_all_properties, public_member_api_docs
   final videoPackages = <String, VideoPackage>{};
 
   @override
