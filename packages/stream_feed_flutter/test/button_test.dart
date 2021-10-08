@@ -253,18 +253,6 @@ void main() {
         // verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
       });
     });
-
-    testGoldens('golden', (tester) async {
-      final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
-        ..addScenario('without own reactions', withoutOwnReactions)
-        ..addScenario('with own reactions', withOwnReactions);
-
-      await tester.pumpWidgetBuilder(
-        builder.build(),
-        surfaceSize: const Size(250, 100),
-      );
-      await screenMatchesGolden(tester, 'reaction_toggle_icon_grid');
-    });
   });
 
   group('ReactionToggleIcon', () {
