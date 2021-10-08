@@ -1,23 +1,34 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-/// TODO(Groovin): Document me!
+/// {@template mediaWidget}
+/// Displays various kinds of [Media].
+/// 
+/// If the [media] is a video, it will display a thumbnail.
+/// {@endtemplate}
 class MediaWidget extends StatefulWidget {
-  /// TODO(Groovin): Document me!
+  /// {@macro mediaWidget}
   const MediaWidget({
     Key? key,
     required this.media,
   }) : super(key: key);
 
-  /// TODO(Groovin): Document me!
+  /// The media to display.
   final Media media;
 
   @override
   _MediaWidgetState createState() => _MediaWidgetState();
+  
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Media>('media', media));
+  }
 }
 
 class _MediaWidgetState extends State<MediaWidget> {
