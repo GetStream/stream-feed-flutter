@@ -1,6 +1,7 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/activities_bloc.dart';
 
 class MockLogger extends Mock implements Logger {}
 
@@ -12,8 +13,8 @@ class MockStreamAnalytics extends Mock implements StreamAnalytics {}
 
 class MockFeedAPI extends Mock implements FlatFeed {}
 
-class MockReactionControllers extends Mock
-    implements Map<String, BehaviorSubject<List<Reaction>>> {}
+class MockReactionsControllers extends Mock
+    implements ReactionsControllers {}
 
 class MockClient extends Mock implements StreamFeedClient {
   final Logger logger = MockLogger();

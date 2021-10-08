@@ -4,7 +4,6 @@ import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:rxdart/rxdart.dart';
 
 // ignore_for_file: cascade_invocations
 
@@ -124,7 +123,7 @@ class _ReactionListCoreState extends State<ReactionListCore> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Reaction>>(
-        stream: widget.bloc.reactionsStreamFor(widget.lookupValue,
+        stream: widget.bloc.getReactionsStream(widget.lookupValue,
             widget.kind), //reactionsStreamFor(widget.lookupValue)
         builder: (context, snapshot) {
           if (snapshot.hasError) {

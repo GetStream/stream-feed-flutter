@@ -301,9 +301,10 @@ void main() {
     testGoldens('onAddReaction', (tester) async {
       final addedReaction = Reaction();
       bloc.reactionsControllers = mockReactionControllers;
-      when(() => mockReactionControllers[activityId])
-          .thenAnswer((_) => BehaviorSubject.seeded(reactions));
-      expect(bloc.reactionsControllers[activityId]!.value, reactions);
+      when(() => mockReactionControllers.getReactions(activityId))
+          .thenAnswer((_) => reactions);
+      expect(bloc.reactionsControllers.getReactions(activityId),
+          reactions);
       when(() => mockReactions.add(
             kind,
             activityId,
@@ -338,8 +339,8 @@ void main() {
       const reactionId = 'reactionId';
       final reaction = Reaction(id: reactionId);
       bloc.reactionsControllers = mockReactionControllers;
-      when(() => mockReactionControllers[activityId])
-          .thenAnswer((_) => BehaviorSubject.seeded(reactions));
+      when(() => mockReactionControllers.getReactions(activityId))
+          .thenAnswer((_) => reactions);
       when(() => mockReactions.delete(reactionId))
           .thenAnswer((invocation) => Future.value());
 

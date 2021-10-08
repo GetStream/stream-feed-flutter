@@ -20,14 +20,14 @@ main() {
   late List<FeedId> targetFeeds;
   late Map<String, String> data;
   late FeedBloc bloc;
-  late MockReactionControllers mockReactionControllers;
+  late MockReactionsControllers mockReactionControllers;
   late String feedGroup;
 
   tearDown(() => bloc.dispose());
 
   setUp(() {
     mockReactions = MockReactions();
-    mockReactionControllers = MockReactionControllers();
+    mockReactionControllers = MockReactionsControllers();
     mockStreamAnalytics = MockStreamAnalytics();
     mockClient = MockStreamFeedClient();
     lookupAttr = LookupAttribute.activityId;
@@ -76,15 +76,16 @@ main() {
       );
       verify(() => mockReactions.filter(lookupAttr, lookupValue,
           filter: filter, limit: limit, kind: kind)).called(1);
-      await expectLater(bloc.reactionsStreamFor(lookupValue), emits(reactions));
+      await expectLater(bloc.getReactionsStream(lookupValue), emits(reactions));
     });
 
     test('onAddReaction', () async {
       final addedReaction = Reaction();
       bloc.reactionsControllers = mockReactionControllers;
-      when(() => mockReactionControllers[activityId])
-          .thenAnswer((_) => BehaviorSubject.seeded(reactions));
-      expect(bloc.reactionsControllers[activityId]!.value, reactions);
+      when(() => mockReactionControllers.getReactions(activityId))
+          .thenAnswer((_) => reactions);
+      expect(bloc.reactionsControllers.getReactions(activityId),
+          reactions);
       when(() => mockReactions.add(
             kind,
             activityId,
@@ -116,9 +117,10 @@ main() {
       const reactionId = 'reactionId';
       final reaction = Reaction(id: reactionId);
       bloc.reactionsControllers = mockReactionControllers;
-      when(() => mockReactionControllers[activityId])
-          .thenAnswer((_) => BehaviorSubject.seeded(reactions));
-      expect(bloc.reactionsControllers[activityId]!.value, reactions);
+      when(() => mockReactionControllers.getReactions(activityId))
+          .thenAnswer((_) => reactions);
+      expect(bloc.reactionsControllers.getReactions(activityId),
+          reactions);
       when(() => mockReactions.delete(reactionId))
           .thenAnswer((invocation) => Future.value());
 

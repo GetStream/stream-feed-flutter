@@ -14,28 +14,23 @@ class FeedBloc<A, Ob, T, Or> {
       _activitiesController.valueOrNull;
 
   /// The current reactions list
-  List<Reaction> reactionsFor(String activityId, [Reaction? reaction]) =>
-      reactionsControllers[activityId]?.valueOrNull ??
-      (reaction != null ? [reaction] : []);
+  List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
+      reactionsControllers.getReactions(activityId, reaction);
 
   /// The current activities list as a stream
   Stream<List<EnrichedActivity<A, Ob, T, Or>>> get activitiesStream =>
       _activitiesController.stream;
 
   /// The current reactions list as a stream
-  Stream<List<Reaction>>? reactionsStreamFor(
+  Stream<List<Reaction>>? getReactionsStream(
       //TODO: better name?
       String activityId,
       [String? kind]) {
-    final reactionStream = reactionsControllers[activityId]?.stream;
-    return kind != null
-        ? reactionStream?.map((reactions) =>
-            reactions.where((reaction) => reaction.kind == kind).toList())
-        : reactionStream;
+    return reactionsControllers.getStream(activityId, kind);
   }
 
   @visibleForTesting
-  late Map<String, BehaviorSubject<List<Reaction>>> reactionsControllers = {};
+  late ReactionsControllers reactionsControllers = ReactionsControllers();
 
   final _activitiesController =
       BehaviorSubject<List<EnrichedActivity<A, Ob, T, Or>>>();
@@ -87,7 +82,7 @@ class FeedBloc<A, Ob, T, Or> {
       required Reaction childReaction,
       required Reaction parentReaction}) async {
     await client.reactions.delete(childReaction.id!);
-    final _reactions = reactionsFor(activity.id!, parentReaction);
+    final _reactions = getReactions(activity.id!, parentReaction);
     final reactionPath = _reactions.getReactionPath(parentReaction);
     final indexPath = _reactions.indexWhere(
         (r) => r.id! == parentReaction.id); //TODO: handle null safety
@@ -109,10 +104,8 @@ class FeedBloc<A, Ob, T, Or> {
     reactionsControllers.unshiftById(
         activity.id!, childReaction, ShiftType.decrement);
 
-    if (reactionsControllers[activity.id!]?.hasValue != null) {
-      reactionsControllers[activity.id!]!.value =
-          _reactions.updateIn(updatedReaction, indexPath);
-    }
+    reactionsControllers.update(
+        activity.id!, _reactions.updateIn(updatedReaction, indexPath));
   }
 
   Future<Reaction> onAddChildReaction(
@@ -124,7 +117,7 @@ class FeedBloc<A, Ob, T, Or> {
       List<FeedId>? targetFeeds}) async {
     final childReaction = await client.reactions.addChild(kind, reaction.id!,
         data: data, userId: userId, targetFeeds: targetFeeds);
-    final _reactions = reactionsFor(activity.id!, reaction);
+    final _reactions = getReactions(activity.id!, reaction);
     final reactionPath = _reactions.getReactionPath(reaction);
     final indexPath = _reactions
         .indexWhere((r) => r.id! == reaction.id); //TODO: handle null safety
@@ -144,10 +137,8 @@ class FeedBloc<A, Ob, T, Or> {
     // adds reaction to the rxstream
     reactionsControllers.unshiftById(activity.id!, childReaction);
 
-    if (reactionsControllers[activity.id!]?.hasValue != null) {
-      reactionsControllers[activity.id!]!.value =
-          _reactions.updateIn(updatedReaction, indexPath);
-    }
+    reactionsControllers.update(
+        activity.id!, _reactions.updateIn(updatedReaction, indexPath));
     // return reaction;
     return childReaction;
   }
@@ -252,18 +243,18 @@ class FeedBloc<A, Ob, T, Or> {
     String? kind,
     EnrichmentFlags? flags,
   }) async {
-    reactionsControllers[lookupValue] = BehaviorSubject<List<Reaction>>();
+    reactionsControllers.init(lookupValue);
     _queryReactionsLoadingControllers[lookupValue] =
         BehaviorSubject.seeded(false);
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
-    if (reactionsControllers[lookupValue]?.hasValue != null) {
+    if (reactionsControllers.hasValue(lookupValue)) {
       _queryReactionsLoadingControllers[lookupValue]!
           .add(true); //TODO: fix null
     }
 
     try {
-      final oldReactions = List<Reaction>.from(reactionsFor(lookupValue));
+      final oldReactions = List<Reaction>.from(getReactions(lookupValue));
       final reactionsResponse = await client.reactions.filter(
         lookupAttr,
         lookupValue,
@@ -273,14 +264,14 @@ class FeedBloc<A, Ob, T, Or> {
         kind: kind,
       );
       final temp = oldReactions + reactionsResponse;
-      reactionsControllers[lookupValue]!.add(temp);
+      reactionsControllers.add(lookupValue, temp);
     } catch (e, stk) {
       // reset loading controller
       _queryReactionsLoadingControllers[lookupValue]?.add(false);
-      if (reactionsControllers[lookupValue]?.hasValue != null) {
+      if (reactionsControllers.hasValue(lookupValue)) {
         _queryReactionsLoadingControllers[lookupValue]?.addError(e, stk);
       } else {
-        reactionsControllers[lookupValue]?.addError(e, stk);
+        reactionsControllers.addError(lookupValue, e, stk);
       }
     }
   }
@@ -332,9 +323,7 @@ class FeedBloc<A, Ob, T, Or> {
 
   void dispose() {
     _activitiesController.close();
-    reactionsControllers.forEach((key, value) {
-      value.close();
-    });
+    reactionsControllers.close();
     _queryActivitiesLoadingController.close();
     _queryReactionsLoadingControllers.forEach((key, value) {
       value.close();
@@ -360,4 +349,58 @@ class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
   @override
   bool updateShouldNotify(FeedBlocProvider old) =>
       navigatorKey != old.navigatorKey || bloc != old.bloc; //
+}
+
+class ReactionsControllers {
+  ReactionsControllers();
+
+  final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
+
+   void init(String lookupValue) =>
+      _controller[lookupValue] = BehaviorSubject<List<Reaction>>();
+
+  BehaviorSubject<List<Reaction>>? _getController(String activityId) =>
+      _controller[activityId]; //TODO: handle null safety
+
+  Stream<List<Reaction>>? getStream(String activityId, [String? kind]) {
+    final isFiltered = kind != null;
+    final reactionStream = _getController(activityId)?.stream;
+    return isFiltered
+        ? reactionStream?.map((reactions) =>
+            reactions.where((reaction) => reaction.kind == kind).toList())
+        : reactionStream; //TODO: handle null safety
+  }
+
+  List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
+      _getController(activityId)?.valueOrNull ??
+      (reaction != null ? [reaction] : <Reaction>[]);
+
+  bool hasValue(String lookupValue) =>
+      _getController(lookupValue)?.hasValue != null;
+
+
+  void unshiftById(String activityId, Reaction reaction,
+          [ShiftType type = ShiftType.increment]) =>
+      _controller.unshiftById(
+          activityId, reaction, type); //TODO: get rid of extension
+
+ 
+
+  void close() => _controller.forEach((key, value) {
+        value.close();
+      });
+
+  void update(String activityId, List<Reaction> reactions) {
+    if (hasValue(activityId)) {
+      _getController(activityId)!.value = reactions;
+    }
+  }
+
+  void add(String lookupValue, List<Reaction> temp) {
+    if (hasValue(lookupValue))
+      _getController(lookupValue)!.add(temp); //TODO: handle null safety
+  }
+
+  void addError(String lookupValue, Object e, StackTrace stk) =>
+      _getController(lookupValue)?.addError(e, stk); //TODO: handle null safety
 }
