@@ -8,7 +8,7 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 
 /// {@template mediaWidget}
 /// Displays various kinds of [Media].
-/// 
+///
 /// If the [media] is a video, it will display a thumbnail.
 /// {@endtemplate}
 class MediaWidget extends StatefulWidget {
@@ -23,7 +23,7 @@ class MediaWidget extends StatefulWidget {
 
   @override
   _MediaWidgetState createState() => _MediaWidgetState();
-  
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
