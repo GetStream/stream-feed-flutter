@@ -352,55 +352,62 @@ class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
 }
 
 class ReactionsControllers {
-  ReactionsControllers();
-
   final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
 
-   void init(String lookupValue) =>
+  /// Init controller for given activityId
+  void init(String lookupValue) =>
       _controller[lookupValue] = BehaviorSubject<List<Reaction>>();
 
-  BehaviorSubject<List<Reaction>>? _getController(String activityId) =>
-      _controller[activityId]; //TODO: handle null safety
+  /// Retrieve with activityId the corresponding StreamController from the map of controllers
+  BehaviorSubject<List<Reaction>>? _getController(String lookupValue) =>
+      _controller[lookupValue]; //TODO: handle null safety
 
-  Stream<List<Reaction>>? getStream(String activityId, [String? kind]) {
+  ///Retrieve Stream of reactions with activityId and filter it if necessary
+  Stream<List<Reaction>>? getStream(String lookupValue, [String? kind]) {
     final isFiltered = kind != null;
-    final reactionStream = _getController(activityId)?.stream;
+    final reactionStream = _getController(lookupValue)?.stream;
     return isFiltered
         ? reactionStream?.map((reactions) =>
             reactions.where((reaction) => reaction.kind == kind).toList())
         : reactionStream; //TODO: handle null safety
   }
 
-  List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
-      _getController(activityId)?.valueOrNull ??
+  /// Convert the Stream of reactions to a List of reactions
+  List<Reaction> getReactions(String lookupValue, [Reaction? reaction]) =>
+      _getController(lookupValue)?.valueOrNull ??
       (reaction != null ? [reaction] : <Reaction>[]);
 
+  ///Check if controller is not empty
   bool hasValue(String lookupValue) =>
       _getController(lookupValue)?.hasValue != null;
 
-
-  void unshiftById(String activityId, Reaction reaction,
+  ///Lookup latest Reactions by Id and inserts the given reaction to the beginning of the list
+  void unshiftById(String lookupValue, Reaction reaction,
           [ShiftType type = ShiftType.increment]) =>
       _controller.unshiftById(
-          activityId, reaction, type); //TODO: get rid of extension
+          lookupValue, reaction, type); 
 
- 
-
+  ///Close every stream controllers
   void close() => _controller.forEach((key, value) {
         value.close();
       });
 
-  void update(String activityId, List<Reaction> reactions) {
-    if (hasValue(activityId)) {
-      _getController(activityId)!.value = reactions;
+  /// Update controller value with given reactions
+  void update(String lookupValue, List<Reaction> reactions) {
+    if (hasValue(lookupValue)) {
+      _getController(lookupValue)!.value = reactions;
     }
   }
 
+  /// Add given reactions to the correct controller
   void add(String lookupValue, List<Reaction> temp) {
     if (hasValue(lookupValue))
       _getController(lookupValue)!.add(temp); //TODO: handle null safety
   }
 
-  void addError(String lookupValue, Object e, StackTrace stk) =>
-      _getController(lookupValue)?.addError(e, stk); //TODO: handle null safety
+  ///Add error to the correct controller
+  void addError(String lookupValue, Object e, StackTrace stk) {
+    if (hasValue(lookupValue))
+      _getController(lookupValue)!.addError(e, stk); //TODO: handle null safety
+  }
 }

@@ -87,13 +87,14 @@ extension UnshiftMapList on Map<String, List<Reaction>>? {
 
 extension UnshiftMapController
     on Map<String, BehaviorSubject<List<Reaction>>>? {
+  ///Lookup latest Reactions by Id and inserts the given reaction to the beginning of the list
   Map<String, BehaviorSubject<List<Reaction>>> unshiftById(
       String activityId, Reaction reaction,
       [ShiftType type = ShiftType.increment]) {
     Map<String, BehaviorSubject<List<Reaction>>>? result;
     result = this;
     final latestReactionsById = this?[activityId]?.valueOrNull ?? [];
-    if (result != null) {
+    if (result != null && result[activityId] !=null) {
       result[activityId]!.add(latestReactionsById.unshift(reaction, type));
     } else {
       result = {
