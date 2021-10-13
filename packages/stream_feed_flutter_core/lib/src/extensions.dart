@@ -94,7 +94,7 @@ extension UnshiftMapController
     Map<String, BehaviorSubject<List<Reaction>>>? result;
     result = this;
     final latestReactionsById = this?[activityId]?.valueOrNull ?? [];
-    if (result != null && result[activityId] !=null) {
+    if (result != null && result[activityId] != null) {
       result[activityId]!.add(latestReactionsById.unshift(reaction, type));
     } else {
       result = {
@@ -109,12 +109,12 @@ extension UnshiftMapController
 //TODO: find a better name
 enum ShiftType { increment, decrement }
 
-extension UnshiftMapInt on Map<String, int>? {
+extension UnshiftMapInt on Map<String, int> {
   Map<String, int> unshiftByKind(String kind,
       [ShiftType type = ShiftType.increment]) {
-    Map<String, int>? result;
-    result = this;
-    final reactionCountsByKind = result?[kind] ?? 0;
+    // Map<String, int>? result;
+    Map<String, int>? result = Map.from(this);
+    final reactionCountsByKind = result[kind] ?? 0;
     if (result != null) {
       result[kind] =
           reactionCountsByKind.unshift(type); //+1 if increment else -1

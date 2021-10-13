@@ -202,7 +202,10 @@ main() {
       });
 
       test('onRemoveChildReaction', () async {
+        final controller = ReactionsControllers();
         final now = DateTime.now();
+        const childId = 'childId';
+        const parentId = 'parentId';
         final reactedActivity = EnrichedActivity(
           id: "id",
           time: now,
@@ -213,35 +216,45 @@ main() {
             'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
           }),
         );
-        final reaction =
-            Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
-        when(() => mockReactions.delete(
-              'id',
-            )).thenAnswer((_) async => Future.value());
+        final childReaction = Reaction(id: childId, kind: 'like');
+        final parentReaction = Reaction(
+          id: parentId,
+          kind: 'comment',
+          activityId: reactedActivity.id,
+          childrenCounts: const {'like': 1},
+          latestChildren: {
+            'like': [childReaction]
+          },
+          ownChildren: {
+            'like': [childReaction]
+          },
+        );
+
+        controller.init(reactedActivity.id!);
+        bloc.reactionsControllers = controller;
+        expect(bloc.reactionsControllers.hasValue(reactedActivity.id!), true);
+        when(() => mockReactions.delete(childId))
+            .thenAnswer((_) async => Future.value());
         await bloc.onRemoveChildReaction(
             kind: 'like',
             activity: reactedActivity,
-            parentReaction: reaction,
-            childReaction: Reaction(id: 'id'));
+            parentReaction: parentReaction,
+            childReaction: childReaction);
 
-        verify(() => mockClient.reactions.delete(
-              'id',
-            )).called(1);
+        verify(() => mockClient.reactions.delete(childId)).called(1);
 
-        // await expectLater(
-        //     bloc.reactionsStreamFor(reactedActivity.id!),
-        //     emits([
-        //       Reaction(
-        //         id: 'id',
-        //         kind: 'like',
-        //         activityId: reactedActivity.id,
-        //         childrenCounts: {
-        //           'like': 0,
-        //         },
-        //         latestChildren: {'like': []},
-        //         ownChildren: {'like': []},
-        //       )
-        //     ]));
+        await expectLater(
+            bloc.getReactionsStream(reactedActivity.id!),
+            emits([
+              Reaction(
+                id: parentId,
+                kind: 'comment',
+                activityId: reactedActivity.id,
+                childrenCounts: const {'like': 0},
+                latestChildren: {'like': []},
+                ownChildren: {'like': []},
+              )
+            ]));
       });
     });
   });

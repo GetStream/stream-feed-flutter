@@ -83,12 +83,14 @@ class FeedBloc<A, Ob, T, Or> {
       required Reaction parentReaction}) async {
     await client.reactions.delete(childReaction.id!);
     final _reactions = getReactions(activity.id!, parentReaction);
+
     final reactionPath = _reactions.getReactionPath(parentReaction);
+
     final indexPath = _reactions.indexWhere(
         (r) => r.id! == parentReaction.id); //TODO: handle null safety
 
     final childrenCounts =
-        reactionPath.childrenCounts.unshiftByKind(kind, ShiftType.decrement);
+        reactionPath.childrenCounts!.unshiftByKind(kind, ShiftType.decrement);
     final latestChildren = reactionPath.latestChildren
         .unshiftByKind(kind, childReaction, ShiftType.decrement);
     final ownChildren = reactionPath.ownChildren
@@ -122,7 +124,7 @@ class FeedBloc<A, Ob, T, Or> {
     final indexPath = _reactions
         .indexWhere((r) => r.id! == reaction.id); //TODO: handle null safety
 
-    final childrenCounts = reactionPath.childrenCounts.unshiftByKind(kind);
+    final childrenCounts = reactionPath.childrenCounts!.unshiftByKind(kind);
     final latestChildren =
         reactionPath.latestChildren.unshiftByKind(kind, childReaction);
     final ownChildren =
@@ -160,7 +162,7 @@ class FeedBloc<A, Ob, T, Or> {
         .indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
 
     final reactionCounts =
-        activityPath.reactionCounts.unshiftByKind(kind, ShiftType.decrement);
+        activityPath.reactionCounts!.unshiftByKind(kind, ShiftType.decrement);
 
     // final reaction =
     //     reactionsFor(activity.id!).firstWhere((reaction) => reaction.id == id);
@@ -201,7 +203,7 @@ class FeedBloc<A, Ob, T, Or> {
     final indexPath = _activities
         .indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
 
-    final reactionCounts = activityPath.reactionCounts.unshiftByKind(kind);
+    final reactionCounts = activityPath.reactionCounts!.unshiftByKind(kind);
     final latestReactions =
         activityPath.latestReactions.unshiftByKind(kind, reaction);
     final ownReactions =
@@ -384,8 +386,7 @@ class ReactionsControllers {
   ///Lookup latest Reactions by Id and inserts the given reaction to the beginning of the list
   void unshiftById(String lookupValue, Reaction reaction,
           [ShiftType type = ShiftType.increment]) =>
-      _controller.unshiftById(
-          lookupValue, reaction, type); 
+      _controller.unshiftById(lookupValue, reaction, type);
 
   ///Close every stream controllers
   void close() => _controller.forEach((key, value) {
