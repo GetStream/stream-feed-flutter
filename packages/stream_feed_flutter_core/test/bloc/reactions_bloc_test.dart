@@ -150,9 +150,12 @@ main() {
 
     group('child reactions', () {
       test('onAddChildReaction', () async {
+        final controller = ReactionsControllers();
+        const parentId = 'parentId';
+        const childId = 'childId';
         final now = DateTime.now();
         final reactedActivity = EnrichedActivity(
-          id: "id",
+          id: 'id',
           time: now,
           actor: User(data: {
             'name': 'Rosemary',
@@ -161,52 +164,39 @@ main() {
             'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
           }),
         );
-        final reaction =
-            Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
+        controller.init(reactedActivity.id!);
+        bloc.reactionsControllers = controller;
+        expect(bloc.reactionsControllers.hasValue(reactedActivity.id!), true);
+        final parentReaction = Reaction(
+            id: parentId, kind: 'comment', activityId: reactedActivity.id);
+        final childReaction =
+            Reaction(id: childId, kind: 'like', activityId: reactedActivity.id);
 
-        final updatedReactionWithChild = Reaction(
-          id: 'id',
-          kind: 'like',
-          activityId: reactedActivity.id,
-          childrenCounts: {
-            'like': 1,
-          },
-          latestChildren: {
-            'like': [reaction]
-          },
-          ownChildren: {
-            'like': [reaction]
-          },
-        );
-        when(() => mockReactions.addChild(
-              'like',
-              'id',
-            )).thenAnswer((_) async => updatedReactionWithChild);
+        when(() => mockReactions.addChild('like', parentId))
+            .thenAnswer((_) async => childReaction);
         await bloc.onAddChildReaction(
-            kind: 'like', activity: reactedActivity, reaction: reaction);
+            kind: 'like', activity: reactedActivity, reaction: parentReaction);
 
         verify(() => mockClient.reactions.addChild(
               'like',
-              'id',
+              parentId,
             )).called(1);
-        // await expectLater(
-        //     bloc.reactionsStreamFor(reactedActivity.id!),
-        //     emits([
-        //       Reaction(
-        //         id: 'id',
-        //         kind: 'like',
-        //         activityId: reactedActivity.id,
-        //         childrenCounts: {
-        //           'like': 1,
-        //         },
-        //         latestChildren: {
-        //           'like': [reaction]
-        //         },
-        //         ownChildren: {
-        //           'like': [reaction]
-        //         },
-        //       )
-        //     ]));
+        await expectLater(
+            bloc.getReactionsStream(reactedActivity.id!),
+            emits([
+              Reaction(
+                id: parentId,
+                kind: 'comment',
+                activityId: reactedActivity.id,
+                childrenCounts: const {'like': 1},
+                latestChildren: {
+                  'like': [childReaction]
+                },
+                ownChildren: {
+                  'like': [childReaction]
+                },
+              )
+            ]));
 
         //TODO: test reaction Stream
       });
