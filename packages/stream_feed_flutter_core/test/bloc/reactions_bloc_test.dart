@@ -148,66 +148,111 @@ main() {
       //TODO: test reaction Stream
     });
 
-    test('onAddChildReaction', () async {
-      final now = DateTime.now();
-      final reactedActivity = EnrichedActivity(
-        id: "id",
-        time: now,
-        actor: User(data: {
-          'name': 'Rosemary',
-          'handle': '@rosemary',
-          'subtitle': 'likes playing fresbee in the park',
-          'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-        }),
-      );
-      final reaction =
-          Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
+    group('child reactions', () {
+      test('onAddChildReaction', () async {
+        final now = DateTime.now();
+        final reactedActivity = EnrichedActivity(
+          id: "id",
+          time: now,
+          actor: User(data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing fresbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          }),
+        );
+        final reaction =
+            Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
 
-      final updatedReactionWithChild = Reaction(
-        id: 'id',
-        kind: 'like',
-        activityId: reactedActivity.id,
-        childrenCounts: {
-          'like': 1,
-        },
-        latestChildren: {
-          'like': [reaction]
-        },
-        ownChildren: {
-          'like': [reaction]
-        },
-      );
-      when(() => mockReactions.addChild(
-            'like',
-            'id',
-          )).thenAnswer((_) async => updatedReactionWithChild);
-      await bloc.onAddChildReaction(
-          kind: 'like', activity: reactedActivity, reaction: reaction);
+        final updatedReactionWithChild = Reaction(
+          id: 'id',
+          kind: 'like',
+          activityId: reactedActivity.id,
+          childrenCounts: {
+            'like': 1,
+          },
+          latestChildren: {
+            'like': [reaction]
+          },
+          ownChildren: {
+            'like': [reaction]
+          },
+        );
+        when(() => mockReactions.addChild(
+              'like',
+              'id',
+            )).thenAnswer((_) async => updatedReactionWithChild);
+        await bloc.onAddChildReaction(
+            kind: 'like', activity: reactedActivity, reaction: reaction);
 
-      verify(() => mockClient.reactions.addChild(
-            'like',
-            'id',
-          )).called(1);
-      // await expectLater(
-      //     bloc.reactionsStreamFor(reactedActivity.id!),
-      //     emits([
-      //       Reaction(
-      //         id: 'id',
-      //         kind: 'like',
-      //         activityId: reactedActivity.id,
-      //         childrenCounts: {
-      //           'like': 1,
-      //         },
-      //         latestChildren: {
-      //           'like': [reaction]
-      //         },
-      //         ownChildren: {
-      //           'like': [reaction]
-      //         },
-      //       )
-      //     ]));
+        verify(() => mockClient.reactions.addChild(
+              'like',
+              'id',
+            )).called(1);
+        // await expectLater(
+        //     bloc.reactionsStreamFor(reactedActivity.id!),
+        //     emits([
+        //       Reaction(
+        //         id: 'id',
+        //         kind: 'like',
+        //         activityId: reactedActivity.id,
+        //         childrenCounts: {
+        //           'like': 1,
+        //         },
+        //         latestChildren: {
+        //           'like': [reaction]
+        //         },
+        //         ownChildren: {
+        //           'like': [reaction]
+        //         },
+        //       )
+        //     ]));
 
-      //TODO: test reaction Stream
+        //TODO: test reaction Stream
+      });
+
+      test('onRemoveChildReaction', () async {
+        final now = DateTime.now();
+        final reactedActivity = EnrichedActivity(
+          id: "id",
+          time: now,
+          actor: User(data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing fresbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          }),
+        );
+        final reaction =
+            Reaction(id: 'id', kind: 'like', activityId: reactedActivity.id);
+        when(() => mockReactions.delete(
+              'id',
+            )).thenAnswer((_) async => Future.value());
+        await bloc.onRemoveChildReaction(
+            kind: 'like',
+            activity: reactedActivity,
+            parentReaction: reaction,
+            childReaction: Reaction(id: 'id'));
+
+        verify(() => mockClient.reactions.delete(
+              'id',
+            )).called(1);
+
+        // await expectLater(
+        //     bloc.reactionsStreamFor(reactedActivity.id!),
+        //     emits([
+        //       Reaction(
+        //         id: 'id',
+        //         kind: 'like',
+        //         activityId: reactedActivity.id,
+        //         childrenCounts: {
+        //           'like': 0,
+        //         },
+        //         latestChildren: {'like': []},
+        //         ownChildren: {'like': []},
+        //       )
+        //     ]));
+      });
     });
   });
 }
