@@ -48,8 +48,8 @@ main() {
         childrenCounts: const {
           'like': 0,
         },
-        latestChildren: const {'like': const []},
-        ownChildren: const {'like': const []},
+        latestChildren: const {'like': []},
+        ownChildren: const {'like': []},
       )
     ];
     when(() => mockClient.reactions).thenReturn(mockReactions);
@@ -140,8 +140,8 @@ main() {
             EnrichedActivity(
                 id: activityId,
                 reactionCounts: const {'like': 0},
-                ownReactions: const {'like': const []},
-                latestReactions: const {'like': const []})
+                ownReactions: const {'like': []},
+                latestReactions: const {'like': []})
           ]));
 
       //TODO: test reaction Stream
@@ -250,8 +250,8 @@ main() {
                 kind: 'comment',
                 activityId: reactedActivity.id,
                 childrenCounts: const {'like': 0},
-                latestChildren: const {'like': const []},
-                ownChildren: const {'like': const []},
+                latestChildren: const {'like': []},
+                ownChildren: const {'like': []},
               )
             ]));
       });

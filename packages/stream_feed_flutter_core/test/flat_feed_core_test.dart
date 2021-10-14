@@ -39,7 +39,7 @@ void main() {
       ),
     ];
     when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
-    when(() => mockFeed.getEnrichedActivities())
+    when(mockFeed.getEnrichedActivities)
         .thenAnswer((_) async => activities);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
@@ -60,7 +60,7 @@ void main() {
     ));
 
     verify(() => mockClient.flatFeed('user')).called(1);
-    verify(() => mockFeed.getEnrichedActivities()).called(1);
+    verify(mockFeed.getEnrichedActivities).called(1);
   });
 
   // test('Default FlatFeedCore debugFillProperties', () {

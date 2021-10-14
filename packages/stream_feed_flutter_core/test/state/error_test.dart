@@ -9,7 +9,7 @@ void main() {
         home: Scaffold(
       body: ErrorStateWidget(),
     )));
-    final text = find.text("Sorry an error has occured").first;
+    final text = find.text('Sorry an error has occured').first;
     expect(text, findsOneWidget);
   });
 
