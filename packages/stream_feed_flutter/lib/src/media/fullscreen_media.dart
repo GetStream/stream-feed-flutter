@@ -129,8 +129,8 @@ class FullscreenMediaState extends State<FullscreenMedia>
                         child: CircularProgressIndicator(),
                       );
                     }
-                    return InkWell(
-                      onTap: () {
+                    return GestureDetector(
+                      onLongPress: () {
                         setState(() {
                           optionsShown = !optionsShown;
                         });
@@ -140,13 +140,8 @@ class FullscreenMediaState extends State<FullscreenMedia>
                           _controller.forward();
                         }
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 50,
-                        ),
-                        child: Chewie(
-                          controller: controller!.chewieController!,
-                        ),
+                      child: Chewie(
+                        controller: controller!.chewieController!,
                       ),
                     );
                   } else {
