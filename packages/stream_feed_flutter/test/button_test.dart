@@ -151,8 +151,8 @@ void main() {
     const reaction = Reaction(id: 'id', kind: kind, parent: activityId);
     const userId = 'user:300';
     final withoutOwnReactions = ChildReactionToggleIcon(
-      activity: EnrichedActivity(),
-      ownReactions: [],
+      activity: const EnrichedActivity(),
+      ownReactions: const [],
       hoverColor: Colors.lightBlue,
       reaction: reaction,
       kind: kind,
@@ -161,7 +161,7 @@ void main() {
       activeIcon: activeIcon,
     );
     final withOwnReactions = ChildReactionToggleIcon(
-      ownReactions: [],
+      ownReactions: const [],
       activity: EnrichedActivity(),
       hoverColor: Colors.lightBlue,
       reaction: reaction,
@@ -285,11 +285,11 @@ void main() {
           id: 'id',
           kind: 'like',
           activityId: activityId,
-          childrenCounts: {
+          childrenCounts: const {
             'like': 0,
           },
-          latestChildren: {'like': []},
-          ownChildren: {'like': []},
+          latestChildren: const {'like': const []},
+          ownChildren: const {'like': const []},
         )
       ];
       when(() => mockClient.reactions).thenReturn(mockReactions);
@@ -302,8 +302,7 @@ void main() {
       bloc.reactionsControllers = mockReactionControllers;
       when(() => mockReactionControllers.getReactions(activityId))
           .thenAnswer((_) => reactions);
-      expect(bloc.reactionsControllers.getReactions(activityId),
-          reactions);
+      expect(bloc.reactionsControllers.getReactions(activityId), reactions);
       when(() => mockReactions.add(
             kind,
             activityId,
@@ -349,7 +348,7 @@ void main() {
           home: Scaffold(
               body: ReactionToggleIcon(
             ownReactions: [reaction],
-            activity: EnrichedActivity(id: activityId, reactionCounts: {
+            activity: EnrichedActivity(id: activityId, reactionCounts: const {
               'like': 1300
             }, ownReactions: {
               'like': [reaction]
@@ -459,7 +458,7 @@ void main() {
       final now = DateTime.now();
       final childReactionToggleIcon = ChildReactionToggleIcon(
         count: 1,
-        ownReactions: [],
+        ownReactions: const [],
         activity: EnrichedActivity(),
         reaction: Reaction(
           createdAt: now,
