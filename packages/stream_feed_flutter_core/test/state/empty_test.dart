@@ -9,7 +9,7 @@ void main() {
         home: Scaffold(
       body: EmptyStateWidget(),
     )));
-    final text = find.text("Nothing here...").first;
+    final text = find.text('Nothing here...').first;
     expect(text, findsOneWidget);
   });
 

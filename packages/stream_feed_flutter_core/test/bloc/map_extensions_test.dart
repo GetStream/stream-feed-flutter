@@ -29,13 +29,13 @@ main() {
 
       test('increment', () async {
         ownChildren = {
-          'like': BehaviorSubject.seeded([Reaction(id: 'id')]),
-          'post': BehaviorSubject.seeded([Reaction(id: 'id2')]),
+          'like': BehaviorSubject.seeded([const Reaction(id: 'id')]),
+          'post': BehaviorSubject.seeded([const Reaction(id: 'id2')]),
         };
         expectedResult = {
-          'like': [Reaction(id: 'id3'), Reaction(id: 'id')]
+          'like': [const Reaction(id: 'id3'), const Reaction(id: 'id')]
         };
-        ownChildren.unshiftById('like', Reaction(id: 'id3'));
+        ownChildren.unshiftById('like', const Reaction(id: 'id3'));
         await expectLater(
             ownChildren['like']!.stream, emits(expectedResult['like']));
       });
@@ -43,8 +43,8 @@ main() {
       test('decrement', () async {
         ownChildren = {
           'like':
-              BehaviorSubject.seeded([Reaction(id: 'id3'), Reaction(id: 'id')]),
-          'post': BehaviorSubject.seeded([Reaction(id: 'id2')])
+              BehaviorSubject.seeded([const Reaction(id: 'id3'), Reaction(id: 'id')]),
+          'post': BehaviorSubject.seeded([const Reaction(id: 'id2')])
         };
         expectedResult = {
           'like': [Reaction(id: 'id')],

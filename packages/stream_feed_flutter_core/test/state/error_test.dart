@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stream_feed_flutter_core/src/states/empty.dart';
 import 'package:stream_feed_flutter_core/src/states/error.dart';
 
 void main() {

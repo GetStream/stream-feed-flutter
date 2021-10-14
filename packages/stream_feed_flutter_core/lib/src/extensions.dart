@@ -22,15 +22,15 @@ extension ReactionX on List<Reaction> {
   List<Reaction?> filterByKind(String kind) =>
       where((reaction) => reaction.kind == kind).toList();
 
-  Reaction getReactionPath(Reaction reaction) => this
-      .firstWhere((r) => r.id! == reaction.id!); //TODO; handle doesn't exist
+  Reaction getReactionPath(Reaction reaction) =>
+      firstWhere((r) => r.id! == reaction.id!); //TODO; handle doesn't exist
 }
 
 extension EnrichedActivityX<A, Ob, T, Or>
     on List<EnrichedActivity<A, Ob, T, Or>> {
   EnrichedActivity<A, Ob, T, Or> getEnrichedActivityPath(
           EnrichedActivity<A, Ob, T, Or> enrichedActivity) =>
-      this.firstWhere(
+      firstWhere(
           (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
 }

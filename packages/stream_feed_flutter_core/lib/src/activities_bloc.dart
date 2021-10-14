@@ -337,16 +337,15 @@ class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
   const FeedBlocProvider(
       {Key? key, required this.bloc, required Widget child, this.navigatorKey})
       : super(key: key, child: child);
-
-  final FeedBloc<A, Ob, T, Or> bloc;
-  final GlobalKey<NavigatorState>? navigatorKey;
-
   factory FeedBlocProvider.of(BuildContext context) {
     final FeedBlocProvider<A, Ob, T, Or>? result = context
         .dependOnInheritedWidgetOfExactType<FeedBlocProvider<A, Ob, T, Or>>();
     assert(result != null, 'No FeedBlocProvider found in context');
     return result!;
   }
+
+  final FeedBloc<A, Ob, T, Or> bloc;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
   @override
   bool updateShouldNotify(FeedBlocProvider old) =>

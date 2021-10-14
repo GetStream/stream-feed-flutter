@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import '../mocks.dart';
@@ -46,11 +45,11 @@ main() {
         id: 'id',
         kind: 'like',
         activityId: activityId,
-        childrenCounts: {
+        childrenCounts: const {
           'like': 0,
         },
-        latestChildren: {'like': []},
-        ownChildren: {'like': []},
+        latestChildren: const {'like': const []},
+        ownChildren: const {'like': const []},
       )
     ];
     when(() => mockClient.reactions).thenReturn(mockReactions);
@@ -101,7 +100,7 @@ main() {
       await expectLater(
           bloc.activitiesStream,
           emits([
-            EnrichedActivity(id: activityId, reactionCounts: {
+            EnrichedActivity(id: activityId, reactionCounts: const {
               'like': 1
             }, ownReactions: {
               'like': [addedReaction]
@@ -123,7 +122,7 @@ main() {
           .thenAnswer((invocation) => Future.value());
 
       await bloc.onRemoveReaction(
-        activity: EnrichedActivity(id: activityId, reactionCounts: {
+        activity: EnrichedActivity(id: activityId, reactionCounts: const {
           'like': 1
         }, ownReactions: {
           'like': [reaction]
@@ -140,9 +139,9 @@ main() {
           emits([
             EnrichedActivity(
                 id: activityId,
-                reactionCounts: {'like': 0},
-                ownReactions: {'like': []},
-                latestReactions: {'like': []})
+                reactionCounts: const {'like': 0},
+                ownReactions: const {'like': const []},
+                latestReactions: const {'like': const []})
           ]));
 
       //TODO: test reaction Stream
@@ -157,7 +156,7 @@ main() {
         final reactedActivity = EnrichedActivity(
           id: 'id',
           time: now,
-          actor: User(data: {
+          actor: User(data: const {
             'name': 'Rosemary',
             'handle': '@rosemary',
             'subtitle': 'likes playing fresbee in the park',
@@ -207,9 +206,9 @@ main() {
         const childId = 'childId';
         const parentId = 'parentId';
         final reactedActivity = EnrichedActivity(
-          id: "id",
+          id: 'id',
           time: now,
-          actor: User(data: {
+          actor: const User(data: {
             'name': 'Rosemary',
             'handle': '@rosemary',
             'subtitle': 'likes playing fresbee in the park',
@@ -251,8 +250,8 @@ main() {
                 kind: 'comment',
                 activityId: reactedActivity.id,
                 childrenCounts: const {'like': 0},
-                latestChildren: {'like': []},
-                ownChildren: {'like': []},
+                latestChildren: const {'like': const []},
+                ownChildren: const {'like': const []},
               )
             ]));
       });
