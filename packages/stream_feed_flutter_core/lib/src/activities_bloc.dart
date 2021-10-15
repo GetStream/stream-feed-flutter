@@ -68,6 +68,7 @@ class FeedBloc<A, Ob, T, Or> {
     final addedActivity =
         await client.flatFeed(feedGroup, userId).addActivity(activity);
 
+    // TODO(Sacha): merge activity and enriched activity classes together
     final enrichedActivity = await client
         .flatFeed(feedGroup, userId)
         .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
