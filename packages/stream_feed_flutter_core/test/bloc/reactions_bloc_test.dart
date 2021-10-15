@@ -298,6 +298,7 @@ main() {
         object: 'test',
         userId: 'test',
       );
+      verify(() => mockFeed.addActivity(activity)).called(1);
     });
   });
 }
