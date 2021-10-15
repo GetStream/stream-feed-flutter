@@ -128,7 +128,7 @@ void main() {
       expect(payloadJson, {
         'exp': isA<int>(),
         // 'iat': isA<int>(),
-        'action': '*',
+        'action': 'write',
         'resource': 'activities',
         'feed_id': '*',
       });
