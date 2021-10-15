@@ -113,11 +113,11 @@ extension UnshiftMapInt on Map<String, int>? {
   Map<String, int> unshiftByKind(String kind,
       [ShiftType type = ShiftType.increment]) {
     Map<String, int>? result;
-    // Map<String, int>? result = Map.from(this);
+    result = this;
     final reactionCountsByKind = result?[kind] ?? 0;
     if (result != null) {
-      result[kind] =
-          reactionCountsByKind.unshift(type); //+1 if increment else -1
+      result =
+           {...result, kind : reactionCountsByKind.unshift(type)}; //+1 if increment else -1
     } else {
       if (type == ShiftType.increment) {
         result = {kind: 1};
