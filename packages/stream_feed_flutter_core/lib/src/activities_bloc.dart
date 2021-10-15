@@ -75,7 +75,10 @@ class FeedBloc<A, Ob, T, Or> {
 
     final _activities = activities ?? [enrichedActivity];
 
-    _activitiesController.value = _activities..insert(0, enrichedActivity);
+    // ignore: cascade_invocations
+    _activities.insert(0, enrichedActivity);
+
+    _activitiesController.add(_activities);
 
     await trackAnalytics(
       label: 'post',
