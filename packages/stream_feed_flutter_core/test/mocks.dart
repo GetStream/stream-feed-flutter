@@ -22,3 +22,5 @@ class MockClient extends Mock implements StreamFeedClient {
   // @override
   // ClientState get state => _state ??= MockClientState();
 }
+
+class MockStreamUser extends Mock implements StreamUser {}
