@@ -214,42 +214,74 @@ void main() {
         final mockClient = MockStreamFeedClient();
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
-        when(() => mockClient.reactions).thenReturn(mockReactions);
 
         const label = kind;
-        // final engagement = Engagement(
-        //     content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-        //     label: 'un$label',
-        //     feedId: FeedId.fromId(feedGroup));
+        when(() => mockClient.reactions).thenReturn(mockReactions);
+        final controller = ReactionsControllers();
+        final now = DateTime.now();
+        const childId = 'childId';
+        const parentId = 'parentId';
+        final reactedActivity = EnrichedActivity<User, String, String, String>(
+          id: 'id',
+          time: now,
+          actor: const User(data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing fresbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          }),
+        );
+        final childReaction = Reaction(id: childId, kind: 'like');
+        final parentReaction = Reaction(
+          id: parentId,
+          kind: 'comment',
+          activityId: reactedActivity.id,
+          childrenCounts: const {'like': 1},
+          latestChildren: {
+            'like': [childReaction]
+          },
+          ownChildren: {
+            'like': [childReaction]
+          },
+        );
 
-        when(() => mockReactions.delete(reaction.id!))
-            .thenAnswer((_) async => reaction);
+        controller.init(reactedActivity.id!);
+        final bloc = DefaultFeedBloc(
+          client: mockClient,
+          analyticsClient: mockStreamAnalytics,
+        );
+        bloc.reactionsControllers = controller;
+        expect(bloc.reactionsControllers.hasValue(reactedActivity.id!), true);
 
-        // when(() => mockStreamAnalytics.trackEngagement(engagement))
-        //     .thenAnswer((_) async => Future.value());
-
+        when(() => mockReactions.delete(childId))
+            .thenAnswer((_) async => Future.value());
         await tester.pumpWidget(MaterialApp(
             home: Scaffold(
-          body: FeedBlocProvider(
-            bloc: FeedBloc(
-              client: mockClient,
-              analyticsClient: mockStreamAnalytics,
+          body: DefaultFeedBlocProvider(
+            bloc: bloc,
+            child: ChildReactionToggleIcon(
+              ownReactions: [childReaction],
+              activity: reactedActivity,
+              hoverColor: Colors.lightBlue,
+              reaction: parentReaction,
+              kind: kind,
+              count: count,
+              // ownReactions: const [reaction],
+              inactiveIcon: inactiveIcon,
+              activeIcon: activeIcon,
             ),
-            child: withOwnReactions,
           ),
         )));
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
 
-        final count = find.text('1300');
-        expect(count, findsOneWidget);
+        final expectedCount = find.text('1300');
+        expect(expectedCount, findsOneWidget);
 
-        // await tester.tap(reactionIcon);
-        // await tester.pumpAndSettle();
-        // final newCount = find.text('1299');
-        // expect(newCount, findsOneWidget);
-        // verify(() => mockClient.reactions.delete(reaction.id!)).called(1);//TODO: fix me
-        // verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+        await tester.tap(reactionIcon);
+        await tester.pumpAndSettle();
+
+        verify(() => mockClient.reactions.delete(childId)).called(1);
       });
     });
   });
