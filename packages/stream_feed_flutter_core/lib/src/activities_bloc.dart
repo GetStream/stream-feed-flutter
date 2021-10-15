@@ -67,6 +67,15 @@ class FeedBloc<A, Ob, T, Or> {
 
     final addedActivity =
         await client.flatFeed(feedGroup, userId).addActivity(activity);
+
+    final enrichedActivity = await client
+        .flatFeed(feedGroup, userId)
+        .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
+
+    final _activities = activities ?? [enrichedActivity];
+
+    _activitiesController.value = _activities..insert(0, enrichedActivity);
+
     await trackAnalytics(
       label: 'post',
       foreignId: activity.foreignId,
