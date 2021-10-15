@@ -39,8 +39,7 @@ void main() {
       ),
     ];
     when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
-    when(mockFeed.getEnrichedActivities)
-        .thenAnswer((_) async => activities);
+    when(mockFeed.getEnrichedActivities).thenAnswer((_) async => activities);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         // body: StreamFeedProvider(

@@ -42,8 +42,8 @@ main() {
 
       test('decrement', () async {
         ownChildren = {
-          'like':
-              BehaviorSubject.seeded([const Reaction(id: 'id3'), Reaction(id: 'id')]),
+          'like': BehaviorSubject.seeded(
+              [const Reaction(id: 'id3'), Reaction(id: 'id')]),
           'post': BehaviorSubject.seeded([const Reaction(id: 'id2')])
         };
         expectedResult = {

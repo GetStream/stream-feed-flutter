@@ -12,8 +12,7 @@ class MockStreamAnalytics extends Mock implements StreamAnalytics {}
 
 class MockFeedAPI extends Mock implements FlatFeed {}
 
-class MockReactionsControllers extends Mock
-    implements ReactionsControllers {}
+class MockReactionsControllers extends Mock implements ReactionsControllers {}
 
 class MockClient extends Mock implements StreamFeedClient {
   final Logger logger = MockLogger();

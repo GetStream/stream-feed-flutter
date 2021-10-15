@@ -12,4 +12,4 @@ class MockFeedAPI extends Mock implements FlatFeed {}
 class MockFeedBloc<A, Ob, T, Or> extends Mock
     implements FeedBloc<A, Ob, T, Or> {}
 
-class MockReactionControllers extends Mock implements ReactionsControllers{}
+class MockReactionControllers extends Mock implements ReactionsControllers {}
