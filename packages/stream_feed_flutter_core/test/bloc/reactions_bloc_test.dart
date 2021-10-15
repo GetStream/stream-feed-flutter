@@ -24,6 +24,8 @@ main() {
   late MockFeedAPI mockFeed;
   late Activity activity;
   late MockStreamUser mockUser;
+  late EnrichedActivity<String, String, String, String> enrichedActivity;
+  late Activity addedActivity;
 
   tearDown(() => bloc.dispose());
 
@@ -64,12 +66,20 @@ main() {
       object: 'test',
     );
 
-    const addedActivity = Activity(
+    addedActivity = const Activity(
       id: 'test',
       actor: 'test',
       verb: 'post',
       object: 'test',
     );
+
+    enrichedActivity = const EnrichedActivity(
+      id: 'test',
+      actor: 'test',
+      verb: 'post',
+      object: 'test',
+    );
+
     mockUser = MockStreamUser();
     when(() => mockClient.flatFeed('user', 'test')).thenReturn(mockFeed);
     when(() => mockFeed.addActivity(activity))
@@ -79,12 +89,7 @@ main() {
     bloc = FeedBloc(client: mockClient);
     when(() =>
         mockFeed.getEnrichedActivityDetail<String, String, String, String>(
-            addedActivity.id!)).thenAnswer((_) async => const EnrichedActivity(
-          id: 'test',
-          actor: 'test',
-          verb: 'post',
-          object: 'test',
-        ));
+            addedActivity.id!)).thenAnswer((_) async => enrichedActivity);
   });
 
   group('ReactionBloc', () {
@@ -299,6 +304,9 @@ main() {
         userId: 'test',
       );
       verify(() => mockFeed.addActivity(activity)).called(1);
+      verify(() => mockFeed.getEnrichedActivityDetail(addedActivity.id!))
+          .called(1);
+      //await expectLater(bloc.activitiesStream, emits([enrichedActivity]));
     });
   });
 }
