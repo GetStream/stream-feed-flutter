@@ -114,9 +114,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(widget.client.currentUser!.id),
-                const SizedBox(height: 8),
+                Text(
+                  widget.client.currentUser!.id,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                const SizedBox(height: 4),
                 Text('${widget.client.currentUser!.data!['handle']}'),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text('${widget.client.currentUser!.followingCount ?? 0} Following'),
+                    const SizedBox(width: 8),
+                    Text('${widget.client.currentUser!.followersCount ?? 0} Followers'),
+                  ],
+                ),
                 const Divider(),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
