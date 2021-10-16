@@ -141,7 +141,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   minLeadingWidth: 0,
                   leading: const Icon(Icons.person_outline),
                   title: const Text('Profile'),
-                  onTap: () {},
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ProfileScreen(
+                        client: widget.client,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -288,6 +294,55 @@ class _ComposeScreenState extends State<ComposeScreen> {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({
+    Key? key,
+    required this.client,
+  }) : super(key: key);
+
+  final StreamFeedClient client;
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  Widget build(BuildContext context) {
+    print(widget.client.currentUser!.data);
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.client.currentUser!.id),
+            Text(
+              '${widget.client.currentUser!.data!['handle']}',
+              style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          ],
+        ),
+      ),
+      body: Scrollbar(
+        child: FlatActivityListPage(
+          flags: EnrichmentFlags()
+              .withReactionCounts()
+              .withOwnChildren()
+              .withOwnReactions(),
+          feedGroup: 'user',
+          onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
+          onUserTap: (user) =>
+              debugPrint('hashtag pressed: ${user!.toJson()}'),
+          onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
         ),
       ),
     );
