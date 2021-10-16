@@ -63,6 +63,7 @@ class MobileApp extends StatelessWidget {
       home: MyHomePage(
         client: client,
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -87,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Builder(builder: (context) {
             return Avatar(
               user: User(
@@ -123,9 +124,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Text('${widget.client.currentUser!.followingCount ?? 0} Following'),
+                    Text(
+                        '${widget.client.currentUser!.followingCount ?? 0} Following'),
                     const SizedBox(width: 8),
-                    Text('${widget.client.currentUser!.followersCount ?? 0} Followers'),
+                    Text(
+                        '${widget.client.currentUser!.followersCount ?? 0} Followers'),
                   ],
                 ),
                 const Divider(),
@@ -134,14 +137,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   minLeadingWidth: 0,
                   leading: const Icon(Icons.person_outline),
                   title: const Text('Profile'),
-                  onTap: () {},
-                ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  minLeadingWidth: 0,
-                  leading: const Icon(Icons.settings_outlined),
-                  title: const Text('Settings'),
-                  onTap: () {},
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ProfileScreen(
+                        client: widget.client,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -168,8 +170,15 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {},
+        child: const Icon(Icons.edit_outlined),
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => ComposeScreen(
+              client: widget.client,
+            ),
+            fullscreenDialog: true,
+          ),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
