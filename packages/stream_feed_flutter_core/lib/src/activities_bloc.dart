@@ -49,9 +49,7 @@ class FeedBloc<A, Ob, T, Or> {
       _queryActivitiesLoadingController.stream;
 
   /// Add an activity to the feed.
-  Future<Activity> onAddActivity(
-      //TODO: add this to the stream
-      {
+  Future<Activity> onAddActivity({
     required String feedGroup,
     Map<String, String>? data,
     required String verb,
