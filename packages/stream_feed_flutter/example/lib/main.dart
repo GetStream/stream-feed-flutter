@@ -232,10 +232,10 @@ class _ComposeScreenState extends State<ComposeScreen> {
               if (postController.text.isNotEmpty) {
                 try {
                   DefaultFeedBlocProvider.of(context).bloc.onAddActivity(
-                    feedGroup: 'user',
-                    verb: 'post',
-                    object: postController.text,
-                  );
+                        feedGroup: 'user',
+                        verb: 'post',
+                        object: postController.text,
+                      );
 
                   Navigator.of(context).pop();
                 } catch (e) {
