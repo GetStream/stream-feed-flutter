@@ -306,7 +306,7 @@ main() {
       verify(() => mockFeed.addActivity(activity)).called(1);
       verify(() => mockFeed.getEnrichedActivityDetail(addedActivity.id!))
           .called(1);
-      //await expectLater(bloc.activitiesStream, emits([enrichedActivity]));
+      await expectLater(bloc.activitiesStream, emits([enrichedActivity]));
     });
   });
 }
