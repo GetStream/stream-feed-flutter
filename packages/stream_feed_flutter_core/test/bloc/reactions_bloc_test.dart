@@ -21,10 +21,16 @@ main() {
   late FeedBloc bloc;
   late MockReactionsControllers mockReactionControllers;
   late String feedGroup;
+  late MockFeedAPI mockFeed;
+  late Activity activity;
+  late MockStreamUser mockUser;
+  late EnrichedActivity<String, String, String, String> enrichedActivity;
+  late Activity addedActivity;
 
   tearDown(() => bloc.dispose());
 
   setUp(() {
+    mockFeed = MockFeedAPI();
     mockReactions = MockReactions();
     mockReactionControllers = MockReactionsControllers();
     mockStreamAnalytics = MockStreamAnalytics();
@@ -54,7 +60,36 @@ main() {
     ];
     when(() => mockClient.reactions).thenReturn(mockReactions);
 
+    activity = const Activity(
+      actor: 'test',
+      verb: 'post',
+      object: 'test',
+    );
+
+    addedActivity = const Activity(
+      id: 'test',
+      actor: 'test',
+      verb: 'post',
+      object: 'test',
+    );
+
+    enrichedActivity = const EnrichedActivity(
+      id: 'test',
+      actor: 'test',
+      verb: 'post',
+      object: 'test',
+    );
+
+    mockUser = MockStreamUser();
+    when(() => mockClient.flatFeed('user', 'test')).thenReturn(mockFeed);
+    when(() => mockFeed.addActivity(activity))
+        .thenAnswer((invocation) async => addedActivity);
+    when(() => mockClient.currentUser).thenReturn(mockUser);
+    when(() => mockUser.ref).thenReturn('test');
     bloc = FeedBloc(client: mockClient);
+    when(() =>
+        mockFeed.getEnrichedActivityDetail<String, String, String, String>(
+            addedActivity.id!)).thenAnswer((_) async => enrichedActivity);
   });
 
   group('ReactionBloc', () {
@@ -255,6 +290,23 @@ main() {
               )
             ]));
       });
+    });
+  });
+
+  group('Activities', () {
+    test(
+        '''When we await onAddActivity the stream gets updated with the new expected value''',
+        () async {
+      await bloc.onAddActivity(
+        feedGroup: 'user',
+        verb: 'post',
+        object: 'test',
+        userId: 'test',
+      );
+      verify(() => mockFeed.addActivity(activity)).called(1);
+      verify(() => mockFeed.getEnrichedActivityDetail(addedActivity.id!))
+          .called(1);
+      await expectLater(bloc.activitiesStream, emits([enrichedActivity]));
     });
   });
 }

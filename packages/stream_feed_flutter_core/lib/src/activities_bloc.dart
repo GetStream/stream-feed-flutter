@@ -49,24 +49,37 @@ class FeedBloc<A, Ob, T, Or> {
       _queryActivitiesLoadingController.stream;
 
   /// Add an activity to the feed.
-  Future<Activity> onAddActivity(
-      //TODO: add this to the stream
-      {
+  Future<Activity> onAddActivity({
     required String feedGroup,
     Map<String, String>? data,
     required String verb,
     required String object,
     String? userId,
+    List<FeedId>? to,
   }) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
       verb: verb,
       object: object,
       extraData: data,
+      to: to,
     );
 
-    final addedActivity =
-        await client.flatFeed(feedGroup, userId).addActivity(activity);
+    final flatFeed = client.flatFeed(feedGroup, userId);
+
+    final addedActivity = await flatFeed.addActivity(activity);
+
+    // TODO(Sacha): merge activity and enriched activity classes together
+    final enrichedActivity = await flatFeed
+        .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
+
+    final _activities = activities ?? [];
+
+    // ignore: cascade_invocations
+    _activities.insert(0, enrichedActivity);
+
+    _activitiesController.add(_activities);
+
     await trackAnalytics(
       label: 'post',
       foreignId: activity.foreignId,
