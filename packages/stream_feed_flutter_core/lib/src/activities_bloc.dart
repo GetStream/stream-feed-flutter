@@ -75,7 +75,7 @@ class FeedBloc<A, Ob, T, Or> {
     final enrichedActivity = await flatFeed
         .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
 
-    final _activities = activities ?? [enrichedActivity];
+    final _activities = activities ?? [];
 
     // ignore: cascade_invocations
     _activities.insert(0, enrichedActivity);
