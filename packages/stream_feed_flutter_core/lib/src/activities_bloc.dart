@@ -57,12 +57,14 @@ class FeedBloc<A, Ob, T, Or> {
     required String verb,
     required String object,
     String? userId,
+    List<FeedId>? to,
   }) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
       verb: verb,
       object: object,
       extraData: data,
+      to: to,
     );
 
     final flatFeed = client.flatFeed(feedGroup, userId);
