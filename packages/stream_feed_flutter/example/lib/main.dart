@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
@@ -57,6 +58,9 @@ class MobileApp extends StatelessWidget {
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: Color(0xff005fff),
+        ),
+        textTheme: GoogleFonts.interTextTheme(
+          Theme.of(context).textTheme,
         ),
       ),
       themeMode: ThemeMode.system,
