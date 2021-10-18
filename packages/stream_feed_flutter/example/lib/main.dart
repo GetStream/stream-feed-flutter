@@ -190,3 +190,99 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+class ComposeScreen extends StatefulWidget {
+  const ComposeScreen({
+    Key? key,
+    required this.client,
+  }) : super(key: key);
+
+  final StreamFeedClient client;
+
+  @override
+  _ComposeScreenState createState() => _ComposeScreenState();
+}
+
+class _ComposeScreenState extends State<ComposeScreen> {
+  final postController = TextEditingController();
+
+  @override
+  void dispose() {
+    postController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Compose'),
+        actions: [
+          ActionChip(
+            label: const Text('Post'),
+            backgroundColor: const Color(0xff76fff1),
+            onPressed: () async {
+              if (postController.text.isNotEmpty) {
+                try {
+                  DefaultFeedBlocProvider.of(context).bloc.onAddActivity(
+                    feedGroup: 'user',
+                    verb: 'post',
+                    object: postController.text,
+                  );
+
+                  Navigator.of(context).pop();
+                } catch (e) {
+                  debugPrint(e.toString());
+                }
+              }
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Avatar(
+                  user: User(
+                    data: widget.client.currentUser?.data,
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: TextField(
+                      controller: postController,
+                      autofocus: true,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey.shade300,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade300,
+                          ),
+                        ),
+                        hintText: 'What\'s on your mind?',
+                        alignLabelWithHint: true,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
