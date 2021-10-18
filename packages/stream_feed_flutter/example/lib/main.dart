@@ -141,13 +141,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   minLeadingWidth: 0,
                   leading: const Icon(Icons.person_outline),
                   title: const Text('Profile'),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => ProfileScreen(
-                        client: widget.client,
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ProfileScreen(
+                          client: widget.client,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -164,8 +167,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 .withOwnReactions(),
             feedGroup: 'user',
             onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
-            onUserTap: (user) =>
-                debugPrint('hashtag pressed: ${user!.toJson()}'),
+            onUserTap: (user) => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ProfileScreen(
+                  client: widget.client,
+                  user: user!,
+                ),
+              ),
+            ),
             onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
           ),
           const Center(
@@ -304,15 +313,29 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     Key? key,
     required this.client,
+    this.user,
   }) : super(key: key);
 
   final StreamFeedClient client;
+  final User? user;
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool? isFollowingUser;
+
+  @override
+  void initState() {
+    super.initState();
+    // If user is not null, this means that the profile being viewed is
+    // not the current user's profile.
+    if (widget.user != null) {
+      // Check if the current user is following this user
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     print(widget.client.currentUser!.data);
@@ -322,15 +345,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.client.currentUser!.id),
+            Text(widget.user?.id ?? widget.client.currentUser!.id),
             Text(
-              '${widget.client.currentUser!.data!['handle']}',
+              '${widget.user?.data?['handle'] ?? widget.client.currentUser!.data!['handle']}',
               style: Theme.of(context).textTheme.subtitle2!.copyWith(
                     color: Colors.white,
                   ),
             ),
           ],
         ),
+        actions: [
+          if (widget.user != null)
+            IconButton(
+              icon: Icon(Icons.add_circle_outline_rounded),
+              onPressed: () {
+                // follow/unfollow user
+              },
+            ),
+        ],
       ),
       body: Scrollbar(
         child: FlatActivityListPage(
