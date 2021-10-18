@@ -12,6 +12,7 @@ class StreamFeedTheme extends InheritedWidget {
   }) : super(key: key, child: child);
 
   /// The [StreamFeedThemeData] styling for this theme.
+  // ignore: diagnostic_describe_all_properties
   final StreamFeedThemeData data;
 
   @override
@@ -29,12 +30,6 @@ class StreamFeedTheme extends InheritedWidget {
     );
 
     return streamFeedTheme!.data;
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<StreamFeedThemeData>('data', data));
   }
 }
 

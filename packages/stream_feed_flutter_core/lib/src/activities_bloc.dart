@@ -331,6 +331,11 @@ class FeedBloc<A, Ob, T, Or> {
       value.close();
     });
   }
+
+  Future<void> onRemoveActivity(
+      {required String feedGroup, required String activityId}) async {
+    await client.flatFeed(feedGroup).removeActivityById(activityId);
+  }
 }
 
 class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {

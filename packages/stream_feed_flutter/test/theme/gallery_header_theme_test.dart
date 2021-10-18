@@ -82,6 +82,148 @@ void main() {
       ],
     );
   });
+
+  testWidgets('default GalleryHeaderTheme debugFillProperties', (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const childReactionTheme = GalleryHeaderTheme(
+      data: GalleryHeaderThemeData(),
+      child: SizedBox(),
+    );
+    // ignore: cascade_invocations
+    childReactionTheme.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toString())
+        .toList();
+
+    expect(
+      description,
+      [
+        'data: GalleryHeaderThemeData#007db(closeButtonColor: null, backgroundColor: null, titleTextStyle: null)',
+      ],
+    );
+  });
+
+  testWidgets('GalleryHeaderTheme wrap', (tester) async {
+    final Key inkWellKey = UniqueKey();
+    const backgroundColor = Colors.red;
+    const closeButtonColor = Colors.red;
+    final Widget result = MaterialApp(
+      home: Scaffold(
+        body: Builder(
+          builder: (context) {
+            return InkWell(
+              key: inkWellKey,
+              hoverColor: GalleryHeaderTheme.of(context).backgroundColor,
+            );
+          },
+        ),
+      ),
+    );
+
+    late BuildContext navigatorContext;
+
+    MaterialApp buildFrame() {
+      return MaterialApp(
+        home: Scaffold(
+          body: GalleryHeaderTheme(
+            data: const GalleryHeaderThemeData(
+              backgroundColor: backgroundColor,
+              closeButtonColor: closeButtonColor,
+            ),
+            child: Builder(
+              builder: (context) {
+                navigatorContext = context;
+
+                return ElevatedButton(
+                  child:
+                      const Text('push wrapped'), //TODO(sacha): push unwrapped
+                  onPressed: () {
+                    Navigator.of(context).push<void>(
+                      MaterialPageRoute<void>(
+                        // Capture the shadow ChildReactionTheme.
+                        builder: (BuildContext _) =>
+                            InheritedTheme.captureAll(context, result),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      );
+    }
+
+    Color inkWellColor() {
+      return tester.widget<InkWell>(find.byKey(inkWellKey)).hoverColor!;
+    }
+
+    await tester.pumpWidget(buildFrame());
+
+    // Show the route which contains InkWell which was wrapped with
+    // InheritedTheme.captureAll().
+    await tester.tap(find.text('push wrapped'));
+    await tester.pumpAndSettle(); // route animation
+    expect(inkWellColor(), backgroundColor);
+  });
+
+  testWidgets('GalleryHeaderTheme updateShouldNotify', (tester) async {
+    TestGalleryHeaderTheme? result;
+    final builder = Builder(
+      builder: (context) {
+        result = context
+            .dependOnInheritedWidgetOfExactType<TestGalleryHeaderTheme>();
+        return Container();
+      },
+    );
+
+    final first = TestGalleryHeaderTheme(
+      shouldNotify: true,
+      data: const GalleryHeaderThemeData(),
+      child: builder,
+    );
+
+    final second = TestGalleryHeaderTheme(
+      shouldNotify: false,
+      data: const GalleryHeaderThemeData(),
+      child: builder,
+    );
+
+    final third = TestGalleryHeaderTheme(
+      shouldNotify: true,
+      data: const GalleryHeaderThemeData(),
+      child: builder,
+    );
+
+    await tester.pumpWidget(first);
+    expect(result, equals(first));
+
+    await tester.pumpWidget(second);
+    expect(result, equals(first));
+
+    await tester.pumpWidget(third);
+    expect(result, equals(third));
+  });
+}
+
+class TestGalleryHeaderTheme extends GalleryHeaderTheme {
+  const TestGalleryHeaderTheme({
+    Key? key,
+    required GalleryHeaderThemeData data,
+    required Widget child,
+    required this.shouldNotify,
+  }) : super(key: key, data: data, child: child);
+
+  // ignore: diagnostic_describe_all_properties
+  final bool shouldNotify;
+
+  @override
+  bool updateShouldNotify(covariant GalleryHeaderTheme oldWidget) {
+    super.updateShouldNotify(oldWidget);
+    return shouldNotify;
+  }
 }
 
 // Light theme test control.

@@ -53,11 +53,6 @@ class InteractiveText extends StatelessWidget {
             style: ReactionTheme.of(context).mentionTextStyle,
           ),
         );
-      default:
-        return Text(
-          tagged.text,
-          style: ReactionTheme.of(context).normalTextStyle,
-        );
     }
   }
 

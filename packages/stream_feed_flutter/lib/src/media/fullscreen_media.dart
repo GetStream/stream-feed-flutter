@@ -24,7 +24,7 @@ class FullscreenMedia extends StatefulWidget {
   final int startIndex;
 
   @override
-  _FullscreenMediaState createState() => _FullscreenMediaState();
+  FullscreenMediaState createState() => FullscreenMediaState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -34,10 +34,11 @@ class FullscreenMedia extends StatefulWidget {
   }
 }
 
-class _FullscreenMediaState extends State<FullscreenMedia>
+class FullscreenMediaState extends State<FullscreenMedia>
     with SingleTickerProviderStateMixin {
   // Whether to display the image options to the user by default or not.
-  bool _optionsShown = true;
+  @visibleForTesting
+  bool optionsShown = true;
 
   late final AnimationController _controller;
   late final PageController _pageController;
@@ -85,7 +86,7 @@ class _FullscreenMediaState extends State<FullscreenMedia>
                       maxScale: PhotoViewComputedScale.covered,
                       minScale: PhotoViewComputedScale.contained,
                       onTapUp: (a, b, c) {
-                        setState(() => _optionsShown = !_optionsShown);
+                        setState(() => optionsShown = !optionsShown);
                         if (_controller.isCompleted) {
                           _controller.reverse();
                         } else {
@@ -107,7 +108,7 @@ class _FullscreenMediaState extends State<FullscreenMedia>
             },
           ),
           AnimatedOpacity(
-            opacity: _optionsShown ? 1.0 : 0.0,
+            opacity: optionsShown ? 1.0 : 0.0,
             duration: const Duration(milliseconds: 300),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -73,6 +73,148 @@ void main() {
       ],
     );
   });
+
+  testWidgets('default ChildReactionTheme debugFillProperties', (tester) async {
+    final builder = DiagnosticPropertiesBuilder();
+    const childReactionTheme = ChildReactionTheme(
+      data: ChildReactionThemeData(),
+      child: SizedBox(),
+    );
+    // ignore: cascade_invocations
+    childReactionTheme.debugFillProperties(builder);
+
+    final description = builder.properties
+        .where((node) => !node.isFiltered(DiagnosticLevel.info))
+        .map((node) => node.toString())
+        .toList();
+
+    expect(
+      description,
+      [
+        'data: ChildReactionThemeData#00000(hoverColor: null, toggleColor: null)',
+      ],
+    );
+  });
+
+  testWidgets('ChildReactionTheme wrap', (tester) async {
+    final Key inkWellKey = UniqueKey();
+    const hoverColor = Colors.red;
+    const toggleColor = Colors.red;
+    final Widget childReaction = MaterialApp(
+      home: Scaffold(
+        body: Builder(
+          builder: (BuildContext context) {
+            return InkWell(
+              key: inkWellKey,
+              hoverColor: ChildReactionTheme.of(context).hoverColor,
+            );
+          },
+        ),
+      ),
+    );
+
+    late BuildContext navigatorContext;
+
+    MaterialApp buildFrame() {
+      return MaterialApp(
+        home: Scaffold(
+          body: ChildReactionTheme(
+            data: const ChildReactionThemeData(
+              hoverColor: hoverColor,
+              toggleColor: toggleColor,
+            ),
+            child: Builder(
+              builder: (context) {
+                navigatorContext = context;
+
+                return ElevatedButton(
+                  child:
+                      const Text('push wrapped'), //TODO(sacha): push unwrapped
+                  onPressed: () {
+                    Navigator.of(context).push<void>(
+                      MaterialPageRoute<void>(
+                        // Capture the shadow ChildReactionTheme.
+                        builder: (BuildContext _) =>
+                            InheritedTheme.captureAll(context, childReaction),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      );
+    }
+
+    Color inkWellColor() {
+      return tester.widget<InkWell>(find.byKey(inkWellKey)).hoverColor!;
+    }
+
+    await tester.pumpWidget(buildFrame());
+
+    // Show the route which contains InkWell which was wrapped with
+    // InheritedTheme.captureAll().
+    await tester.tap(find.text('push wrapped'));
+    await tester.pumpAndSettle(); // route animation
+    expect(inkWellColor(), hoverColor);
+  });
+
+  testWidgets('ChildReactionTheme updateShouldNotify', (tester) async {
+    TestChildReactionTheme? result;
+    final builder = Builder(
+      builder: (context) {
+        result = context
+            .dependOnInheritedWidgetOfExactType<TestChildReactionTheme>();
+        return Container();
+      },
+    );
+
+    final first = TestChildReactionTheme(
+      shouldNotify: true,
+      data: const ChildReactionThemeData(),
+      child: builder,
+    );
+
+    final second = TestChildReactionTheme(
+      shouldNotify: false,
+      data: const ChildReactionThemeData(),
+      child: builder,
+    );
+
+    final third = TestChildReactionTheme(
+      shouldNotify: true,
+      data: const ChildReactionThemeData(),
+      child: builder,
+    );
+
+    await tester.pumpWidget(first);
+    expect(result, equals(first));
+
+    await tester.pumpWidget(second);
+    expect(result, equals(first));
+
+    await tester.pumpWidget(third);
+    expect(result, equals(third));
+  });
+}
+
+class TestChildReactionTheme extends ChildReactionTheme {
+  const TestChildReactionTheme({
+    Key? key,
+    required ChildReactionThemeData data,
+    required Widget child,
+    required this.shouldNotify,
+  }) : super(key: key, data: data, child: child);
+
+  // ignore: diagnostic_describe_all_properties
+  final bool shouldNotify;
+
+  @override
+  bool updateShouldNotify(covariant ChildReactionTheme oldWidget) {
+    super.updateShouldNotify(oldWidget);
+    return shouldNotify;
+  }
 }
 
 const _childReactionThemeDefault = ChildReactionThemeData(
