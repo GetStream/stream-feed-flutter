@@ -137,13 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   minLeadingWidth: 0,
                   leading: const Icon(Icons.person_outline),
                   title: const Text('Profile'),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => ProfileScreen(
-                        client: widget.client,
-                      ),
-                    ),
-                  ),
+                  onTap: () {},
                 ),
               ],
             ),
