@@ -3,32 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-/// A simple InheritedWidget created for the purpose of passing our
-/// StreamFeedClient around the widget tree
-class FeedClient extends InheritedWidget {
-  const FeedClient({
-    Key? key,
-    required this.client,
-    required Widget child,
-  }) : super(key: key, child: child);
-
-  final StreamFeedClient client;
-
-  /// Returns the closes instance of StreamFeedClient in the widget tree.
-  static StreamFeedClient of(BuildContext context) {
-    final StreamFeedClient? result =
-        context.dependOnInheritedWidgetOfExactType<FeedClient>()!.client;
-    assert(result != null, 'No FeedClient found in context');
-    return result!;
-  }
-
-  @override
-  // ignore: avoid_renaming_method_parameters
-  bool updateShouldNotify(FeedClient old) {
-    return client != old.client;
-  }
-}
-
 // The entrypoint of our application.
 Future<void> main() async {
   // Here we are passing in the api key for our application. You can get an
@@ -114,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final client = FeedClient.of(context);
+    final client = DefaultFeedBlocProvider.of(context).bloc.client;
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -259,6 +233,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = DefaultFeedBlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compose'),
@@ -269,11 +244,11 @@ class _ComposeScreenState extends State<ComposeScreen> {
             onPressed: () async {
               if (postController.text.isNotEmpty) {
                 try {
-                  DefaultFeedBlocProvider.of(context).bloc.onAddActivity(
-                        feedGroup: 'user',
-                        verb: 'post',
-                        object: postController.text,
-                      );
+                  bloc.onAddActivity(
+                    feedGroup: 'user',
+                    verb: 'post',
+                    object: postController.text,
+                  );
 
                   Navigator.of(context).pop();
                 } catch (e) {
@@ -292,7 +267,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
               children: [
                 Avatar(
                   user: User(
-                    data: widget.client.currentUser?.data,
+                    data: bloc.currentUser?.data,
                   ),
                 ),
                 Expanded(
@@ -347,16 +322,16 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final client = FeedClient.of(context);
+    final bloc = DefaultFeedBlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.user?.id ?? client.currentUser!.id),
+            Text(widget.user?.id ?? bloc.currentUser!.id),
             Text(
-              '${widget.user?.data?['handle'] ?? client.currentUser!.data!['handle']}',
+              '${widget.user?.data?['handle'] ?? bloc.currentUser!.data!['handle']}',
               style: Theme.of(context).textTheme.subtitle2!.copyWith(
                     color: Colors.white,
                   ),
@@ -370,13 +345,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Note: until Aggregated Feeds are implemented this is functionally
           // useless because the current user will never see posts from other
           // users.
-          if (widget.user != null && widget.user!.id != client.currentUser!.id)
+          if (widget.user != null && widget.user!.id != bloc.currentUser!.id)
             FutureBuilder<List<Follow>>(
-              future: client.flatFeed('user', client.currentUser?.id).following(
+              future:
+                  bloc.client.flatFeed('user', bloc.currentUser?.id).following(
                 limit: 1,
                 offset: 0,
                 filter: [
-                  FeedId.id('user:${client.currentUser?.id}'),
+                  FeedId.id('user:${bloc.currentUser?.id}'),
                 ],
               ),
               builder: (context, snapshot) {
@@ -399,16 +375,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       // If isFollowingUser is not true, follow the
                       // user's feed.
                       if (isFollowingUser!) {
-                        final currentUserFeed =
-                            client.flatFeed('user', client.currentUser!.id);
+                        final currentUserFeed = bloc.client
+                            .flatFeed('user', bloc.client.currentUser!.id);
                         final userToFollowFeed =
-                            client.flatFeed('user', widget.user!.id);
+                            bloc.client.flatFeed('user', widget.user!.id);
                         await currentUserFeed.unfollow(userToFollowFeed);
                       } else {
-                        final currentUserFeed =
-                            client.flatFeed('user', client.currentUser!.id);
+                        final currentUserFeed = bloc.client
+                            .flatFeed('user', bloc.client.currentUser!.id);
                         final userToFollowFeed =
-                            client.flatFeed('user', widget.user!.id);
+                            bloc.client.flatFeed('user', widget.user!.id);
                         await currentUserFeed.follow(userToFollowFeed);
                       }
                     },
