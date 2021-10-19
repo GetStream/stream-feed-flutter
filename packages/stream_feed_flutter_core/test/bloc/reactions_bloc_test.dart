@@ -4,7 +4,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import '../mocks.dart';
 
-main() {
+void main() {
   late MockStreamFeedClient mockClient;
   late MockReactions mockReactions;
   late MockStreamAnalytics mockStreamAnalytics;
@@ -15,7 +15,6 @@ main() {
   late String kind;
   late List<Reaction> reactions;
   late String activityId;
-  late String userId;
   late List<FeedId> targetFeeds;
   late Map<String, String> data;
   late FeedBloc bloc;
@@ -25,7 +24,9 @@ main() {
   late MockFeedAPI mockSecondFeed;
   late Activity activity;
   late MockStreamUser mockUser;
+  late String userId;
   late MockStreamUser mockSecondUser;
+  late String secondUserId;
   late EnrichedActivity<String, String, String, String> enrichedActivity;
   late Activity addedActivity;
   late List<Follow> following;
@@ -87,15 +88,17 @@ main() {
     following = [];
 
     mockUser = MockStreamUser();
+    userId = '1';
     mockSecondUser = MockStreamUser();
+    secondUserId = '2';
     when(() => mockClient.flatFeed('user', 'test')).thenReturn(mockFeed);
-    when(() => mockClient.flatFeed('user', '1')).thenReturn(mockFeed);
-    when(() => mockClient.flatFeed('user', '2')).thenReturn(mockFeed);
+    when(() => mockClient.flatFeed('user', userId)).thenReturn(mockFeed);
+    when(() => mockClient.flatFeed('user', secondUserId)).thenReturn(mockFeed);
     when(() => mockFeed.addActivity(activity))
         .thenAnswer((invocation) async => addedActivity);
     when(() => mockClient.currentUser).thenReturn(mockUser);
-    when(() => mockUser.id).thenReturn('1');
-    when(() => mockSecondUser.id).thenReturn('2');
+    when(() => mockUser.id).thenReturn(userId);
+    when(() => mockSecondUser.id).thenReturn(secondUserId);
     when(() => mockUser.ref).thenReturn('test');
     bloc = FeedBloc(client: mockClient);
     when(() =>
@@ -109,7 +112,7 @@ main() {
       limit: 1,
       offset: 0,
       filter: [
-        FeedId.id('user:1'),
+        FeedId.id('user:$userId'),
       ],
     )).thenAnswer((_) async => following);
   });
