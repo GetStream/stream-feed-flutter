@@ -54,7 +54,6 @@ class CommentField extends StatelessWidget {
               //TODO: pass down User
               child: Avatar(
                 // user: user,
-                user: activity!.actor,
                 size: UserBarTheme.of(context).avatarSize,
               ), //TODO: User in core and onUserTap
             ),
