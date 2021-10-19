@@ -309,4 +309,18 @@ main() {
       await expectLater(bloc.activitiesStream, emits([enrichedActivity]));
     });
   });
+
+  group('Follows', () {
+    test('isFollowingUser', () async {
+      //
+    });
+
+    test('followUser', () async {
+      //
+    });
+
+    test('unfollowUser', () async {
+      //
+    });
+  });
 }
