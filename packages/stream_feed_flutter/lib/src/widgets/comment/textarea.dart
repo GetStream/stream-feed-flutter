@@ -100,10 +100,11 @@ class _TextAreaState extends State<TextArea> {
         autofocus: widget.autofocus,
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(8),
-            hintStyle: widget.hintTextStyle,
-            border: InputBorder.none,
-            hintText: widget.hintText),
+          contentPadding: const EdgeInsets.all(8),
+          hintStyle: widget.hintTextStyle,
+          border: InputBorder.none,
+          hintText: widget.hintText,
+        ),
         textCapitalization: TextCapitalization.sentences,
       ),
     );
