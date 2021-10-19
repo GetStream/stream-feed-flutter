@@ -6,6 +6,7 @@ class FeedBloc<A, Ob, T, Or> {
   FeedBloc({required this.client, this.analyticsClient});
 
   final StreamFeedClient client;
+  StreamUser? get currentUser => client.currentUser;
 
   final StreamAnalytics? analyticsClient;
 

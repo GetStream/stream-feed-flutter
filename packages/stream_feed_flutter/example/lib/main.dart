@@ -3,13 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
+// The entrypoint of our application.
 Future<void> main() async {
+  // Here we are passing in the api key for our application. You can get an
+  // api key for your own application in the Stream dashboard.
   const apiKey = String.fromEnvironment('key');
   // Here we are passing in a user token via `dart-define`. In a production
   // application you will want to have authentication and authorization set up,
   // and generate a user token via that process.
+  //
+  // In this case, our user token is generated via https://getstream.io/chat/docs/react/token_generator/
   const userToken = String.fromEnvironment('user_token');
 
+  // Here we create an instance of StreamFeedClient and connect to the Stream API
   final client = StreamFeedClient.connect(
     apiKey,
     token: const Token(userToken),
@@ -29,9 +35,7 @@ Future<void> main() async {
     StreamFeedApp(
       bloc: DefaultFeedBloc(client: client),
       navigatorKey: _navigatorKey,
-      home: MobileApp(
-        client: client,
-      ),
+      home: const MobileApp(),
     ),
   );
 }
@@ -39,10 +43,7 @@ Future<void> main() async {
 class MobileApp extends StatelessWidget {
   const MobileApp({
     Key? key,
-    required this.client,
   }) : super(key: key);
-
-  final StreamFeedClient client;
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +65,7 @@ class MobileApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.system,
-      home: MyHomePage(
-        client: client,
-      ),
+      home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -75,10 +74,7 @@ class MobileApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
     Key? key,
-    required this.client,
   }) : super(key: key);
-
-  final StreamFeedClient client;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -89,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = DefaultFeedBlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -96,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Builder(builder: (context) {
             return Avatar(
               user: User(
-                data: widget.client.currentUser!.data,
+                data: bloc.currentUser!.data,
               ),
               onUserTap: (user) {
                 Scaffold.of(context).openDrawer();
@@ -115,24 +112,22 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Avatar(
                   user: User(
-                    data: widget.client.currentUser!.data,
+                    data: bloc.currentUser!.data,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  widget.client.currentUser!.id,
+                  bloc.currentUser!.id,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 4),
-                Text('${widget.client.currentUser!.data!['handle']}'),
+                Text('${bloc.currentUser!.data!['handle']}'),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Text(
-                        '${widget.client.currentUser!.followingCount ?? 0} Following'),
+                    Text('${bloc.currentUser!.followingCount ?? 0} Following'),
                     const SizedBox(width: 8),
-                    Text(
-                        '${widget.client.currentUser!.followersCount ?? 0} Followers'),
+                    Text('${bloc.currentUser!.followersCount ?? 0} Followers'),
                   ],
                 ),
                 const Divider(),
@@ -141,7 +136,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   minLeadingWidth: 0,
                   leading: const Icon(Icons.person_outline),
                   title: const Text('Profile'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const ProfileScreen(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -158,8 +160,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 .withOwnReactions(),
             feedGroup: 'user',
             onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
-            onUserTap: (user) =>
-                debugPrint('hashtag pressed: ${user!.toJson()}'),
+            onUserTap: (user) => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ProfileScreen(
+                  user: user!,
+                ),
+              ),
+            ),
             onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
           ),
           const Center(
@@ -171,9 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.edit_outlined),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => ComposeScreen(
-              client: widget.client,
-            ),
+            builder: (_) => const ComposeScreen(),
             fullscreenDialog: true,
           ),
         ),
@@ -201,10 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
 class ComposeScreen extends StatefulWidget {
   const ComposeScreen({
     Key? key,
-    required this.client,
   }) : super(key: key);
-
-  final StreamFeedClient client;
 
   @override
   _ComposeScreenState createState() => _ComposeScreenState();
@@ -221,6 +223,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = DefaultFeedBlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compose'),
@@ -231,11 +234,15 @@ class _ComposeScreenState extends State<ComposeScreen> {
             onPressed: () async {
               if (postController.text.isNotEmpty) {
                 try {
-                  DefaultFeedBlocProvider.of(context).bloc.onAddActivity(
-                        feedGroup: 'user',
-                        verb: 'post',
-                        object: postController.text,
-                      );
+                  bloc.onAddActivity(
+                    feedGroup: 'user',
+                    verb: 'post',
+                    object: postController.text,
+                    to: [
+                      FeedId('timeline', bloc.currentUser!.id),
+                      FeedId('user', bloc.currentUser!.id),
+                    ],
+                  );
 
                   Navigator.of(context).pop();
                 } catch (e) {
@@ -254,7 +261,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
               children: [
                 Avatar(
                   user: User(
-                    data: widget.client.currentUser?.data,
+                    data: bloc.currentUser?.data,
                   ),
                 ),
                 Expanded(
@@ -288,6 +295,109 @@ class _ComposeScreenState extends State<ComposeScreen> {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({
+    Key? key,
+    this.user,
+  }) : super(key: key);
+
+  final User? user;
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final bloc = DefaultFeedBlocProvider.of(context).bloc;
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.user?.id ?? bloc.currentUser!.id),
+            Text(
+              '${widget.user?.data?['handle'] ?? bloc.currentUser!.data!['handle']}',
+              style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          ],
+        ),
+        actions: [
+          // If the user matches the currentUser, do not show the
+          // follow/unfollow button; you cannot follow your own feed.
+          //
+          // Note: until Aggregated Feeds are implemented this is functionally
+          // useless because the current user will never see posts from other
+          // users.
+          if (widget.user != null && widget.user!.id != bloc.currentUser!.id)
+            FutureBuilder<List<Follow>>(
+              future:
+                  bloc.client.flatFeed('user', bloc.currentUser?.id).following(
+                limit: 1,
+                offset: 0,
+                filter: [
+                  FeedId.id('user:${bloc.currentUser?.id}'),
+                ],
+              ),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                } else {
+                  bool? isFollowingUser;
+                  if (snapshot.data!.isEmpty) {
+                    isFollowingUser = false;
+                  } else {
+                    isFollowingUser = true;
+                  }
+
+                  return IconButton(
+                    icon: Icon(isFollowingUser
+                        ? Icons.remove_circle_outline
+                        : Icons.add_circle_outline),
+                    onPressed: () async {
+                      // If isFollowingUser is true, unfollow the user's feed.
+                      // If isFollowingUser is not true, follow the
+                      // user's feed.
+                      if (isFollowingUser!) {
+                        final currentUserFeed =
+                            bloc.client.flatFeed('user', bloc.currentUser!.id);
+                        final userToFollowFeed =
+                            bloc.client.flatFeed('user', widget.user!.id);
+                        await currentUserFeed.unfollow(userToFollowFeed);
+                      } else {
+                        final currentUserFeed =
+                            bloc.client.flatFeed('user', bloc.currentUser!.id);
+                        final userToFollowFeed =
+                            bloc.client.flatFeed('user', widget.user!.id);
+                        await currentUserFeed.follow(userToFollowFeed);
+                      }
+                    },
+                  );
+                }
+              },
+            ),
+        ],
+      ),
+      body: Scrollbar(
+        child: FlatActivityListPage(
+          flags: EnrichmentFlags()
+              .withReactionCounts()
+              .withOwnChildren()
+              .withOwnReactions(),
+          feedGroup: 'user',
+          onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
+          onUserTap: (user) => debugPrint('hashtag pressed: ${user!.toJson()}'),
+          onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
         ),
       ),
     );

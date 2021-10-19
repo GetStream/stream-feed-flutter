@@ -60,6 +60,7 @@ class CommentField extends StatelessWidget {
             Expanded(
               child: TextArea(
                 textEditingController: textEditingController,
+                hintText: 'Post your reply',
               ),
             ),
             if (enableButton)
