@@ -53,7 +53,6 @@ class CommentField extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               //TODO: pass down User
               child: Avatar(
-                // user: user,
                 user: User(
                   data: DefaultFeedBlocProvider.of(context)
                       .bloc
