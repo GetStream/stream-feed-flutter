@@ -22,15 +22,19 @@ main() {
   late MockReactionsControllers mockReactionControllers;
   late String feedGroup;
   late MockFeedAPI mockFeed;
+  late MockFeedAPI mockSecondFeed;
   late Activity activity;
   late MockStreamUser mockUser;
+  late MockStreamUser mockSecondUser;
   late EnrichedActivity<String, String, String, String> enrichedActivity;
   late Activity addedActivity;
+  late List<Follow> following;
 
   tearDown(() => bloc.dispose());
 
   setUp(() {
     mockFeed = MockFeedAPI();
+    mockSecondFeed = MockFeedAPI();
     mockReactions = MockReactions();
     mockReactionControllers = MockReactionsControllers();
     mockStreamAnalytics = MockStreamAnalytics();
@@ -80,16 +84,34 @@ main() {
       object: 'test',
     );
 
+    following = [];
+
     mockUser = MockStreamUser();
+    mockSecondUser = MockStreamUser();
     when(() => mockClient.flatFeed('user', 'test')).thenReturn(mockFeed);
+    when(() => mockClient.flatFeed('user', '1')).thenReturn(mockFeed);
+    when(() => mockClient.flatFeed('user', '2')).thenReturn(mockFeed);
     when(() => mockFeed.addActivity(activity))
         .thenAnswer((invocation) async => addedActivity);
     when(() => mockClient.currentUser).thenReturn(mockUser);
+    when(() => mockUser.id).thenReturn('1');
+    when(() => mockSecondUser.id).thenReturn('2');
     when(() => mockUser.ref).thenReturn('test');
     bloc = FeedBloc(client: mockClient);
     when(() =>
         mockFeed.getEnrichedActivityDetail<String, String, String, String>(
             addedActivity.id!)).thenAnswer((_) async => enrichedActivity);
+    when(() => mockFeed.follow(mockSecondFeed))
+        .thenAnswer((_) => Future.value());
+    when(() => mockFeed.unfollow(mockSecondFeed))
+        .thenAnswer((_) => Future.value());
+    when(() => mockFeed.following(
+      limit: 1,
+      offset: 0,
+      filter: [
+        FeedId.id('user:1'),
+      ],
+    )).thenAnswer((_) async => following);
   });
 
   group('ReactionBloc', () {
@@ -310,17 +332,26 @@ main() {
     });
   });
 
+  group('currentUser', () {
+    test('currentUser matches', () {
+      expect(bloc.currentUser, mockUser);
+    });
+  });
+
   group('Follows', () {
     test('isFollowingUser', () async {
-      //
+      final isFollowing = await bloc.isFollowingUser('2');
+      expect(isFollowing, false);
     });
 
     test('followUser', () async {
-      //
+      await bloc.followUser(mockSecondFeed);
+      verify(() => mockFeed.follow(mockSecondFeed)).called(1);
     });
 
     test('unfollowUser', () async {
-      //
+      await bloc.unfollowUser(mockSecondFeed);
+      verify(() => mockFeed.unfollow(mockSecondFeed)).called(1);
     });
   });
 }
