@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final client = DefaultFeedBlocProvider.of(context).bloc.client;
+    final client = DefaultFeedBlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Builder(builder: (context) {
             return Avatar(
               user: User(
-                data: client.currentUser!.data,
+                data: bloc.currentUser!.data,
               ),
               onUserTap: (user) {
                 Scaffold.of(context).openDrawer();
@@ -112,24 +112,24 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Avatar(
                   user: User(
-                    data: client.currentUser!.data,
+                    data: bloc.currentUser!.data,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  client.currentUser!.id,
+                  bloc.currentUser!.id,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 4),
-                Text('${client.currentUser!.data!['handle']}'),
+                Text('${bloc.currentUser!.data!['handle']}'),
                 const SizedBox(height: 8),
                 Row(
                   children: [
                     Text(
-                        '${client.currentUser!.followingCount ?? 0} Following'),
+                        '${bloc.currentUser!.followingCount ?? 0} Following'),
                     const SizedBox(width: 8),
                     Text(
-                        '${client.currentUser!.followersCount ?? 0} Followers'),
+                        '${bloc.currentUser!.followersCount ?? 0} Followers'),
                   ],
                 ),
                 const Divider(),
@@ -377,13 +377,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       // user's feed.
                       if (isFollowingUser!) {
                         final currentUserFeed = bloc.client
-                            .flatFeed('user', bloc.client.currentUser!.id);
+                            .flatFeed('user', bloc.currentUser!.id);
                         final userToFollowFeed =
                             bloc.client.flatFeed('user', widget.user!.id);
                         await currentUserFeed.unfollow(userToFollowFeed);
                       } else {
                         final currentUserFeed = bloc.client
-                            .flatFeed('user', bloc.client.currentUser!.id);
+                            .flatFeed('user', bloc.currentUser!.id);
                         final userToFollowFeed =
                             bloc.client.flatFeed('user', widget.user!.id);
                         await currentUserFeed.follow(userToFollowFeed);
