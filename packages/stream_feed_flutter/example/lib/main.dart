@@ -5,8 +5,8 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 // The entrypoint of our application.
 Future<void> main() async {
-  // Here we are passing in the api key for our application. You can get an
-  // api key for your own application in the Stream dashboard.
+  // Here we are passing in the api key for our application via `dart-define`.
+  // You can get an api key for your own application in the Stream dashboard.
   const apiKey = String.fromEnvironment('key');
   // Here we are passing in a user token via `dart-define`. In a production
   // application you will want to have authentication and authorization set up,
