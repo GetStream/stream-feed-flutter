@@ -109,12 +109,12 @@ void main() {
     when(() => mockFeed.unfollow(mockSecondFeed))
         .thenAnswer((_) => Future.value());
     when(() => mockFeed.following(
-      limit: 1,
-      offset: 0,
-      filter: [
-        FeedId.id('user:$userId'),
-      ],
-    )).thenAnswer((_) async => following);
+          limit: 1,
+          offset: 0,
+          filter: [
+            FeedId.id('user:$userId'),
+          ],
+        )).thenAnswer((_) async => following);
   });
 
   group('ReactionBloc', () {

@@ -347,8 +347,8 @@ class FeedBloc<A, Ob, T, Or> {
 
   /// Unfollows the given [flatFeed].
   Future<void> unfollowUser(
-      FlatFeed flatFeed,
-      ) async {
+    FlatFeed flatFeed,
+  ) async {
     final currentUserFeed = client.flatFeed('user', currentUser!.id);
     await currentUserFeed.unfollow(flatFeed);
   }
