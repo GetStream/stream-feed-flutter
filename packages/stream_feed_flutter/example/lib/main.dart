@@ -35,10 +35,7 @@ Future<void> main() async {
     StreamFeedApp(
       bloc: DefaultFeedBloc(client: client),
       navigatorKey: _navigatorKey,
-      home: FeedClient(
-        client: client,
-        child: const MobileApp(),
-      ),
+      home: const MobileApp(),
     ),
   );
 }
