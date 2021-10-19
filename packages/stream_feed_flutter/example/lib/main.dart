@@ -3,13 +3,45 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
+/// A simple InheritedWidget created for the purpose of passing our
+/// StreamFeedClient around the widget tree
+class FeedClient extends InheritedWidget {
+  const FeedClient({
+    Key? key,
+    required this.client,
+    required Widget child,
+  }) : super(key: key, child: child);
+
+  final StreamFeedClient client;
+
+  /// Returns the closes instance of StreamFeedClient in the widget tree.
+  static StreamFeedClient of(BuildContext context) {
+    final StreamFeedClient? result =
+        context.dependOnInheritedWidgetOfExactType<FeedClient>()!.client;
+    assert(result != null, 'No FeedClient found in context');
+    return result!;
+  }
+
+  @override
+  // ignore: avoid_renaming_method_parameters
+  bool updateShouldNotify(FeedClient old) {
+    return client != old.client;
+  }
+}
+
+// The entrypoint of our application.
 Future<void> main() async {
+  // Here we are passing in the api key for our application. You can get an
+  // api key for your own application in the Stream dashboard.
   const apiKey = String.fromEnvironment('key');
   // Here we are passing in a user token via `dart-define`. In a production
   // application you will want to have authentication and authorization set up,
   // and generate a user token via that process.
+  //
+  // In this case, our user token is generated via https://getstream.io/chat/docs/react/token_generator/
   const userToken = String.fromEnvironment('user_token');
 
+  // Here we create an instance of StreamFeedClient and connect to the Stream API
   final client = StreamFeedClient.connect(
     apiKey,
     token: const Token(userToken),
@@ -29,8 +61,9 @@ Future<void> main() async {
     StreamFeedApp(
       bloc: DefaultFeedBloc(client: client),
       navigatorKey: _navigatorKey,
-      home: MobileApp(
+      home: FeedClient(
         client: client,
+        child: const MobileApp(),
       ),
     ),
   );
@@ -39,10 +72,7 @@ Future<void> main() async {
 class MobileApp extends StatelessWidget {
   const MobileApp({
     Key? key,
-    required this.client,
   }) : super(key: key);
-
-  final StreamFeedClient client;
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +94,7 @@ class MobileApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.system,
-      home: MyHomePage(
-        client: client,
-      ),
+      home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -75,10 +103,7 @@ class MobileApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
     Key? key,
-    required this.client,
   }) : super(key: key);
-
-  final StreamFeedClient client;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -89,6 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final client = FeedClient.of(context);
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -96,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Builder(builder: (context) {
             return Avatar(
               user: User(
-                data: widget.client.currentUser!.data,
+                data: client.currentUser!.data,
               ),
               onUserTap: (user) {
                 Scaffold.of(context).openDrawer();
@@ -115,24 +141,24 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Avatar(
                   user: User(
-                    data: widget.client.currentUser!.data,
+                    data: client.currentUser!.data,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  widget.client.currentUser!.id,
+                  client.currentUser!.id,
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 4),
-                Text('${widget.client.currentUser!.data!['handle']}'),
+                Text('${client.currentUser!.data!['handle']}'),
                 const SizedBox(height: 8),
                 Row(
                   children: [
                     Text(
-                        '${widget.client.currentUser!.followingCount ?? 0} Following'),
+                        '${client.currentUser!.followingCount ?? 0} Following'),
                     const SizedBox(width: 8),
                     Text(
-                        '${widget.client.currentUser!.followersCount ?? 0} Followers'),
+                        '${client.currentUser!.followersCount ?? 0} Followers'),
                   ],
                 ),
                 const Divider(),
@@ -145,9 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.of(context).pop();
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => ProfileScreen(
-                          client: widget.client,
-                        ),
+                        builder: (_) => const ProfileScreen(),
                       ),
                     );
                   },
@@ -170,7 +194,6 @@ class _MyHomePageState extends State<MyHomePage> {
             onUserTap: (user) => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => ProfileScreen(
-                  client: widget.client,
                   user: user!,
                 ),
               ),
@@ -187,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => ComposeScreen(
-              client: widget.client,
+              client: client,
             ),
             fullscreenDialog: true,
           ),
@@ -312,11 +335,9 @@ class _ComposeScreenState extends State<ComposeScreen> {
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     Key? key,
-    required this.client,
     this.user,
   }) : super(key: key);
 
-  final StreamFeedClient client;
   final User? user;
 
   @override
@@ -326,16 +347,16 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    print(widget.client.currentUser!.data);
+    final client = FeedClient.of(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.user?.id ?? widget.client.currentUser!.id),
+            Text(widget.user?.id ?? client.currentUser!.id),
             Text(
-              '${widget.user?.data?['handle'] ?? widget.client.currentUser!.data!['handle']}',
+              '${widget.user?.data?['handle'] ?? client.currentUser!.data!['handle']}',
               style: Theme.of(context).textTheme.subtitle2!.copyWith(
                     color: Colors.white,
                   ),
@@ -349,16 +370,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Note: until Aggregated Feeds are implemented this is functionally
           // useless because the current user will never see posts from other
           // users.
-          if (widget.user != null &&
-              widget.user!.id != widget.client.currentUser!.id)
+          if (widget.user != null && widget.user!.id != client.currentUser!.id)
             FutureBuilder<List<Follow>>(
-              future: widget.client
-                  .flatFeed('user', widget.client.currentUser?.id)
-                  .following(
+              future: client.flatFeed('user', client.currentUser?.id).following(
                 limit: 1,
                 offset: 0,
                 filter: [
-                  FeedId.id('user:${widget.client.currentUser?.id}'),
+                  FeedId.id('user:${client.currentUser?.id}'),
                 ],
               ),
               builder: (context, snapshot) {
@@ -381,16 +399,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       // If isFollowingUser is not true, follow the
                       // user's feed.
                       if (isFollowingUser!) {
-                        final currentUserFeed = widget.client
-                            .flatFeed('user', widget.client.currentUser!.id);
+                        final currentUserFeed =
+                            client.flatFeed('user', client.currentUser!.id);
                         final userToFollowFeed =
-                            widget.client.flatFeed('user', widget.user!.id);
+                            client.flatFeed('user', widget.user!.id);
                         await currentUserFeed.unfollow(userToFollowFeed);
                       } else {
-                        final currentUserFeed = widget.client
-                            .flatFeed('user', widget.client.currentUser!.id);
+                        final currentUserFeed =
+                            client.flatFeed('user', client.currentUser!.id);
                         final userToFollowFeed =
-                            widget.client.flatFeed('user', widget.user!.id);
+                            client.flatFeed('user', widget.user!.id);
                         await currentUserFeed.follow(userToFollowFeed);
                       }
                     },
