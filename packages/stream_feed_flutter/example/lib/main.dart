@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final client = DefaultFeedBlocProvider.of(context).bloc;
+    final bloc = DefaultFeedBlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -125,11 +125,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Text(
-                        '${bloc.currentUser!.followingCount ?? 0} Following'),
+                    Text('${bloc.currentUser!.followingCount ?? 0} Following'),
                     const SizedBox(width: 8),
-                    Text(
-                        '${bloc.currentUser!.followersCount ?? 0} Followers'),
+                    Text('${bloc.currentUser!.followersCount ?? 0} Followers'),
                   ],
                 ),
                 const Divider(),
@@ -180,9 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.edit_outlined),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => ComposeScreen(
-              client: client,
-            ),
+            builder: (_) => const ComposeScreen(),
             fullscreenDialog: true,
           ),
         ),
@@ -210,10 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
 class ComposeScreen extends StatefulWidget {
   const ComposeScreen({
     Key? key,
-    required this.client,
   }) : super(key: key);
-
-  final StreamFeedClient client;
 
   @override
   _ComposeScreenState createState() => _ComposeScreenState();
@@ -376,14 +369,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       // If isFollowingUser is not true, follow the
                       // user's feed.
                       if (isFollowingUser!) {
-                        final currentUserFeed = bloc.client
-                            .flatFeed('user', bloc.currentUser!.id);
+                        final currentUserFeed =
+                            bloc.client.flatFeed('user', bloc.currentUser!.id);
                         final userToFollowFeed =
                             bloc.client.flatFeed('user', widget.user!.id);
                         await currentUserFeed.unfollow(userToFollowFeed);
                       } else {
-                        final currentUserFeed = bloc.client
-                            .flatFeed('user', bloc.currentUser!.id);
+                        final currentUserFeed =
+                            bloc.client.flatFeed('user', bloc.currentUser!.id);
                         final userToFollowFeed =
                             bloc.client.flatFeed('user', widget.user!.id);
                         await currentUserFeed.follow(userToFollowFeed);
