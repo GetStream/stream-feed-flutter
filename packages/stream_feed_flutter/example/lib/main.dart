@@ -324,18 +324,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  bool? isFollowingUser;
-
-  @override
-  void initState() {
-    super.initState();
-    // If user is not null, this means that the profile being viewed is
-    // not the current user's profile.
-    if (widget.user != null) {
-      // Check if the current user is following this user
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     print(widget.client.currentUser!.data);
@@ -355,11 +343,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
         actions: [
-          if (widget.user != null)
-            IconButton(
-              icon: Icon(Icons.add_circle_outline_rounded),
-              onPressed: () {
-                // follow/unfollow user
+          // If the user matches the currentUser, do not show the
+          // follow/unfollow button; you cannot follow your own feed.
+          //
+          // Note: until Aggregated Feeds are implemented this is functionally
+          // useless because the current user will never see posts from other
+          // users.
+          if (widget.user != null &&
+              widget.user!.id != widget.client.currentUser!.id)
+            FutureBuilder<List<Follow>>(
+              future: widget.client
+                  .flatFeed('user', widget.client.currentUser?.id)
+                  .following(
+                limit: 1,
+                offset: 0,
+                filter: [
+                  FeedId.id('user:${widget.client.currentUser?.id}'),
+                ],
+              ),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                } else {
+                  bool? isFollowingUser;
+                  if (snapshot.data!.isEmpty) {
+                    isFollowingUser = false;
+                  } else {
+                    isFollowingUser = true;
+                  }
+
+                  return IconButton(
+                    icon: Icon(isFollowingUser
+                        ? Icons.remove_circle_outline
+                        : Icons.add_circle_outline),
+                    onPressed: () async {
+                      // If isFollowingUser is true, unfollow the user's feed.
+                      // If isFollowingUser is not true, follow the
+                      // user's feed.
+                      if (isFollowingUser!) {
+                        final currentUserFeed = widget.client
+                            .flatFeed('user', widget.client.currentUser!.id);
+                        final userToFollowFeed =
+                            widget.client.flatFeed('user', widget.user!.id);
+                        await currentUserFeed.unfollow(userToFollowFeed);
+                      } else {
+                        final currentUserFeed = widget.client
+                            .flatFeed('user', widget.client.currentUser!.id);
+                        final userToFollowFeed =
+                            widget.client.flatFeed('user', widget.user!.id);
+                        await currentUserFeed.follow(userToFollowFeed);
+                      }
+                    },
+                  );
+                }
               },
             ),
         ],
@@ -372,8 +408,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               .withOwnReactions(),
           feedGroup: 'user',
           onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
-          onUserTap: (user) =>
-              debugPrint('hashtag pressed: ${user!.toJson()}'),
+          onUserTap: (user) => debugPrint('hashtag pressed: ${user!.toJson()}'),
           onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
         ),
       ),
