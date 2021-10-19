@@ -245,6 +245,10 @@ class _ComposeScreenState extends State<ComposeScreen> {
                     feedGroup: 'user',
                     verb: 'post',
                     object: postController.text,
+                    to: [
+                      FeedId('timeline', bloc.currentUser!.id),
+                      FeedId('user', bloc.currentUser!.id),
+                    ],
                   );
 
                   Navigator.of(context).pop();
