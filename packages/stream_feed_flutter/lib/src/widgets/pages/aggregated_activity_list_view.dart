@@ -120,11 +120,10 @@ class AggregatedActivityListView extends StatelessWidget {
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       aggregatedFeedBuilder: (context, aggregatedActivities, index) {
-        final _activity = aggregatedActivities[index].activities!.first;
         //print(_activity);
         return ActivityWidget(
           //TODO: create it based on ActivityWidget
-          activity: _activity,
+          activity: aggregatedActivities[index],
           feedGroup: feedGroup,
           onHashtagTap: onHashtagTap,
           onMentionTap: onMentionTap,

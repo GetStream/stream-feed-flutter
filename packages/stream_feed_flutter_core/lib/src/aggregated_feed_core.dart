@@ -33,7 +33,7 @@ class AggregatedFeedCore<A, Ob, T, Or> extends StatefulWidget {
   }) : super(key: key);
 
   /// A builder that let you build a ListView of EnrichedActivity based Widgets
-  final EnrichedAggregatedFeedBuilder<A, Ob, T, Or> aggregatedFeedBuilder;
+  final EnrichedFeedBuilder<A, Ob, T, Or> aggregatedFeedBuilder;
 
   /// An error widget to show when an error occurs
   final Widget onErrorWidget;
@@ -88,7 +88,7 @@ class AggregatedFeedCore<A, Ob, T, Or> extends StatefulWidget {
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(DiagnosticsProperty<FeedBloc<A, Ob, T, Or>>('bloc', bloc));
     properties.add(
-        ObjectFlagProperty<EnrichedAggregatedFeedBuilder<A, Ob, T, Or>>.has(
+        ObjectFlagProperty<EnrichedFeedBuilder<A, Ob, T, Or>>.has(
             'aggregatedFeedBuilder', aggregatedFeedBuilder));
   }
 }
@@ -131,11 +131,17 @@ class _AggregatedFeedCoreState<A, Ob, T, Or>
           if (aggregatedActivities.isEmpty) {
             return widget.onEmptyWidget;
           }
+
+          final activities = <EnrichedActivity<A, Ob, T, Or>>[];
+          for (final group in aggregatedActivities) {
+            activities.addAll(group.activities!);
+          }
+
           return ListView.builder(
-            itemCount: aggregatedActivities.length,
+            itemCount: activities.length,
             itemBuilder: (context, index) => widget.aggregatedFeedBuilder(
               context,
-              aggregatedActivities,
+              activities,
               index,
             ),
           );
