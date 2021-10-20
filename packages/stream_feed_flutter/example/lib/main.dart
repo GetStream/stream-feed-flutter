@@ -19,6 +19,7 @@ Future<void> main() async {
   final client = StreamFeedClient.connect(
     apiKey,
     token: const Token(userToken),
+    logLevel: Level.ALL,
   );
 
   // Here we are setting a default user.
@@ -153,12 +154,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: IndexedStack(
         index: _pageIndex,
         children: [
-          FlatActivityListPage(
+          AggregatedActivityListView(
             flags: EnrichmentFlags()
                 .withReactionCounts()
                 .withOwnChildren()
                 .withOwnReactions(),
-            feedGroup: 'user',
+            feedGroup: 'timeline',
             onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
             onUserTap: (user) => Navigator.of(context).push(
               MaterialPageRoute(
@@ -235,6 +236,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
               if (postController.text.isNotEmpty) {
                 try {
                   bloc.onAddActivity(
+                    feedType: FeedType.aggregated,
                     feedGroup: 'user',
                     verb: 'post',
                     object: postController.text,

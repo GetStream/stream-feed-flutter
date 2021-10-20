@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:stream_feed_flutter_core/src/feed_type.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class FeedBloc<A, Ob, T, Or> {
@@ -36,6 +37,21 @@ class FeedBloc<A, Ob, T, Or> {
   final _activitiesController =
       BehaviorSubject<List<EnrichedActivity<A, Ob, T, Or>>>();
 
+  /// Tracks the activities within an aggregated feed.
+  final _aggregatedActivitiesController =
+      BehaviorSubject<List<Group<EnrichedActivity<A, Ob, T, Or>>>>();
+
+  /// A stream of activities within an aggregated feed.
+  Stream<List<Group<EnrichedActivity<A, Ob, T, Or>>>>
+      get aggregatedActivitiesStream => _aggregatedActivitiesController.stream;
+
+  /// A convenience getter for the value in the _aggregatedActivitiesController.
+  List<Group<EnrichedActivity<A, Ob, T, Or>>>? get aggregatedActivities =>
+      _aggregatedActivitiesController.valueOrNull;
+
+  final _queryAggregatedActivitiesLoadingController =
+      BehaviorSubject<bool>.seeded(false);
+
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
   final Map<String, BehaviorSubject<bool>> _queryReactionsLoadingControllers =
@@ -57,6 +73,7 @@ class FeedBloc<A, Ob, T, Or> {
     required String object,
     String? userId,
     List<FeedId>? to,
+    required FeedType feedType,
   }) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
@@ -66,20 +83,39 @@ class FeedBloc<A, Ob, T, Or> {
       to: to,
     );
 
-    final flatFeed = client.flatFeed(feedGroup, userId);
+    var addedActivity;
+    var enrichedActivity;
+    var _activities;
+    var _controller;
 
-    final addedActivity = await flatFeed.addActivity(activity);
-
-    // TODO(Sacha): merge activity and enriched activity classes together
-    final enrichedActivity = await flatFeed
-        .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
-
-    final _activities = activities ?? [];
+    switch (feedType) {
+      case FeedType.flat:
+        final flatFeed = client.flatFeed(feedGroup, userId);
+        addedActivity = await flatFeed.addActivity(activity);
+        // TODO(Sacha): merge activity and enriched activity classes together
+        enrichedActivity = await flatFeed
+            .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
+        _activities = activities ?? [];
+        _controller = _activitiesController;
+        break;
+      case FeedType.aggregated:
+        final aggregatedFeed = client.aggregatedFeed(feedGroup, userId);
+        addedActivity = await aggregatedFeed.addActivity(activity);
+        // TODO(Sacha): merge activity and enriched activity classes together
+        enrichedActivity = await aggregatedFeed
+            .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
+        _activities = aggregatedActivities ?? [];
+        _controller = _aggregatedActivitiesController;
+        break;
+      case FeedType.notification:
+        // TODO: Handle this case.
+        break;
+    }
 
     // ignore: cascade_invocations
     _activities.insert(0, enrichedActivity);
 
-    _activitiesController.add(_activities);
+    _controller.add(_activities);
 
     await trackAnalytics(
       label: 'post',
@@ -292,6 +328,51 @@ class FeedBloc<A, Ob, T, Or> {
     }
   }
 
+  /// Queries the given [feedGroup] for aggregated activities.
+  Future<void> queryAggregatedActivities({
+    required String feedGroup,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
+    String? userId,
+  }) async {
+    if (_queryAggregatedActivitiesLoadingController.value == true) return;
+
+    if (_aggregatedActivitiesController.hasValue) {
+      _queryAggregatedActivitiesLoadingController.add(true);
+    }
+
+    try {
+      final oldActivities = List<Group<EnrichedActivity<A, Ob, T, Or>>>.from(
+          aggregatedActivities ?? []);
+
+      final activitiesResponse = await client
+          .aggregatedFeed(feedGroup, userId)
+          .getEnrichedActivities<A, Ob, T, Or>(
+            limit: limit,
+            offset: offset,
+            session: session,
+            filter: filter,
+            flags: flags,
+            //ranking: ranking,
+          );
+
+      final temp = oldActivities + activitiesResponse;
+      _aggregatedActivitiesController.add(temp);
+    } catch (e, stackTrace) {
+      // reset loading controller
+      _queryAggregatedActivitiesLoadingController.add(false);
+      if (_aggregatedActivitiesController.hasValue) {
+        _queryAggregatedActivitiesLoadingController.addError(e, stackTrace);
+      } else {
+        _aggregatedActivitiesController.addError(e, stackTrace);
+      }
+    }
+  }
+
   Future<void> queryEnrichedActivities({
     required String feedGroup,
     int? limit,
@@ -374,6 +455,8 @@ class FeedBloc<A, Ob, T, Or> {
 
   void dispose() {
     _activitiesController.close();
+    _aggregatedActivitiesController.close();
+    _queryAggregatedActivitiesLoadingController.close();
     reactionsControllers.close();
     _queryActivitiesLoadingController.close();
     _queryReactionsLoadingControllers.forEach((key, value) {

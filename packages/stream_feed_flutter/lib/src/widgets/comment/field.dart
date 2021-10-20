@@ -18,6 +18,7 @@ class CommentField extends StatelessWidget {
   const CommentField({
     Key? key,
     required this.feedGroup,
+    required this.feedType,
     this.activity,
     this.targetFeeds,
     required this.textEditingController,
@@ -42,6 +43,9 @@ class CommentField extends StatelessWidget {
   ///The feed group part of the feed
   final String feedGroup;
 
+  /// The type of feed the activity will be posted to.
+  final FeedType feedType;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -65,6 +69,7 @@ class CommentField extends StatelessWidget {
             ),
             if (enableButton)
               PostCommentButton(
+                feedType: feedType,
                 feedGroup: feedGroup,
                 activity: activity,
                 targetFeeds: targetFeeds,

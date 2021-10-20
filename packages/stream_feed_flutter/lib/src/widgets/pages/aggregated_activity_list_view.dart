@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/transition_type.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
+import 'package:stream_feed_flutter/src/utils/extensions.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -15,9 +16,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///
 /// Best used as the main page of an app.
 /// {@endtemplate}
-class FlatActivityListPage extends StatelessWidget {
+class AggregatedActivityListView extends StatelessWidget {
   /// Builds a [FlatActivityListPage].
-  const FlatActivityListPage({
+  const AggregatedActivityListView({
     Key? key,
     this.feedGroup = 'user',
     this.onHashtagTap,
@@ -46,7 +47,7 @@ class FlatActivityListPage extends StatelessWidget {
 
   /// {@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
-//TODO:document me
+  //TODO:document me
   // final DefaultFeedBloc bloc;
 
   /// {@macro mention_callback}
@@ -64,7 +65,7 @@ class FlatActivityListPage extends StatelessWidget {
   /// Builds the activity content
   final ActivityContentBuilder? activityContentBuilder;
 
-  /// Builds the activity header
+  /// Builds the activity headerAny
   final ActivityHeaderBuilder? activityHeaderBuilder;
 
   /// {@macro activity_callback}
@@ -108,9 +109,7 @@ class FlatActivityListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(
-    //     "bloc: ${DefaultFeedBlocProvider.of(context).navigatorKey!.currentState}");
-    return DefaultFlatFeedCore(
+    return DefaultAggregatedFeedCore(
       bloc: DefaultFeedBlocProvider.of(context).bloc,
       flags: flags,
       limit: limit,
@@ -120,11 +119,12 @@ class FlatActivityListPage extends StatelessWidget {
       ranking: ranking,
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
-      //TODO: activity type Flat?
-      feedBuilder: (context, activities, idx) {
-        // print("feedBuilder ${activities[idx]}");
+      aggregatedFeedBuilder: (context, aggregatedActivities, index) {
+        final _activity = aggregatedActivities[index].activities!.first;
+        //print(_activity);
         return ActivityWidget(
-          activity: activities[idx],
+          //TODO: create it based on ActivityWidget
+          activity: _activity,
           feedGroup: feedGroup,
           onHashtagTap: onHashtagTap,
           onMentionTap: onMentionTap,
@@ -134,32 +134,24 @@ class FlatActivityListPage extends StatelessWidget {
           activityHeaderBuilder: activityHeaderBuilder,
           activityFooterBuilder: activityFooterBuilder,
           activityContentBuilder: activityContentBuilder,
-          onActivityTap: (context, activity) {
-            // onActivityTap != null
-            //     ? onActivityTap?.call(context, activity)
-            // TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
+          onActivityTap: (context, aggregatedActivity) {
             _pageRouteBuilder(
-              activity: activity,
+              aggregatedActivity: aggregatedActivity,
               context: context,
               transitionType: transitionType,
               currentNavigator: Navigator.of(context),
-              //  DefaultFeedBlocProvider.of(context)
-              //     .navigatorKey!
-              //     .currentState!
-              //TODO: hmm doesnt work
               page: Scaffold(
                 appBar: AppBar(
-                  // TODO: Parameterize me
                   title: const Text('Post'),
                 ),
                 body: CommentView(
+                  //TODO: create it based on CommentView widget
                   nameJsonKey: nameJsonKey,
                   handleJsonKey: handleJsonKey,
-                  activity: activity,
+                  activity: aggregatedActivity,
                   enableCommentFieldButton: true,
                   enableReactions: true,
-                  textEditingController:
-                      TextEditingController(), //TODO: move this into props for customisation like buildSpans
+                  textEditingController: TextEditingController(),
                 ),
               ),
             );
@@ -170,13 +162,13 @@ class FlatActivityListPage extends StatelessWidget {
     );
   }
 
-  void _pageRouteBuilder(
-      {required BuildContext context,
-      required TransitionType transitionType,
-      required EnrichedActivity activity,
-      required Widget page,
-      required NavigatorState currentNavigator}) {
-    //TODO: assert navigator not null
+  void _pageRouteBuilder({
+    required BuildContext context,
+    required TransitionType transitionType,
+    required EnrichedActivity aggregatedActivity,
+    required Widget page,
+    required NavigatorState currentNavigator,
+  }) {
     switch (transitionType) {
       case TransitionType.material:
         currentNavigator.push(
@@ -212,33 +204,4 @@ class FlatActivityListPage extends StatelessWidget {
         );
     }
   }
-
-  // @override
-  // void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  //   super.debugFillProperties(properties);
-  //   properties.add(
-  //       ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
-  //   properties.add(
-  //       ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
-  //   properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-  //   properties.add(StringProperty('feedGroup', feedGroup));
-  //   properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
-  //       'activityFooterBuilder', activityFooterBuilder));
-  //   properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
-  //       'activityContentBuilder', activityContentBuilder));
-  //   properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
-  //       'activityHeaderBuilder', activityHeaderBuilder));
-  //   properties.add(
-  //       ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
-  //   properties
-  //       .add(EnumProperty<TransitionType>('transitionType', transitionType));
-  //   properties.add(IntProperty('limit', limit));
-  //   properties.add(IntProperty('offset', offset));
-  //   properties.add(StringProperty('session', session));
-  //   properties.add(DiagnosticsProperty<Filter?>('filter', filter));
-  //   properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
-  //   properties.add(StringProperty('ranking', ranking));
-  //   properties.add(StringProperty('handleJsonKey', handleJsonKey));
-  //   properties.add(StringProperty('nameJsonKey', nameJsonKey));
-  // }
 }

@@ -8,11 +8,21 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
   int idx,
 );
 
+/// A special builder for creating a feed of aggregated activities.
+typedef EnrichedAggregatedFeedBuilder<A, Ob, T, Or> = Widget Function(
+  BuildContext context,
+  List<Group<EnrichedActivity<A, Ob, T, Or>>>,
+  int index,
+);
+
 /// TODO: document me
 typedef ReactionsBuilder = Widget Function(
     BuildContext context, List<Reaction> reactions, int idx);
 
 typedef DefaultFlatFeedCore = FlatFeedCore<User, String, String, String>;
+
+typedef DefaultAggregatedFeedCore
+    = AggregatedFeedCore<User, String, String, String>;
 
 typedef DefaultFeedBlocProvider
     = FeedBlocProvider<User, String, String, String>;

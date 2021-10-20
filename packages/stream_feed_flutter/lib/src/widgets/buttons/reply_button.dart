@@ -17,6 +17,7 @@ class ReplyButton extends StatelessWidget {
   const ReplyButton({
     Key? key,
     this.feedGroup = 'user',
+    this.feedType = FeedType.flat,
     required this.activity,
     this.reaction,
     this.iconSize = 14,
@@ -32,6 +33,9 @@ class ReplyButton extends StatelessWidget {
 
   /// The group or slug of the feed to post to.
   final String feedGroup;
+
+  /// The type of feed the activity will be posted to.
+  final FeedType feedType;
 
   /// The activity to post to the feed.
   final DefaultEnrichedActivity activity;
@@ -63,6 +67,7 @@ class ReplyButton extends StatelessWidget {
                 return MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
                   child: AlertDialogComment(
+                    feedType: feedType,
                     activity: activity,
                     feedGroup: feedGroup,
                     nameJsonKey: nameJsonKey,
@@ -92,5 +97,6 @@ class ReplyButton extends StatelessWidget {
     properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
     properties.add(DoubleProperty('iconSize', iconSize));
     properties.add(IntProperty('count', count));
+    properties.add(EnumProperty<FeedType>('feedType', feedType));
   }
 }

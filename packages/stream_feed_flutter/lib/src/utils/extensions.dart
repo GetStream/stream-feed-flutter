@@ -1,4 +1,5 @@
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 part 'constants.dart';
 
@@ -20,4 +21,10 @@ extension TagX on Tag {
         Tag.mention: 'mention',
         Tag.normalText: 'normalText',
       }[this]!;
+}
+
+extension ListGroup<A, Ob, T, Or>
+    on List<Group<EnrichedActivity<A, Ob, T, Or>>> {
+  List<EnrichedActivity<A, Ob, T, Or>> flatten() =>
+      [for (var group in this) ...group.activities!];
 }

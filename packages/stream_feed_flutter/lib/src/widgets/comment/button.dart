@@ -27,6 +27,7 @@ class PostCommentButton extends StatelessWidget {
     required this.textEditingController,
     this.activity,
     required this.feedGroup,
+    required this.feedType,
     this.targetFeeds,
   }) : super(key: key);
 
@@ -43,6 +44,9 @@ class PostCommentButton extends StatelessWidget {
 
   /// The feed group that the post will be posted in.
   final String feedGroup;
+
+  /// The type of feed the activity will be posted to.
+  final FeedType feedType;
 
   ///The targeted feeds to post to.
   final List<FeedId>? targetFeeds;
@@ -62,6 +66,7 @@ class PostCommentButton extends StatelessWidget {
                 feedGroup: feedGroup,
               )
             : await activities.onAddActivity(
+                feedType: feedType,
                 feedGroup: feedGroup,
                 verb: 'post',
                 //data: TODO: attachments with upload controller thingy
@@ -83,6 +88,7 @@ class PostCommentButton extends StatelessWidget {
         'textEditingController', textEditingController));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
+    properties.add(EnumProperty<FeedType>('feedType', feedType));
   }
 }
 

@@ -72,9 +72,21 @@ class AggregatedFeed extends Feed {
     return data;
   }
 
+  /// Retrieves one enriched activity from a feed
+  Future<Group<EnrichedActivity<A, Ob, T, Or>>>
+      getEnrichedActivityDetail<A, Ob, T, Or>(String activityId) async {
+    final activities = await getEnrichedActivities<A, Ob, T, Or>(
+        limit: 1,
+        filter: Filter()
+            .idLessThanOrEqual(activityId)
+            .idGreaterThanOrEqual(activityId));
+    return activities.first;
+  }
+
   /// Retrieve activities with reaction enrichment
   ///
   /// {@macro filter}
+  //TODO: Support ranking
   Future<List<Group<EnrichedActivity<A, Ob, T, Or>>>>
       getEnrichedActivities<A, Ob, T, Or>({
     int? limit,
@@ -94,6 +106,7 @@ class AggregatedFeed extends Feed {
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
+    print(result.data['results']);
     final data = (result.data['results'] as List)
         .map((e) => Group.fromJson(
               e,

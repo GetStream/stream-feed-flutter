@@ -19,6 +19,7 @@ class AlertDialogComment extends StatelessWidget {
   const AlertDialogComment({
     Key? key,
     required this.feedGroup,
+    required this.feedType,
     this.activity,
     this.handleJsonKey = 'handle',
     this.nameJsonKey = 'name',
@@ -26,6 +27,9 @@ class AlertDialogComment extends StatelessWidget {
 
   /// The feed group/slug that is being commented on.
   final String feedGroup;
+
+  /// The type of feed the activity will be posted to.
+  final FeedType feedType;
 
   /// The activity that is being commented on.
   final DefaultEnrichedActivity? activity;
@@ -42,6 +46,7 @@ class AlertDialogComment extends StatelessWidget {
     return AlertDialog(
       actions: [
         AlertDialogActions(
+          feedType: feedType,
           activity: activity,
           feedGroup: feedGroup,
           textEditingController: textEditingController,
@@ -65,6 +70,7 @@ class AlertDialogComment extends StatelessWidget {
         DiagnosticsProperty<DefaultEnrichedActivity?>('activity', activity));
     properties.add(StringProperty('handleJsonKey', handleJsonKey));
     properties.add(StringProperty('nameJsonKey', nameJsonKey));
+    properties.add(EnumProperty<FeedType>('feedType', feedType));
   }
 }
 
@@ -80,6 +86,7 @@ class CommentView extends StatelessWidget {
     required this.textEditingController,
     this.activity,
     this.feedGroup = 'user',
+    this.feedType = FeedType.flat,
     this.onReactionTap,
     this.onHashtagTap,
     this.onMentionTap,
@@ -123,6 +130,9 @@ class CommentView extends StatelessWidget {
   /// TODO: document me
   final String nameJsonKey;
 
+  /// The type of feed the activity will be posted to.
+  final FeedType feedType;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -145,6 +155,7 @@ class CommentView extends StatelessWidget {
             //TODO: "in response to" activity.to
           ],
           CommentField(
+            feedType: feedType,
             textEditingController: textEditingController,
             activity: activity,
 
@@ -200,6 +211,7 @@ class CommentView extends StatelessWidget {
         'enableCommentFieldButton', enableCommentFieldButton));
     properties.add(StringProperty('handleJsonKey', handleJsonKey));
     properties.add(StringProperty('nameJsonKey', nameJsonKey));
+    properties.add(EnumProperty<FeedType>('feedType', feedType));
   }
 }
 
@@ -213,6 +225,7 @@ class AlertDialogActions extends StatelessWidget {
     this.activity,
     this.targetFeeds,
     required this.feedGroup,
+    required this.feedType,
     required this.textEditingController,
   }) : super(key: key);
 
@@ -225,6 +238,9 @@ class AlertDialogActions extends StatelessWidget {
   /// TODO: document me
   final String feedGroup;
 
+  /// The type of feed the activity will be posted to.
+  final FeedType feedType;
+
   /// TODO: document me
   final TextEditingController textEditingController;
 
@@ -236,6 +252,7 @@ class AlertDialogActions extends StatelessWidget {
         children: [
           const LeftActions(), //TODO: upload controller thingy
           RightActions(
+            feedType: feedType,
             textEditingController: textEditingController,
             activity: activity, //TODO: upload controller thingy
             targetFeeds: targetFeeds,
@@ -255,6 +272,7 @@ class AlertDialogActions extends StatelessWidget {
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));
+        properties.add(EnumProperty<FeedType>('feedType', feedType));
   }
 }
 
@@ -311,6 +329,7 @@ class RightActions extends StatelessWidget {
     required this.textEditingController,
     this.activity,
     required this.feedGroup,
+    required this.feedType,
     this.targetFeeds,
   }) : super(key: key);
 
@@ -323,6 +342,9 @@ class RightActions extends StatelessWidget {
   /// TODO: document me
   final String feedGroup;
 
+  /// The type of feed the activity will be posted to.
+  final FeedType feedType;
+
   /// TODO: document me
   final List<FeedId>? targetFeeds;
 
@@ -332,6 +354,7 @@ class RightActions extends StatelessWidget {
         alignment: Alignment.bottomRight,
         //TODO: Row : show progress (if textInputValue.length> 0) if number of characters restricted
         child: PostCommentButton(
+          feedType: feedType,
           feedGroup: feedGroup,
           activity: activity,
           targetFeeds: targetFeeds,
@@ -348,5 +371,6 @@ class RightActions extends StatelessWidget {
         'textEditingController', textEditingController));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
+    properties.add(EnumProperty<FeedType>('feedType', feedType));
   }
 }
