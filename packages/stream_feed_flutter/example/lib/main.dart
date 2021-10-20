@@ -237,7 +237,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
                 try {
                   bloc.onAddActivity(
                     feedType: FeedType.aggregated,
-                    feedGroup: 'user',
+                    feedGroup: 'timeline',
                     verb: 'post',
                     object: postController.text,
                     to: [
