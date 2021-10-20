@@ -133,10 +133,10 @@ class _AggregatedFeedCoreState<A, Ob, T, Or>
           }
           return ListView.builder(
             itemCount: aggregatedActivities.length,
-            itemBuilder: (context, idx) => widget.aggregatedFeedBuilder(
+            itemBuilder: (context, index) => widget.aggregatedFeedBuilder(
               context,
               aggregatedActivities,
-              idx,
+              index,
             ),
           );
         },
