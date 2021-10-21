@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/feed_type.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
@@ -414,6 +415,34 @@ class FeedBloc<A, Ob, T, Or> {
     }
   }
 
+  /// Deletes the given activity
+  Future<void> deleteActivity({
+    required String activityId,
+    required String feedId,
+    required FeedType feedType,
+  }) async {
+    switch (feedType) {
+      case FeedType.flat:
+        final flatFeed = client.flatFeed(feedId);
+        await flatFeed.removeActivityById(activityId);
+        activities?.removeWhere((element) => element.id == activityId);
+        break;
+      case FeedType.aggregated:
+        final aggregatedFeed = client.aggregatedFeed(feedId);
+        await aggregatedFeed.removeActivityById(activityId);
+        final _groups = aggregatedActivities;
+        for (final group in _groups!) {
+          group.activities!.removeWhere((element) => element.id == activityId);
+        }
+        _aggregatedActivitiesController.add(_groups);
+        break;
+      case FeedType.notification:
+        // TODO: Handle this case.
+        break;
+    }
+
+  }
+
   /// Follows the given [flatFeed].
   Future<void> followUser(
     FlatFeed flatFeed,
@@ -458,11 +487,6 @@ class FeedBloc<A, Ob, T, Or> {
     _queryReactionsLoadingControllers.forEach((key, value) {
       value.close();
     });
-  }
-
-  Future<void> onRemoveActivity(
-      {required String feedGroup, required String activityId}) async {
-    await client.flatFeed(feedGroup).removeActivityById(activityId);
   }
 }
 

@@ -11,6 +11,7 @@ class DeleteActivityDialog extends StatelessWidget {
     Key? key,
     required this.activityId,
     required this.feedGroup,
+    required this.feedType,
   }) : super(key: key);
 
   /// The ID of the activity to delete.
@@ -20,6 +21,8 @@ class DeleteActivityDialog extends StatelessWidget {
   ///
   /// Ex: 'timeline'.
   final String feedGroup;
+
+  final FeedType feedType;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +35,11 @@ class DeleteActivityDialog extends StatelessWidget {
           onPressed: () {
             // Keep in mind that we might need to refactor this so that
             // users pass in their own logic.
-            DefaultFeedBlocProvider.of(context)
-                .bloc
-                .onRemoveActivity(feedGroup: feedGroup, activityId: activityId);
+            DefaultFeedBlocProvider.of(context).bloc.deleteActivity(
+                  feedType: feedType,
+                  feedId: feedGroup,
+                  activityId: activityId,
+                );
             Navigator.of(context).pop();
           },
         ),

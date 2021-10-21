@@ -78,7 +78,7 @@ class AggregatedFeed extends Feed {
     final activities = await getEnrichedActivities<A, Ob, T, Or>(
         limit: 1,
         filter: Filter()
-            //.idLessThanOrEqual(activityId)
+            .idLessThanOrEqual(activityId)
             .idGreaterThanOrEqual(activityId));
     return activities.first;
   }

@@ -148,6 +148,7 @@ class CommentView extends StatelessWidget {
                   feedGroup: feedGroup,
                   nameJsonKey: nameJsonKey,
                   handleJsonKey: handleJsonKey,
+                  feedType: feedType,
                 );
               },
             )

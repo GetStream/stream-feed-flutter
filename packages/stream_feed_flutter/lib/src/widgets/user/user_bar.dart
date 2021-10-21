@@ -22,6 +22,7 @@ class UserBar extends StatelessWidget {
     required this.kind,
     required this.user,
     required this.feedGroup,
+    required this.feedType,
     this.onUserTap,
     this.reactionIcon,
     this.afterUsername,
@@ -74,6 +75,9 @@ class UserBar extends StatelessWidget {
   ///
   /// Ex: 'timeline'.
   final String feedGroup;
+
+  /// The type of feed the activity is in.
+  final FeedType feedType;
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +143,7 @@ class UserBar extends StatelessWidget {
                 builder: (_) => DeleteActivityDialog(
                   activityId: activityId,
                   feedGroup: feedGroup,
+                  feedType: feedType,
                 ),
               );
             }

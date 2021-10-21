@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
-import 'package:stream_feed_flutter_core/src/typedefs.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 // ignore_for_file: cascade_invocations
 
@@ -15,6 +15,7 @@ class ActivityHeader extends StatelessWidget {
     Key? key,
     required this.activity,
     required this.feedGroup,
+    required this.feedType,
     this.onUserTap,
     this.activityKind = 'like', //TODO: enum that thing
     this.showSubtitle = true,
@@ -45,11 +46,15 @@ class ActivityHeader extends StatelessWidget {
   /// Ex: 'timeline'.
   final String feedGroup;
 
+  /// The type of feed the activity is in.
+  final FeedType feedType;
+
   @override
   Widget build(BuildContext context) {
     return UserBar(
       activityId: activity.id!,
       feedGroup: feedGroup,
+      feedType: feedType,
       user: activity.actor!, //TODO: actor will be non nullable in the future
       onUserTap: onUserTap,
       timestamp: activity.time!, //TODO: time will be non nullable in the future

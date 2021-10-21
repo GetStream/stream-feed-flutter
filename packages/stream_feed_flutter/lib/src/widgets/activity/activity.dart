@@ -4,6 +4,7 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 
 // ignore_for_file: cascade_invocations
@@ -27,6 +28,7 @@ class ActivityWidget extends StatelessWidget {
     this.activityContentBuilder,
     this.activityHeaderBuilder,
     this.onActivityTap,
+    required this.feedType,
   }) : super(key: key);
 
   /// The activity to display.
@@ -62,6 +64,9 @@ class ActivityWidget extends StatelessWidget {
   /// The group of the feed this activity belongs to.
   final String feedGroup;
 
+  /// The type of feed the activity is in.
+  final FeedType feedType;
+
   @override
   Widget build(BuildContext context) {
     // print("onActivityTap != null ${onActivityTap != null}");
@@ -79,6 +84,7 @@ class ActivityWidget extends StatelessWidget {
                 handleJsonKey: handleJsonKey,
                 activity: activity,
                 onUserTap: onUserTap,
+                feedType: feedType,
               ),
           activityContentBuilder?.call(context, activity) ??
               ActivityContent(

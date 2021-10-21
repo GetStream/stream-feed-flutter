@@ -123,6 +123,7 @@ class AggregatedFeedListView extends StatelessWidget {
           //TODO: create it based on ActivityWidget
           activity: aggregatedActivities[index],
           feedGroup: feedGroup,
+          feedType: FeedType.aggregated,
           onHashtagTap: onHashtagTap,
           onMentionTap: onMentionTap,
           onUserTap: onUserTap,

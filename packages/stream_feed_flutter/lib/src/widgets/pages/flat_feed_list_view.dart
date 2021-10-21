@@ -126,6 +126,7 @@ class FlatFeedListView extends StatelessWidget {
         return ActivityWidget(
           activity: activities[idx],
           feedGroup: feedGroup,
+          feedType: FeedType.flat,
           onHashtagTap: onHashtagTap,
           onMentionTap: onMentionTap,
           onUserTap: onUserTap,
