@@ -87,9 +87,8 @@ class AggregatedFeedCore<A, Ob, T, Or> extends StatefulWidget {
     properties.add(StringProperty('userId', userId));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(DiagnosticsProperty<FeedBloc<A, Ob, T, Or>>('bloc', bloc));
-    properties.add(
-        ObjectFlagProperty<EnrichedFeedBuilder<A, Ob, T, Or>>.has(
-            'aggregatedFeedBuilder', aggregatedFeedBuilder));
+    properties.add(ObjectFlagProperty<EnrichedFeedBuilder<A, Ob, T, Or>>.has(
+        'aggregatedFeedBuilder', aggregatedFeedBuilder));
   }
 }
 
