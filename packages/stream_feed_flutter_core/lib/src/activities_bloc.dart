@@ -81,6 +81,7 @@ class FeedBloc<A, Ob, T, Or> {
       object: object,
       extraData: data,
       to: to,
+      time: DateTime.now(),
     );
 
     var addedActivity;
