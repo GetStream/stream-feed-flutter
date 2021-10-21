@@ -161,7 +161,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   .withOwnChildren()
                   .withOwnReactions(),
               feedGroup: 'timeline',
-              onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
+              onHashtagTap: (hashtag) =>
+                  debugPrint('hashtag pressed: $hashtag'),
               onUserTap: (user) => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => ProfileScreen(
@@ -169,7 +170,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
+              onMentionTap: (mention) =>
+                  debugPrint('hashtag pressed: $mention'),
             ),
           ),
           const Center(

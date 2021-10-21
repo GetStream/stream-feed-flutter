@@ -273,7 +273,7 @@ class AlertDialogActions extends StatelessWidget {
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));
-        properties.add(EnumProperty<FeedType>('feedType', feedType));
+    properties.add(EnumProperty<FeedType>('feedType', feedType));
   }
 }
 
