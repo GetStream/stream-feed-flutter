@@ -425,7 +425,9 @@ class FeedBloc<A, Ob, T, Or> {
       case FeedType.flat:
         final flatFeed = client.flatFeed(feedId);
         await flatFeed.removeActivityById(activityId);
-        activities?.removeWhere((element) => element.id == activityId);
+        final _activities = activities;
+        _activities?.removeWhere((element) => element.id == activityId);
+        _activitiesController.add(_activities!);
         break;
       case FeedType.aggregated:
         final aggregatedFeed = client.aggregatedFeed(feedId);
