@@ -77,6 +77,7 @@ void main() {
           child: Directionality(
             textDirection: TextDirection.ltr,
             child: RightActions(
+              feedType: FeedType.flat,
               feedGroup: 'user',
               textEditingController: TextEditingController(),
             ),
@@ -125,6 +126,7 @@ void main() {
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: AlertDialogActions(
+                feedType: FeedType.flat,
                 feedGroup: 'user',
                 textEditingController: TextEditingController(),
               ),
@@ -153,6 +155,7 @@ void main() {
               bloc: mockFeedBloc,
               home: Scaffold(
                 body: AlertDialogComment(
+                  feedType: FeedType.flat,
                   feedGroup: 'user',
                   activity: EnrichedActivity(
                     id: '1',
@@ -239,6 +242,7 @@ void main() {
     testWidgets('AlertDialogComment', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
       const alertDialogComment = AlertDialogComment(
+        feedType: FeedType.flat,
         feedGroup: 'user',
       );
 
@@ -274,6 +278,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final alertDialogActions = AlertDialogActions(
+        feedType: FeedType.flat,
         feedGroup: 'user',
         textEditingController: TextEditingController(),
         activity: EnrichedActivity(
@@ -322,6 +327,7 @@ void main() {
     testWidgets('RightActions', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
       final rightActions = RightActions(
+        feedType: FeedType.flat,
         feedGroup: 'user',
         textEditingController: TextEditingController(),
       );

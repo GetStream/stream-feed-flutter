@@ -323,6 +323,7 @@ void main() {
         '''When we await onAddActivity the stream gets updated with the new expected value''',
         () async {
       await bloc.onAddActivity(
+        feedType: FeedType.flat,
         feedGroup: 'user',
         verb: 'post',
         object: 'test',

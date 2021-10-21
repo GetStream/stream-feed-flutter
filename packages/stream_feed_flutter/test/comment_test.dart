@@ -153,6 +153,7 @@ void main() {
             analyticsClient: mockStreamAnalytics, client: mockClient),
         home: Scaffold(
           body: CommentField(
+            feedType: FeedType.flat,
             key: key,
             feedGroup: feedGroup,
             activity: activity,
@@ -229,6 +230,7 @@ void main() {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
     final commentField = CommentField(
+      feedType: FeedType.flat,
       feedGroup: 'whatever:300',
       textEditingController: TextEditingController(),
       activity: EnrichedActivity(
