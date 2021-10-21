@@ -427,7 +427,7 @@ class FeedBloc<A, Ob, T, Or> {
         await flatFeed.removeActivityById(activityId);
         final _activities = activities;
         _activities?.removeWhere((element) => element.id == activityId);
-        _activitiesController.value = _activities!;
+        _activitiesController.value = _activities ?? [];
         break;
       case FeedType.aggregated:
         final aggregatedFeed = client.aggregatedFeed(feedId);
