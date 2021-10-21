@@ -95,7 +95,8 @@ class FeedBloc<A, Ob, T, Or> {
         final enrichedActivity = await flatFeed
             .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
         final _activities = activities ?? [];
-        _activities.insert(0, enrichedActivity);
+        _activities.clear();
+        _activities.add(enrichedActivity);
         _activitiesController.add(_activities);
         break;
       case FeedType.aggregated:
