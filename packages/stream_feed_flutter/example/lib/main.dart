@@ -340,46 +340,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // useless because the current user will never see posts from other
           // users.
           if (widget.user != null && widget.user!.id != bloc.currentUser!.id)
-            FutureBuilder<List<Follow>>(
-              future:
-                  bloc.client.flatFeed('user', bloc.currentUser?.id).following(
-                limit: 1,
-                offset: 0,
-                filter: [
-                  FeedId.id('user:${bloc.currentUser?.id}'),
-                ],
-              ),
+            FutureBuilder<bool>(
+              future: bloc.isFollowingUser(widget.user!.id!),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SizedBox.shrink();
                 } else {
-                  bool? isFollowingUser;
-                  if (snapshot.data!.isEmpty) {
-                    isFollowingUser = false;
-                  } else {
-                    isFollowingUser = true;
-                  }
-
                   return IconButton(
-                    icon: Icon(isFollowingUser
+                    icon: Icon(snapshot.data!
                         ? Icons.remove_circle_outline
                         : Icons.add_circle_outline),
                     onPressed: () async {
                       // If isFollowingUser is true, unfollow the user's feed.
                       // If isFollowingUser is not true, follow the
                       // user's feed.
-                      if (isFollowingUser!) {
-                        final currentUserFeed =
-                            bloc.client.flatFeed('user', bloc.currentUser!.id);
+                      if (snapshot.data!) {
                         final userToFollowFeed =
                             bloc.client.flatFeed('user', widget.user!.id);
-                        await currentUserFeed.unfollow(userToFollowFeed);
+                        await bloc.unfollowUser(userToFollowFeed);
                       } else {
-                        final currentUserFeed =
-                            bloc.client.flatFeed('user', bloc.currentUser!.id);
                         final userToFollowFeed =
                             bloc.client.flatFeed('user', widget.user!.id);
-                        await currentUserFeed.follow(userToFollowFeed);
+                        await bloc.followUser(userToFollowFeed);
                       }
                     },
                   );

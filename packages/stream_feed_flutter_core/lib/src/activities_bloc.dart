@@ -337,6 +337,41 @@ class FeedBloc<A, Ob, T, Or> {
     }
   }
 
+  /// Follows the given [flatFeed].
+  Future<void> followUser(
+    FlatFeed flatFeed,
+  ) async {
+    final currentUserFeed = client.flatFeed('user', currentUser!.id);
+    await currentUserFeed.follow(flatFeed);
+  }
+
+  /// Unfollows the given [flatFeed].
+  Future<void> unfollowUser(
+    FlatFeed flatFeed,
+  ) async {
+    final currentUserFeed = client.flatFeed('user', currentUser!.id);
+    await currentUserFeed.unfollow(flatFeed);
+  }
+
+  /// Checks whether the current user is following a feed with the given
+  /// [userId].
+  ///
+  /// It filters the request such that if the current user is in fact
+  /// following the given user, one user will be returned that matches the
+  /// current user, thus indicating that the current user does follow the given
+  /// user. If no results are found, this means that the current user is not
+  /// following the given user.
+  Future<bool> isFollowingUser(String userId) async {
+    final following = await client.flatFeed('user', userId).following(
+      limit: 1,
+      offset: 0,
+      filter: [
+        FeedId.id('user:${currentUser?.id}'),
+      ],
+    );
+    return following.isNotEmpty;
+  }
+
   void dispose() {
     _activitiesController.close();
     reactionsControllers.close();
