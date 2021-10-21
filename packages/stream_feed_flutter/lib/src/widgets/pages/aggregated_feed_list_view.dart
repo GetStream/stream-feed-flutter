@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/transition_type.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
-import 'package:stream_feed_flutter/src/utils/extensions.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -16,9 +15,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///
 /// Best used as the main page of an app.
 /// {@endtemplate}
-class AggregatedActivityListView extends StatelessWidget {
+class AggregatedFeedListView extends StatelessWidget {
   /// Builds a [FlatActivityListPage].
-  const AggregatedActivityListView({
+  const AggregatedFeedListView({
     Key? key,
     this.feedGroup = 'user',
     this.onHashtagTap,

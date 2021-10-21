@@ -14,7 +14,7 @@ export 'src/widgets/buttons/child_reaction.dart';
 export 'src/widgets/buttons/reaction.dart';
 export 'src/widgets/comment/field.dart';
 export 'src/widgets/icons.dart';
-export 'src/widgets/pages/aggregated_activity_list_view.dart';
+export 'src/widgets/pages/aggregated_feed_list_view.dart';
 export 'src/widgets/pages/flat_activity_list.dart';
 export 'src/widgets/stream_feed_app.dart';
 export 'src/widgets/user/avatar.dart';
