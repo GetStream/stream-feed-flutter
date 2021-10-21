@@ -113,11 +113,6 @@ void main() {
   });
 
   group('CommentField tests', () {
-    /*late MockFeedBloc<User, String, String, String> mockFeedBloc;
-    setUp(() {
-      mockFeedBloc = MockFeedBloc();
-      when(() => mockFeedBloc.currentUser).thenReturn(MockStreamUser());
-    });*/
     testWidgets('CommentField', (WidgetTester tester) async {
       final key = GlobalKey();
       final mockClient = MockStreamFeedClient();
