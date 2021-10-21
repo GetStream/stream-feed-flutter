@@ -103,8 +103,8 @@ class FeedBloc<A, Ob, T, Or> {
         final aggregatedFeed = client.aggregatedFeed(feedGroup, userId);
         addedActivity = await aggregatedFeed.addActivity(activity);
         // TODO(Sacha): merge activity and enriched activity classes together
-        enrichedActivity = await aggregatedFeed
-            .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
+        enrichedActivity =
+            (await aggregatedFeed.getEnrichedActivities<A, Ob, T, Or>()).first;
         final _activities = aggregatedActivities ?? [];
         _activities.insert(0, enrichedActivity);
         _aggregatedActivitiesController.add(_activities);
@@ -442,7 +442,6 @@ class FeedBloc<A, Ob, T, Or> {
         // TODO: Handle this case.
         break;
     }
-
   }
 
   /// Follows the given [flatFeed].
