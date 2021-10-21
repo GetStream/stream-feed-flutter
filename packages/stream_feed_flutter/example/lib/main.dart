@@ -154,21 +154,23 @@ class _MyHomePageState extends State<MyHomePage> {
       body: IndexedStack(
         index: _pageIndex,
         children: [
-          AggregatedFeedListView(
-            flags: EnrichmentFlags()
-                .withReactionCounts()
-                .withOwnChildren()
-                .withOwnReactions(),
-            feedGroup: 'timeline',
-            onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
-            onUserTap: (user) => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => ProfileScreen(
-                  user: user!,
+          Scrollbar(
+            child: AggregatedFeedListView(
+              flags: EnrichmentFlags()
+                  .withReactionCounts()
+                  .withOwnChildren()
+                  .withOwnReactions(),
+              feedGroup: 'timeline',
+              onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
+              onUserTap: (user) => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => ProfileScreen(
+                    user: user!,
+                  ),
                 ),
               ),
+              onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
             ),
-            onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
           ),
           const Center(
             child: Text('Notifications'),
