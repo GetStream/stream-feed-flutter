@@ -95,8 +95,7 @@ class FeedBloc<A, Ob, T, Or> {
         final enrichedActivity = await flatFeed
             .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
         final _activities = activities ?? [];
-        _activities.clear();
-        _activities.add(enrichedActivity);
+        _activities.insert(0, enrichedActivity);
         _activitiesController.add(_activities);
         break;
       case FeedType.aggregated:
@@ -403,8 +402,8 @@ class FeedBloc<A, Ob, T, Or> {
             ranking: ranking,
           );
 
-      final temp = oldActivities + activitiesResponse;
-      _activitiesController.add(temp);
+      final temp = Set.of(oldActivities + activitiesResponse);
+      _activitiesController.add(temp.toList());
     } catch (e, stk) {
       // reset loading controller
       _queryActivitiesLoadingController.add(false);
