@@ -21,6 +21,7 @@ void main() {
           },
           home: Scaffold(
             body: UserBar(
+              feedType: FeedType.flat,
               feedGroup: 'timeline',
               showReactedBy: true,
               activityId: '1',
@@ -64,6 +65,7 @@ void main() {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
     final userBar = UserBar(
+      feedType: FeedType.flat,
       activityId: '1',
       feedGroup: 'timeline',
       kind: 'like',

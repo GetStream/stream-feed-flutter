@@ -358,6 +358,7 @@ void main() {
             },
             home: Scaffold(
               body: ActivityHeader(
+                feedType: FeedType.flat,
                 feedGroup: 'timeline',
                 activity: EnrichedActivity(
                   id: '1',
@@ -412,6 +413,7 @@ void main() {
             },
             home: Scaffold(
               body: ActivityHeader(
+                feedType: FeedType.flat,
                 feedGroup: 'timeline',
                 activity: EnrichedActivity(
                   id: '1',
@@ -471,6 +473,7 @@ void main() {
           bloc: DefaultFeedBloc(client: mockClient),
           home: const Scaffold(
             body: DeleteActivityDialog(
+              feedType: FeedType.flat,
               activityId: activityId,
               feedGroup: feedGroup,
             ),
@@ -497,6 +500,7 @@ void main() {
     testWidgets('debugFillProperties', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
       const DeleteActivityDialog(
+        feedType: FeedType.flat,
         activityId: '1',
         feedGroup: 'timeline',
       ).debugFillProperties(builder);

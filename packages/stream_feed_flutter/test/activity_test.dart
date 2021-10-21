@@ -25,6 +25,7 @@ void main() {
           },
           home: Scaffold(
             body: ActivityHeader(
+              feedType: FeedType.flat,
               feedGroup: 'timeline',
               activity: EnrichedActivity(
                 id: '1',
@@ -134,6 +135,7 @@ void main() {
           },
           home: Scaffold(
             body: ActivityWidget(
+              feedType: FeedType.flat,
               activity: EnrichedActivity(
                 id: '1',
                 time: DateTime.now(),
@@ -195,6 +197,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityWidget = ActivityWidget(
+        feedType: FeedType.flat,
         activity: EnrichedActivity(
           id: '1',
           time: now,
@@ -303,6 +306,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityHeader = ActivityHeader(
+        feedType: FeedType.flat,
         feedGroup: 'timeline',
         activity: EnrichedActivity(
           id: '1',
