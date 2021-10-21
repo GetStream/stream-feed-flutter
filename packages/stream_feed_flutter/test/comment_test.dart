@@ -111,75 +111,86 @@ void main() {
       expect(pressedMentions, ['sacha']);
     });
   });
-  testWidgets('CommentField', (WidgetTester tester) async {
-    final key = GlobalKey();
-    final mockClient = MockStreamFeedClient();
-    final mockReactions = MockReactions();
-    final mockStreamAnalytics = MockStreamAnalytics();
-    when(() => mockClient.reactions).thenReturn(mockReactions);
-    const foreignId = 'like:300';
-    const activityId = 'activityId';
-    const feedGroup = 'whatever:300';
-    const kind = 'comment';
-    const textInput = 'Soup';
-    const reaction = Reaction(
-      kind: kind,
-      activityId: activityId,
-      data: {'text': textInput},
-    );
-    const activity = DefaultEnrichedActivity(
-      id: activityId,
-      foreignId: foreignId,
-    );
-    const label = kind;
-    final engagement = Engagement(
-        content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-        label: label,
-        feedId: FeedId.fromId(feedGroup));
 
-    when(() => mockReactions.add(
-          kind,
-          activityId,
-          data: {'text': textInput},
-        )).thenAnswer((_) async => reaction);
+  group('CommentField tests', () {
+    /*late MockFeedBloc<User, String, String, String> mockFeedBloc;
+    setUp(() {
+      mockFeedBloc = MockFeedBloc();
+      when(() => mockFeedBloc.currentUser).thenReturn(MockStreamUser());
+    });*/
+    testWidgets('CommentField', (WidgetTester tester) async {
+      final key = GlobalKey();
+      final mockClient = MockStreamFeedClient();
+      when(() => mockClient.currentUser).thenReturn(MockStreamUser());
+      final mockReactions = MockReactions();
+      final mockStreamAnalytics = MockStreamAnalytics();
+      when(() => mockClient.reactions).thenReturn(mockReactions);
+      const foreignId = 'like:300';
+      const activityId = 'activityId';
+      const feedGroup = 'whatever:300';
+      const kind = 'comment';
+      const textInput = 'Soup';
+      const reaction = Reaction(
+        kind: kind,
+        activityId: activityId,
+        data: {'text': textInput},
+      );
+      const activity = DefaultEnrichedActivity(
+        id: activityId,
+        foreignId: foreignId,
+      );
+      const label = kind;
+      final engagement = Engagement(
+          content: Content(foreignId: FeedId.fromId(activity.foreignId)),
+          label: label,
+          feedId: FeedId.fromId(feedGroup));
 
-    when(() => mockStreamAnalytics.trackEngagement(engagement))
-        .thenAnswer((_) async => Future.value());
-    final textEditingController = TextEditingController();
+      when(() => mockReactions.add(
+            kind,
+            activityId,
+            data: {'text': textInput},
+          )).thenAnswer((_) async => reaction);
 
-    await tester.pumpWidget(
-      StreamFeedApp(
-        bloc: DefaultFeedBloc(
-            analyticsClient: mockStreamAnalytics, client: mockClient),
-        home: Scaffold(
-          body: CommentField(
-            feedType: FeedType.flat,
-            key: key,
-            feedGroup: feedGroup,
-            activity: activity,
-            textEditingController: textEditingController,
+      when(() => mockStreamAnalytics.trackEngagement(engagement))
+          .thenAnswer((_) async => Future.value());
+      final textEditingController = TextEditingController();
+
+      await tester.pumpWidget(
+        StreamFeedApp(
+          bloc: DefaultFeedBloc(
+            analyticsClient: mockStreamAnalytics,
+            client: mockClient,
+          ),
+          home: Scaffold(
+            body: CommentField(
+              key: key,
+              feedGroup: feedGroup,
+              activity: activity,
+              textEditingController: textEditingController,
+              feedType: FeedType.flat,
+            ),
           ),
         ),
-      ),
-    );
+      );
 
-    final avatar = find.byType(Avatar);
-    final textArea = find.byType(TextArea);
-    final button = find.byType(ElevatedButton);
-    expect(avatar, findsOneWidget);
-    expect(textArea, findsOneWidget);
-    // expect(button, findsOneWidget);
-    await tester.enterText(textArea, textInput);
-    await tester.testTextInput.receiveAction(TextInputAction.done);
-    await tester.pump();
-    tester.widget<EditableText>(find.text(textInput));
+      final avatar = find.byType(Avatar);
+      final textArea = find.byType(TextArea);
+      final button = find.byType(ElevatedButton);
+      expect(avatar, findsOneWidget);
+      expect(textArea, findsOneWidget);
+      // expect(button, findsOneWidget);
+      await tester.enterText(textArea, textInput);
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pump();
+      tester.widget<EditableText>(find.text(textInput));
 
-    // final commentFieldState = key.currentState! as CommentFieldState;
-    expect(textEditingController.value.text, textInput);
+      // final commentFieldState = key.currentState! as CommentFieldState;
+      expect(textEditingController.value.text, textInput);
 
-    await tester.tap(button);
-    verify(() => mockClient.reactions.add(kind, activityId)).called(1);
-    verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+      await tester.tap(button);
+      verify(() => mockClient.reactions.add(kind, activityId)).called(1);
+      verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+    });
   });
 
   testWidgets('TextArea', (WidgetTester tester) async {
