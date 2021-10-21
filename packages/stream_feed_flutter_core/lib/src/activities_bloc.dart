@@ -86,14 +86,13 @@ class FeedBloc<A, Ob, T, Or> {
     );
 
     var addedActivity;
-    var enrichedActivity;
 
     switch (feedType) {
       case FeedType.flat:
         final flatFeed = client.flatFeed(feedGroup, userId);
         addedActivity = await flatFeed.addActivity(activity);
         // TODO(Sacha): merge activity and enriched activity classes together
-        enrichedActivity = await flatFeed
+        final enrichedActivity = await flatFeed
             .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
         final _activities = activities ?? [];
         _activities.insert(0, enrichedActivity);
@@ -103,11 +102,12 @@ class FeedBloc<A, Ob, T, Or> {
         final aggregatedFeed = client.aggregatedFeed(feedGroup, userId);
         addedActivity = await aggregatedFeed.addActivity(activity);
         // TODO(Sacha): merge activity and enriched activity classes together
-        enrichedActivity =
+        final group =
             (await aggregatedFeed.getEnrichedActivities<A, Ob, T, Or>()).first;
-        final _activities = aggregatedActivities ?? [];
-        _activities.insert(0, enrichedActivity);
-        _aggregatedActivitiesController.add(_activities);
+        final _aggregatedActivities = aggregatedActivities ?? [];
+        _aggregatedActivities.clear();
+        _aggregatedActivities.add(group);
+        _aggregatedActivitiesController.value = _aggregatedActivities;
         break;
       case FeedType.notification:
         // TODO: Handle this case.
@@ -427,16 +427,16 @@ class FeedBloc<A, Ob, T, Or> {
         await flatFeed.removeActivityById(activityId);
         final _activities = activities;
         _activities?.removeWhere((element) => element.id == activityId);
-        _activitiesController.add(_activities!);
+        _activitiesController.value = _activities!;
         break;
       case FeedType.aggregated:
         final aggregatedFeed = client.aggregatedFeed(feedId);
         await aggregatedFeed.removeActivityById(activityId);
         final _groups = aggregatedActivities;
-        for (final group in _groups!) {
+        _groups!.forEach((group) {
           group.activities!.removeWhere((element) => element.id == activityId);
-        }
-        _aggregatedActivitiesController.add(_groups);
+        });
+        _aggregatedActivitiesController.value = _groups;
         break;
       case FeedType.notification:
         // TODO: Handle this case.
