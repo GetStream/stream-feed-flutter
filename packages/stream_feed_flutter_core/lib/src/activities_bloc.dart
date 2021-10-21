@@ -85,8 +85,6 @@ class FeedBloc<A, Ob, T, Or> {
 
     var addedActivity;
     var enrichedActivity;
-    var _activities;
-    var _controller;
 
     switch (feedType) {
       case FeedType.flat:
@@ -95,8 +93,9 @@ class FeedBloc<A, Ob, T, Or> {
         // TODO(Sacha): merge activity and enriched activity classes together
         enrichedActivity = await flatFeed
             .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
-        _activities = activities ?? [];
-        _controller = _activitiesController;
+        final _activities = activities ?? [];
+        _activities.insert(0, enrichedActivity);
+        _activitiesController.add(_activities);
         break;
       case FeedType.aggregated:
         final aggregatedFeed = client.aggregatedFeed(feedGroup, userId);
@@ -104,18 +103,14 @@ class FeedBloc<A, Ob, T, Or> {
         // TODO(Sacha): merge activity and enriched activity classes together
         enrichedActivity = await aggregatedFeed
             .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
-        _activities = aggregatedActivities ?? [];
-        _controller = _aggregatedActivitiesController;
+        final _activities = aggregatedActivities ?? [];
+        _activities.insert(0, enrichedActivity);
+        _aggregatedActivitiesController.add(_activities);
         break;
       case FeedType.notification:
         // TODO: Handle this case.
         break;
     }
-
-    // ignore: cascade_invocations
-    _activities.insert(0, enrichedActivity);
-
-    _controller.add(_activities);
 
     await trackAnalytics(
       label: 'post',
