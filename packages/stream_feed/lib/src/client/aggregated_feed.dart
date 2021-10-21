@@ -72,13 +72,13 @@ class AggregatedFeed extends Feed {
     return data;
   }
 
-  /// Retrieves one enriched activity from a feed
+  /// Retrieves one group of enriched activities from an aggregated feed
   Future<Group<EnrichedActivity<A, Ob, T, Or>>>
       getEnrichedActivityDetail<A, Ob, T, Or>(String activityId) async {
     final activities = await getEnrichedActivities<A, Ob, T, Or>(
         limit: 1,
         filter: Filter()
-            .idLessThanOrEqual(activityId)
+            //.idLessThanOrEqual(activityId)
             .idGreaterThanOrEqual(activityId));
     return activities.first;
   }
