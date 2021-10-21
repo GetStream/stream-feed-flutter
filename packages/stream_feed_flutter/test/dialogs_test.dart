@@ -145,6 +145,7 @@ void main() {
         mockFeedBloc = MockFeedBloc();
         when(() => mockFeedBloc.activitiesStream)
             .thenAnswer((_) => Stream.value([EnrichedActivity(actor: User())]));
+        when(() => mockFeedBloc.currentUser).thenReturn(MockStreamUser());
       });
       testWidgets('Comment', (tester) async {
         await mockNetworkImages(() async {
