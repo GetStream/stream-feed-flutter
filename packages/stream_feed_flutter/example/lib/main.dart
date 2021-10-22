@@ -271,6 +271,15 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
           }),
         ),
         title: const Text('Timeline'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => showSearch(
+              context: context,
+              delegate: UserSearchDelegate(),
+            ),
+          ),
+        ],
       ),
       drawer: Drawer(
         child: SafeArea(
@@ -372,6 +381,78 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
           ),
         ],
       ),
+    );
+  }
+}
+
+class UserSearchDelegate extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () => close(context, null),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return FutureBuilder<StreamUser>(
+      future: DefaultFeedBlocProvider.of(context).bloc.client.user(query).get(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return ListTile(
+            title: Text(snapshot.data!.id),
+            onTap: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => ProfileScreen(
+                  user: User(
+                    id: snapshot.data!.id,
+                    data: snapshot.data!.data,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return FutureBuilder<StreamUser>(
+      future: DefaultFeedBlocProvider.of(context).bloc.client.user(query).get(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child:
+                Text('User not found. Type an exact username to find a user.'),
+          );
+        } else {
+          return ListTile(
+            title: Text(snapshot.data!.id),
+            onTap: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => ProfileScreen(
+                  user: User(
+                    id: snapshot.data!.id,
+                    data: snapshot.data!.data,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
