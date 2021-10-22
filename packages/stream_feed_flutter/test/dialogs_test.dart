@@ -460,17 +460,16 @@ void main() {
       when(() => mockFeed.removeActivityById(activityId))
           .thenAnswer((_) async => Future.value());
 
-      await tester.pumpWidget(
-        StreamFeed(
-          bloc: FeedBloc(client: mockClient),
-          child: const Scaffold(
-            body: DeleteActivityDialog(
-              activityId: activityId,
-              feedGroup: feedGroup,
-            ),
+      await tester.pumpWidget(MaterialApp(
+        builder: (context, child) =>
+            StreamFeed(bloc: FeedBloc(client: mockClient), child: child!),
+        home: const Scaffold(
+          body: DeleteActivityDialog(
+            activityId: activityId,
+            feedGroup: feedGroup,
           ),
         ),
-      );
+      ));
 
       final deleteDialog = find.byType(AlertDialog);
       expect(deleteDialog, findsOneWidget);
