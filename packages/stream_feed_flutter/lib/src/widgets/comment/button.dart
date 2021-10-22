@@ -34,7 +34,7 @@ class PostCommentButton extends StatelessWidget {
   /// be attached to.
   ///
   /// If no activity is supplied, this will be a new activity.
-  final DefaultEnrichedActivity? activity;
+  final EnrichedActivity? activity;
 
   /// The Text Editing Controller used to edit the comment text.
   ///
@@ -51,7 +51,7 @@ class PostCommentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveElevatedButton(
       onSend: (inputText) async {
-        final activities = DefaultFeedBlocProvider.of(context).bloc;
+        final activities = FeedBlocProvider.of(context).bloc;
         final trimmedText = inputText.trim();
         activity != null
             ? await activities.onAddReaction(
@@ -77,8 +77,8 @@ class PostCommentButton extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity?>('activity', activity));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));
     properties.add(StringProperty('feedGroup', feedGroup));

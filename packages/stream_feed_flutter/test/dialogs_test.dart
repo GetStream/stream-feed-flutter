@@ -143,19 +143,18 @@ void main() {
       late MockFeedBloc<User, String, String, String> mockFeedBloc;
       setUp(() {
         mockFeedBloc = MockFeedBloc();
-        when(() => mockFeedBloc.activitiesStream)
-            .thenAnswer((_) => Stream.value([EnrichedActivity(actor: User())]));
-        when(() => mockFeedBloc.currentUser).thenReturn(MockStreamUser());
+        when(() => mockFeedBloc.activitiesStream).thenAnswer((_) =>
+            Stream.value(const [GenericEnrichedActivity(actor: User())]));
       });
       testWidgets('Comment', (tester) async {
         await mockNetworkImages(() async {
           await tester.pumpWidget(
-            StreamFeedApp(
+            StreamFeed(
               bloc: mockFeedBloc,
-              home: Scaffold(
+              child: Scaffold(
                 body: AlertDialogComment(
                   feedGroup: 'user',
-                  activity: EnrichedActivity(
+                  activity: GenericEnrichedActivity(
                     id: '1',
                     time: DateTime.now(),
                     actor: const User(
@@ -184,11 +183,11 @@ void main() {
         testWidgets('with an activity', (tester) async {
           await mockNetworkImages(() async {
             await tester.pumpWidget(
-              StreamFeedApp(
+              StreamFeed(
                 bloc: mockFeedBloc,
-                home: Scaffold(
+                child: Scaffold(
                   body: CommentView(
-                    activity: EnrichedActivity(
+                    activity: GenericEnrichedActivity(
                       id: '1',
                       time: DateTime.now(),
                       actor: const User(data: {
@@ -218,9 +217,9 @@ void main() {
         testWidgets('without an activity', (tester) async {
           await mockNetworkImages(() async {
             await tester.pumpWidget(
-              StreamFeedApp(
+              StreamFeed(
                 bloc: mockFeedBloc,
-                home: Scaffold(
+                child: Scaffold(
                   body: CommentView(
                     textEditingController: TextEditingController(),
                   ),
@@ -277,7 +276,7 @@ void main() {
       final alertDialogActions = AlertDialogActions(
         feedGroup: 'user',
         textEditingController: TextEditingController(),
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -354,7 +353,7 @@ void main() {
             home: Scaffold(
               body: ActivityHeader(
                 feedGroup: 'timeline',
-                activity: EnrichedActivity(
+                activity: GenericEnrichedActivity(
                   id: '1',
                   time: DateTime.now(),
                   actor: const User(
@@ -408,7 +407,7 @@ void main() {
             home: Scaffold(
               body: ActivityHeader(
                 feedGroup: 'timeline',
-                activity: EnrichedActivity(
+                activity: GenericEnrichedActivity(
                   id: '1',
                   time: DateTime.now(),
                   actor: const User(
@@ -462,9 +461,9 @@ void main() {
           .thenAnswer((_) async => Future.value());
 
       await tester.pumpWidget(
-        StreamFeedApp(
-          bloc: DefaultFeedBloc(client: mockClient),
-          home: const Scaffold(
+        StreamFeed(
+          bloc: FeedBloc(client: mockClient),
+          child: const Scaffold(
             body: DeleteActivityDialog(
               activityId: activityId,
               feedGroup: feedGroup,

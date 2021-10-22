@@ -17,7 +17,7 @@ void main() {
   late String activityId;
   late List<FeedId> targetFeeds;
   late Map<String, String> data;
-  late FeedBloc bloc;
+  late GenericFeedBloc bloc;
   late MockReactionsControllers mockReactionControllers;
   late String feedGroup;
   late MockFeedAPI mockFeed;
@@ -27,7 +27,7 @@ void main() {
   late String userId;
   late MockStreamUser mockSecondUser;
   late String secondUserId;
-  late EnrichedActivity<String, String, String, String> enrichedActivity;
+  late GenericEnrichedActivity<String, String, String, String> enrichedActivity;
   late Activity addedActivity;
   late List<Follow> following;
 
@@ -78,7 +78,7 @@ void main() {
       object: 'test',
     );
 
-    enrichedActivity = const EnrichedActivity(
+    enrichedActivity = const GenericEnrichedActivity(
       id: 'test',
       actor: 'test',
       verb: 'post',
@@ -100,7 +100,7 @@ void main() {
     when(() => mockUser.id).thenReturn(userId);
     when(() => mockSecondUser.id).thenReturn(secondUserId);
     when(() => mockUser.ref).thenReturn('test');
-    bloc = FeedBloc(client: mockClient);
+    bloc = GenericFeedBloc(client: mockClient);
     when(() =>
         mockFeed.getEnrichedActivityDetail<String, String, String, String>(
             addedActivity.id!)).thenAnswer((_) async => enrichedActivity);
@@ -150,7 +150,7 @@ void main() {
           )).thenAnswer((_) async => addedReaction);
 
       await bloc.onAddReaction(
-          activity: EnrichedActivity(id: activityId),
+          activity: GenericEnrichedActivity(id: activityId),
           feedGroup: feedGroup,
           kind: kind);
       verify(() => mockReactions.add(
@@ -160,7 +160,7 @@ void main() {
       await expectLater(
           bloc.activitiesStream,
           emits([
-            EnrichedActivity(id: activityId, reactionCounts: const {
+            GenericEnrichedActivity(id: activityId, reactionCounts: const {
               'like': 1
             }, ownReactions: {
               'like': [addedReaction]
@@ -182,7 +182,8 @@ void main() {
           .thenAnswer((invocation) => Future.value());
 
       await bloc.onRemoveReaction(
-        activity: EnrichedActivity(id: activityId, reactionCounts: const {
+        activity:
+            GenericEnrichedActivity(id: activityId, reactionCounts: const {
           'like': 1
         }, ownReactions: {
           'like': [reaction]
@@ -197,7 +198,7 @@ void main() {
       await expectLater(
           bloc.activitiesStream,
           emits([
-            EnrichedActivity(
+            GenericEnrichedActivity(
                 id: activityId,
                 reactionCounts: const {'like': 0},
                 ownReactions: const {'like': []},
@@ -213,7 +214,7 @@ void main() {
         const parentId = 'parentId';
         const childId = 'childId';
         final now = DateTime.now();
-        final reactedActivity = EnrichedActivity(
+        final reactedActivity = GenericEnrichedActivity(
           id: 'id',
           time: now,
           actor: User(data: const {
@@ -265,7 +266,7 @@ void main() {
         final now = DateTime.now();
         const childId = 'childId';
         const parentId = 'parentId';
-        final reactedActivity = EnrichedActivity(
+        final reactedActivity = GenericEnrichedActivity(
           id: 'id',
           time: now,
           actor: const User(data: {

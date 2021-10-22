@@ -13,7 +13,7 @@ void main() {
     testWidgets('widget', (tester) async {
       await mockNetworkImages(() async {
         final activities = [
-          EnrichedActivity(
+          GenericEnrichedActivity(
             time: DateTime.now(),
             actor: const User(
               data: {
@@ -25,7 +25,7 @@ void main() {
               },
             ),
           ),
-          EnrichedActivity(
+          GenericEnrichedActivity(
             time: DateTime.now(),
             actor: const User(
               data: {
@@ -48,12 +48,12 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: DefaultFeedBlocProvider(
-                bloc: DefaultFeedBloc(
+              body: FeedBlocProvider(
+                bloc: FeedBloc(
                   analyticsClient: mockStreamAnalytics,
                   client: mockClient,
                 ),
-                child: FlatActivityListPage(
+                child: const FlatActivityListPage(
                   feedGroup: 'user',
                 ),
               ),

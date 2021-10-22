@@ -24,7 +24,7 @@ class ActivityContent extends StatelessWidget {
   }) : super(key: key);
 
   /// The activity that is being displayed.
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   /// {@macro mention_callback}
   final OnMentionTap? onMentionTap;
@@ -72,8 +72,7 @@ class ActivityContent extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
     properties.add(
         ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
     properties.add(

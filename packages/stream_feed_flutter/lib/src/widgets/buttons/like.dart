@@ -30,7 +30,7 @@ class LikeButton extends StatelessWidget {
 
   /// The activity received from Stream that should be liked when pressing
   /// the [LikeButton].
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   /// The callback to be performed on tap.
   ///
@@ -75,7 +75,8 @@ class LikeButton extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity>('activity', activity));
     properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(ColorProperty('hoverColor', hoverColor));

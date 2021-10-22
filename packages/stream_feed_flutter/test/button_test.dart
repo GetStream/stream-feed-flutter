@@ -48,20 +48,24 @@ void main() {
           limit: limit,
           kind: kind,
         )).thenAnswer((_) async => reactions);
-    await tester.pumpWidget(StreamFeedApp(
-        bloc: FeedBloc(
+    await tester.pumpWidget(
+      StreamFeed(
+        bloc: GenericFeedBloc(
           client: mockClient,
           analyticsClient: mockStreamAnalytics,
         ),
-        home: Scaffold(
-            body: ReactionListPage(
-          activity: EnrichedActivity(id: 'id'),
-          reactionBuilder: (context, reaction) => const Offstage(),
-          lookupValue: lookupValue,
-          filter: filter,
-          limit: limit,
-          kind: kind,
-        ))));
+        child: Scaffold(
+          body: ReactionListPage(
+            activity: const GenericEnrichedActivity(id: 'id'),
+            reactionBuilder: (context, reaction) => const Offstage(),
+            lookupValue: lookupValue,
+            filter: filter,
+            limit: limit,
+            kind: kind,
+          ),
+        ),
+      ),
+    );
     verify(() => mockReactions.filter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind)).called(1);
   });
@@ -78,7 +82,7 @@ void main() {
         home: const Scaffold(
           body: LikeButton(
             activity:
-                EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
+                GenericEnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
             // .add and .delete
             reaction: Reaction(kind: 'like', childrenCounts: {
               'like': 3
@@ -113,7 +117,7 @@ void main() {
         home: const Scaffold(
           body: RepostButton(
             activity:
-                EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
+                GenericEnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
             // .add and .delete
             reaction: Reaction(kind: 'repost', childrenCounts: {
               'repost': 3
@@ -144,7 +148,7 @@ void main() {
     const foreignId = 'like:300';
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
-    const activity = EnrichedActivity(
+    const activity = GenericEnrichedActivity(
       id: activityId,
       foreignId: foreignId,
     );
@@ -160,7 +164,8 @@ void main() {
         const parentId = 'parentId';
         const childId = 'childId';
         final now = DateTime.now();
-        final reactedActivity = EnrichedActivity<User, String, String, String>(
+        final reactedActivity =
+            GenericEnrichedActivity<User, String, String, String>(
           id: 'id',
           time: now,
           actor: User(data: const {
@@ -171,7 +176,7 @@ void main() {
           }),
         );
         controller.init(reactedActivity.id!);
-        final bloc = DefaultFeedBloc(
+        final bloc = FeedBloc(
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
         );
@@ -184,9 +189,9 @@ void main() {
         when(() => mockClient.reactions).thenReturn(mockReactions);
         when(() => mockReactions.addChild('like', parentId))
             .thenAnswer((_) async => childReaction);
-        await tester.pumpWidget(StreamFeedApp(
+        await tester.pumpWidget(StreamFeed(
             bloc: bloc,
-            home: Scaffold(
+            child: Scaffold(
               body: ChildReactionToggleIcon(
                 activity: reactedActivity,
                 hoverColor: Colors.lightBlue,
@@ -236,7 +241,8 @@ void main() {
         final now = DateTime.now();
         const childId = 'childId';
         const parentId = 'parentId';
-        final reactedActivity = EnrichedActivity<User, String, String, String>(
+        final reactedActivity =
+            GenericEnrichedActivity<User, String, String, String>(
           id: 'id',
           time: now,
           actor: const User(data: {
@@ -261,7 +267,7 @@ void main() {
         );
 
         controller.init(reactedActivity.id!);
-        final bloc = DefaultFeedBloc(
+        final bloc = FeedBloc(
           client: mockClient,
           analyticsClient: mockStreamAnalytics,
         );
@@ -270,23 +276,26 @@ void main() {
 
         when(() => mockReactions.delete(childId))
             .thenAnswer((_) async => Future.value());
-        await tester.pumpWidget(MaterialApp(
+        await tester.pumpWidget(
+          MaterialApp(
             home: Scaffold(
-          body: DefaultFeedBlocProvider(
-            bloc: bloc,
-            child: ChildReactionToggleIcon(
-              ownReactions: [childReaction],
-              activity: reactedActivity,
-              hoverColor: Colors.lightBlue,
-              reaction: parentReaction,
-              kind: kind,
-              count: count,
-              // ownReactions: const [reaction],
-              inactiveIcon: inactiveIcon,
-              activeIcon: activeIcon,
+              body: FeedBlocProvider(
+                bloc: bloc,
+                child: ChildReactionToggleIcon(
+                  ownReactions: [childReaction],
+                  activity: reactedActivity,
+                  hoverColor: Colors.lightBlue,
+                  reaction: parentReaction,
+                  kind: kind,
+                  count: count,
+                  // ownReactions: const [reaction],
+                  inactiveIcon: inactiveIcon,
+                  activeIcon: activeIcon,
+                ),
+              ),
             ),
           ),
-        )));
+        );
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
 
@@ -308,7 +317,7 @@ void main() {
     late String kind;
     late List<Reaction> reactions;
     late String activityId;
-    late DefaultFeedBloc bloc;
+    late FeedBloc bloc;
     late MockReactionControllers mockReactionControllers;
     late String feedGroup;
     late StreamSvgIcon inactiveIcon;
@@ -341,11 +350,11 @@ void main() {
       ];
       when(() => mockClient.reactions).thenReturn(mockReactions);
 
-      bloc = DefaultFeedBloc(client: mockClient);
+      bloc = FeedBloc(client: mockClient);
     });
 
     testGoldens('onAddReaction', (tester) async {
-      final addedReaction = Reaction();
+      const addedReaction = Reaction();
       bloc.reactionsControllers = mockReactionControllers;
       when(() => mockReactionControllers.getReactions(activityId))
           .thenAnswer((_) => reactions);
@@ -355,17 +364,18 @@ void main() {
             activityId,
           )).thenAnswer((_) async => addedReaction);
       await tester.pumpWidgetBuilder(
-        StreamFeedApp(
+        StreamFeed(
           bloc: bloc,
-          home: Scaffold(
-              body: ReactionToggleIcon(
-            activity: EnrichedActivity(id: activityId),
-            feedGroup: feedGroup,
-            kind: kind,
-            activeIcon: activeIcon,
-            count: 1300,
-            inactiveIcon: inactiveIcon,
-          )),
+          child: Scaffold(
+            body: ReactionToggleIcon(
+              activity: GenericEnrichedActivity(id: activityId),
+              feedGroup: feedGroup,
+              kind: kind,
+              activeIcon: activeIcon,
+              count: 1300,
+              inactiveIcon: inactiveIcon,
+            ),
+          ),
         ),
         surfaceSize: const Size(125, 100),
       );
@@ -382,7 +392,7 @@ void main() {
     });
     testGoldens('onRemoveReaction', (tester) async {
       const reactionId = 'reactionId';
-      final reaction = Reaction(id: reactionId);
+      const reaction = Reaction(id: reactionId);
       bloc.reactionsControllers = mockReactionControllers;
       when(() => mockReactionControllers.getReactions(activityId))
           .thenAnswer((_) => reactions);
@@ -390,16 +400,17 @@ void main() {
           .thenAnswer((invocation) => Future.value());
 
       await tester.pumpWidgetBuilder(
-        StreamFeedApp(
+        StreamFeed(
           bloc: bloc,
-          home: Scaffold(
+          child: Scaffold(
               body: ReactionToggleIcon(
-            ownReactions: [reaction],
-            activity: EnrichedActivity(id: activityId, reactionCounts: const {
+            ownReactions: const [reaction],
+            activity:
+                GenericEnrichedActivity(id: activityId, reactionCounts: const {
               'like': 1300
-            }, ownReactions: {
+            }, ownReactions: const {
               'like': [reaction]
-            }, latestReactions: {
+            }, latestReactions: const {
               'like': [reaction]
             }),
             feedGroup: feedGroup,
@@ -475,7 +486,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final childReactionButton = ChildReactionButton(
-        activity: EnrichedActivity(),
+        activity: const GenericEnrichedActivity(),
         reaction: Reaction(
           createdAt: now,
           kind: 'comment',
@@ -497,7 +508,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null, null)');
+          '''Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null, null)''');
     });
 
     test('ChildReactionToggleIcon', () {
@@ -506,7 +517,7 @@ void main() {
       final childReactionToggleIcon = ChildReactionToggleIcon(
         count: 1,
         ownReactions: const [],
-        activity: EnrichedActivity(),
+        activity: const GenericEnrichedActivity(),
         reaction: Reaction(
           createdAt: now,
           kind: 'comment',
@@ -534,7 +545,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final likeButton = LikeButton(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -567,7 +578,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final reactionButton = ReactionButton(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -604,7 +615,7 @@ void main() {
       final now = DateTime.now();
       final reactionToggleIcon = ReactionToggleIcon(
         count: 1,
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -657,7 +668,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final replyButton = ReplyButton(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -690,7 +701,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final repostButton = RepostButton(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {

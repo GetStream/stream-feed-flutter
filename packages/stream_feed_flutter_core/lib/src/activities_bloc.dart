@@ -1,28 +1,29 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class FeedBloc<A, Ob, T, Or> {
-  FeedBloc({required this.client, this.analyticsClient});
+class GenericFeedBloc<A, Ob, T, Or> {
+  GenericFeedBloc({required this.client, this.analyticsClient});
 
   final StreamFeedClient client;
   StreamUser? get currentUser => client.currentUser;
 
   final StreamAnalytics? analyticsClient;
 
-  /// The current activities list
-  List<EnrichedActivity<A, Ob, T, Or>>? get activities =>
+  /// The current activities list.
+  List<GenericEnrichedActivity<A, Ob, T, Or>>? get activities =>
       _activitiesController.valueOrNull;
 
-  /// The current reactions list
+  /// The current reactions list.
   List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
       reactionsControllers.getReactions(activityId, reaction);
 
-  /// The current activities list as a stream
-  Stream<List<EnrichedActivity<A, Ob, T, Or>>> get activitiesStream =>
+  /// The current activities list as a stream.
+  Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>> get activitiesStream =>
       _activitiesController.stream;
 
-  /// The current reactions list as a stream
+  /// The current reactions list as a stream.
   Stream<List<Reaction>>? getReactionsStream(
       //TODO: better name?
       String activityId,
@@ -34,18 +35,18 @@ class FeedBloc<A, Ob, T, Or> {
   late ReactionsControllers reactionsControllers = ReactionsControllers();
 
   final _activitiesController =
-      BehaviorSubject<List<EnrichedActivity<A, Ob, T, Or>>>();
+      BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
 
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
   final Map<String, BehaviorSubject<bool>> _queryReactionsLoadingControllers =
       {};
 
-  /// The stream notifying the state of queryReactions call
+  /// The stream notifying the state of queryReactions call.
   Stream<bool> queryReactionsLoadingFor(String activityId) =>
       _queryReactionsLoadingControllers[activityId]!;
 
-  /// The stream notifying the state of queryActivities call
+  /// The stream notifying the state of queryActivities call.
   Stream<bool> get queryActivitiesLoading =>
       _queryActivitiesLoadingController.stream;
 
@@ -89,10 +90,10 @@ class FeedBloc<A, Ob, T, Or> {
     return addedActivity;
   }
 
-  /// Remove child reaction
+  /// Remove child reaction.
   Future<void> onRemoveChildReaction(
       {required String kind,
-      required EnrichedActivity activity,
+      required GenericEnrichedActivity activity,
       required Reaction childReaction,
       required Reaction parentReaction}) async {
     await client.reactions.delete(childReaction.id!);
@@ -116,18 +117,16 @@ class FeedBloc<A, Ob, T, Or> {
       childrenCounts: childrenCounts,
     );
 
-    //remove reaction from rxstream
-    reactionsControllers.unshiftById(
-        activity.id!, childReaction, ShiftType.decrement);
-
-    reactionsControllers.update(
-        activity.id!, _reactions.updateIn(updatedReaction, indexPath));
+    // remove reaction from rxstream
+    reactionsControllers
+      ..unshiftById(activity.id!, childReaction, ShiftType.decrement)
+      ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
   }
 
   Future<Reaction> onAddChildReaction(
       {required String kind,
       required Reaction reaction,
-      required EnrichedActivity activity,
+      required GenericEnrichedActivity activity,
       Map<String, Object>? data,
       String? userId,
       List<FeedId>? targetFeeds}) async {
@@ -151,10 +150,9 @@ class FeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the rxstream
-    reactionsControllers.unshiftById(activity.id!, childReaction);
-
-    reactionsControllers.update(
-        activity.id!, _reactions.updateIn(updatedReaction, indexPath));
+    reactionsControllers
+      ..unshiftById(activity.id!, childReaction)
+      ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
     // return reaction;
     return childReaction;
   }
@@ -162,7 +160,7 @@ class FeedBloc<A, Ob, T, Or> {
   /// Remove reaction from the feed.
   Future<void> onRemoveReaction({
     required String kind,
-    required EnrichedActivity<A, Ob, T, Or> activity,
+    required GenericEnrichedActivity<A, Ob, T, Or> activity,
     required Reaction reaction,
     required String feedGroup,
   }) async {
@@ -192,7 +190,7 @@ class FeedBloc<A, Ob, T, Or> {
       reactionCounts: reactionCounts,
     );
 
-    //remove reaction from the stream
+    // remove reaction from the stream
     reactionsControllers.unshiftById(
         activity.id!, reaction, ShiftType.decrement);
 
@@ -204,7 +202,7 @@ class FeedBloc<A, Ob, T, Or> {
   Future<Reaction> onAddReaction({
     Map<String, Object>? data,
     required String kind,
-    required EnrichedActivity<A, Ob, T, Or> activity,
+    required GenericEnrichedActivity<A, Ob, T, Or> activity,
     List<FeedId>? targetFeeds,
     required String feedGroup,
   }) async {
@@ -229,7 +227,7 @@ class FeedBloc<A, Ob, T, Or> {
       reactionCounts: reactionCounts,
     );
 
-    //adds reaction to the stream
+    // adds reaction to the stream
     reactionsControllers.unshiftById(activity.id!, reaction);
 
     _activitiesController.value = _activities //TODO: handle null safety
@@ -237,7 +235,7 @@ class FeedBloc<A, Ob, T, Or> {
     return reaction;
   }
 
-  ///Track analytics
+  /// Track analytics.
   Future<void> trackAnalytics(
       {required String label,
       String? foreignId,
@@ -312,7 +310,7 @@ class FeedBloc<A, Ob, T, Or> {
 
     try {
       final oldActivities =
-          List<EnrichedActivity<A, Ob, T, Or>>.from(activities ?? []);
+          List<GenericEnrichedActivity<A, Ob, T, Or>>.from(activities ?? []);
       final activitiesResponse = await client
           .flatFeed(feedGroup, userId)
           .getEnrichedActivities<A, Ob, T, Or>(
@@ -387,33 +385,45 @@ class FeedBloc<A, Ob, T, Or> {
   }
 }
 
-class FeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
-  const FeedBlocProvider(
+class GenericFeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
+  const GenericFeedBlocProvider(
       {Key? key, required this.bloc, required Widget child, this.navigatorKey})
       : super(key: key, child: child);
-  factory FeedBlocProvider.of(BuildContext context) {
-    final FeedBlocProvider<A, Ob, T, Or>? result = context
-        .dependOnInheritedWidgetOfExactType<FeedBlocProvider<A, Ob, T, Or>>();
+
+  factory GenericFeedBlocProvider.of(BuildContext context) {
+    final result =
+        context.dependOnInheritedWidgetOfExactType<GenericFeedBlocProvider>()
+            as GenericFeedBlocProvider<A, Ob, T, Or>?;
     assert(result != null, 'No FeedBlocProvider found in context');
     return result!;
   }
 
-  final FeedBloc<A, Ob, T, Or> bloc;
+  final GenericFeedBloc<A, Ob, T, Or> bloc;
   final GlobalKey<NavigatorState>? navigatorKey;
 
   @override
-  bool updateShouldNotify(FeedBlocProvider old) =>
+  bool updateShouldNotify(GenericFeedBlocProvider old) =>
       navigatorKey != old.navigatorKey || bloc != old.bloc; //
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc))
+      ..add(DiagnosticsProperty<GlobalKey<NavigatorState>?>(
+          'navigatorKey', navigatorKey));
+  }
 }
 
 class ReactionsControllers {
   final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
 
-  /// Init controller for given activityId
+  /// Init controller for given activityId.
   void init(String lookupValue) =>
       _controller[lookupValue] = BehaviorSubject<List<Reaction>>();
 
-  /// Retrieve with activityId the corresponding StreamController from the map of controllers
+  /// Retrieve with activityId the corresponding StreamController from the map
+  /// of controllers.
   BehaviorSubject<List<Reaction>>? _getController(String lookupValue) =>
       _controller[lookupValue]; //TODO: handle null safety
 
@@ -427,41 +437,44 @@ class ReactionsControllers {
         : reactionStream; //TODO: handle null safety
   }
 
-  /// Convert the Stream of reactions to a List of reactions
+  /// Convert the Stream of reactions to a List of reactions.
   List<Reaction> getReactions(String lookupValue, [Reaction? reaction]) =>
       _getController(lookupValue)?.valueOrNull ??
       (reaction != null ? [reaction] : <Reaction>[]);
 
-  ///Check if controller is not empty
+  /// Check if controller is not empty.
   bool hasValue(String lookupValue) =>
       _getController(lookupValue)?.hasValue != null;
 
-  ///Lookup latest Reactions by Id and inserts the given reaction to the beginning of the list
+  /// Lookup latest Reactions by Id and inserts the given reaction to the
+  /// beginning of the list.
   void unshiftById(String lookupValue, Reaction reaction,
           [ShiftType type = ShiftType.increment]) =>
       _controller.unshiftById(lookupValue, reaction, type);
 
-  ///Close every stream controllers
+  /// Close every stream controllers.
   void close() => _controller.forEach((key, value) {
         value.close();
       });
 
-  /// Update controller value with given reactions
+  /// Update controller value with given reactions.
   void update(String lookupValue, List<Reaction> reactions) {
     if (hasValue(lookupValue)) {
       _getController(lookupValue)!.value = reactions;
     }
   }
 
-  /// Add given reactions to the correct controller
+  /// Add given reactions to the correct controller.
   void add(String lookupValue, List<Reaction> temp) {
-    if (hasValue(lookupValue))
-      _getController(lookupValue)!.add(temp); //TODO: handle null safety
+    if (hasValue(lookupValue)) {
+      _getController(lookupValue)!.add(temp);
+    } //TODO: handle null safety
   }
 
-  ///Add error to the correct controller
+  /// Add error to the correct controller.
   void addError(String lookupValue, Object e, StackTrace stk) {
-    if (hasValue(lookupValue))
-      _getController(lookupValue)!.addError(e, stk); //TODO: handle null safety
+    if (hasValue(lookupValue)) {
+      _getController(lookupValue)!.addError(e, stk);
+    } //TODO: handle null safety
   }
 }

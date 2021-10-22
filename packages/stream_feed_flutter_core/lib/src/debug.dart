@@ -3,7 +3,8 @@ import 'package:stream_feed_flutter_core/src/activities_bloc.dart';
 
 bool debugCheckHasFeedBlocProvider(BuildContext context) {
   assert(() {
-    if (context.findAncestorWidgetOfExactType<FeedBlocProvider>() == null) {
+    if (context.findAncestorWidgetOfExactType<GenericFeedBlocProvider>() ==
+        null) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
         ErrorSummary('No FeedBlocProvider widget found.'),
         ErrorDescription(
@@ -26,7 +27,7 @@ bool debugCheckHasFeedBlocProvider(BuildContext context) {
             " feedGroup: 'user',"
             ' ))'),
         ...context.describeMissingAncestor(
-            expectedAncestorType: FeedBlocProvider),
+            expectedAncestorType: GenericFeedBlocProvider),
       ]);
     }
     return true;

@@ -27,7 +27,7 @@ class CommentField extends StatelessWidget {
   /// The activity on which the comment will be posted (reaction).
   ///
   /// If no activity is provided, the comment will be posted as a new activity.
-  final DefaultEnrichedActivity? activity;
+  final EnrichedActivity? activity;
 
   /// The target feed on which the comment will be posted.
   final List<FeedId>? targetFeeds;
@@ -84,8 +84,8 @@ class CommentField extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity?>('activity', activity));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));

@@ -20,7 +20,7 @@ PaginatedReactions<A, Ob, T, Or> _$PaginatedReactionsFromJson<A, Ob, T, Or>(
         .toList(),
     json['activity'] == null
         ? null
-        : EnrichedActivity.fromJson(
+        : GenericEnrichedActivity.fromJson(
             (json['activity'] as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
             ),

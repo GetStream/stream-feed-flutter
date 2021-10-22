@@ -30,12 +30,12 @@ part 'enriched_activity.g.dart';
 /// * T = [target]
 /// * Or = [origin]
 @JsonSerializable(genericArgumentFactories: true)
-class EnrichedActivity<A, Ob, T, Or> extends Equatable {
+class GenericEnrichedActivity<A, Ob, T, Or> extends Equatable {
   //TODO: improve this
   // when type parameter to can a default type in Dart
   //i.e. https://github.com/dart-lang/language/issues/283#issuecomment-839603127
-  /// Builds an [EnrichedActivity].
-  const EnrichedActivity({
+  /// Builds an [GenericEnrichedActivity].
+  const GenericEnrichedActivity({
     this.id,
     this.actor,
     this.verb,
@@ -55,7 +55,7 @@ class EnrichedActivity<A, Ob, T, Or> extends Equatable {
   });
 
   /// Create a new instance from a JSON object
-  factory EnrichedActivity.fromJson(
+  factory GenericEnrichedActivity.fromJson(
     Map<String, dynamic>? json, [
     A Function(Object? json)? fromJsonA,
     Ob Function(Object? json)? fromJsonOb,
@@ -178,7 +178,7 @@ class EnrichedActivity<A, Ob, T, Or> extends Equatable {
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? extraData;
 
-  EnrichedActivity<A, Ob, T, Or> copyWith({
+  GenericEnrichedActivity<A, Ob, T, Or> copyWith({
     A? actor,
     Ob? object,
     String? verb,
@@ -196,7 +196,7 @@ class EnrichedActivity<A, Ob, T, Or> extends Equatable {
     Map<String, List<Reaction>>? ownReactions,
     Map<String, List<Reaction>>? latestReactions,
   }) =>
-      EnrichedActivity<A, Ob, T, Or>(
+      GenericEnrichedActivity<A, Ob, T, Or>(
         actor: actor ?? this.actor,
         object: object ?? this.object,
         verb: verb ?? this.verb,

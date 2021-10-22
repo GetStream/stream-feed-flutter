@@ -56,11 +56,11 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: ReactionListCore(
-          bloc: DefaultFeedBloc(
+          bloc: FeedBloc(
             analyticsClient: mockStreamAnalytics,
             client: mockClient,
           ),
-          reactionsBuilder: (context, reactions, idx) => Offstage(),
+          reactionsBuilder: (context, reactions, idx) => const Offstage(),
           lookupValue: lookupValue,
           filter: filter,
           limit: limit,

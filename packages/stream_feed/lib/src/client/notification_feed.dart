@@ -102,7 +102,7 @@ class NotificationFeed extends AggregatedFeed {
   ///
   /// {@macro filter}
   @override
-  Future<List<NotificationGroup<EnrichedActivity<A, Ob, T, Or>>>>
+  Future<List<NotificationGroup<GenericEnrichedActivity<A, Ob, T, Or>>>>
       getEnrichedActivities<A, Ob, T, Or>({
     int? limit,
     int? offset,
@@ -124,7 +124,7 @@ class NotificationFeed extends AggregatedFeed {
     final data = (result.data['results'] as List)
         .map((e) => NotificationGroup.fromJson(
               e,
-              (json) => EnrichedActivity<A, Ob, T, Or>.fromJson(
+              (json) => GenericEnrichedActivity<A, Ob, T, Or>.fromJson(
                 json! as Map<String, dynamic>?,
               ),
             ))

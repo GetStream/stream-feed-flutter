@@ -28,7 +28,7 @@ class AlertDialogComment extends StatelessWidget {
   final String feedGroup;
 
   /// The activity that is being commented on.
-  final DefaultEnrichedActivity? activity;
+  final EnrichedActivity? activity;
 
   /// TODO: document me
   final String handleJsonKey;
@@ -61,8 +61,8 @@ class AlertDialogComment extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity?>('activity', activity));
+    properties
+        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
     properties.add(StringProperty('handleJsonKey', handleJsonKey));
     properties.add(StringProperty('nameJsonKey', nameJsonKey));
   }
@@ -91,7 +91,7 @@ class CommentView extends StatelessWidget {
   }) : super(key: key);
 
   /// TODO: document me
-  final DefaultEnrichedActivity? activity;
+  final EnrichedActivity? activity;
 
   /// TODO: document me
   final String feedGroup;
@@ -131,7 +131,7 @@ class CommentView extends StatelessWidget {
           //TODO: "this post has been deleted by the author"
           if (activity != null) ...[
             StreamBuilder(
-              stream: DefaultFeedBlocProvider.of(context).bloc.activitiesStream,
+              stream: FeedBlocProvider.of(context).bloc.activitiesStream,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 return ActivityWidget(
                   activity: activity!,
@@ -182,8 +182,8 @@ class CommentView extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity?>('activity', activity));
+    properties
+        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));
@@ -217,7 +217,7 @@ class AlertDialogActions extends StatelessWidget {
   }) : super(key: key);
 
   /// TODO: document me
-  final DefaultEnrichedActivity? activity;
+  final EnrichedActivity? activity;
 
   /// TODO: document me
   final List<FeedId>? targetFeeds;
@@ -249,8 +249,8 @@ class AlertDialogActions extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity?>('activity', activity));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(DiagnosticsProperty<TextEditingController>(
@@ -315,7 +315,7 @@ class RightActions extends StatelessWidget {
   }) : super(key: key);
 
   /// TODO: document me
-  final DefaultEnrichedActivity? activity;
+  final EnrichedActivity? activity;
 
   /// TODO: document me
   final TextEditingController textEditingController;
@@ -342,8 +342,8 @@ class RightActions extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity?>('activity', activity));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));
     properties.add(StringProperty('feedGroup', feedGroup));

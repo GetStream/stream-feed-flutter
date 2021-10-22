@@ -85,7 +85,7 @@ class ReactionListCore extends StatefulWidget {
 
   /// The kind of reaction
   final String? kind;
-  final FeedBloc bloc;
+  final GenericFeedBloc bloc;
 
   @override
   State<ReactionListCore> createState() => _ReactionListCoreState();

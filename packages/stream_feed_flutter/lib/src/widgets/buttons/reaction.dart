@@ -31,7 +31,7 @@ class ReactionButton extends StatelessWidget {
 
   /// The activity received from Stream that should be liked when pressing
   /// the [LikeButton].
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   /// The callback to be performed on tap.
   ///
@@ -82,7 +82,8 @@ class ReactionButton extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity>('activity', activity));
     properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
     properties.add(StringProperty('kind', kind));
     properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
@@ -135,7 +136,7 @@ class ReactionToggleIcon extends StatelessWidget {
   final String feedGroup;
 
   /// TODO: document me
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   /// TODO: document me
   final String? userId;
@@ -171,17 +172,16 @@ class ReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> addReaction(BuildContext context) async {
-    final reaction =
-        await DefaultFeedBlocProvider.of(context).bloc.onAddReaction(
-            //TODO: get rid of mutations in StreamFeedProvider
-            kind: kind,
-            activity: activity,
-            data: data,
-            feedGroup: feedGroup);
+    final reaction = await FeedBlocProvider.of(context).bloc.onAddReaction(
+        //TODO: get rid of mutations in StreamFeedProvider
+        kind: kind,
+        activity: activity,
+        data: data,
+        feedGroup: feedGroup);
   }
 
   Future<void> removeReaction(BuildContext context) async {
-    await DefaultFeedBlocProvider.of(context).bloc.onRemoveReaction(
+    await FeedBlocProvider.of(context).bloc.onRemoveReaction(
         kind: kind,
         activity: activity,
         reaction: ownReactions!.last,
@@ -195,7 +195,8 @@ class ReactionToggleIcon extends StatelessWidget {
     properties.add(IntProperty('count', count));
     properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
     properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity>('activity', activity));
     properties.add(StringProperty('userId', userId));
     properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));

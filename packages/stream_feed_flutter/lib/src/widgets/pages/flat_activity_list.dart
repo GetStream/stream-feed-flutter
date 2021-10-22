@@ -121,8 +121,8 @@ class FlatActivityListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // print(
     //     "bloc: ${DefaultFeedBlocProvider.of(context).navigatorKey!.currentState}");
-    return DefaultFlatFeedCore(
-      bloc: DefaultFeedBlocProvider.of(context).bloc,
+    return FlatFeedCore(
+      bloc: FeedBlocProvider.of(context).bloc,
       flags: flags,
       limit: limit,
       offset: offset,
@@ -184,7 +184,7 @@ class FlatActivityListPage extends StatelessWidget {
   void _pageRouteBuilder(
       {required BuildContext context,
       required TransitionType transitionType,
-      required EnrichedActivity activity,
+      required GenericEnrichedActivity activity,
       required Widget page,
       required NavigatorState currentNavigator}) {
     //TODO: assert navigator not null

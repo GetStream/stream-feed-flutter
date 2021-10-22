@@ -34,7 +34,7 @@ class ReplyButton extends StatelessWidget {
   final String feedGroup;
 
   /// The activity to post to the feed.
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   /// TODO: document me
   final Reaction? reaction;
@@ -87,8 +87,7 @@ class ReplyButton extends StatelessWidget {
     properties.add(StringProperty('handleJsonKey', handleJsonKey));
     properties.add(StringProperty('nameJsonKey', nameJsonKey));
     properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
     properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
     properties.add(DoubleProperty('iconSize', iconSize));
     properties.add(IntProperty('count', count));

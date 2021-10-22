@@ -65,7 +65,7 @@ class CommentItem extends StatelessWidget {
 
   /// {@macro reaction_callback}
   final OnReactionTap? onReactionTap;
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   @override
   Widget build(BuildContext context) {

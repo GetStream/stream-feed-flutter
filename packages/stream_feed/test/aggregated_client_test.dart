@@ -123,7 +123,7 @@ void main() {
           rawActivities
               .map((e) => Group.fromJson(
                     e,
-                    (json) => EnrichedActivity<String, String, String,
+                    (json) => GenericEnrichedActivity<String, String, String,
                         String>.fromJson(json as Map<String, dynamic>?),
                   ))
               .toList(growable: false));

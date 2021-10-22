@@ -30,7 +30,7 @@ class ActivityWidget extends StatelessWidget {
   }) : super(key: key);
 
   /// The activity to display.
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   /// The json key for the user's handle.
   final String handleJsonKey;
@@ -99,8 +99,7 @@ class ActivityWidget extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
     properties.add(StringProperty('handleJsonKey', handleJsonKey));
     properties.add(StringProperty('nameJsonKey', nameJsonKey));
     properties.add(

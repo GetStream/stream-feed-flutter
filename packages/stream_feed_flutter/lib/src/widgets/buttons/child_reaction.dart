@@ -53,7 +53,7 @@ class ChildReactionButton extends StatelessWidget {
   /// Generally applies to desktop and web.
   final Color? hoverColor;
 
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +120,7 @@ class ChildReactionToggleIcon extends StatelessWidget {
   final int count;
 
   //TODO:document me
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   /// The callback to be performed when the user clicks on the reaction icon.
   final VoidCallback? onTap;
@@ -164,7 +164,7 @@ class ChildReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> onAddChildReaction(BuildContext context) async {
-    await DefaultFeedBlocProvider.of(context).bloc.onAddChildReaction(
+    await FeedBlocProvider.of(context).bloc.onAddChildReaction(
         //TODO: get rid of mutations in StreamFeedProvider
         reaction: reaction,
         kind: kind,
@@ -173,7 +173,7 @@ class ChildReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> onRemoveChildReaction(BuildContext context) async {
-    await DefaultFeedBlocProvider.of(context).bloc.onRemoveChildReaction(
+    await FeedBlocProvider.of(context).bloc.onRemoveChildReaction(
         kind: kind,
         parentReaction: reaction,
         childReaction: ownReactions!.last, //.ownChildren!['like']!.last,

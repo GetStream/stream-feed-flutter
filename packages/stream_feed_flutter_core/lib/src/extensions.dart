@@ -27,22 +27,23 @@ extension ReactionX on List<Reaction> {
 }
 
 extension EnrichedActivityX<A, Ob, T, Or>
-    on List<EnrichedActivity<A, Ob, T, Or>> {
-  EnrichedActivity<A, Ob, T, Or> getEnrichedActivityPath(
-          EnrichedActivity<A, Ob, T, Or> enrichedActivity) =>
+    on List<GenericEnrichedActivity<A, Ob, T, Or>> {
+  GenericEnrichedActivity<A, Ob, T, Or> getEnrichedActivityPath(
+          GenericEnrichedActivity<A, Ob, T, Or> enrichedActivity) =>
       firstWhere(
           (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
 }
 
-extension UpdateIn<A, Ob, T, Or> on List<EnrichedActivity<A, Ob, T, Or>> {
+extension UpdateIn<A, Ob, T, Or>
+    on List<GenericEnrichedActivity<A, Ob, T, Or>> {
   // EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
   //     this.firstWhere(
   //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
 
-  List<EnrichedActivity<A, Ob, T, Or>> updateIn(
-      EnrichedActivity<A, Ob, T, Or> enrichedActivity, int indexPath) {
-    var result = List<EnrichedActivity<A, Ob, T, Or>>.from(this);
+  List<GenericEnrichedActivity<A, Ob, T, Or>> updateIn(
+      GenericEnrichedActivity<A, Ob, T, Or> enrichedActivity, int indexPath) {
+    var result = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(this);
     result.isNotEmpty
         ? result.removeAt(indexPath) //removes the item at index 1
         : null;

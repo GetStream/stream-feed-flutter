@@ -29,21 +29,18 @@ Future<void> main() async {
     'profile_image': 'https://avatars.githubusercontent.com/u/4250470?v=4',
   });
 
-  final _navigatorKey = GlobalKey<NavigatorState>();
-
   runApp(
-    StreamFeedApp(
-      bloc: DefaultFeedBloc(client: client),
-      navigatorKey: _navigatorKey,
-      home: const MobileApp(),
-    ),
+    MobileApp(client: client),
   );
 }
 
 class MobileApp extends StatelessWidget {
   const MobileApp({
     Key? key,
+    required this.client,
   }) : super(key: key);
+
+  final StreamFeedClient client;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +61,12 @@ class MobileApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
+      builder: (context, child) {
+        return StreamFeed(
+          bloc: FeedBloc(client: client),
+          child: child!,
+        );
+      },
       themeMode: ThemeMode.system,
       home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
@@ -85,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = DefaultFeedBlocProvider.of(context).bloc;
+    final bloc = FeedBlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -223,7 +226,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = DefaultFeedBlocProvider.of(context).bloc;
+    final bloc = FeedBlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compose'),
@@ -316,7 +319,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final bloc = DefaultFeedBlocProvider.of(context).bloc;
+    final bloc = FeedBlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,

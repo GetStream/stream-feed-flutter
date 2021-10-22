@@ -30,7 +30,7 @@ void main() {
           },
           home: Scaffold(
             body: CommentItem(
-              activity: EnrichedActivity(),
+              activity: const GenericEnrichedActivity(),
               user: const User(data: {
                 'name': 'Rosemary',
                 'subtitle': 'likes playing fresbee in the park',
@@ -151,12 +151,10 @@ void main() {
       final textEditingController = TextEditingController();
 
       await tester.pumpWidget(
-        StreamFeedApp(
-          bloc: DefaultFeedBloc(
-            analyticsClient: mockStreamAnalytics,
-            client: mockClient,
-          ),
-          home: Scaffold(
+        StreamFeed(
+          bloc: FeedBloc(
+              analyticsClient: mockStreamAnalytics, client: mockClient),
+          child: Scaffold(
             body: CommentField(
               key: key,
               feedGroup: feedGroup,
@@ -237,7 +235,7 @@ void main() {
     final commentField = CommentField(
       feedGroup: 'whatever:300',
       textEditingController: TextEditingController(),
-      activity: EnrichedActivity(
+      activity: GenericEnrichedActivity(
         time: now,
         actor: const User(
           data: {
@@ -269,7 +267,7 @@ void main() {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
     final commentItem = CommentItem(
-      activity: EnrichedActivity(),
+      activity: const GenericEnrichedActivity(),
       reaction: Reaction(
         createdAt: now,
         kind: 'comment',

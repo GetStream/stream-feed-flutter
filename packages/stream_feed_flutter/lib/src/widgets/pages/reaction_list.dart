@@ -32,7 +32,7 @@ class ReactionListPage extends StatelessWidget {
         super(key: key);
 
   /// The activity to display notifications for.
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   ///{@macro reaction_callback}
   final OnReactionTap? onReactionTap;
@@ -79,7 +79,7 @@ class ReactionListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //  debugCheckHasReactionsProvider(context);
     return ReactionListCore(
-      bloc: DefaultFeedBlocProvider.of(context).bloc,
+      bloc: FeedBlocProvider.of(context).bloc,
       lookupValue: _lookupValue, //TODO: handle null safety
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
@@ -97,7 +97,8 @@ class ReactionListPage extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity>('activity', activity));
     properties.add(
         ObjectFlagProperty<OnReactionTap?>.has('onReactionTap', onReactionTap));
     properties.add(

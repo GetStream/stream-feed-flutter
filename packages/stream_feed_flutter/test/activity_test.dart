@@ -26,7 +26,7 @@ void main() {
           home: Scaffold(
             body: ActivityHeader(
               feedGroup: 'timeline',
-              activity: EnrichedActivity(
+              activity: GenericEnrichedActivity(
                 id: '1',
                 time: DateTime.now(),
                 actor: const User(
@@ -68,7 +68,7 @@ void main() {
           },
           home: Scaffold(
             body: ActivityContent(
-              activity: EnrichedActivity(
+              activity: GenericEnrichedActivity(
                 id: '1',
                 extraData: {
                   'attachments': const OpenGraphData(
@@ -134,7 +134,7 @@ void main() {
           },
           home: Scaffold(
             body: ActivityWidget(
-              activity: EnrichedActivity(
+              activity: GenericEnrichedActivity(
                 id: '1',
                 time: DateTime.now(),
                 actor: const User(data: {
@@ -167,7 +167,7 @@ void main() {
           child: Padding(
             padding: EdgeInsets.all(8),
             child: ActivityFooter(
-              activity: EnrichedActivity(
+              activity: GenericEnrichedActivity(
                 id: '1',
                 reactionCounts: {
                   'like': 139,
@@ -195,7 +195,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityWidget = ActivityWidget(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           id: '1',
           time: now,
           actor: const User(
@@ -231,7 +231,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityContent = ActivityContent(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           id: '1',
           time: now,
           actor: const User(
@@ -267,7 +267,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityFooter = ActivityFooter(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           id: '1',
           time: now,
           actor: const User(
@@ -304,7 +304,7 @@ void main() {
       final now = DateTime.now();
       final activityHeader = ActivityHeader(
         feedGroup: 'timeline',
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           id: '1',
           time: now,
           actor: const User(

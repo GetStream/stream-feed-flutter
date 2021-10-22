@@ -4,7 +4,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// TODO: document me
 typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
   BuildContext context,
-  List<EnrichedActivity<A, Ob, T, Or>> activities,
+  List<GenericEnrichedActivity<A, Ob, T, Or>> activities,
   int idx,
 );
 
@@ -12,13 +12,13 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
 typedef ReactionsBuilder = Widget Function(
     BuildContext context, List<Reaction> reactions, int idx);
 
-typedef DefaultFlatFeedCore = FlatFeedCore<User, String, String, String>;
+typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
 
-typedef DefaultFeedBlocProvider
-    = FeedBlocProvider<User, String, String, String>;
+typedef FeedBlocProvider
+    = GenericFeedBlocProvider<User, String, String, String>;
 
-typedef DefaultFeedBloc = FeedBloc<User, String, String, String>;
+typedef FeedBloc = GenericFeedBloc<User, String, String, String>;
 
 /// TODO: document me
-typedef DefaultEnrichedActivity
-    = EnrichedActivity<User, String, String, String>;
+typedef EnrichedActivity
+    = GenericEnrichedActivity<User, String, String, String>;

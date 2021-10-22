@@ -38,7 +38,7 @@ void main() {
                   inactiveIcon: StreamSvgIcon.loveInactive(),
                   kind: 'like',
                   reaction: const Reaction(),
-                  activity: const EnrichedActivity(),
+                  activity: const GenericEnrichedActivity(),
                 ),
               ),
             );

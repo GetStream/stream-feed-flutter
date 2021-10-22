@@ -11,7 +11,7 @@ void main() {
     final mockFeed = MockFeedAPI();
     final mockStreamAnalytics = MockStreamAnalytics();
     final activities = [
-      EnrichedActivity(
+      GenericEnrichedActivity(
         // reactionCounts: {
         //   'like': 139,
         //   'repost': 23,
@@ -26,7 +26,7 @@ void main() {
           },
         ),
       ),
-      EnrichedActivity(
+      GenericEnrichedActivity(
         time: DateTime.now(),
         actor: const User(
           data: {
@@ -44,8 +44,8 @@ void main() {
       home: Scaffold(
         // body: StreamFeedProvider(
 
-        body: DefaultFlatFeedCore(
-          bloc: DefaultFeedBloc(client: mockClient),
+        body: FlatFeedCore(
+          bloc: FeedBloc(client: mockClient),
           feedGroup: 'user',
           feedBuilder: (BuildContext context, activities, int idx) {
             return Column(

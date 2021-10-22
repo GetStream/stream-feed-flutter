@@ -32,7 +32,7 @@ class DeleteActivityDialog extends StatelessWidget {
           onPressed: () {
             // Keep in mind that we might need to refactor this so that
             // users pass in their own logic.
-            DefaultFeedBlocProvider.of(context)
+            FeedBlocProvider.of(context)
                 .bloc
                 .onRemoveActivity(feedGroup: feedGroup, activityId: activityId);
             Navigator.of(context).pop();

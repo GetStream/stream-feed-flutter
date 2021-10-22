@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-/// [FlatFeedCore] is a simplified class that allows fetching a list of
+/// [GenericFlatFeedCore] is a simplified class that allows fetching a list of
 /// enriched activities (flat) while exposing UI builders.
 ///
 ///
@@ -36,8 +36,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
 /// information about the activities.
-class FlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
-  const FlatFeedCore(
+class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
+  const GenericFlatFeedCore(
       {Key? key,
       required this.feedGroup,
       required this.feedBuilder,
@@ -91,15 +91,15 @@ class FlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   /// The feed group to use for the request
   final String feedGroup;
 
-  final FeedBloc<A, Ob, T, Or> bloc;
+  final GenericFeedBloc<A, Ob, T, Or> bloc;
 
   @override
-  _FlatFeedCoreState<A, Ob, T, Or> createState() =>
-      _FlatFeedCoreState<A, Ob, T, Or>();
+  _GenericFlatFeedCoreState<A, Ob, T, Or> createState() =>
+      _GenericFlatFeedCoreState<A, Ob, T, Or>();
 }
 
-class _FlatFeedCoreState<A, Ob, T, Or>
-    extends State<FlatFeedCore<A, Ob, T, Or>> {
+class _GenericFlatFeedCoreState<A, Ob, T, Or>
+    extends State<GenericFlatFeedCore<A, Ob, T, Or>> {
   @override
   void initState() {
     super.initState();
@@ -120,9 +120,9 @@ class _FlatFeedCoreState<A, Ob, T, Or>
 
   @override
   Widget build(BuildContext context) {
-    return FeedBlocProvider(
+    return GenericFeedBlocProvider(
       bloc: widget.bloc,
-      child: StreamBuilder<List<EnrichedActivity<A, Ob, T, Or>>>(
+      child: StreamBuilder<List<GenericEnrichedActivity<A, Ob, T, Or>>>(
         stream: widget.bloc.activitiesStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
