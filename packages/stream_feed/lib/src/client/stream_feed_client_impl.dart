@@ -53,16 +53,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
     _logger.info('instantiating new client');
 
     _api = api ?? StreamApiImpl(apiKey, logger: _logger, options: options);
-
-    if (userToken != null) {
-      final jwtBody = jwtDecode(userToken!);
-      final userId = jwtBody.claims.getTyped('user_id');
-      assert(
-        userId != null,
-        'Invalid `userToken`, It should contain `user_id`',
-      );
-      _currentUser = user(userId);
-    }
   }
 
   bool _ensureCredentials() {
@@ -100,7 +90,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   final String apiKey;
   final String? appId;
-  final Token? userToken;
+  Token? userToken;
   final String? secret;
   final String fayeUrl;
   final Runner runner;
@@ -143,13 +133,14 @@ class StreamFeedClientImpl implements StreamFeedClient {
   StreamUser? get currentUser => _currentUser;
 
   @override
-  Future<StreamUser> setUser(Map<String, Object> data) async {
-    assert(
-      runner == Runner.client,
-      'This method can only be used client-side using a user token',
-    );
-    final body = <String, Object>{...data}..remove('id');
-    return _currentUser!.getOrCreate(body);
+  Future<StreamUser> setUser(
+    User user,
+    Token userToken, {
+    Map<String, Object?>? extraData,
+  }) async {
+    this.userToken = userToken;
+    return _currentUser =
+        await this.user(user.id!).getOrCreate(extraData ?? {});
   }
 
   @override

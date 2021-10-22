@@ -22,12 +22,18 @@ Future<void> main() async {
   );
 
   // Here we are setting a default user.
-  await client.setUser({
-    'name': 'GroovinChip',
-    'handle': '@GroovinChip',
-    'subtitle': 'Likes building Flutter apps',
-    'profile_image': 'https://avatars.githubusercontent.com/u/4250470?v=4',
-  });
+  await client.setUser(
+    const User(
+      id: 'GroovinChip',
+      data: {
+        'name': 'GroovinChip',
+        'handle': '@GroovinChip',
+        'subtitle': 'Likes building Flutter apps',
+        'profile_image': 'https://avatars.githubusercontent.com/u/4250470?v=4',
+      },
+    ),
+    const Token(userToken),
+  );
 
   runApp(
     MobileApp(client: client),
