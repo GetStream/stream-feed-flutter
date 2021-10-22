@@ -77,47 +77,13 @@ mixin StreamFeedMixin<T extends StatefulWidget> on State<T> {
 ///
 /// How to run and use this application:
 /// 1. Create a run configuration with the following arguments for `flutter run`:
-///    `--dart-define=key=q4vr7jwek7a4 --dart-define=user_token={user_token}`
-///    where `{user_token}` is the token of the user you wish to log in as. You
-///    can find the user tokens enumerated in the named constructors of the
-///    [SampleUser] class. Alternatively, you can run `flutter run` in your
-///    terminal and pass the `--dart-define` arguments there.
+///    `--dart-define=key=q4vr7jwek7a4. Alternatively, you can run `flutter run` in your
+///    terminal and pass the `--dart-define` argument. there.
 /// 2. Select a user to log in by tapping the tile that represents them.
 /// 3. Play around with the app!
-Future<void> main() async {
-  // Here we are passing in the api key for our application via `dart-define`.
-  // You can get an api key for your own application in the Stream dashboard.
-  const apiKey = String.fromEnvironment('key');
-  // Here we are passing in a user token via `dart-define`. In a production
-  // application you will want to have authentication and authorization set up,
-  // and generate a user token via that process.
-  //
-  // In this case, our user token is generated via https://getstream.io/chat/docs/react/token_generator/
-  const userToken = String.fromEnvironment('user_token');
-
-  // Here we create an instance of StreamFeedClient and connect to the Stream API
-  final client = StreamFeedClient.connect(
-    apiKey,
-    token: const Token(userToken),
-    logLevel: Level.ALL,
-  );
-
-  // Here we are setting a default user.
-  /*await client.setUser({
-    'name': 'GroovinChip',
-    'handle': '@GroovinChip',
-    'subtitle': 'Likes building Flutter apps',
-    'profile_image': 'https://avatars.githubusercontent.com/u/4250470?v=4',
-  });*/
-
-  final _navigatorKey = GlobalKey<NavigatorState>();
-
+void main() {
   runApp(
-    StreamFeedApp(
-      bloc: DefaultFeedBloc(client: client),
-      navigatorKey: _navigatorKey,
-      home: const MobileApp(),
-    ),
+    const MobileApp(),
   );
 }
 
@@ -165,10 +131,32 @@ class _LoginScreenState extends State<LoginScreen> with StreamFeedMixin {
   Future<void> login(SampleUser user) async {
     setState(() => _loggingIn = true);
     try {
+      // Here we are passing in the api key for our application via `dart-define`.
+      // You can get an api key for your own application in the Stream dashboard.
+      const apiKey = String.fromEnvironment('key');
+
+      // Here we are passing in a user token. In a production
+      // application you will want to have authentication and authorization set up,
+      // and generate a user token via that process.
+      //
+      // In this case, our user token is generated via https://getstream.io/chat/docs/react/token_generator/
+      final userToken = user.token;
+
+      // Here we create an instance of StreamFeedClient and connect to the Stream API
+      final client = StreamFeedClient.connect(
+        apiKey,
+        token: Token(userToken),
+        logLevel: Level.ALL,
+      );
+
+      final _navigatorKey = GlobalKey<NavigatorState>();
+
       final streamUser = await client.user(user.id).create(
             user.data,
             getOrCreate: true,
           );
+
+      // Here we set the current user
       await client.setUser({
         'name': streamUser.data!['name'].toString(),
         'handle': streamUser.data!['handle'].toString(),
@@ -177,7 +165,11 @@ class _LoginScreenState extends State<LoginScreen> with StreamFeedMixin {
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => const MyHomePage(),
+          builder: (_) => StreamFeedApp(
+            bloc: DefaultFeedBloc(client: client),
+            navigatorKey: _navigatorKey,
+            home: const MyHomePage(),
+          ),
         ),
       );
     } catch (e) {
@@ -323,6 +315,21 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
                     );
                   },
                 ),
+                const Divider(),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  minLeadingWidth: 0,
+                  leading: const Icon(Icons.exit_to_app_outlined),
+                  title: const Text('Log out'),
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (_) => const LoginScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -411,8 +418,8 @@ class UserSearchDelegate extends SearchDelegate {
         } else {
           return ListTile(
             leading: CircleAvatar(
-              backgroundImage:
-                  NetworkImage(snapshot.data!.data!['profile_image'].toString()),
+              backgroundImage: NetworkImage(
+                  snapshot.data!.data!['profile_image'].toString()),
             ),
             title: Text(snapshot.data!.id),
             onTap: () => Navigator.of(context).pushReplacement(
@@ -444,8 +451,8 @@ class UserSearchDelegate extends SearchDelegate {
         } else {
           return ListTile(
             leading: CircleAvatar(
-              backgroundImage:
-                  NetworkImage(snapshot.data!.data!['profile_image'].toString()),
+              backgroundImage: NetworkImage(
+                  snapshot.data!.data!['profile_image'].toString()),
             ),
             title: Text(snapshot.data!.id),
             onTap: () => Navigator.of(context).pushReplacement(
