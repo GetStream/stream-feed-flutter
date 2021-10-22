@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = FeedBlocProvider.of(context).bloc;
+    final bloc = FeedProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -226,7 +226,7 @@ class _ComposeScreenState extends State<ComposeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = FeedBlocProvider.of(context).bloc;
+    final bloc = FeedProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compose'),
@@ -319,7 +319,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final bloc = FeedBlocProvider.of(context).bloc;
+    final bloc = FeedProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,

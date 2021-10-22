@@ -18,7 +18,7 @@ class StreamFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FeedBlocProvider(
+    return FeedProvider(
       bloc: bloc,
       child: StreamFeedTheme(
         data: _themeData,

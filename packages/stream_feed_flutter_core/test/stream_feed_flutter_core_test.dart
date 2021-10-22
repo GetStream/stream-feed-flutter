@@ -25,7 +25,7 @@ void main() {
       final mockClient = MockClient();
       // const streamFeedCoreKey = Key('streamFeedCore');
       final childKey = GlobalKey();
-      final streamFeedCore = GenericFeedBlocProvider(
+      final streamFeedCore = GenericFeedProvider(
         bloc: GenericFeedBloc(
           client: mockClient,
         ),
@@ -36,7 +36,7 @@ void main() {
 
       // expect(find.byKey(streamFeedCoreKey), findsOneWidget);
       expect(find.byKey(childKey), findsOneWidget);
-      expect(GenericFeedBlocProvider.of(childKey.currentState!.context).bloc,
+      expect(GenericFeedProvider.of(childKey.currentState!.context).bloc,
           isNotNull);
     },
   );
@@ -48,7 +48,7 @@ void main() {
       await tester.pumpWidget(TestWidget(key: childKey));
 
       expect(
-          () => FeedBlocProvider.of(childKey.currentState!.context),
+          () => FeedProvider.of(childKey.currentState!.context),
           throwsA(predicate<AssertionError>(
               (e) => e.message == 'No FeedBlocProvider found in context')));
       // expect(find.byKey(childKey), findsOneWidget);

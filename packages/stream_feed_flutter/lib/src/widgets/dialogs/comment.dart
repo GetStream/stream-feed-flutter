@@ -131,7 +131,7 @@ class CommentView extends StatelessWidget {
           //TODO: "this post has been deleted by the author"
           if (activity != null) ...[
             StreamBuilder(
-              stream: FeedBlocProvider.of(context).bloc.activitiesStream,
+              stream: FeedProvider.of(context).bloc.activitiesStream,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 return ActivityWidget(
                   activity: activity!,

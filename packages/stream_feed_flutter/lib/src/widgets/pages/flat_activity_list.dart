@@ -122,7 +122,6 @@ class FlatActivityListPage extends StatelessWidget {
     // print(
     //     "bloc: ${DefaultFeedBlocProvider.of(context).navigatorKey!.currentState}");
     return FlatFeedCore(
-      bloc: FeedBlocProvider.of(context).bloc,
       flags: flags,
       limit: limit,
       offset: offset,

@@ -172,7 +172,7 @@ class ReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> addReaction(BuildContext context) async {
-    final reaction = await FeedBlocProvider.of(context).bloc.onAddReaction(
+    final reaction = await FeedProvider.of(context).bloc.onAddReaction(
         //TODO: get rid of mutations in StreamFeedProvider
         kind: kind,
         activity: activity,
@@ -181,7 +181,7 @@ class ReactionToggleIcon extends StatelessWidget {
   }
 
   Future<void> removeReaction(BuildContext context) async {
-    await FeedBlocProvider.of(context).bloc.onRemoveReaction(
+    await FeedProvider.of(context).bloc.onRemoveReaction(
         kind: kind,
         activity: activity,
         reaction: ownReactions!.last,

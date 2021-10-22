@@ -279,7 +279,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: FeedBlocProvider(
+              body: FeedProvider(
                 bloc: bloc,
                 child: ChildReactionToggleIcon(
                   ownReactions: [childReaction],

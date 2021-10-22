@@ -385,15 +385,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
   }
 }
 
-class GenericFeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
-  const GenericFeedBlocProvider(
+class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
+  const GenericFeedProvider(
       {Key? key, required this.bloc, required Widget child, this.navigatorKey})
       : super(key: key, child: child);
 
-  factory GenericFeedBlocProvider.of(BuildContext context) {
-    final GenericFeedBlocProvider<A, Ob, T, Or>? result =
-        context.dependOnInheritedWidgetOfExactType<
-            GenericFeedBlocProvider<A, Ob, T, Or>>();
+  factory GenericFeedProvider.of(BuildContext context) {
+    final result = context.dependOnInheritedWidgetOfExactType<
+        GenericFeedProvider<A, Ob, T, Or>>();
     assert(result != null, 'No FeedBlocProvider found in context');
     return result!;
   }
@@ -401,7 +400,7 @@ class GenericFeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
 
   @override
-  bool updateShouldNotify(GenericFeedBlocProvider old) =>
+  bool updateShouldNotify(GenericFeedProvider old) =>
       navigatorKey != old.navigatorKey || bloc != old.bloc; //
 
   @override

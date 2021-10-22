@@ -42,10 +42,7 @@ void main() {
     when(mockFeed.getEnrichedActivities).thenAnswer((_) async => activities);
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-        // body: StreamFeedProvider(
-
         body: FlatFeedCore(
-          bloc: FeedBloc(client: mockClient),
           feedGroup: 'user',
           feedBuilder: (BuildContext context, activities, int idx) {
             return Column(

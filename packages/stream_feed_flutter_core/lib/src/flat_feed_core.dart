@@ -41,7 +41,6 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
       {Key? key,
       required this.feedGroup,
       required this.feedBuilder,
-      required this.bloc,
       this.onErrorWidget = const ErrorStateWidget(),
       this.onProgressWidget = const ProgressStateWidget(),
       this.limit,
@@ -91,8 +90,6 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   /// The feed group to use for the request
   final String feedGroup;
 
-  final GenericFeedBloc<A, Ob, T, Or> bloc;
-
   @override
   _GenericFlatFeedCoreState<A, Ob, T, Or> createState() =>
       _GenericFlatFeedCoreState<A, Ob, T, Or>();
@@ -100,14 +97,10 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
 
 class _GenericFlatFeedCoreState<A, Ob, T, Or>
     extends State<GenericFlatFeedCore<A, Ob, T, Or>> {
-  @override
-  void initState() {
-    super.initState();
-    loadData();
-  }
+  late GenericFeedBloc<A, Ob, T, Or> bloc;
 
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => widget.bloc.queryEnrichedActivities(
+  Future<void> loadData() => bloc.queryEnrichedActivities(
         feedGroup: widget.feedGroup,
         limit: widget.limit,
         offset: widget.offset,
@@ -119,33 +112,45 @@ class _GenericFlatFeedCoreState<A, Ob, T, Or>
       );
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    bloc = GenericFeedProvider<A, Ob, T, Or>.of(context).bloc;
+    loadData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GenericFeedBlocProvider(
-      bloc: widget.bloc,
-      child: StreamBuilder<List<GenericEnrichedActivity<A, Ob, T, Or>>>(
-        stream: widget.bloc.activitiesStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return widget
-                .onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
-          }
-          if (!snapshot.hasData) {
-            return widget.onProgressWidget;
-          }
-          final activities = snapshot.data!;
-          if (activities.isEmpty) {
-            return widget.onEmptyWidget;
-          }
-          return ListView.builder(
-            itemCount: activities.length,
-            itemBuilder: (context, idx) => widget.feedBuilder(
-              context,
-              activities,
-              idx,
-            ),
-          );
-        },
-      ),
+    return StreamBuilder<List<GenericEnrichedActivity<A, Ob, T, Or>>>(
+      stream:
+          GenericFeedProvider<A, Ob, T, Or>.of(context).bloc.activitiesStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return widget
+              .onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
+        }
+        if (!snapshot.hasData) {
+          return widget.onProgressWidget;
+        }
+        final activities = snapshot.data!;
+        if (activities.isEmpty) {
+          return widget.onEmptyWidget;
+        }
+        return ListView.builder(
+          itemCount: activities.length,
+          itemBuilder: (context, idx) => widget.feedBuilder(
+            context,
+            activities,
+            idx,
+          ),
+        );
+      },
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc));
   }
 }

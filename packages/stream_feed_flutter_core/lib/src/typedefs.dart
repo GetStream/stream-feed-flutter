@@ -14,8 +14,7 @@ typedef ReactionsBuilder = Widget Function(
 
 typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
 
-typedef FeedBlocProvider
-    = GenericFeedBlocProvider<User, String, String, String>;
+typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 
 typedef FeedBloc = GenericFeedBloc<User, String, String, String>;
 

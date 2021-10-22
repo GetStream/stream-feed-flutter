@@ -48,7 +48,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: FeedBlocProvider(
+              body: FeedProvider(
                 bloc: FeedBloc(
                   analyticsClient: mockStreamAnalytics,
                   client: mockClient,
