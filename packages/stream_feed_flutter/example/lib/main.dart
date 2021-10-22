@@ -410,6 +410,10 @@ class UserSearchDelegate extends SearchDelegate {
           );
         } else {
           return ListTile(
+            leading: CircleAvatar(
+              backgroundImage:
+                  NetworkImage(snapshot.data!.data!['profile_image'].toString()),
+            ),
             title: Text(snapshot.data!.id),
             onTap: () => Navigator.of(context).pushReplacement(
               MaterialPageRoute(
@@ -439,6 +443,10 @@ class UserSearchDelegate extends SearchDelegate {
           );
         } else {
           return ListTile(
+            leading: CircleAvatar(
+              backgroundImage:
+                  NetworkImage(snapshot.data!.data!['profile_image'].toString()),
+            ),
             title: Text(snapshot.data!.id),
             onTap: () => Navigator.of(context).pushReplacement(
               MaterialPageRoute(
