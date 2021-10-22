@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 
-  final StreamFeedClient client;
+  StreamFeedClient client;
   StreamUser? get currentUser => client.currentUser;
 
   final StreamAnalytics? analyticsClient;
