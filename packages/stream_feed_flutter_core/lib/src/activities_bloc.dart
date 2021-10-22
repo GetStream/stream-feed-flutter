@@ -391,13 +391,12 @@ class GenericFeedBlocProvider<A, Ob, T, Or> extends InheritedWidget {
       : super(key: key, child: child);
 
   factory GenericFeedBlocProvider.of(BuildContext context) {
-    final result =
-        context.dependOnInheritedWidgetOfExactType<GenericFeedBlocProvider>()
-            as GenericFeedBlocProvider<A, Ob, T, Or>?;
+    final GenericFeedBlocProvider<A, Ob, T, Or>? result =
+        context.dependOnInheritedWidgetOfExactType<
+            GenericFeedBlocProvider<A, Ob, T, Or>>();
     assert(result != null, 'No FeedBlocProvider found in context');
     return result!;
   }
-
   final GenericFeedBloc<A, Ob, T, Or> bloc;
   final GlobalKey<NavigatorState>? navigatorKey;
 
