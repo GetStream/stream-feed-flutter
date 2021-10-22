@@ -54,7 +54,7 @@ class CommentField extends StatelessWidget {
               //TODO: pass down User
               child: Avatar(
                 user: User(
-                  data: DefaultFeedBlocProvider.of(context)
+                  data: FeedBlocProvider.of(context)
                       .bloc
                       .currentUser!
                       .data,

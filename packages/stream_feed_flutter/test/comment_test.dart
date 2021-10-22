@@ -130,7 +130,7 @@ void main() {
         activityId: activityId,
         data: {'text': textInput},
       );
-      const activity = DefaultEnrichedActivity(
+      const activity = EnrichedActivity(
         id: activityId,
         foreignId: foreignId,
       );
