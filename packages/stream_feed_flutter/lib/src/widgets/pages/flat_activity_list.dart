@@ -31,6 +31,7 @@ class FlatActivityListPage extends StatelessWidget {
   const FlatActivityListPage({
     Key? key,
     this.feedGroup = 'user',
+    this.userId,
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
@@ -117,11 +118,14 @@ class FlatActivityListPage extends StatelessWidget {
   /// TODO: document me
   final String nameJsonKey;
 
+  final String? userId;
+
   @override
   Widget build(BuildContext context) {
     // print(
     //     "bloc: ${DefaultFeedBlocProvider.of(context).navigatorKey!.currentState}");
     return FlatFeedCore(
+      userId: userId,
       flags: flags,
       limit: limit,
       offset: offset,
