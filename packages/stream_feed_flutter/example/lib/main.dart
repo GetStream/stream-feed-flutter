@@ -350,6 +350,7 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
                 .withOwnChildren()
                 .withOwnReactions(),
             feedGroup: 'timeline',
+            userId: bloc.currentUser?.id,
             onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
             onUserTap: (user) => Navigator.of(context).push(
               MaterialPageRoute(
