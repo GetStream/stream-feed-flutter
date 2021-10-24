@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 
-  StreamFeedClient client;
+  final StreamFeedClient client;
   StreamUser? get currentUser => client.currentUser;
 
   final StreamAnalytics? analyticsClient;
@@ -360,11 +360,11 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// user. If no results are found, this means that the current user is not
   /// following the given user.
   Future<bool> isFollowingUser(String userId) async {
-    final following = await client.flatFeed('user', userId).following(
+    final following = await client.flatFeed('user').following(
       limit: 1,
       offset: 0,
       filter: [
-        FeedId.id('user:${currentUser?.id}'),
+        FeedId.id('user:$userId'),
       ],
     );
     return following.isNotEmpty;
