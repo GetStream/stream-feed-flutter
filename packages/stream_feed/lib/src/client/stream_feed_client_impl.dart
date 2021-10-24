@@ -94,7 +94,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
   final String? secret;
   final String fayeUrl;
   final Runner runner;
-  late final StreamAPI _api;
+  late StreamAPI _api;
   late final Logger _logger;
 
   void _defaultLogHandler(LogRecord record) {
@@ -141,6 +141,14 @@ class StreamFeedClientImpl implements StreamFeedClient {
     this.userToken = userToken;
     return _currentUser =
         await this.user(user.id!).getOrCreate(extraData ?? {});
+  }
+
+  @override
+  /// Reauthenticates the client with new credentials.
+  Future<void> reauthenticate(String apiKey, Token token) async {
+    _logger.info('reconnecting with new credentials');
+
+    _api = StreamApiImpl(apiKey, logger: _logger);
   }
 
   @override
