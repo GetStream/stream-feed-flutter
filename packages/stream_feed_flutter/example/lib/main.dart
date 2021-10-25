@@ -617,13 +617,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       // user's feed.
                       if (snapshot.data!) {
                         final userToUnfollowFeed =
-                            bloc.client.flatFeed('user', widget.user!.id);
-                        await bloc.unfollowUser(userToUnfollowFeed);
+                            client.flatFeed('user', widget.user!.id);
+                        /*await client
+                            .flatFeed('timeline', bloc.currentUser!.id)
+                            .unfollow(userToUnfollowFeed);*/
+                        await bloc.unfollowFlatFeed(
+                            client.flatFeed('timeline', bloc.currentUser!.id),
+                            userToUnfollowFeed);
                         setState(() {});
                       } else {
                         final userToFollowFeed =
-                            bloc.client.flatFeed('user', widget.user!.id);
-                        await bloc.followUser(userToFollowFeed);
+                            client.flatFeed('user', widget.user!.id);
+                        /*await client
+                            .flatFeed('timeline', bloc.currentUser!.id)
+                            .follow(userToFollowFeed);*/
+                        await bloc.followFlatFeed(
+                            client.flatFeed('timeline', bloc.currentUser!.id),
+                            userToFollowFeed);
                         setState(() {});
                       }
                     },

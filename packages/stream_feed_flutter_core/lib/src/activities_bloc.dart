@@ -340,19 +340,19 @@ class GenericFeedBloc<A, Ob, T, Or> {
   }
 
   /// Follows the given [flatFeed].
-  Future<void> followUser(
-    FlatFeed flatFeed,
+  Future<void> followFlatFeed(
+    FlatFeed actingFeed,
+    FlatFeed feedToFollow,
   ) async {
-    final currentUserFeed = client.flatFeed('user', currentUser!.id);
-    await currentUserFeed.follow(flatFeed);
+    await actingFeed.follow(feedToFollow);
   }
 
-  /// Unfollows the given [flatFeed].
-  Future<void> unfollowUser(
-    FlatFeed flatFeed,
+  /// Unfollows the given [actingFeed].
+  Future<void> unfollowFlatFeed(
+    FlatFeed actingFeed,
+    FlatFeed feedToUnfollow,
   ) async {
-    final currentUserFeed = client.flatFeed('user', currentUser!.id);
-    await currentUserFeed.unfollow(flatFeed);
+    await actingFeed.unfollow(feedToUnfollow);
   }
 
   /// Checks whether the current user is following a feed with the given
