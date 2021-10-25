@@ -393,8 +393,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
             ranking: ranking,
           );
 
-      final temp = Set.of(oldActivities + activitiesResponse);
-      activitiesController.add(feedGroup, activitiesResponse);
+      final temp = oldActivities + activitiesResponse;
+      activitiesController.add(feedGroup, temp);
       if (activitiesController.hasValue(feedGroup) &&
           _queryActivitiesLoadingController.value) {
         _queryActivitiesLoadingController.sink.add(false);
