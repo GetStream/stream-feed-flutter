@@ -37,6 +37,10 @@ class GenericFeedBloc<A, Ob, T, Or> {
   final _activitiesController =
       BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
 
+  void clearActivities() {
+    _activitiesController.value = [];
+  }
+
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
   final Map<String, BehaviorSubject<bool>> _queryReactionsLoadingControllers =
