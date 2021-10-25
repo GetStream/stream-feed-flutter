@@ -44,7 +44,6 @@ class ReactionListCore extends StatefulWidget {
     Key? key,
     required this.reactionsBuilder,
     required this.lookupValue,
-    required this.bloc,
     this.onErrorWidget = const ErrorStateWidget(),
     this.onProgressWidget = const ProgressStateWidget(),
     this.onEmptyWidget =
@@ -85,33 +84,24 @@ class ReactionListCore extends StatefulWidget {
 
   /// The kind of reaction
   final String? kind;
-  final GenericFeedBloc bloc;
 
   @override
-  State<ReactionListCore> createState() => _ReactionListCoreState();
+  _ReactionListCoreState createState() =>
+      _ReactionListCoreState();
 }
 
 class _ReactionListCoreState extends State<ReactionListCore> {
+  late GenericFeedBloc bloc;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    bloc = FeedProvider.of(context).bloc;
     loadData();
   }
 
-  // late ReactionsBloc _reactionsBloc;
-
-  // @override
-  // void didChangeDependencies() {
-  //   final newReactionsBloc = ReactionsProvider.of(context).bloc;
-  //   if (newReactionsBloc != _reactionsBloc) {
-  //     _reactionsBloc = newReactionsBloc;
-  //     loadData();
-  //   }
-  //   super.didChangeDependencies();
-  // }
-
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => widget.bloc.queryReactions(
+  Future<void> loadData() => bloc.queryReactions(
         widget.lookupAttr,
         widget.lookupValue,
         filter: widget.filter,
@@ -123,7 +113,7 @@ class _ReactionListCoreState extends State<ReactionListCore> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Reaction>>(
-        stream: widget.bloc.getReactionsStream(widget.lookupValue,
+        stream: bloc.getReactionsStream(widget.lookupValue,
             widget.kind), //reactionsStreamFor(widget.lookupValue)
         builder: (context, snapshot) {
           if (snapshot.hasError) {
