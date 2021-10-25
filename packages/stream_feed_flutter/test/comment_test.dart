@@ -150,20 +150,20 @@ void main() {
           .thenAnswer((_) async => Future.value());
       final textEditingController = TextEditingController();
 
-      await tester.pumpWidget(
-        StreamFeed(
+      await tester.pumpWidget(MaterialApp(
+        builder: (context, child) => StreamFeed(
           bloc: FeedBloc(
               analyticsClient: mockStreamAnalytics, client: mockClient),
-          child: Scaffold(
-            body: CommentField(
-              key: key,
-              feedGroup: feedGroup,
-              activity: activity,
-              textEditingController: textEditingController,
-            ),
-          ),
+          child: child!,
         ),
-      );
+        home: Scaffold(
+            body: CommentField(
+          key: key,
+          feedGroup: feedGroup,
+          activity: activity,
+          textEditingController: textEditingController,
+        )),
+      ));
 
       final avatar = find.byType(Avatar);
       final textArea = find.byType(TextArea);
