@@ -49,12 +49,14 @@ void main() {
           kind: kind,
         )).thenAnswer((_) async => reactions);
     await tester.pumpWidget(
-      StreamFeed(
-        bloc: GenericFeedBloc(
-          client: mockClient,
-          analyticsClient: mockStreamAnalytics,
-        ),
-        child: Scaffold(
+      MaterialApp(
+        builder: (context, child) => StreamFeed(
+            bloc: FeedBloc(
+              client: mockClient,
+              analyticsClient: mockStreamAnalytics,
+            ),
+            child: child!),
+        home: Scaffold(
           body: ReactionListPage(
             activity: const GenericEnrichedActivity(id: 'id'),
             reactionBuilder: (context, reaction) => const Offstage(),
