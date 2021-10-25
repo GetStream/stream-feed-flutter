@@ -432,7 +432,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// user. If no results are found, this means that the current user is not
   /// following the given user.
   Future<bool> isFollowingUser(String userId) async {
-    final following = await client.flatFeed('user').following(
+    final following = await client.flatFeed('timeline').following(
       limit: 1,
       offset: 0,
       filter: [
