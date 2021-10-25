@@ -473,7 +473,7 @@ class ComposeScreen extends StatefulWidget {
   _ComposeScreenState createState() => _ComposeScreenState();
 }
 
-class _ComposeScreenState extends State<ComposeScreen> {
+class _ComposeScreenState extends State<ComposeScreen> with StreamFeedMixin {
   final postController = TextEditingController();
 
   @override
@@ -484,7 +484,6 @@ class _ComposeScreenState extends State<ComposeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = FeedProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compose'),
