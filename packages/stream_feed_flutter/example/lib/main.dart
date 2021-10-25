@@ -649,7 +649,7 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
               .withOwnChildren()
               .withOwnReactions(),
           feedGroup: 'user',
-          userId: widget.user?.id,
+          userId: widget.user?.id ?? bloc.currentUser!.id,
           onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
           onUserTap: (user) => debugPrint('hashtag pressed: ${user!.toJson()}'),
           onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
