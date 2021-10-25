@@ -90,9 +90,6 @@ abstract class StreamFeedClient {
     Map<String, Object?>? extraData,
   });
 
-  /// Reauthenticates the client with new credentials.
-  Future<void> reauthenticate(String apiKey, Token token);
-
   /// Convenient getter for [BatchOperationsClient]
   BatchOperationsClient get batch;
 

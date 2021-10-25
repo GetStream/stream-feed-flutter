@@ -150,23 +150,11 @@ class _LoginScreenState extends State<LoginScreen> with StreamFeedMixin {
   Future<void> login(SampleUser user) async {
     setState(() => _loggingIn = true);
     try {
-      const apiKey = String.fromEnvironment('key');
-
-      await bloc.client.reauthenticate(
-        apiKey,
-        Token(user.token),
-      );
-
-      final streamUser = await client.user(user.id).create(
-            user.data,
-            getOrCreate: true,
-          );
-
       await client.setUser(
         User(id: user.id, data: {
-          'name': streamUser.data!['name'].toString(),
-          'handle': streamUser.data!['handle'].toString(),
-          'profile_image': streamUser.data!['profile_image'].toString(),
+          'name': user.name,
+          'handle': user.handle,
+          'profile_image': user.avatarUrl,
         }),
         Token(user.token),
       );

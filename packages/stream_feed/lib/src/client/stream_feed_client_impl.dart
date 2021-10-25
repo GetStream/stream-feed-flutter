@@ -144,14 +144,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
   }
 
   @override
-  /// Reauthenticates the client with new credentials.
-  Future<void> reauthenticate(String apiKey, Token token) async {
-    _logger.info('reconnecting with new credentials');
-
-    _api = StreamApiImpl(apiKey, logger: _logger);
-  }
-
-  @override
   BatchOperationsClient get batch {
     assert(
       runner == Runner.server,
