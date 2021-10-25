@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: IndexedStack(
         index: _pageIndex,
         children: [
-          FlatActivityListPage(
+          FlatFeedListView(
             flags: EnrichmentFlags()
                 .withReactionCounts()
                 .withOwnChildren()
@@ -374,7 +374,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
       body: Scrollbar(
-        child: FlatActivityListPage(
+        child: FlatFeedListView(
           flags: EnrichmentFlags()
               .withReactionCounts()
               .withOwnChildren()

@@ -26,9 +26,9 @@ enum TransitionType {
 ///
 /// Best used as the main page of an app.
 /// {@endtemplate}
-class FlatActivityListPage extends StatelessWidget {
-  /// Builds a [FlatActivityListPage].
-  const FlatActivityListPage({
+class FlatFeedListView extends StatelessWidget {
+  /// Builds a [FlatFeedListView].
+  const FlatFeedListView({
     Key? key,
     this.feedGroup = 'user',
     this.onHashtagTap,
