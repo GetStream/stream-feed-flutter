@@ -350,12 +350,12 @@ void main() {
     });
 
     test('followUser', () async {
-      await bloc.followFlatFeed(mockFeed, mockSecondFeed);
+      await bloc.followFlatFeed(mockSecondUser.id);
       verify(() => mockFeed.follow(mockSecondFeed)).called(1);
     });
 
     test('unfollowUser', () async {
-      await bloc.unfollowFlatFeed(mockFeed, mockSecondFeed);
+      await bloc.unfollowFlatFeed(mockSecondUser.id);
       verify(() => mockFeed.unfollow(mockSecondFeed)).called(1);
     });
   });
