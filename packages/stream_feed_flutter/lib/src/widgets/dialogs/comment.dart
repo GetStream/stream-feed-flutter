@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/item.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/reaction_list_view.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 // ignore_for_file: cascade_invocations
@@ -155,7 +155,7 @@ class CommentView extends StatelessWidget {
           ),
           //TODO: builder for using it elsewhere than in actions
           if (enableReactions && activity != null)
-            ReactionListPage(
+            ReactionListView(
                 activity: activity!,
                 onReactionTap: onReactionTap,
                 onHashtagTap: onHashtagTap,

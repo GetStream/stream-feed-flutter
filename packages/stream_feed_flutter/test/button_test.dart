@@ -8,7 +8,7 @@ import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/reaction_list_view.dart';
 import 'package:stream_feed_flutter/src/widgets/stream_feed_app.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
@@ -55,7 +55,7 @@ void main() {
           analyticsClient: mockStreamAnalytics,
         ),
         child: Scaffold(
-          body: ReactionListPage(
+          body: ReactionListView(
             activity: const GenericEnrichedActivity(id: 'id'),
             reactionBuilder: (context, reaction) => const Offstage(),
             lookupValue: lookupValue,
