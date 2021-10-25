@@ -588,6 +588,10 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
             ),
           ],
         ),
+        leading: BackButton(
+          onPressed: () => Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (_) => MyHomePage())),
+        ),
         actions: [
           // If the user matches the currentUser, do not show the
           // follow/unfollow button; you cannot follow your own feed.
