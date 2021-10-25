@@ -180,12 +180,13 @@ class FlatFeedListView extends StatelessWidget {
     );
   }
 
-  void _pageRouteBuilder(
-      {required BuildContext context,
-      required TransitionType transitionType,
-      required GenericEnrichedActivity activity,
-      required Widget page,
-      required NavigatorState currentNavigator}) {
+  void _pageRouteBuilder({
+    required BuildContext context,
+    required TransitionType transitionType,
+    required GenericEnrichedActivity activity,
+    required Widget page,
+    required NavigatorState currentNavigator,
+  }) {
     //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:
