@@ -16,6 +16,9 @@ class ActivitiesControllers<A, Ob, T, Or> {
           String feedGroup) =>
       _getController(feedGroup)?.stream;
 
+  void init(String feedGroup) => _controller[feedGroup] =
+      BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
+
   void clearActivities(String feedGroup) {
     _getController(feedGroup)!.value = [];
   }
