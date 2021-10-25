@@ -158,11 +158,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
   }
 
   /// Remove child reaction.
-  Future<void> onRemoveChildReaction(
-      {required String kind,
-      required GenericEnrichedActivity activity,
-      required Reaction childReaction,
-      required Reaction parentReaction}) async {
+  Future<void> onRemoveChildReaction({
+    required String kind,
+    required GenericEnrichedActivity activity,
+    required Reaction childReaction,
+    required Reaction parentReaction,
+  }) async {
     await client.reactions.delete(childReaction.id!);
     final _reactions = getReactions(activity.id!, parentReaction);
 
@@ -190,13 +191,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
   }
 
-  Future<Reaction> onAddChildReaction(
-      {required String kind,
-      required Reaction reaction,
-      required GenericEnrichedActivity activity,
-      Map<String, Object>? data,
-      String? userId,
-      List<FeedId>? targetFeeds}) async {
+  Future<Reaction> onAddChildReaction({
+    required String kind,
+    required Reaction reaction,
+    required GenericEnrichedActivity activity,
+    Map<String, Object>? data,
+    String? userId,
+    List<FeedId>? targetFeeds,
+  }) async {
     final childReaction = await client.reactions.addChild(kind, reaction.id!,
         data: data, userId: userId, targetFeeds: targetFeeds);
     final _reactions = getReactions(activity.id!, reaction);
@@ -306,10 +308,11 @@ class GenericFeedBloc<A, Ob, T, Or> {
   }
 
   /// Track analytics.
-  Future<void> trackAnalytics(
-      {required String label,
-      String? foreignId,
-      required String feedGroup}) async {
+  Future<void> trackAnalytics({
+    required String label,
+    String? foreignId,
+    required String feedGroup,
+  }) async {
     analyticsClient != null
         ? await analyticsClient!.trackEngagement(Engagement(
             content: Content(foreignId: FeedId.fromId(foreignId)),
@@ -453,8 +456,10 @@ class GenericFeedBloc<A, Ob, T, Or> {
     });
   }
 
-  Future<void> onRemoveActivity(
-      {required String feedGroup, required String activityId}) async {
+  Future<void> onRemoveActivity({
+    required String feedGroup,
+    required String activityId,
+  }) async {
     await client.flatFeed(feedGroup).removeActivityById(activityId);
   }
 }
@@ -481,7 +486,7 @@ class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc));
+        .add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc));
   }
 }
 
