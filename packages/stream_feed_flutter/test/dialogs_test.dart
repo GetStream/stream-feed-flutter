@@ -141,17 +141,24 @@ void main() {
 
     group('AlertDialog', () {
       late MockFeedBloc<User, String, String, String> mockFeedBloc;
+      late MockStreamUser mockUser;
       setUp(() {
         mockFeedBloc = MockFeedBloc();
+        mockUser = MockStreamUser();
         when(() => mockFeedBloc.activitiesStream).thenAnswer((_) =>
             Stream.value(const [GenericEnrichedActivity(actor: User())]));
+
+        when(() => mockFeedBloc.currentUser).thenReturn(mockUser);
+        when(() => mockUser.data).thenReturn({});
       });
       testWidgets('Comment', (tester) async {
         await mockNetworkImages(() async {
           await tester.pumpWidget(
-            StreamFeed(
-              bloc: mockFeedBloc,
-              child: Scaffold(
+            MaterialApp(
+              builder: (context, child) {
+                return StreamFeed(bloc: mockFeedBloc, child: child!);
+              },
+              home: Scaffold(
                 body: AlertDialogComment(
                   feedGroup: 'user',
                   activity: GenericEnrichedActivity(
@@ -182,27 +189,27 @@ void main() {
       group('CommentView', () {
         testWidgets('with an activity', (tester) async {
           await mockNetworkImages(() async {
-            await tester.pumpWidget(
-              StreamFeed(
-                bloc: mockFeedBloc,
-                child: Scaffold(
-                  body: CommentView(
-                    activity: GenericEnrichedActivity(
-                      id: '1',
-                      time: DateTime.now(),
-                      actor: const User(data: {
-                        'name': 'Rosemary',
-                        'handle': '@rosemary',
-                        'subtitle': 'likes playing fresbee in the park',
-                        'profile_image':
-                            'https://randomuser.me/api/portraits/women/20.jpg',
-                      }),
-                    ),
-                    textEditingController: TextEditingController(),
+            await tester.pumpWidget(MaterialApp(
+              builder: (context, child) {
+                return StreamFeed(bloc: mockFeedBloc, child: child!);
+              },
+              home: Scaffold(
+                body: CommentView(
+                  activity: EnrichedActivity(
+                    id: '1',
+                    time: DateTime.now(),
+                    actor: const User(data: {
+                      'name': 'Rosemary',
+                      'handle': '@rosemary',
+                      'subtitle': 'likes playing fresbee in the park',
+                      'profile_image':
+                          'https://randomuser.me/api/portraits/women/20.jpg',
+                    }),
                   ),
+                  textEditingController: TextEditingController(),
                 ),
               ),
-            );
+            ));
             final activityHeader = find.byType(ActivityHeader);
             expect(activityHeader, findsOneWidget);
 
@@ -216,16 +223,16 @@ void main() {
 
         testWidgets('without an activity', (tester) async {
           await mockNetworkImages(() async {
-            await tester.pumpWidget(
-              StreamFeed(
-                bloc: mockFeedBloc,
-                child: Scaffold(
-                  body: CommentView(
-                    textEditingController: TextEditingController(),
-                  ),
+            await tester.pumpWidget(MaterialApp(
+              builder: (context, child) {
+                return StreamFeed(bloc: mockFeedBloc, child: child!);
+              },
+              home: Scaffold(
+                body: CommentView(
+                  textEditingController: TextEditingController(),
                 ),
               ),
-            );
+            ));
 
             final commentField = find.byType(CommentField);
             expect(commentField, findsOneWidget);
