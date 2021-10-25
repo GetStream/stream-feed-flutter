@@ -372,6 +372,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
     //TODO: no way to parameterized marker?
   }) async {
+    activitiesController.init(feedGroup);
     if (_queryActivitiesLoadingController.value == true) return;
 
     if (activitiesController.hasValue(feedGroup)) {
@@ -379,9 +380,6 @@ class GenericFeedBloc<A, Ob, T, Or> {
     }
 
     try {
-      if (!activitiesController.hasValue(feedGroup)) {
-        activitiesController.init(feedGroup);
-      }
       final oldActivities = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(
           getActivities(feedGroup) ?? []);
       final activitiesResponse = await client
