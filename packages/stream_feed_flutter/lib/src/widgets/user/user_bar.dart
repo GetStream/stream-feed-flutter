@@ -77,6 +77,9 @@ class UserBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc =
+        GenericFeedProvider<User, String, String, String>.of(context).bloc;
+
     // If handle is null, show name. If both are null, show
     // an empty string.
     final displayName = user.data?[handleJsonKey] as String? ??
@@ -121,29 +124,30 @@ class UserBar extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           child: HumanReadableTimestamp(timestamp: timestamp),
         ),
-        PopupMenuButton(
-          icon: const Icon(
-            Icons.more_vert,
-            size: 18,
-          ),
-          itemBuilder: (_) => [
-            const PopupMenuItem(
-              value: 'delete',
-              child: Text('Delete'),
+        if (bloc.currentUser!.id == user.id)
+          PopupMenuButton(
+            icon: const Icon(
+              Icons.more_vert,
+              size: 18,
             ),
-          ],
-          onSelected: (value) {
-            if (value == 'delete') {
-              showDialog(
-                context: context,
-                builder: (_) => DeleteActivityDialog(
-                  activityId: activityId,
-                  feedGroup: feedGroup,
-                ),
-              );
-            }
-          },
-        ),
+            itemBuilder: (_) => [
+              const PopupMenuItem(
+                value: 'delete',
+                child: Text('Delete'),
+              ),
+            ],
+            onSelected: (value) {
+              if (value == 'delete') {
+                showDialog(
+                  context: context,
+                  builder: (_) => DeleteActivityDialog(
+                    activityId: activityId,
+                    feedGroup: feedGroup,
+                  ),
+                );
+              }
+            },
+          ),
       ],
     );
   }
