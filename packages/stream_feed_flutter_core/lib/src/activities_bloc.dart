@@ -380,8 +380,6 @@ class GenericFeedBloc<A, Ob, T, Or> {
     }
 
     try {
-      final oldActivities = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(
-          getActivities(feedGroup) ?? []);
       final activitiesResponse = await client
           .flatFeed(feedGroup, userId)
           .getEnrichedActivities<A, Ob, T, Or>(
@@ -393,8 +391,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
             ranking: ranking,
           );
 
-      final temp = oldActivities + activitiesResponse;
-      activitiesController.add(feedGroup, temp);
+      activitiesController.add(feedGroup, activitiesResponse);
       if (activitiesController.hasValue(feedGroup) &&
           _queryActivitiesLoadingController.value) {
         _queryActivitiesLoadingController.sink.add(false);
