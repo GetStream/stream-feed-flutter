@@ -167,6 +167,7 @@ class FlatActivityListPage extends StatelessWidget {
                   title: const Text('Post'),
                 ),
                 body: CommentView(
+                  feedGroup: feedGroup,
                   nameJsonKey: nameJsonKey,
                   handleJsonKey: handleJsonKey,
                   activity: activity,
