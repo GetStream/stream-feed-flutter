@@ -101,6 +101,9 @@ class GenericFeedBloc<A, Ob, T, Or> {
   void clearActivities(String feedGroup) =>
       activitiesController.clearActivities(feedGroup);
 
+  void clearAllActivities(List<String> feedGroups) =>
+      activitiesController.clearAllActivities(feedGroups);
+
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
   final Map<String, BehaviorSubject<bool>> _queryReactionsLoadingControllers =
