@@ -23,6 +23,10 @@ class ActivitiesControllers<A, Ob, T, Or> {
     _getController(feedGroup)!.value = [];
   }
 
+  void clearAllActivities(List<String> feedGroups) {
+    feedGroups.forEach((feedGroups) => init(feedGroups));
+  }
+
   void close() {
     _controller.forEach((key, value) {
       value.close();
@@ -51,7 +55,11 @@ class ActivitiesControllers<A, Ob, T, Or> {
     }
   }
 
-  void addError(String feedGroup, Object e, StackTrace stk) {}
+  void addError(String feedGroup, Object e, StackTrace stk) {
+    if (hasValue(feedGroup)) {
+      _getController(feedGroup)!.addError(e, stk);
+    } //TODO: handle null safety
+  }
 }
 
 class GenericFeedBloc<A, Ob, T, Or> {
