@@ -573,10 +573,9 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
   @override
   Widget build(BuildContext context) {
-    final bloc = FeedProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
