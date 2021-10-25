@@ -361,6 +361,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
     //TODO: no way to parameterized marker?
   }) async {
+    reactionsControllers.init(feedGroup);
     if (_queryActivitiesLoadingController.value == true) return;
 
     if (activitiesController.hasValue(feedGroup)) {
