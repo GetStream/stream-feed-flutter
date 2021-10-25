@@ -498,10 +498,7 @@ class _ComposeScreenState extends State<ComposeScreen> with StreamFeedMixin {
                     feedGroup: 'user',
                     verb: 'post',
                     object: postController.text,
-                    to: [
-                      FeedId('timeline', bloc.currentUser!.id),
-                      FeedId('user', bloc.currentUser!.id),
-                    ],
+                    userId: bloc.currentUser!.id,
                   );
 
                   Navigator.of(context).pop();
