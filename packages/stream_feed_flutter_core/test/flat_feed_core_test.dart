@@ -41,8 +41,13 @@ void main() {
     when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
     when(mockFeed.getEnrichedActivities).thenAnswer((_) async => activities);
     await tester.pumpWidget(MaterialApp(
+      builder: (context, child) =>
+          GenericFeedProvider<Object?, Object?, Object?, Object?>(
+              bloc: GenericFeedBloc<Object?, Object?, Object?, Object?>(
+                  client: mockClient, analyticsClient: mockStreamAnalytics),
+              child: child!),
       home: Scaffold(
-        body: FlatFeedCore(
+        body: GenericFlatFeedCore(
           feedGroup: 'user',
           feedBuilder: (BuildContext context, activities, int idx) {
             return Column(
