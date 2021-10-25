@@ -460,9 +460,11 @@ class GenericFeedBloc<A, Ob, T, Or> {
 }
 
 class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
-  const GenericFeedProvider(
-      {Key? key, required this.bloc, required Widget child, this.navigatorKey})
-      : super(key: key, child: child);
+  const GenericFeedProvider({
+    Key? key,
+    required this.bloc,
+    required Widget child,
+  }) : super(key: key, child: child);
 
   factory GenericFeedProvider.of(BuildContext context) {
     final result = context.dependOnInheritedWidgetOfExactType<
@@ -471,19 +473,15 @@ class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
     return result!;
   }
   final GenericFeedBloc<A, Ob, T, Or> bloc;
-  final GlobalKey<NavigatorState>? navigatorKey;
 
   @override
-  bool updateShouldNotify(GenericFeedProvider old) =>
-      navigatorKey != old.navigatorKey || bloc != old.bloc; //
+  bool updateShouldNotify(GenericFeedProvider old) => bloc != old.bloc; //
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc))
-      ..add(DiagnosticsProperty<GlobalKey<NavigatorState>?>(
-          'navigatorKey', navigatorKey));
+      ..add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc));
   }
 }
 
