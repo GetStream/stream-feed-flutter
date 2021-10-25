@@ -158,7 +158,7 @@ void main() {
             activityId,
           )).called(1);
       await expectLater(
-          bloc.activitiesStream,
+          bloc.getActivitiesStream(feedGroup),
           emits([
             GenericEnrichedActivity(id: activityId, reactionCounts: const {
               'like': 1
@@ -196,7 +196,7 @@ void main() {
       );
       verify(() => mockReactions.delete(reactionId)).called(1);
       await expectLater(
-          bloc.activitiesStream,
+          bloc.getActivitiesStream(feedGroup),
           emits([
             GenericEnrichedActivity(
                 id: activityId,
@@ -332,7 +332,8 @@ void main() {
       verify(() => mockFeed.addActivity(activity)).called(1);
       verify(() => mockFeed.getEnrichedActivityDetail(addedActivity.id!))
           .called(1);
-      await expectLater(bloc.activitiesStream, emits([enrichedActivity]));
+      await expectLater(
+          bloc.getActivities(feedGroup), emits([enrichedActivity]));
     });
   });
 

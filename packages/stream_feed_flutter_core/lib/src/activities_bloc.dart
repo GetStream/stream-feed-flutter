@@ -3,6 +3,54 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+class ActivitiesControllers<A, Ob, T, Or> {
+  final Map<String,
+          BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>>
+      _controller = {};
+
+  List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
+          String feedGroup) =>
+      _getController(feedGroup)?.valueOrNull;
+
+  Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getStream(
+          String feedGroup) =>
+      _getController(feedGroup)?.stream;
+
+  void clearActivities(String feedGroup) {
+    _getController(feedGroup)!.value = [];
+  }
+
+  void close() {
+    _controller.forEach((key, value) {
+      value.close();
+    });
+  }
+
+  /// Check if controller is not empty.
+  bool hasValue(String feedGroup) =>
+      _getController(feedGroup)?.hasValue != null;
+
+  void add(String feedGroup,
+      List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
+    if (hasValue(feedGroup)) {
+      _getController(feedGroup)!.add(activities);
+    } //TODO: handle null safety
+  }
+
+  BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>? _getController(
+          String feedGroup) =>
+      _controller[feedGroup];
+
+  void update(String feedGroup,
+      List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
+    if (hasValue(feedGroup)) {
+      _getController(feedGroup)!.value = activities;
+    }
+  }
+
+  void addError(String feedGroup, Object e, StackTrace stk) {}
+}
+
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 
@@ -11,17 +59,25 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   final StreamAnalytics? analyticsClient;
 
+  @visibleForTesting
+  late ReactionsControllers reactionsControllers = ReactionsControllers();
+
+  @visibleForTesting
+  final activitiesController = ActivitiesControllers<A, Ob, T, Or>();
+
   /// The current activities list.
-  List<GenericEnrichedActivity<A, Ob, T, Or>>? get activities =>
-      _activitiesController.valueOrNull;
+  List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
+          String feedGroup) =>
+      activitiesController.getActivities(feedGroup);
 
   /// The current reactions list.
   List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
       reactionsControllers.getReactions(activityId, reaction);
 
   /// The current activities list as a stream.
-  Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>> get activitiesStream =>
-      _activitiesController.stream;
+  Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(
+          String feedGroup) =>
+      activitiesController.getStream(feedGroup);
 
   /// The current reactions list as a stream.
   Stream<List<Reaction>>? getReactionsStream(
@@ -31,15 +87,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return reactionsControllers.getStream(activityId, kind);
   }
 
-  @visibleForTesting
-  late ReactionsControllers reactionsControllers = ReactionsControllers();
-
-  final _activitiesController =
-      BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
-
-  void clearActivities() {
-    _activitiesController.value = [];
-  }
+  void clearActivities(String feedGroup) =>
+      activitiesController.clearActivities(feedGroup);
 
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
@@ -79,12 +128,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
     final enrichedActivity = await flatFeed
         .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
 
-    final _activities = activities ?? [];
+    final _activities = getActivities(feedGroup) ?? [];
 
     // ignore: cascade_invocations
     _activities.insert(0, enrichedActivity);
 
-    _activitiesController.add(_activities);
+    activitiesController.add(feedGroup, _activities);
 
     await trackAnalytics(
       label: 'post',
@@ -171,7 +220,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     await client.reactions.delete(reaction.id!);
     await trackAnalytics(
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
-    final _activities = activities ?? [activity];
+    final _activities = getActivities(feedGroup) ?? [activity];
     final activityPath = _activities.getEnrichedActivityPath(activity);
 
     final indexPath = _activities
@@ -198,8 +247,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
     reactionsControllers.unshiftById(
         activity.id!, reaction, ShiftType.decrement);
 
-    _activitiesController.value =
-        _activities.updateIn(updatedActivity, indexPath);
+    activitiesController.update(
+        feedGroup, _activities.updateIn(updatedActivity, indexPath));
   }
 
   /// Add a new reaction to the feed.
@@ -214,7 +263,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
-    final _activities = activities ?? [activity];
+    final _activities = getActivities(feedGroup) ?? [activity];
     final activityPath = _activities.getEnrichedActivityPath(activity);
     final indexPath = _activities
         .indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
@@ -234,8 +283,11 @@ class GenericFeedBloc<A, Ob, T, Or> {
     // adds reaction to the stream
     reactionsControllers.unshiftById(activity.id!, reaction);
 
-    _activitiesController.value = _activities //TODO: handle null safety
-        .updateIn(updatedActivity, indexPath); //List<EnrichedActivity>.from
+    activitiesController.update(
+        feedGroup,
+        _activities //TODO: handle null safety
+            .updateIn(
+                updatedActivity, indexPath)); //List<EnrichedActivity>.from
     return reaction;
   }
 
@@ -308,13 +360,13 @@ class GenericFeedBloc<A, Ob, T, Or> {
   }) async {
     if (_queryActivitiesLoadingController.value == true) return;
 
-    if (_activitiesController.hasValue) {
+    if (activitiesController.hasValue(feedGroup)) {
       _queryActivitiesLoadingController.add(true);
     }
 
     try {
-      final oldActivities =
-          List<GenericEnrichedActivity<A, Ob, T, Or>>.from(activities ?? []);
+      final oldActivities = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(
+          getActivities(feedGroup) ?? []);
       final activitiesResponse = await client
           .flatFeed(feedGroup, userId)
           .getEnrichedActivities<A, Ob, T, Or>(
@@ -327,18 +379,18 @@ class GenericFeedBloc<A, Ob, T, Or> {
           );
 
       final temp = Set.of(oldActivities + activitiesResponse);
-      _activitiesController.add(activitiesResponse);
-      if (_activitiesController.hasValue &&
+      activitiesController.add(feedGroup, activitiesResponse);
+      if (activitiesController.hasValue(feedGroup) &&
           _queryActivitiesLoadingController.value) {
         _queryActivitiesLoadingController.sink.add(false);
       }
     } catch (e, stk) {
       // reset loading controller
       _queryActivitiesLoadingController.add(false);
-      if (_activitiesController.hasValue) {
+      if (activitiesController.hasValue(feedGroup)) {
         _queryActivitiesLoadingController.addError(e, stk);
       } else {
-        _activitiesController.addError(e, stk);
+        activitiesController.addError(feedGroup, e, stk);
       }
     }
   }
@@ -379,7 +431,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
   }
 
   void dispose() {
-    _activitiesController.close();
+    activitiesController.close();
     reactionsControllers.close();
     _queryActivitiesLoadingController.close();
     _queryReactionsLoadingControllers.forEach((key, value) {

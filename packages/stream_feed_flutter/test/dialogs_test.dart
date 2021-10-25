@@ -143,7 +143,7 @@ void main() {
       late MockFeedBloc<User, String, String, String> mockFeedBloc;
       setUp(() {
         mockFeedBloc = MockFeedBloc();
-        when(() => mockFeedBloc.activitiesStream).thenAnswer((_) =>
+        when(() => mockFeedBloc.getActivitiesStream('user')).thenAnswer((_) =>
             Stream.value(const [GenericEnrichedActivity(actor: User())]));
       });
       testWidgets('Comment', (tester) async {
