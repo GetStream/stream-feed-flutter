@@ -316,7 +316,7 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
                   leading: const Icon(Icons.exit_to_app_outlined),
                   title: const Text('Log out'),
                   onTap: () {
-                    bloc.clearActivities();
+                    bloc.clearAllActivities(['user', 'timeline']);
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (_) => const LoginScreen(),
