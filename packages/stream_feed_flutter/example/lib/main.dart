@@ -616,9 +616,7 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
                         /*await client
                             .flatFeed('timeline', bloc.currentUser!.id)
                             .unfollow(userToUnfollowFeed);*/
-                        await bloc.unfollowFlatFeed(
-                            client.flatFeed('timeline', bloc.currentUser!.id),
-                            userToUnfollowFeed);
+                        await bloc.unfollowFlatFeed(widget.user!.id!);
                         setState(() {});
                       } else {
                         final userToFollowFeed =
@@ -626,9 +624,7 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
                         /*await client
                             .flatFeed('timeline', bloc.currentUser!.id)
                             .follow(userToFollowFeed);*/
-                        await bloc.followFlatFeed(
-                            client.flatFeed('timeline', bloc.currentUser!.id),
-                            userToFollowFeed);
+                        await bloc.followFlatFeed(widget.user!.id!);
                         setState(() {});
                       }
                     },
