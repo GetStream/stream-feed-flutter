@@ -68,6 +68,7 @@ class LikeButton extends StatelessWidget {
       reaction: reaction,
       kind: 'like',
       onTap: onTap,
+      feedGroup: feedGroup,
     );
   }
 
