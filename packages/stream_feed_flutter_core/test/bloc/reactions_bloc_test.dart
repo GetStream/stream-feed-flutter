@@ -7,7 +7,6 @@ import '../mocks.dart';
 void main() {
   late MockStreamFeedClient mockClient;
   late MockReactions mockReactions;
-  late MockStreamAnalytics mockStreamAnalytics;
   late LookupAttribute lookupAttr;
   late String lookupValue;
   late Filter filter;
@@ -15,8 +14,6 @@ void main() {
   late String kind;
   late List<Reaction> reactions;
   late String activityId;
-  late List<FeedId> targetFeeds;
-  late Map<String, String> data;
   late GenericFeedBloc bloc;
   late MockReactionsControllers mockReactionControllers;
   late String feedGroup;
@@ -38,7 +35,6 @@ void main() {
     mockSecondFeed = MockFeedAPI();
     mockReactions = MockReactions();
     mockReactionControllers = MockReactionsControllers();
-    mockStreamAnalytics = MockStreamAnalytics();
     mockClient = MockStreamFeedClient();
     lookupAttr = LookupAttribute.activityId;
     lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
@@ -48,8 +44,6 @@ void main() {
     kind = 'like';
     activityId = 'activityId';
     userId = 'john-doe';
-    targetFeeds = <FeedId>[];
-    data = {'text': 'awesome post!'};
     feedGroup = 'user';
     reactions = [
       Reaction(
@@ -105,17 +99,6 @@ void main() {
     when(() =>
         mockFeed.getEnrichedActivityDetail<String, String, String, String>(
             addedActivity.id!)).thenAnswer((_) async => enrichedActivity);
-    when(() => mockFeed.follow(mockSecondFeed))
-        .thenAnswer((_) => Future.value());
-    when(() => mockFeed.unfollow(mockSecondFeed))
-        .thenAnswer((_) => Future.value());
-    when(() => mockFeed.following(
-          limit: 1,
-          offset: 0,
-          filter: [
-            FeedId.id('user:$userId'),
-          ],
-        )).thenAnswer((_) async => following);
   });
 
   group('ReactionBloc', () {
@@ -291,16 +274,16 @@ void main() {
             'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
           }),
         );
-        final childReaction = Reaction(id: childId, kind: 'like');
+        const childReaction = Reaction(id: childId, kind: 'like');
         final parentReaction = Reaction(
           id: parentId,
           kind: 'comment',
           activityId: reactedActivity.id,
           childrenCounts: const {'like': 1},
-          latestChildren: {
+          latestChildren: const {
             'like': [childReaction]
           },
-          ownChildren: {
+          ownChildren: const {
             'like': [childReaction]
           },
         );
