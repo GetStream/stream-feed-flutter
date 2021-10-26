@@ -120,6 +120,30 @@ class MobileApp extends StatelessWidget {
         textTheme: GoogleFonts.interTextTheme(
           Theme.of(context).textTheme,
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: const UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0xff005fff),
+            ),
+          ),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0xff005fff),
+            ),
+          ),
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0xff005fff),
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.grey.shade300,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: const Color(0xff005fff),
+          ),
+        ),
       ),
       builder: (context, child) {
         return StreamFeed(
@@ -199,7 +223,8 @@ class _LoginScreenState extends State<LoginScreen> with StreamFeedMixin {
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage(sampleUser.profileImage),
+                          backgroundImage:
+                              NetworkImage(sampleUser.profileImage),
                         ),
                         title: Text(sampleUser.fullName),
                         subtitle: Text(sampleUser.handle),
