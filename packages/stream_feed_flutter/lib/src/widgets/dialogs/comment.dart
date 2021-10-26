@@ -156,25 +156,27 @@ class CommentView extends StatelessWidget {
           //TODO: builder for using it elsewhere than in actions
           if (enableReactions && activity != null)
             ReactionListView(
+              activity: activity!,
+              onReactionTap: onReactionTap,
+              onHashtagTap: onHashtagTap,
+              onMentionTap: onMentionTap,
+              onUserTap: onUserTap,
+              kind: 'comment',
+              flags: EnrichmentFlags()
+                  .withReactionCounts()
+                  .withOwnChildren()
+                  .withOwnReactions(), //TODO: refactor this?
+              reactionBuilder: (context, reaction) => CommentItem(
+                nameJsonKey: nameJsonKey,
                 activity: activity!,
+                user: reaction.user,
+                reaction: reaction,
                 onReactionTap: onReactionTap,
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,
                 onUserTap: onUserTap,
-                kind: 'comment',
-                flags: EnrichmentFlags()
-                    .withReactionCounts()
-                    .withOwnChildren()
-                    .withOwnReactions(), //TODO: refactor this?
-                reactionBuilder: (context, reaction) => CommentItem(
-                      activity: activity!,
-                      user: reaction.user,
-                      reaction: reaction,
-                      onReactionTap: onReactionTap,
-                      onHashtagTap: onHashtagTap,
-                      onMentionTap: onMentionTap,
-                      onUserTap: onUserTap,
-                    ))
+              ),
+            )
         ],
       ),
     );
