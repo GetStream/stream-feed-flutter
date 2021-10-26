@@ -160,9 +160,7 @@ void main() {
             );
           },
           home: Scaffold(
-            body: ActivityWidget(
-              activity: enrichedActivity
-            ),
+            body: ActivityWidget(activity: enrichedActivity),
           ),
         ),
       );

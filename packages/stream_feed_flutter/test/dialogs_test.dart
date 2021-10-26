@@ -218,7 +218,7 @@ void main() {
                         'handle': '@rosemary',
                         'subtitle': 'likes playing fresbee in the park',
                         'profile_image':
-                        'https://randomuser.me/api/portraits/women/20.jpg',
+                            'https://randomuser.me/api/portraits/women/20.jpg',
                       }),
                     ),
                     textEditingController: TextEditingController(),
