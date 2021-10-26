@@ -9,25 +9,32 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 class SampleUser {
   const SampleUser.groovinChip()
       : id = 'GroovinChip',
-        name = 'GroovinChip',
+        firstName = 'Reuben',
+        lastName = 'Turner',
         token =
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiR3Jvb3ZpbkNoaXAifQ.IiCLY_1h3mNIuf_yIMSWYZefzsII5R1djNVYPZjcgXo',
-        avatarUrl = 'https://avatars.githubusercontent.com/u/4250470?v=4',
+        profileImage = 'https://avatars.githubusercontent.com/u/4250470?v=4',
         handle = '@GroovinChip';
 
   const SampleUser.sacha()
       : id = 'SachaArbonel',
-        name = 'Sacha Arbonel',
+        firstName = 'Sacha',
+        lastName = 'Arbonel',
         token =
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiU2FjaGFBcmJvbmVsIn0.xAhGqzgGa1wPuUF74aHTHcJnGRf_OljoAY2gy87ll88',
-        avatarUrl = 'https://avatars.githubusercontent.com/u/18029834?v=4',
+        profileImage = 'https://avatars.githubusercontent.com/u/18029834?v=4',
         handle = '@sachaarbonel';
 
   /// The user's id.
   final String id;
 
-  /// The user's name.
-  final String name;
+  /// The user's firstt name.
+  final String firstName;
+
+  /// The user's last name
+  final String lastName;
+
+  String get fullName => '$firstName $lastName';
 
   /// The user's login token.
   ///
@@ -35,30 +42,20 @@ class SampleUser {
   final String token;
 
   /// The user's avatar url.
-  final String avatarUrl;
+  final String profileImage;
 
   /// The user's "@" handle.
   final String handle;
 
-  Map<String, Object> get data {
-    final parts = name.split(' ');
-    if (parts.length > 1) {
-      return {
-        'first_name': parts[0],
-        'last_name': parts[1],
-        'full_name': name,
-        'profile_image': avatarUrl,
-        'handle': handle,
-      };
-    } else {
-      return {
-        'first_name': name,
-        'last_name': name,
-        'full_name': name,
-        'profile_image': avatarUrl,
-        'handle': handle,
-      };
-    }
+  Map<String, Object> toJson() {
+    return {
+      'id': id,
+      'first_name': firstName,
+      'last_name': lastName,
+      'full_name': fullName,
+      'handle': handle,
+      'profile_image': profileImage,
+    };
   }
 }
 
@@ -152,11 +149,10 @@ class _LoginScreenState extends State<LoginScreen> with StreamFeedMixin {
     setState(() => _loggingIn = true);
     try {
       await client.setUser(
-        User(id: user.id, data: {
-          'name': user.name,
-          'handle': user.handle,
-          'profile_image': user.avatarUrl,
-        }),
+        User(
+          id: user.id,
+          data: user.toJson(),
+        ),
         Token(user.token),
       );
 
@@ -204,10 +200,10 @@ class _LoginScreenState extends State<LoginScreen> with StreamFeedMixin {
                     children: [
                       ListTile(
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage(sampleUser.avatarUrl),
+                          backgroundImage: NetworkImage(sampleUser.profileImage),
                         ),
-                        title: Text(sampleUser.name),
-                        subtitle: Text('@${sampleUser.id}'),
+                        title: Text(sampleUser.fullName),
+                        subtitle: Text(sampleUser.handle),
                         onTap: () => login(sampleUser),
                       ),
                     ],
