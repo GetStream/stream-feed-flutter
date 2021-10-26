@@ -53,18 +53,28 @@ void main() {
         )).thenAnswer((_) async => reactions);
   });
   testWidgets('ReactionListCore', (tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: ReactionListCore(
-          reactionsBuilder: (context, reactions, idx) => const Offstage(),
-          lookupValue: lookupValue,
-          filter: filter,
-          limit: limit,
-          kind: kind,
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) =>
+            GenericFeedProvider(
+              bloc: GenericFeedBloc(
+                client: mockClient,
+                analyticsClient: mockStreamAnalytics,
+              ),
+              child: child!,
+            ),
+        home: Scaffold(
+          body: GenericReactionListCore(
+            reactionsBuilder: (context, reactions, idx) => const Offstage(),
+            lookupValue: lookupValue,
+            filter: filter,
+            limit: limit,
+            kind: kind,
+          ),
         ),
+        // ))
       ),
-      // ))
-    ));
+    );
     verify(() => mockReactions.filter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind)).called(1);
   });
