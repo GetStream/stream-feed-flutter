@@ -18,12 +18,30 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'mock.dart';
 
 void main() {
+  late MockStreamUser mockUser;
+  late MockFeedBloc<User, String, String, String> mockFeedBloc;
+
+  setUpAll(() {
+    mockFeedBloc = MockFeedBloc();
+    mockUser = MockStreamUser();
+    when(() => mockFeedBloc.currentUser).thenReturn(mockUser);
+    when(() => mockUser.id).thenReturn('1');
+    when(() => mockFeedBloc.getActivitiesStream('user')).thenAnswer(
+        (_) => Stream.value(const [GenericEnrichedActivity(actor: User())]));
+  });
+
   group('Actions', () {
     testWidgets('EmojisAction', (tester) async {
       await tester.pumpWidget(
-        StreamFeedTheme(
-          data: StreamFeedThemeData.light(),
-          child: Material(
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeed(
+              bloc: mockFeedBloc,
+              themeData: StreamFeedThemeData.light(),
+              child: child!,
+            );
+          },
+          home: Material(
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: EmojisAction(
@@ -140,17 +158,6 @@ void main() {
     });
 
     group('AlertDialog', () {
-      late MockFeedBloc<User, String, String, String> mockFeedBloc;
-      late MockStreamUser mockUser;
-      
-      setUp(() {
-        mockFeedBloc = MockFeedBloc();
-        mockUser = MockStreamUser();
-        when(() => mockFeedBloc.currentUser).thenReturn(mockUser);
-        when(() => mockUser.id).thenReturn('1');
-        when(() => mockFeedBloc.getActivitiesStream('user')).thenAnswer((_) =>
-            Stream.value(const [GenericEnrichedActivity(actor: User())]));
-      });
       testWidgets('Comment', (tester) async {
         await mockNetworkImages(() async {
           await tester.pumpWidget(
@@ -168,7 +175,7 @@ void main() {
                     id: '1',
                     time: DateTime.now(),
                     actor: const User(
-                      id:'1',
+                      id: '1',
                       data: {
                         'name': 'Rosemary',
                         'handle': '@rosemary',
@@ -194,9 +201,14 @@ void main() {
         testWidgets('with an activity', (tester) async {
           await mockNetworkImages(() async {
             await tester.pumpWidget(
-              StreamFeed(
-                bloc: mockFeedBloc,
-                child: Scaffold(
+              MaterialApp(
+                builder: (context, child) {
+                  return StreamFeed(
+                    bloc: mockFeedBloc,
+                    child: child!,
+                  );
+                },
+                home: Scaffold(
                   body: CommentView(
                     activity: GenericEnrichedActivity(
                       id: '1',
@@ -206,7 +218,7 @@ void main() {
                         'handle': '@rosemary',
                         'subtitle': 'likes playing fresbee in the park',
                         'profile_image':
-                            'https://randomuser.me/api/portraits/women/20.jpg',
+                        'https://randomuser.me/api/portraits/women/20.jpg',
                       }),
                     ),
                     textEditingController: TextEditingController(),
@@ -228,9 +240,14 @@ void main() {
         testWidgets('without an activity', (tester) async {
           await mockNetworkImages(() async {
             await tester.pumpWidget(
-              StreamFeed(
-                bloc: mockFeedBloc,
-                child: Scaffold(
+              MaterialApp(
+                builder: (context, child) {
+                  return StreamFeed(
+                    bloc: mockFeedBloc,
+                    child: child!,
+                  );
+                },
+                home: Scaffold(
                   body: CommentView(
                     textEditingController: TextEditingController(),
                   ),
@@ -314,7 +331,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'GenericEnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     testWidgets('LeftActions', (tester) async {
@@ -356,8 +373,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) {
-              return StreamFeedTheme(
-                data: StreamFeedThemeData.light(),
+              return StreamFeed(
+                bloc: mockFeedBloc,
+                themeData: StreamFeedThemeData.light(),
                 child: child!,
               );
             },
@@ -368,6 +386,7 @@ void main() {
                   id: '1',
                   time: DateTime.now(),
                   actor: const User(
+                    id: '1',
                     data: {
                       'name': 'Rosemary',
                       'handle': '@rosemary',
@@ -410,8 +429,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) {
-              return StreamFeedTheme(
-                data: StreamFeedThemeData.light(),
+              return StreamFeed(
+                bloc: mockFeedBloc,
+                themeData: StreamFeedThemeData.light(),
                 child: child!,
               );
             },
@@ -422,6 +442,7 @@ void main() {
                   id: '1',
                   time: DateTime.now(),
                   actor: const User(
+                    id: '1',
                     data: {
                       'name': 'Rosemary',
                       'handle': '@rosemary',
