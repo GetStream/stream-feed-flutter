@@ -302,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  bloc.currentUser?.id ?? '',
+                  bloc.currentUser!.data!['full_name'].toString(),
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 4),
