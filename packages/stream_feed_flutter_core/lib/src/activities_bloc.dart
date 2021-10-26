@@ -474,7 +474,7 @@ class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
   factory GenericFeedProvider.of(BuildContext context) {
     final result = context.dependOnInheritedWidgetOfExactType<
         GenericFeedProvider<A, Ob, T, Or>>();
-    assert(result != null, 'No FeedBlocProvider found in context');
+    assert(result != null, 'No GenericFeedProvider<$A,$Ob, $T, $Or> found in context');
     return result!;
   }
   final GenericFeedBloc<A, Ob, T, Or> bloc;
