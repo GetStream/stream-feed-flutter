@@ -85,7 +85,6 @@ void main() {
   final client = StreamFeedClient.connect(
     apiKey,
     token: const Token(userToken),
-    logLevel: Level.ALL,
   );
 
   runApp(
