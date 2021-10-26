@@ -90,13 +90,14 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
       _GenericReactionListCoreState<A, Ob, T, Or>();
 }
 
-class _GenericReactionListCoreState<A, Ob, T, Or> extends State<GenericReactionListCore<A, Ob, T, Or>> {
-  late GenericFeedBloc bloc;
+class _GenericReactionListCoreState<A, Ob, T, Or>
+    extends State<GenericReactionListCore<A, Ob, T, Or>> {
+  late GenericFeedBloc<A, Ob, T, Or> bloc;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    bloc = GenericFeedProvider.of(context).bloc;
+    bloc = GenericFeedProvider<A, Ob, T, Or>.of(context).bloc;
     loadData();
   }
 
