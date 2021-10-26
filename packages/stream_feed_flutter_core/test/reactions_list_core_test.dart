@@ -55,14 +55,13 @@ void main() {
   testWidgets('ReactionListCore', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        builder: (context, child) =>
-            GenericFeedProvider(
-              bloc: GenericFeedBloc(
-                client: mockClient,
-                analyticsClient: mockStreamAnalytics,
-              ),
-              child: child!,
-            ),
+        builder: (context, child) => GenericFeedProvider(
+          bloc: GenericFeedBloc(
+            client: mockClient,
+            analyticsClient: mockStreamAnalytics,
+          ),
+          child: child!,
+        ),
         home: Scaffold(
           body: GenericReactionListCore(
             reactionsBuilder: (context, reactions, idx) => const Offstage(),
