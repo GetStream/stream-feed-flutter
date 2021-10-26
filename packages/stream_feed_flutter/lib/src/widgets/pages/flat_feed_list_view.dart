@@ -26,9 +26,9 @@ enum TransitionType {
 ///
 /// Best used as the main page of an app.
 /// {@endtemplate}
-class FlatActivityListPage extends StatelessWidget {
-  /// Builds a [FlatActivityListPage].
-  const FlatActivityListPage({
+class FlatFeedListView extends StatelessWidget {
+  /// Builds a [FlatFeedListView].
+  const FlatFeedListView({
     Key? key,
     this.feedGroup = 'user',
     this.userId,
@@ -185,12 +185,13 @@ class FlatActivityListPage extends StatelessWidget {
     );
   }
 
-  void _pageRouteBuilder(
-      {required BuildContext context,
-      required TransitionType transitionType,
-      required GenericEnrichedActivity activity,
-      required Widget page,
-      required NavigatorState currentNavigator}) {
+  void _pageRouteBuilder({
+    required BuildContext context,
+    required TransitionType transitionType,
+    required GenericEnrichedActivity activity,
+    required Widget page,
+    required NavigatorState currentNavigator,
+  }) {
     //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:

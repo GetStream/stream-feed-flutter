@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/flat_activity_list.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/flat_feed_list_view.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart'
     hide FlatFeed;
 
@@ -53,7 +53,7 @@ void main() {
                   analyticsClient: mockStreamAnalytics,
                   client: mockClient,
                 ),
-                child: const FlatActivityListPage(
+                child: const FlatFeedListView(
                   feedGroup: 'user',
                 ),
               ),

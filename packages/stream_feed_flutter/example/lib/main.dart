@@ -354,7 +354,7 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
       body: IndexedStack(
         index: _pageIndex,
         children: [
-          FlatActivityListPage(
+          FlatFeedListView(
             flags: EnrichmentFlags()
                 .withReactionCounts()
                 .withOwnChildren()
@@ -657,7 +657,7 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
         ],
       ),
       body: Scrollbar(
-        child: FlatActivityListPage(
+        child: FlatFeedListView(
           flags: EnrichmentFlags()
               .withReactionCounts()
               .withOwnChildren()
