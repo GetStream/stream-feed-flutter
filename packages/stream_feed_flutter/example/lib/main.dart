@@ -340,6 +340,7 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
                 .withOwnChildren()
                 .withOwnReactions(),
             feedGroup: 'timeline',
+            nameJsonKey: 'full_name',
             userId: bloc.currentUser?.id,
             onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
             onUserTap: (user) => Navigator.of(context).push(
@@ -642,6 +643,7 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
               .withOwnChildren()
               .withOwnReactions(),
           feedGroup: 'user',
+          nameJsonKey: 'full_name',
           userId: widget.user?.id ?? bloc.currentUser!.id,
           onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
           onUserTap: (user) => debugPrint('hashtag pressed: ${user!.toJson()}'),
