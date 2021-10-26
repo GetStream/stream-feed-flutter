@@ -71,7 +71,6 @@ void main() {
             kind: kind,
           ),
         ),
-        // ))
       ),
     );
     verify(() => mockReactions.filter(lookupAttr, lookupValue,

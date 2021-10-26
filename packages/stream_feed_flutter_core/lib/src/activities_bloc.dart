@@ -303,8 +303,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     activitiesController.update(
         feedGroup,
         _activities //TODO: handle null safety
-            .updateIn(
-                updatedActivity, indexPath)); //List<EnrichedActivity>.from
+            .updateIn(updatedActivity, indexPath));
     return reaction;
   }
 
