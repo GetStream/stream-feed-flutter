@@ -75,7 +75,7 @@ extension UnshiftMapList on Map<String, List<Reaction>>? {
     result = this;
     final latestReactionsByKind = this?[kind] ?? [];
     if (result != null) {
-      result[kind] = latestReactionsByKind.unshift(reaction, type);
+      result = {...result, kind: latestReactionsByKind.unshift(reaction, type)};
     } else {
       result = {
         //TODO: handle decrement: should we throw?
@@ -134,12 +134,11 @@ extension UnshiftMapInt on Map<String, int>? {
 
 extension Unshift<T> on List<T> {
   List<T> unshift(T item, [ShiftType type = ShiftType.increment]) {
+    final result = List<T>.from(this);
     if (type == ShiftType.increment) {
-      return [item, ...this];
+      return [item, ...result];
     } else {
-      var result = this;
-      result.remove(item);
-      return result;
+      return result..remove(item);
     }
   }
 }
