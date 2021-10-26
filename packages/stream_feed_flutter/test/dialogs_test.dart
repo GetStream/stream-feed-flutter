@@ -141,23 +141,34 @@ void main() {
 
     group('AlertDialog', () {
       late MockFeedBloc<User, String, String, String> mockFeedBloc;
+      late MockStreamUser mockUser;
+      
       setUp(() {
         mockFeedBloc = MockFeedBloc();
+        mockUser = MockStreamUser();
+        when(() => mockFeedBloc.currentUser).thenReturn(mockUser);
+        when(() => mockUser.id).thenReturn('1');
         when(() => mockFeedBloc.getActivitiesStream('user')).thenAnswer((_) =>
             Stream.value(const [GenericEnrichedActivity(actor: User())]));
       });
       testWidgets('Comment', (tester) async {
         await mockNetworkImages(() async {
           await tester.pumpWidget(
-            StreamFeed(
-              bloc: mockFeedBloc,
-              child: Scaffold(
+            MaterialApp(
+              builder: (context, child) {
+                return StreamFeed(
+                  bloc: mockFeedBloc,
+                  child: child!,
+                );
+              },
+              home: Scaffold(
                 body: AlertDialogComment(
                   feedGroup: 'user',
-                  activity: GenericEnrichedActivity(
+                  activity: EnrichedActivity(
                     id: '1',
                     time: DateTime.now(),
                     actor: const User(
+                      id:'1',
                       data: {
                         'name': 'Rosemary',
                         'handle': '@rosemary',
