@@ -13,6 +13,7 @@ typedef ReactionsBuilder = Widget Function(
     BuildContext context, List<Reaction> reactions, int idx);
 
 typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
+typedef ReactionListCore = GenericReactionListCore<User, String, String, String>;
 
 typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 

@@ -39,8 +39,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
 /// information about the reactions.
-class ReactionListCore extends StatefulWidget {
-  const ReactionListCore({
+class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
+  const GenericReactionListCore({
     Key? key,
     required this.reactionsBuilder,
     required this.lookupValue,
@@ -86,17 +86,17 @@ class ReactionListCore extends StatefulWidget {
   final String? kind;
 
   @override
-  _ReactionListCoreState createState() =>
-      _ReactionListCoreState();
+  _GenericReactionListCoreState<A, Ob, T, Or> createState() =>
+      _GenericReactionListCoreState<A, Ob, T, Or>();
 }
 
-class _ReactionListCoreState extends State<ReactionListCore> {
+class _GenericReactionListCoreState<A, Ob, T, Or> extends State<GenericReactionListCore<A, Ob, T, Or>> {
   late GenericFeedBloc bloc;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    bloc = FeedProvider.of(context).bloc;
+    bloc = GenericFeedProvider.of(context).bloc;
     loadData();
   }
 
