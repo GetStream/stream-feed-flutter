@@ -130,6 +130,7 @@ class _GenericReactionListCoreState<A, Ob, T, Or>
           return ListView.builder(
             shrinkWrap: true,
             itemCount: reactions.length,
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, idx) => widget.reactionsBuilder(
               context,
               reactions,
