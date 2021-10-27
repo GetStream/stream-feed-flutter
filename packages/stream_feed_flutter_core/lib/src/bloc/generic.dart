@@ -7,9 +7,13 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 
+  /// The underlying client instance
   final StreamFeedClient client;
+
+  /// The current User
   StreamUser? get currentUser => client.currentUser;
 
+  /// The underlying analytics client
   final StreamAnalytics? analyticsClient;
 
   late ReactionsController reactionsController = ReactionsController();
@@ -81,7 +85,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
     final addedActivity = await flatFeed.addActivity(activity);
 
-    // TODO(Sacha): merge activity and enriched activity classes together
+    // TODO(Sacha): this is a hack. Merge activity and enriched activity classes together
     final enrichedActivity = await flatFeed
         .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
 
@@ -141,7 +145,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     reactionsController
       ..unshiftById(activity.id!, childReaction)
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
-    // return reaction;
+
     return childReaction;
   }
 
@@ -274,6 +278,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
         : print('warning: analytics: not enabled'); //TODO:logger
   }
 
+  /// Query reactions
   Future<void> queryReactions(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -361,7 +366,9 @@ class GenericFeedBloc<A, Ob, T, Or> {
     }
   }
 
-  /// Follows the given [flatFeed].
+  /* FOLLOW */
+
+  /// Follows the given [otherUser] id.
   Future<void> followFlatFeed(
     String otherUser,
   ) async {
@@ -370,7 +377,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     await timeline.follow(user);
   }
 
-  /// Unfollows the given [actingFeed].
+  /// Unfollows the given [otherUser] id.
   Future<void> unfollowFlatFeed(
     String otherUser,
   ) async {

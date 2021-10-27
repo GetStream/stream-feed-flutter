@@ -115,8 +115,7 @@ class _GenericReactionListCoreState<A, Ob, T, Or>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Reaction>>(
-        stream: bloc.getReactionsStream(widget.lookupValue,
-            widget.kind), //reactionsStreamFor(widget.lookupValue)
+        stream: bloc.getReactionsStream(widget.lookupValue, widget.kind),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return widget.onErrorWidget; //snapshot.error

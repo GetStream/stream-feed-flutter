@@ -16,7 +16,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///   @override
 ///   Widget build(BuildContext context) {
 ///     return Scaffold(
-///       body: FlatFeedCore(
+///       body: GenericFlatFeedCore(
 ///         onErrorWidget: Center(
 ///             child: Text('An error has occurred'),
 ///         ),
