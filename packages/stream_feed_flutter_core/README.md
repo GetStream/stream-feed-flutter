@@ -31,14 +31,14 @@ void main() {
               return InkWell(
                 child:  Column(children:[Text("${activities[index].actor}",Text("${activities[index].object}"))]),
                 onTap: (){
-                  Navigator.of(context).  MaterialPageRoute<void>(
+                  Navigator.of(context).push(MaterialPageRoute<void>(
             builder: (BuildContext context) =>  Scaffold(
           body: ReactionListCore(
             lookupValue:activity.id!,
             reactionsBuilder: (context, reactions, idx) =>  Text("${reaction.data?["text"]}"),
           ),
         ),
-          );
+          ));
                },
               );
             },
