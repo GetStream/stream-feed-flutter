@@ -136,8 +136,9 @@ class _GenericFlatFeedCoreState<A, Ob, T, Or>
         if (activities.isEmpty) {
           return widget.onEmptyWidget;
         }
-        return ListView.builder(
+        return ListView.separated(
           itemCount: activities.length,
+          separatorBuilder: (context, index) => const Divider(),
           itemBuilder: (context, idx) => widget.feedBuilder(
             context,
             activities,
