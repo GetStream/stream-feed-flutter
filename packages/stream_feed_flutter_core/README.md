@@ -35,7 +35,7 @@ void main() {
             builder: (BuildContext context) =>  Scaffold(
           body: ReactionListCore(
             lookupValue:activity.id!,
-            reactionsBuilder: (context, reactions, idx) =>  Text("${reaction.data?["text"]}"),
+            reactionsBuilder: (context, reactions, idx) =>  Text("${reactions[index].data?["text"]}"),
           ),
         ),
           ));
