@@ -77,7 +77,6 @@ class StreamHttpClient {
     } else {
       feedsError = StreamFeedsNetworkError.fromDioError(dioError);
     }
-    print(feedsError.errorCode);
     return feedsError..stackTrace = dioError.stackTrace;
   }
 
