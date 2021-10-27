@@ -634,7 +634,7 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
                       // user's feed.
                       if (snapshot.data!) {
                         await bloc.unfollowFlatFeed(widget.user!.id!);
-                        setState(() {});//TODO: make this reactive in core
+                        setState(() {}); //TODO: make this reactive in core
                       } else {
                         await bloc.followFlatFeed(widget.user!.id!);
                         setState(() {});
