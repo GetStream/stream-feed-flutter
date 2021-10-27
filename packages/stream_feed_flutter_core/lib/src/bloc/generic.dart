@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
@@ -13,7 +12,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   final StreamAnalytics? analyticsClient;
 
-  late ReactionsControllers reactionsControllers = ReactionsControllers();
+  late ReactionsController reactionsController = ReactionsController();
 
   late ActivitiesControllers<A, Ob, T, Or> activitiesController =
       ActivitiesControllers<A, Ob, T, Or>();
@@ -25,7 +24,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   /// The current reactions list.
   List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
-      reactionsControllers.getReactions(activityId, reaction);
+      reactionsController.getReactions(activityId, reaction);
 
   /// The current activities list as a stream.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(
@@ -37,7 +36,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
       //TODO: better name?
       String activityId,
       [String? kind]) {
-    return reactionsControllers.getStream(activityId, kind);
+    return reactionsController.getStream(activityId, kind);
   }
 
   void clearActivities(String feedGroup) =>
@@ -128,7 +127,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // remove reaction from rxstream
-    reactionsControllers
+    reactionsController
       ..unshiftById(activity.id!, childReaction, ShiftType.decrement)
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
   }
@@ -161,7 +160,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the rxstream
-    reactionsControllers
+    reactionsController
       ..unshiftById(activity.id!, childReaction)
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
     // return reaction;
@@ -202,7 +201,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // remove reaction from the stream
-    reactionsControllers.unshiftById(
+    reactionsController.unshiftById(
         activity.id!, reaction, ShiftType.decrement);
 
     activitiesController.update(
@@ -239,7 +238,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the stream
-    reactionsControllers.unshiftById(activity.id!, reaction);
+    reactionsController.unshiftById(activity.id!, reaction);
 
     activitiesController.update(
         feedGroup,
@@ -271,12 +270,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
     String? kind,
     EnrichmentFlags? flags,
   }) async {
-    reactionsControllers.init(lookupValue);
+    reactionsController.init(lookupValue);
     _queryReactionsLoadingControllers[lookupValue] =
         BehaviorSubject.seeded(false);
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
-    if (reactionsControllers.hasValue(lookupValue)) {
+    if (reactionsController.hasValue(lookupValue)) {
       _queryReactionsLoadingControllers[lookupValue]!
           .add(true); //TODO: fix null
     }
@@ -292,14 +291,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
         kind: kind,
       );
       final temp = oldReactions + reactionsResponse;
-      reactionsControllers.add(lookupValue, temp);
+      reactionsController.add(lookupValue, temp);
     } catch (e, stk) {
       // reset loading controller
       _queryReactionsLoadingControllers[lookupValue]?.add(false);
-      if (reactionsControllers.hasValue(lookupValue)) {
+      if (reactionsController.hasValue(lookupValue)) {
         _queryReactionsLoadingControllers[lookupValue]?.addError(e, stk);
       } else {
-        reactionsControllers.addError(lookupValue, e, stk);
+        reactionsController.addError(lookupValue, e, stk);
       }
     }
   }
@@ -390,7 +389,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   void dispose() {
     activitiesController.close();
-    reactionsControllers.close();
+    reactionsController.close();
     _queryActivitiesLoadingController.close();
     _queryReactionsLoadingControllers.forEach((key, value) {
       value.close();

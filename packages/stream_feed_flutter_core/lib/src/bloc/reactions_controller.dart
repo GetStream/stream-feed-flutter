@@ -4,7 +4,7 @@ import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 
 @visibleForTesting
-class ReactionsControllers {
+class ReactionsController {
   final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
 
   /// Init controller for given activityId.
