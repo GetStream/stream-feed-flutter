@@ -37,9 +37,11 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return reactionsController.getStream(activityId, kind);
   }
 
+  ///  Clear activities for a given feedGroup
   void clearActivities(String feedGroup) =>
       activitiesController.clearActivities(feedGroup);
 
+  ///  Clear all activities for a given feedGroups
   void clearAllActivities(List<String> feedGroups) =>
       activitiesController.clearAllActivities(feedGroups);
 
@@ -55,6 +57,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// The stream notifying the state of queryActivities call.
   Stream<bool> get queryActivitiesLoading =>
       _queryActivitiesLoadingController.stream;
+
+  /* ACTIVITIES */
 
   /// Add an activity to the feed.
   Future<Activity> onAddActivity({
@@ -96,40 +100,16 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return addedActivity;
   }
 
-  /// Remove child reaction.
-  Future<void> onRemoveChildReaction({
-    required String kind,
-    required GenericEnrichedActivity activity,
-    required Reaction childReaction,
-    required Reaction parentReaction,
+  Future<void> onRemoveActivity({
+    required String feedGroup,
+    required String activityId,
   }) async {
-    await client.reactions.delete(childReaction.id!);
-    final _reactions = getReactions(activity.id!, parentReaction);
-
-    final reactionPath = _reactions.getReactionPath(parentReaction);
-
-    final indexPath = _reactions.indexWhere(
-        (r) => r.id! == parentReaction.id); //TODO: handle null safety
-
-    final childrenCounts =
-        reactionPath.childrenCounts.unshiftByKind(kind, ShiftType.decrement);
-    final latestChildren = reactionPath.latestChildren
-        .unshiftByKind(kind, childReaction, ShiftType.decrement);
-    final ownChildren = reactionPath.ownChildren
-        .unshiftByKind(kind, childReaction, ShiftType.decrement);
-
-    final updatedReaction = reactionPath.copyWith(
-      ownChildren: ownChildren,
-      latestChildren: latestChildren,
-      childrenCounts: childrenCounts,
-    );
-
-    // remove reaction from rxstream
-    reactionsController
-      ..unshiftById(activity.id!, childReaction, ShiftType.decrement)
-      ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
+    await client.flatFeed(feedGroup).removeActivityById(activityId);
   }
 
+  /* CHILD REACTIONS */
+
+  /// Add child reaction
   Future<Reaction> onAddChildReaction({
     required String kind,
     required Reaction reaction,
@@ -165,6 +145,40 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return childReaction;
   }
 
+  /// Remove child reactions
+  Future<void> onRemoveChildReaction({
+    required String kind,
+    required GenericEnrichedActivity activity,
+    required Reaction childReaction,
+    required Reaction parentReaction,
+  }) async {
+    await client.reactions.delete(childReaction.id!);
+    final _reactions = getReactions(activity.id!, parentReaction);
+
+    final reactionPath = _reactions.getReactionPath(parentReaction);
+
+    final indexPath = _reactions.indexWhere(
+        (r) => r.id! == parentReaction.id); //TODO: handle null safety
+
+    final childrenCounts =
+        reactionPath.childrenCounts.unshiftByKind(kind, ShiftType.decrement);
+    final latestChildren = reactionPath.latestChildren
+        .unshiftByKind(kind, childReaction, ShiftType.decrement);
+    final ownChildren = reactionPath.ownChildren
+        .unshiftByKind(kind, childReaction, ShiftType.decrement);
+
+    final updatedReaction = reactionPath.copyWith(
+      ownChildren: ownChildren,
+      latestChildren: latestChildren,
+      childrenCounts: childrenCounts,
+    );
+
+    // remove reaction from rxstream
+    reactionsController
+      ..unshiftById(activity.id!, childReaction, ShiftType.decrement)
+      ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
+  }
+
   /// Remove reaction from the feed.
   Future<void> onRemoveReaction({
     required String kind,
@@ -184,8 +198,6 @@ class GenericFeedBloc<A, Ob, T, Or> {
     final reactionCounts =
         activityPath.reactionCounts.unshiftByKind(kind, ShiftType.decrement);
 
-    // final reaction =
-    //     reactionsFor(activity.id!).firstWhere((reaction) => reaction.id == id);
     final latestReactions = activityPath.latestReactions
         .unshiftByKind(kind, reaction, ShiftType.decrement);
 
@@ -205,6 +217,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
     activitiesController.update(
         feedGroup, _activities.updateIn(updatedActivity, indexPath));
   }
+
+  /* REACTIONS */
 
   /// Add a new reaction to the feed.
   Future<Reaction> onAddReaction({
@@ -274,8 +288,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
     if (reactionsController.hasValue(lookupValue)) {
-      _queryReactionsLoadingControllers[lookupValue]!
-          .add(true); //TODO: fix null
+      _queryReactionsLoadingControllers[lookupValue]!.add(true);
     }
 
     try {
@@ -392,12 +405,5 @@ class GenericFeedBloc<A, Ob, T, Or> {
     _queryReactionsLoadingControllers.forEach((key, value) {
       value.close();
     });
-  }
-
-  Future<void> onRemoveActivity({
-    required String feedGroup,
-    required String activityId,
-  }) async {
-    await client.flatFeed(feedGroup).removeActivityById(activityId);
   }
 }
