@@ -32,9 +32,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
       activitiesController.getStream(feedGroup);
 
   /// The current reactions list as a stream.
-  Stream<List<Reaction>>? getReactionsStream(
-      //TODO: better name?
-      String activityId,
+  Stream<List<Reaction>>? getReactionsStream(String activityId,
       [String? kind]) {
     return reactionsController.getStream(activityId, kind);
   }

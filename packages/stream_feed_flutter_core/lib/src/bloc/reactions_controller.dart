@@ -11,7 +11,7 @@ class ReactionsController {
   void init(String lookupValue) =>
       _controller[lookupValue] = BehaviorSubject<List<Reaction>>();
 
-  /// Retrieve with activityId the corresponding StreamController from the map
+  /// Retrieve with lookupValue the corresponding StreamController from the map
   /// of controllers.
   BehaviorSubject<List<Reaction>>? _getController(String lookupValue) =>
       _controller[lookupValue]; //TODO: handle null safety
