@@ -5,7 +5,7 @@ import 'package:stream_feed_flutter_core/src/states/empty.dart';
 
 void main() {
   testWidgets('EmptyStateWidget', (tester) async {
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(const MaterialApp(
         home: Scaffold(
       body: EmptyStateWidget(),
     )));
@@ -15,7 +15,7 @@ void main() {
 
   test('Default EmptyStateWidget debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
-    final emptyStateWidget = EmptyStateWidget();
+    const emptyStateWidget = EmptyStateWidget();
 
     // ignore: cascade_invocations
     emptyStateWidget.debugFillProperties(builder);
