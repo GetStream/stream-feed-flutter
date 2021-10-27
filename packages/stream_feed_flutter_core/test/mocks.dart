@@ -16,11 +16,6 @@ class MockReactionsControllers extends Mock implements ReactionsController {}
 
 class MockClient extends Mock implements StreamFeedClient {
   final Logger logger = MockLogger();
-
-  // ClientState _state;
-
-  // @override
-  // ClientState get state => _state ??= MockClientState();
 }
 
 class MockStreamUser extends Mock implements StreamUser {}
