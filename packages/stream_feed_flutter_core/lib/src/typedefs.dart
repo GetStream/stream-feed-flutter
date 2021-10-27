@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /// TODO: document me

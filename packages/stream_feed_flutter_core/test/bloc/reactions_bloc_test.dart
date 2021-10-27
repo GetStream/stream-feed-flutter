@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
+import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import '../mocks.dart';

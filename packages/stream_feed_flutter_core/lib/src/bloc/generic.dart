@@ -1,66 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
-class ActivitiesControllers<A, Ob, T, Or> {
-  final Map<String,
-          BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>>
-      _controller = {};
-
-  List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
-          String feedGroup) =>
-      _getController(feedGroup)?.valueOrNull;
-
-  Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getStream(
-          String feedGroup) =>
-      _getController(feedGroup)?.stream;
-
-  void init(String feedGroup) => _controller[feedGroup] =
-      BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
-
-  void clearActivities(String feedGroup) {
-    _getController(feedGroup)!.value = [];
-  }
-
-  void clearAllActivities(List<String> feedGroups) {
-    feedGroups.forEach((feedGroups) => init(feedGroups));
-  }
-
-  void close() {
-    _controller.forEach((key, value) {
-      value.close();
-    });
-  }
-
-  /// Check if controller is not empty.
-  bool hasValue(String feedGroup) =>
-      _getController(feedGroup)?.hasValue != null;
-
-  void add(String feedGroup,
-      List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
-    if (hasValue(feedGroup)) {
-      _getController(feedGroup)!.add(activities);
-    } //TODO: handle null safety
-  }
-
-  BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>? _getController(
-          String feedGroup) =>
-      _controller[feedGroup];
-
-  void update(String feedGroup,
-      List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
-    if (hasValue(feedGroup)) {
-      _getController(feedGroup)!.value = activities;
-    }
-  }
-
-  void addError(String feedGroup, Object e, StackTrace stk) {
-    if (hasValue(feedGroup)) {
-      _getController(feedGroup)!.addError(e, stk);
-    } //TODO: handle null safety
-  }
-}
+import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
+import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
+import 'package:stream_feed_flutter_core/src/extensions.dart';
 
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
@@ -70,10 +13,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   final StreamAnalytics? analyticsClient;
 
-  @visibleForTesting
   late ReactionsControllers reactionsControllers = ReactionsControllers();
 
-  @visibleForTesting
   late ActivitiesControllers<A, Ob, T, Or> activitiesController =
       ActivitiesControllers<A, Ob, T, Or>();
 
@@ -461,96 +402,5 @@ class GenericFeedBloc<A, Ob, T, Or> {
     required String activityId,
   }) async {
     await client.flatFeed(feedGroup).removeActivityById(activityId);
-  }
-}
-
-class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
-  const GenericFeedProvider({
-    Key? key,
-    required this.bloc,
-    required Widget child,
-  }) : super(key: key, child: child);
-
-  factory GenericFeedProvider.of(BuildContext context) {
-    final result = context.dependOnInheritedWidgetOfExactType<
-        GenericFeedProvider<A, Ob, T, Or>>();
-    assert(result != null,
-        'No GenericFeedProvider<$A, $Ob, $T, $Or> found in context');
-    return result!;
-  }
-  final GenericFeedBloc<A, Ob, T, Or> bloc;
-
-  @override
-  bool updateShouldNotify(GenericFeedProvider old) => bloc != old.bloc; //
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc));
-  }
-}
-
-class ReactionsControllers {
-  final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
-
-  /// Init controller for given activityId.
-  void init(String lookupValue) =>
-      _controller[lookupValue] = BehaviorSubject<List<Reaction>>();
-
-  /// Retrieve with activityId the corresponding StreamController from the map
-  /// of controllers.
-  BehaviorSubject<List<Reaction>>? _getController(String lookupValue) =>
-      _controller[lookupValue]; //TODO: handle null safety
-
-  ///Retrieve Stream of reactions with activityId and filter it if necessary
-  Stream<List<Reaction>>? getStream(String lookupValue, [String? kind]) {
-    final isFiltered = kind != null;
-    final reactionStream = _getController(lookupValue)?.stream;
-    return isFiltered
-        ? reactionStream?.map((reactions) =>
-            reactions.where((reaction) => reaction.kind == kind).toList())
-        : reactionStream; //TODO: handle null safety
-  }
-
-  /// Convert the Stream of reactions to a List of reactions.
-  List<Reaction> getReactions(String lookupValue, [Reaction? reaction]) =>
-      _getController(lookupValue)?.valueOrNull ??
-      (reaction != null ? [reaction] : <Reaction>[]);
-
-  /// Check if controller is not empty.
-  bool hasValue(String lookupValue) =>
-      _getController(lookupValue)?.hasValue != null;
-
-  /// Lookup latest Reactions by Id and inserts the given reaction to the
-  /// beginning of the list.
-  void unshiftById(String lookupValue, Reaction reaction,
-          [ShiftType type = ShiftType.increment]) =>
-      _controller.unshiftById(lookupValue, reaction, type);
-
-  /// Close every stream controllers.
-  void close() => _controller.forEach((key, value) {
-        value.close();
-      });
-
-  /// Update controller value with given reactions.
-  void update(String lookupValue, List<Reaction> reactions) {
-    if (hasValue(lookupValue)) {
-      _getController(lookupValue)!.value = reactions;
-    }
-  }
-
-  /// Add given reactions to the correct controller.
-  void add(String lookupValue, List<Reaction> temp) {
-    if (hasValue(lookupValue)) {
-      _getController(lookupValue)!.add(temp);
-    } //TODO: handle null safety
-  }
-
-  /// Add error to the correct controller.
-  void addError(String lookupValue, Object e, StackTrace stk) {
-    if (hasValue(lookupValue)) {
-      _getController(lookupValue)!.addError(e, stk);
-    } //TODO: handle null safety
   }
 }

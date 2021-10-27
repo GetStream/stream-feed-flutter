@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
 import 'package:stream_feed_flutter_core/src/states/empty.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';

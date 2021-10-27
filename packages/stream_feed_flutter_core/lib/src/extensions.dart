@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 
@@ -37,10 +38,6 @@ extension EnrichedActivityX<A, Ob, T, Or>
 
 extension UpdateIn<A, Ob, T, Or>
     on List<GenericEnrichedActivity<A, Ob, T, Or>> {
-  // EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
-  //     this.firstWhere(
-  //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
-
   List<GenericEnrichedActivity<A, Ob, T, Or>> updateIn(
       GenericEnrichedActivity<A, Ob, T, Or> enrichedActivity, int indexPath) {
     var result = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(this);
@@ -53,10 +50,6 @@ extension UpdateIn<A, Ob, T, Or>
 }
 
 extension UpdateInReaction on List<Reaction> {
-  // EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
-  //     this.firstWhere(
-  //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
-
   List<Reaction> updateIn(Reaction enrichedActivity, int indexPath) {
     var result = List<Reaction>.from(this);
     result.isNotEmpty
@@ -86,6 +79,7 @@ extension UnshiftMapList on Map<String, List<Reaction>>? {
   }
 }
 
+@visibleForTesting
 extension UnshiftMapController
     on Map<String, BehaviorSubject<List<Reaction>>>? {
   ///Lookup latest Reactions by Id and inserts the given reaction to the beginning of the list
