@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/media/fullscreen_media.dart';
 import 'package:stream_feed_flutter/src/media/media.dart';
+import 'package:stream_feed_flutter/src/media/media_widget.dart';
 
 // ignore_for_file: cascade_invocations
 
@@ -37,9 +38,8 @@ class GalleryPreview extends StatelessWidget {
               children: [
                 FlexibleImage(
                   media: media,
-                  child: Image.network(
-                    media.first.url,
-                    fit: BoxFit.cover,
+                  child: MediaWidget(
+                    media: media[0],
                   ),
                 ),
                 if (media.length >= 2)
@@ -48,9 +48,8 @@ class GalleryPreview extends StatelessWidget {
                     index: 1,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 2),
-                      child: Image.network(
-                        media[1].url,
-                        fit: BoxFit.cover,
+                      child: MediaWidget(
+                        media: media[1],
                       ),
                     ),
                   ),
@@ -69,9 +68,8 @@ class GalleryPreview extends StatelessWidget {
                     FlexibleImage(
                       media: media,
                       index: 2,
-                      child: Image.network(
-                        media[2].url,
-                        fit: BoxFit.cover,
+                      child: MediaWidget(
+                        media: media[2],
                       ),
                     ),
                     if (media.length >= 4)
@@ -83,9 +81,8 @@ class GalleryPreview extends StatelessWidget {
                           child: Stack(
                             fit: StackFit.expand,
                             children: [
-                              Image.network(
-                                media[3].url,
-                                fit: BoxFit.cover,
+                              MediaWidget(
+                                media: media[3],
                               ),
                               if (media.length > 4)
                                 Positioned.fill(
