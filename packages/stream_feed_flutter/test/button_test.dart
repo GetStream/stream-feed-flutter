@@ -8,7 +8,7 @@ import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/reaction_list_view.dart';
 import 'package:stream_feed_flutter/src/widgets/stream_feed_app.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
@@ -50,14 +50,17 @@ void main() {
         )).thenAnswer((_) async => reactions);
     await tester.pumpWidget(
       MaterialApp(
-        builder: (context, child) => StreamFeed(
-            bloc: FeedBloc(
+        builder: (context, child) {
+          return StreamFeed(
+            bloc: GenericFeedBloc(
               client: mockClient,
               analyticsClient: mockStreamAnalytics,
             ),
-            child: child!),
+            child: child!,
+          );
+        },
         home: Scaffold(
-          body: ReactionListPage(
+          body: ReactionListView(
             activity: const GenericEnrichedActivity(id: 'id'),
             reactionBuilder: (context, reaction) => const Offstage(),
             lookupValue: lookupValue,
@@ -170,7 +173,7 @@ void main() {
             GenericEnrichedActivity<User, String, String, String>(
           id: 'id',
           time: now,
-          actor: User(data: const {
+          actor: const User(data: {
             'name': 'Rosemary',
             'handle': '@rosemary',
             'subtitle': 'likes playing fresbee in the park',
@@ -191,9 +194,15 @@ void main() {
         when(() => mockClient.reactions).thenReturn(mockReactions);
         when(() => mockReactions.addChild('like', parentId))
             .thenAnswer((_) async => childReaction);
-        await tester.pumpWidget(StreamFeed(
-            bloc: bloc,
-            child: Scaffold(
+        await tester.pumpWidget(
+          MaterialApp(
+            builder: (context, child) {
+              return StreamFeed(
+                bloc: bloc,
+                child: child!,
+              );
+            },
+            home: Scaffold(
               body: ChildReactionToggleIcon(
                 activity: reactedActivity,
                 hoverColor: Colors.lightBlue,
@@ -203,7 +212,9 @@ void main() {
                 inactiveIcon: inactiveIcon,
                 activeIcon: activeIcon,
               ),
-            )));
+            ),
+          ),
+        );
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
         await tester.tap(reactionIcon);
@@ -346,8 +357,8 @@ void main() {
           childrenCounts: const {
             'like': 0,
           },
-          latestChildren: const {'like': const []},
-          ownChildren: const {'like': const []},
+          latestChildren: const {'like': []},
+          ownChildren: const {'like': []},
         )
       ];
       when(() => mockClient.reactions).thenReturn(mockReactions);
@@ -402,25 +413,34 @@ void main() {
           .thenAnswer((invocation) => Future.value());
 
       await tester.pumpWidgetBuilder(
-        StreamFeed(
-          bloc: bloc,
-          child: Scaffold(
-              body: ReactionToggleIcon(
-            ownReactions: const [reaction],
-            activity:
-                GenericEnrichedActivity(id: activityId, reactionCounts: const {
-              'like': 1300
-            }, ownReactions: const {
-              'like': [reaction]
-            }, latestReactions: const {
-              'like': [reaction]
-            }),
-            feedGroup: feedGroup,
-            kind: kind,
-            activeIcon: activeIcon,
-            count: 1300,
-            inactiveIcon: inactiveIcon,
-          )),
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeed(
+              bloc: bloc,
+              child: child!,
+            );
+          },
+          home: Scaffold(
+            body: ReactionToggleIcon(
+              ownReactions: const [reaction],
+              activity: GenericEnrichedActivity(
+                  id: activityId,
+                  reactionCounts: const {
+                    'like': 1300
+                  },
+                  ownReactions: const {
+                    'like': [reaction]
+                  },
+                  latestReactions: const {
+                    'like': [reaction]
+                  }),
+              feedGroup: feedGroup,
+              kind: kind,
+              activeIcon: activeIcon,
+              count: 1300,
+              inactiveIcon: inactiveIcon,
+            ),
+          ),
         ),
         surfaceSize: const Size(125, 100),
       );

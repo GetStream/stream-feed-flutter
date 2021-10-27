@@ -49,9 +49,9 @@ void main() {
 
       expect(
           () => FeedProvider.of(childKey.currentState!.context),
-          throwsA(predicate<AssertionError>(
-              (e) => e.message == 'No FeedBlocProvider found in context')));
-      // expect(find.byKey(childKey), findsOneWidget);
+          throwsA(predicate<AssertionError>((e) =>
+              e.message ==
+              'No GenericFeedProvider<User, String, String, String> found in context')));
     },
   );
 }

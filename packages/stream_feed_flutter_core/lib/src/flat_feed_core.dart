@@ -121,8 +121,9 @@ class _GenericFlatFeedCoreState<A, Ob, T, Or>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<GenericEnrichedActivity<A, Ob, T, Or>>>(
-      stream:
-          GenericFeedProvider<A, Ob, T, Or>.of(context).bloc.activitiesStream,
+      stream: GenericFeedProvider<A, Ob, T, Or>.of(context)
+          .bloc
+          .getActivitiesStream(widget.feedGroup),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return widget

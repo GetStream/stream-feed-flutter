@@ -26,11 +26,12 @@ enum TransitionType {
 ///
 /// Best used as the main page of an app.
 /// {@endtemplate}
-class FlatActivityListPage extends StatelessWidget {
-  /// Builds a [FlatActivityListPage].
-  const FlatActivityListPage({
+class FlatFeedListView extends StatelessWidget {
+  /// Builds a [FlatFeedListView].
+  const FlatFeedListView({
     Key? key,
     this.feedGroup = 'user',
+    this.userId,
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
@@ -117,11 +118,14 @@ class FlatActivityListPage extends StatelessWidget {
   /// TODO: document me
   final String nameJsonKey;
 
+  final String? userId;
+
   @override
   Widget build(BuildContext context) {
     // print(
     //     "bloc: ${DefaultFeedBlocProvider.of(context).navigatorKey!.currentState}");
     return FlatFeedCore(
+      userId: userId,
       flags: flags,
       limit: limit,
       offset: offset,
@@ -163,6 +167,7 @@ class FlatActivityListPage extends StatelessWidget {
                   title: const Text('Post'),
                 ),
                 body: CommentView(
+                  feedGroup: feedGroup,
                   nameJsonKey: nameJsonKey,
                   handleJsonKey: handleJsonKey,
                   activity: activity,
@@ -180,12 +185,13 @@ class FlatActivityListPage extends StatelessWidget {
     );
   }
 
-  void _pageRouteBuilder(
-      {required BuildContext context,
-      required TransitionType transitionType,
-      required GenericEnrichedActivity activity,
-      required Widget page,
-      required NavigatorState currentNavigator}) {
+  void _pageRouteBuilder({
+    required BuildContext context,
+    required TransitionType transitionType,
+    required GenericEnrichedActivity activity,
+    required Widget page,
+    required NavigatorState currentNavigator,
+  }) {
     //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:

@@ -3,6 +3,65 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+class ActivitiesControllers<A, Ob, T, Or> {
+  final Map<String,
+          BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>>
+      _controller = {};
+
+  List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
+          String feedGroup) =>
+      _getController(feedGroup)?.valueOrNull;
+
+  Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getStream(
+          String feedGroup) =>
+      _getController(feedGroup)?.stream;
+
+  void init(String feedGroup) => _controller[feedGroup] =
+      BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
+
+  void clearActivities(String feedGroup) {
+    _getController(feedGroup)!.value = [];
+  }
+
+  void clearAllActivities(List<String> feedGroups) {
+    feedGroups.forEach((feedGroups) => init(feedGroups));
+  }
+
+  void close() {
+    _controller.forEach((key, value) {
+      value.close();
+    });
+  }
+
+  /// Check if controller is not empty.
+  bool hasValue(String feedGroup) =>
+      _getController(feedGroup)?.hasValue != null;
+
+  void add(String feedGroup,
+      List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
+    if (hasValue(feedGroup)) {
+      _getController(feedGroup)!.add(activities);
+    } //TODO: handle null safety
+  }
+
+  BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>? _getController(
+          String feedGroup) =>
+      _controller[feedGroup];
+
+  void update(String feedGroup,
+      List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
+    if (hasValue(feedGroup)) {
+      _getController(feedGroup)!.value = activities;
+    }
+  }
+
+  void addError(String feedGroup, Object e, StackTrace stk) {
+    if (hasValue(feedGroup)) {
+      _getController(feedGroup)!.addError(e, stk);
+    } //TODO: handle null safety
+  }
+}
+
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 
@@ -11,17 +70,26 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   final StreamAnalytics? analyticsClient;
 
+  @visibleForTesting
+  late ReactionsControllers reactionsControllers = ReactionsControllers();
+
+  @visibleForTesting
+  late ActivitiesControllers<A, Ob, T, Or> activitiesController =
+      ActivitiesControllers<A, Ob, T, Or>();
+
   /// The current activities list.
-  List<GenericEnrichedActivity<A, Ob, T, Or>>? get activities =>
-      _activitiesController.valueOrNull;
+  List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
+          String feedGroup) =>
+      activitiesController.getActivities(feedGroup);
 
   /// The current reactions list.
   List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
       reactionsControllers.getReactions(activityId, reaction);
 
   /// The current activities list as a stream.
-  Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>> get activitiesStream =>
-      _activitiesController.stream;
+  Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(
+          String feedGroup) =>
+      activitiesController.getStream(feedGroup);
 
   /// The current reactions list as a stream.
   Stream<List<Reaction>>? getReactionsStream(
@@ -31,11 +99,11 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return reactionsControllers.getStream(activityId, kind);
   }
 
-  @visibleForTesting
-  late ReactionsControllers reactionsControllers = ReactionsControllers();
+  void clearActivities(String feedGroup) =>
+      activitiesController.clearActivities(feedGroup);
 
-  final _activitiesController =
-      BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
+  void clearAllActivities(List<String> feedGroups) =>
+      activitiesController.clearAllActivities(feedGroups);
 
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
@@ -75,12 +143,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
     final enrichedActivity = await flatFeed
         .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
 
-    final _activities = activities ?? [];
+    final _activities = getActivities(feedGroup) ?? [];
 
     // ignore: cascade_invocations
     _activities.insert(0, enrichedActivity);
 
-    _activitiesController.add(_activities);
+    activitiesController.add(feedGroup, _activities);
 
     await trackAnalytics(
       label: 'post',
@@ -91,11 +159,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
   }
 
   /// Remove child reaction.
-  Future<void> onRemoveChildReaction(
-      {required String kind,
-      required GenericEnrichedActivity activity,
-      required Reaction childReaction,
-      required Reaction parentReaction}) async {
+  Future<void> onRemoveChildReaction({
+    required String kind,
+    required GenericEnrichedActivity activity,
+    required Reaction childReaction,
+    required Reaction parentReaction,
+  }) async {
     await client.reactions.delete(childReaction.id!);
     final _reactions = getReactions(activity.id!, parentReaction);
 
@@ -123,13 +192,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
   }
 
-  Future<Reaction> onAddChildReaction(
-      {required String kind,
-      required Reaction reaction,
-      required GenericEnrichedActivity activity,
-      Map<String, Object>? data,
-      String? userId,
-      List<FeedId>? targetFeeds}) async {
+  Future<Reaction> onAddChildReaction({
+    required String kind,
+    required Reaction reaction,
+    required GenericEnrichedActivity activity,
+    Map<String, Object>? data,
+    String? userId,
+    List<FeedId>? targetFeeds,
+  }) async {
     final childReaction = await client.reactions.addChild(kind, reaction.id!,
         data: data, userId: userId, targetFeeds: targetFeeds);
     final _reactions = getReactions(activity.id!, reaction);
@@ -167,7 +237,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     await client.reactions.delete(reaction.id!);
     await trackAnalytics(
         label: 'un$kind', foreignId: activity.foreignId, feedGroup: feedGroup);
-    final _activities = activities ?? [activity];
+    final _activities = getActivities(feedGroup) ?? [activity];
     final activityPath = _activities.getEnrichedActivityPath(activity);
 
     final indexPath = _activities
@@ -194,8 +264,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
     reactionsControllers.unshiftById(
         activity.id!, reaction, ShiftType.decrement);
 
-    _activitiesController.value =
-        _activities.updateIn(updatedActivity, indexPath);
+    activitiesController.update(
+        feedGroup, _activities.updateIn(updatedActivity, indexPath));
   }
 
   /// Add a new reaction to the feed.
@@ -210,7 +280,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
     await trackAnalytics(
         label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
-    final _activities = activities ?? [activity];
+    final _activities = getActivities(feedGroup) ?? [activity];
     final activityPath = _activities.getEnrichedActivityPath(activity);
     final indexPath = _activities
         .indexWhere((a) => a.id! == activity.id); //TODO: handle null safety
@@ -230,16 +300,19 @@ class GenericFeedBloc<A, Ob, T, Or> {
     // adds reaction to the stream
     reactionsControllers.unshiftById(activity.id!, reaction);
 
-    _activitiesController.value = _activities //TODO: handle null safety
-        .updateIn(updatedActivity, indexPath); //List<EnrichedActivity>.from
+    activitiesController.update(
+        feedGroup,
+        _activities //TODO: handle null safety
+            .updateIn(updatedActivity, indexPath));
     return reaction;
   }
 
   /// Track analytics.
-  Future<void> trackAnalytics(
-      {required String label,
-      String? foreignId,
-      required String feedGroup}) async {
+  Future<void> trackAnalytics({
+    required String label,
+    String? foreignId,
+    required String feedGroup,
+  }) async {
     analyticsClient != null
         ? await analyticsClient!.trackEngagement(Engagement(
             content: Content(foreignId: FeedId.fromId(foreignId)),
@@ -302,15 +375,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
     //TODO: no way to parameterized marker?
   }) async {
+    activitiesController.init(feedGroup);
     if (_queryActivitiesLoadingController.value == true) return;
 
-    if (_activitiesController.hasValue) {
+    if (activitiesController.hasValue(feedGroup)) {
       _queryActivitiesLoadingController.add(true);
     }
 
     try {
-      final oldActivities =
-          List<GenericEnrichedActivity<A, Ob, T, Or>>.from(activities ?? []);
       final activitiesResponse = await client
           .flatFeed(feedGroup, userId)
           .getEnrichedActivities<A, Ob, T, Or>(
@@ -322,33 +394,38 @@ class GenericFeedBloc<A, Ob, T, Or> {
             ranking: ranking,
           );
 
-      final temp = oldActivities + activitiesResponse;
-      _activitiesController.add(temp);
+      activitiesController.add(feedGroup, activitiesResponse);
+      if (activitiesController.hasValue(feedGroup) &&
+          _queryActivitiesLoadingController.value) {
+        _queryActivitiesLoadingController.sink.add(false);
+      }
     } catch (e, stk) {
       // reset loading controller
       _queryActivitiesLoadingController.add(false);
-      if (_activitiesController.hasValue) {
+      if (activitiesController.hasValue(feedGroup)) {
         _queryActivitiesLoadingController.addError(e, stk);
       } else {
-        _activitiesController.addError(e, stk);
+        activitiesController.addError(feedGroup, e, stk);
       }
     }
   }
 
   /// Follows the given [flatFeed].
-  Future<void> followUser(
-    FlatFeed flatFeed,
+  Future<void> followFlatFeed(
+    String otherUser,
   ) async {
-    final currentUserFeed = client.flatFeed('user', currentUser!.id);
-    await currentUserFeed.follow(flatFeed);
+    final timeline = client.flatFeed('timeline');
+    final user = client.flatFeed('user', otherUser);
+    await timeline.follow(user);
   }
 
-  /// Unfollows the given [flatFeed].
-  Future<void> unfollowUser(
-    FlatFeed flatFeed,
+  /// Unfollows the given [actingFeed].
+  Future<void> unfollowFlatFeed(
+    String otherUser,
   ) async {
-    final currentUserFeed = client.flatFeed('user', currentUser!.id);
-    await currentUserFeed.unfollow(flatFeed);
+    final timeline = client.flatFeed('timeline');
+    final user = client.flatFeed('user', otherUser);
+    await timeline.unfollow(user);
   }
 
   /// Checks whether the current user is following a feed with the given
@@ -360,18 +437,18 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// user. If no results are found, this means that the current user is not
   /// following the given user.
   Future<bool> isFollowingUser(String userId) async {
-    final following = await client.flatFeed('user', userId).following(
+    final following = await client.flatFeed('timeline').following(
       limit: 1,
       offset: 0,
       filter: [
-        FeedId.id('user:${currentUser?.id}'),
+        FeedId.id('user:$userId'),
       ],
     );
     return following.isNotEmpty;
   }
 
   void dispose() {
-    _activitiesController.close();
+    activitiesController.close();
     reactionsControllers.close();
     _queryActivitiesLoadingController.close();
     _queryReactionsLoadingControllers.forEach((key, value) {
@@ -379,37 +456,38 @@ class GenericFeedBloc<A, Ob, T, Or> {
     });
   }
 
-  Future<void> onRemoveActivity(
-      {required String feedGroup, required String activityId}) async {
+  Future<void> onRemoveActivity({
+    required String feedGroup,
+    required String activityId,
+  }) async {
     await client.flatFeed(feedGroup).removeActivityById(activityId);
   }
 }
 
 class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
-  const GenericFeedProvider(
-      {Key? key, required this.bloc, required Widget child, this.navigatorKey})
-      : super(key: key, child: child);
+  const GenericFeedProvider({
+    Key? key,
+    required this.bloc,
+    required Widget child,
+  }) : super(key: key, child: child);
 
   factory GenericFeedProvider.of(BuildContext context) {
     final result = context.dependOnInheritedWidgetOfExactType<
         GenericFeedProvider<A, Ob, T, Or>>();
-    assert(result != null, 'No FeedBlocProvider found in context');
+    assert(result != null,
+        'No GenericFeedProvider<$A, $Ob, $T, $Or> found in context');
     return result!;
   }
   final GenericFeedBloc<A, Ob, T, Or> bloc;
-  final GlobalKey<NavigatorState>? navigatorKey;
 
   @override
-  bool updateShouldNotify(GenericFeedProvider old) =>
-      navigatorKey != old.navigatorKey || bloc != old.bloc; //
+  bool updateShouldNotify(GenericFeedProvider old) => bloc != old.bloc; //
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc))
-      ..add(DiagnosticsProperty<GlobalKey<NavigatorState>?>(
-          'navigatorKey', navigatorKey));
+        .add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc));
   }
 }
 

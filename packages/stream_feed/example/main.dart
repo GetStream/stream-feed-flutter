@@ -340,11 +340,16 @@ Future<void> main() async {
 
   client = StreamFeedClient.connect(apiKey, token: frontendToken);
 // ensure the user data is stored on Stream
-  await client.setUser({
-    'name': 'John Doe',
-    'occupation': 'Software Engineer',
-    'gender': 'male'
-  });
+  await client.setUser(
+    const User(
+      data: {
+        'name': 'John Doe',
+        'occupation': 'Software Engineer',
+        'gender': 'male'
+      },
+    ),
+    frontendToken,
+  );
 
   // create a new user, if the user already exist an error is returned
   // await client.user('john-doe').create({

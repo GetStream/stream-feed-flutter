@@ -173,11 +173,12 @@ class ReactionToggleIcon extends StatelessWidget {
 
   Future<void> addReaction(BuildContext context) async {
     final reaction = await FeedProvider.of(context).bloc.onAddReaction(
-        //TODO: get rid of mutations in StreamFeedProvider
-        kind: kind,
-        activity: activity,
-        data: data,
-        feedGroup: feedGroup);
+          //TODO: get rid of mutations in StreamFeedProvider
+          kind: kind,
+          activity: activity,
+          data: data,
+          feedGroup: feedGroup,
+        );
   }
 
   Future<void> removeReaction(BuildContext context) async {

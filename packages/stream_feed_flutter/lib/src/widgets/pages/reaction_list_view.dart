@@ -8,9 +8,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// {@template reaction_list_page}
 /// Renders a list of reactions to a post.
 /// {@endtemplate}
-class ReactionListPage extends StatelessWidget {
-  /// Builds a [ReactionListPage].
-  ReactionListPage({
+class ReactionListView extends StatelessWidget {
+  /// Builds a [ReactionListView].
+  ReactionListView({
     Key? key,
     required this.activity,
     this.onReactionTap,
@@ -79,7 +79,6 @@ class ReactionListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     //  debugCheckHasReactionsProvider(context);
     return ReactionListCore(
-      bloc: FeedProvider.of(context).bloc,
       lookupValue: _lookupValue, //TODO: handle null safety
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,

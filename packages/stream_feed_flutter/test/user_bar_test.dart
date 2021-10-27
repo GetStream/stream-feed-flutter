@@ -1,21 +1,36 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+import 'mock.dart';
+
 void main() {
+  late MockStreamFeedClient mockClient;
+  late MockStreamUser mockUser;
+
+  setUpAll(() {
+    mockClient = MockStreamFeedClient();
+    mockUser = MockStreamUser();
+    when(() => mockClient.currentUser).thenReturn(mockUser);
+    when(() => mockUser.id).thenReturn('test');
+  });
+
   testWidgets('UserBar', (tester) async {
     await mockNetworkImages(() async {
       await tester.pumpWidget(
         MaterialApp(
           builder: (context, child) {
-            return StreamFeedTheme(
-              data: StreamFeedThemeData.light(),
+            return StreamFeed(
+              bloc: FeedBloc(
+                client: mockClient,
+              ),
               child: child!,
             );
           },
