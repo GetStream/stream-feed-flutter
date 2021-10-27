@@ -114,7 +114,6 @@ class GenericFeedBloc<A, Ob, T, Or> {
     _activities.removeWhere((element) => element.id == activityId);
     activitiesController.add(feedGroup, _activities);
   }
-
   /* CHILD REACTIONS */
 
   /// Add child reaction
