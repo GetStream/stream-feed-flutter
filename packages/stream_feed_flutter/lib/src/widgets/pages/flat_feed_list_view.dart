@@ -122,8 +122,6 @@ class FlatFeedListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(
-    //     "bloc: ${DefaultFeedBlocProvider.of(context).navigatorKey!.currentState}");
     return FlatFeedCore(
       userId: userId,
       flags: flags,
@@ -136,7 +134,6 @@ class FlatFeedListView extends StatelessWidget {
       onErrorWidget: onErrorWidget,
       //TODO: activity type Flat?
       feedBuilder: (context, activities, idx) {
-        // print("feedBuilder ${activities[idx]}");
         return ActivityWidget(
           activity: activities[idx],
           feedGroup: feedGroup,
@@ -157,10 +154,6 @@ class FlatFeedListView extends StatelessWidget {
               context: context,
               transitionType: transitionType,
               currentNavigator: Navigator.of(context),
-              //  DefaultFeedBlocProvider.of(context)
-              //     .navigatorKey!
-              //     .currentState!
-              //TODO: hmm doesnt work
               page: Scaffold(
                 appBar: AppBar(
                   // TODO: Parameterize me
@@ -192,7 +185,6 @@ class FlatFeedListView extends StatelessWidget {
     required Widget page,
     required NavigatorState currentNavigator,
   }) {
-    //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:
         currentNavigator.push(
