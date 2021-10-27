@@ -109,6 +109,10 @@ class GenericFeedBloc<A, Ob, T, Or> {
     required String activityId,
   }) async {
     await client.flatFeed(feedGroup).removeActivityById(activityId);
+    final _activities = getActivities(feedGroup) ?? [];
+    // ignore: cascade_invocations
+    _activities.removeWhere((element) => element.id == activityId);
+    activitiesController.add(feedGroup, _activities);
   }
 
   /* CHILD REACTIONS */
