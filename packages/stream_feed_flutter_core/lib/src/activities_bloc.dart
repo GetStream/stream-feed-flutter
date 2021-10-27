@@ -151,7 +151,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     activitiesController.add(feedGroup, _activities);
 
     await trackAnalytics(
-      label: 'post',
+      label: verb,
       foreignId: activity.foreignId,
       feedGroup: feedGroup,
     ); //TODO: remove hardcoded value
