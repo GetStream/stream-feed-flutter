@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 @visibleForTesting
-class ActivitiesControllers<A, Ob, T, Or> {
+class ActivitiesController<A, Ob, T, Or> {
   final Map<String,
           BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>>
       _controller = {};

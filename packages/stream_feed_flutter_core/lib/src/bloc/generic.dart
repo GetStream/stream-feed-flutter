@@ -14,8 +14,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   late ReactionsController reactionsController = ReactionsController();
 
-  late ActivitiesControllers<A, Ob, T, Or> activitiesController =
-      ActivitiesControllers<A, Ob, T, Or>();
+  late ActivitiesController<A, Ob, T, Or> activitiesController =
+      ActivitiesController<A, Ob, T, Or>();
 
   /// The current activities list.
   List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(

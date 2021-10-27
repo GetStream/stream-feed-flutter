@@ -125,7 +125,7 @@ void main() {
     });
 
     test('onAddReaction', () async {
-      final controller = ActivitiesControllers();
+      final controller = ActivitiesController();
       const addedReaction = Reaction(id: '1');
       // ignore: cascade_invocations
       controller.init(feedGroup);
@@ -165,7 +165,7 @@ void main() {
       //TODO: test reaction Stream
     });
     test('onRemoveReaction', () async {
-      final controller = ActivitiesControllers();
+      final controller = ActivitiesController();
       const reactionId = 'reactionId';
       const reaction = Reaction(id: reactionId);
       controller.init(feedGroup);
@@ -323,7 +323,7 @@ void main() {
     test(
         '''When we await onAddActivity the stream gets updated with the new expected value''',
         () async {
-      final controller = ActivitiesControllers();
+      final controller = ActivitiesController();
       // ignore: cascade_invocations
       controller.init(feedGroup);
       bloc.activitiesController = controller;

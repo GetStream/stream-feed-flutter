@@ -7,7 +7,7 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 class ReactionsController {
   final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
 
-  /// Init controller for given activityId.
+  /// Init controller for given lookupValue.
   void init(String lookupValue) =>
       _controller[lookupValue] = BehaviorSubject<List<Reaction>>();
 
