@@ -83,8 +83,7 @@ void main() {
       );
 
       test("don't throw if secret provided while running on server-side", () {
-        StreamFeedClient('apiKey',
-            secret: 'secret', runner: Runner.server);
+        StreamFeedClient('apiKey', secret: 'secret', runner: Runner.server);
       });
 
       test("don't throw if token provided while running on client-side", () {
