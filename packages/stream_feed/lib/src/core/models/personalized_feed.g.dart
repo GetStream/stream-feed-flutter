@@ -19,7 +19,7 @@ PersonalizedFeed<A, Ob, T, Or> _$PersonalizedFeedFromJson<A, Ob, T, Or>(
     limit: json['limit'] as int,
     next: json['next'] as String?,
     results: (json['results'] as List<dynamic>?)
-        ?.map((e) => EnrichedActivity.fromJson(
+        ?.map((e) => GenericEnrichedActivity.fromJson(
             (e as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
             ),

@@ -4,6 +4,7 @@ import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
+import 'package:stream_feed_flutter_core/src/typedefs.dart';
 
 // ignore_for_file: cascade_invocations
 
@@ -29,7 +30,7 @@ class ActivityWidget extends StatelessWidget {
   }) : super(key: key);
 
   /// The activity to display.
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   /// The json key for the user's handle.
   final String handleJsonKey;
@@ -97,8 +98,7 @@ class ActivityWidget extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
     properties.add(StringProperty('handleJsonKey', handleJsonKey));
     properties.add(StringProperty('nameJsonKey', nameJsonKey));
     properties.add(

@@ -30,6 +30,7 @@ void main() {
           },
           home: Scaffold(
             body: CommentItem(
+              activity: const GenericEnrichedActivity(),
               user: const User(data: {
                 'name': 'Rosemary',
                 'subtitle': 'likes playing fresbee in the park',
@@ -110,55 +111,58 @@ void main() {
       expect(pressedMentions, ['sacha']);
     });
   });
-  testWidgets('CommentField', (WidgetTester tester) async {
-    final key = GlobalKey();
-    final mockClient = MockStreamFeedClient();
-    final mockReactions = MockReactions();
-    final mockStreamAnalytics = MockStreamAnalytics();
-    when(() => mockClient.reactions).thenReturn(mockReactions);
-    const foreignId = 'like:300';
-    const activityId = 'activityId';
-    const feedGroup = 'whatever:300';
-    const kind = 'comment';
-    const textInput = 'Soup';
-    const reaction = Reaction(
-      kind: kind,
-      activityId: activityId,
-      data: {'text': textInput},
-    );
-    const activity = EnrichedActivity(
-      id: activityId,
-      foreignId: foreignId,
-    );
-    const label = kind;
-    final engagement = Engagement(
-        content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-        label: label,
-        feedId: FeedId.fromId(feedGroup));
 
-    when(() => mockReactions.add(
-          kind,
-          activityId,
-          data: {'text': textInput},
-        )).thenAnswer((_) async => reaction);
+  group('CommentField tests', () {
+    testWidgets('CommentField', (WidgetTester tester) async {
+      final key = GlobalKey();
+      final mockClient = MockStreamFeedClient();
+      when(() => mockClient.currentUser).thenReturn(MockStreamUser());
+      final mockReactions = MockReactions();
+      final mockStreamAnalytics = MockStreamAnalytics();
+      when(() => mockClient.reactions).thenReturn(mockReactions);
+      const foreignId = 'like:300';
+      const activityId = 'activityId';
+      const feedGroup = 'whatever:300';
+      const kind = 'comment';
+      const textInput = 'Soup';
+      const reaction = Reaction(
+        kind: kind,
+        activityId: activityId,
+        data: {'text': textInput},
+      );
+      const activity = EnrichedActivity(
+        id: activityId,
+        foreignId: foreignId,
+      );
+      const label = kind;
+      final engagement = Engagement(
+          content: Content(foreignId: FeedId.fromId(activity.foreignId)),
+          label: label,
+          feedId: FeedId.fromId(feedGroup));
 
-    when(() => mockStreamAnalytics.trackEngagement(engagement))
-        .thenAnswer((_) async => Future.value());
-    final textEditingController = TextEditingController();
+      when(() => mockReactions.add(
+            kind,
+            activityId,
+            data: {'text': textInput},
+          )).thenAnswer((_) async => reaction);
 
-    await tester.pumpWidget(
-      MaterialApp(
-        builder: (context, child) {
-          return StreamFeedTheme(
-            data: StreamFeedThemeData.light(),
-            child: child!,
-          );
-        },
-        home: Scaffold(
-          body: StreamFeedCore(
-            analyticsClient: mockStreamAnalytics,
-            client: mockClient,
-            child: CommentField(
+      when(() => mockStreamAnalytics.trackEngagement(engagement))
+          .thenAnswer((_) async => Future.value());
+      final textEditingController = TextEditingController();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeed(
+              bloc: FeedBloc(
+                analyticsClient: mockStreamAnalytics,
+                client: mockClient,
+              ),
+              child: child!,
+            );
+          },
+          home: Scaffold(
+            body: CommentField(
               key: key,
               feedGroup: feedGroup,
               activity: activity,
@@ -166,26 +170,26 @@ void main() {
             ),
           ),
         ),
-      ),
-    );
+      );
 
-    final avatar = find.byType(Avatar);
-    final textArea = find.byType(TextArea);
-    final button = find.byType(ElevatedButton);
-    expect(avatar, findsOneWidget);
-    expect(textArea, findsOneWidget);
-    // expect(button, findsOneWidget);
-    await tester.enterText(textArea, textInput);
-    await tester.testTextInput.receiveAction(TextInputAction.done);
-    await tester.pump();
-    tester.widget<EditableText>(find.text(textInput));
+      final avatar = find.byType(Avatar);
+      final textArea = find.byType(TextArea);
+      final button = find.byType(ElevatedButton);
+      expect(avatar, findsOneWidget);
+      expect(textArea, findsOneWidget);
+      // expect(button, findsOneWidget);
+      await tester.enterText(textArea, textInput);
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pump();
+      tester.widget<EditableText>(find.text(textInput));
 
-    // final commentFieldState = key.currentState! as CommentFieldState;
-    expect(textEditingController.value.text, textInput);
+      // final commentFieldState = key.currentState! as CommentFieldState;
+      expect(textEditingController.value.text, textInput);
 
-    await tester.tap(button);
-    verify(() => mockClient.reactions.add(kind, activityId)).called(1);
-    verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+      await tester.tap(button);
+      verify(() => mockClient.reactions.add(kind, activityId)).called(1);
+      verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+    });
   });
 
   testWidgets('TextArea', (WidgetTester tester) async {
@@ -238,7 +242,7 @@ void main() {
     final commentField = CommentField(
       feedGroup: 'whatever:300',
       textEditingController: TextEditingController(),
-      activity: EnrichedActivity(
+      activity: GenericEnrichedActivity(
         time: now,
         actor: const User(
           data: {
@@ -263,13 +267,14 @@ void main() {
         .toList();
 
     expect(description[0]['description'],
-        'EnrichedActivity<dynamic, dynamic, dynamic, dynamic>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+        'GenericEnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
   });
 
   test('Default CommentItem debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
     final commentItem = CommentItem(
+      activity: const GenericEnrichedActivity(),
       reaction: Reaction(
         createdAt: now,
         kind: 'comment',

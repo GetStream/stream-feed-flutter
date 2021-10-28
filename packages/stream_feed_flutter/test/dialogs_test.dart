@@ -12,17 +12,36 @@ import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/delete_activity_dialog.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
+import 'package:stream_feed_flutter/src/widgets/stream_feed_app.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mock.dart';
 
 void main() {
+  late MockStreamUser mockUser;
+  late MockFeedBloc<User, String, String, String> mockFeedBloc;
+
+  setUpAll(() {
+    mockFeedBloc = MockFeedBloc();
+    mockUser = MockStreamUser();
+    when(() => mockFeedBloc.currentUser).thenReturn(mockUser);
+    when(() => mockUser.id).thenReturn('1');
+    when(() => mockFeedBloc.getActivitiesStream('user')).thenAnswer(
+        (_) => Stream.value(const [GenericEnrichedActivity(actor: User())]));
+  });
+
   group('Actions', () {
     testWidgets('EmojisAction', (tester) async {
       await tester.pumpWidget(
-        StreamFeedTheme(
-          data: StreamFeedThemeData.light(),
-          child: Material(
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeed(
+              bloc: mockFeedBloc,
+              themeData: StreamFeedThemeData.light(),
+              child: child!,
+            );
+          },
+          home: Material(
             child: Directionality(
               textDirection: TextDirection.ltr,
               child: EmojisAction(
@@ -144,8 +163,8 @@ void main() {
           await tester.pumpWidget(
             MaterialApp(
               builder: (context, child) {
-                return StreamFeedTheme(
-                  data: StreamFeedThemeData.light(),
+                return StreamFeed(
+                  bloc: mockFeedBloc,
                   child: child!,
                 );
               },
@@ -156,6 +175,7 @@ void main() {
                     id: '1',
                     time: DateTime.now(),
                     actor: const User(
+                      id: '1',
                       data: {
                         'name': 'Rosemary',
                         'handle': '@rosemary',
@@ -183,14 +203,14 @@ void main() {
             await tester.pumpWidget(
               MaterialApp(
                 builder: (context, child) {
-                  return StreamFeedTheme(
-                    data: StreamFeedThemeData.light(),
+                  return StreamFeed(
+                    bloc: mockFeedBloc,
                     child: child!,
                   );
                 },
                 home: Scaffold(
                   body: CommentView(
-                    activity: EnrichedActivity(
+                    activity: GenericEnrichedActivity(
                       id: '1',
                       time: DateTime.now(),
                       actor: const User(data: {
@@ -222,8 +242,8 @@ void main() {
             await tester.pumpWidget(
               MaterialApp(
                 builder: (context, child) {
-                  return StreamFeedTheme(
-                    data: StreamFeedThemeData.light(),
+                  return StreamFeed(
+                    bloc: mockFeedBloc,
                     child: child!,
                   );
                 },
@@ -284,7 +304,7 @@ void main() {
       final alertDialogActions = AlertDialogActions(
         feedGroup: 'user',
         textEditingController: TextEditingController(),
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -311,7 +331,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<dynamic, dynamic, dynamic, dynamic>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'GenericEnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, null, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     testWidgets('LeftActions', (tester) async {
@@ -353,18 +373,20 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) {
-              return StreamFeedTheme(
-                data: StreamFeedThemeData.light(),
+              return StreamFeed(
+                bloc: mockFeedBloc,
+                themeData: StreamFeedThemeData.light(),
                 child: child!,
               );
             },
             home: Scaffold(
               body: ActivityHeader(
                 feedGroup: 'timeline',
-                activity: EnrichedActivity(
+                activity: GenericEnrichedActivity(
                   id: '1',
                   time: DateTime.now(),
                   actor: const User(
+                    id: '1',
                     data: {
                       'name': 'Rosemary',
                       'handle': '@rosemary',
@@ -407,18 +429,20 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) {
-              return StreamFeedTheme(
-                data: StreamFeedThemeData.light(),
+              return StreamFeed(
+                bloc: mockFeedBloc,
+                themeData: StreamFeedThemeData.light(),
                 child: child!,
               );
             },
             home: Scaffold(
               body: ActivityHeader(
                 feedGroup: 'timeline',
-                activity: EnrichedActivity(
+                activity: GenericEnrichedActivity(
                   id: '1',
                   time: DateTime.now(),
                   actor: const User(
+                    id: '1',
                     data: {
                       'name': 'Rosemary',
                       'handle': '@rosemary',
@@ -468,25 +492,16 @@ void main() {
       when(() => mockFeed.removeActivityById(activityId))
           .thenAnswer((_) async => Future.value());
 
-      await tester.pumpWidget(
-        MaterialApp(
-          builder: (context, child) {
-            return StreamFeedCore(
-              client: mockClient,
-              child: StreamFeedTheme(
-                data: StreamFeedThemeData.light(),
-                child: child!,
-              ),
-            );
-          },
-          home: const Scaffold(
-            body: DeleteActivityDialog(
-              activityId: activityId,
-              feedGroup: feedGroup,
-            ),
+      await tester.pumpWidget(MaterialApp(
+        builder: (context, child) =>
+            StreamFeed(bloc: FeedBloc(client: mockClient), child: child!),
+        home: const Scaffold(
+          body: DeleteActivityDialog(
+            activityId: activityId,
+            feedGroup: feedGroup,
           ),
         ),
-      );
+      ));
 
       final deleteDialog = find.byType(AlertDialog);
       expect(deleteDialog, findsOneWidget);

@@ -45,7 +45,7 @@ class FlatFeed extends Feed {
   }
 
   /// Retrieves one enriched activity from a feed
-  Future<EnrichedActivity<A, Ob, T, Or>>
+  Future<GenericEnrichedActivity<A, Ob, T, Or>>
       getEnrichedActivityDetail<A, Ob, T, Or>(String activityId) async {
     final activities = await getEnrichedActivities<A, Ob, T, Or>(
         limit: 1,
@@ -110,7 +110,7 @@ class FlatFeed extends Feed {
   /// ```
   ///
   /// {@macro filter}
-  Future<List<EnrichedActivity<A, Ob, T, Or>>>
+  Future<List<GenericEnrichedActivity<A, Ob, T, Or>>>
       getEnrichedActivities<A, Ob, T, Or>({
     int? limit,
     int? offset,
@@ -132,7 +132,7 @@ class FlatFeed extends Feed {
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getEnrichedActivities(token, feedId, options);
     final data = (result.data['results'] as List)
-        .map((e) => EnrichedActivity<A, Ob, T, Or>.fromJson(e))
+        .map((e) => GenericEnrichedActivity<A, Ob, T, Or>.fromJson(e))
         .toList(growable: false);
     return data;
   }

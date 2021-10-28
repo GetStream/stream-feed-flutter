@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
 // ignore_for_file: cascade_invocations
 
 /// {@template repost_button}
@@ -68,7 +68,8 @@ class RepostButton extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity>('activity', activity));
     properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
     properties.add(StringProperty('feedGroup', feedGroup));
   }

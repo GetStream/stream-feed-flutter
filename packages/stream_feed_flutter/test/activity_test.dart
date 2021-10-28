@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
@@ -9,36 +10,61 @@ import 'package:stream_feed_flutter/src/widgets/activity/content.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/footer.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/header.dart';
 import 'package:stream_feed_flutter/src/widgets/og/card.dart';
+import 'package:stream_feed_flutter/src/widgets/stream_feed_app.dart';
 import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+import 'mock.dart';
+
 void main() {
+  late GenericFeedBloc<User, String, String, String> bloc;
+  late MockStreamFeedClient mockClient;
+  late MockStreamUser mockUser;
+  late GenericEnrichedActivity<User, String, String, String> enrichedActivity;
+
+  setUpAll(() {
+    mockClient = MockStreamFeedClient();
+    mockUser = MockStreamUser();
+    const id = '@GroovinChip';
+    const handle = '@GroovinChip';
+    const fullName = 'Reuben Turner';
+    enrichedActivity = GenericEnrichedActivity(
+      id: '1',
+      time: DateTime.now(),
+      actor: const User(
+        data: {
+          'name': fullName,
+          'handle': handle,
+          'subtitle': 'likes developing Flutter apps',
+          'profile_image':
+              'https://avatars.githubusercontent.com/u/4250470?v=4',
+        },
+      ),
+    );
+    when(() => mockClient.currentUser).thenReturn(mockUser);
+    when(() => mockUser.id).thenReturn(id);
+    when(() => mockUser.data).thenReturn({
+      'handle': handle,
+      'name': fullName,
+    });
+    bloc = GenericFeedBloc<User, String, String, String>(client: mockClient);
+  });
+
   testWidgets('ActivityHeader', (tester) async {
     await mockNetworkImages(() async {
       await tester.pumpWidget(
         MaterialApp(
           builder: (context, child) {
-            return StreamFeedTheme(
-              data: StreamFeedThemeData.light(),
+            return StreamFeed(
+              bloc: bloc,
+              themeData: StreamFeedThemeData.light(),
               child: child!,
             );
           },
           home: Scaffold(
             body: ActivityHeader(
               feedGroup: 'timeline',
-              activity: EnrichedActivity(
-                id: '1',
-                time: DateTime.now(),
-                actor: const User(
-                  data: {
-                    'name': 'Rosemary',
-                    'handle': '@rosemary',
-                    'subtitle': 'likes playing frisbee in the park',
-                    'profile_image':
-                        'https://randomuser.me/api/portraits/women/20.jpg',
-                  },
-                ),
-              ),
+              activity: enrichedActivity,
             ),
           ),
         ),
@@ -68,7 +94,7 @@ void main() {
           },
           home: Scaffold(
             body: ActivityContent(
-              activity: EnrichedActivity(
+              activity: GenericEnrichedActivity(
                 id: '1',
                 extraData: {
                   'attachments': const OpenGraphData(
@@ -127,29 +153,14 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           builder: (context, child) {
-            return StreamFeedTheme(
-              data: StreamFeedThemeData.light(),
+            return StreamFeed(
+              bloc: bloc,
+              themeData: StreamFeedThemeData.light(),
               child: child!,
             );
           },
           home: Scaffold(
-            body: ActivityWidget(
-              activity: EnrichedActivity(
-                id: '1',
-                time: DateTime.now(),
-                actor: const User(data: {
-                  'name': 'Rosemary',
-                  'handle': '@rosemary',
-                  'subtitle': 'likes playing frisbee in the park',
-                  'profile_image':
-                      'https://randomuser.me/api/portraits/women/20.jpg',
-                }),
-                extraData: const {
-                  'image':
-                      'https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg',
-                },
-              ),
-            ),
+            body: ActivityWidget(activity: enrichedActivity),
           ),
         ),
       );
@@ -167,7 +178,7 @@ void main() {
           child: Padding(
             padding: EdgeInsets.all(8),
             child: ActivityFooter(
-              activity: EnrichedActivity(
+              activity: GenericEnrichedActivity(
                 id: '1',
                 reactionCounts: {
                   'like': 139,
@@ -195,7 +206,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityWidget = ActivityWidget(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           id: '1',
           time: now,
           actor: const User(
@@ -224,14 +235,14 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'GenericEnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     test('Default ActivityContent debugFillProperties', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityContent = ActivityContent(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           id: '1',
           time: now,
           actor: const User(
@@ -260,14 +271,14 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'GenericEnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     test('Default ActivityFooter debugFillProperties', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final activityFooter = ActivityFooter(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           id: '1',
           time: now,
           actor: const User(
@@ -296,7 +307,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'GenericEnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
 
     test('Default ActivityHeader debugFillProperties', () {
@@ -304,7 +315,7 @@ void main() {
       final now = DateTime.now();
       final activityHeader = ActivityHeader(
         feedGroup: 'timeline',
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           id: '1',
           time: now,
           actor: const User(
@@ -333,7 +344,7 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'EnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
+          'GenericEnrichedActivity<User, String, String, String>(User(null, {name: Rosemary, handle: @rosemary, subtitle: likes playing frisbee in the park, profile_image: https://randomuser.me/api/portraits/women/20.jpg}, null, null, null, null), null, null, null, null, null, 1, ${now.toString()}, null, null, null, null, {image: https://handluggageonly.co.uk/wp-content/uploads/2017/08/IMG_0777.jpg}, null, null, null)');
     });
   });
 }

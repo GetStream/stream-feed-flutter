@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
+import 'package:stream_feed_flutter_core/src/typedefs.dart';
 
 // ignore_for_file: cascade_invocations
 
@@ -22,7 +23,7 @@ class ActivityHeader extends StatelessWidget {
   }) : super(key: key);
 
   /// TODO: document me
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   ///{@macro user_callback}
   final OnUserTap? onUserTap;
@@ -63,8 +64,7 @@ class ActivityHeader extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
     properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
     properties.add(DiagnosticsProperty<bool>('showSubtitle', showSubtitle));
     properties.add(StringProperty('handleJsonKey', handleJsonKey));

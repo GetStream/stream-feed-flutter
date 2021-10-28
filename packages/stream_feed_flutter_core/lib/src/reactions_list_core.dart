@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -39,9 +40,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
 /// information about the reactions.
-class ReactionListCore extends StatelessWidget {
-  /// Builds a [ReactionListCore].
-  const ReactionListCore({
+class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
+  const GenericReactionListCore({
     Key? key,
     required this.reactionsBuilder,
     required this.lookupValue,
@@ -87,50 +87,55 @@ class ReactionListCore extends StatelessWidget {
   final String? kind;
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<Reaction>>(
-      future: StreamFeedCore.of(context).getReactions(
-        lookupAttr,
-        lookupValue,
-        filter: filter,
-        flags: flags,
-        limit: limit,
-        kind: kind,
-      ),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return onErrorWidget; //snapshot.error
-        }
-        if (!snapshot.hasData) {
-          return onProgressWidget;
-        }
-        final reactions = snapshot.data!;
-        if (reactions.isEmpty) {
-          return onEmptyWidget;
-        }
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: reactions.length,
-          itemBuilder: (context, idx) => reactionsBuilder(
-            context,
-            reactions,
-            idx,
-          ),
-        );
-      },
-    );
-  }
+  _GenericReactionListCoreState<A, Ob, T, Or> createState() =>
+      _GenericReactionListCoreState<A, Ob, T, Or>();
+}
+
+class _GenericReactionListCoreState<A, Ob, T, Or>
+    extends State<GenericReactionListCore<A, Ob, T, Or>> {
+  late GenericFeedBloc<A, Ob, T, Or> bloc;
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<ReactionsBuilder>.has(
-        'reactionsBuilder', reactionsBuilder));
-    properties.add(EnumProperty<LookupAttribute>('lookupAttr', lookupAttr));
-    properties.add(StringProperty('lookupValue', lookupValue));
-    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
-    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
-    properties.add(IntProperty('limit', limit));
-    properties.add(StringProperty('kind', kind));
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    bloc = GenericFeedProvider<A, Ob, T, Or>.of(context).bloc;
+    loadData();
+  }
+
+  /// Fetches initial reactions and updates the widget
+  Future<void> loadData() => bloc.queryReactions(
+        widget.lookupAttr,
+        widget.lookupValue,
+        filter: widget.filter,
+        flags: widget.flags,
+        limit: widget.limit,
+        kind: widget.kind,
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<Reaction>>(
+        stream: bloc.getReactionsStream(widget.lookupValue, widget.kind),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return widget.onErrorWidget; //snapshot.error
+          }
+          if (!snapshot.hasData) {
+            return widget.onProgressWidget;
+          }
+          final reactions = snapshot.data!;
+          if (reactions.isEmpty) {
+            return widget.onEmptyWidget;
+          }
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: reactions.length,
+            itemBuilder: (context, idx) => widget.reactionsBuilder(
+              context,
+              reactions,
+              idx,
+            ),
+          );
+        });
   }
 }

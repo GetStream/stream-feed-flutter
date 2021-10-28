@@ -4,7 +4,6 @@ import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
 // ignore_for_file: cascade_invocations
 
 /// {@template like_button}
@@ -69,6 +68,7 @@ class LikeButton extends StatelessWidget {
       reaction: reaction,
       kind: 'like',
       onTap: onTap,
+      feedGroup: feedGroup,
     );
   }
 
@@ -76,7 +76,8 @@ class LikeButton extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity>('activity', activity));
     properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(ColorProperty('hoverColor', hoverColor));

@@ -1,5 +1,6 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 
 class MockLogger extends Mock implements Logger {}
 
@@ -11,11 +12,10 @@ class MockStreamAnalytics extends Mock implements StreamAnalytics {}
 
 class MockFeedAPI extends Mock implements FlatFeed {}
 
+class MockReactionsControllers extends Mock implements ReactionsController {}
+
 class MockClient extends Mock implements StreamFeedClient {
   final Logger logger = MockLogger();
-
-  // ClientState _state;
-
-  // @override
-  // ClientState get state => _state ??= MockClientState();
 }
+
+class MockStreamUser extends Mock implements StreamUser {}

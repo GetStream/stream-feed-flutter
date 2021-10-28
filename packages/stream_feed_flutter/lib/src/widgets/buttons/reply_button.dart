@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
-import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -35,7 +34,7 @@ class ReplyButton extends StatelessWidget {
   final String feedGroup;
 
   /// The activity to post to the feed.
-  final DefaultEnrichedActivity activity;
+  final EnrichedActivity activity;
 
   /// TODO: document me
   final Reaction? reaction;
@@ -63,15 +62,11 @@ class ReplyButton extends StatelessWidget {
               builder: (_) {
                 return MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-                  child: StreamFeedCore(
-                    //TODO: there might be a better way to do this
-                    client: StreamFeedCore.of(context).client,
-                    child: AlertDialogComment(
-                      activity: activity,
-                      feedGroup: feedGroup,
-                      nameJsonKey: nameJsonKey,
-                      handleJsonKey: handleJsonKey,
-                    ),
+                  child: AlertDialogComment(
+                    activity: activity,
+                    feedGroup: feedGroup,
+                    nameJsonKey: nameJsonKey,
+                    handleJsonKey: handleJsonKey,
                   ),
                 );
               },
@@ -92,8 +87,7 @@ class ReplyButton extends StatelessWidget {
     properties.add(StringProperty('handleJsonKey', handleJsonKey));
     properties.add(StringProperty('nameJsonKey', nameJsonKey));
     properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity>('activity', activity));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
     properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
     properties.add(DoubleProperty('iconSize', iconSize));
     properties.add(IntProperty('count', count));

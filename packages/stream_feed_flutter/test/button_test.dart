@@ -4,13 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
-import 'package:stream_feed_flutter/src/widgets/comment/item.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/reaction_list_view.dart';
+import 'package:stream_feed_flutter/src/widgets/stream_feed_app.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 import 'mock.dart';
@@ -49,20 +48,29 @@ void main() {
           limit: limit,
           kind: kind,
         )).thenAnswer((_) async => reactions);
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) {
+          return StreamFeed(
+            bloc: GenericFeedBloc(
+              client: mockClient,
+              analyticsClient: mockStreamAnalytics,
+            ),
+            child: child!,
+          );
+        },
         home: Scaffold(
-            body: StreamFeedCore(
-      analyticsClient: mockStreamAnalytics,
-      client: mockClient,
-      child: ReactionListPage(
-        activity: EnrichedActivity(id: 'id'),
-        reactionBuilder: (context, reaction) => const Offstage(),
-        lookupValue: lookupValue,
-        filter: filter,
-        limit: limit,
-        kind: kind,
+          body: ReactionListView(
+            activity: const GenericEnrichedActivity(id: 'id'),
+            reactionBuilder: (context, reaction) => const Offstage(),
+            lookupValue: lookupValue,
+            filter: filter,
+            limit: limit,
+            kind: kind,
+          ),
+        ),
       ),
-    ))));
+    );
     verify(() => mockReactions.filter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind)).called(1);
   });
@@ -79,7 +87,7 @@ void main() {
         home: const Scaffold(
           body: LikeButton(
             activity:
-                EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
+                GenericEnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
             // .add and .delete
             reaction: Reaction(kind: 'like', childrenCounts: {
               'like': 3
@@ -114,7 +122,7 @@ void main() {
         home: const Scaffold(
           body: RepostButton(
             activity:
-                EnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
+                GenericEnrichedActivity(), //TODO: put actual fields in this, notes: look into checks in llc reactions
             // .add and .delete
             reaction: Reaction(kind: 'repost', childrenCounts: {
               'repost': 3
@@ -145,62 +153,64 @@ void main() {
     const foreignId = 'like:300';
     const activityId = 'activityId';
     const feedGroup = 'timeline:300';
-    const activity = EnrichedActivity(
+    const activity = GenericEnrichedActivity(
       id: activityId,
       foreignId: foreignId,
     );
     const reaction = Reaction(id: 'id', kind: kind, parent: activityId);
     const userId = 'user:300';
-    final withoutOwnReactions = ChildReactionToggleIcon(
-      hoverColor: Colors.lightBlue,
-      reaction: reaction,
-      kind: kind,
-      count: count,
-      inactiveIcon: inactiveIcon,
-      activeIcon: activeIcon,
-    );
-    final withOwnReactions = ChildReactionToggleIcon(
-      hoverColor: Colors.lightBlue,
-      reaction: reaction,
-      kind: kind,
-      count: count,
-      ownReactions: const [reaction],
-      inactiveIcon: inactiveIcon,
-      activeIcon: activeIcon,
-    );
+
     group('widget test', () {
       testWidgets('withoutOwnReactions: onAddChildReaction', (tester) async {
-        final mockClient = MockStreamFeedClient();
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
-
-        const label = kind;
-        // final engagement = Engagement(
-        //     content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-        //     label: label,
-        //     feedId: FeedId.fromId(feedGroup));
+        final mockClient = MockStreamFeedClient();
+        final controller = ReactionsController();
+        const parentId = 'parentId';
+        const childId = 'childId';
+        final now = DateTime.now();
+        final reactedActivity =
+            GenericEnrichedActivity<User, String, String, String>(
+          id: 'id',
+          time: now,
+          actor: const User(data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing fresbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          }),
+        );
+        controller.init(reactedActivity.id!);
+        final bloc = FeedBloc(
+          analyticsClient: mockStreamAnalytics,
+          client: mockClient,
+        );
+        bloc.reactionsController = controller;
+        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
+        final parentReaction = Reaction(
+            id: parentId, kind: 'comment', activityId: reactedActivity.id);
+        final childReaction =
+            Reaction(id: childId, kind: 'like', activityId: reactedActivity.id);
         when(() => mockClient.reactions).thenReturn(mockReactions);
-        when(() => mockReactions.addChild(
-              kind,
-              reaction.id!,
-            )).thenAnswer((_) async => reaction);
-
-        // when(() => mockStreamAnalytics.trackEngagement(engagement))
-        //     .thenAnswer((_) async => Future.value());
-
+        when(() => mockReactions.addChild('like', parentId))
+            .thenAnswer((_) async => childReaction);
         await tester.pumpWidget(
           MaterialApp(
             builder: (context, child) {
-              return StreamFeedTheme(
-                data: StreamFeedThemeData(),
+              return StreamFeed(
+                bloc: bloc,
                 child: child!,
               );
             },
             home: Scaffold(
-              body: StreamFeedCore(
-                analyticsClient: mockStreamAnalytics,
-                client: mockClient,
-                child: withoutOwnReactions,
+              body: ChildReactionToggleIcon(
+                activity: reactedActivity,
+                hoverColor: Colors.lightBlue,
+                reaction: parentReaction,
+                kind: kind,
+                count: count,
+                inactiveIcon: inactiveIcon,
+                activeIcon: activeIcon,
               ),
             ),
           ),
@@ -210,186 +220,238 @@ void main() {
         await tester.tap(reactionIcon);
         await tester.pumpAndSettle();
         verify(() => mockClient.reactions.addChild(
-              kind,
-              reaction.id!,
+              'like',
+              parentId,
             )).called(1);
-        // verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+        // await expectLater(
+        //     bloc.getReactionsStream(reactedActivity.id!),
+        //     emits([
+        //       Reaction(
+        //         id: parentId,
+        //         kind: 'comment',
+        //         activityId: reactedActivity.id,
+        //         childrenCounts: const {'like': 1},
+        //         latestChildren: {
+        //           'like': [childReaction]
+        //         },
+        //         ownChildren: {
+        //           'like': [childReaction]
+        //         },
+        //       )
+        //     ]));
+
+        //TODO: test reaction Stream
       });
 
       testWidgets('withOwnReactions: onRemoveChildReaction', (tester) async {
         final mockClient = MockStreamFeedClient();
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
-        when(() => mockClient.reactions).thenReturn(mockReactions);
 
         const label = kind;
-        // final engagement = Engagement(
-        //     content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-        //     label: 'un$label',
-        //     feedId: FeedId.fromId(feedGroup));
+        when(() => mockClient.reactions).thenReturn(mockReactions);
+        final controller = ReactionsController();
+        final now = DateTime.now();
+        const childId = 'childId';
+        const parentId = 'parentId';
+        final reactedActivity =
+            GenericEnrichedActivity<User, String, String, String>(
+          id: 'id',
+          time: now,
+          actor: const User(data: {
+            'name': 'Rosemary',
+            'handle': '@rosemary',
+            'subtitle': 'likes playing fresbee in the park',
+            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
+          }),
+        );
+        final childReaction = Reaction(id: childId, kind: 'like');
+        final parentReaction = Reaction(
+          id: parentId,
+          kind: 'comment',
+          activityId: reactedActivity.id,
+          childrenCounts: const {'like': 1},
+          latestChildren: {
+            'like': [childReaction]
+          },
+          ownChildren: {
+            'like': [childReaction]
+          },
+        );
 
-        when(() => mockReactions.delete(reaction.id!))
-            .thenAnswer((_) async => reaction);
+        controller.init(reactedActivity.id!);
+        final bloc = FeedBloc(
+          client: mockClient,
+          analyticsClient: mockStreamAnalytics,
+        );
+        bloc.reactionsController = controller;
+        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
 
-        // when(() => mockStreamAnalytics.trackEngagement(engagement))
-        //     .thenAnswer((_) async => Future.value());
-
-        await tester.pumpWidget(MaterialApp(
+        when(() => mockReactions.delete(childId))
+            .thenAnswer((_) async => Future.value());
+        await tester.pumpWidget(
+          MaterialApp(
             home: Scaffold(
-          body: StreamFeedCore(
-              analyticsClient: mockStreamAnalytics,
-              client: mockClient,
-              child: withOwnReactions),
-        )));
+              body: FeedProvider(
+                bloc: bloc,
+                child: ChildReactionToggleIcon(
+                  ownReactions: [childReaction],
+                  activity: reactedActivity,
+                  hoverColor: Colors.lightBlue,
+                  reaction: parentReaction,
+                  kind: kind,
+                  count: count,
+                  // ownReactions: const [reaction],
+                  inactiveIcon: inactiveIcon,
+                  activeIcon: activeIcon,
+                ),
+              ),
+            ),
+          ),
+        );
         final reactionIcon = find.byType(ReactionIcon);
         expect(reactionIcon, findsOneWidget);
 
-        final count = find.text('1300');
-        expect(count, findsOneWidget);
+        final expectedCount = find.text('1300');
+        expect(expectedCount, findsOneWidget);
 
         await tester.tap(reactionIcon);
         await tester.pumpAndSettle();
-        final newCount = find.text('1299');
-        expect(newCount, findsOneWidget);
-        verify(() => mockClient.reactions.delete(reaction.id!)).called(1);
-        // verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
+
+        verify(() => mockClient.reactions.delete(childId)).called(1);
       });
-    });
-
-    testGoldens('golden', (tester) async {
-      final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
-        ..addScenario('without own reactions', withoutOwnReactions)
-        ..addScenario('with own reactions', withOwnReactions);
-
-      await tester.pumpWidgetBuilder(
-        builder.build(),
-        surfaceSize: const Size(250, 100),
-      );
-      await screenMatchesGolden(tester, 'reaction_toggle_icon_grid');
     });
   });
 
   group('ReactionToggleIcon', () {
-    const kind = 'like';
-    const count = 1300;
-    final inactiveIcon = StreamSvgIcon.loveInactive();
-    final activeIcon = StreamSvgIcon.loveActive();
-    const foreignId = 'like:300';
-    const activityId = 'activityId';
-    const feedGroup = 'timeline:300';
-    const activity = EnrichedActivity(
-      id: activityId,
-      foreignId: foreignId,
-    );
-    const reaction = Reaction(id: 'id', kind: kind, activityId: activityId);
-    const userId = 'user:300';
-    final withoutOwnReactions = ReactionToggleIcon(
-      activity: activity,
-      kind: kind,
-      count: count,
-      feedGroup: feedGroup,
-      inactiveIcon: inactiveIcon,
-      activeIcon: activeIcon,
-      hoverColor: Colors.lightBlue,
-    );
-    final withOwnReactions = ReactionToggleIcon(
-      activity: activity,
-      kind: kind,
-      count: count,
-      feedGroup: feedGroup,
-      ownReactions: const [reaction],
-      inactiveIcon: inactiveIcon,
-      activeIcon: activeIcon,
-      hoverColor: Colors.lightBlue,
-    );
-    group('widget test', () {
-      testWidgets('withoutOwnReactions: onAddReaction', (tester) async {
-        final mockClient = MockStreamFeedClient();
-        final mockReactions = MockReactions();
-        final mockStreamAnalytics = MockStreamAnalytics();
-        when(() => mockClient.reactions).thenReturn(mockReactions);
+    late MockStreamFeedClient mockClient;
+    late MockReactions mockReactions;
+    late MockStreamAnalytics mockStreamAnalytics;
+    late String kind;
+    late List<Reaction> reactions;
+    late String activityId;
+    late FeedBloc bloc;
+    late MockReactionsController mockReactionsController;
+    late String feedGroup;
+    late StreamSvgIcon inactiveIcon;
+    late StreamSvgIcon activeIcon;
 
-        const label = kind;
-        final engagement = Engagement(
-            content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-            label: label,
-            feedId: FeedId.fromId(feedGroup));
+    tearDown(() => bloc.dispose());
 
-        when(() => mockReactions.add(
-              kind,
-              activityId,
-            )).thenAnswer((_) async => reaction);
+    setUp(() {
+      mockReactions = MockReactions();
+      mockReactionsController = MockReactionsController();
+      mockStreamAnalytics = MockStreamAnalytics();
+      mockClient = MockStreamFeedClient();
 
-        when(() => mockStreamAnalytics.trackEngagement(engagement))
-            .thenAnswer((_) async => Future.value());
+      kind = 'like';
+      activityId = 'activityId';
+      feedGroup = 'user';
+      inactiveIcon = StreamSvgIcon.loveInactive();
+      activeIcon = StreamSvgIcon.loveActive();
+      reactions = [
+        Reaction(
+          id: 'id',
+          kind: 'like',
+          activityId: activityId,
+          childrenCounts: const {
+            'like': 0,
+          },
+          latestChildren: const {'like': []},
+          ownChildren: const {'like': []},
+        )
+      ];
+      when(() => mockClient.reactions).thenReturn(mockReactions);
 
-        await tester.pumpWidget(MaterialApp(
-            home: Scaffold(
-          body: StreamFeedCore(
-              analyticsClient: mockStreamAnalytics,
-              client: mockClient,
-              child: withoutOwnReactions),
-        )));
-        final reactionIcon = find.byType(ReactionIcon);
-        expect(reactionIcon, findsOneWidget);
-        await tester.tap(reactionIcon);
-        verify(() => mockClient.reactions.add(
-              kind,
-              activityId,
-            )).called(1);
-        verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
-      });
-
-      testWidgets('withOwnReactions: onRemoveReaction', (tester) async {
-        final mockClient = MockStreamFeedClient();
-        final mockReactions = MockReactions();
-        final mockStreamAnalytics = MockStreamAnalytics();
-        when(() => mockClient.reactions).thenReturn(mockReactions);
-
-        const label = kind;
-        final engagement = Engagement(
-            content: Content(foreignId: FeedId.fromId(activity.foreignId)),
-            label: 'un$label',
-            feedId: FeedId.fromId(feedGroup));
-
-        when(() => mockReactions.delete(reaction.id!))
-            .thenAnswer((_) async => reaction);
-
-        when(() => mockStreamAnalytics.trackEngagement(engagement))
-            .thenAnswer((_) async => Future.value());
-
-        await tester.pumpWidget(MaterialApp(
-            home: Scaffold(
-          body: StreamFeedCore(
-              analyticsClient: mockStreamAnalytics,
-              client: mockClient,
-              child: withOwnReactions),
-        )));
-        final reactionIcon = find.byType(ReactionToggleIcon);
-        expect(reactionIcon, findsOneWidget);
-
-        final count = find.text('1300');
-        expect(count, findsOneWidget);
-
-        await tester.tap(reactionIcon);
-        await tester.pumpAndSettle();
-        final newCount = find.text('1299');
-        expect(newCount, findsOneWidget);
-        verify(() => mockClient.reactions.delete(reaction.id!)).called(1);
-        verify(() => mockStreamAnalytics.trackEngagement(engagement)).called(1);
-      });
+      bloc = FeedBloc(client: mockClient);
     });
 
-    testGoldens('golden', (tester) async {
-      final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 0.5)
-        ..addScenario('without own reactions', withoutOwnReactions)
-        ..addScenario('with own reactions', withOwnReactions);
+    testGoldens('onAddReaction', (tester) async {
+      const addedReaction = Reaction();
+      bloc.reactionsController = mockReactionsController;
+      when(() => mockReactionsController.getReactions(activityId))
+          .thenAnswer((_) => reactions);
+      expect(bloc.reactionsController.getReactions(activityId), reactions);
+      when(() => mockReactions.add(
+            kind,
+            activityId,
+          )).thenAnswer((_) async => addedReaction);
+      await tester.pumpWidgetBuilder(
+        StreamFeed(
+          bloc: bloc,
+          child: Scaffold(
+            body: ReactionToggleIcon(
+              activity: GenericEnrichedActivity(id: activityId),
+              feedGroup: feedGroup,
+              kind: kind,
+              activeIcon: activeIcon,
+              count: 1300,
+              inactiveIcon: inactiveIcon,
+            ),
+          ),
+        ),
+        surfaceSize: const Size(125, 100),
+      );
+      await screenMatchesGolden(tester, 'reaction_toggle_onAddReaction');
+      final reactionIcon = find.byType(InkWell);
+      expect(reactionIcon, findsOneWidget);
+      await tester.tap(reactionIcon);
+      verify(() => mockReactions.add(
+            kind,
+            activityId,
+          )).called(1);
+
+      //TODO: test reaction Stream
+    });
+    testGoldens('onRemoveReaction', (tester) async {
+      const reactionId = 'reactionId';
+      const reaction = Reaction(id: reactionId);
+      bloc.reactionsController = mockReactionsController;
+      when(() => mockReactionsController.getReactions(activityId))
+          .thenAnswer((_) => reactions);
+      when(() => mockReactions.delete(reactionId))
+          .thenAnswer((invocation) => Future.value());
 
       await tester.pumpWidgetBuilder(
-        builder.build(),
-        surfaceSize: const Size(250, 100),
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeed(
+              bloc: bloc,
+              child: child!,
+            );
+          },
+          home: Scaffold(
+            body: ReactionToggleIcon(
+              ownReactions: const [reaction],
+              activity: GenericEnrichedActivity(
+                  id: activityId,
+                  reactionCounts: const {
+                    'like': 1300
+                  },
+                  ownReactions: const {
+                    'like': [reaction]
+                  },
+                  latestReactions: const {
+                    'like': [reaction]
+                  }),
+              feedGroup: feedGroup,
+              kind: kind,
+              activeIcon: activeIcon,
+              count: 1300,
+              inactiveIcon: inactiveIcon,
+            ),
+          ),
+        ),
+        surfaceSize: const Size(125, 100),
       );
-      await screenMatchesGolden(tester, 'reaction_toggle_icon_grid');
+      await screenMatchesGolden(tester, 'reaction_toggle_onRemoveReaction');
+      final reactionIcon = find.byType(InkWell);
+      expect(reactionIcon, findsOneWidget);
+      await tester.tap(reactionIcon);
+      await tester.pumpAndSettle();
+      verify(() => mockReactions.delete(reactionId)).called(1);
+
+      //TODO: test reaction Stream
     });
   });
 
@@ -446,6 +508,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final childReactionButton = ChildReactionButton(
+        activity: const GenericEnrichedActivity(),
         reaction: Reaction(
           createdAt: now,
           kind: 'comment',
@@ -467,13 +530,16 @@ void main() {
           .toList();
 
       expect(description[0]['description'],
-          'Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null)');
+          '''Reaction(null, comment, null, null, null, ${now.toString()}, null, null, null, null, {text: this is a piece of text}, null, null, null)''');
     });
 
     test('ChildReactionToggleIcon', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final childReactionToggleIcon = ChildReactionToggleIcon(
+        count: 1,
+        ownReactions: const [],
+        activity: const GenericEnrichedActivity(),
         reaction: Reaction(
           createdAt: now,
           kind: 'comment',
@@ -494,14 +560,14 @@ void main() {
               node.toJsonMap(const DiagnosticsSerializationDelegate()))
           .toList();
 
-      expect(description[0]['description'], 'null');
+      expect(description[0]['description'], '[]');
     });
 
     test('Like button', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final likeButton = LikeButton(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -534,7 +600,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final reactionButton = ReactionButton(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -570,7 +636,8 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final reactionToggleIcon = ReactionToggleIcon(
-        activity: EnrichedActivity(
+        count: 1,
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -623,7 +690,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final replyButton = ReplyButton(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {
@@ -656,7 +723,7 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
       final repostButton = RepostButton(
-        activity: EnrichedActivity(
+        activity: GenericEnrichedActivity(
           time: now,
           actor: const User(
             data: {

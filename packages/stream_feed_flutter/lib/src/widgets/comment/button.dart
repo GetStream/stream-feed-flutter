@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 // ignore_for_file: cascade_invocations
@@ -50,21 +51,22 @@ class PostCommentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveElevatedButton(
       onSend: (inputText) async {
-        final streamFeed = StreamFeedCore.of(context);
+        final activities = FeedProvider.of(context).bloc;
         final trimmedText = inputText.trim();
         activity != null
-            ? await streamFeed.onAddReaction(
+            ? await activities.onAddReaction(
                 kind: 'comment',
                 activity: activity!,
                 data: {'text': trimmedText}, //TODO: key
                 targetFeeds: targetFeeds,
                 feedGroup: feedGroup,
               )
-            : await streamFeed.onAddActivity(
+            : await activities.onAddActivity(
                 feedGroup: feedGroup,
                 verb: 'post',
                 //data: TODO: attachments with upload controller thingy
-                object: trimmedText);
+                object: trimmedText,
+              );
       },
 
       label: activity != null ? 'Respond' : 'Post', //TODO: i18n
@@ -75,17 +77,14 @@ class PostCommentButton extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity?>('activity', activity));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
   }
 }
-
-/// TODO: document me
-typedef OnSend = Function(String inputText);
 
 /// TODO: document me
 class ReactiveElevatedButton extends StatefulWidget {
@@ -147,7 +146,9 @@ class _ReactiveElevatedButtonState extends State<ReactiveElevatedButton> {
               // Dis/enabled button if textInputValue.length> 0
               onPressed: snapshot.hasData && snapshot.data!.isNotEmpty
                   ? () async {
-                      await widget.onSend(snapshot.data!);
+                      await widget.onSend(snapshot
+                          .data!); //TODO clear controller once future done
+                      widget.textEditingController.clear();
                     }
                   : null,
 

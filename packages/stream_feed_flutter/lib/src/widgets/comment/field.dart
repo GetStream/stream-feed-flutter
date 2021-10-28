@@ -53,13 +53,16 @@ class CommentField extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               //TODO: pass down User
               child: Avatar(
-                // user: user,
+                user: User(
+                  data: FeedProvider.of(context).bloc.currentUser!.data,
+                ),
                 size: UserBarTheme.of(context).avatarSize,
               ), //TODO: User in core and onUserTap
             ),
             Expanded(
               child: TextArea(
                 textEditingController: textEditingController,
+                hintText: 'Post your reply',
               ),
             ),
             if (enableButton)
@@ -78,8 +81,8 @@ class CommentField extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity?>('activity', activity));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));

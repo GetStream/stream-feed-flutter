@@ -35,6 +35,7 @@ void main() {
             return Scaffold(
               body: Center(
                 child: ChildReactionButton(
+                  activity: GenericEnrichedActivity(),
                   activeIcon: StreamSvgIcon.loveActive(),
                   inactiveIcon: StreamSvgIcon.loveInactive(),
                   kind: 'like',

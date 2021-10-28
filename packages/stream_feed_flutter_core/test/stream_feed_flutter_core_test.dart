@@ -23,20 +23,21 @@ void main() {
     'should render StreamFeedCore if both client and child is provided',
     (tester) async {
       final mockClient = MockClient();
-      const streamFeedCoreKey = Key('streamFeedCore');
+      // const streamFeedCoreKey = Key('streamFeedCore');
       final childKey = GlobalKey();
-      final streamFeedCore = StreamFeedCore(
-        key: streamFeedCoreKey,
-        client: mockClient,
+      final streamFeedCore = GenericFeedProvider(
+        bloc: GenericFeedBloc(
+          client: mockClient,
+        ),
         child: TestWidget(key: childKey),
       );
 
       await tester.pumpWidget(streamFeedCore);
 
-      expect(find.byKey(streamFeedCoreKey), findsOneWidget);
+      // expect(find.byKey(streamFeedCoreKey), findsOneWidget);
       expect(find.byKey(childKey), findsOneWidget);
-      expect(
-          StreamFeedCore.of(childKey.currentState!.context).client, isNotNull);
+      expect(GenericFeedProvider.of(childKey.currentState!.context).bloc,
+          isNotNull);
     },
   );
   testWidgets(
@@ -47,10 +48,10 @@ void main() {
       await tester.pumpWidget(TestWidget(key: childKey));
 
       expect(
-          () => StreamFeedCore.of(childKey.currentState!.context),
+          () => FeedProvider.of(childKey.currentState!.context),
           throwsA(predicate<AssertionError>((e) =>
               e.message ==
-              '''You must have a StreamFeedCore widget at the top of your widget tree''')));
+              'No GenericFeedProvider<User, String, String, String> found in context')));
     },
   );
 }

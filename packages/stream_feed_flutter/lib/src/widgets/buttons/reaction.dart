@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/reaction_theme.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
 // ignore_for_file: cascade_invocations
 
 /// {@template reaction_button}
@@ -64,7 +63,9 @@ class ReactionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactionToggleIcon(
       activity: activity,
-      count: reaction?.childrenCounts?[kind] ?? activity.reactionCounts?[kind],
+      count: reaction?.childrenCounts?[kind] ??
+          activity.reactionCounts?[kind] ??
+          0,
       ownReactions:
           reaction?.ownChildren?[kind] ?? activity.ownReactions?[kind],
       activeIcon: activeIcon,
@@ -81,7 +82,8 @@ class ReactionButton extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity>('activity', activity));
     properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
     properties.add(StringProperty('kind', kind));
     properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
@@ -90,8 +92,8 @@ class ReactionButton extends StatelessWidget {
   }
 }
 
-/// TODO: document me
-class ReactionToggleIcon extends StatefulWidget {
+//TODO: get rid of this now that it is reactive it should work
+class ReactionToggleIcon extends StatelessWidget {
   //TODO: see what we can extract from a parent widget and put in core
   /// Builds a [ReactionToggleIcon].
   const ReactionToggleIcon({
@@ -106,7 +108,7 @@ class ReactionToggleIcon extends StatefulWidget {
     this.ownReactions,
     this.feedGroup = 'user',
     this.hoverColor,
-    this.count,
+    required this.count,
     this.userId,
   }) : super(key: key);
 
@@ -125,7 +127,7 @@ class ReactionToggleIcon extends StatefulWidget {
   final String kind;
 
   /// The reaction count
-  final int? count;
+  final int count;
 
   /// A callback that will be called when the user clicks on the reaction icon
   final VoidCallback? onTap;
@@ -148,10 +150,45 @@ class ReactionToggleIcon extends StatefulWidget {
   /// TODO: document me
   final Color? hoverColor;
 
-  @override
-  State<ReactionToggleIcon> createState() => _ReactionToggleIconState();
+  bool get alreadyReacted => ownReactions != null && ownReactions!.isNotEmpty;
+  // List<Reaction?>? get reactionsKind => ownReactions?.filterByKind(kind);
+
+  Widget get displayedIcon => alreadyReacted ? activeIcon : inactiveIcon;
 
   @override
+  Widget build(BuildContext context) {
+    return ReactionIcon(
+      hoverColor: hoverColor ?? ReactionTheme.of(context).toggleHoverColor!,
+      icon: displayedIcon,
+      count: count,
+      onTap: () async {
+        onTap?.call ?? await onToggleReaction(context);
+      },
+    );
+  }
+
+  Future<void> onToggleReaction(BuildContext context) async {
+    alreadyReacted ? await removeReaction(context) : await addReaction(context);
+  }
+
+  Future<void> addReaction(BuildContext context) async {
+    final reaction = await FeedProvider.of(context).bloc.onAddReaction(
+          //TODO: get rid of mutations in StreamFeedProvider
+          kind: kind,
+          activity: activity,
+          data: data,
+          feedGroup: feedGroup,
+        );
+  }
+
+  Future<void> removeReaction(BuildContext context) async {
+    await FeedProvider.of(context).bloc.onRemoveReaction(
+        kind: kind,
+        activity: activity,
+        reaction: ownReactions!.last,
+        feedGroup: feedGroup);
+  }
+
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(IterableProperty<Reaction>('ownReactions', ownReactions));
@@ -159,81 +196,12 @@ class ReactionToggleIcon extends StatefulWidget {
     properties.add(IntProperty('count', count));
     properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
     properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity>('activity', activity));
     properties.add(StringProperty('userId', userId));
     properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
     properties.add(ColorProperty('hoverColor', hoverColor));
-  }
-}
-
-class _ReactionToggleIconState extends State<ReactionToggleIcon> {
-  late bool alreadyReacted;
-  late List<Reaction?>? reactionsKind;
-  late String? idToRemove;
-  late int count;
-
-  @override
-  void initState() {
-    super.initState();
-    reactionsKind = widget.ownReactions?.filterByKind(widget.kind);
-    alreadyReacted = reactionsKind?.isNotEmpty != null;
-    idToRemove = reactionsKind?.last?.id;
-    count = widget.count ?? 0;
-  }
-
-  Widget get displayedIcon =>
-      alreadyReacted ? widget.activeIcon : widget.inactiveIcon;
-
-  @override
-  Widget build(BuildContext context) {
-    return ReactionIcon(
-      hoverColor:
-          widget.hoverColor ?? ReactionTheme.of(context).toggleHoverColor!,
-      icon: displayedIcon,
-      count: count,
-      onTap: () async {
-        widget.onTap?.call ?? await onToggleReaction();
-      },
-    );
-  }
-
-  Future<void> onToggleReaction() async {
-    alreadyReacted ? await removeReaction() : await addReaction();
-  }
-
-  Future<void> addReaction() async {
-    final reaction = await StreamFeedCore.of(context).onAddReaction(
-        kind: widget.kind,
-        activity: widget.activity,
-        data: widget.data,
-        feedGroup: widget.feedGroup);
-    setState(() {
-      alreadyReacted = !alreadyReacted;
-      idToRemove = reaction.id;
-      count += 1;
-    });
-  }
-
-  Future<void> removeReaction() async {
-    await StreamFeedCore.of(context).onRemoveReaction(
-        kind: widget.kind,
-        activity: widget.activity,
-        id: idToRemove!,
-        feedGroup: widget.feedGroup);
-    setState(() {
-      alreadyReacted = !alreadyReacted;
-      count -= 1;
-    });
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('alreadyReacted', alreadyReacted));
-    properties.add(IterableProperty<Reaction?>('reactionsKind', reactionsKind));
-    properties.add(StringProperty('idToRemove', idToRemove));
-    properties.add(IntProperty('count', count));
   }
 }
 

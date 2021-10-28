@@ -8,6 +8,7 @@ import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'enriched_activity.g.dart';
 
+//TODO: mark this as immutable maybe?
 /// Enrichment is a concept in Stream that enables our API to work quickly
 /// and efficiently.
 ///
@@ -29,12 +30,12 @@ part 'enriched_activity.g.dart';
 /// * T = [target]
 /// * Or = [origin]
 @JsonSerializable(genericArgumentFactories: true)
-class EnrichedActivity<A, Ob, T, Or> extends Equatable {
+class GenericEnrichedActivity<A, Ob, T, Or> extends Equatable {
   //TODO: improve this
   // when type parameter to can a default type in Dart
   //i.e. https://github.com/dart-lang/language/issues/283#issuecomment-839603127
-  /// Builds an [EnrichedActivity].
-  const EnrichedActivity({
+  /// Builds an [GenericEnrichedActivity].
+  const GenericEnrichedActivity({
     this.id,
     this.actor,
     this.verb,
@@ -54,7 +55,7 @@ class EnrichedActivity<A, Ob, T, Or> extends Equatable {
   });
 
   /// Create a new instance from a JSON object
-  factory EnrichedActivity.fromJson(
+  factory GenericEnrichedActivity.fromJson(
     Map<String, dynamic>? json, [
     A Function(Object? json)? fromJsonA,
     Ob Function(Object? json)? fromJsonOb,
@@ -68,7 +69,8 @@ class EnrichedActivity<A, Ob, T, Or> extends Equatable {
                 ? User.fromJson(jsonA! as Map<String, dynamic>) as A
                 : jsonA as A,
         fromJsonOb ??
-            (jsonOb) => (Ob == CollectionEntry)
+            (jsonOb) => (Ob ==
+                    CollectionEntry) //TODO: can be a list of collection entry and a list of activities
                 ? CollectionEntry.fromJson(jsonOb! as Map<String, dynamic>)
                     as Ob
                 : jsonOb as Ob,
@@ -175,6 +177,43 @@ class EnrichedActivity<A, Ob, T, Or> extends Equatable {
   /// Map of custom user extraData
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? extraData;
+
+  GenericEnrichedActivity<A, Ob, T, Or> copyWith({
+    A? actor,
+    Ob? object,
+    String? verb,
+    T? target,
+    List<String>? to,
+    String? foreignId,
+    String? id,
+    DateTime? time,
+    Map<String, Object>? analytics,
+    Map<String, Object>? extraContext,
+    Or? origin,
+    double? score,
+    Map<String, Object>? extraData,
+    Map<String, int>? reactionCounts,
+    Map<String, List<Reaction>>? ownReactions,
+    Map<String, List<Reaction>>? latestReactions,
+  }) =>
+      GenericEnrichedActivity<A, Ob, T, Or>(
+        actor: actor ?? this.actor,
+        object: object ?? this.object,
+        verb: verb ?? this.verb,
+        target: target ?? this.target,
+        to: to ?? this.to,
+        foreignId: foreignId ?? this.foreignId,
+        id: id ?? this.id,
+        time: time ?? this.time,
+        analytics: analytics ?? this.analytics,
+        extraContext: extraContext ?? this.extraContext,
+        origin: origin ?? this.origin,
+        score: score ?? this.score,
+        extraData: extraData ?? this.extraData,
+        reactionCounts: reactionCounts ?? this.reactionCounts,
+        ownReactions: ownReactions ?? this.ownReactions,
+        latestReactions: latestReactions ?? this.latestReactions,
+      );
 
   /// Known top level fields.
   /// Useful for [Serializer] methods.

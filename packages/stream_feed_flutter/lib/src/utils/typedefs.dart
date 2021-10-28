@@ -26,7 +26,7 @@ typedef OnUserTap = void Function(User? user);
 /// A callback to handle activity taps
 /// {@endtemplate}
 typedef OnActivityTap = void Function(
-    BuildContext context, DefaultEnrichedActivity activity);
+    BuildContext context, EnrichedActivity activity);
 
 /// TODO: document me
 typedef ActivityFooterBuilder = Widget Function(
@@ -45,5 +45,4 @@ typedef ReactionBuilder = Widget Function(
     BuildContext context, Reaction reaction);
 
 /// TODO: document me
-typedef DefaultEnrichedActivity
-    = EnrichedActivity<User, String, String, String>;
+typedef OnSend = Function(String inputText);

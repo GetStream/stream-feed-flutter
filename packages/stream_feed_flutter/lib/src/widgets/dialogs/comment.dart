@@ -6,7 +6,7 @@ import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/field.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/item.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/reaction_list.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/reaction_list_view.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 // ignore_for_file: cascade_invocations
@@ -28,7 +28,7 @@ class AlertDialogComment extends StatelessWidget {
   final String feedGroup;
 
   /// The activity that is being commented on.
-  final DefaultEnrichedActivity? activity;
+  final EnrichedActivity? activity;
 
   /// TODO: document me
   final String handleJsonKey;
@@ -61,8 +61,8 @@ class AlertDialogComment extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity?>('activity', activity));
+    properties
+        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
     properties.add(StringProperty('handleJsonKey', handleJsonKey));
     properties.add(StringProperty('nameJsonKey', nameJsonKey));
   }
@@ -91,7 +91,7 @@ class CommentView extends StatelessWidget {
   }) : super(key: key);
 
   /// TODO: document me
-  final DefaultEnrichedActivity? activity;
+  final EnrichedActivity? activity;
 
   /// TODO: document me
   final String feedGroup;
@@ -130,11 +130,17 @@ class CommentView extends StatelessWidget {
         children: [
           //TODO: "this post has been deleted by the author"
           if (activity != null) ...[
-            ActivityWidget(
-              activity: activity!,
-              feedGroup: feedGroup,
-              nameJsonKey: nameJsonKey,
-              handleJsonKey: handleJsonKey,
+            StreamBuilder(
+              stream:
+                  FeedProvider.of(context).bloc.getActivitiesStream(feedGroup),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                return ActivityWidget(
+                  activity: activity!,
+                  feedGroup: feedGroup,
+                  nameJsonKey: nameJsonKey,
+                  handleJsonKey: handleJsonKey,
+                );
+              },
             )
             //TODO: analytics
             //TODO: "in response to" activity.to
@@ -149,24 +155,28 @@ class CommentView extends StatelessWidget {
           ),
           //TODO: builder for using it elsewhere than in actions
           if (enableReactions && activity != null)
-            ReactionListPage(
+            ReactionListView(
+              activity: activity!,
+              onReactionTap: onReactionTap,
+              onHashtagTap: onHashtagTap,
+              onMentionTap: onMentionTap,
+              onUserTap: onUserTap,
+              kind: 'comment',
+              flags: EnrichmentFlags()
+                  .withReactionCounts()
+                  .withOwnChildren()
+                  .withOwnReactions(), //TODO: refactor this?
+              reactionBuilder: (context, reaction) => CommentItem(
+                nameJsonKey: nameJsonKey,
                 activity: activity!,
+                user: reaction.user,
+                reaction: reaction,
                 onReactionTap: onReactionTap,
                 onHashtagTap: onHashtagTap,
                 onMentionTap: onMentionTap,
                 onUserTap: onUserTap,
-                flags: EnrichmentFlags()
-                    .withReactionCounts()
-                    .withOwnChildren()
-                    .withOwnReactions(), //TODO: refactor this?
-                reactionBuilder: (context, reaction) => CommentItem(
-                      user: reaction.user,
-                      reaction: reaction,
-                      onReactionTap: onReactionTap,
-                      onHashtagTap: onHashtagTap,
-                      onMentionTap: onMentionTap,
-                      onUserTap: onUserTap,
-                    ))
+              ),
+            )
         ],
       ),
     );
@@ -175,8 +185,8 @@ class CommentView extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<DefaultEnrichedActivity?>('activity', activity));
+    properties
+        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));
@@ -242,8 +252,8 @@ class AlertDialogActions extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity?>('activity', activity));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
     properties.add(StringProperty('feedGroup', feedGroup));
     properties.add(DiagnosticsProperty<TextEditingController>(
@@ -335,8 +345,8 @@ class RightActions extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<EnrichedActivity?>('activity', activity));
+    properties.add(
+        DiagnosticsProperty<GenericEnrichedActivity?>('activity', activity));
     properties.add(DiagnosticsProperty<TextEditingController>(
         'textEditingController', textEditingController));
     properties.add(StringProperty('feedGroup', feedGroup));

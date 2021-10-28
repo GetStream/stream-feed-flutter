@@ -20,7 +20,7 @@ RealtimeMessage<A, Ob, T, Or> _$RealtimeMessageFromJson<A, Ob, T, Or>(
     deletedForeignIds:
         ForeignIdTimePair.fromList(json['deleted_foreign_ids'] as List?),
     newActivities: (json['new'] as List<dynamic>?)
-        ?.map((e) => EnrichedActivity.fromJson(
+        ?.map((e) => GenericEnrichedActivity.fromJson(
             (e as Map?)?.map(
               (k, e) => MapEntry(k as String, e),
             ),

@@ -119,21 +119,21 @@ class Reaction extends Equatable {
   ];
 
   /// Copies this [Reaction] to a new instance.
-  Reaction copyWith({
-    String? id,
-    String? kind,
-    String? activityId,
-    String? userId,
-    String? parent,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    List<FeedId>? targetFeeds,
-    User? user,
-    Map<String, Object>? targetFeedsExtraData,
-    Map<String, Object>? data,
-    Map<String, List<Reaction>>? latestChildren,
-    Map<String, int>? childrenCounts,
-  }) =>
+  Reaction copyWith(
+          {String? id,
+          String? kind,
+          String? activityId,
+          String? userId,
+          String? parent,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          List<FeedId>? targetFeeds,
+          User? user,
+          Map<String, Object>? targetFeedsExtraData,
+          Map<String, Object>? data,
+          Map<String, List<Reaction>>? latestChildren,
+          Map<String, int>? childrenCounts,
+          Map<String, List<Reaction>>? ownChildren}) =>
       Reaction(
         id: id ?? this.id,
         kind: kind ?? this.kind,
@@ -148,6 +148,7 @@ class Reaction extends Equatable {
         data: data ?? this.data,
         latestChildren: latestChildren ?? this.latestChildren,
         childrenCounts: childrenCounts ?? this.childrenCounts,
+        ownChildren: ownChildren ?? this.ownChildren,
       );
 
   @override
@@ -165,6 +166,7 @@ class Reaction extends Equatable {
         data,
         latestChildren,
         childrenCounts,
+        ownChildren
       ];
 
   /// Serialize to json

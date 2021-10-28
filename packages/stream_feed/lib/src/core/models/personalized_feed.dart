@@ -9,14 +9,14 @@ part 'personalized_feed.g.dart';
 /// In other words, a feed of based on user's activities.
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
 class PersonalizedFeed<A, Ob, T, Or>
-    extends Paginated<EnrichedActivity<A, Ob, T, Or>> {
+    extends Paginated<GenericEnrichedActivity<A, Ob, T, Or>> {
   /// Builds a [PaginatedReactions].
   const PersonalizedFeed({
     required this.version,
     required this.offset,
     required this.limit,
     String? next,
-    List<EnrichedActivity<A, Ob, T, Or>>? results,
+    List<GenericEnrichedActivity<A, Ob, T, Or>>? results,
     String? duration,
   }) : super(next, results, duration);
 

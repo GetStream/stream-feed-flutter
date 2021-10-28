@@ -99,7 +99,7 @@ class RealtimeMessage<A, Ob, T, Or> extends Equatable {
   /// the only thing you don’t get is the enriched reactions like `own_reaction`
   /// or `latest_reactions`
   @JsonKey(name: 'new')
-  final List<EnrichedActivity<A, Ob, T, Or>>? newActivities;
+  final List<GenericEnrichedActivity<A, Ob, T, Or>>? newActivities;
 
   /// Time of the update in ISO format
   @JsonKey(includeIfNull: false)

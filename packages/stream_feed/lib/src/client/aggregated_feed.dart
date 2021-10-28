@@ -75,7 +75,7 @@ class AggregatedFeed extends Feed {
   /// Retrieve activities with reaction enrichment
   ///
   /// {@macro filter}
-  Future<List<Group<EnrichedActivity<A, Ob, T, Or>>>>
+  Future<List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>>
       getEnrichedActivities<A, Ob, T, Or>({
     int? limit,
     int? offset,
@@ -97,7 +97,7 @@ class AggregatedFeed extends Feed {
     final data = (result.data['results'] as List)
         .map((e) => Group.fromJson(
               e,
-              (json) => EnrichedActivity<A, Ob, T, Or>.fromJson(
+              (json) => GenericEnrichedActivity<A, Ob, T, Or>.fromJson(
                 json! as Map<String, dynamic>?,
               ),
             ))

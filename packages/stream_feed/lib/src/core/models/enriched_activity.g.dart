@@ -6,14 +6,14 @@ part of 'enriched_activity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-EnrichedActivity<A, Ob, T, Or> _$EnrichedActivityFromJson<A, Ob, T, Or>(
+GenericEnrichedActivity<A, Ob, T, Or> _$EnrichedActivityFromJson<A, Ob, T, Or>(
   Map json,
   A Function(Object? json) fromJsonA,
   Ob Function(Object? json) fromJsonOb,
   T Function(Object? json) fromJsonT,
   Or Function(Object? json) fromJsonOr,
 ) {
-  return EnrichedActivity<A, Ob, T, Or>(
+  return GenericEnrichedActivity<A, Ob, T, Or>(
     id: json['id'] as String?,
     actor: _$nullableGenericFromJson(json['actor'], fromJsonA),
     verb: json['verb'] as String?,
@@ -56,7 +56,7 @@ EnrichedActivity<A, Ob, T, Or> _$EnrichedActivityFromJson<A, Ob, T, Or>(
 }
 
 Map<String, dynamic> _$EnrichedActivityToJson<A, Ob, T, Or>(
-  EnrichedActivity<A, Ob, T, Or> instance,
+  GenericEnrichedActivity<A, Ob, T, Or> instance,
   Object? Function(A value) toJsonA,
   Object? Function(Ob value) toJsonOb,
   Object? Function(T value) toJsonT,

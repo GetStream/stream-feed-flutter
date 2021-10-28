@@ -168,7 +168,7 @@ void main() {
       ];
       final duration = const Duration(minutes: 2).toString();
       final paginatedReactions = PaginatedReactions(
-          'next', reactions, const EnrichedActivity(), duration);
+          'next', reactions, const GenericEnrichedActivity(), duration);
       when(() => api.paginatedFilter(
             token,
             lookupAttr,

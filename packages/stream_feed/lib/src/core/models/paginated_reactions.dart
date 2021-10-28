@@ -57,7 +57,7 @@ class PaginatedReactions<A, Ob, T, Or> extends Paginated<Reaction> {
   /// The activity data.
   ///
   /// This field is returned only when with_activity_data is sent.
-  final EnrichedActivity<A, Ob, T, Or>? activity;
+  final GenericEnrichedActivity<A, Ob, T, Or>? activity;
 
   /// Serialize to json
   Map<String, dynamic> toJson(

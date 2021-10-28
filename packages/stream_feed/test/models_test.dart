@@ -143,7 +143,7 @@ void main() {
         RealtimeMessage<String, String, String, String>(
           feed: FeedId.fromId('reward:1'),
           newActivities: [
-            EnrichedActivity<String, String, String, String>(
+            GenericEnrichedActivity<String, String, String, String>(
               actor: 'reward:1',
               id: 'f3de8328-be2d-11eb-bb18-128a130028af',
               extraData: const {
@@ -171,7 +171,7 @@ void main() {
         RealtimeMessage<User, String, String?, String?>(
           feed: FeedId.fromId('task:32db0f46-3593-4e14-aa57-f05af4887260'),
           newActivities: [
-            EnrichedActivity(
+            GenericEnrichedActivity(
               foreignId: null,
               id: 'cff95542-c979-11eb-8080-80005abdd229',
               object: 'task_situation_updated to true',
@@ -205,7 +205,7 @@ void main() {
 
   test('EnrichedActivity issue 61', () {
     final enrichedActivity =
-        EnrichedActivity<User, String, String, String?>.fromJson(
+        GenericEnrichedActivity<User, String, String, String?>.fromJson(
       jsonFixture('enriched_activity_issue61.json'),
     );
     expect(enrichedActivity.latestReactions, isNotNull);
@@ -232,7 +232,7 @@ void main() {
       childrenCounts: const {'test': 1},
     );
 
-    final enrichedActivity = EnrichedActivity(
+    final enrichedActivity = GenericEnrichedActivity(
       id: 'test',
       actor: 'test',
       object: 'test',
@@ -257,7 +257,7 @@ void main() {
 
     final enrichedActivityJson = json.decode(fixture('enriched_activity.json'));
     final enrichedActivityFromJson =
-        EnrichedActivity<String, String, String, String>.fromJson(
+        GenericEnrichedActivity<String, String, String, String>.fromJson(
             enrichedActivityJson);
     expect(enrichedActivityFromJson, enrichedActivity);
     // we will never get “extra_data” from the api
@@ -286,7 +286,7 @@ void main() {
       childrenCounts: const {'test': 1},
     );
 
-    final enrichedActivity = EnrichedActivity(
+    final enrichedActivity = GenericEnrichedActivity(
       id: 'test',
       actor: 'test',
       object: CollectionEntry(
@@ -318,8 +318,8 @@ void main() {
 
     final enrichedActivityJson =
         json.decode(fixture('enriched_activity_collection_entry.json'));
-    final enrichedActivityFromJson =
-        EnrichedActivity<String, CollectionEntry, String, String>.fromJson(
+    final enrichedActivityFromJson = GenericEnrichedActivity<String,
+        CollectionEntry, String, String>.fromJson(
       enrichedActivityJson,
     );
     expect(enrichedActivityFromJson, enrichedActivity);
@@ -641,7 +641,7 @@ void main() {
       // },//TODO: test this
       childrenCounts: const {'test': 1},
     );
-    final enrichedActivity = EnrichedActivity(
+    final enrichedActivity = GenericEnrichedActivity(
       id: 'test',
       actor: 'test',
       object: 'test',

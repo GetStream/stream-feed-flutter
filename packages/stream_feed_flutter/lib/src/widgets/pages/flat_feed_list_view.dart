@@ -26,11 +26,12 @@ enum TransitionType {
 ///
 /// Best used as the main page of an app.
 /// {@endtemplate}
-class FlatActivityListPage extends StatelessWidget {
-  /// Builds a [FlatActivityListPage].
-  const FlatActivityListPage({
+class FlatFeedListView extends StatelessWidget {
+  /// Builds a [FlatFeedListView].
+  const FlatFeedListView({
     Key? key,
     this.feedGroup = 'user',
+    this.userId,
     this.onHashtagTap,
     this.onMentionTap,
     this.onUserTap,
@@ -42,6 +43,7 @@ class FlatActivityListPage extends StatelessWidget {
     this.session,
     this.filter,
     this.flags,
+    // required this.bloc,
     this.ranking,
     this.handleJsonKey = 'handle',
     this.nameJsonKey = 'name',
@@ -56,6 +58,8 @@ class FlatActivityListPage extends StatelessWidget {
 
   /// {@macro hashtag_callback}
   final OnHashtagTap? onHashtagTap;
+//TODO:document me
+  // final DefaultFeedBloc bloc;
 
   /// {@macro mention_callback}
   final OnMentionTap? onMentionTap;
@@ -114,9 +118,12 @@ class FlatActivityListPage extends StatelessWidget {
   /// TODO: document me
   final String nameJsonKey;
 
+  final String? userId;
+
   @override
   Widget build(BuildContext context) {
-    return FlatFeedCore<User, String, String, String>(
+    return FlatFeedCore(
+      userId: userId,
       flags: flags,
       limit: limit,
       offset: offset,
@@ -126,77 +133,75 @@ class FlatActivityListPage extends StatelessWidget {
       onProgressWidget: onProgressWidget,
       onErrorWidget: onErrorWidget,
       //TODO: activity type Flat?
-      feedBuilder: (context, activities, idx) => ActivityWidget(
-        activity: activities[idx],
-        feedGroup: feedGroup,
-        onHashtagTap: onHashtagTap,
-        onMentionTap: onMentionTap,
-        onUserTap: onUserTap,
-        nameJsonKey: nameJsonKey,
-        handleJsonKey: handleJsonKey,
-        activityHeaderBuilder: activityHeaderBuilder,
-        activityFooterBuilder: activityFooterBuilder,
-        activityContentBuilder: activityContentBuilder,
-        onActivityTap: (context, activity) =>
-
+      feedBuilder: (context, activities, idx) {
+        return ActivityWidget(
+          activity: activities[idx],
+          feedGroup: feedGroup,
+          onHashtagTap: onHashtagTap,
+          onMentionTap: onMentionTap,
+          onUserTap: onUserTap,
+          nameJsonKey: nameJsonKey,
+          handleJsonKey: handleJsonKey,
+          activityHeaderBuilder: activityHeaderBuilder,
+          activityFooterBuilder: activityFooterBuilder,
+          activityContentBuilder: activityContentBuilder,
+          onActivityTap: (context, activity) {
             // onActivityTap != null
             //     ? onActivityTap?.call(context, activity)
             // TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
-            pageRouteBuilder(
-          activity: activity,
-          context: context,
-          transitionType: transitionType,
-          page: StreamFeedCore(
-            //TODO: let the user implement this
-            client: StreamFeedCore.of(context).client,
-            child: Scaffold(
-              appBar: AppBar(
-                // TODO: Parameterize me
-                title: const Text('Post'),
+            _pageRouteBuilder(
+              activity: activity,
+              context: context,
+              transitionType: transitionType,
+              currentNavigator: Navigator.of(context),
+              page: Scaffold(
+                appBar: AppBar(
+                  // TODO: Parameterize me
+                  title: const Text('Post'),
+                ),
+                body: CommentView(
+                  feedGroup: feedGroup,
+                  nameJsonKey: nameJsonKey,
+                  handleJsonKey: handleJsonKey,
+                  activity: activity,
+                  enableCommentFieldButton: true,
+                  enableReactions: true,
+                  textEditingController:
+                      TextEditingController(), //TODO: move this into props for customisation like buildSpans
+                ),
               ),
-              body: CommentView(
-                nameJsonKey: nameJsonKey,
-                handleJsonKey: handleJsonKey,
-                activity: activity,
-                enableCommentFieldButton: true,
-                enableReactions: true,
-                textEditingController:
-                    TextEditingController(), //TODO: move this into props for customisation like buildSpans
-              ),
-            ),
-          ),
-        ),
-      ),
+            );
+          },
+        );
+      },
       feedGroup: feedGroup,
     );
   }
 
-  /// TODO: document me
-  void pageRouteBuilder({
+  void _pageRouteBuilder({
     required BuildContext context,
     required TransitionType transitionType,
-    required EnrichedActivity activity,
+    required GenericEnrichedActivity activity,
     required Widget page,
+    required NavigatorState currentNavigator,
   }) {
-    final currentNavigator = StreamFeedCore.of(context).navigator;
-    //TODO: assert navigator not null
     switch (transitionType) {
       case TransitionType.material:
-        currentNavigator!.push(
+        currentNavigator.push(
           MaterialPageRoute<void>(
             builder: (BuildContext context) => page,
           ),
         );
         break;
       case TransitionType.cupertino:
-        currentNavigator!.push(
+        currentNavigator.push(
           CupertinoPageRoute<void>(
             builder: (BuildContext context) => page,
           ),
         );
         break;
       default:
-        currentNavigator!.push(
+        currentNavigator.push(
           PageRouteBuilder(
             pageBuilder: (_, __, ___) => page,
             transitionsBuilder: (
@@ -216,32 +221,32 @@ class FlatActivityListPage extends StatelessWidget {
     }
   }
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
-    properties.add(
-        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
-    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-    properties.add(StringProperty('feedGroup', feedGroup));
-    properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
-        'activityFooterBuilder', activityFooterBuilder));
-    properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
-        'activityContentBuilder', activityContentBuilder));
-    properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
-        'activityHeaderBuilder', activityHeaderBuilder));
-    properties.add(
-        ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
-    properties
-        .add(EnumProperty<TransitionType>('transitionType', transitionType));
-    properties.add(IntProperty('limit', limit));
-    properties.add(IntProperty('offset', offset));
-    properties.add(StringProperty('session', session));
-    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
-    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
-    properties.add(StringProperty('ranking', ranking));
-    properties.add(StringProperty('handleJsonKey', handleJsonKey));
-    properties.add(StringProperty('nameJsonKey', nameJsonKey));
-  }
+  // @override
+  // void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  //   super.debugFillProperties(properties);
+  //   properties.add(
+  //       ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
+  //   properties.add(
+  //       ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
+  //   properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
+  //   properties.add(StringProperty('feedGroup', feedGroup));
+  //   properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
+  //       'activityFooterBuilder', activityFooterBuilder));
+  //   properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
+  //       'activityContentBuilder', activityContentBuilder));
+  //   properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
+  //       'activityHeaderBuilder', activityHeaderBuilder));
+  //   properties.add(
+  //       ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
+  //   properties
+  //       .add(EnumProperty<TransitionType>('transitionType', transitionType));
+  //   properties.add(IntProperty('limit', limit));
+  //   properties.add(IntProperty('offset', offset));
+  //   properties.add(StringProperty('session', session));
+  //   properties.add(DiagnosticsProperty<Filter?>('filter', filter));
+  //   properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
+  //   properties.add(StringProperty('ranking', ranking));
+  //   properties.add(StringProperty('handleJsonKey', handleJsonKey));
+  //   properties.add(StringProperty('nameJsonKey', nameJsonKey));
+  // }
 }
