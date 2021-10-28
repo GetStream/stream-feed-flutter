@@ -13,7 +13,7 @@ void main() async {
     final appId = env['appId'];
     final apiKey = env['apiKey'];
 
-    final client = StreamFeedClient.connect(
+    final client = StreamFeedClient(
       apiKey!,
       secret: secret,
       appId: appId,

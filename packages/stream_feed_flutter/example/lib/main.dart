@@ -82,7 +82,7 @@ mixin StreamFeedMixin<T extends StatefulWidget> on State<T> {
 void main() {
   const apiKey = String.fromEnvironment('key');
   const userToken = String.fromEnvironment('user_token');
-  final client = StreamFeedClient.connect(
+  final client = StreamFeedClient(
     apiKey,
     token: const Token(userToken),
   );
