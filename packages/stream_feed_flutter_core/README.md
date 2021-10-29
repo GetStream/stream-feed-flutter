@@ -92,6 +92,33 @@ void main() {
 }
 ```
 
+## Docs
+
+This package provides business logic to fetch common things required for integrating Stream Feed into your application.
+The core package allows more customisation and hence provides business logic but no UI components.
+Use stream_feed for the low-level client.
+
+The package primarily contains three types of classes:
+
+1) Business Logic Components
+2) Core Components
+
+### Business Logic Components
+
+These components allow you to have the maximum and lower-level control of the queries being executed.
+The BLoCs we provide are:
+
+1) FeedBloc
+
+### Core Components
+
+Core components usually are an easy way to fetch data associated with Stream Feed which are decoupled from UI and often expose UI builders.
+Data fetching can be controlled with the controllers of the respective core components.
+
+1) FlatFeedCore (Fetch a list of activities)
+2) ReactionListCore (Fetch a list of reactions)
+3) FeedProvider (Inherited widget providing bloc to the widget tree)
+
 ## Contributing
 
 We welcome code changes that improve this library or fix a problem,
