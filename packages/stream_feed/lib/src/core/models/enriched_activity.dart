@@ -1,10 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stream_feed/src/core/models/activity.dart';
+import 'package:stream_feed/src/core/models/collection_entry.dart';
 import 'package:stream_feed/src/core/models/reaction.dart';
+import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/serializer.dart';
 
 part 'enriched_activity.g.dart';
 
+//TODO: mark this as immutable maybe?
 /// Enrichment is a concept in Stream that enables our API to work quickly
 /// and efficiently.
 ///
@@ -15,34 +19,23 @@ part 'enriched_activity.g.dart';
 ///
 /// The same rule applies to users and reactions. They are stored only once,
 /// but references are used elsewhere.
-class EnrichableField extends Equatable {
-  /// Builds a  [EnrichableField].
-  const EnrichableField(this.data);
-
-  /// Underlying [EnrichableField] data
-  final Object? data;
-
-  /// Deserializes an [EnrichableField].
-  static EnrichableField deserialize(Object? obj) {
-    if (obj is String) {
-      return EnrichableField(obj);
-    }
-    return EnrichableField(obj as Map<String, dynamic>?);
-  }
-
-  /// Serializes an [EnrichableField].
-  static Object? serialize(EnrichableField? field) => field?.data;
-
-  @override
-  List<Object?> get props => [data];
-}
-
+///
 /// An Enriched Activity is an Activity with additional fields
 /// that are derived from the Activity's
-@JsonSerializable()
-class EnrichedActivity extends Equatable {
-  /// [EnrichedActivity] constructor
-  const EnrichedActivity({
+///
+/// This class makes use of generics in order to have a more flexible API
+/// surface. Here is a legend of what each generic is for:
+/// * A = [actor]
+/// * Ob = [object]
+/// * T = [target]
+/// * Or = [origin]
+@JsonSerializable(genericArgumentFactories: true)
+class GenericEnrichedActivity<A, Ob, T, Or> extends Equatable {
+  //TODO: improve this
+  // when type parameter to can a default type in Dart
+  //i.e. https://github.com/dart-lang/language/issues/283#issuecomment-839603127
+  /// Builds an [GenericEnrichedActivity].
+  const GenericEnrichedActivity({
     this.id,
     this.actor,
     this.verb,
@@ -62,30 +55,59 @@ class EnrichedActivity extends Equatable {
   });
 
   /// Create a new instance from a JSON object
-  factory EnrichedActivity.fromJson(Map<String, dynamic>? json) =>
-      _$EnrichedActivityFromJson(
-          Serializer.moveKeysToRoot(json, topLevelFields)!);
+  factory GenericEnrichedActivity.fromJson(
+    Map<String, dynamic>? json, [
+    A Function(Object? json)? fromJsonA,
+    Ob Function(Object? json)? fromJsonOb,
+    T Function(Object? json)? fromJsonT,
+    Or Function(Object? json)? fromJsonOr,
+  ]) =>
+      _$EnrichedActivityFromJson<A, Ob, T, Or>(
+        Serializer.moveKeysToRoot(json, topLevelFields)!,
+        fromJsonA ??
+            (jsonA) => (A == User)
+                ? User.fromJson(jsonA! as Map<String, dynamic>) as A
+                : jsonA as A,
+        fromJsonOb ??
+            (jsonOb) => (Ob ==
+                    CollectionEntry) //TODO: can be a list of collection entry and a list of activities
+                ? CollectionEntry.fromJson(jsonOb! as Map<String, dynamic>)
+                    as Ob
+                : jsonOb as Ob,
+        fromJsonT ??
+            (jsonT) => (T == Activity)
+                ? Activity.fromJson(jsonT! as Map<String, dynamic>) as T
+                : jsonT as T,
+        fromJsonOr ??
+            (jsonOr) {
+              if (Or == User) {
+                return User.fromJson(jsonOr! as Map<String, dynamic>) as Or;
+              } else if (Or == Reaction) {
+                return Reaction.fromJson(jsonOr! as Map<String, dynamic>) as Or;
+              } else {
+                return jsonOr as Or;
+              }
+            },
+      );
 
   /// The Stream id of the activity.
   @JsonKey(includeIfNull: false, toJson: Serializer.readOnly)
   final String? id;
 
   /// The actor performing the activity.
-  @JsonKey(
-    fromJson: EnrichableField.deserialize,
-    toJson: EnrichableField.serialize,
-  )
-  final EnrichableField? actor;
+  ///
+  /// The type of this field can be either a `String` or a [User].
+  @JsonKey(includeIfNull: false)
+  final A? actor;
 
   /// The verb of the activity.
   final String? verb;
 
-  /// object of the activity.
-  @JsonKey(
-    fromJson: EnrichableField.deserialize,
-    toJson: EnrichableField.serialize,
-  )
-  final EnrichableField? object;
+  /// The object of the activity.
+  ///
+  /// Can be a String or a [CollectionEntry].
+  @JsonKey(includeIfNull: false)
+  final Ob? object;
 
   /// A unique ID from your application for this activity.
   ///
@@ -93,13 +115,21 @@ class EnrichedActivity extends Equatable {
   @JsonKey(includeIfNull: false)
   final String? foreignId;
 
+  /// Describes the target of the activity.
   ///
-  @JsonKey(
-    includeIfNull: false,
-    fromJson: EnrichableField.deserialize,
-    toJson: Serializer.readOnly,
-  )
-  final EnrichableField? target;
+  /// The precise meaning of the activity's target is dependent on the
+  /// activities verb, but will often be the object the English preposition
+  /// "to".
+  ///
+  /// For instance, in the activity, "John saved a movie to his wishlist",
+  /// the target of the activity is "wishlist". The activity target MUST NOT
+  /// be used to identity an indirect object that is not a target of the
+  /// activity. An activity MAY contain a target property whose value is a
+  /// single Object.
+  ///
+  /// The type of this field can be either [Activity] or `String`.
+  @JsonKey(includeIfNull: false)
+  final T? target;
 
   /// The optional time of the activity in iso format.
   ///
@@ -108,12 +138,10 @@ class EnrichedActivity extends Equatable {
   final DateTime? time;
 
   /// The feed id where the activity was posted.
-  @JsonKey(
-    includeIfNull: false,
-    fromJson: EnrichableField.deserialize,
-    toJson: Serializer.readOnly,
-  )
-  final EnrichableField? origin;
+  ///
+  /// Can be of type User, Reaction, or String
+  @JsonKey(includeIfNull: false)
+  final Or? origin;
 
   /// An array allows you to specify a list of feeds to which the activity
   /// should be copied.
@@ -149,6 +177,43 @@ class EnrichedActivity extends Equatable {
   /// Map of custom user extraData
   @JsonKey(includeIfNull: false)
   final Map<String, Object>? extraData;
+
+  GenericEnrichedActivity<A, Ob, T, Or> copyWith({
+    A? actor,
+    Ob? object,
+    String? verb,
+    T? target,
+    List<String>? to,
+    String? foreignId,
+    String? id,
+    DateTime? time,
+    Map<String, Object>? analytics,
+    Map<String, Object>? extraContext,
+    Or? origin,
+    double? score,
+    Map<String, Object>? extraData,
+    Map<String, int>? reactionCounts,
+    Map<String, List<Reaction>>? ownReactions,
+    Map<String, List<Reaction>>? latestReactions,
+  }) =>
+      GenericEnrichedActivity<A, Ob, T, Or>(
+        actor: actor ?? this.actor,
+        object: object ?? this.object,
+        verb: verb ?? this.verb,
+        target: target ?? this.target,
+        to: to ?? this.to,
+        foreignId: foreignId ?? this.foreignId,
+        id: id ?? this.id,
+        time: time ?? this.time,
+        analytics: analytics ?? this.analytics,
+        extraContext: extraContext ?? this.extraContext,
+        origin: origin ?? this.origin,
+        score: score ?? this.score,
+        extraData: extraData ?? this.extraData,
+        reactionCounts: reactionCounts ?? this.reactionCounts,
+        ownReactions: ownReactions ?? this.ownReactions,
+        latestReactions: latestReactions ?? this.latestReactions,
+      );
 
   /// Known top level fields.
   /// Useful for [Serializer] methods.
@@ -191,6 +256,13 @@ class EnrichedActivity extends Equatable {
       ];
 
   /// Serialize to JSON
-  Map<String, dynamic> toJson() => Serializer.moveKeysToMapInPlace(
-      _$EnrichedActivityToJson(this), topLevelFields);
+  Map<String, dynamic> toJson(
+    Object? Function(A value) toJsonA,
+    Object? Function(Ob value) toJsonOb,
+    Object? Function(T value) toJsonT,
+    Object? Function(Or value) toJsonOr,
+  ) =>
+      Serializer.moveKeysToMapInPlace(
+          _$EnrichedActivityToJson(this, toJsonA, toJsonOb, toJsonT, toJsonOr),
+          topLevelFields);
 }

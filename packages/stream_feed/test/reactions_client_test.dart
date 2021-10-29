@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/client/reactions_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
-import 'package:stream_feed/src/core/lookup_attribute.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
+import 'package:stream_feed/src/core/models/lookup_attribute.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/reaction.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -168,7 +168,7 @@ void main() {
       ];
       final duration = const Duration(minutes: 2).toString();
       final paginatedReactions = PaginatedReactions(
-          'next', reactions, const EnrichedActivity(), duration);
+          'next', reactions, const GenericEnrichedActivity(), duration);
       when(() => api.paginatedFilter(
             token,
             lookupAttr,

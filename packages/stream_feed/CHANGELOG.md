@@ -1,3 +1,20 @@
+## 0.4.0: 29/10/2021
+
+- breaking: `StreamFeedClient.connect` is now `StreamFeedClient` for better user session handling.
+The connect verb was confusing, and made you think that it will perform the connection immediately. Also it doesn't infer the id anymore from the token anymore. You can now have to call `setUser` down the tree or before `runApp`
+- breaking: `setUser` now takes a `User` (must contain id) and a token. Passing the userToken in client constructor was making the whole instance depend on a single user.
+- new: we support generics
+`EnrichedActivity` is now `GenericEnrichedActivity<A,Ob,T,Or>` in order to have a more flexible API surface. Those generic parameters can be as follows:
+A = [actor]: can be an User, String
+Ob = [object] can a String, or a CollectionEntry
+T = [target] can be a String or an Activity
+Or = [origin] can be a String or a Reaction or an User
+- breaking: along with these changes we removed `EnrichableField` field from `EnrichedActivity` 
+- new: there is a type definition `EnrichedActivity` to handle most use cases of `GenericEnrichedActivity` (User,String,String,String)
+- fix: a time drift issue in token generation when using the low level client sever-side
+- bump: dart sdk package constraints to 2.14 to make use of typedefs for non function types
+
+
 ## 0.3.0: 06/09/2021
 
 - improvements: 

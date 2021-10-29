@@ -42,20 +42,20 @@ abstract class StreamFeedClient {
   /// - Instantiate a new client (server side) with [StreamFeedClient.connect]
   /// using your api [secret] parameter and [apiKey]
   /// ```dart
-  /// var client = connect('YOUR_API_KEY',secret: 'API_KEY_SECRET');
+  /// var client = StreamFeedClient('YOUR_API_KEY',secret: 'API_KEY_SECRET');
   /// ```
   /// - Create a token for user with id "the-user-id"
   /// ```dart
   /// var userToken = client.frontendToken('the-user-id');
   /// ```
   /// - if you are using the SDK client side, get a userToken in your dashboard
-  /// and pass it to [StreamFeedClient.connect] using the [token] parameter
+  /// and pass it to [StreamFeedClient] using the [token] parameter
   /// and [apiKey]
   /// ```dart
-  /// var client = connect('YOUR_API_KEY',token: Token('userToken'));
+  /// var client = StreamFeedClient('YOUR_API_KEY',token: Token('userToken'));
   /// ```
   /// {@endtemplate}
-  factory StreamFeedClient.connect(
+  factory StreamFeedClient(
     String apiKey, {
     Token? token,
     String? secret,
@@ -84,7 +84,11 @@ abstract class StreamFeedClient {
   StreamUser? get currentUser;
 
   /// Set data for the [currentUser] assigned to [StreamFeedClient]
-  Future<StreamUser> setUser(Map<String, Object> data);
+  Future<StreamUser> setUser(
+    User user,
+    Token userToken, {
+    Map<String, Object?>? extraData,
+  });
 
   /// Convenient getter for [BatchOperationsClient]
   BatchOperationsClient get batch;
