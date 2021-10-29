@@ -9,8 +9,8 @@ void main() {
   group('subscription', () {
     test('successfully invokes the callback', () {
       final client = MockClient();
-      const channel = "/foo/**";
-      bool callbackInvoked = false;
+      const channel = '/foo/**';
+      var callbackInvoked = false;
       final subscription = Subscription(
         client,
         channel,
@@ -25,15 +25,16 @@ void main() {
 
     test('successfully invokes withChannel callback if provided', () {
       final client = MockClient();
-      const channel = "/foo/**";
-      bool callbackInvoked = false;
-      bool withChannelCallbackInvoked = false;
+      const channel = '/foo/**';
+      var callbackInvoked = false;
+      var withChannelCallbackInvoked = false;
       final subscription = Subscription(
         client,
         channel,
         callback: (data) => callbackInvoked = true,
       );
 
+      // ignore: cascade_invocations
       subscription.withChannel(
         (channel, data) => withChannelCallbackInvoked = true,
       );
@@ -47,7 +48,7 @@ void main() {
 
     test('successfully cancels the subscription', () {
       final client = MockClient();
-      const channel = "/foo/**";
+      const channel = '/foo/**';
 
       final subscription = Subscription(client, channel, callback: (data) {});
 

@@ -1,16 +1,15 @@
 import 'package:equatable/equatable.dart';
-import 'subscription.dart';
 import 'package:faye_dart/src/event_emitter.dart';
-
-import 'message.dart';
-import 'grammar.dart' as grammar;
+import 'package:faye_dart/src/grammar.dart' as grammar;
+import 'package:faye_dart/src/message.dart';
+import 'package:faye_dart/src/subscription.dart';
 
 const event_message = 'message';
 
 class Channel with EquatableMixin, EventEmitter<Message> {
-  final String name;
-
   Channel(this.name);
+
+  final String name;
 
   static const String handshake = '/meta/handshake';
   static const String connect = '/meta/connect';

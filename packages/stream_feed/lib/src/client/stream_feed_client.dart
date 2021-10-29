@@ -55,7 +55,7 @@ abstract class StreamFeedClient {
   /// var client = connect('YOUR_API_KEY',token: Token('userToken'));
   /// ```
   /// {@endtemplate}
-  factory StreamFeedClient.connect(
+  factory StreamFeedClient(
     String apiKey, {
     Token? token,
     String? secret,
@@ -84,7 +84,11 @@ abstract class StreamFeedClient {
   StreamUser? get currentUser;
 
   /// Set data for the [currentUser] assigned to [StreamFeedClient]
-  Future<StreamUser> setUser(Map<String, Object> data);
+  Future<StreamUser> setUser(
+    User user,
+    Token userToken, {
+    Map<String, Object?>? extraData,
+  });
 
   /// Convenient getter for [BatchOperationsClient]
   BatchOperationsClient get batch;

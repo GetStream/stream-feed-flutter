@@ -42,6 +42,7 @@ class Feed {
           'At least a secret or userToken must be provided',
         );
 
+  /// TODO: document me
   final FeedSubscriber? subscriber;
 
   /// Your API secret
@@ -63,8 +64,8 @@ class Feed {
 
   /// Subscribes to any changes in the feed, return a [Subscription]
   @experimental
-  Future<Subscription> subscribe(
-    void Function(RealtimeMessage? message) callback,
+  Future<Subscription> subscribe<A, Ob, T, Or>(
+    void Function(RealtimeMessage<A, Ob, T, Or>? message) callback,
   ) {
     checkNotNull(
       subscriber,
@@ -74,7 +75,9 @@ class Feed {
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
 
     return subscriber!(token, feedId, (data) {
-      final realtimeMessage = RealtimeMessage.fromJson(data!);
+      final realtimeMessage = RealtimeMessage<A, Ob, T, Or>.fromJson(
+        data!,
+      );
       callback(realtimeMessage);
     });
   }

@@ -26,7 +26,7 @@ void main() {
     final client = StreamAnalytics(apiKey, userToken: token, analytics: api);
     final impression = Impression(
       contentList: <Content>[
-        Content(foreignId: FeedId.id('post:42'), data: {
+        Content(foreignId: FeedId.id('post:42'), data: const {
           'actor': {'id': 'user:2353540'},
           'verb': 'share',
           'object': {'id': 'song:34349698'},

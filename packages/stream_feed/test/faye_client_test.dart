@@ -13,7 +13,7 @@ void main() async {
     final appId = env['appId'];
     final apiKey = env['apiKey'];
 
-    final client = StreamFeedClient.connect(
+    final client = StreamFeedClient(
       apiKey!,
       secret: secret,
       appId: appId,
@@ -42,7 +42,7 @@ void main() async {
     await Future.delayed(const Duration(seconds: 3));
 
     expect(realTimeMessage, isNotNull);
-    expect(realTimeMessage!.newActivities.first.id,
+    expect(realTimeMessage!.newActivities!.first.id,
         activity.id); //TODO: this test is flaky
 
     addTearDown(subscription.cancel);
