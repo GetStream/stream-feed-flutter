@@ -1,3 +1,18 @@
+## 0.4.0
+
+
+
+### Breaking changes
+
+- `StreamFeedClient.connect` is now `StreamFeedClient` for better user session handling.
+The connect verb was confusing, and made you think that it will perform the connection immediately. Also it doesn't infer the id anymore from the token anymore. You can now have to call `setUser` down the tree or before `runApp`
+- `setUser` now takes a `User` (must contain id) and a token. Passing the userToken in client constructor was making the whole instance depend on a single user.
+- `EnrichedActivity` is now `GenericEnrichedActivity`
+
+### New
+
+- We now support generic parameters and removed `EnrichableField` field on `EnrichedActivity`
+- There is a type definition `EnrichedActivity` to handle most use cases of `GenericEnrichedActivity<ActorType,`
 ## 0.3.0: 06/09/2021
 
 - improvements: 
