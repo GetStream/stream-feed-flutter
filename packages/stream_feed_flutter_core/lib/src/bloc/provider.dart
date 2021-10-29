@@ -7,12 +7,14 @@ import 'package:stream_feed_flutter_core/src/bloc/feed_bloc.dart';
 /// {@macro feedProvider}
 /// {@macro genericParameters}
 class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
+  /// {@macro feedProvider}
   const GenericFeedProvider({
     Key? key,
     required this.bloc,
     required Widget child,
   }) : super(key: key, child: child);
 
+  /// Obtains the nearest widget of type [GenericFeedProvider<A, Ob, T, Or>]
   factory GenericFeedProvider.of(BuildContext context) {
     final result = context.dependOnInheritedWidgetOfExactType<
         GenericFeedProvider<A, Ob, T, Or>>();

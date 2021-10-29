@@ -39,7 +39,7 @@ typedef ReactionsBuilder = Widget Function(
 /// ## Usage
 ///
 /// ```dart
-/// class FlatActivityListPage extends StatelessWidget {
+/// class ActivityListView extends StatelessWidget {
 ///   @override
 ///   Widget build(BuildContext context) {
 ///     return Scaffold(
@@ -73,7 +73,7 @@ typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
 /// ## Usage
 ///
 /// ```dart
-/// class FlatActivityListPage extends StatelessWidget {
+/// class ReactionListView extends StatelessWidget {
 ///   @override
 ///   Widget build(BuildContext context) {
 ///     return Scaffold(
@@ -134,31 +134,14 @@ typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 /// more advanced use case use [GenericFeedBloc] instead
 ///
 /// ## Usage
-/// - query the activities stream. Checkout our core widget [FlatFeedCore]
-/// to display activities
-/// - query the reactions stream (like, retweet, claps). Checkout our core widget
-///  [ReactionListCore] for displaying reactions
-/// - add activities (a tweet for example) in a reactive way
-/// ```dart
-/// FeedProvider.of(context).bloc.onAddActivity()
-/// ```
-/// - remove activities (delete a tweet) in a reactive way
-/// ```dart
-/// FeedProvider.of(context).bloc.onRemoveActivity()
-/// ```
+/// - {@macro queryEnrichedActivities}
+/// - {@macro queryReactions}
+/// - {@macro onAddActivity}
+/// - {@macro deleteActivity}
 /// - {@macro onAddReaction}
-/// - remove reacitons (delete a comment under a tweet) in a reactive way
-/// ```dart
-/// FeedProvider.of(context).bloc.onRemoveReaction()
-/// ```
-/// - add child reactions (like to a comment) in a reactive way
-/// ```dart
-/// FeedProvider.of(context).bloc.onAddReaction()
-/// ```
-/// - remove child reacitons (unlike a comment) in a reactive way
-/// ```dart
-/// FeedProvider.of(context).bloc.onRemoveChildReaction()
-/// ```
+/// - {@macro onRemoveReaction}
+/// - {@macro onAddChildReaction}
+/// - {@macro onRemoveChildReaction}
 /// {@endtemplate}
 /// 
 /// {@template genericParameters}

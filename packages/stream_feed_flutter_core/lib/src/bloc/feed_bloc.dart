@@ -9,6 +9,7 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 /// {@macro feedBloc}
 /// {@macro genericParameters}
 class GenericFeedBloc<A, Ob, T, Or> {
+  /// {@macro feedBloc}
   GenericFeedBloc({required this.client, this.analyticsClient});
 
   /// The underlying client instance
@@ -68,7 +69,15 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   /* ACTIVITIES */
 
-  /// Add an activity to the feed.
+  /// {@template onAddActivity}
+  ///  Add an activity to the feed in a reactive way
+  ///
+  /// For example a tweet
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onAddActivity()
+  /// ```
+  /// {@endtemplate}
+
   Future<Activity> onAddActivity({
     required String feedGroup,
     Map<String, String>? data,
@@ -109,6 +118,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return addedActivity;
   }
 
+  /// {@template onRemoveActivity}
+  /// Remove an Activity from the feed in a reactive way
+  ///
+  /// For example delete a tweet
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onRemoveActivity()
+  /// ```
+  /// {@endtemplate}
   Future<void> onRemoveActivity({
     required String feedGroup,
     required String activityId,
@@ -119,9 +136,17 @@ class GenericFeedBloc<A, Ob, T, Or> {
     _activities.removeWhere((element) => element.id == activityId);
     activitiesController.add(feedGroup, _activities);
   }
+
   /* CHILD REACTIONS */
 
-  /// Add child reaction
+  /// {@template onAddChildReaction}
+  /// Add child reaction to the feed in a reactive way
+  ///
+  /// For example to add a like to a comment
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onAddReaction()
+  /// ```
+  /// {@endtemplate}
   Future<Reaction> onAddChildReaction({
     required String kind,
     required Reaction reaction,
@@ -157,7 +182,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return childReaction;
   }
 
-  /// Remove child reactions
+  /// {@template onRemoveChildReaction}
+  /// Remove child reactions from the feed in a reactive way
+  ///
+  /// For example to unlike a comment
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onRemoveChildReaction()
+  /// ```
+  /// {@endtemplate}
   Future<void> onRemoveChildReaction({
     required String kind,
     required GenericEnrichedActivity activity,
@@ -191,7 +223,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
   }
 
-  /// Remove reaction from the feed.
+  /// {@template onRemoveReaction}
+  /// Remove reaction from the feed in a reactive way
+  ///
+  /// For example to delete a comment under a tweet
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onRemoveReaction()
+  /// ```
+  /// {@endtemplate}
   Future<void> onRemoveReaction({
     required String kind,
     required GenericEnrichedActivity<A, Ob, T, Or> activity,
@@ -296,7 +335,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
         : print('warning: analytics: not enabled'); //TODO:logger
   }
 
-  /// Query reactions
+  /// {@template queryReactions}
+  /// Query the reactions stream (like, retweet, claps).
+  ///
+  /// Checkout our convenient core widget
+  ///  [ReactionListCore] for displaying reactions easily
+  /// {@endtemplate}
   Future<void> queryReactions(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -337,6 +381,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
     }
   }
 
+  /// {@template queryEnrichedActivities}
+  /// Query the activities stream
+  ///
+  /// Checkout our convenient core widget [FlatFeedCore]
+  /// to display activities easily
+  /// {@endtemplate}
   Future<void> queryEnrichedActivities({
     required String feedGroup,
     int? limit,
