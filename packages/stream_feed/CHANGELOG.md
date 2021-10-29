@@ -5,9 +5,9 @@ The connect verb was confusing, and made you think that it will perform the conn
 - breaking: `setUser` now takes a `User` (must contain id) and a token. Passing the userToken in client constructor was making the whole instance depend on a single user.
 - new: we support generics
 `EnrichedActivity` is now `GenericEnrichedActivity<A,Ob,T,Or>` in order to have a more flexible API surface. Those generic parameters can be as follows:
-A = [actor]: can be User, String
-Ob = [object] can a String, or CollectionEntry
-T = [target] can be a String or Activity
+A = [actor]: can be an User, String
+Ob = [object] can a String, or a CollectionEntry
+T = [target] can be a String or an Activity
 Or = [origin] can be a String or a Reaction or an User
 - breaking: along with these changes we removed `EnrichableField` field from `EnrichedActivity` 
 - new: there is a type definition `EnrichedActivity` to handle most use cases of `GenericEnrichedActivity` (User,String,String,String)
