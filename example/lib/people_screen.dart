@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
-import 'app_user.dart';
-import 'extension.dart';
 
 // ignore_for_file: public_member_api_docs
 

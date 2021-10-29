@@ -15,6 +15,7 @@ export 'followers.dart';
 export 'following.dart';
 export 'foreign_id_time_pair.dart';
 export 'group.dart';
+export 'lookup_attribute.dart';
 export 'open_graph_data.dart';
 export 'reaction.dart';
 export 'realtime_message.dart';

@@ -34,7 +34,3 @@ typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 
 ///Convenient typedef for [GenericFeedBloc] with default parameters
 typedef FeedBloc = GenericFeedBloc<User, String, String, String>;
-
-///Convenient typedef for [EnrichedActivity] with default parameters
-typedef EnrichedActivity
-    = GenericEnrichedActivity<User, String, String, String>;
