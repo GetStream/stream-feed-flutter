@@ -12,7 +12,7 @@ void main() {
   const _key = String.fromEnvironment('key');
   const _userToken = String.fromEnvironment('user_token');
 
-  final client = StreamFeedClient.connect(
+  final client = StreamFeedClient(
     _key,
     token: const Token(_userToken),
   );

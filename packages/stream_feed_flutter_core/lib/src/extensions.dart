@@ -1,22 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-//TODO: find a better than shift
-
-// extension AlreadyReacted on Reaction {
-//   bool alreadyReactedTo(String kind) {
-//     final ownReactions = ownChildren?[kind];
-//     return ownReactions != null && ownReactions.isNotEmpty;
-//   }
-// }
-
-// extension AlreadyReactedEnrichedActivity on EnrichedActivity {
-//   bool alreadyReactedTo(String kind) {
-//     final _ownReactions = ownReactions?[kind];
-//     return _ownReactions != null && _ownReactions.isNotEmpty;
-//   }
-// }
-
+@visibleForTesting
 extension ReactionX on List<Reaction> {
   ///Filter reactions by reaction kind
   List<Reaction?> filterByKind(String kind) =>
@@ -26,6 +12,7 @@ extension ReactionX on List<Reaction> {
       firstWhere((r) => r.id! == reaction.id!); //TODO; handle doesn't exist
 }
 
+@visibleForTesting
 extension EnrichedActivityX<A, Ob, T, Or>
     on List<GenericEnrichedActivity<A, Ob, T, Or>> {
   GenericEnrichedActivity<A, Ob, T, Or> getEnrichedActivityPath(
@@ -35,12 +22,9 @@ extension EnrichedActivityX<A, Ob, T, Or>
 
 }
 
+@visibleForTesting
 extension UpdateIn<A, Ob, T, Or>
     on List<GenericEnrichedActivity<A, Ob, T, Or>> {
-  // EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
-  //     this.firstWhere(
-  //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
-
   List<GenericEnrichedActivity<A, Ob, T, Or>> updateIn(
       GenericEnrichedActivity<A, Ob, T, Or> enrichedActivity, int indexPath) {
     var result = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(this);
@@ -52,11 +36,8 @@ extension UpdateIn<A, Ob, T, Or>
   }
 }
 
+@visibleForTesting
 extension UpdateInReaction on List<Reaction> {
-  // EnrichedActivity getEnrichedActivityPath(EnrichedActivity enrichedActivity) =>
-  //     this.firstWhere(
-  //         (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
-
   List<Reaction> updateIn(Reaction enrichedActivity, int indexPath) {
     var result = List<Reaction>.from(this);
     result.isNotEmpty
@@ -67,6 +48,7 @@ extension UpdateInReaction on List<Reaction> {
   }
 }
 
+@visibleForTesting
 extension UnshiftMapList on Map<String, List<Reaction>>? {
   //TODO: maybe refactor to an operator maybe [Reaction] + Reaction
   Map<String, List<Reaction>> unshiftByKind(String kind, Reaction reaction,
@@ -86,6 +68,7 @@ extension UnshiftMapList on Map<String, List<Reaction>>? {
   }
 }
 
+@visibleForTesting
 extension UnshiftMapController
     on Map<String, BehaviorSubject<List<Reaction>>>? {
   ///Lookup latest Reactions by Id and inserts the given reaction to the beginning of the list
@@ -110,6 +93,7 @@ extension UnshiftMapController
 //TODO: find a better name
 enum ShiftType { increment, decrement }
 
+@visibleForTesting
 extension UnshiftMapInt on Map<String, int>? {
   Map<String, int> unshiftByKind(String kind,
       [ShiftType type = ShiftType.increment]) {
@@ -132,6 +116,7 @@ extension UnshiftMapInt on Map<String, int>? {
   }
 }
 
+@visibleForTesting
 extension Unshift<T> on List<T> {
   List<T> unshift(T item, [ShiftType type = ShiftType.increment]) {
     final result = List<T>.from(this);
@@ -143,6 +128,7 @@ extension Unshift<T> on List<T> {
   }
 }
 
+@visibleForTesting
 extension UnshiftInt on int {
   int unshift([ShiftType type = ShiftType.increment]) {
     if (type == ShiftType.increment) {
