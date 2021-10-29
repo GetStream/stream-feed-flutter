@@ -1,13 +1,6 @@
-A library for Dart developers.
+import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
-
-## Usage
-
-A simple usage example:
-
-```dart
 Future<void> main() async {
   const apiKey = String.fromEnvironment('key');
   const userToken = String.fromEnvironment('user_token');
@@ -18,12 +11,13 @@ Future<void> main() async {
 
   await client.setUser(
     const User(
-      id: 'JohnDoe',
+      id: 'GroovinChip',
       data: {
-        'handle': '@JohnDow',
-        'first_name': 'John',
-        'last_name': 'Doe',
-        'full_name': 'John Doe',
+        'handle': '@GroovinChip',
+        'first_name': 'Reuben',
+        'last_name': 'Turner',
+        'full_name': 'Reuben Turner',
+        'profile_image': 'https://avatars.githubusercontent.com/u/4250470?v=4',
       },
     ),
     const Token(userToken),
@@ -68,10 +62,3 @@ Future<void> main() async {
     ),
   );
 }
-```
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
