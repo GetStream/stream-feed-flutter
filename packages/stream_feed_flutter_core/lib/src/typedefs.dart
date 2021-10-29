@@ -143,7 +143,7 @@ typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 /// - {@macro onAddChildReaction}
 /// - {@macro onRemoveChildReaction}
 /// {@endtemplate}
-/// 
+///
 /// {@template genericParameters}
 /// The generic parameters can be of the following type:
 /// - A : [actor] can be an User, or a String
@@ -154,6 +154,6 @@ typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 /// To avoid potential runtime errors
 /// make sure they are the same across the app if
 /// you go the route of using Generic* classes
-/// 
+///
 /// {@endtemplate}
 typedef FeedBloc = GenericFeedBloc<User, String, String, String>;
