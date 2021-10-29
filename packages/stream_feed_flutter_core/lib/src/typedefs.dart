@@ -17,14 +17,24 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
 typedef ReactionsBuilder = Widget Function(
     BuildContext context, List<Reaction> reactions, int idx);
 
+/*  Convenient typedefs for defining default type parameters 
+ Dart doesn't allow a type parameter to have a default value
+ so this is hack until it is supported
+*/
+
+///Convenient typedef for [GenericFlatFeedCore] with default parameters
 typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
+
+///Convenient typedef for [GenericReactionListCore] with default parameters
 typedef ReactionListCore
     = GenericReactionListCore<User, String, String, String>;
 
+///Convenient typedef for [GenericFeedProvider] with default parameters
 typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 
+///Convenient typedef for [GenericFeedBloc] with default parameters
 typedef FeedBloc = GenericFeedBloc<User, String, String, String>;
 
-/// TODO: document me
+///Convenient typedef for [EnrichedActivity] with default parameters
 typedef EnrichedActivity
     = GenericEnrichedActivity<User, String, String, String>;
