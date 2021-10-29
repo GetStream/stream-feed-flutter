@@ -1,3 +1,2 @@
-## 0.0.0
-
-- domain parking 🏎
+## 0.0.4
+- first release
