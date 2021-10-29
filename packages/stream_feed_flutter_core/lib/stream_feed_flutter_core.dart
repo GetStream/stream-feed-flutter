@@ -1,8 +1,10 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
 library stream_feed_flutter_core;
 
-export 'src/stream_feed_flutter_core_base.dart';
+export 'package:stream_feed/stream_feed.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+export 'src/bloc/bloc.dart';
+export 'src/extensions.dart';
+export 'src/flat_feed_core.dart';
+export 'src/reactions_list_core.dart';
+export 'src/states/states.dart';
+export 'src/typedefs.dart';

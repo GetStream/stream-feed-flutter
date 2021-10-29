@@ -7,6 +7,7 @@ import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/reaction.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 /// The http layer api for CRUD operations on Reactions
 class ReactionsAPI {
@@ -89,7 +90,7 @@ class ReactionsAPI {
   }
 
   /// Paginated reactions and filter them
-  Future<PaginatedReactions> paginatedFilter(
+  Future<PaginatedReactions<A, Ob, T, Or>> paginatedFilter<A, Ob, T, Or>(
     Token token,
     LookupAttribute lookupAttr,
     String lookupValue,
@@ -108,18 +109,20 @@ class ReactionsAPI {
         'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );
-    return PaginatedReactions.fromJson(result.data);
+    return PaginatedReactions<A, Ob, T, Or>.fromJson(result.data);
   }
 
   /// Next reaction pagination returned by [PaginatedReactions].next
-  Future<PaginatedReactions> nextPaginatedFilter(
-      Token token, String next) async {
+  Future<PaginatedReactions<A, Ob, T, Or>> nextPaginatedFilter<A, Ob, T, Or>(
+    Token token,
+    String next,
+  ) async {
     checkArgument(next.isNotEmpty, "Next url can't be empty");
     final result = await _client.get(
       next,
       headers: {'Authorization': '$token'},
     );
-    return PaginatedReactions.fromJson(result.data);
+    return PaginatedReactions<A, Ob, T, Or>.fromJson(result.data);
   }
 
   /// Update a reaction

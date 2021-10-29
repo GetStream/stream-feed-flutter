@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:faye_dart/faye_dart.dart';
 import 'package:faye_dart/src/channel.dart';
 import 'package:faye_dart/src/message.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/status.dart' as status;
-import 'package:logging/logging.dart';
-import 'extensible.dart';
-import 'dart:math' as math;
-
 import 'package:faye_dart/src/subscription.dart';
-
-import 'timeout_helper.dart';
+import 'package:faye_dart/src/timeout_helper.dart';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
+import 'package:web_socket_channel/status.dart' as status;
+import 'package:web_socket_channel/web_socket_channel.dart';
+
+import 'package:faye_dart/src/extensible.dart';
 
 enum FayeClientState {
   unconnected,

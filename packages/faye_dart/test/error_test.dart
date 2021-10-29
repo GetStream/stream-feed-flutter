@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('should successfully parse error if it matches error grammar', () {
-    final errorMessage = '405:bayeuxChannel:Invalid channel';
+    const errorMessage = '405:bayeuxChannel:Invalid channel';
     final error = FayeClientError.parse(errorMessage);
     expect(error.code, 405);
     expect(error.params, ['bayeuxChannel']);
@@ -13,7 +13,7 @@ void main() {
   test(
     'should return same errorMessage if it does not matches error grammar',
     () {
-      final errorMessage = 'dummy error message';
+      const errorMessage = 'dummy error message';
       final error = FayeClientError.parse(errorMessage);
       expect(error.code, isNull);
       expect(error.params, isEmpty);
@@ -22,7 +22,7 @@ void main() {
   );
 
   test('should print error as a String', () {
-    final errorMessage = '405:bayeuxChannel:Invalid channel';
+    const errorMessage = '405:bayeuxChannel:Invalid channel';
     final error = FayeClientError.parse(errorMessage);
     expect(
       error.toString(),

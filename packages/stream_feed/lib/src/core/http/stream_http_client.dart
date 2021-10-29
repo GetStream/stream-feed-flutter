@@ -77,7 +77,6 @@ class StreamHttpClient {
     } else {
       feedsError = StreamFeedsNetworkError.fromDioError(dioError);
     }
-    print(feedsError.errorCode);
     return feedsError..stackTrace = dioError.stackTrace;
   }
 
@@ -104,7 +103,7 @@ class StreamHttpClient {
     }
   }
 
-  /// Handy method to make http POST request with error parsing.
+  /// Handy method to make an http POST request with error parsing.
   Future<Response<T>> post<T>(
     String path, {
     String serviceName = 'api',

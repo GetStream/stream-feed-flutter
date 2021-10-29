@@ -73,10 +73,10 @@ class BatchOperationsClient {
     return _batch.getActivitiesById(token, ids);
   }
 
-  Future<Iterable<EnrichedActivity>> getEnrichedActivitiesById(
-      Iterable<String> ids) {
+  Future<Iterable<GenericEnrichedActivity<A, Ob, T, Or>>>
+      getEnrichedActivitiesById<A, Ob, T, Or>(Iterable<String> ids) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
-    return _batch.getEnrichedActivitiesById(token, ids);
+    return _batch.getEnrichedActivitiesById<A, Ob, T, Or>(token, ids);
   }
 
   /// Retrieve a batch of activities by a list of foreign ids.
@@ -86,10 +86,11 @@ class BatchOperationsClient {
     return _batch.getActivitiesByForeignId(token, pairs);
   }
 
-  Future<Iterable<EnrichedActivity>> getEnrichedActivitiesByForeignId(
-      Iterable<ForeignIdTimePair> pairs) {
+  Future<Iterable<GenericEnrichedActivity<A, Ob, T, Or>>>
+      getEnrichedActivitiesByForeignId<A, Ob, T, Or>(
+          Iterable<ForeignIdTimePair> pairs) {
     final token = TokenHelper.buildActivityToken(secret, TokenAction.read);
-    return _batch.getEnrichedActivitiesByForeignId(token, pairs);
+    return _batch.getEnrichedActivitiesByForeignId<A, Ob, T, Or>(token, pairs);
   }
 
   /// Update a single activity

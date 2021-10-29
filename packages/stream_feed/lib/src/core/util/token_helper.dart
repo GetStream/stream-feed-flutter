@@ -220,12 +220,11 @@ String issueJwtHS256({
   required Map<String, Object?>? claims,
   DateTime? expiresAt,
 }) {
+  final now = DateTime.now();
   final claimSet = JsonWebTokenClaims.fromJson({
-    'exp': DateTime.now()
-            .add(const Duration(seconds: 1200))
-            .millisecondsSinceEpoch ~/
-        1000,
-    'iat': DateTime.now().toUtc().millisecondsSinceEpoch ~/ 1000,
+    'exp':
+        now.add(const Duration(seconds: 1200)).millisecondsSinceEpoch ~/ 1000,
+    //'iat': now.toUtc().millisecondsSinceEpoch ~/ 1000,
     if (claims != null) ...claims,
   });
 

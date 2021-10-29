@@ -7,7 +7,7 @@ Future<void> main() async {
   final secret = env['secret'];
   final apiKey = env['apiKey'];
   final appId = env['appId'];
-  final clientWithSecret = StreamFeedClient.connect(
+  final clientWithSecret = StreamFeedClient(
     apiKey!,
     secret: secret,
     runner: Runner.server,
@@ -72,7 +72,7 @@ Future<void> main() async {
   // response = await userFeed.getActivities(limit: 5, ranking: "popularity");//must be enabled
 
 // Server-side
-  var client = StreamFeedClient.connect(
+  var client = StreamFeedClient(
     apiKey,
     secret: secret,
     appId: appId,
@@ -83,7 +83,7 @@ Future<void> main() async {
   final userToken = client.frontendToken('user.id');
 
 // Client-side
-  client = StreamFeedClient.connect(
+  client = StreamFeedClient(
     apiKey,
     token: userToken,
     appId: appId,
@@ -338,13 +338,18 @@ Future<void> main() async {
         object: cheeseBurgerRef,
       ));
 
-  client = StreamFeedClient.connect(apiKey, token: frontendToken);
+  client = StreamFeedClient(apiKey, token: frontendToken);
 // ensure the user data is stored on Stream
-  await client.setUser({
-    'name': 'John Doe',
-    'occupation': 'Software Engineer',
-    'gender': 'male'
-  });
+  await client.setUser(
+    const User(
+      data: {
+        'name': 'John Doe',
+        'occupation': 'Software Engineer',
+        'gender': 'male'
+      },
+    ),
+    frontendToken,
+  );
 
   // create a new user, if the user already exist an error is returned
   // await client.user('john-doe').create({
