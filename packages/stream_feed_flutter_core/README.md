@@ -9,7 +9,7 @@
 - [Tutorial](https://getstream.io/activity-feeds/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
 - [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/) to jumpstart your design with notifications and social feeds
 
-#### Install from pub <a href="https://pub.dartlang.org/packages/stream_feed"><img alt="Pub" src="https://img.shields.io/pub/v/stream_feed.svg"></a>
+#### Install from pub <a href="https://pub.dartlang.org/packages/stream_feed_flutter_core"><img alt="Pub" src="https://img.shields.io/pub/v/stream_feed_flutter_core.svg"></a>
 
 Next step is to add `stream_feed` to your dependencies, to do that just open pubspec.yaml and add it inside the dependencies section. 
 
