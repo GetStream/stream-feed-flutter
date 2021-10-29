@@ -4,6 +4,12 @@ import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
 import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 
+/// Widget dedicated to the state management of an app's Stream feed
+/// [GenericFeedBloc] is used to manage a set of operations
+/// associated with [GenericEnrichedActivity]s and [Reaction]s.
+///
+/// [GenericFeedBloc] can be access at anytime by using the factory [of] method
+/// using Flutter's [BuildContext].
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 

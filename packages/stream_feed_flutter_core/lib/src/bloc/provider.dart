@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/bloc/generic.dart';
 
+/// Inherited widget providing the [GenericFeedBloc] to the widget tree
 class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
   const GenericFeedProvider({
     Key? key,
