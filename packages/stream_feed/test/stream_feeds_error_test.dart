@@ -5,7 +5,7 @@ import 'package:stream_feed/src/core/error/stream_feeds_error.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('StreamChatNetworkError', () {
+  group('StreamFeedNetworkError', () {
     test('.raw', () {
       const code = 400;
       const message = 'test-error-message';

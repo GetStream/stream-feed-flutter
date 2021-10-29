@@ -52,7 +52,7 @@ class StreamHttpClient {
       ]);
   }
 
-  /// Your project Stream Chat api key.
+  /// Your project Stream Feed api key.
   ///
   /// Find your API keys here https://getstream.io/dashboard/.
   ///
