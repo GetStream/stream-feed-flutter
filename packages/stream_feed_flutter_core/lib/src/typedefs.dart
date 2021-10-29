@@ -163,4 +163,17 @@ typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 /// FeedProvider.of(context).bloc.onRemoveChildReaction()
 /// ```
 /// {@endtemplate}
+/// 
+/// {@template genericParameters}
+/// The generic parameters can be of the following type:
+/// A = [actor] can be an User, or a String
+/// Ob = [object] can a String, or a CollectionEntry
+/// T = [target] can be a String or an Activity
+/// Or = [origin] can be a String or a Reaction or an User
+///
+/// To avoid potential runtime errors
+/// make sure they are the same across the app if
+/// you go the route of using Generic* classes
+/// 
+/// {@endtemplate}
 typedef FeedBloc = GenericFeedBloc<User, String, String, String>;

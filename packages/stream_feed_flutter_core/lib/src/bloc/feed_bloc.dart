@@ -6,8 +6,8 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 
 /// The generic version of feedBloc
 ///
-///{@macro feedBloc}
-
+/// {@macro feedBloc}
+/// {@macro genericParameters}
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 
