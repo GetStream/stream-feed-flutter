@@ -9,8 +9,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /// The generic version of [FlatFeedCore]
 /// 
-///{@macro flatFeedCore}
-///{@macro genericParameters}
+/// {@macro flatFeedCore}
+/// {@macro genericParameters}
 class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   ///{@macro flatFeedCore}
   const GenericFlatFeedCore({

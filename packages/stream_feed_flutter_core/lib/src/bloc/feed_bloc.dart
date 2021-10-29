@@ -232,13 +232,23 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   /* REACTIONS */
 
-  /// Add a new reaction to the feed.
+  /// {@template onAddReaction}
+  /// Add a new reaction to the feed
+  ///  in a reactive way.
+  /// For example to add a comment under a tweet:
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onAddReaction(kind:'comment',
+  /// activity: activities[idx],feedGroup:'user'),
+  /// data: {'text': trimmedText}
+  /// ```
+  /// {@endtemplate}
+
   Future<Reaction> onAddReaction({
-    Map<String, Object>? data,
     required String kind,
     required GenericEnrichedActivity<A, Ob, T, Or> activity,
-    List<FeedId>? targetFeeds,
     required String feedGroup,
+    List<FeedId>? targetFeeds,
+    Map<String, Object>? data,
   }) async {
     final reaction = await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);

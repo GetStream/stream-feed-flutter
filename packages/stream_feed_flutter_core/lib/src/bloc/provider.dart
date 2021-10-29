@@ -4,7 +4,8 @@ import 'package:stream_feed_flutter_core/src/bloc/feed_bloc.dart';
 
 /// The generic version of [FeedProvider]
 ///
-///{@macro feedProvider}
+/// {@macro feedProvider}
+/// {@macro genericParameters}
 class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
   const GenericFeedProvider({
     Key? key,

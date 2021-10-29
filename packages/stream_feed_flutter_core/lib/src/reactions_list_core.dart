@@ -11,8 +11,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 //TODO: other things to add to core: FollowListCore, UserListCore
 
 /// The generic version of [ReactionListCore]
-/// 
-///{@macro reactionListCore}
+///
+/// {@macro reactionListCore}
+/// {@macro genericParameters}
 class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
   ///{@macro reactionListCore}
   const GenericReactionListCore({
