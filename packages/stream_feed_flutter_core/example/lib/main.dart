@@ -39,7 +39,7 @@ Future<void> main() async {
             return InkWell(
               child: ListTile(
                 title: Text('${activities[index].actor!.data!['handle']}'),
-                subtitle:  Text('${activities[index].object}'),
+                subtitle: Text('${activities[index].object}'),
               ),
               onTap: () {
                 Navigator.of(context).push(
