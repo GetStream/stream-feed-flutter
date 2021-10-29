@@ -7,16 +7,11 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-/// {@template genericFlatFeedCore}
-/// [GenericFlatFeedCore] is a simplified class that allows fetching a list of
-/// enriched activities (flat) while exposing UI builders.
-/// Make sure to have a [GenericFeedProvider] ancestor in order to provide the
-/// information about the activities.
-/// Usually what you want is the convenient [FlatFeedCore] that already
-/// has the default parameters defined for you
-/// suitable to most use cases
-/// {@endtemplate}
+/// The generic version of [FlatFeedCore]
+/// 
+///{@macro flatFeedCore}
 class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
+  ///{@macro flatFeedCore}
   const GenericFlatFeedCore({
     Key? key,
     required this.feedGroup,

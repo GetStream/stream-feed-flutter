@@ -2,10 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/bloc/feed_bloc.dart';
 
-/// Inherited widget providing the [GenericFeedBloc] to the widget tree
-/// Usually what you need is the convenient [FeedProvider] that already 
-/// has the default parameters defined for you
-/// suitable to most usecases
+/// The generic version of [FeedProvider]
+///
+///{@macro feedProvider}
 class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
   const GenericFeedProvider({
     Key? key,

@@ -10,37 +10,11 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 //TODO: other things to add to core: FollowListCore, UserListCore
 
-/// [ReactionListCore] is a simplified class that allows fetching a list of
-/// reactions while exposing UI builders.
-///
-///
-/// ```dart
-/// class FlatActivityListPage extends StatelessWidget {
-///   @override
-///   Widget build(BuildContext context) {
-///     return Scaffold(
-///       body: ReactionListCore(
-///         onErrorWidget: Center(
-///             child: Text('An error has occurred'),
-///         ),
-///         onEmptyWidget: Center(
-///             child: Text('Nothing here...'),
-///         ),
-///         onProgressWidget: Center(
-///             child: CircularProgressIndicator(),
-///         ),
-///         feedBuilder: (context, reactions, idx) {
-///           return YourReactionWidget(reaction: reactions[idx]);
-///         }
-///       ),
-///     );
-///   }
-/// }
-/// ```
-///
-/// Make sure to have a [GenericFeedProvider] ancestor in order to provide the
-/// information about the reactions.
+/// The generic version of [ReactionListCore]
+/// 
+///{@macro reactionListCore}
 class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
+  ///{@macro reactionListCore}
   const GenericReactionListCore({
     Key? key,
     required this.reactionsBuilder,
