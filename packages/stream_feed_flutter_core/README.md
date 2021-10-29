@@ -11,7 +11,7 @@
 
 #### Install from pub <a href="https://pub.dartlang.org/packages/stream_feed_flutter_core"><img alt="Pub" src="https://img.shields.io/pub/v/stream_feed_flutter_core.svg"></a>
 
-Next step is to add `stream_feed` to your dependencies, to do that just open pubspec.yaml and add it inside the dependencies section. 
+Next step is to add `stream_feed_flutter_core` to your dependencies, to do that just open pubspec.yaml and add it inside the dependencies section. 
 
 ```yaml
 dependencies:
