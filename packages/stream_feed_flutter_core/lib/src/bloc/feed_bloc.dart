@@ -92,7 +92,6 @@ class GenericFeedBloc<A, Ob, T, Or> {
       object: object,
       extraData: data,
       to: to,
-      time: DateTime.now(),
     );
 
     final flatFeed = client.flatFeed(feedGroup, userId);
