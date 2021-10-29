@@ -22,7 +22,34 @@ typedef ReactionsBuilder = Widget Function(
  so this is hack until it is supported
 */
 
+/// {@template flatFeedCore}
 ///Convenient typedef for [GenericFlatFeedCore] with default parameters
+/// ## Usage
+///
+/// ```dart
+/// class FlatActivityListPage extends StatelessWidget {
+///   @override
+///   Widget build(BuildContext context) {
+///     return Scaffold(
+///       body: FlatFeedCore(
+///         onErrorWidget: Center(
+///             child: Text('An error has occurred'),
+///         ),
+///         onEmptyWidget: Center(
+///             child: Text('Nothing here...'),
+///         ),
+///         onProgressWidget: Center(
+///             child: CircularProgressIndicator(),
+///         ),
+///         feedBuilder: (context, activities, idx) {
+///           return YourActivityWidget(activity: activities[idx]);
+///         }
+///       ),
+///     );
+///   }
+/// }
+/// ```
+/// {@endtemplate}
 typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
 
 ///Convenient typedef for [GenericReactionListCore] with default parameters

@@ -10,6 +10,21 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 ///
 /// [GenericFeedBloc] can be access at anytime by using the factory [of] method
 /// using Flutter's [BuildContext].
+/// 
+/// Usually what you want is the convenient [FeedBloc] that already 
+/// has the default parameters defined for you
+/// suitable to most use cases
+/// 
+/// ## Usage
+/// - query activities
+/// - query reactions (like, retweet, claps)
+/// - add activities (a tweet for example)
+/// - remove activities (delete a tweet)
+/// - add reactions (comment under a tweet)
+/// - remove reacitons (delete a comment under a tweet)
+/// - add child reactions (like to a comment)
+/// - remove child reacitons (unlike a comment)
+
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 

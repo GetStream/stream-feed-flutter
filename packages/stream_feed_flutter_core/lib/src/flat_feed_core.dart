@@ -7,36 +7,15 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+/// {@template genericFlatFeedCore}
 /// [GenericFlatFeedCore] is a simplified class that allows fetching a list of
 /// enriched activities (flat) while exposing UI builders.
-///
-///
-/// ```dart
-/// class FlatActivityListPage extends StatelessWidget {
-///   @override
-///   Widget build(BuildContext context) {
-///     return Scaffold(
-///       body: GenericFlatFeedCore(
-///         onErrorWidget: Center(
-///             child: Text('An error has occurred'),
-///         ),
-///         onEmptyWidget: Center(
-///             child: Text('Nothing here...'),
-///         ),
-///         onProgressWidget: Center(
-///             child: CircularProgressIndicator(),
-///         ),
-///         feedBuilder: (context, activities, idx) {
-///           return YourActivityWidget(activity: activities[idx]);
-///         }
-///       ),
-///     );
-///   }
-/// }
-/// ```
-///
 /// Make sure to have a [GenericFeedProvider] ancestor in order to provide the
 /// information about the activities.
+/// Usually what you want is the convenient [FlatFeedCore] that already
+/// has the default parameters defined for you
+/// suitable to most use cases
+/// {@endtemplate}
 class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   const GenericFlatFeedCore({
     Key? key,
