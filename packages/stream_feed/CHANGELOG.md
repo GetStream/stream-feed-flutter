@@ -11,7 +11,9 @@ T = [target] can be a String or Activity
 Or = [origin] can be a String or a Reaction or an User
 - breaking: along with these changes we removed `EnrichableField` field from `EnrichedActivity` 
 - new: there is a type definition `EnrichedActivity` to handle most use cases of `GenericEnrichedActivity` (User,String,String,String)
-  
+- fix: a time drift issue in tokeng generation when using the low level client severside
+- bump: dart sdk package constraints to 2.13 to make use of new typedefs
+-   
 
 ## 0.3.0: 06/09/2021
 
