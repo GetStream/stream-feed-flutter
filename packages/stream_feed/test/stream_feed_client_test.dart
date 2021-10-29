@@ -13,7 +13,7 @@ void main() {
     group('throw', () {
       test('throws an AssertionError when no secret or token provided', () {
         expect(
-          () => StreamFeedClient.connect('apiKey'),
+          () => StreamFeedClient('apiKey'),
           throwsA(
             predicate<AssertionError>((e) =>
                 e.message == 'At least a secret or userToken must be provided'),
@@ -26,7 +26,7 @@ void main() {
         'while running on client-side',
         () {
           expect(
-            () => StreamFeedClient.connect('apiKey', secret: 'secret'),
+            () => StreamFeedClient('apiKey', secret: 'secret'),
             throwsA(
               predicate<AssertionError>(
                 (e) =>
@@ -43,7 +43,7 @@ void main() {
         'while running on server-side',
         () {
           expect(
-            () => StreamFeedClient.connect(
+            () => StreamFeedClient(
               'apiKey',
               token: TokenHelper.buildFrontendToken('secret', 'userId'),
               runner: Runner.server,
@@ -64,7 +64,7 @@ void main() {
         'while running on client-side',
         () {
           expect(
-            () => StreamFeedClient.connect(
+            () => StreamFeedClient(
               'apiKey',
               secret: 'secret',
               token: TokenHelper.buildFrontendToken('secret', 'userId'),
@@ -83,12 +83,11 @@ void main() {
       );
 
       test("don't throw if secret provided while running on server-side", () {
-        StreamFeedClient.connect('apiKey',
-            secret: 'secret', runner: Runner.server);
+        StreamFeedClient('apiKey', secret: 'secret', runner: Runner.server);
       });
 
       test("don't throw if token provided while running on client-side", () {
-        StreamFeedClient.connect(
+        StreamFeedClient(
           'apiKey',
           token: TokenHelper.buildFrontendToken('secret', 'userId'),
         );

@@ -1,30 +1,30 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stream_feed_flutter_core/src/states/error.dart';
+import 'package:stream_feed_flutter_core/src/states/empty.dart';
 
 void main() {
-  testWidgets('ErrorStateWidget', (tester) async {
-    await tester.pumpWidget(MaterialApp(
+  testWidgets('EmptyStateWidget', (tester) async {
+    await tester.pumpWidget(const MaterialApp(
         home: Scaffold(
-      body: ErrorStateWidget(),
+      body: EmptyStateWidget(),
     )));
-    final text = find.text('Sorry an error has occured').first;
+    final text = find.text('Nothing here...').first;
     expect(text, findsOneWidget);
   });
 
-  test('Default ErrorStateWidget debugFillProperties', () {
+  test('Default EmptyStateWidget debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
-    final errorStateWidget = ErrorStateWidget();
+    const emptyStateWidget = EmptyStateWidget();
 
     // ignore: cascade_invocations
-    errorStateWidget.debugFillProperties(builder);
+    emptyStateWidget.debugFillProperties(builder);
 
     final description = builder.properties
         .where((node) => !node.isFiltered(DiagnosticLevel.info))
         .map((node) => node.toDescription())
         .toList();
 
-    expect(description, ['"Sorry an error has occured"']);
+    expect(description, ['"Nothing here..."']);
   });
 }

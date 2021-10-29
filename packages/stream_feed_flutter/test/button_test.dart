@@ -165,7 +165,7 @@ void main() {
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
         final mockClient = MockStreamFeedClient();
-        final controller = ReactionsControllers();
+        final controller = ReactionsController();
         const parentId = 'parentId';
         const childId = 'childId';
         final now = DateTime.now();
@@ -185,8 +185,8 @@ void main() {
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
         );
-        bloc.reactionsControllers = controller;
-        expect(bloc.reactionsControllers.hasValue(reactedActivity.id!), true);
+        bloc.reactionsController = controller;
+        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
         final parentReaction = Reaction(
             id: parentId, kind: 'comment', activityId: reactedActivity.id);
         final childReaction =
@@ -250,7 +250,7 @@ void main() {
 
         const label = kind;
         when(() => mockClient.reactions).thenReturn(mockReactions);
-        final controller = ReactionsControllers();
+        final controller = ReactionsController();
         final now = DateTime.now();
         const childId = 'childId';
         const parentId = 'parentId';
@@ -284,8 +284,8 @@ void main() {
           client: mockClient,
           analyticsClient: mockStreamAnalytics,
         );
-        bloc.reactionsControllers = controller;
-        expect(bloc.reactionsControllers.hasValue(reactedActivity.id!), true);
+        bloc.reactionsController = controller;
+        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
 
         when(() => mockReactions.delete(childId))
             .thenAnswer((_) async => Future.value());
@@ -331,7 +331,7 @@ void main() {
     late List<Reaction> reactions;
     late String activityId;
     late FeedBloc bloc;
-    late MockReactionControllers mockReactionControllers;
+    late MockReactionsController mockReactionsController;
     late String feedGroup;
     late StreamSvgIcon inactiveIcon;
     late StreamSvgIcon activeIcon;
@@ -340,7 +340,7 @@ void main() {
 
     setUp(() {
       mockReactions = MockReactions();
-      mockReactionControllers = MockReactionControllers();
+      mockReactionsController = MockReactionsController();
       mockStreamAnalytics = MockStreamAnalytics();
       mockClient = MockStreamFeedClient();
 
@@ -368,10 +368,10 @@ void main() {
 
     testGoldens('onAddReaction', (tester) async {
       const addedReaction = Reaction();
-      bloc.reactionsControllers = mockReactionControllers;
-      when(() => mockReactionControllers.getReactions(activityId))
+      bloc.reactionsController = mockReactionsController;
+      when(() => mockReactionsController.getReactions(activityId))
           .thenAnswer((_) => reactions);
-      expect(bloc.reactionsControllers.getReactions(activityId), reactions);
+      expect(bloc.reactionsController.getReactions(activityId), reactions);
       when(() => mockReactions.add(
             kind,
             activityId,
@@ -406,8 +406,8 @@ void main() {
     testGoldens('onRemoveReaction', (tester) async {
       const reactionId = 'reactionId';
       const reaction = Reaction(id: reactionId);
-      bloc.reactionsControllers = mockReactionControllers;
-      when(() => mockReactionControllers.getReactions(activityId))
+      bloc.reactionsController = mockReactionsController;
+      when(() => mockReactionsController.getReactions(activityId))
           .thenAnswer((_) => reactions);
       when(() => mockReactions.delete(reactionId))
           .thenAnswer((invocation) => Future.value());

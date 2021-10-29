@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
+import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import '../mocks.dart';
@@ -123,17 +125,17 @@ void main() {
     });
 
     test('onAddReaction', () async {
-      final controller = ActivitiesControllers();
+      final controller = ActivitiesController();
       const addedReaction = Reaction(id: '1');
       // ignore: cascade_invocations
       controller.init(feedGroup);
       bloc.activitiesController = controller;
       // ignore: cascade_invocations
-      bloc.reactionsControllers = mockReactionControllers;
+      bloc.reactionsController = mockReactionControllers;
       expect(bloc.activitiesController.hasValue(feedGroup), true);
       when(() => mockReactionControllers.getReactions(activityId))
           .thenAnswer((_) => reactions);
-      expect(bloc.reactionsControllers.getReactions(activityId), reactions);
+      expect(bloc.reactionsController.getReactions(activityId), reactions);
       when(() => mockReactions.add(
             kind,
             activityId,
@@ -163,16 +165,16 @@ void main() {
       //TODO: test reaction Stream
     });
     test('onRemoveReaction', () async {
-      final controller = ActivitiesControllers();
+      final controller = ActivitiesController();
       const reactionId = 'reactionId';
       const reaction = Reaction(id: reactionId);
       controller.init(feedGroup);
       bloc.activitiesController = controller;
       // ignore: cascade_invocations
-      bloc.reactionsControllers = mockReactionControllers;
+      bloc.reactionsController = mockReactionControllers;
       when(() => mockReactionControllers.getReactions(activityId))
           .thenAnswer((_) => reactions);
-      expect(bloc.reactionsControllers.getReactions(activityId), reactions);
+      expect(bloc.reactionsController.getReactions(activityId), reactions);
       when(() => mockReactions.delete(reactionId))
           .thenAnswer((invocation) => Future.value());
 
@@ -205,7 +207,7 @@ void main() {
 
     group('child reactions', () {
       test('onAddChildReaction', () async {
-        final controller = ReactionsControllers();
+        final controller = ReactionsController();
         const parentId = 'parentId';
         const childId = 'childId';
         final now = DateTime.now();
@@ -223,8 +225,8 @@ void main() {
           ),
         );
         controller.init(reactedActivity.id!);
-        bloc.reactionsControllers = controller;
-        expect(bloc.reactionsControllers.hasValue(reactedActivity.id!), true);
+        bloc.reactionsController = controller;
+        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
         final parentReaction = Reaction(
             id: parentId, kind: 'comment', activityId: reactedActivity.id);
         final childReaction =
@@ -260,7 +262,7 @@ void main() {
       });
 
       test('onRemoveChildReaction', () async {
-        final controller = ReactionsControllers();
+        final controller = ReactionsController();
         final now = DateTime.now();
         const childId = 'childId';
         const parentId = 'parentId';
@@ -289,8 +291,8 @@ void main() {
         );
 
         controller.init(reactedActivity.id!);
-        bloc.reactionsControllers = controller;
-        expect(bloc.reactionsControllers.hasValue(reactedActivity.id!), true);
+        bloc.reactionsController = controller;
+        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
         when(() => mockReactions.delete(childId))
             .thenAnswer((_) async => Future.value());
         await bloc.onRemoveChildReaction(
@@ -321,7 +323,7 @@ void main() {
     test(
         '''When we await onAddActivity the stream gets updated with the new expected value''',
         () async {
-      final controller = ActivitiesControllers();
+      final controller = ActivitiesController();
       // ignore: cascade_invocations
       controller.init(feedGroup);
       bloc.activitiesController = controller;

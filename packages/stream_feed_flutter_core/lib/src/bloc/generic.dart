@@ -1,81 +1,25 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-
-class ActivitiesControllers<A, Ob, T, Or> {
-  final Map<String,
-          BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>>
-      _controller = {};
-
-  List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
-          String feedGroup) =>
-      _getController(feedGroup)?.valueOrNull;
-
-  Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getStream(
-          String feedGroup) =>
-      _getController(feedGroup)?.stream;
-
-  void init(String feedGroup) => _controller[feedGroup] =
-      BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
-
-  void clearActivities(String feedGroup) {
-    _getController(feedGroup)!.value = [];
-  }
-
-  void clearAllActivities(List<String> feedGroups) {
-    feedGroups.forEach((feedGroups) => init(feedGroups));
-  }
-
-  void close() {
-    _controller.forEach((key, value) {
-      value.close();
-    });
-  }
-
-  /// Check if controller is not empty.
-  bool hasValue(String feedGroup) =>
-      _getController(feedGroup)?.hasValue != null;
-
-  void add(String feedGroup,
-      List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
-    if (hasValue(feedGroup)) {
-      _getController(feedGroup)!.add(activities);
-    } //TODO: handle null safety
-  }
-
-  BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>? _getController(
-          String feedGroup) =>
-      _controller[feedGroup];
-
-  void update(String feedGroup,
-      List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
-    if (hasValue(feedGroup)) {
-      _getController(feedGroup)!.value = activities;
-    }
-  }
-
-  void addError(String feedGroup, Object e, StackTrace stk) {
-    if (hasValue(feedGroup)) {
-      _getController(feedGroup)!.addError(e, stk);
-    } //TODO: handle null safety
-  }
-}
+import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
+import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
+import 'package:stream_feed_flutter_core/src/extensions.dart';
 
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 
+  /// The underlying client instance
   final StreamFeedClient client;
+
+  /// The current User
   StreamUser? get currentUser => client.currentUser;
 
+  /// The underlying analytics client
   final StreamAnalytics? analyticsClient;
 
-  @visibleForTesting
-  late ReactionsControllers reactionsControllers = ReactionsControllers();
+  late ReactionsController reactionsController = ReactionsController();
 
-  @visibleForTesting
-  late ActivitiesControllers<A, Ob, T, Or> activitiesController =
-      ActivitiesControllers<A, Ob, T, Or>();
+  late ActivitiesController<A, Ob, T, Or> activitiesController =
+      ActivitiesController<A, Ob, T, Or>();
 
   /// The current activities list.
   List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
@@ -84,7 +28,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   /// The current reactions list.
   List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
-      reactionsControllers.getReactions(activityId, reaction);
+      reactionsController.getReactions(activityId, reaction);
 
   /// The current activities list as a stream.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(
@@ -92,16 +36,16 @@ class GenericFeedBloc<A, Ob, T, Or> {
       activitiesController.getStream(feedGroup);
 
   /// The current reactions list as a stream.
-  Stream<List<Reaction>>? getReactionsStream(
-      //TODO: better name?
-      String activityId,
+  Stream<List<Reaction>>? getReactionsStream(String activityId,
       [String? kind]) {
-    return reactionsControllers.getStream(activityId, kind);
+    return reactionsController.getStream(activityId, kind);
   }
 
+  ///  Clear activities for a given feedGroup
   void clearActivities(String feedGroup) =>
       activitiesController.clearActivities(feedGroup);
 
+  ///  Clear all activities for a given feedGroups
   void clearAllActivities(List<String> feedGroups) =>
       activitiesController.clearAllActivities(feedGroups);
 
@@ -117,6 +61,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// The stream notifying the state of queryActivities call.
   Stream<bool> get queryActivitiesLoading =>
       _queryActivitiesLoadingController.stream;
+
+  /* ACTIVITIES */
 
   /// Add an activity to the feed.
   Future<Activity> onAddActivity({
@@ -139,7 +85,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
     final addedActivity = await flatFeed.addActivity(activity);
 
-    // TODO(Sacha): merge activity and enriched activity classes together
+    // TODO(Sacha): this is a hack. Merge activity and enriched activity classes together
     final enrichedActivity = await flatFeed
         .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
 
@@ -158,40 +104,19 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return addedActivity;
   }
 
-  /// Remove child reaction.
-  Future<void> onRemoveChildReaction({
-    required String kind,
-    required GenericEnrichedActivity activity,
-    required Reaction childReaction,
-    required Reaction parentReaction,
+  Future<void> onRemoveActivity({
+    required String feedGroup,
+    required String activityId,
   }) async {
-    await client.reactions.delete(childReaction.id!);
-    final _reactions = getReactions(activity.id!, parentReaction);
-
-    final reactionPath = _reactions.getReactionPath(parentReaction);
-
-    final indexPath = _reactions.indexWhere(
-        (r) => r.id! == parentReaction.id); //TODO: handle null safety
-
-    final childrenCounts =
-        reactionPath.childrenCounts.unshiftByKind(kind, ShiftType.decrement);
-    final latestChildren = reactionPath.latestChildren
-        .unshiftByKind(kind, childReaction, ShiftType.decrement);
-    final ownChildren = reactionPath.ownChildren
-        .unshiftByKind(kind, childReaction, ShiftType.decrement);
-
-    final updatedReaction = reactionPath.copyWith(
-      ownChildren: ownChildren,
-      latestChildren: latestChildren,
-      childrenCounts: childrenCounts,
-    );
-
-    // remove reaction from rxstream
-    reactionsControllers
-      ..unshiftById(activity.id!, childReaction, ShiftType.decrement)
-      ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
+    await client.flatFeed(feedGroup).removeActivityById(activityId);
+    final _activities = getActivities(feedGroup) ?? [];
+    // ignore: cascade_invocations
+    _activities.removeWhere((element) => element.id == activityId);
+    activitiesController.add(feedGroup, _activities);
   }
+  /* CHILD REACTIONS */
 
+  /// Add child reaction
   Future<Reaction> onAddChildReaction({
     required String kind,
     required Reaction reaction,
@@ -220,11 +145,45 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the rxstream
-    reactionsControllers
+    reactionsController
       ..unshiftById(activity.id!, childReaction)
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
-    // return reaction;
+
     return childReaction;
+  }
+
+  /// Remove child reactions
+  Future<void> onRemoveChildReaction({
+    required String kind,
+    required GenericEnrichedActivity activity,
+    required Reaction childReaction,
+    required Reaction parentReaction,
+  }) async {
+    await client.reactions.delete(childReaction.id!);
+    final _reactions = getReactions(activity.id!, parentReaction);
+
+    final reactionPath = _reactions.getReactionPath(parentReaction);
+
+    final indexPath = _reactions.indexWhere(
+        (r) => r.id! == parentReaction.id); //TODO: handle null safety
+
+    final childrenCounts =
+        reactionPath.childrenCounts.unshiftByKind(kind, ShiftType.decrement);
+    final latestChildren = reactionPath.latestChildren
+        .unshiftByKind(kind, childReaction, ShiftType.decrement);
+    final ownChildren = reactionPath.ownChildren
+        .unshiftByKind(kind, childReaction, ShiftType.decrement);
+
+    final updatedReaction = reactionPath.copyWith(
+      ownChildren: ownChildren,
+      latestChildren: latestChildren,
+      childrenCounts: childrenCounts,
+    );
+
+    // remove reaction from rxstream
+    reactionsController
+      ..unshiftById(activity.id!, childReaction, ShiftType.decrement)
+      ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
   }
 
   /// Remove reaction from the feed.
@@ -246,8 +205,6 @@ class GenericFeedBloc<A, Ob, T, Or> {
     final reactionCounts =
         activityPath.reactionCounts.unshiftByKind(kind, ShiftType.decrement);
 
-    // final reaction =
-    //     reactionsFor(activity.id!).firstWhere((reaction) => reaction.id == id);
     final latestReactions = activityPath.latestReactions
         .unshiftByKind(kind, reaction, ShiftType.decrement);
 
@@ -261,12 +218,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // remove reaction from the stream
-    reactionsControllers.unshiftById(
+    reactionsController.unshiftById(
         activity.id!, reaction, ShiftType.decrement);
 
     activitiesController.update(
         feedGroup, _activities.updateIn(updatedActivity, indexPath));
   }
+
+  /* REACTIONS */
 
   /// Add a new reaction to the feed.
   Future<Reaction> onAddReaction({
@@ -298,7 +257,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the stream
-    reactionsControllers.unshiftById(activity.id!, reaction);
+    reactionsController.unshiftById(activity.id!, reaction);
 
     activitiesController.update(
         feedGroup,
@@ -322,6 +281,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
         : print('warning: analytics: not enabled'); //TODO:logger
   }
 
+  /// Query reactions
   Future<void> queryReactions(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -330,14 +290,13 @@ class GenericFeedBloc<A, Ob, T, Or> {
     String? kind,
     EnrichmentFlags? flags,
   }) async {
-    reactionsControllers.init(lookupValue);
+    reactionsController.init(lookupValue);
     _queryReactionsLoadingControllers[lookupValue] =
         BehaviorSubject.seeded(false);
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
-    if (reactionsControllers.hasValue(lookupValue)) {
-      _queryReactionsLoadingControllers[lookupValue]!
-          .add(true); //TODO: fix null
+    if (reactionsController.hasValue(lookupValue)) {
+      _queryReactionsLoadingControllers[lookupValue]!.add(true);
     }
 
     try {
@@ -351,14 +310,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
         kind: kind,
       );
       final temp = oldReactions + reactionsResponse;
-      reactionsControllers.add(lookupValue, temp);
+      reactionsController.add(lookupValue, temp);
     } catch (e, stk) {
       // reset loading controller
       _queryReactionsLoadingControllers[lookupValue]?.add(false);
-      if (reactionsControllers.hasValue(lookupValue)) {
+      if (reactionsController.hasValue(lookupValue)) {
         _queryReactionsLoadingControllers[lookupValue]?.addError(e, stk);
       } else {
-        reactionsControllers.addError(lookupValue, e, stk);
+        reactionsController.addError(lookupValue, e, stk);
       }
     }
   }
@@ -410,7 +369,9 @@ class GenericFeedBloc<A, Ob, T, Or> {
     }
   }
 
-  /// Follows the given [flatFeed].
+  /* FOLLOW */
+
+  /// Follows the given [otherUser] id.
   Future<void> followFlatFeed(
     String otherUser,
   ) async {
@@ -419,7 +380,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     await timeline.follow(user);
   }
 
-  /// Unfollows the given [actingFeed].
+  /// Unfollows the given [otherUser] id.
   Future<void> unfollowFlatFeed(
     String otherUser,
   ) async {
@@ -449,108 +410,10 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   void dispose() {
     activitiesController.close();
-    reactionsControllers.close();
+    reactionsController.close();
     _queryActivitiesLoadingController.close();
     _queryReactionsLoadingControllers.forEach((key, value) {
       value.close();
     });
-  }
-
-  Future<void> onRemoveActivity({
-    required String feedGroup,
-    required String activityId,
-  }) async {
-    await client.flatFeed(feedGroup).removeActivityById(activityId);
-  }
-}
-
-class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
-  const GenericFeedProvider({
-    Key? key,
-    required this.bloc,
-    required Widget child,
-  }) : super(key: key, child: child);
-
-  factory GenericFeedProvider.of(BuildContext context) {
-    final result = context.dependOnInheritedWidgetOfExactType<
-        GenericFeedProvider<A, Ob, T, Or>>();
-    assert(result != null,
-        'No GenericFeedProvider<$A, $Ob, $T, $Or> found in context');
-    return result!;
-  }
-  final GenericFeedBloc<A, Ob, T, Or> bloc;
-
-  @override
-  bool updateShouldNotify(GenericFeedProvider old) => bloc != old.bloc; //
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc));
-  }
-}
-
-class ReactionsControllers {
-  final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
-
-  /// Init controller for given activityId.
-  void init(String lookupValue) =>
-      _controller[lookupValue] = BehaviorSubject<List<Reaction>>();
-
-  /// Retrieve with activityId the corresponding StreamController from the map
-  /// of controllers.
-  BehaviorSubject<List<Reaction>>? _getController(String lookupValue) =>
-      _controller[lookupValue]; //TODO: handle null safety
-
-  ///Retrieve Stream of reactions with activityId and filter it if necessary
-  Stream<List<Reaction>>? getStream(String lookupValue, [String? kind]) {
-    final isFiltered = kind != null;
-    final reactionStream = _getController(lookupValue)?.stream;
-    return isFiltered
-        ? reactionStream?.map((reactions) =>
-            reactions.where((reaction) => reaction.kind == kind).toList())
-        : reactionStream; //TODO: handle null safety
-  }
-
-  /// Convert the Stream of reactions to a List of reactions.
-  List<Reaction> getReactions(String lookupValue, [Reaction? reaction]) =>
-      _getController(lookupValue)?.valueOrNull ??
-      (reaction != null ? [reaction] : <Reaction>[]);
-
-  /// Check if controller is not empty.
-  bool hasValue(String lookupValue) =>
-      _getController(lookupValue)?.hasValue != null;
-
-  /// Lookup latest Reactions by Id and inserts the given reaction to the
-  /// beginning of the list.
-  void unshiftById(String lookupValue, Reaction reaction,
-          [ShiftType type = ShiftType.increment]) =>
-      _controller.unshiftById(lookupValue, reaction, type);
-
-  /// Close every stream controllers.
-  void close() => _controller.forEach((key, value) {
-        value.close();
-      });
-
-  /// Update controller value with given reactions.
-  void update(String lookupValue, List<Reaction> reactions) {
-    if (hasValue(lookupValue)) {
-      _getController(lookupValue)!.value = reactions;
-    }
-  }
-
-  /// Add given reactions to the correct controller.
-  void add(String lookupValue, List<Reaction> temp) {
-    if (hasValue(lookupValue)) {
-      _getController(lookupValue)!.add(temp);
-    } //TODO: handle null safety
-  }
-
-  /// Add error to the correct controller.
-  void addError(String lookupValue, Object e, StackTrace stk) {
-    if (hasValue(lookupValue)) {
-      _getController(lookupValue)!.addError(e, stk);
-    } //TODO: handle null safety
   }
 }

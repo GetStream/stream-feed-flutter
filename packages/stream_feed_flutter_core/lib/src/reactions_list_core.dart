@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
 import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -114,8 +115,7 @@ class _GenericReactionListCoreState<A, Ob, T, Or>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Reaction>>(
-        stream: bloc.getReactionsStream(widget.lookupValue,
-            widget.kind), //reactionsStreamFor(widget.lookupValue)
+        stream: bloc.getReactionsStream(widget.lookupValue, widget.kind),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return widget.onErrorWidget; //snapshot.error
