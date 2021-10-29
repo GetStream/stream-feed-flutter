@@ -10,20 +10,40 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 ///
 /// [GenericFeedBloc] can be access at anytime by using the factory [of] method
 /// using Flutter's [BuildContext].
-/// 
-/// Usually what you want is the convenient [FeedBloc] that already 
+///
+/// Usually what you want is the convenient [FeedBloc] that already
 /// has the default parameters defined for you
 /// suitable to most use cases
-/// 
+///
 /// ## Usage
-/// - query activities
-/// - query reactions (like, retweet, claps)
-/// - add activities (a tweet for example)
+/// - query the activities stream. Checkout our core widget [FlatFeedCore]
+/// to display activities
+/// - query the reactions stream (like, retweet, claps). Checkout our core widget [ReactionListCore]
+/// to display reactions
+/// - add activities (a tweet for example) in a reactive way
+/// ```dart
+/// FeedProvider.of(context).bloc.onAddActivity()
+/// ```
 /// - remove activities (delete a tweet)
+/// ```dart
+/// FeedProvider.of(context).bloc.onRemoveActivity()
+/// ```
 /// - add reactions (comment under a tweet)
+/// ```dart
+/// FeedProvider.of(context).bloc.onAddReaction()
+/// ```
 /// - remove reacitons (delete a comment under a tweet)
+/// ```dart
+/// FeedProvider.of(context).bloc.onRemoveReaction()
+/// ```
 /// - add child reactions (like to a comment)
+/// ```dart
+/// FeedProvider.of(context).bloc.onAddReaction()
+/// ```
 /// - remove child reacitons (unlike a comment)
+/// ```dart
+/// FeedProvider.of(context).bloc.onRemoveChildReaction()
+/// ```
 
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
