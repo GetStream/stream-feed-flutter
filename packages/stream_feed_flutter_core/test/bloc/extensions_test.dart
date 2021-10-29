@@ -1,7 +1,7 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
-import 'package:test/test.dart';
 
 main() {
   group('unshiftByKind', () {
