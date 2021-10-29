@@ -1,55 +1,101 @@
-A library for Dart developers.
+# Official Core [Flutter SDK](https://getstream.io/activity-feeds/sdk/flutter/tutorial/) for [Stream Feeds](https://getstream.io/activity-feeds/)
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+> The official Flutter core components for Stream Feeds, a service for
+> building activity feeds.
+
+**🔗 Quick Links**
+
+- [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
+- [Tutorial](https://getstream.io/activity-feeds/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
+- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/) to jumpstart your design with notifications and social feeds
+
+#### Install from pub <a href="https://pub.dartlang.org/packages/stream_feed"><img alt="Pub" src="https://img.shields.io/pub/v/stream_feed.svg"></a>
+
+Next step is to add `stream_feed` to your dependencies, to do that just open pubspec.yaml and add it inside the dependencies section. 
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  stream_feed_flutter_core: ^[latest-version]
+```
+
+Then run `flutter packages get`
+
+This package requires no custom setup on any platform since it does not depend on any platform-specific dependency.
+
+
+### Changelog
+
+Check out the [changelog on pub.dev](https://pub.dev/packages/stream_feed_flutter_core/changelog) to see the latest changes in the package.
 
 ## Usage
 
-A simple usage example:
+This package provides business logic to fetch common things required for integrating Stream Feeds into your application.
+The core package allows more customisation and hence provides business logic but no UI components.
+
+
+A simple example:
 
 ```dart
+import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
 void main() {
-  const apiKey = String.fromEnvironment('key');
-  const userToken = String.fromEnvironment('user_token');
-  final client = StreamFeedClient.connect(
+  const apiKey = 'API-KEY';
+  const userToken = 'USER-TOKEN';
+  final client = StreamFeedClient(
     apiKey,
     token: const Token(userToken),
   );
 
-     runApp(MaterialApp(
-        builder: (context, child) =>
-            FeedProvider(
-          bloc: FeedBloc(
-            client: client,
-          ),
-          child: child!,
+  runApp(
+    MaterialApp(
+      /// Wrap your application in a `FeedProvider`. This requires a `FeedBloc`.
+      /// The `FeedBloc` is used to perform various Stream Feed operations.
+      builder: (context, child) => FeedProvider(
+        bloc: FeedBloc(client: client),
+        child: child!,
+      ),
+      home: Scaffold(
+        /// Returns `Activities`s for the given `feedGroup` in the `feedBuilder`.
+        body: FlatFeedCore(
+          feedGroup: 'user',
+          feedBuilder: (BuildContext context, activities, int index) {
+            return InkWell(
+              child: Column(children: [
+                Text("${activities[index].actor}"),
+                Text("${activities[index].object}"),
+              ]),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => Scaffold(
+                      /// Returns `Reaction`s for the given
+                      /// `lookupValue` in the `reactionsBuilder`.
+                      body: ReactionListCore(
+                        lookupValue: activities[index].id!,
+                        reactionsBuilder: (context, reactions, idx) =>
+                            Text("${reactions[index].data?["text"]}"),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
         ),
-        home: Scaffold(
-          body: FlatFeedCore(
-            feedGroup: 'user',
-            feedBuilder: (BuildContext context, activities, int idx) {
-              return InkWell(
-                child:  Column(children:[Text("${activities[index].actor}",Text("${activities[index].object}"))]),
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute<void>(
-            builder: (BuildContext context) =>  Scaffold(
-          body: ReactionListCore(
-            lookupValue:activity.id!,
-            reactionsBuilder: (context, reactions, idx) =>  Text("${reactions[index].data?["text"]}"),
-          ),
-        ),
-          ));
-               },
-              );
-            },
-          ),
-        ),
-      ));
+      ),
+    ),
+  );
 }
 ```
 
-## Features and bugs
+## Contributing
 
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
+We welcome code changes that improve this library or fix a problem,
+please make sure to follow all best practices and add tests if applicable before submitting a Pull Request on Github.
+We are pleased to merge your code into the official repository.
+Make sure to sign our [Contributor License Agreement (CLA)](https://docs.google.com/forms/d/e/1FAIpQLScFKsKkAJI7mhCr7K9rEIOpqIDThrWxuvxnwUq2XkHyG154vQ/viewform) first.
+See our license file for more details.
