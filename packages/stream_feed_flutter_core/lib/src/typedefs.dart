@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-/// TODO: document me
+/// {@template enrichedFeedBuilder}
+/// A builder that allows building a ListView of EnrichedActivity based Widgets
+/// {@endtemplate}
 typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
   BuildContext context,
   List<GenericEnrichedActivity<A, Ob, T, Or>> activities,
   int idx,
 );
 
-/// TODO: document me
+/// {@template reactionsBuilder}
+/// A builder that allows building a ListView of Reaction based Widgets
+/// {@endtemplate}
 typedef ReactionsBuilder = Widget Function(
     BuildContext context, List<Reaction> reactions, int idx);
 

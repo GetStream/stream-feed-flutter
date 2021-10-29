@@ -38,7 +38,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// }
 /// ```
 ///
-/// Make sure to have a [StreamFeedCore] ancestor in order to provide the
+/// Make sure to have a [GenericFeedProvider] ancestor in order to provide the
 /// information about the reactions.
 class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
   const GenericReactionListCore({
@@ -56,19 +56,19 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
     this.limit,
   }) : super(key: key);
 
-  /// A builder that allows building a ListView of Reaction based Widgets
+  /// {@macro reactionsBuilder}
   final ReactionsBuilder reactionsBuilder;
 
-  /// A builder for building widgets to show on error
+  ///{@macro onErrorWidget}
   final Widget onErrorWidget;
 
-  /// A builder for building widgets to show on progress
+  ///{@macro onProgressWidget}
   final Widget onProgressWidget;
 
-  /// A builder for building widgets to show on empty
+  ///{@macro onEmptyWidget}
   final Widget onEmptyWidget;
 
-  /// Lookup objects based on attributes
+  ///{@macro lookupAttr}
   final LookupAttribute lookupAttr;
 
   /// TODO: document me
@@ -77,13 +77,13 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
   /// {@macro filter}
   final Filter? filter;
 
-  /// The flags to use for the request
+  /// {@macro enrichmentFlags}
   final EnrichmentFlags? flags;
 
   /// The limit of activities to fetch
   final int? limit;
 
-  /// The kind of reaction
+  /// The kind of reaction, usually i.e 'comment', 'like', 'reaction' etc
   final String? kind;
 
   @override

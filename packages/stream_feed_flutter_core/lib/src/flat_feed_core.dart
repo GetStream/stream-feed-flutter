@@ -38,22 +38,22 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// Make sure to have a [GenericFeedProvider] ancestor in order to provide the
 /// information about the activities.
 class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
-  const GenericFlatFeedCore(
-      {Key? key,
-      required this.feedGroup,
-      required this.feedBuilder,
-      this.onErrorWidget = const ErrorStateWidget(),
-      this.onProgressWidget = const ProgressStateWidget(),
-      this.limit,
-      this.offset,
-      this.session,
-      this.filter,
-      this.flags,
-      this.ranking,
-      this.userId,
-      this.onEmptyWidget =
-          const EmptyStateWidget(message: 'No activities to display')})
-      : super(key: key);
+  const GenericFlatFeedCore({
+    Key? key,
+    required this.feedGroup,
+    required this.feedBuilder,
+    this.onErrorWidget = const ErrorStateWidget(),
+    this.onProgressWidget = const ProgressStateWidget(),
+    this.onEmptyWidget =
+        const EmptyStateWidget(message: 'No activities to display'),
+    this.limit,
+    this.offset,
+    this.session,
+    this.filter,
+    this.flags,
+    this.ranking,
+    this.userId,
+  }) : super(key: key);
 
   /// A builder that let you build a ListView of EnrichedActivity based Widgets
   final EnrichedFeedBuilder<A, Ob, T, Or> feedBuilder;
@@ -122,9 +122,7 @@ class _GenericFlatFeedCoreState<A, Ob, T, Or>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<GenericEnrichedActivity<A, Ob, T, Or>>>(
-      stream: GenericFeedProvider<A, Ob, T, Or>.of(context)
-          .bloc
-          .getActivitiesStream(widget.feedGroup),
+      stream: bloc.getActivitiesStream(widget.feedGroup),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return widget
