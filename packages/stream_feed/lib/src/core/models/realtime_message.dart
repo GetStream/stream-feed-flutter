@@ -36,6 +36,10 @@ class RealtimeMessage<A, Ob, T, Or> extends Equatable {
 
   /// Create a new instance from a JSON object
   factory RealtimeMessage.fromJson(
+    Map<String, dynamic> json, [
+    A Function(Object? json)? fromJsonA,
+    Ob Function(Object? json)? fromJsonOb,
+    T Function(Object? json)? fromJsonT,
     Or Function(Object? json)? fromJsonOr,
   ]) =>
       _$RealtimeMessageFromJson<A, Ob, T, Or>(
@@ -68,6 +72,7 @@ class RealtimeMessage<A, Ob, T, Or> extends Equatable {
   /// Name of the feed this update was published on
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)
   final FeedId? feed;
+
   /// AppId to which this app is connected to
   @JsonKey(includeIfNull: false)
   final String? appId;
