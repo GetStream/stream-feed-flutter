@@ -1,4 +1,4 @@
-## 0.4.0
+## 0.4.0: 29/10/2021
 
 - breaking: `StreamFeedClient.connect` is now `StreamFeedClient` for better user session handling.
 The connect verb was confusing, and made you think that it will perform the connection immediately. Also it doesn't infer the id anymore from the token anymore. You can now have to call `setUser` down the tree or before `runApp`
