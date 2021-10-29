@@ -35,7 +35,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// }
 /// ```
 ///
-/// Make sure to have a [StreamFeedCore] ancestor in order to provide the
+/// Make sure to have a [GenericFeedProvider] ancestor in order to provide the
 /// information about the activities.
 class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   const GenericFlatFeedCore(
