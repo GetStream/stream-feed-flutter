@@ -613,10 +613,6 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
         actions: [
           // If the user matches the currentUser, do not show the
           // follow/unfollow button; you cannot follow your own feed.
-          //
-          // Note: until Aggregated Feeds are implemented this is functionally
-          // useless because the current user will never see posts from other
-          // users.
           if (widget.user != null && widget.user!.id != bloc.currentUser!.id)
             FutureBuilder<bool>(
               future: bloc.isFollowingUser(widget.user!.id!),
