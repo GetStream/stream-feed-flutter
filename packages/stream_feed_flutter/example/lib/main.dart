@@ -82,7 +82,7 @@ mixin StreamFeedMixin<T extends StatefulWidget> on State<T> {
 void main() {
   const apiKey = String.fromEnvironment('key');
   const userToken = String.fromEnvironment('user_token');
-  final client = StreamFeedClient.connect(
+  final client = StreamFeedClient(
     apiKey,
     token: const Token(userToken),
   );
@@ -633,19 +633,9 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
                       // If isFollowingUser is not true, follow the
                       // user's feed.
                       if (snapshot.data!) {
-                        final userToUnfollowFeed =
-                            client.flatFeed('user', widget.user!.id);
-                        /*await client
-                            .flatFeed('timeline', bloc.currentUser!.id)
-                            .unfollow(userToUnfollowFeed);*/
                         await bloc.unfollowFlatFeed(widget.user!.id!);
-                        setState(() {});
+                        setState(() {}); //TODO: make this reactive in core
                       } else {
-                        final userToFollowFeed =
-                            client.flatFeed('user', widget.user!.id);
-                        /*await client
-                            .flatFeed('timeline', bloc.currentUser!.id)
-                            .follow(userToFollowFeed);*/
                         await bloc.followFlatFeed(widget.user!.id!);
                         setState(() {});
                       }

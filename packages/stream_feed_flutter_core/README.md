@@ -8,10 +8,43 @@ Created from templates made available by Stagehand under a BSD-style
 A simple usage example:
 
 ```dart
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+void main() {
+  const apiKey = String.fromEnvironment('key');
+  const userToken = String.fromEnvironment('user_token');
+  final client = StreamFeedClient.connect(
+    apiKey,
+    token: const Token(userToken),
+  );
 
-main() {
-  var awesome = new Awesome();
+     runApp(MaterialApp(
+        builder: (context, child) =>
+            FeedProvider(
+          bloc: FeedBloc(
+            client: client,
+          ),
+          child: child!,
+        ),
+        home: Scaffold(
+          body: FlatFeedCore(
+            feedGroup: 'user',
+            feedBuilder: (BuildContext context, activities, int idx) {
+              return InkWell(
+                child:  Column(children:[Text("${activities[index].actor}",Text("${activities[index].object}"))]),
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute<void>(
+            builder: (BuildContext context) =>  Scaffold(
+          body: ReactionListCore(
+            lookupValue:activity.id!,
+            reactionsBuilder: (context, reactions, idx) =>  Text("${reactions[index].data?["text"]}"),
+          ),
+        ),
+          ));
+               },
+              );
+            },
+          ),
+        ),
+      ));
 }
 ```
 

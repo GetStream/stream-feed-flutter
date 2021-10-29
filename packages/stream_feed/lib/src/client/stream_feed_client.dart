@@ -55,7 +55,7 @@ abstract class StreamFeedClient {
   /// var client = connect('YOUR_API_KEY',token: Token('userToken'));
   /// ```
   /// {@endtemplate}
-  factory StreamFeedClient.connect(
+  factory StreamFeedClient(
     String apiKey, {
     Token? token,
     String? secret,
