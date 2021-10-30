@@ -54,6 +54,7 @@ class FlatFeedListView extends StatelessWidget {
     this.onActivityTap,
     this.transitionType =
         TransitionType.material, //TODO: move this to core or theme
+    this.scrollPhysics,
   }) : super(key: key);
 
   /// {@macro hashtag_callback}
@@ -120,6 +121,8 @@ class FlatFeedListView extends StatelessWidget {
 
   final String? userId;
 
+  final ScrollPhysics? scrollPhysics;
+
   @override
   Widget build(BuildContext context) {
     return FlatFeedCore(
@@ -175,6 +178,7 @@ class FlatFeedListView extends StatelessWidget {
         );
       },
       feedGroup: feedGroup,
+      scrollPhysics: scrollPhysics,
     );
   }
 
