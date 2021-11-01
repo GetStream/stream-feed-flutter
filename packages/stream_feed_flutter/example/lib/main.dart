@@ -753,36 +753,8 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
                   debugPrint('hashtag pressed: $mention'),
             ),
           ),
-          /*SliverToBoxAdapter(
-            child: FlatFeedListView(
-              flags: EnrichmentFlags()
-                  .withReactionCounts()
-                  .withOwnChildren()
-                  .withOwnReactions(),
-              feedGroup: 'user',
-              nameJsonKey: 'full_name',
-              userId: widget.user?.id ?? bloc.currentUser!.id,
-              onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
-              onUserTap: (user) => debugPrint('hashtag pressed: ${user!.toJson()}'),
-              onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
-            ),
-          ),*/
         ],
       ),
-      /*body: Scrollbar(
-        child: FlatFeedListView(
-          flags: EnrichmentFlags()
-              .withReactionCounts()
-              .withOwnChildren()
-              .withOwnReactions(),
-          feedGroup: 'user',
-          nameJsonKey: 'full_name',
-          userId: widget.user?.id ?? bloc.currentUser!.id,
-          onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
-          onUserTap: (user) => debugPrint('hashtag pressed: ${user!.toJson()}'),
-          onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
-        ),
-      ),*/
     );
   }
 }
