@@ -12,7 +12,6 @@ class DateTimeUTCConverter implements JsonConverter<DateTime, String> {
   String toJson(DateTime json) => formatDateWithOffset(json);
 }
 
-
 String formatDateWithOffset(DateTime date) {
   String twoDigits(int n) => n >= 10 ? '$n' : '0$n';
 
