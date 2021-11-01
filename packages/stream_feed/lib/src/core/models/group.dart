@@ -60,16 +60,18 @@ class Group<T> extends Equatable {
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
 class NotificationGroup<T> extends Group<T> {
   /// [NotificationGroup] constructor
-  const NotificationGroup({
-    String? id,
-    String? group,
-    List<T>? activities,
-    int? actorCount,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    this.isRead,
-    this.isSeen,
-  }) : super(
+  const NotificationGroup(
+      {String? id,
+      String? group,
+      List<T>? activities,
+      int? actorCount,
+      DateTime? createdAt,
+      DateTime? updatedAt,
+      this.isRead,
+      this.isSeen,
+      this.unread,
+      this.unseen})
+      : super(
           id: id,
           group: group,
           activities: activities,
@@ -91,12 +93,11 @@ class NotificationGroup<T> extends Group<T> {
   /// True if the notification group is seen.
   final bool? isSeen;
 
+  final int? unread;
+  final int? unseen;
+
   @override
-  List<Object?> get props => [
-        ...super.props,
-        isRead,
-        isSeen,
-      ];
+  List<Object?> get props => [...super.props, isRead, isSeen, unread, unseen];
 
   /// Serialize to json
   @override
