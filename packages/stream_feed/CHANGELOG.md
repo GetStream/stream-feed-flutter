@@ -1,3 +1,9 @@
+## 0.4.0+1: 01/11/2021
+
+- fix: support null values `extraData`'s map
+- fix: utc date parsing with a `JsonConverter<DateTime,String>` and `intl`
+- fix: unread/unseen count in `NotificationGroup` model
+  
 ## 0.4.0: 29/10/2021
 
 - breaking: `StreamFeedClient.connect` is now `StreamFeedClient` for better user session handling.
