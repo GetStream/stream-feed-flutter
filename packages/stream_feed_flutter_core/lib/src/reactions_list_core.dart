@@ -115,28 +115,31 @@ class _GenericReactionListCoreState<A, Ob, T, Or>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Reaction>>(
-        stream: bloc.getReactionsStream(widget.lookupValue, widget.kind),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return widget.onErrorWidget; //snapshot.error
-          }
-          if (!snapshot.hasData) {
-            return widget.onProgressWidget;
-          }
-          final reactions = snapshot.data!;
-          if (reactions.isEmpty) {
-            return widget.onEmptyWidget;
-          }
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: reactions.length,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, idx) => widget.reactionsBuilder(
-              context,
-              reactions,
-              idx,
-            ),
-          );
-        });
+      stream: bloc.getReactionsStream(widget.lookupValue,
+          widget.kind), //reactionsStreamFor(widget.lookupValue)
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return widget.onErrorWidget; //snapshot.error
+        }
+        if (!snapshot.hasData) {
+          return widget.onProgressWidget;
+        }
+        final reactions = snapshot.data!;
+        if (reactions.isEmpty) {
+          return widget.onEmptyWidget;
+        }
+        return ListView.separated(
+          shrinkWrap: true,
+          itemCount: reactions.length,
+          physics: const NeverScrollableScrollPhysics(),
+          separatorBuilder: (context, index) => const Divider(),
+          itemBuilder: (context, idx) => widget.reactionsBuilder(
+            context,
+            reactions,
+            idx,
+          ),
+        );
+      },
+    );
   }
 }
