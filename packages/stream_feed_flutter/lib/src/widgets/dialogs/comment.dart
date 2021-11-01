@@ -125,60 +125,68 @@ class CommentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          //TODO: "this post has been deleted by the author"
-          if (activity != null) ...[
-            StreamBuilder(
-              stream:
-                  FeedProvider.of(context).bloc.getActivitiesStream(feedGroup),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                return ActivityWidget(
-                  activity: activity!,
-                  feedGroup: feedGroup,
-                  nameJsonKey: nameJsonKey,
-                  handleJsonKey: handleJsonKey,
-                );
-              },
-            )
-            //TODO: analytics
-            //TODO: "in response to" activity.to
-          ],
-          CommentField(
-            textEditingController: textEditingController,
-            activity: activity,
-
-            //enabled in actions [RightActions]
-            enableButton: enableCommentFieldButton,
-            feedGroup: feedGroup,
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                //TODO: "this post has been deleted by the author"
+                if (activity != null) ...[
+                  StreamBuilder(
+                    stream: FeedProvider.of(context)
+                        .bloc
+                        .getActivitiesStream(feedGroup),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      return ActivityWidget(
+                        activity: activity!,
+                        feedGroup: feedGroup,
+                        nameJsonKey: nameJsonKey,
+                        handleJsonKey: handleJsonKey,
+                      );
+                    },
+                  )
+                  //TODO: analytics
+                  //TODO: "in response to" activity.to
+                ],
+                //TODO: builder for using it elsewhere than in actions
+                if (enableReactions && activity != null)
+                  ReactionListView(
+                    activity: activity!,
+                    onReactionTap: onReactionTap,
+                    onHashtagTap: onHashtagTap,
+                    onMentionTap: onMentionTap,
+                    onUserTap: onUserTap,
+                    kind: 'comment',
+                    flags: EnrichmentFlags()
+                        .withReactionCounts()
+                        .withOwnChildren()
+                        .withOwnReactions(), //TODO: refactor this?
+                    reactionBuilder: (context, reaction) => CommentItem(
+                      nameJsonKey: nameJsonKey,
+                      activity: activity!,
+                      user: reaction.user,
+                      reaction: reaction,
+                      onReactionTap: onReactionTap,
+                      onHashtagTap: onHashtagTap,
+                      onMentionTap: onMentionTap,
+                      onUserTap: onUserTap,
+                    ),
+                  )
+              ],
+            ),
           ),
-          //TODO: builder for using it elsewhere than in actions
-          if (enableReactions && activity != null)
-            ReactionListView(
-              activity: activity!,
-              onReactionTap: onReactionTap,
-              onHashtagTap: onHashtagTap,
-              onMentionTap: onMentionTap,
-              onUserTap: onUserTap,
-              kind: 'comment',
-              flags: EnrichmentFlags()
-                  .withReactionCounts()
-                  .withOwnChildren()
-                  .withOwnReactions(), //TODO: refactor this?
-              reactionBuilder: (context, reaction) => CommentItem(
-                nameJsonKey: nameJsonKey,
-                activity: activity!,
-                user: reaction.user,
-                reaction: reaction,
-                onReactionTap: onReactionTap,
-                onHashtagTap: onHashtagTap,
-                onMentionTap: onMentionTap,
-                onUserTap: onUserTap,
-              ),
-            )
-        ],
-      ),
+        ),
+        CommentField(
+          textEditingController: textEditingController,
+          activity: activity,
+
+          //enabled in actions [RightActions]
+          enableButton: enableCommentFieldButton,
+          feedGroup: feedGroup,
+        ),
+      ],
     );
   }
 
