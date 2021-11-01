@@ -245,7 +245,7 @@ void main() {
       extraContext: const {'test': 'test'},
       origin: 'test',
       score: 1,
-      extraData: const {'test': 'test'},
+      extraData: const {'test': null},
       reactionCounts: const {'test': 1},
       ownReactions: {
         'test': [reaction1]
@@ -264,7 +264,7 @@ void main() {
     //that's why it's not explicit in the json fixture
     // all the extra data other than the default fields in json will ultimately
     // gets collected as a field extra_data of type Map
-    expect(enrichedActivityFromJson.extraData, {'test': 'test'});
+    expect(enrichedActivityFromJson.extraData, {'test': null});
   });
 
   test('EnrichedActivity with CollectionEntry object', () {

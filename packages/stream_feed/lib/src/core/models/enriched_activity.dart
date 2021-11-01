@@ -62,7 +62,7 @@ class GenericEnrichedActivity<A, Ob, T, Or> extends Equatable {
     T Function(Object? json)? fromJsonT,
     Or Function(Object? json)? fromJsonOr,
   ]) =>
-      _$EnrichedActivityFromJson<A, Ob, T, Or>(
+      _$GenericEnrichedActivityFromJson<A, Ob, T, Or>(
         Serializer.moveKeysToRoot(json, topLevelFields)!,
         fromJsonA ??
             (jsonA) => (A == User)
@@ -176,7 +176,7 @@ class GenericEnrichedActivity<A, Ob, T, Or> extends Equatable {
 
   /// Map of custom user extraData
   @JsonKey(includeIfNull: false)
-  final Map<String, Object>? extraData;
+  final Map<String, Object?>? extraData;
 
   GenericEnrichedActivity<A, Ob, T, Or> copyWith({
     A? actor,
@@ -263,6 +263,6 @@ class GenericEnrichedActivity<A, Ob, T, Or> extends Equatable {
     Object? Function(Or value) toJsonOr,
   ) =>
       Serializer.moveKeysToMapInPlace(
-          _$EnrichedActivityToJson(this, toJsonA, toJsonOb, toJsonT, toJsonOr),
+          _$GenericEnrichedActivityToJson(this, toJsonA, toJsonOb, toJsonT, toJsonOr),
           topLevelFields);
 }

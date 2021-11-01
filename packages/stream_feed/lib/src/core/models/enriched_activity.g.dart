@@ -6,7 +6,8 @@ part of 'enriched_activity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-GenericEnrichedActivity<A, Ob, T, Or> _$EnrichedActivityFromJson<A, Ob, T, Or>(
+GenericEnrichedActivity<A, Ob, T, Or>
+    _$GenericEnrichedActivityFromJson<A, Ob, T, Or>(
   Map json,
   A Function(Object? json) fromJsonA,
   Ob Function(Object? json) fromJsonOb,
@@ -31,7 +32,7 @@ GenericEnrichedActivity<A, Ob, T, Or> _$EnrichedActivityFromJson<A, Ob, T, Or>(
       (k, e) => MapEntry(k as String, e as Object),
     ),
     extraData: (json['extra_data'] as Map?)?.map(
-      (k, e) => MapEntry(k as String, e as Object),
+      (k, e) => MapEntry(k as String, e),
     ),
     reactionCounts: (json['reaction_counts'] as Map?)?.map(
       (k, e) => MapEntry(k as String, e as int),
@@ -55,7 +56,7 @@ GenericEnrichedActivity<A, Ob, T, Or> _$EnrichedActivityFromJson<A, Ob, T, Or>(
   );
 }
 
-Map<String, dynamic> _$EnrichedActivityToJson<A, Ob, T, Or>(
+Map<String, dynamic> _$GenericEnrichedActivityToJson<A, Ob, T, Or>(
   GenericEnrichedActivity<A, Ob, T, Or> instance,
   Object? Function(A value) toJsonA,
   Object? Function(Ob value) toJsonOb,
