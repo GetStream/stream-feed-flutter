@@ -12,6 +12,7 @@ import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/src/core/models/user.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -797,6 +798,7 @@ void main() {
   });
 
   test('Follow', () {
+    const converter = DateTimeUTCConverter();
     final followJson = {
       'feed_id': 'timeline:feedId',
       'target_id': 'user:userId',
@@ -806,15 +808,15 @@ void main() {
     final follow = Follow(
         feedId: 'timeline:feedId',
         targetId: 'user:userId',
-        createdAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'),
-        updatedAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'));
+        createdAt: converter.fromJson('2021-05-14T19:58:27.274792063Z'),
+        updatedAt: converter.fromJson('2021-05-14T19:58:27.274792063Z'));
 
     expect(follow, Follow.fromJson(followJson));
     expect(follow.toJson(), {
       'feed_id': 'timeline:feedId',
       'target_id': 'user:userId',
-      'created_at': '2021-05-14T19:58:27.274792Z',
-      'updated_at': '2021-05-14T19:58:27.274792Z'
+      'created_at': '2021-05-14T19:58:27-00:00',
+      'updated_at': '2021-05-14T19:58:27-00:00'
     });
   });
 

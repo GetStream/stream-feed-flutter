@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 
 part 'follow.g.dart';
 
@@ -7,6 +8,7 @@ part 'follow.g.dart';
 /// Model for the follower of a feed
 /// {@endtemplate}
 @JsonSerializable()
+@DateTimeUTCConverter()
 class Follow extends Equatable {
   /// Builds a [Follow]
   const Follow({

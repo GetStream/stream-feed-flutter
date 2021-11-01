@@ -5,6 +5,7 @@ import 'package:stream_feed/src/core/models/collection_entry.dart';
 import 'package:stream_feed/src/core/models/reaction.dart';
 import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/serializer.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 
 part 'enriched_activity.g.dart';
 
@@ -30,9 +31,10 @@ part 'enriched_activity.g.dart';
 /// * T = [target]
 /// * Or = [origin]
 @JsonSerializable(genericArgumentFactories: true)
+@DateTimeUTCConverter()
 class GenericEnrichedActivity<A, Ob, T, Or> extends Equatable {
   //TODO: improve this
-  // when type parameter to can a default type in Dart
+  // when type parameter can have a default type in Dart
   //i.e. https://github.com/dart-lang/language/issues/283#issuecomment-839603127
   /// Builds an [GenericEnrichedActivity].
   const GenericEnrichedActivity({
@@ -263,6 +265,7 @@ class GenericEnrichedActivity<A, Ob, T, Or> extends Equatable {
     Object? Function(Or value) toJsonOr,
   ) =>
       Serializer.moveKeysToMapInPlace(
-          _$GenericEnrichedActivityToJson(this, toJsonA, toJsonOb, toJsonT, toJsonOr),
+          _$GenericEnrichedActivityToJson(
+              this, toJsonA, toJsonOb, toJsonT, toJsonOr),
           topLevelFields);
 }

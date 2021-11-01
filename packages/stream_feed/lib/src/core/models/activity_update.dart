@@ -1,11 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 
 part 'activity_update.g.dart';
 
 /// For updating only parts of one or more activities by changing,
 /// adding, or removing fields.
 @JsonSerializable()
+@DateTimeUTCConverter()
 class ActivityUpdate extends Equatable {
   /// Builds an [ActivityUpdate].
   const ActivityUpdate({

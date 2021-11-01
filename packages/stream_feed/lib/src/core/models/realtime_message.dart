@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 
 import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 part 'realtime_message.g.dart';
@@ -23,6 +24,7 @@ part 'realtime_message.g.dart';
 /// The only thing you don’t get is the enriched reactions like `own_reaction`
 /// or `latest_reactions`
 @JsonSerializable(genericArgumentFactories: true)
+@DateTimeUTCConverter()
 class RealtimeMessage<A, Ob, T, Or> extends Equatable {
   /// Builds a [RealtimeMessage].
   const RealtimeMessage({
