@@ -9,6 +9,7 @@ import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/group.dart';
+import 'package:stream_feed/src/core/models/notification_feed_meta.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
@@ -96,6 +97,22 @@ class NotificationFeed extends AggregatedFeed {
             e, (json) => Activity.fromJson(json as Map<String, dynamic>?)))
         .toList(growable: false);
     return data;
+  }
+
+  /// Retrieves unread an unseen count of notification feeds
+  Future<NotificationFeedMeta> getUnreadUnseenCounts({
+    Filter? filter,
+    ActivityMarker? marker,
+  }) async {
+    final options = {
+      'limit': 0,
+      ...filter?.params ?? Default.filter.params,
+      ...marker?.params ?? Default.marker.params,
+    };
+    final token = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
+    final result = await feed.getActivities(token, feedId, options);
+    return NotificationFeedMeta.fromJson(result.data!);
   }
 
   /// Retrieve activities with reaction enrichment
