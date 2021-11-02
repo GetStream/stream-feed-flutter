@@ -1,6 +1,6 @@
 name: stream_feed
 description: Stream Feed official Dart SDK. Build your own feed experience using Dart and Flutter. 
-version: 0.4.0
+version: 0.4.0+1
 repository: https://github.com/GetStream/stream-feed-flutter
 issue_tracker: https://github.com/GetStream/stream-feed-flutter/issues
 homepage: https://getstream.io/
@@ -13,6 +13,7 @@ dependencies:
   equatable: ^2.0.0
   faye_dart: ^0.1.0
   http_parser: ^4.0.0
+  intl: ^0.17.0
   jose: ^0.3.2
   json_annotation: ^4.0.1
   logging: ^1.0.1

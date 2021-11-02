@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 part 'collection_entry.g.dart';
@@ -20,6 +21,7 @@ part 'collection_entry.g.dart';
 /// Collection endpoints can be used both client-side and server-side except
 /// the batch methods that are only available server-side.
 @JsonSerializable()
+@DateTimeUTCConverter()
 class CollectionEntry extends Equatable {
   /// Builds a [CollectionEntry].
   const CollectionEntry({

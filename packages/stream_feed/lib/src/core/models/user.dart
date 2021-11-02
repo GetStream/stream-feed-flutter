@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed/src/core/util/serializer.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 
 part 'user.g.dart';
 
@@ -11,6 +12,7 @@ part 'user.g.dart';
 /// When stored in activities, users are automatically enriched by Stream.
 /// {@endtemplate}
 @JsonSerializable()
+@DateTimeUTCConverter()
 class User extends Equatable {
   /// Builds a [User].
   const User({

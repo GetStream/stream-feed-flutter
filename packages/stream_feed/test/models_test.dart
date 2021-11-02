@@ -12,6 +12,7 @@ import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/src/core/models/user.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -245,7 +246,7 @@ void main() {
       extraContext: const {'test': 'test'},
       origin: 'test',
       score: 1,
-      extraData: const {'test': 'test'},
+      extraData: const {'test': null},
       reactionCounts: const {'test': 1},
       ownReactions: {
         'test': [reaction1]
@@ -264,7 +265,7 @@ void main() {
     //that's why it's not explicit in the json fixture
     // all the extra data other than the default fields in json will ultimately
     // gets collected as a field extra_data of type Map
-    expect(enrichedActivityFromJson.extraData, {'test': 'test'});
+    expect(enrichedActivityFromJson.extraData, {'test': null});
   });
 
   test('EnrichedActivity with CollectionEntry object', () {
@@ -428,31 +429,32 @@ void main() {
 
   group('NotificationGroup', () {
     final notificationGroup = NotificationGroup(
-      id: 'test',
-      group: 'test',
-      activities: [
-        Activity(
-          target: 'test',
-          foreignId: 'test',
-          id: 'test',
-          analytics: const {'test': 'test'},
-          extraContext: const {'test': 'test'},
-          origin: 'test',
-          score: 1,
-          extraData: const {'test': 'test'},
-          actor: 'test',
-          verb: 'test',
-          object: 'test',
-          to: <FeedId>[FeedId('slug', 'id')],
-          time: DateTime.parse('2001-09-11T00:01:02.000'),
-        ),
-      ],
-      actorCount: 1,
-      createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
-      updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
-      isRead: true,
-      isSeen: true,
-    );
+        id: 'test',
+        group: 'test',
+        activities: [
+          Activity(
+            target: 'test',
+            foreignId: 'test',
+            id: 'test',
+            analytics: const {'test': 'test'},
+            extraContext: const {'test': 'test'},
+            origin: 'test',
+            score: 1,
+            extraData: const {'test': 'test'},
+            actor: 'test',
+            verb: 'test',
+            object: 'test',
+            to: <FeedId>[FeedId('slug', 'id')],
+            time: DateTime.parse('2001-09-11T00:01:02.000'),
+          ),
+        ],
+        actorCount: 1,
+        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
+        isRead: true,
+        isSeen: true,
+        unread: 0,
+        unseen: 1);
 
     test('fromJson', () {
       final notificationGroupJson =
@@ -489,7 +491,9 @@ void main() {
         'created_at': '2001-09-11T00:01:02.000',
         'updated_at': '2001-09-11T00:01:02.000',
         'is_read': true,
-        'is_seen': true
+        'is_seen': true,
+        'unread': 0,
+        'unseen': 1,
       });
     });
   });
@@ -794,6 +798,7 @@ void main() {
   });
 
   test('Follow', () {
+    const converter = DateTimeUTCConverter();
     final followJson = {
       'feed_id': 'timeline:feedId',
       'target_id': 'user:userId',
@@ -803,15 +808,15 @@ void main() {
     final follow = Follow(
         feedId: 'timeline:feedId',
         targetId: 'user:userId',
-        createdAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'),
-        updatedAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'));
+        createdAt: converter.fromJson('2021-05-14T19:58:27.274792063Z'),
+        updatedAt: converter.fromJson('2021-05-14T19:58:27.274792063Z'));
 
     expect(follow, Follow.fromJson(followJson));
     expect(follow.toJson(), {
       'feed_id': 'timeline:feedId',
       'target_id': 'user:userId',
-      'created_at': '2021-05-14T19:58:27.274792Z',
-      'updated_at': '2021-05-14T19:58:27.274792Z'
+      'created_at': '2021-05-14T19:58:27-00:00',
+      'updated_at': '2021-05-14T19:58:27-00:00'
     });
   });
 

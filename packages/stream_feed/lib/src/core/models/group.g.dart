@@ -54,6 +54,8 @@ NotificationGroup<T> _$NotificationGroupFromJson<T>(
         : DateTime.parse(json['updated_at'] as String),
     isRead: json['is_read'] as bool?,
     isSeen: json['is_seen'] as bool?,
+    unread: json['unread'] as int?,
+    unseen: json['unseen'] as int?,
   );
 }
 
@@ -70,4 +72,6 @@ Map<String, dynamic> _$NotificationGroupToJson<T>(
       'updated_at': instance.updatedAt?.toIso8601String(),
       'is_read': instance.isRead,
       'is_seen': instance.isSeen,
+      'unread': instance.unread,
+      'unseen': instance.unseen,
     };

@@ -28,5 +28,7 @@
   "created_at": "2001-09-11T00:01:02.000",
   "updated_at": "2001-09-11T00:01:02.000",
   "is_read": true,
-  "is_seen": true
+  "is_seen": true,
+  "unread": 0,
+  "unseen": 1
 }
