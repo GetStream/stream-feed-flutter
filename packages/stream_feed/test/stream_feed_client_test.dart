@@ -151,6 +151,35 @@ void main() {
       verify(() => mockApi.users.create(token, userId, data)).called(1);
     });
 
+    test('setUser', () async {
+      final mockApi = MockAPI();
+      const id = 'test-user';
+      final mockUserAPI = MockUserAPI();
+      final token = TokenHelper.buildFrontendToken('secret', id);
+
+      final client =
+          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
+
+      const data = {
+        'name': 'John Doe',
+        'occupation': 'Software Engineer',
+        'gender': 'male',
+      };
+      const user = User(id: id, data: data);
+      when(() => mockApi.users).thenReturn(mockUserAPI);
+      when(() => mockUserAPI.create(token, id, data, getOrCreate: true))
+          .thenAnswer((_) async => user);
+
+      when(() => mockUserAPI.get(token, id, withFollowCounts: true))
+          .thenAnswer((_) async => user);
+      await client.setUser(user, token, extraData: data);
+      verify(() => mockUserAPI.create(token, id, data, getOrCreate: true))
+          .called(1);
+
+      verify(() => mockUserAPI.get(token, id, withFollowCounts: true))
+          .called(1);
+    });
+
     test('getUser', () async {
       final mockApi = MockAPI();
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
