@@ -28,6 +28,7 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
     this.flags,
     this.ranking,
     this.userId,
+    this.scrollPhysics,
   }) : super(key: key);
 
   /// A builder that let you build a ListView of EnrichedActivity based Widgets
@@ -65,6 +66,8 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
 
   /// The feed group to use for the request
   final String feedGroup;
+
+  final ScrollPhysics? scrollPhysics;
 
   @override
   _GenericFlatFeedCoreState<A, Ob, T, Or> createState() =>
@@ -111,6 +114,8 @@ class _GenericFlatFeedCoreState<A, Ob, T, Or>
           return widget.onEmptyWidget;
         }
         return ListView.builder(
+          physics:
+              widget.scrollPhysics ?? const AlwaysScrollableScrollPhysics(),
           itemCount: activities.length,
           itemBuilder: (context, idx) => widget.feedBuilder(
             context,
