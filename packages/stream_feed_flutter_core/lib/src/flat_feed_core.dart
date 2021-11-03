@@ -38,22 +38,23 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// Make sure to have a [StreamFeedCore] ancestor in order to provide the
 /// information about the activities.
 class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
-  const GenericFlatFeedCore(
-      {Key? key,
-      required this.feedGroup,
-      required this.feedBuilder,
-      this.onErrorWidget = const ErrorStateWidget(),
-      this.onProgressWidget = const ProgressStateWidget(),
-      this.limit,
-      this.offset,
-      this.session,
-      this.filter,
-      this.flags,
-      this.ranking,
-      this.userId,
-      this.onEmptyWidget =
-          const EmptyStateWidget(message: 'No activities to display')})
-      : super(key: key);
+  const GenericFlatFeedCore({
+    Key? key,
+    required this.feedGroup,
+    required this.feedBuilder,
+    this.onErrorWidget = const ErrorStateWidget(),
+    this.onProgressWidget = const ProgressStateWidget(),
+    this.limit,
+    this.offset,
+    this.session,
+    this.filter,
+    this.flags,
+    this.ranking,
+    this.userId,
+    this.onEmptyWidget =
+        const EmptyStateWidget(message: 'No activities to display'),
+    this.scrollPhysics,
+  }) : super(key: key);
 
   /// A builder that let you build a ListView of EnrichedActivity based Widgets
   final EnrichedFeedBuilder<A, Ob, T, Or> feedBuilder;
@@ -90,6 +91,8 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
 
   /// The feed group to use for the request
   final String feedGroup;
+
+  final ScrollPhysics? scrollPhysics;
 
   @override
   _GenericFlatFeedCoreState<A, Ob, T, Or> createState() =>
@@ -138,6 +141,8 @@ class _GenericFlatFeedCoreState<A, Ob, T, Or>
           return widget.onEmptyWidget;
         }
         return ListView.separated(
+          physics:
+              widget.scrollPhysics ?? const AlwaysScrollableScrollPhysics(),
           itemCount: activities.length,
           separatorBuilder: (context, index) => const Divider(),
           itemBuilder: (context, idx) => widget.feedBuilder(

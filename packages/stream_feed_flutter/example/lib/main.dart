@@ -264,6 +264,10 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 0,
+        actionsIconTheme: Theme.of(context).iconTheme,
+        titleTextStyle: Theme.of(context).textTheme.headline6,
         leading: Padding(
           padding: const EdgeInsets.all(8),
           child: Builder(builder: (context) {
@@ -524,11 +528,20 @@ class _ComposeScreenState extends State<ComposeScreen> with StreamFeedMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).canvasColor,
+        iconTheme: Theme.of(context).iconTheme,
+        titleTextStyle: Theme.of(context).textTheme.headline6,
+        elevation: 0,
         title: const Text('Compose'),
         actions: [
           ActionChip(
-            label: const Text('Post'),
-            backgroundColor: const Color(0xff76fff1),
+            label: const Text(
+              'Post',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
             onPressed: () async {
               if (postController.text.isNotEmpty) {
                 try {
@@ -614,63 +627,133 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(widget.user?.id ?? bloc.currentUser!.id),
-            Text(
-              '${widget.user?.data?['handle'] ?? bloc.currentUser!.data!['handle']}',
-              style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                    color: Colors.white,
-                  ),
-            ),
-          ],
+        elevation: 0,
+        iconTheme: Theme.of(context).iconTheme,
+        backgroundColor: Theme.of(context).canvasColor,
+        title: Text(
+          widget.user?.id ?? bloc.currentUser!.id,
+          style: const TextStyle(
+            color: Colors.black,
+          ),
         ),
-        actions: [
-          // If the user matches the currentUser, do not show the
-          // follow/unfollow button; you cannot follow your own feed.
-          if (widget.user != null && widget.user!.id != bloc.currentUser!.id)
-            FutureBuilder<bool>(
-              future: bloc.isFollowingUser(widget.user!.id!),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const SizedBox.shrink();
-                } else {
-                  return IconButton(
-                    icon: Icon(snapshot.data!
-                        ? Icons.remove_circle_outline
-                        : Icons.add_circle_outline),
-                    onPressed: () async {
-                      // If isFollowingUser is true, unfollow the user's feed.
-                      // If isFollowingUser is not true, follow the
-                      // user's feed.
-                      if (snapshot.data!) {
-                        await bloc.unfollowFlatFeed(widget.user!.id!);
-                        setState(() {}); //TODO: make this reactive in core
-                      } else {
-                        await bloc.followFlatFeed(widget.user!.id!);
-                        setState(() {});
-                      }
-                    },
-                  );
-                }
-              },
-            ),
-        ],
       ),
-      body: Scrollbar(
-        child: FlatFeedListView(
-          flags: EnrichmentFlags()
-              .withReactionCounts()
-              .withOwnChildren()
-              .withOwnReactions(),
-          feedGroup: 'user',
-          nameJsonKey: 'full_name',
-          userId: widget.user?.id ?? bloc.currentUser!.id,
-          onHashtagTap: (hashtag) => debugPrint('hashtag pressed: $hashtag'),
-          onUserTap: (user) => debugPrint('hashtag pressed: ${user!.toJson()}'),
-          onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
-        ),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 8),
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(
+                        '${widget.user?.data?['profile_image'] ?? bloc.currentUser!.data!['profile_image']}'),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${widget.user?.data?['full_name'] ?? bloc.currentUser!.data!['full_name']}',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${widget.user?.followersCount ?? bloc.currentUser!.followersCount}',
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          Text(
+                            'Followers',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${widget.user?.followingCount ?? bloc.currentUser!.followingCount}',
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          Text(
+                            'Following',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  if (widget.user != null &&
+                      widget.user!.id != bloc.currentUser!.id) ...[
+                    Row(
+                      children: [
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: FutureBuilder<bool>(
+                            future: bloc.isFollowingUser(widget.user!.id!),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const SizedBox.shrink();
+                              } else {
+                                return OutlinedButton(
+                                  child: Text(
+                                      snapshot.data! ? 'Unfollow' : 'Follow'),
+                                  onPressed: () async {
+                                    if (snapshot.data!) {
+                                      await bloc
+                                          .unfollowFlatFeed(widget.user!.id!);
+                                      setState(() {});
+                                    } else {
+                                      await bloc
+                                          .followFlatFeed(widget.user!.id!);
+                                      setState(() {});
+                                    }
+                                  },
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: OutlinedButton(
+                            child: const Text('Message'),
+                            onPressed: () {},
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                      ],
+                    ),
+                    const Divider(),
+                  ],
+                ],
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: FlatFeedListView(
+              scrollPhysics: const NeverScrollableScrollPhysics(),
+              flags: EnrichmentFlags()
+                  .withReactionCounts()
+                  .withOwnChildren()
+                  .withOwnReactions(),
+              feedGroup: 'user',
+              nameJsonKey: 'full_name',
+              userId: widget.user?.id ?? bloc.currentUser!.id,
+              onHashtagTap: (hashtag) =>
+                  debugPrint('hashtag pressed: $hashtag'),
+              onUserTap: (user) =>
+                  debugPrint('hashtag pressed: ${user!.toJson()}'),
+              onMentionTap: (mention) =>
+                  debugPrint('hashtag pressed: $mention'),
+            ),
+          ),
+        ],
       ),
     );
   }
