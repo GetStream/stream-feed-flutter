@@ -28,6 +28,7 @@ class ReactionListView extends StatelessWidget {
     this.filter,
     this.limit,
     this.kind,
+    this.scrollPhysics,
   })  : _lookupValue = lookupValue ?? activity.id!,
         super(key: key);
 
@@ -75,6 +76,8 @@ class ReactionListView extends StatelessWidget {
   /// TODO: document me
   final String? kind;
 
+  final ScrollPhysics? scrollPhysics;
+
   @override
   Widget build(BuildContext context) {
     //  debugCheckHasReactionsProvider(context);
@@ -90,6 +93,7 @@ class ReactionListView extends StatelessWidget {
       limit: limit,
       reactionsBuilder: (context, reactions, idx) =>
           reactionBuilder(context, reactions[idx]),
+      scrollPhysics: scrollPhysics,
     );
   }
 
