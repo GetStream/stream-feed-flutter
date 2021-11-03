@@ -310,9 +310,25 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Text('${bloc.currentUser?.followingCount ?? 0} Following'),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const FollowingScreen(),
+                        ),
+                      ),
+                      child: Text(
+                          '${bloc.currentUser?.followingCount ?? 0} Following'),
+                    ),
                     const SizedBox(width: 8),
-                    Text('${bloc.currentUser?.followersCount ?? 0} Followers'),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const FollowersScreen(),
+                        ),
+                      ),
+                      child: Text(
+                          '${bloc.currentUser?.followersCount ?? 0} Followers'),
+                    ),
                   ],
                 ),
                 const Divider(),
@@ -613,10 +629,6 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
         actions: [
           // If the user matches the currentUser, do not show the
           // follow/unfollow button; you cannot follow your own feed.
-          //
-          // Note: until Aggregated Feeds are implemented this is functionally
-          // useless because the current user will never see posts from other
-          // users.
           if (widget.user != null && widget.user!.id != bloc.currentUser!.id)
             FutureBuilder<bool>(
               future: bloc.isFollowingUser(widget.user!.id!),
@@ -659,6 +671,83 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
           onUserTap: (user) => debugPrint('hashtag pressed: ${user!.toJson()}'),
           onMentionTap: (mention) => debugPrint('hashtag pressed: $mention'),
         ),
+      ),
+    );
+  }
+}
+
+class FollowingScreen extends StatefulWidget {
+  const FollowingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FollowingScreen> createState() => _FollowingScreenState();
+}
+
+class _FollowingScreenState extends State<FollowingScreen>
+    with StreamFeedMixin {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Following'),
+      ),
+      body: FutureBuilder<List<Follow>>(
+        future: client.flatFeed('timeline', bloc.currentUser!.id).following(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(snapshot.data![index].feedId),
+                );
+              },
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+class FollowersScreen extends StatefulWidget {
+  const FollowersScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FollowersScreen> createState() => _FollowersScreenState();
+}
+
+class _FollowersScreenState extends State<FollowersScreen>
+    with StreamFeedMixin {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Followers'),
+      ),
+      body: FutureBuilder<List<Follow>>(
+        future: client.flatFeed('user', bloc.currentUser!.id).followers(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                final feedName = snapshot.data![index].feedId.split(':').last;
+                return ListTile(
+                  title: Text(feedName),
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }
