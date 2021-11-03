@@ -128,6 +128,8 @@ void main() {
 
     test('createUser', () async {
       final mockApi = MockAPI();
+      final mockUserAPI = MockUserAPI();
+      when(() => mockApi.users).thenReturn(mockUserAPI);
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
       final client =
           StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
@@ -139,7 +141,7 @@ void main() {
         'gender': 'male',
       };
 
-      when(() => mockApi.users.create(token, userId, data)).thenAnswer(
+      when(() => mockUserAPI.create(token, userId, data)).thenAnswer(
         (_) async => const User(id: userId, data: data),
       );
 
@@ -148,7 +150,7 @@ void main() {
       expect(user.id, userId);
       expect(user.data, data);
 
-      verify(() => mockApi.users.create(token, userId, data)).called(1);
+      verify(() => mockUserAPI.create(token, userId, data)).called(1);
     });
 
     test('setUser', () async {
@@ -182,6 +184,8 @@ void main() {
 
     test('getUser', () async {
       final mockApi = MockAPI();
+      final mockUserAPI = MockUserAPI();
+      when(() => mockApi.users).thenReturn(mockUserAPI);
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
       final client =
           StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
@@ -193,7 +197,7 @@ void main() {
         'gender': 'male',
       };
 
-      when(() => mockApi.users.get(token, userId)).thenAnswer(
+      when(() => mockUserAPI.get(token, userId)).thenAnswer(
         (_) async => const User(id: userId, data: data),
       );
 
@@ -202,11 +206,13 @@ void main() {
       expect(user.id, userId);
       expect(user.data, data);
 
-      verify(() => mockApi.users.get(token, userId)).called(1);
+      verify(() => mockUserAPI.get(token, userId)).called(1);
     });
 
     test('updateUser', () async {
       final mockApi = MockAPI();
+      final mockUserAPI = MockUserAPI();
+      when(() => mockApi.users).thenReturn(mockUserAPI);
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
       final client =
           StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
@@ -218,7 +224,7 @@ void main() {
         'gender': 'male',
       };
 
-      when(() => mockApi.users.update(token, userId, data)).thenAnswer(
+      when(() => mockUserAPI.update(token, userId, data)).thenAnswer(
         (_) async => const User(id: userId, data: data),
       );
 
@@ -227,24 +233,26 @@ void main() {
       expect(user.id, userId);
       expect(user.data, data);
 
-      verify(() => mockApi.users.update(token, userId, data)).called(1);
+      verify(() => mockUserAPI.update(token, userId, data)).called(1);
     });
 
-    test('updateUser', () async {
+    test('delete', () async {
       final mockApi = MockAPI();
+      final mockUserAPI = MockUserAPI();
+      when(() => mockApi.users).thenReturn(mockUserAPI);
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
       final client =
           StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
 
       const userId = 'test-user';
 
-      when(() => mockApi.users.delete(token, userId)).thenAnswer(
+      when(() => mockUserAPI.delete(token, userId)).thenAnswer(
         (_) async => Future.value(),
       );
 
       await client.deleteUser(userId);
 
-      verify(() => mockApi.users.delete(token, userId)).called(1);
+      verify(() => mockUserAPI.delete(token, userId)).called(1);
     });
   });
 }
