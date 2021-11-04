@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/compose_reply_view.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/activity_reply_view.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 // ignore_for_file: cascade_invocations
@@ -59,7 +59,7 @@ class ReplyButton extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => ComposeReplyView(
+                builder: (_) => ActivityReplyView(
                   parentActivity: activity,
                   feedGroup: feedGroup,
                 ),

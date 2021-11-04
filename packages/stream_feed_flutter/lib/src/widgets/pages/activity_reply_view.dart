@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-class ComposeReplyView extends StatefulWidget {
-  const ComposeReplyView({
+class ActivityReplyView extends StatefulWidget {
+  const ActivityReplyView({
     Key? key,
     required this.parentActivity,
     required this.feedGroup,
@@ -13,10 +13,10 @@ class ComposeReplyView extends StatefulWidget {
   final String feedGroup;
 
   @override
-  _ComposeReplyViewState createState() => _ComposeReplyViewState();
+  _ActivityReplyViewState createState() => _ActivityReplyViewState();
 }
 
-class _ComposeReplyViewState extends State<ComposeReplyView> {
+class _ActivityReplyViewState extends State<ActivityReplyView> {
   final _replyController = TextEditingController();
 
   @override
