@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/compose_reply_view.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 // ignore_for_file: cascade_invocations
@@ -56,7 +57,15 @@ class ReplyButton extends StatelessWidget {
           iconSize: iconSize,
           hoverColor: Colors.blue.shade100,
           onPressed: () {
-            showDialog<void>(
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ComposeReplyView(
+                  parentActivity: activity,
+                ),
+                fullscreenDialog: true,
+              ),
+            );
+            /*showDialog<void>(
               //TODO: switch (await showDialog<Delete/Register>
               context: context,
               builder: (_) {
@@ -70,7 +79,7 @@ class ReplyButton extends StatelessWidget {
                   ),
                 );
               },
-            );
+            );*/
           },
           icon: StreamSvgIcon.reply(
             color: StreamFeedTheme.of(context).primaryIconTheme.color,
