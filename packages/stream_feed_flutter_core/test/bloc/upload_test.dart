@@ -7,6 +7,8 @@ abstract class State {}
 
 class IncreaseEvent extends Event {}
 
+class DecreaseEvent extends Event {}
+
 class CounterState extends State {
   final int count;
   CounterState({this.count = 0});
@@ -28,9 +30,12 @@ class CounterBloc {
     _stateController.close();
   }
 
-  void increase(Event event) {
+  void mutate(Event event) {
     if (event is IncreaseEvent) {
       _stateController.value = CounterState(count: count + 1);
+    }
+    if (event is DecreaseEvent) {
+      _stateController.value = CounterState(count: count - 1);
     }
   }
 }
@@ -39,7 +44,9 @@ main() {
   test('bloc', () {
     final bloc = CounterBloc();
     expect(bloc.count, 0);
-    bloc.increase(IncreaseEvent());
+    bloc.mutate(IncreaseEvent());
     expect(bloc.count, 1);
+    bloc.mutate(DecreaseEvent());
+    expect(bloc.count, 0);
   });
 }
