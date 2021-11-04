@@ -371,38 +371,46 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   /* FOLLOW */
 
-  /// Follows the given [otherUser] id.
-  Future<void> followFlatFeed(
-    String otherUser,
-  ) async {
-    final timeline = client.flatFeed('timeline');
-    final user = client.flatFeed('user', otherUser);
-    await timeline.follow(user);
+  /// Follows the given [followeeId] id.
+  Future<void> followFeed({
+    String followerFeedGroup = 'timeline',
+    String followeeFeedGroup = 'user',
+    required String followeeId,
+  }) async {
+    final followerFeed = client.flatFeed(followerFeedGroup);
+    final followeeFeed = client.flatFeed(followeeFeedGroup, followeeId);
+    await followerFeed.follow(followeeFeed);
   }
 
-  /// Unfollows the given [otherUser] id.
-  Future<void> unfollowFlatFeed(
-    String otherUser,
-  ) async {
-    final timeline = client.flatFeed('timeline');
-    final user = client.flatFeed('user', otherUser);
-    await timeline.unfollow(user);
+  /// Unfollows the given [unfolloweeId] id.
+  Future<void> unfollowFeed({
+    String unfollowerFeedGroup = 'timeline',
+    String unfolloweeFeedGroup = 'user',
+    required String unfolloweeId,
+  }) async {
+    final unfollowerFeed = client.flatFeed(unfollowerFeedGroup);
+    final unfolloweeFeed = client.flatFeed(unfolloweeFeedGroup, unfolloweeId);
+    await unfollowerFeed.unfollow(unfolloweeFeed);
   }
 
   /// Checks whether the current user is following a feed with the given
-  /// [userId].
+  /// [followerId].
   ///
   /// It filters the request such that if the current user is in fact
   /// following the given user, one user will be returned that matches the
   /// current user, thus indicating that the current user does follow the given
   /// user. If no results are found, this means that the current user is not
   /// following the given user.
-  Future<bool> isFollowingUser(String userId) async {
-    final following = await client.flatFeed('timeline').following(
+  Future<bool> isFollowingFeed({
+    String followeeFeedGroup = 'timeline',
+    String followerFeedGroup = 'user',
+    required String followerId,
+  }) async {
+    final following = await client.flatFeed(followeeFeedGroup).following(
       limit: 1,
       offset: 0,
       filter: [
-        FeedId.id('user:$userId'),
+        FeedId.id('$followerFeedGroup:$followerId'),
       ],
     );
     return following.isNotEmpty;
