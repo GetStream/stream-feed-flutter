@@ -6,9 +6,11 @@ class ComposeReplyView extends StatefulWidget {
   const ComposeReplyView({
     Key? key,
     required this.parentActivity,
+    required this.feedGroup,
   }) : super(key: key);
 
   final EnrichedActivity parentActivity;
+  final String feedGroup;
 
   @override
   _ComposeReplyViewState createState() => _ComposeReplyViewState();
@@ -20,7 +22,25 @@ class _ComposeReplyViewState extends State<ComposeReplyView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Reply'),
+        actions: [
+          ActionChip(
+            label: const Text('Post'),
+            onPressed: () async {
+              if (_replyController.text.isNotEmpty) {
+                await FeedProvider.of(context).bloc.onAddReaction(
+                  kind: 'comment',
+                  data: {'text': _replyController.text},
+                  activity: widget.parentActivity,
+                  feedGroup: widget.feedGroup,
+                );
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
