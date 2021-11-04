@@ -54,6 +54,7 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
     this.flags,
     this.kind,
     this.limit,
+    this.scrollPhysics,
   }) : super(key: key);
 
   /// A builder that allows building a ListView of Reaction based Widgets
@@ -85,6 +86,8 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
 
   /// The kind of reaction
   final String? kind;
+
+  final ScrollPhysics? scrollPhysics;
 
   @override
   _GenericReactionListCoreState<A, Ob, T, Or> createState() =>
@@ -131,7 +134,7 @@ class _GenericReactionListCoreState<A, Ob, T, Or>
         return ListView.separated(
           shrinkWrap: true,
           itemCount: reactions.length,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: widget.scrollPhysics ?? const NeverScrollableScrollPhysics(),
           separatorBuilder: (context, index) => const Divider(),
           itemBuilder: (context, idx) => widget.reactionsBuilder(
             context,
