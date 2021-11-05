@@ -14,6 +14,7 @@ dependencies:
   rxdart: ^0.27.1
   stream_feed: ^0.4.0
   equatable: ^2.0.3
+  dio: ^4.0.1
   
 dev_dependencies:
   flutter_test:
