@@ -3,8 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:stream_feed/stream_feed.dart' show CancelToken;
 import '../mocks.dart';
 import '../utils.dart';
 
@@ -86,18 +86,13 @@ class UploadController {
     _stateController.add(UploadCancelled());
   }
 
-  Future<void> uploadFile(AttachmentFile attachmentFile,
-      // [CancelToken? cancelToken]
-      ) async {
-    // final token = cancelToken ?? CancelToken();
-    // uploads[attachmentFile] = token;
-    client.files.upload(attachmentFile, 
-    // cancelToken: token,
-        // onSendProgress: (sentBytes, totalBytes) {
-      // _stateController
-      //     .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
-    // }
-    ).then((url) => _stateController.add(UploadSuccess(url)));
+  Future<void> uploadFile(AttachmentFile attachmentFile) async {
+    final url = await client.files.upload(attachmentFile,
+        onSendProgress: (sentBytes, totalBytes) {
+      _stateController
+          .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
+    });
+    _stateController.add(UploadSuccess(url));
     // .onError((error, stackTrace) => _stateController.add(UploadError()));
     // _stateController.add(UploadProgress());
   }
@@ -109,13 +104,16 @@ main() {
       final mockClient = MockClient();
       final mockFiles = MockFiles();
       final file = assetFile('test_image.jpeg');
+      final mockOnSendProgress = MockOnSendProgress();
+
       final attachment = AttachmentFile(
         path: file.path,
         bytes: file.readAsBytesSync(),
       );
       const cdnUrl = 'url';
       when(() => mockClient.files).thenReturn(mockFiles);
-      when(() => mockFiles.upload(attachment))
+      when(() =>
+              mockFiles.upload(attachment, onSendProgress: mockOnSendProgress))
           .thenAnswer((_) async => cdnUrl);
       final bloc = UploadController(mockClient);
 
@@ -123,17 +121,18 @@ main() {
           bloc.stateStream,
           emitsInOrder(<UploadState>[
             UploadEmptyState(),
-            // UploadProgress(),
+            UploadProgress(bytesTotal: 100),
             UploadSuccess(cdnUrl)
           ]));
 
       await bloc.uploadFile(attachment);
+      mockOnSendProgress.onSendProgress!(0, 100);
       // if things go as expected
 
       //cancelled
-      //  await expectLater(bloc.stateStream,emitsInOrder([UploadStarted(), UploadProgress(), UploadCancelled()]));
+      //  await expectLater(bloc.stateStream,emitsInOrder([UploadEmptyState(), UploadProgress(), UploadCancelled()]));
       //failed
-      //  await expectLater(bloc.stateStream,emitsInOrder([UploadStarted(), UploadProgress(), UploadFailed()]));
+      //  await expectLater(bloc.stateStream,emitsInOrder([UploadEmptyState(), UploadProgress(), UploadFailed()]));
     });
   });
 }
