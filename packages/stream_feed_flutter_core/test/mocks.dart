@@ -8,6 +8,8 @@ class MockStreamFeedClient extends Mock implements StreamFeedClient {}
 
 class MockReactions extends Mock implements ReactionsClient {}
 
+class MockFiles extends Mock implements FileStorageClient {}
+
 class MockStreamAnalytics extends Mock implements StreamAnalytics {}
 
 class MockFeedAPI extends Mock implements FlatFeed {}

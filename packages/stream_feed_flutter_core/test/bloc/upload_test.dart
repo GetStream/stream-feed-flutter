@@ -1,9 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import '../mocks.dart';
+import '../utils.dart';
 
 abstract class _Event with EquatableMixin {
   @override
@@ -51,7 +53,10 @@ class UploadProgress extends UploadState {
   List<Object> get props => [bytesSent, bytesTotal];
 }
 
-class UploadSuccess extends UploadState {}
+class UploadSuccess extends UploadState {
+  final String? url;
+  UploadSuccess(this.url);
+}
 
 class UploadController {
   UploadController(this.client);
@@ -70,24 +75,36 @@ class UploadController {
     _stateController.close();
   }
 
-  void upload() {
-    _stateController.add(UploadProgress());
-    _stateController.add(UploadSuccess());
+  Future<void> uploadFile(AttachmentFile attachmentFile) async {
+    client.files
+        .upload(attachmentFile)
+        .then((url) => _stateController.add(UploadSuccess(url)));
+    // _stateController.add(UploadProgress());
   }
 }
 
 main() {
   test('bloc', () async {
     final mockClient = MockClient();
+    final mockFiles = MockFiles();
+    final file = assetFile('test_image.jpeg');
+    final attachment = AttachmentFile(
+      path: file.path,
+      bytes: file.readAsBytesSync(),
+    );
+    const cdnUrl = 'url';
+    when(() => mockClient.files).thenReturn(mockFiles);
+    when(() => mockFiles.upload(attachment)).thenAnswer((_) async => cdnUrl);
     final bloc = UploadController(mockClient);
     expect(
         bloc.stateStream,
         emitsInOrder(<UploadState>[
           UploadEmptyState(),
-          UploadProgress(),
-          UploadSuccess()
+          // UploadProgress(),
+          UploadSuccess(cdnUrl)
         ]));
-    bloc.upload();
+
+    await bloc.uploadFile(attachment);
     // if things go as expected
 
     //cancelled
