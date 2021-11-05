@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,6 +46,13 @@ class CancelUpload extends UploadEvent {}
 
 class UploadEmptyState extends UploadState {}
 
+class UploadFailed extends UploadState {
+  final Object error;
+  UploadFailed(this.error);
+  @override
+  List<Object> get props => [error];
+}
+
 class UploadProgress extends UploadState {
   UploadProgress({this.bytesSent = 0, this.bytesTotal = 0});
 
@@ -62,10 +71,10 @@ class UploadSuccess extends UploadState {
 }
 
 class UploadController {
-  late Map<AttachmentFile, CancelToken> uploads = {};
-
   UploadController(this.client);
+  late Map<AttachmentFile, CancelToken> uploads = {};
   final StreamFeedClient client;
+
   final _eventController = BehaviorSubject<UploadEvent>();
   final _stateController =
       BehaviorSubject<UploadState>.seeded(UploadEmptyState());
@@ -87,12 +96,18 @@ class UploadController {
   }
 
   Future<void> uploadFile(AttachmentFile attachmentFile) async {
-    final url = await client.files.upload(attachmentFile,
-        onSendProgress: (sentBytes, totalBytes) {
-      _stateController
-          .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
-    });
-    _stateController.add(UploadSuccess(url));
+    try {
+      final url = await client.files.upload(
+        attachmentFile,
+        //     onSendProgress: (sentBytes, totalBytes) {
+        //   _stateController
+        //       .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
+        // }
+      );
+      _stateController.add(UploadSuccess(url));
+    } catch (e) {
+      _stateController.add(UploadFailed(e));
+    }
     // .onError((error, stackTrace) => _stateController.add(UploadError()));
     // _stateController.add(UploadProgress());
   }
@@ -100,33 +115,61 @@ class UploadController {
 
 main() {
   group('bloc', () {
-    test('success', () async {
-      final mockClient = MockClient();
-      final mockFiles = MockFiles();
-      final file = assetFile('test_image.jpeg');
-      final mockOnSendProgress = MockOnSendProgress();
+    late MockClient mockClient;
+    late MockFiles mockFiles;
+    late File file;
+    late AttachmentFile attachment;
+    late String cdnUrl;
+    setUp(() {
+      mockClient = MockClient();
+      mockFiles = MockFiles();
+      file = assetFile('test_image.jpeg');
+      // final mockOnSendProgress = MockOnSendProgress();
 
-      final attachment = AttachmentFile(
+      attachment = AttachmentFile(
         path: file.path,
         bytes: file.readAsBytesSync(),
       );
-      const cdnUrl = 'url';
+      cdnUrl = 'url';
       when(() => mockClient.files).thenReturn(mockFiles);
-      when(() =>
-              mockFiles.upload(attachment, onSendProgress: mockOnSendProgress))
-          .thenAnswer((_) async => cdnUrl);
+    });
+    test('success', () async {
+      when(() => mockFiles.upload(attachment)).thenAnswer((_) async => cdnUrl);
       final bloc = UploadController(mockClient);
 
       expect(
           bloc.stateStream,
           emitsInOrder(<UploadState>[
             UploadEmptyState(),
-            UploadProgress(bytesTotal: 100),
+            // UploadProgress(bytesTotal: 100),
             UploadSuccess(cdnUrl)
           ]));
 
       await bloc.uploadFile(attachment);
-      mockOnSendProgress.onSendProgress!(0, 100);
+      // mockOnSendProgress.onSendProgress!(0, 100);
+      // if things go as expected
+
+      //cancelled
+      //  await expectLater(bloc.stateStream,emitsInOrder([UploadEmptyState(), UploadProgress(), UploadCancelled()]));
+      //failed
+      //  await expectLater(bloc.stateStream,emitsInOrder([UploadEmptyState(), UploadProgress(), UploadFailed()]));
+    });
+
+    test('fail', () async {
+      const exception = SocketException;
+      when(() => mockFiles.upload(attachment)).thenThrow(exception);
+      final bloc = UploadController(mockClient);
+
+      expect(
+          bloc.stateStream,
+          emitsInOrder(<UploadState>[
+            UploadEmptyState(),
+            // UploadProgress(bytesTotal: 100),
+            UploadFailed(exception)
+          ]));
+
+      await bloc.uploadFile(attachment);
+      // mockOnSendProgress.onSendProgress!(0, 100);
       // if things go as expected
 
       //cancelled
