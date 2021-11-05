@@ -1,52 +1,98 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-abstract class Event {}
+import '../mocks.dart';
 
-abstract class State {}
-
-class IncreaseEvent extends Event {}
-
-class DecreaseEvent extends Event {}
-
-class CounterState extends State {
-  final int count;
-  CounterState({this.count = 0});
+abstract class _Event with EquatableMixin {
+  @override
+  List<Object> get props => [];
 }
 
-class CounterBloc {
-  final _eventController = BehaviorSubject<Event>();
-  final _stateController = BehaviorSubject.seeded(CounterState());
+abstract class _State with EquatableMixin {
+  @override
+  List<Object> get props => [];
+}
 
-  CounterBloc();
-  Stream<Event> get eventsStream => _eventController.stream;
-  Event get event => _eventController.value;
-  Stream<State> get stateStream => _stateController.stream;
-  CounterState? get state => _stateController.valueOrNull;
-  int get count => state!.count;
+class UploadEvent extends _Event {}
+
+class UploadState extends _State {}
+
+class UploadFile extends UploadEvent {
+  UploadFile({required this.file, required this.url});
+
+  final AttachmentFile file;
+  final String url;
+  @override
+  List<Object> get props => [file, url];
+}
+
+class CancelUpload extends UploadEvent {}
+
+// class RemoveFile extends Event {
+//   RemoveFile({required this.file});
+
+//   final AttachmentFile file;
+
+//   // @override
+//   // List<Object> get props => [file];
+// }
+
+class UploadEmptyState extends UploadState {}
+
+class UploadProgress extends UploadState {
+  UploadProgress({this.bytesSent = 0, this.bytesTotal = 0});
+
+  final int bytesSent;
+  final int bytesTotal;
+
+  @override
+  List<Object> get props => [bytesSent, bytesTotal];
+}
+
+class UploadSuccess extends UploadState {}
+
+class UploadController {
+  UploadController(this.client);
+  final StreamFeedClient client;
+  final _eventController = BehaviorSubject<UploadEvent>();
+  final _stateController =
+      BehaviorSubject<UploadState>.seeded(UploadEmptyState());
+
+  Stream<UploadEvent> get eventsStream => _eventController.stream;
+  Stream<UploadState> get stateStream => _stateController.stream;
+  Stream<UploadProgress>? get progressStream =>
+      _stateController.whereType<UploadProgress>();
 
   void close() {
     _eventController.close();
     _stateController.close();
   }
 
-  void mutate(Event event) {
-    if (event is IncreaseEvent) {
-      _stateController.value = CounterState(count: count + 1);
-    }
-    if (event is DecreaseEvent) {
-      _stateController.value = CounterState(count: count - 1);
-    }
+  void upload() {
+    _stateController.add(UploadProgress());
+    _stateController.add(UploadSuccess());
   }
 }
 
 main() {
-  test('bloc', () {
-    final bloc = CounterBloc();
-    expect(bloc.count, 0);
-    bloc.mutate(IncreaseEvent());
-    expect(bloc.count, 1);
-    bloc.mutate(DecreaseEvent());
-    expect(bloc.count, 0);
+  test('bloc', () async {
+    final mockClient = MockClient();
+    final bloc = UploadController(mockClient);
+    expect(
+        bloc.stateStream,
+        emitsInOrder(<UploadState>[
+          UploadEmptyState(),
+          UploadProgress(),
+          UploadSuccess()
+        ]));
+    bloc.upload();
+    // if things go as expected
+
+    //cancelled
+    //  await expectLater(bloc.stateStream,emitsInOrder([UploadStarted(), UploadProgress(), UploadCancelled()]));
+    //failed
+    //  await expectLater(bloc.stateStream,emitsInOrder([UploadStarted(), UploadProgress(), UploadFailed()]));
   });
 }
