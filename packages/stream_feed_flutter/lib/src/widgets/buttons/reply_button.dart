@@ -66,21 +66,6 @@ class ReplyButton extends StatelessWidget {
                 fullscreenDialog: true,
               ),
             );
-            /*showDialog<void>(
-              //TODO: switch (await showDialog<Delete/Register>
-              context: context,
-              builder: (_) {
-                return MediaQuery(
-                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-                  child: AlertDialogComment(
-                    activity: activity,
-                    feedGroup: feedGroup,
-                    nameJsonKey: nameJsonKey,
-                    handleJsonKey: handleJsonKey,
-                  ),
-                );
-              },
-            );*/
           },
           icon: StreamSvgIcon.reply(
             color: StreamFeedTheme.of(context).primaryIconTheme.color,
