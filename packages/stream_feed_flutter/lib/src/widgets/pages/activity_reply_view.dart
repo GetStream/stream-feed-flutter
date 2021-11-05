@@ -14,6 +14,7 @@ class ActivityReplyView extends StatefulWidget {
     Key? key,
     required this.parentActivity,
     required this.feedGroup,
+    this.nameJsonKey = 'full_name',
   }) : super(key: key);
 
   /// The activity to reply to.
@@ -21,6 +22,8 @@ class ActivityReplyView extends StatefulWidget {
 
   /// The feed group that the [parentActivity] belongs to.
   final String feedGroup;
+
+  final String nameJsonKey;
 
   @override
   _ActivityReplyViewState createState() => _ActivityReplyViewState();
@@ -31,6 +34,7 @@ class ActivityReplyView extends StatefulWidget {
     properties.add(DiagnosticsProperty<EnrichedActivity>(
         'parentActivity', parentActivity));
     properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(StringProperty('nameJsonKey', nameJsonKey));
   }
 }
 
@@ -64,6 +68,7 @@ class _ActivityReplyViewState extends State<ActivityReplyView> {
           children: [
             ActivityWidget(
               activity: widget.parentActivity,
+              nameJsonKey: widget.nameJsonKey!,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
