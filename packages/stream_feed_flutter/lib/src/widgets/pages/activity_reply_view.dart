@@ -53,7 +53,7 @@ class _ActivityReplyViewState extends State<ActivityReplyView> {
               if (_replyController.text.isNotEmpty) {
                 await FeedProvider.of(context).bloc.onAddReaction(
                       kind: 'comment',
-                      data: {'text': _replyController.text},
+                      data: {'text': _replyController.text.trim()},
                       activity: widget.parentActivity,
                       feedGroup: widget.feedGroup,
                     );
