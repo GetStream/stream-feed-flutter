@@ -695,7 +695,8 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
                         const SizedBox(width: 16),
                         Expanded(
                           child: FutureBuilder<bool>(
-                            future: bloc.isFollowingUser(widget.user!.id!),
+                            future: bloc.isFollowingFeed(
+                                followerId: widget.user!.id!),
                             builder: (context, snapshot) {
                               if (!snapshot.hasData) {
                                 return const SizedBox.shrink();
@@ -705,12 +706,12 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
                                       snapshot.data! ? 'Unfollow' : 'Follow'),
                                   onPressed: () async {
                                     if (snapshot.data!) {
-                                      await bloc
-                                          .unfollowFlatFeed(widget.user!.id!);
+                                      await bloc.unfollowFeed(
+                                          unfolloweeId: widget.user!.id!);
                                       setState(() {});
                                     } else {
-                                      await bloc
-                                          .followFlatFeed(widget.user!.id!);
+                                      await bloc.followFeed(
+                                          followeeId: widget.user!.id!);
                                       setState(() {});
                                     }
                                   },
