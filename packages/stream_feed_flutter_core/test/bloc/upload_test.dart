@@ -158,7 +158,7 @@ main() {
           ]));
 
       await bloc.uploadFile(attachment);
-      bloc.cancel(attachment, mockCancelToken);
+      bloc.cancelUpload(attachment, mockCancelToken);
 
       verify(() => mockCancelToken.cancel('cancelled')).called(1);
       // addTearDown(timer.cancel);
