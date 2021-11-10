@@ -157,7 +157,6 @@ main() {
           bloc.stateStream,
           emitsInOrder(<UploadState>[
             UploadEmptyState(),
-            // UploadProgress(bytesTotal: 100),
             UploadCancelled()
           ]));
 
@@ -210,7 +209,6 @@ main() {
           bloc.stateStream,
           emitsInOrder(<UploadState>[
             UploadEmptyState(),
-            // UploadProgress(bytesTotal: 100),
             UploadFailed(exception)
           ]));
       await bloc.uploadFile(attachment);
