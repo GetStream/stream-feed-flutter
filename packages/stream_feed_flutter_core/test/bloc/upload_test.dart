@@ -12,30 +12,30 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import '../mocks.dart';
 import '../utils.dart';
 
-abstract class _Event with EquatableMixin {
-  @override
-  List<Object> get props => [];
-}
+// abstract class _Event with EquatableMixin {
+//   @override
+//   List<Object> get props => [];
+// }
 
 abstract class _State with EquatableMixin {
   @override
   List<Object> get props => [];
 }
 
-class UploadEvent extends _Event {}
+// class UploadEvent extends _Event {}
 
 class UploadState extends _State {}
 
-class UploadFile extends UploadEvent {
-  UploadFile({required this.file, required this.url});
+// class UploadFile extends UploadEvent {
+//   UploadFile({required this.file, required this.url});
 
-  final AttachmentFile file;
-  final String url;
-  @override
-  List<Object> get props => [file, url];
-}
+//   final AttachmentFile file;
+//   final String url;
+//   @override
+//   List<Object> get props => [file, url];
+// }
 
-class CancelUpload extends UploadEvent {}
+// class CancelUpload extends UploadEvent {}
 
 // class RemoveFile extends Event {
 //   RemoveFile({required this.file});
@@ -77,19 +77,19 @@ class UploadController {
   late Map<AttachmentFile, CancelToken> cancelMap = {};
   final StreamFeedClient client;
 
-  final _eventController = BehaviorSubject<UploadEvent>();
+  // final _eventController = BehaviorSubject<UploadEvent>();
 
   @visibleForTesting
   final stateController =
       BehaviorSubject<UploadState>.seeded(UploadEmptyState());
 
-  Stream<UploadEvent> get eventsStream => _eventController.stream;
+  // Stream<UploadEvent> get eventsStream => _eventController.stream;
   Stream<UploadState> get stateStream => stateController.stream;
   Stream<UploadProgress>? get progressStream =>
       stateController.whereType<UploadProgress>();
 
   void close() {
-    _eventController.close();
+    // _eventController.close();
     stateController.close();
   }
 
@@ -121,7 +121,6 @@ class UploadController {
 
 main() {
   group('bloc', () {
-    late OnSendProgress onSendProgress;
     late MockClient mockClient;
     late MockFiles mockFiles;
     late File file;
@@ -131,7 +130,6 @@ main() {
       mockClient = MockClient();
       mockFiles = MockFiles();
       file = assetFile('test_image.jpeg');
-      onSendProgress = MockOnSendProgress();
 
       attachment = AttachmentFile(
         path: file.path,

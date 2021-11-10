@@ -13,10 +13,6 @@ class MockFiles extends Mock implements FileStorageClient {}
 
 class MockCancelToken extends Mock implements CancelToken {}
 
-class MockOnSendProgress extends Mock implements Function {
-  void call(int sentBytes, int totalBytes);
-}
-
 class MockStreamAnalytics extends Mock implements StreamAnalytics {}
 
 class MockFeedAPI extends Mock implements FlatFeed {}
