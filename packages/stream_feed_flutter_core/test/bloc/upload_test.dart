@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rxdart/rxdart.dart';
@@ -77,17 +78,19 @@ class UploadController {
   final StreamFeedClient client;
 
   final _eventController = BehaviorSubject<UploadEvent>();
-  final _stateController =
+
+  @visibleForTesting
+  final stateController =
       BehaviorSubject<UploadState>.seeded(UploadEmptyState());
 
   Stream<UploadEvent> get eventsStream => _eventController.stream;
-  Stream<UploadState> get stateStream => _stateController.stream;
+  Stream<UploadState> get stateStream => stateController.stream;
   Stream<UploadProgress>? get progressStream =>
-      _stateController.whereType<UploadProgress>();
+      stateController.whereType<UploadProgress>();
 
   void close() {
     _eventController.close();
-    _stateController.close();
+    stateController.close();
   }
 
   void cancelUpload(AttachmentFile attachmentFile, [CancelToken? cancelToken]) {
@@ -100,25 +103,25 @@ class UploadController {
     AttachmentFile attachmentFile,
   ) async {
     try {
-      final url = await client.files.upload(attachmentFile,
-          cancelToken: cancelMap[attachmentFile]
-          //     onSendProgress: (sentBytes, totalBytes) {
-          //   _stateController
-          //       .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
-          // }
-          );
+      final url = await client.files
+          .upload(attachmentFile, cancelToken: cancelMap[attachmentFile],
+              onSendProgress: (sentBytes, totalBytes) {
+        stateController
+            .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
+      });
 
-      _stateController.add(UploadSuccess(url));
+      stateController.add(UploadSuccess(url));
     } catch (e) {
-      if (e is SocketException) _stateController.add(UploadFailed(e));
+      if (e is SocketException) stateController.add(UploadFailed(e));
       if (e is DioError && CancelToken.isCancel(e))
-        _stateController.add(UploadCancelled());
+        stateController.add(UploadCancelled());
     }
   }
 }
 
 main() {
   group('bloc', () {
+    late OnSendProgress onSendProgress;
     late MockClient mockClient;
     late MockFiles mockFiles;
     late File file;
@@ -128,7 +131,7 @@ main() {
       mockClient = MockClient();
       mockFiles = MockFiles();
       file = assetFile('test_image.jpeg');
-      // final mockOnSendProgress = MockOnSendProgress();
+      onSendProgress = MockOnSendProgress();
 
       attachment = AttachmentFile(
         path: file.path,
@@ -141,15 +144,16 @@ main() {
     test('cancel', () async {
       final mockCancelToken = MockCancelToken();
 
-      when(() => mockFiles.upload(attachment, cancelToken: mockCancelToken))
-          .thenThrow(DioError(
+      when(() => mockFiles.upload(attachment,
+          cancelToken: mockCancelToken,
+          onSendProgress: any(named: 'onSendProgress'))).thenThrow(DioError(
         requestOptions: RequestOptions(path: ''),
         type: DioErrorType.cancel,
       ));
       final bloc = UploadController(mockClient);
       bloc.cancelMap = {attachment: mockCancelToken};
 
-      expect(
+      expectLater(
           bloc.stateStream,
           emitsInOrder(<UploadState>[
             UploadEmptyState(),
@@ -161,52 +165,55 @@ main() {
       bloc.cancelUpload(attachment, mockCancelToken);
 
       verify(() => mockCancelToken.cancel('cancelled')).called(1);
-      // addTearDown(timer.cancel);
     });
 
     test('success', () async {
-      when(() => mockFiles.upload(attachment)).thenAnswer((_) async => cdnUrl);
+      when(() => mockFiles.upload(attachment,
+              onSendProgress: any(named: 'onSendProgress')))
+          .thenAnswer((_) async => cdnUrl);
       final bloc = UploadController(mockClient);
 
       expect(
           bloc.stateStream,
-          emitsInOrder(<UploadState>[
-            UploadEmptyState(),
-            // UploadProgress(bytesTotal: 100),
-            UploadSuccess(cdnUrl)
-          ]));
+          emitsInOrder(
+              <UploadState>[UploadEmptyState(), UploadSuccess(cdnUrl)]));
 
       await bloc.uploadFile(attachment);
-      // mockOnSendProgress.onSendProgress!(0, 100);
-      // if things go as expected
+    });
 
-      //cancelled
-      //  await expectLater(bloc.stateStream,emitsInOrder([UploadEmptyState(), UploadProgress(), UploadCancelled()]));
-      //failed
-      //  await expectLater(bloc.stateStream,emitsInOrder([UploadEmptyState(), UploadProgress(), UploadFailed()]));
+    test('progress', () async {
+      final bloc = UploadController(mockClient);
+      void mockOnSendProgress(int sentBytes, int totalBytes) {
+        bloc.stateController
+            .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
+      }
+
+      when(() =>
+              mockFiles.upload(attachment, onSendProgress: mockOnSendProgress))
+          .thenAnswer((_) async => cdnUrl);
+      expectLater(
+          bloc.stateStream,
+          emitsInOrder(<UploadState>[
+            UploadEmptyState(),
+            UploadProgress(bytesSent: 0, bytesTotal: 50)
+          ]));
+      await bloc.uploadFile(attachment);
+      mockOnSendProgress(0, 50);
     });
 
     test('fail', () async {
       const exception = SocketException('exception');
-      when(() => mockFiles.upload(attachment)).thenThrow(exception);
+      when(() => mockFiles.upload(attachment,
+          onSendProgress: any(named: 'onSendProgress'))).thenThrow(exception);
       final bloc = UploadController(mockClient);
-
-      expect(
+      expectLater(
           bloc.stateStream,
           emitsInOrder(<UploadState>[
             UploadEmptyState(),
             // UploadProgress(bytesTotal: 100),
             UploadFailed(exception)
           ]));
-
       await bloc.uploadFile(attachment);
-      // mockOnSendProgress.onSendProgress!(0, 100);
-      // if things go as expected
-
-      //cancelled
-      //  await expectLater(bloc.stateStream,emitsInOrder([UploadEmptyState(), UploadProgress(), UploadCancelled()]));
-      //failed
-      //  await expectLater(bloc.stateStream,emitsInOrder([UploadEmptyState(), UploadProgress(), UploadFailed()]));
     });
   });
 }

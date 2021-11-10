@@ -11,32 +11,10 @@ class MockReactions extends Mock implements ReactionsClient {}
 
 class MockFiles extends Mock implements FileStorageClient {}
 
-// class MockAttachmentDownloader extends Mock {
-
-//   Completer<String> completer = Completer();
-
-//   Future<String> call(
-//     Attachment attachment, {
-//     ProgressCallback? progressCallback,
-//   }) {
-//     this.progressCallback = progressCallback;
-//     return completer.future;
-//   }
-// }
-
-// class MockOnSendProgress extends Mock {
-//   OnSendProgress? onSendProgress;
-//   call({OnSendProgress? onSendProgress}) =>
-//       this.onSendProgress = onSendProgress;
-// }
-
 class MockCancelToken extends Mock implements CancelToken {}
 
-class MockOnSendProgress extends Mock {
-  OnSendProgress? onSendProgress;
-
-  void call(int sentBytes, int totalBytes) =>
-      onSendProgress!.call(sentBytes, totalBytes);
+class MockOnSendProgress extends Mock implements Function {
+  void call(int sentBytes, int totalBytes);
 }
 
 class MockStreamAnalytics extends Mock implements StreamAnalytics {}
