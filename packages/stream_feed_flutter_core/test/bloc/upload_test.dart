@@ -73,7 +73,7 @@ class UploadSuccess extends UploadState {
 
 class UploadController {
   UploadController(this.client);
-  late Map<AttachmentFile, CancelToken> uploads = {};
+  late Map<AttachmentFile, CancelToken> cancelMap = {};
   final StreamFeedClient client;
 
   final _eventController = BehaviorSubject<UploadEvent>();
@@ -90,17 +90,18 @@ class UploadController {
     _stateController.close();
   }
 
-  void cancel(AttachmentFile attachmentFile) {
-    final token = uploads[attachmentFile];
+  void cancelUpload(AttachmentFile attachmentFile, [CancelToken? cancelToken]) {
+    cancelMap[attachmentFile] = cancelToken ?? CancelToken();
+    final token = cancelMap[attachmentFile];
     token!.cancel('cancelled');
-    _stateController.add(UploadCancelled());
   }
 
-  Future<void> uploadFile(AttachmentFile attachmentFile,
-      {CancelToken? cancelToken}) async {
+  Future<void> uploadFile(
+    AttachmentFile attachmentFile,
+  ) async {
     try {
       final url = await client.files.upload(attachmentFile,
-          cancelToken: cancelToken
+          cancelToken: cancelMap[attachmentFile]
           //     onSendProgress: (sentBytes, totalBytes) {
           //   _stateController
           //       .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
@@ -146,6 +147,7 @@ main() {
         type: DioErrorType.cancel,
       ));
       final bloc = UploadController(mockClient);
+      bloc.cancelMap = {attachment: mockCancelToken};
 
       expect(
           bloc.stateStream,
@@ -155,8 +157,8 @@ main() {
             UploadCancelled()
           ]));
 
-      await bloc.uploadFile(attachment, cancelToken: mockCancelToken);
-      mockCancelToken.cancel('cancelled');
+      await bloc.uploadFile(attachment);
+      bloc.cancel(attachment, mockCancelToken);
 
       verify(() => mockCancelToken.cancel('cancelled')).called(1);
       // addTearDown(timer.cancel);
