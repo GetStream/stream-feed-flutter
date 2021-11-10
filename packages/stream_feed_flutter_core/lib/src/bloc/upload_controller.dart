@@ -1,4 +1,3 @@
-
 // abstract class _Event with EquatableMixin {
 //   @override
 //   List<Object> get props => [];
@@ -44,8 +43,8 @@ class UploadState extends _State {}
 class UploadEmptyState extends UploadState {}
 
 class UploadFailed extends UploadState {
-  final Object error;
   UploadFailed(this.error);
+  final Object error;
   @override
   List<Object> get props => [error];
 }
@@ -63,8 +62,8 @@ class UploadProgress extends UploadState {
 class UploadCancelled extends UploadState {}
 
 class UploadSuccess extends UploadState {
-  final String? url;
   UploadSuccess(this.url);
+  final String? url;
 }
 
 class UploadController {
@@ -108,8 +107,9 @@ class UploadController {
       stateController.add(UploadSuccess(url));
     } catch (e) {
       if (e is SocketException) stateController.add(UploadFailed(e));
-      if (e is DioError && CancelToken.isCancel(e))
+      if (e is DioError && CancelToken.isCancel(e)) {
         stateController.add(UploadCancelled());
+      }
     }
   }
 }
