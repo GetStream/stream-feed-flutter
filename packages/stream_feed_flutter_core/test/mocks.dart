@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
@@ -28,6 +29,8 @@ class MockFiles extends Mock implements FileStorageClient {}
 //   call({OnSendProgress? onSendProgress}) =>
 //       this.onSendProgress = onSendProgress;
 // }
+
+class MockCancelToken extends Mock implements CancelToken {}
 
 class MockOnSendProgress extends Mock {
   OnSendProgress? onSendProgress;

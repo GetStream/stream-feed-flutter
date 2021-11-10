@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -95,21 +96,23 @@ class UploadController {
     _stateController.add(UploadCancelled());
   }
 
-  Future<void> uploadFile(AttachmentFile attachmentFile) async {
+  Future<void> uploadFile(AttachmentFile attachmentFile,
+      {CancelToken? cancelToken}) async {
     try {
-      final url = await client.files.upload(
-        attachmentFile,
-        //     onSendProgress: (sentBytes, totalBytes) {
-        //   _stateController
-        //       .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
-        // }
-      );
+      final url = await client.files.upload(attachmentFile,
+          cancelToken: cancelToken
+          //     onSendProgress: (sentBytes, totalBytes) {
+          //   _stateController
+          //       .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
+          // }
+          );
+
       _stateController.add(UploadSuccess(url));
     } catch (e) {
-      _stateController.add(UploadFailed(e));
+      if (e is SocketException) _stateController.add(UploadFailed(e));
+      if (e is DioError && CancelToken.isCancel(e))
+        _stateController.add(UploadCancelled());
     }
-    // .onError((error, stackTrace) => _stateController.add(UploadError()));
-    // _stateController.add(UploadProgress());
   }
 }
 
@@ -133,6 +136,32 @@ main() {
       cdnUrl = 'url';
       when(() => mockClient.files).thenReturn(mockFiles);
     });
+
+    test('cancel', () async {
+      final mockCancelToken = MockCancelToken();
+
+      when(() => mockFiles.upload(attachment, cancelToken: mockCancelToken))
+          .thenThrow(DioError(
+        requestOptions: RequestOptions(path: ''),
+        type: DioErrorType.cancel,
+      ));
+      final bloc = UploadController(mockClient);
+
+      expect(
+          bloc.stateStream,
+          emitsInOrder(<UploadState>[
+            UploadEmptyState(),
+            // UploadProgress(bytesTotal: 100),
+            UploadCancelled()
+          ]));
+
+      await bloc.uploadFile(attachment, cancelToken: mockCancelToken);
+      mockCancelToken.cancel('cancelled');
+
+      verify(() => mockCancelToken.cancel('cancelled')).called(1);
+      // addTearDown(timer.cancel);
+    });
+
     test('success', () async {
       when(() => mockFiles.upload(attachment)).thenAnswer((_) async => cdnUrl);
       final bloc = UploadController(mockClient);
@@ -156,7 +185,7 @@ main() {
     });
 
     test('fail', () async {
-      const exception = SocketException;
+      const exception = SocketException('exception');
       when(() => mockFiles.upload(attachment)).thenThrow(exception);
       final bloc = UploadController(mockClient);
 
