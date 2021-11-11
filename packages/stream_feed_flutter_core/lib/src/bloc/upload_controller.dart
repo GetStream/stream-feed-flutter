@@ -106,8 +106,8 @@ class UploadController {
   Future<void> uploadFile(
     AttachmentFile attachmentFile,
   ) async {
-    stateMap[attachmentFile]!.value = UploadEmptyState();
-    final _stateController = stateMap[attachmentFile]!;
+    initController(attachmentFile);
+    final _stateController = getController(attachmentFile);
     try {
       final url = await client.files
           .upload(attachmentFile, cancelToken: cancelMap[attachmentFile],
@@ -123,5 +123,12 @@ class UploadController {
         _stateController.add(UploadCancelled());
       }
     }
+  }
+
+  BehaviorSubject<UploadState> getController(AttachmentFile attachmentFile) =>
+      stateMap[attachmentFile]!;
+
+  void initController(AttachmentFile attachmentFile) {
+    stateMap[attachmentFile]!.value = UploadEmptyState();
   }
 }
