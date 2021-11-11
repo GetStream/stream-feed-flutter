@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/upload_controller.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -40,8 +41,9 @@ main() {
       ));
       final bloc = UploadController(mockClient);
       bloc.cancelMap = {attachment: mockCancelToken};
+      bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
 
-      expectLater(bloc.stateStream,
+      expectLater(bloc.getUploadStateStream(attachment),
           emitsInOrder(<UploadState>[UploadEmptyState(), UploadCancelled()]));
 
       await bloc.uploadFile(attachment);
@@ -54,31 +56,35 @@ main() {
       when(() => mockFiles.upload(attachment,
               onSendProgress: any(named: 'onSendProgress')))
           .thenAnswer((_) async => cdnUrl);
-      final bloc = UploadController(mockClient);
 
-      expect(
-          bloc.stateStream,
+      final bloc = UploadController(mockClient);
+      bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
+
+      expectLater(
+          bloc.getUploadStateStream(attachment),
           emitsInOrder(
               <UploadState>[UploadEmptyState(), UploadSuccess(cdnUrl)]));
-
       await bloc.uploadFile(attachment);
+
+      // print(bloc.stateMap[attachment].);
     });
 
     test('progress', () async {
       final bloc = UploadController(mockClient);
       void mockOnSendProgress(int sentBytes, int totalBytes) {
-        bloc.stateController
-            .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
+        bloc.stateMap[attachment]!
+            .add(UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes));
       }
 
       when(() =>
               mockFiles.upload(attachment, onSendProgress: mockOnSendProgress))
           .thenAnswer((_) async => cdnUrl);
+      bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
       expectLater(
-          bloc.stateStream,
+          bloc.getUploadStateStream(attachment),
           emitsInOrder(<UploadState>[
             UploadEmptyState(),
-            UploadProgress(bytesSent: 0, bytesTotal: 50)
+            UploadProgress(sentBytes: 0, totalBytes: 50)
           ]));
       await bloc.uploadFile(attachment);
       mockOnSendProgress(0, 50);
@@ -89,8 +95,9 @@ main() {
       when(() => mockFiles.upload(attachment,
           onSendProgress: any(named: 'onSendProgress'))).thenThrow(exception);
       final bloc = UploadController(mockClient);
+      bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
       expectLater(
-          bloc.stateStream,
+          bloc.getUploadStateStream(attachment),
           emitsInOrder(
               <UploadState>[UploadEmptyState(), UploadFailed(exception)]));
       await bloc.uploadFile(attachment);

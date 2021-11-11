@@ -50,13 +50,13 @@ class UploadFailed extends UploadState {
 }
 
 class UploadProgress extends UploadState {
-  UploadProgress({this.bytesSent = 0, this.bytesTotal = 0});
+  UploadProgress({this.sentBytes = 0, this.totalBytes = 0});
 
-  final int bytesSent;
-  final int bytesTotal;
+  final int sentBytes;
+  final int totalBytes;
 
   @override
-  List<Object> get props => [bytesSent, bytesTotal];
+  List<Object> get props => [sentBytes, totalBytes];
 }
 
 class UploadCancelled extends UploadState {}
@@ -73,18 +73,24 @@ class UploadController {
 
   // final _eventController = BehaviorSubject<UploadEvent>();
 
+  // @visibleForTesting
+  // final stateController =
+  //     BehaviorSubject<UploadState>.seeded(UploadEmptyState());
   @visibleForTesting
-  final stateController =
-      BehaviorSubject<UploadState>.seeded(UploadEmptyState());
+  late Map<AttachmentFile, BehaviorSubject<UploadState>> stateMap = {};
 
   // Stream<UploadEvent> get eventsStream => _eventController.stream;
-  Stream<UploadState> get stateStream => stateController.stream;
-  Stream<UploadProgress>? get progressStream =>
-      stateController.whereType<UploadProgress>();
+  Stream<UploadState> getUploadStateStream(AttachmentFile attachmentFile) =>
+      stateMap[attachmentFile]!.stream;
+
+  // Stream<UploadProgress>? get progressStream =>
+  //     stateController.whereType<UploadProgress>();
 
   void close() {
     // _eventController.close();
-    stateController.close();
+    stateMap.forEach((key, value) {
+      value.close();
+    });
   }
 
   void cancelUpload(AttachmentFile attachmentFile, [CancelToken? cancelToken]) {
@@ -93,22 +99,28 @@ class UploadController {
     token!.cancel('cancelled');
   }
 
+  Future<void> uploadFiles(List<AttachmentFile> attachmentFiles) async {
+    await Future.wait(attachmentFiles.map(uploadFile));
+  }
+
   Future<void> uploadFile(
     AttachmentFile attachmentFile,
   ) async {
+    stateMap[attachmentFile]!.value = UploadEmptyState();
+    final _stateController = stateMap[attachmentFile]!;
     try {
       final url = await client.files
           .upload(attachmentFile, cancelToken: cancelMap[attachmentFile],
               onSendProgress: (sentBytes, totalBytes) {
-        stateController
-            .add(UploadProgress(bytesSent: sentBytes, bytesTotal: totalBytes));
+        _stateController
+            .add(UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes));
       });
 
-      stateController.add(UploadSuccess(url));
+      _stateController.add(UploadSuccess(url));
     } catch (e) {
-      if (e is SocketException) stateController.add(UploadFailed(e));
+      if (e is SocketException) _stateController.add(UploadFailed(e));
       if (e is DioError && CancelToken.isCancel(e)) {
-        stateController.add(UploadCancelled());
+        _stateController.add(UploadCancelled());
       }
     }
   }
