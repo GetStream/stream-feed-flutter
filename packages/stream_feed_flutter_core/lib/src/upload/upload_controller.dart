@@ -1,44 +1,10 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
-
-class UploadState extends Object with EquatableMixin {
-  const UploadState();
-  @override
-  List<Object> get props => [];
-}
-
-class UploadEmptyState extends UploadState {
-  const UploadEmptyState();
-}
-
-class UploadFailed extends UploadState {
-  const UploadFailed(this.error);
-  final Object error;
-  @override
-  List<Object> get props => [error];
-}
-
-class UploadProgress extends UploadState {
-  const UploadProgress({this.sentBytes = 0, this.totalBytes = 0});
-
-  final int sentBytes;
-  final int totalBytes;
-
-  @override
-  List<Object> get props => [sentBytes, totalBytes];
-}
-
-class UploadCancelled extends UploadState {}
-
-class UploadSuccess extends UploadState {
-  const UploadSuccess(this.url);
-  final String? url;
-}
+import 'package:stream_feed_flutter_core/src/upload/states.dart';
 
 class UploadController {
   UploadController(this.client);
@@ -51,19 +17,20 @@ class UploadController {
   Stream<UploadState> getUploadStateStream(AttachmentFile attachmentFile) =>
       stateMap[attachmentFile]!.stream;
 
-  // Future<List<MapEntry<AttachmentFile, UploadState>>> getUploads() async =>
+  // Future<List<FileUploadState>> getUploads() async =>
   //     combineStateMap().last;
 
   //TODO: get urls
 
-  Stream<List<MapEntry<AttachmentFile, UploadState>>> get uploadsStream =>
-      combineStateMap();
+  Stream<List<FileUploadState>> get uploadsStream => combineStateMap();
 
-  Stream<List<MapEntry<AttachmentFile, UploadState>>> combineStateMap() {
+  Stream<List<FileUploadState>> combineStateMap() {
     return CombineLatestStream(
         stateMap.entries
             .map((entry) => entry.value.map((v) => MapEntry(entry.key, v))),
-        (List<MapEntry<AttachmentFile, UploadState>> values) => values);
+        (List<MapEntry<AttachmentFile, UploadState>> values) =>
+            List<FileUploadState>.from(
+                values.map((entry) => FileUploadState.fromEntry(entry))));
   }
 
   void close() {
@@ -95,7 +62,7 @@ class UploadController {
             .add(UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes));
       });
 
-      _stateController.add(UploadSuccess(url));
+      _stateController.add(UploadSuccess(url!)); //TODO: deal url null
     } catch (e) {
       if (e is SocketException) _stateController.add(UploadFailed(e));
       if (e is DioError && CancelToken.isCancel(e)) {

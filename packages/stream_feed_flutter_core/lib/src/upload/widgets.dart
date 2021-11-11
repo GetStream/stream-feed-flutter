@@ -1,24 +1,25 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter_core/src/bloc/upload_controller.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/typedefs.dart';
+import 'package:stream_feed_flutter_core/src/upload/states.dart';
 
-class FileUploadState extends StatelessWidget {
-  const FileUploadState({
+class FileUploadStateWidget extends StatelessWidget {
+  const FileUploadStateWidget({
     Key? key,
     required this.fileState,
     this.onUploadSuccess,
     this.onUploadProgress,
     this.onUploadFailed,
   }) : super(key: key);
-  final MapEntry<AttachmentFile, UploadState> fileState;
+  final FileUploadState fileState;
 
   final OnUploadSuccess? onUploadSuccess;
   final OnUploadProgress? onUploadProgress;
   final OnUploadFailed? onUploadFailed;
-  UploadState get state => fileState.value;
-  AttachmentFile get file => fileState.key;
+  UploadState get state => fileState.state;
+  AttachmentFile get file => fileState.file;
 
   @override
   Widget build(BuildContext context) {

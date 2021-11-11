@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/bloc/provider.dart';
-import 'package:stream_feed_flutter_core/src/bloc/upload_controller.dart';
-import 'package:stream_feed_flutter_core/src/widgets/file_upload.dart';
+import 'package:stream_feed_flutter_core/src/upload/states.dart';
+import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
@@ -50,13 +50,12 @@ class _GenericUploadCoreState<A, Ob, T, Or>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<MapEntry<AttachmentFile, UploadState>>>(
+    return StreamBuilder<List<FileUploadState>>(
         stream: bloc.uploadsStream,
         // bloc.uploadFiles(files) or bloc.uploadFile(file)
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return widget
-                .onErrorWidget;
+            return widget.onErrorWidget;
           }
           if (!snapshot.hasData) {
             return widget.onProgressWidget;
@@ -71,7 +70,7 @@ class _GenericUploadCoreState<A, Ob, T, Or>
                   uploads,
                   idx,
                 ) ??
-                FileUploadState(
+                FileUploadStateWidget(
                   fileState: uploads[idx],
                   onUploadSuccess: widget.onUploadSuccess,
                   onUploadProgress: widget.onUploadProgress,

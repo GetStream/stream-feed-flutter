@@ -2,8 +2,9 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
 import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
-import 'package:stream_feed_flutter_core/src/bloc/upload_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
+import 'package:stream_feed_flutter_core/src/upload/states.dart';
+import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
 /// The generic version of feedBloc
 ///
@@ -41,10 +42,10 @@ class GenericFeedBloc<A, Ob, T, Or> {
       uploadController.getUploadStateStream(file);
 
   /// The current attachment list as a stream.
-  Stream<List<MapEntry<AttachmentFile, UploadState>>> get uploadsStream =>
+  Stream<List<FileUploadState>> get uploadsStream =>
       uploadController.uploadsStream;
 
-  // Future<List<MapEntry<AttachmentFile, UploadState>>> getUploads() async =>
+  // Future<List<FileUploadState>> getUploads() async =>
   //     uploadController.getUploads();
 
   /// Upload files and keep track of the state

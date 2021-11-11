@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
-import 'package:stream_feed_flutter_core/src/bloc/upload_controller.dart';
+import 'package:stream_feed_flutter_core/src/flat_feed_core.dart';
+import 'package:stream_feed_flutter_core/src/reactions_list_core.dart';
+import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload_core.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /* BUILDERS */
 /// {@template enrichedFeedBuilder}
@@ -14,8 +16,8 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
   int idx,
 );
 
-typedef UploadsBuilder = Widget Function(BuildContext context,
-    List<MapEntry<AttachmentFile, UploadState>> uploads, int idx);
+typedef UploadsBuilder = Widget Function(
+    BuildContext context, List<FileUploadState> uploads, int idx);
 
 typedef OnUploadSuccess = Widget Function(
     AttachmentFile file, UploadSuccess success);
