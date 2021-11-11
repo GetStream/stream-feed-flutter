@@ -1,8 +1,3 @@
-// abstract class _Event with EquatableMixin {
-//   @override
-//   List<Object> get props => [];
-// }
-
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -11,39 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-// abstract class _State extends Equatable {
-//   const _State();
-//   @override
-//   List<Object> get props => [];
-// }
-
-// class UploadEvent extends _Event {}
-
 class UploadState extends Object with EquatableMixin {
   const UploadState();
   @override
   List<Object> get props => [];
 }
-
-// class UploadFile extends UploadEvent {
-//   UploadFile({required this.file, required this.url});
-
-//   final AttachmentFile file;
-//   final String url;
-//   @override
-//   List<Object> get props => [file, url];
-// }
-
-// class CancelUpload extends UploadEvent {}
-
-// class RemoveFile extends Event {
-//   RemoveFile({required this.file});
-
-//   final AttachmentFile file;
-
-//   // @override
-//   // List<Object> get props => [file];
-// }
 
 class UploadEmptyState extends UploadState {
   const UploadEmptyState();
@@ -78,23 +45,13 @@ class UploadController {
   late Map<AttachmentFile, CancelToken> cancelMap = {};
   final StreamFeedClient client;
 
-  // final _eventController = BehaviorSubject<UploadEvent>();
-
-  // @visibleForTesting
-  // final stateController =
-  //     BehaviorSubject<UploadState>.seeded(UploadEmptyState());
   @visibleForTesting
   late Map<AttachmentFile, BehaviorSubject<UploadState>> stateMap = {};
 
-  // Stream<UploadEvent> get eventsStream => _eventController.stream;
   Stream<UploadState> getUploadStateStream(AttachmentFile attachmentFile) =>
       stateMap[attachmentFile]!.stream;
 
-  // Stream<UploadProgress>? get progressStream =>
-  //     stateController.whereType<UploadProgress>();
-
   void close() {
-    // _eventController.close();
     stateMap.forEach((key, value) {
       value.close();
     });
