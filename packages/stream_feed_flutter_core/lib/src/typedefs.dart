@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
+import 'package:stream_feed_flutter_core/src/bloc/upload_controller.dart';
+import 'package:stream_feed_flutter_core/src/upload_core.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /* BUILDERS */
@@ -11,6 +13,18 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
   List<GenericEnrichedActivity<A, Ob, T, Or>> activities,
   int idx,
 );
+
+typedef UploadsBuilder = Widget Function(BuildContext context,
+    List<MapEntry<AttachmentFile, UploadState>> uploads, int idx);
+
+typedef OnUploadSuccess = Widget Function(
+    AttachmentFile file, UploadSuccess success);
+
+typedef OnUploadProgress = Widget Function(
+    AttachmentFile file, UploadProgress progress);
+
+typedef OnUploadFailed = Widget Function(
+    AttachmentFile file, UploadFailed progress);
 
 /// {@template reactionsBuilder}
 /// A builder that allows building a ListView of Reaction based Widgets
@@ -63,6 +77,8 @@ typedef ReactionsBuilder = Widget Function(
 /// ```
 /// {@endtemplate}
 typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
+
+typedef UploadCore = GenericUploadCore<User, String, String, String>;
 
 ///Convenient typedef for [GenericReactionListCore] with default parameters
 ///

@@ -2,6 +2,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
 import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
+import 'package:stream_feed_flutter_core/src/bloc/upload_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 
 /// The generic version of feedBloc
@@ -22,6 +23,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
   final StreamAnalytics? analyticsClient;
 
   late ReactionsController reactionsController = ReactionsController();
+  late UploadController uploadController = UploadController(client);
 
   late ActivitiesController<A, Ob, T, Or> activitiesController =
       ActivitiesController<A, Ob, T, Or>();
@@ -34,6 +36,20 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// The current reactions list.
   List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
       reactionsController.getReactions(activityId, reaction);
+
+  Stream<UploadState> getUploadStream(AttachmentFile file) =>
+      uploadController.getUploadStateStream(file);
+
+  /// The current attachment list as a stream.
+  Stream<List<MapEntry<AttachmentFile, UploadState>>> get uploadsStream =>
+      uploadController.uploadsStream;
+
+  // Future<List<MapEntry<AttachmentFile, UploadState>>> getUploads() async =>
+  //     uploadController.getUploads();
+
+  /// Upload files and keep track of the state
+  Future<void> uploadFiles(List<AttachmentFile> files) =>
+      uploadController.uploadFiles(files);
 
   /// The current activities list as a stream.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(

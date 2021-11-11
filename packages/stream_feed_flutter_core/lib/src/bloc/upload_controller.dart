@@ -51,6 +51,21 @@ class UploadController {
   Stream<UploadState> getUploadStateStream(AttachmentFile attachmentFile) =>
       stateMap[attachmentFile]!.stream;
 
+  // Future<List<MapEntry<AttachmentFile, UploadState>>> getUploads() async =>
+  //     combineStateMap().last;
+
+  //TODO: get urls
+
+  Stream<List<MapEntry<AttachmentFile, UploadState>>> get uploadsStream =>
+      combineStateMap();
+
+  Stream<List<MapEntry<AttachmentFile, UploadState>>> combineStateMap() {
+    return CombineLatestStream(
+        stateMap.entries
+            .map((entry) => entry.value.map((v) => MapEntry(entry.key, v))),
+        (List<MapEntry<AttachmentFile, UploadState>> values) => values);
+  }
+
   void close() {
     stateMap.forEach((key, value) {
       value.close();
