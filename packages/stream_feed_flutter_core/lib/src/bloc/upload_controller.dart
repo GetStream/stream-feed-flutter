@@ -11,14 +11,19 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-abstract class _State with EquatableMixin {
-  @override
-  List<Object> get props => [];
-}
+// abstract class _State extends Equatable {
+//   const _State();
+//   @override
+//   List<Object> get props => [];
+// }
 
 // class UploadEvent extends _Event {}
 
-class UploadState extends _State {}
+class UploadState extends Object with EquatableMixin {
+  const UploadState();
+  @override
+  List<Object> get props => [];
+}
 
 // class UploadFile extends UploadEvent {
 //   UploadFile({required this.file, required this.url});
@@ -40,17 +45,19 @@ class UploadState extends _State {}
 //   // List<Object> get props => [file];
 // }
 
-class UploadEmptyState extends UploadState {}
+class UploadEmptyState extends UploadState {
+  const UploadEmptyState();
+}
 
 class UploadFailed extends UploadState {
-  UploadFailed(this.error);
+  const UploadFailed(this.error);
   final Object error;
   @override
   List<Object> get props => [error];
 }
 
 class UploadProgress extends UploadState {
-  UploadProgress({this.sentBytes = 0, this.totalBytes = 0});
+  const UploadProgress({this.sentBytes = 0, this.totalBytes = 0});
 
   final int sentBytes;
   final int totalBytes;
@@ -62,7 +69,7 @@ class UploadProgress extends UploadState {
 class UploadCancelled extends UploadState {}
 
 class UploadSuccess extends UploadState {
-  UploadSuccess(this.url);
+  const UploadSuccess(this.url);
   final String? url;
 }
 
