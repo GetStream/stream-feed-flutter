@@ -51,12 +51,12 @@ class _GenericUploadCoreState<A, Ob, T, Or>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<MapEntry<AttachmentFile, UploadState>>>(
-        stream: bloc
-            .uploadsStream, //stream get "mutated" with  blocFromContext.uploadFiles(files)
+        stream: bloc.uploadsStream,
+        // bloc.uploadFiles(files) or bloc.uploadFile(file)
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return widget
-                .onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
+                .onErrorWidget;
           }
           if (!snapshot.hasData) {
             return widget.onProgressWidget;

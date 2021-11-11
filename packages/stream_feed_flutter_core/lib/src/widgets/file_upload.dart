@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/bloc/upload_controller.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-
 class FileUploadState extends StatelessWidget {
   const FileUploadState({
     Key? key,
@@ -23,9 +22,9 @@ class FileUploadState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // UploadProgress success;
     if (state is UploadFailed) {
-      final fail = state as UploadFailed;
+      final fail = state
+          as UploadFailed; //TODO: wait for Dart proposal on field promotion or Enhanced Enum (Dart 2.15)
       return onUploadFailed?.call(file, fail) ?? UploadFailedWidget(file);
     } else if (state is UploadSuccess) {
       final success = state as UploadSuccess;
