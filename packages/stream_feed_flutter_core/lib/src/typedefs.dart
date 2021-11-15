@@ -80,7 +80,7 @@ typedef ReactionsBuilder = Widget Function(
 /// {@endtemplate}
 typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
 
-typedef UploadCore = GenericUploadCore<User, String, String, String>;
+// typedef UploadCore = GenericUploadCore<User, String, String, String>;
 
 ///Convenient typedef for [GenericReactionListCore] with default parameters
 ///
@@ -175,3 +175,7 @@ typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 ///
 /// {@endtemplate}
 typedef FeedBloc = GenericFeedBloc<User, String, String, String>;
+
+typedef OnRemoveUpload = void Function(AttachmentFile file);
+typedef OnCancelUpload = void Function(AttachmentFile file);
+typedef OnRetryUpload = void Function(AttachmentFile file);

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter_core/src/bloc/provider.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
+import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class GenericUploadCore<A, Ob, T, Or> extends StatefulWidget {
-  const GenericUploadCore({
+class UploadCore extends StatefulWidget {
+  const UploadCore({
     Key? key,
     required this.files,
-    required this.uploadsBuilder,
+    required this.uploadController,
+    this.uploadsBuilder,
     this.onUploadSuccess,
     this.onUploadProgress,
     this.onUploadFailed,
@@ -32,26 +33,17 @@ class GenericUploadCore<A, Ob, T, Or> extends StatefulWidget {
   final OnUploadSuccess? onUploadSuccess;
   final OnUploadProgress? onUploadProgress;
   final OnUploadFailed? onUploadFailed;
+  final UploadController uploadController;
 
   @override
-  _GenericUploadCoreState<A, Ob, T, Or> createState() =>
-      _GenericUploadCoreState<A, Ob, T, Or>();
+  _UploadCoreState createState() => _UploadCoreState();
 }
 
-class _GenericUploadCoreState<A, Ob, T, Or>
-    extends State<GenericUploadCore<A, Ob, T, Or>> {
-  late GenericFeedBloc<A, Ob, T, Or> bloc;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    bloc = GenericFeedProvider<A, Ob, T, Or>.of(context).bloc;
-  }
-
+class _UploadCoreState extends State<UploadCore> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<FileUploadState>>(
-        stream: bloc.uploadsStream,
+        stream: widget.uploadController.uploadsStream,
         // bloc.uploadFiles(files) or bloc.uploadFile(file)
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -75,6 +67,15 @@ class _GenericUploadCoreState<A, Ob, T, Or>
                   onUploadSuccess: widget.onUploadSuccess,
                   onUploadProgress: widget.onUploadProgress,
                   onUploadFailed: widget.onUploadFailed,
+                  onCancelUpload: (AttachmentFile file) {
+                    widget.uploadController.cancelUpload(file);
+                  },
+                  onRemoveUpload: (AttachmentFile file) {
+                    // widget.uploadController.removeUpload(file);
+                  },
+                  onRetryUpload: (AttachmentFile file) async {
+                    await widget.uploadController.uploadFile(file);
+                  },
                 ),
           );
         });
