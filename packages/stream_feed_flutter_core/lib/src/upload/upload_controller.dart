@@ -39,8 +39,7 @@ class UploadController {
     });
   }
 
-  void cancelUpload(AttachmentFile attachmentFile, [CancelToken? cancelToken]) {
-    cancelMap[attachmentFile] = cancelToken ?? CancelToken();
+  void cancelUpload(AttachmentFile attachmentFile) {
     final token = cancelMap[attachmentFile];
     token!.cancel('cancelled');
   }
@@ -49,10 +48,9 @@ class UploadController {
     await Future.wait(attachmentFiles.map(uploadFile));
   }
 
-  Future<void> uploadFile(
-    AttachmentFile attachmentFile,
-  ) async {
-    initController(attachmentFile);
+  Future<void> uploadFile(AttachmentFile attachmentFile,
+      [CancelToken? cancelToken]) async {
+    initController(attachmentFile, cancelToken);
     final _stateController = getController(attachmentFile);
     try {
       final url = await client.files
@@ -71,10 +69,14 @@ class UploadController {
     }
   }
 
-  BehaviorSubject<UploadState> getController(AttachmentFile attachmentFile) =>
+  BehaviorSubject<UploadState> getController(
+    AttachmentFile attachmentFile,
+  ) =>
       stateMap[attachmentFile]!;
 
-  void initController(AttachmentFile attachmentFile) {
+  void initController(AttachmentFile attachmentFile,
+      [CancelToken? cancelToken]) {
     stateMap[attachmentFile]!.value = UploadEmptyState();
+    cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
 }

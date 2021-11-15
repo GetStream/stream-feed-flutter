@@ -47,8 +47,8 @@ main() {
       expectLater(bloc.getUploadStateStream(attachment),
           emitsInOrder(<UploadState>[UploadEmptyState(), UploadCancelled()]));
 
-      await bloc.uploadFile(attachment);
-      bloc.cancelUpload(attachment, mockCancelToken);
+      await bloc.uploadFile(attachment, mockCancelToken);
+      bloc.cancelUpload(attachment);
 
       verify(() => mockCancelToken.cancel('cancelled')).called(1);
     });
