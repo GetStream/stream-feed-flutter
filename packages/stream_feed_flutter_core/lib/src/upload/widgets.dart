@@ -131,28 +131,19 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
-      filePreview: FilePreview(widget.file),
-      stateIcon: InkWell(
-        onHover: (val) {
-          setState(() {
-            isHover = val;
-          });
-        },
-        child: isHover
-            ? CircularProgressIndicator(
+        filePreview: FilePreview(widget.file),
+        stateIcon: isHover
+            ? InkWell(
+                onHover: (val) {
+                  setState(() {
+                    isHover = val;
+                  });
+                },
+                child: Icon(Icons.close))
+            : CircularProgressIndicator(
                 value:
                     (widget.totalBytes - widget.sentBytes) / widget.totalBytes,
-              )
-            : IconButton(
-                icon: Icon(
-                  Icons.close,
-                ),
-                onPressed: () {
-                  widget.onCancelUpload(widget.file);
-                },
-              ),
-      ),
-    );
+              ));
   }
 }
 
