@@ -5,8 +5,8 @@ import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class UploadCore extends StatefulWidget {
-  const UploadCore({
+class UploadListCore extends StatefulWidget {
+  const UploadListCore({
     Key? key,
     required this.files,
     required this.uploadController,
@@ -36,10 +36,10 @@ class UploadCore extends StatefulWidget {
   final UploadController uploadController;
 
   @override
-  _UploadCoreState createState() => _UploadCoreState();
+  _UploadListCoreState createState() => _UploadListCoreState();
 }
 
-class _UploadCoreState extends State<UploadCore> {
+class _UploadListCoreState extends State<UploadListCore> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<FileUploadState>>(
