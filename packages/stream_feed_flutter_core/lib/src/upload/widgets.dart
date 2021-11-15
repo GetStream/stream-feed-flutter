@@ -134,6 +134,9 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
         filePreview: FilePreview(widget.file),
         stateIcon: isHover
             ? InkWell(
+                onTap: () {
+                  widget.onCancelUpload(widget.file);
+                },
                 onHover: (val) {
                   setState(() {
                     isHover = val;
