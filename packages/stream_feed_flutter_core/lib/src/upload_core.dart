@@ -5,6 +5,11 @@ import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+///Usage
+///```dart
+/// UploadListCore(files: filesFromPicker,
+// uploadController: FeedBloc.of(context).bloc.uploadController));
+/// ```
 class UploadListCore extends StatefulWidget {
   const UploadListCore({
     Key? key,
