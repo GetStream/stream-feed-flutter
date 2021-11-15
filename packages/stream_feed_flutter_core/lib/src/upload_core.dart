@@ -71,7 +71,7 @@ class _UploadCoreState extends State<UploadCore> {
                     widget.uploadController.cancelUpload(file);
                   },
                   onRemoveUpload: (AttachmentFile file) {
-                    // widget.uploadController.removeUpload(file);
+                    widget.uploadController.removeUpload(file);
                   },
                   onRetryUpload: (AttachmentFile file) async {
                     await widget.uploadController.uploadFile(file);

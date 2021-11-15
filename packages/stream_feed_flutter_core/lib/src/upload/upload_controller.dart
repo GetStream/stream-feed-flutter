@@ -79,4 +79,6 @@ class UploadController {
     stateMap[attachmentFile]!.value = UploadEmptyState();
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
+
+  void removeUpload(AttachmentFile file) => stateMap.remove(file);
 }
