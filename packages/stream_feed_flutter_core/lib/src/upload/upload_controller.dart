@@ -14,9 +14,6 @@ class UploadController {
   @visibleForTesting
   late Map<AttachmentFile, BehaviorSubject<UploadState>> stateMap = {};
 
-  Stream<UploadState> getUploadStateStream(AttachmentFile attachmentFile) =>
-      stateMap[attachmentFile]!.stream;
-
   // Future<List<FileUploadState>> getUploads() async =>
   //     combineStateMap().last;
 
