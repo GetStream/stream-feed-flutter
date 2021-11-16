@@ -1,13 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:stream_feed/stream_feed.dart';
 
-class FileUploadState {
+class FileUploadState with EquatableMixin {
   const FileUploadState({required this.file, required this.state});
   final AttachmentFile file;
   final UploadState state;
 
   factory FileUploadState.fromEntry(MapEntry entry) =>
       FileUploadState(file: entry.key, state: entry.value);
+
+  @override
+  List<Object> get props => [file,state];
 }
 
 class UploadState with EquatableMixin {
