@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -9,43 +11,81 @@ import '../mocks.dart';
 import '../utils.dart';
 
 main() {
-  testWidgets('FileUploadStateWidget', (tester) async {
-    final mockController = MockUploadController();
-    final file = assetFile('test_image.jpeg');
+  late MockUploadController mockController;
+  late File file;
+  late AttachmentFile attachment;
+  setUp(() {
+    mockController = MockUploadController();
+    file = assetFile('test_image.jpeg');
 
-    final attachment = AttachmentFile(
+    attachment = AttachmentFile(
       path: file.path,
       bytes: file.readAsBytesSync(),
     );
-
-    await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-      body: FileUploadStateWidget(
-        fileState: FileUploadState(
-          state: UploadProgress(sentBytes: 0, totalBytes: 50),
-          file: attachment,
+  });
+  group('FileUploadStateWidget', () {
+    testWidgets('UploadProgress', (tester) async {
+      await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+        body: FileUploadStateWidget(
+          fileState: FileUploadState(
+            state: UploadProgress(sentBytes: 0, totalBytes: 50),
+            file: attachment,
+          ),
+          onCancelUpload: (AttachmentFile attachment) {
+            mockController.cancelUpload(attachment);
+          },
+          onRemoveUpload: (AttachmentFile attachment) {
+            print("hey");
+          },
+          onRetryUpload: (AttachmentFile attachment) {
+            print("hey");
+          },
         ),
-        onCancelUpload: (AttachmentFile attachment) {
-          mockController.cancelUpload(attachment);
-        },
-        onRemoveUpload: (AttachmentFile attachment) {
-          print("hey");
-        },
-        onRetryUpload: (AttachmentFile attachment) {
-          print("hey");
-        },
-      ),
-    )));
-    final uploadProgressWidget = find.byType(UploadProgressWidget);
-    expect(uploadProgressWidget, findsOneWidget);
+      )));
+      final uploadProgressWidget = find.byType(UploadProgressWidget);
+      expect(uploadProgressWidget, findsOneWidget);
 
-    final progress = find.byType(CircularProgressIndicator);
-    expect(progress, findsOneWidget);
-    
-    // final closeButton = find.byIcon(Icons.close);
-    // expect(closeButton, findsOneWidget);
-    // await tester.tap(closeButton);
-    // await tester.pumpAndSettle();
-    // verify(() => mockController.cancelUpload(attachment)).called(1);
+      final progress = find.byType(CircularProgressIndicator);
+      expect(progress, findsOneWidget);
+
+      // final closeButton = find.byIcon(Icons.close);
+      // expect(closeButton, findsOneWidget);
+      // await tester.tap(closeButton);
+      // await tester.pumpAndSettle();
+      // verify(() => mockController.cancelUpload(attachment)).called(1);
+    });
+
+    testWidgets('UploadFailed', (tester) async {
+      const exception = SocketException('exception');
+      when(() => mockController.uploadFile(attachment))
+          .thenAnswer((_) async => Future.value());
+      await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+        body: FileUploadStateWidget(
+          fileState: FileUploadState(
+            state: UploadFailed(exception),
+            file: attachment,
+          ),
+          onCancelUpload: (AttachmentFile attachment) {
+            print("hey");
+          },
+          onRemoveUpload: (AttachmentFile attachment) {
+            print("hey");
+          },
+          onRetryUpload: (AttachmentFile attachment) async {
+            await mockController.uploadFile(attachment);
+          },
+        ),
+      )));
+      final uploadProgressWidget = find.byType(UploadFailedWidget);
+      expect(uploadProgressWidget, findsOneWidget);
+
+      final refreshButton = find.byIcon(Icons.refresh);
+      expect(refreshButton, findsOneWidget);
+      await tester.tap(refreshButton);
+      await tester.pumpAndSettle();
+      verify(() => mockController.uploadFile(attachment)).called(1);
+    });
   });
 }

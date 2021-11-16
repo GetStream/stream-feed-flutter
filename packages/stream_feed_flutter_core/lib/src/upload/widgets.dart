@@ -160,9 +160,10 @@ class UploadFailedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
         filePreview: FilePreview(file),
-        stateIcon: IconButton(
-          icon: Icon(Icons.refresh),
-          onPressed: () {
+        stateIcon: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          child: Icon(Icons.refresh),
+          onTap: () {
             onRetryUpload(file);
           },
         ));
