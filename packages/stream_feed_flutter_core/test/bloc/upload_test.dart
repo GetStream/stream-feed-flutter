@@ -27,7 +27,7 @@ main() {
       mockFiles = MockFiles();
       mockCancelToken = MockCancelToken();
       file = assetFile('test_image.jpeg');
-      file2 = assetFile('test_image2.jpeg');
+      file2 = assetFile('test_image2.png');
 
       attachment = AttachmentFile(
         path: file.path,
@@ -65,6 +65,25 @@ main() {
       bloc.cancelUpload(attachment);
 
       verify(() => mockCancelToken.cancel('cancelled')).called(1);
+    });
+
+    test('remove', () async {
+      when(() => mockFiles.upload(attachment,
+              cancelToken: mockCancelToken,
+              onSendProgress: any(named: 'onSendProgress')))
+          .thenAnswer((_) async => cdnUrl);
+
+      final bloc = UploadController(mockClient);
+      bloc.stateMap = {
+        attachment: BehaviorSubject.seeded(UploadSuccess(cdnUrl)),
+        attachment2: BehaviorSubject.seeded(UploadSuccess(cdnUrl2))
+      };
+
+      bloc.removeUpload(attachment);
+      final result = await bloc.uploadsStream.first;
+      expect(result, [
+        FileUploadState(file: attachment2, state: UploadSuccess(cdnUrl2))
+      ]); //TODO: test the stream
     });
 
     test('success', () async {
