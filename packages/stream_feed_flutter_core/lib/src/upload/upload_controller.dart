@@ -19,9 +19,9 @@ class UploadController {
 
   //TODO: get urls
 
-  Stream<List<FileUploadState>> get uploadsStream => combineStateMap();
+  Stream<List<FileUploadState>> get uploadsStream => _combineStateMap();
 
-  Stream<List<FileUploadState>> combineStateMap() {
+  Stream<List<FileUploadState>> _combineStateMap() {
     return CombineLatestStream(
         stateMap.entries
             .map((entry) => entry.value.map((v) => MapEntry(entry.key, v))),
@@ -47,8 +47,8 @@ class UploadController {
 
   Future<void> uploadFile(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) async {
-    initController(attachmentFile, cancelToken);
-    final _stateController = getController(attachmentFile);
+    _initController(attachmentFile, cancelToken);
+    final _stateController = _getController(attachmentFile);
     try {
       final url = await client.files
           .upload(attachmentFile, cancelToken: cancelMap[attachmentFile],
@@ -66,17 +66,28 @@ class UploadController {
     }
   }
 
-  BehaviorSubject<UploadState> getController(
+  BehaviorSubject<UploadState> _getController(
     AttachmentFile attachmentFile,
   ) =>
       stateMap[attachmentFile]!;
 
-  void initController(AttachmentFile attachmentFile,
+  void _initController(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) {
     stateMap[attachmentFile]!.value = const UploadEmptyState();
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
 
+  /// Remove upload from controller
   void removeUpload(AttachmentFile file) =>
       stateMap.removeWhere((key, value) => key == file);
+
+  /// Get urls
+  List<String> getUrls() {
+    final successes = stateMap.values
+        .map((state) => state.value)
+        .toList()
+        .whereType<UploadSuccess>();
+    final urls = successes.map((success) => success.url).toList();
+    return urls;
+  }
 }
