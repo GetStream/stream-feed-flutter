@@ -96,15 +96,15 @@ class UploadSuccessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
-        filePreview: FilePreview(file),
-        stateIcon: IconButton(
-          icon: Icon(
-            Icons.close,
-          ),
-          onPressed: () {
-            onRemoveUpload(file);
-          },
-        ));
+      filePreview: FilePreview(file),
+      stateIcon: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        child: Icon(Icons.close),
+        onTap: () {
+          onRemoveUpload(file);
+        },
+      ),
+    );
   }
 }
 

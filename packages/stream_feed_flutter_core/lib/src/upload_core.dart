@@ -58,6 +58,7 @@ class _UploadListCoreState extends State<UploadListCore> {
             return widget.onProgressWidget;
           }
           final uploads = snapshot.data!;
+
           return ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: uploads.length,
