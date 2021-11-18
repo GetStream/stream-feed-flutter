@@ -108,13 +108,8 @@ main() {
         attachment,
         mockCancelToken,
       );
-      // expectLater(
-      //     bloc.uploadsStream,
-      //     emitsInOrder(<FileUploadState>[
-      //       FileUploadState(file: attachment2, state: state2)
-      //     ]));
 
-      // print(bloc.stateMap[attachment].);
+      expect(bloc.getUrls(), [cdnUrl]);
     });
 
     test('progress', () async {
