@@ -50,14 +50,16 @@ main() {
         requestOptions: RequestOptions(path: ''),
         type: DioErrorType.cancel,
       ));
-      final bloc = UploadController(mockClient);
-      bloc.cancelMap = {attachment: mockCancelToken};
-      bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
+      final bloc = UploadController(mockClient)
+        ..cancelMap = {attachment: mockCancelToken}
+        ..stateMap = {attachment: BehaviorSubject<UploadState>()};
 
       expectLater(
           bloc.uploadsStream,
           emitsInOrder([
-            [FileUploadState(file: attachment, state: const UploadEmptyState())],
+            [
+              FileUploadState(file: attachment, state: const UploadEmptyState())
+            ],
             [FileUploadState(file: attachment, state: UploadCancelled())]
           ]));
 
@@ -73,13 +75,12 @@ main() {
               onSendProgress: any(named: 'onSendProgress')))
           .thenAnswer((_) async => cdnUrl);
 
-      final bloc = UploadController(mockClient);
-      bloc.stateMap = {
-        attachment: BehaviorSubject.seeded(UploadSuccess(cdnUrl)),
-        attachment2: BehaviorSubject.seeded(UploadSuccess(cdnUrl2))
-      };
-
-      bloc.removeUpload(attachment);
+      final bloc = UploadController(mockClient)
+        ..stateMap = {
+          attachment: BehaviorSubject.seeded(UploadSuccess(cdnUrl)),
+          attachment2: BehaviorSubject.seeded(UploadSuccess(cdnUrl2))
+        }
+        ..removeUpload(attachment);
       final result = await bloc.uploadsStream.first;
       expect(result, [
         FileUploadState(file: attachment2, state: UploadSuccess(cdnUrl2))
@@ -92,13 +93,15 @@ main() {
               onSendProgress: any(named: 'onSendProgress')))
           .thenAnswer((_) async => cdnUrl);
 
-      final bloc = UploadController(mockClient);
-      bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
+      final bloc = UploadController(mockClient)
+        ..stateMap = {attachment: BehaviorSubject<UploadState>()};
 
       expectLater(
           bloc.uploadsStream,
           emitsInOrder([
-            [FileUploadState(file: attachment, state: const UploadEmptyState())],
+            [
+              FileUploadState(file: attachment, state: const UploadEmptyState())
+            ],
             [FileUploadState(file: attachment, state: UploadSuccess(cdnUrl))]
           ]));
       await bloc.uploadFile(
@@ -130,11 +133,12 @@ main() {
       expectLater(
           bloc.uploadsStream,
           emitsInOrder([
-            [FileUploadState(file: attachment, state: const UploadEmptyState())],
+            [
+              FileUploadState(file: attachment, state: const UploadEmptyState())
+            ],
             [
               FileUploadState(
-                  file: attachment,
-                  state: const UploadProgress(totalBytes: 50))
+                  file: attachment, state: const UploadProgress(totalBytes: 50))
             ]
           ]));
       await bloc.uploadFile(attachment, mockCancelToken);
@@ -146,13 +150,18 @@ main() {
       when(() => mockFiles.upload(attachment,
           cancelToken: mockCancelToken,
           onSendProgress: any(named: 'onSendProgress'))).thenThrow(exception);
-      final bloc = UploadController(mockClient);
-      bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
+      final bloc = UploadController(mockClient)
+        ..stateMap = {attachment: BehaviorSubject<UploadState>()};
       expectLater(
           bloc.uploadsStream,
           emitsInOrder([
-            [FileUploadState(file: attachment, state: const UploadEmptyState())],
-            [FileUploadState(file: attachment, state: const UploadFailed(exception))]
+            [
+              FileUploadState(file: attachment, state: const UploadEmptyState())
+            ],
+            [
+              FileUploadState(
+                  file: attachment, state: const UploadFailed(exception))
+            ]
           ]));
       await bloc.uploadFile(
         attachment,
