@@ -61,7 +61,7 @@ void main() {
     ];
     when(() => mockClient.reactions).thenReturn(mockReactions);
 
-    activity = Activity(actor: 'test', verb: 'post', object: 'test');
+    activity = const Activity(actor: 'test', verb: 'post', object: 'test');
 
     addedActivity = const Activity(
       id: 'test',

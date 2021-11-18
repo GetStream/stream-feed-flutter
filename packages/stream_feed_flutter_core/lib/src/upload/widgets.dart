@@ -82,7 +82,7 @@ class FilePreview extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 5,
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
     );
   }
 }
@@ -99,7 +99,7 @@ class UploadSuccessWidget extends StatelessWidget {
       filePreview: FilePreview(file),
       stateIcon: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        child: Icon(Icons.close),
+        child: const Icon(Icons.close),
         onTap: () {
           onRemoveUpload(file);
         },
@@ -142,7 +142,7 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
                     isHover = val;
                   });
                 },
-                child: Icon(Icons.close))
+                child: const Icon(Icons.close))
             : CircularProgressIndicator(
                 value:
                     (widget.totalBytes - widget.sentBytes) / widget.totalBytes,
@@ -162,7 +162,7 @@ class UploadFailedWidget extends StatelessWidget {
         filePreview: FilePreview(file),
         stateIcon: GestureDetector(
           behavior: HitTestBehavior.translucent,
-          child: Icon(Icons.refresh),
+          child: const Icon(Icons.refresh),
           onTap: () {
             onRetryUpload(file);
           },

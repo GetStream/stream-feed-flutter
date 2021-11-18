@@ -29,7 +29,7 @@ main() {
           home: Scaffold(
         body: FileUploadStateWidget(
           fileState: FileUploadState(
-            state: UploadProgress(sentBytes: 0, totalBytes: 50),
+            state: const UploadProgress(totalBytes: 50),
             file: attachment,
           ),
           onCancelUpload: (AttachmentFile attachment) {
@@ -64,7 +64,7 @@ main() {
           home: Scaffold(
         body: FileUploadStateWidget(
           fileState: FileUploadState(
-            state: UploadFailed(exception),
+            state: const UploadFailed(exception),
             file: attachment,
           ),
           onCancelUpload: (AttachmentFile attachment) {

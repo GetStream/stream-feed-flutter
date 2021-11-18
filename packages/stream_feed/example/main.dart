@@ -40,7 +40,7 @@ Future<void> main() async {
   final user1 = clientWithSecret.flatFeed('user', '1');
 
 // Create an activity object
-  var activity = Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
+  var activity = const Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
 
 // Add an activity to the feed
   final pinActivity = await user1.addActivity(activity);
@@ -77,7 +77,7 @@ Future<void> main() async {
     secret: secret,
     appId: appId,
     runner: Runner.server,
-    options: StreamHttpClientOptions(location: Location.usEast),
+    options: const StreamHttpClientOptions(location: Location.usEast),
   );
 
   final userToken = client.frontendToken('user.id');
@@ -103,7 +103,7 @@ Future<void> main() async {
       object: "3",
       time: now,
       foreignId: "like:3",
-      extraData: {
+      extraData: const {
         'popularity': 100,
       });
 
@@ -207,7 +207,7 @@ Future<void> main() async {
   // Add the activity to Eric's feed and to Jessica's notification feed
   activity = Activity(
     actor: 'user:Eric',
-    extraData: {
+    extraData: const {
       'message': "@Jessica check out getstream.io it's awesome!",
     },
     verb: 'tweet',
@@ -316,7 +316,7 @@ Future<void> main() async {
 
   // First create a collection entry with upsert api
   await clientWithSecret.collections.upsert('food', [
-    CollectionEntry(id: 'cheese-burger', data: {'name': 'Cheese Burger'}),
+    const CollectionEntry(id: 'cheese-burger', data: {'name': 'Cheese Burger'}),
   ]);
 
 // Then create a user

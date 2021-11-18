@@ -73,7 +73,7 @@ class UploadController {
 
   void initController(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) {
-    stateMap[attachmentFile]!.value = UploadEmptyState();
+    stateMap[attachmentFile]!.value = const UploadEmptyState();
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
 

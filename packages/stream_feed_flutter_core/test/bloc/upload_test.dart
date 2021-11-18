@@ -57,7 +57,7 @@ main() {
       expectLater(
           bloc.uploadsStream,
           emitsInOrder([
-            [FileUploadState(file: attachment, state: UploadEmptyState())],
+            [FileUploadState(file: attachment, state: const UploadEmptyState())],
             [FileUploadState(file: attachment, state: UploadCancelled())]
           ]));
 
@@ -98,7 +98,7 @@ main() {
       expectLater(
           bloc.uploadsStream,
           emitsInOrder([
-            [FileUploadState(file: attachment, state: UploadEmptyState())],
+            [FileUploadState(file: attachment, state: const UploadEmptyState())],
             [FileUploadState(file: attachment, state: UploadSuccess(cdnUrl))]
           ]));
       await bloc.uploadFile(
@@ -130,11 +130,11 @@ main() {
       expectLater(
           bloc.uploadsStream,
           emitsInOrder([
-            [FileUploadState(file: attachment, state: UploadEmptyState())],
+            [FileUploadState(file: attachment, state: const UploadEmptyState())],
             [
               FileUploadState(
                   file: attachment,
-                  state: UploadProgress(sentBytes: 0, totalBytes: 50))
+                  state: const UploadProgress(totalBytes: 50))
             ]
           ]));
       await bloc.uploadFile(attachment, mockCancelToken);
@@ -151,8 +151,8 @@ main() {
       expectLater(
           bloc.uploadsStream,
           emitsInOrder([
-            [FileUploadState(file: attachment, state: UploadEmptyState())],
-            [FileUploadState(file: attachment, state: UploadFailed(exception))]
+            [FileUploadState(file: attachment, state: const UploadEmptyState())],
+            [FileUploadState(file: attachment, state: const UploadFailed(exception))]
           ]));
       await bloc.uploadFile(
         attachment,
