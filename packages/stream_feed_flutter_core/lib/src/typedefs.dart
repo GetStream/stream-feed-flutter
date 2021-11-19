@@ -179,3 +179,4 @@ typedef FeedBloc = GenericFeedBloc<User, String, String, String>;
 typedef OnRemoveUpload = void Function(AttachmentFile file);
 typedef OnCancelUpload = void Function(AttachmentFile file);
 typedef OnRetryUpload = void Function(AttachmentFile file);
+typedef OnFilePreview = Widget Function(AttachmentFile file);

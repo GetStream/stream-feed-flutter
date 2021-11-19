@@ -6,17 +6,18 @@ import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 
 class FileUploadStateWidget extends StatelessWidget {
-  const FileUploadStateWidget(
-      {Key? key,
-      required this.fileState,
-      this.onUploadSuccess,
-      this.onUploadProgress,
-      this.onUploadFailed,
-      required this.onRemoveUpload,
-      required this.onCancelUpload,
-      required this.onRetryUpload})
-      : super(key: key);
-
+  const FileUploadStateWidget({
+    Key? key,
+    required this.fileState,
+    this.onUploadSuccess,
+    this.onUploadProgress,
+    this.onUploadFailed,
+    required this.onRemoveUpload,
+    required this.onCancelUpload,
+    required this.onRetryUpload,
+    this.onFilePreview,
+  }) : super(key: key);
+  final OnFilePreview? onFilePreview;
   final FileUploadState fileState;
 
   final OnUploadSuccess? onUploadSuccess;
@@ -38,6 +39,7 @@ class FileUploadStateWidget extends StatelessWidget {
       return onUploadFailed?.call(file, fail) ??
           UploadFailedWidget(
             file,
+            onFilePreview: onFilePreview,
             onRetryUpload: onRetryUpload,
           );
     } else if (state is UploadSuccess) {
@@ -45,6 +47,7 @@ class FileUploadStateWidget extends StatelessWidget {
       return onUploadSuccess?.call(file, success) ??
           UploadSuccessWidget(
             file,
+            onFilePreview: onFilePreview,
             onRemoveUpload: onRemoveUpload,
           );
     } else if (state is UploadProgress) {
@@ -54,6 +57,7 @@ class FileUploadStateWidget extends StatelessWidget {
       return onUploadProgress?.call(file, progress) ??
           UploadProgressWidget(
             file,
+            onFilePreview: onFilePreview,
             totalBytes: totalBytes,
             sentBytes: sentBytes,
             onCancelUpload: onCancelUpload,
@@ -61,6 +65,7 @@ class FileUploadStateWidget extends StatelessWidget {
     }
     return UploadSuccessWidget(
       file,
+      onFilePreview: onFilePreview,
       onRemoveUpload: onRemoveUpload,
     );
   }
@@ -88,15 +93,17 @@ class FilePreview extends StatelessWidget {
 }
 
 class UploadSuccessWidget extends StatelessWidget {
-  const UploadSuccessWidget(this.file, {Key? key, required this.onRemoveUpload})
+  const UploadSuccessWidget(this.file,
+      {Key? key, required this.onRemoveUpload, this.onFilePreview})
       : super(key: key);
+  final OnFilePreview? onFilePreview;
   final AttachmentFile file;
   final OnRemoveUpload onRemoveUpload;
 
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
-      filePreview: FilePreview(file),
+      filePreview: onFilePreview?.call(file) ?? FilePreview(file),
       stateIcon: GestureDetector(
         behavior: HitTestBehavior.translucent,
         child: const Icon(Icons.close),
@@ -109,13 +116,14 @@ class UploadSuccessWidget extends StatelessWidget {
 }
 
 class UploadProgressWidget extends StatefulWidget {
-  const UploadProgressWidget(
-    this.file, {
-    Key? key,
-    required this.totalBytes,
-    required this.sentBytes,
-    required this.onCancelUpload,
-  }) : super(key: key);
+  const UploadProgressWidget(this.file,
+      {Key? key,
+      required this.totalBytes,
+      required this.sentBytes,
+      required this.onCancelUpload,
+      this.onFilePreview})
+      : super(key: key);
+  final OnFilePreview? onFilePreview;
 
   final AttachmentFile file;
   final int totalBytes;
@@ -131,7 +139,8 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
-        filePreview: FilePreview(widget.file),
+        filePreview:
+            widget.onFilePreview?.call(widget.file) ?? FilePreview(widget.file),
         stateIcon: isHover
             ? InkWell(
                 onTap: () {
@@ -151,15 +160,17 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
 }
 
 class UploadFailedWidget extends StatelessWidget {
-  const UploadFailedWidget(this.file, {Key? key, required this.onRetryUpload})
+  const UploadFailedWidget(this.file,
+      {Key? key, required this.onRetryUpload, this.onFilePreview})
       : super(key: key);
+  final OnFilePreview? onFilePreview;
   final OnRetryUpload onRetryUpload;
 
   final AttachmentFile file;
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
-        filePreview: FilePreview(file),
+        filePreview: onFilePreview?.call(file) ?? FilePreview(file),
         stateIcon: GestureDetector(
           behavior: HitTestBehavior.translucent,
           child: const Icon(Icons.refresh),
