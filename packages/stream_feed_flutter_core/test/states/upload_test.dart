@@ -56,6 +56,37 @@ main() {
       // verify(() => mockController.cancelUpload(attachment)).called(1);
     });
 
+    testWidgets('UploadSuccess', (tester) async {
+      when(() => mockController.removeUpload(attachment))
+          .thenAnswer((_) async => Future.value());
+      await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+        body: FileUploadStateWidget(
+          fileState: FileUploadState(
+            state: UploadSuccess('cdnUrl'),
+            file: attachment,
+          ),
+          onCancelUpload: (AttachmentFile attachment) {
+            print("hey");
+          },
+          onRemoveUpload: (AttachmentFile attachment) {
+            mockController.removeUpload(attachment);
+          },
+          onRetryUpload: (AttachmentFile attachment) {
+            print("hey");
+          },
+        ),
+      )));
+      final uploadProgressWidget = find.byType(UploadSuccessWidget);
+      expect(uploadProgressWidget, findsOneWidget);
+
+      final closeButton = find.byIcon(Icons.close);
+      expect(closeButton, findsOneWidget);
+      await tester.tap(closeButton);
+      await tester.pumpAndSettle();
+      verify(() => mockController.removeUpload(attachment)).called(1);
+    });
+
     testWidgets('UploadFailed', (tester) async {
       const exception = SocketException('exception');
       when(() => mockController.uploadFile(attachment))
