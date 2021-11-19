@@ -26,5 +26,4 @@ class MockClient extends Mock implements StreamFeedClient {
 
 class MockStreamUser extends Mock implements StreamUser {}
 
-
 class MockUploadController extends Mock implements UploadController {}

@@ -35,7 +35,8 @@ void main() {
   testWidgets('UploadListCore', (tester) async {
     when(() => mockkUploadController.uploadsStream)
         .thenAnswer((_) => Stream.value([
-              FileUploadState(file: attachment, state: const UploadSuccess('cdnUrl')),
+              FileUploadState(
+                  file: attachment, state: const UploadSuccess('cdnUrl')),
               FileUploadState(
                   file: attachment2, state: const UploadSuccess('cdnUrl2'))
             ]));
