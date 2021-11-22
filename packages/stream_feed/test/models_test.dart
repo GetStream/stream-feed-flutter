@@ -429,32 +429,31 @@ void main() {
 
   group('NotificationGroup', () {
     final notificationGroup = NotificationGroup(
-        id: 'test',
-        group: 'test',
-        activities: [
-          Activity(
-            target: 'test',
-            foreignId: 'test',
-            id: 'test',
-            analytics: const {'test': 'test'},
-            extraContext: const {'test': 'test'},
-            origin: 'test',
-            score: 1,
-            extraData: const {'test': 'test'},
-            actor: 'test',
-            verb: 'test',
-            object: 'test',
-            to: <FeedId>[FeedId('slug', 'id')],
-            time: DateTime.parse('2001-09-11T00:01:02.000'),
-          ),
-        ],
-        actorCount: 1,
-        createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
-        updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
-        isRead: true,
-        isSeen: true,
-        unread: 0,
-        unseen: 1);
+      id: 'test',
+      group: 'test',
+      activities: [
+        Activity(
+          target: 'test',
+          foreignId: 'test',
+          id: 'test',
+          analytics: const {'test': 'test'},
+          extraContext: const {'test': 'test'},
+          origin: 'test',
+          score: 1,
+          extraData: const {'test': 'test'},
+          actor: 'test',
+          verb: 'test',
+          object: 'test',
+          to: <FeedId>[FeedId('slug', 'id')],
+          time: DateTime.parse('2001-09-11T00:01:02.000'),
+        ),
+      ],
+      actorCount: 1,
+      createdAt: DateTime.parse('2001-09-11T00:01:02.000'),
+      updatedAt: DateTime.parse('2001-09-11T00:01:02.000'),
+      isRead: true,
+      isSeen: true,
+    );
 
     test('fromJson', () {
       final notificationGroupJson =
@@ -491,9 +490,7 @@ void main() {
         'created_at': '2001-09-11T00:01:02.000',
         'updated_at': '2001-09-11T00:01:02.000',
         'is_read': true,
-        'is_seen': true,
-        'unread': 0,
-        'unseen': 1,
+        'is_seen': true
       });
     });
   });
