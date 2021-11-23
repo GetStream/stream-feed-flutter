@@ -8,6 +8,7 @@ import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/group.dart';
+import 'package:stream_feed/src/core/models/notification_feed_meta.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
@@ -425,6 +426,13 @@ void main() {
     final otherForeignIdTimePair =
         ForeignIdTimePair('foreignID', DateTime(2021, 04, 03));
     expect(foreignIdTimePair, otherForeignIdTimePair);
+  });
+
+  test('NotificationFeedMeta', () {
+    final notificationFeedMeta =
+        NotificationFeedMeta(unreadCount: 1, unseenCount: 1);
+    expect(NotificationFeedMeta.fromJson({'unread': 1, 'unseen': 1}),
+        notificationFeedMeta);
   });
 
   group('NotificationGroup', () {

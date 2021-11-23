@@ -12,3 +12,10 @@ NotificationFeedMeta _$NotificationFeedMetaFromJson(Map json) {
     unseenCount: json['unseen'] as int,
   );
 }
+
+Map<String, dynamic> _$NotificationFeedMetaToJson(
+        NotificationFeedMeta instance) =>
+    <String, dynamic>{
+      'unread': instance.unreadCount,
+      'unseen': instance.unseenCount,
+    };
