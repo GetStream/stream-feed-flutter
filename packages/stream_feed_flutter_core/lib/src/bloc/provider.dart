@@ -8,9 +8,10 @@ class FeedProvider extends GenericFeedProvider<User, String, String, String> {
     Key? key,
     required GenericFeedBloc<User, String, String, String> bloc,
     required Widget child,
-  }) : super(key: key, child: child, bloc: bloc);
+  }) : super(key: key, bloc: bloc, child: child);
 
-  static of(BuildContext context) {
+  static GenericFeedProvider<User, String, String, String> of(
+      BuildContext context) {
     return GenericFeedProvider<User, String, String, String>.of(context);
   }
 }
@@ -23,12 +24,15 @@ class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
   }) : super(key: key, child: child);
 
   factory GenericFeedProvider.of(BuildContext context) {
-    final result = context.dependOnInheritedWidgetOfExactType<
+    var result = context.dependOnInheritedWidgetOfExactType<
         GenericFeedProvider<A, Ob, T, Or>>();
+    result ??= context.dependOnInheritedWidgetOfExactType<FeedProvider>()
+        as GenericFeedProvider<A, Ob, T, Or>?;
     assert(result != null,
-        'No GenericFeedProvider<$A, $Ob, $T, $Or> found in context');
+        '''No `FeedProvider` or `GenericFeedProvider<$A, $Ob, $T, $Or>` found in context''');
     return result!;
   }
+
   final GenericFeedBloc<A, Ob, T, Or> bloc;
 
   @override
