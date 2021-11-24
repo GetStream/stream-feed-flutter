@@ -52,7 +52,7 @@ void main() {
       MaterialApp(
         builder: (context, child) {
           return StreamFeed(
-            bloc: GenericFeedBloc(
+            bloc: FeedBloc(
               client: mockClient,
               analyticsClient: mockStreamAnalytics,
             ),

@@ -17,7 +17,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import 'mock.dart';
 
 void main() {
-  late GenericFeedBloc<User, String, String, String> bloc;
+  late FeedBloc bloc;
   late MockStreamFeedClient mockClient;
   late MockStreamUser mockUser;
   late GenericEnrichedActivity<User, String, String, String> enrichedActivity;
@@ -47,7 +47,7 @@ void main() {
       'handle': handle,
       'name': fullName,
     });
-    bloc = GenericFeedBloc<User, String, String, String>(client: mockClient);
+    bloc = FeedBloc(client: mockClient);
   });
 
   testWidgets('ActivityHeader', (tester) async {

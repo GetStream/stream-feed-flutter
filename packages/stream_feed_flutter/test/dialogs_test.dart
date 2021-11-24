@@ -19,7 +19,7 @@ import 'mock.dart';
 
 void main() {
   late MockStreamUser mockUser;
-  late MockFeedBloc<User, String, String, String> mockFeedBloc;
+  late MockFeedBloc mockFeedBloc;
 
   setUpAll(() {
     mockFeedBloc = MockFeedBloc();

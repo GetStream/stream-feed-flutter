@@ -23,7 +23,7 @@ void main() {
       MaterialApp(
         builder: (context, child) {
           return StreamFeed(
-            bloc: GenericFeedBloc(client: client),
+            bloc: FeedBloc(client: client),
             child: child!,
           );
         },
