@@ -40,6 +40,26 @@ void main() {
           isNotNull);
     },
   );
+
+  testWidgets(
+    'FeedProvider',
+    (tester) async {
+      final mockClient = MockClient();
+      final childKey = GlobalKey();
+      final streamFeedCore = FeedProvider(
+        bloc: FeedBloc(
+          client: mockClient,
+        ),
+        child: TestWidget(key: childKey),
+      );
+
+      await tester.pumpWidget(streamFeedCore);
+
+      // expect(find.byKey(streamFeedCoreKey), findsOneWidget);
+      expect(find.byKey(childKey), findsOneWidget);
+      expect(FeedProvider.of(childKey.currentState!.context).bloc, isNotNull);
+    },
+  );
   testWidgets(
     'throw an error if StreamFeedCore is not in the tree',
     (tester) async {
