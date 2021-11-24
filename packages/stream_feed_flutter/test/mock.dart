@@ -9,8 +9,7 @@ class MockStreamFeedClient extends Mock implements StreamFeedClient {}
 
 class MockFlatFeed extends Mock implements FlatFeed {}
 
-class MockFeedBloc extends Mock
-    implements FeedBloc {}
+class MockFeedBloc extends Mock implements FeedBloc {}
 
 class MockReactionsController extends Mock implements ReactionsController {}
 
