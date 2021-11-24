@@ -18,6 +18,9 @@ class _TestWidgetState extends State<TestWidget> {
   }
 }
 
+typedef CustomFeedProvider
+    = GenericFeedProvider<User, CollectionEntry, String, String>;
+
 void main() {
   testWidgets(
     'should render StreamFeedCore if both client and child is provided',
@@ -58,6 +61,27 @@ void main() {
       // expect(find.byKey(streamFeedCoreKey), findsOneWidget);
       expect(find.byKey(childKey), findsOneWidget);
       expect(FeedProvider.of(childKey.currentState!.context).bloc, isNotNull);
+    },
+  );
+
+  testWidgets(
+    'CustomFeedProvider',
+    (tester) async {
+      final mockClient = MockClient();
+      final childKey = GlobalKey();
+      final streamFeedCore = CustomFeedProvider(
+        bloc: GenericFeedBloc(
+          client: mockClient,
+        ),
+        child: TestWidget(key: childKey),
+      );
+
+      await tester.pumpWidget(streamFeedCore);
+
+      // expect(find.byKey(streamFeedCoreKey), findsOneWidget);
+      expect(find.byKey(childKey), findsOneWidget);
+      expect(CustomFeedProvider.of(childKey.currentState!.context).bloc,
+          isNotNull);
     },
   );
   testWidgets(
