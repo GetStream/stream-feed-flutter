@@ -14,11 +14,6 @@ class UploadController {
   @visibleForTesting
   late Map<AttachmentFile, BehaviorSubject<UploadState>> stateMap = {};
 
-  // Future<List<FileUploadState>> getUploads() async =>
-  //     combineStateMap().last;
-
-  //TODO: get urls
-
   Stream<List<FileUploadState>> get uploadsStream => _combineStateMap();
 
   Stream<List<FileUploadState>> _combineStateMap() {
@@ -73,7 +68,7 @@ class UploadController {
 
   void _initController(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) {
-    stateMap[attachmentFile]!.value = const UploadEmptyState();
+    stateMap[attachmentFile] = BehaviorSubject<UploadState>();
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
 
@@ -82,7 +77,7 @@ class UploadController {
       stateMap.removeWhere((key, value) => key == file);
 
   /// Get urls
-  List<String> getUrls() {
+  Future<List<String>> getUrls() async {
     final successes = stateMap.values
         .map((state) => state.value)
         .toList()

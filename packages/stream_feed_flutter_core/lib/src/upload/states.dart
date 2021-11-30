@@ -22,6 +22,8 @@ class UploadState with EquatableMixin {
 
 class UploadEmptyState extends UploadState {
   const UploadEmptyState();
+  @override
+  List<Object> get props => [];
 }
 
 class UploadFailed extends UploadState {
