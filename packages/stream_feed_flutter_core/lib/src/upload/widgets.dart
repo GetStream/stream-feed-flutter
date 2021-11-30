@@ -106,7 +106,10 @@ class UploadSuccessWidget extends StatelessWidget {
       filePreview: onFilePreview?.call(file) ?? FilePreview(file),
       stateIcon: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        child: const Icon(Icons.close),
+        child: CircleAvatar(
+            backgroundColor: Colors.black87,
+            radius: 10,
+            child: const Icon(Icons.close, size: 12, color: Colors.white)),
         onTap: () {
           onRemoveUpload(file);
         },
