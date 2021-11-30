@@ -41,6 +41,7 @@ main() {
           onRetryUpload: (AttachmentFile attachment) {
             print("hey");
           },
+          stateIconPosition: StateIconPosition.left,
         ),
       )));
       final uploadProgressWidget = find.byType(UploadProgressWidget);
@@ -75,6 +76,7 @@ main() {
           onRetryUpload: (AttachmentFile attachment) {
             print("hey");
           },
+          stateIconPosition: StateIconPosition.left,
         ),
       )));
       final uploadProgressWidget = find.byType(UploadSuccessWidget);
@@ -107,6 +109,7 @@ main() {
           onRetryUpload: (AttachmentFile attachment) async {
             await mockController.uploadFile(attachment);
           },
+          stateIconPosition: StateIconPosition.left,
         ),
       )));
       final uploadProgressWidget = find.byType(UploadFailedWidget);
