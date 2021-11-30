@@ -184,25 +184,35 @@ class UploadFailedWidget extends StatelessWidget {
   }
 }
 
+enum StateIconPosition { left, right }
+
 class FileUploadStateIcon extends StatelessWidget {
   final Widget stateIcon;
   final Widget filePreview;
-  const FileUploadStateIcon({
-    Key? key,
-    required this.stateIcon,
-    required this.filePreview,
-  }) : super(key: key);
+  final StateIconPosition stateIconPosition;
+  const FileUploadStateIcon(
+      {Key? key,
+      required this.stateIcon,
+      required this.filePreview,
+      this.stateIconPosition = StateIconPosition.right})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
         filePreview,
-        Positioned(
-          right: 0, //TODO: paramterize position
-          top: 0,
-          child: stateIcon,
-        )
+        stateIconPosition == StateIconPosition.right
+            ? Positioned(
+                right: 0, //TODO: paramterize position
+                top: 0,
+                child: stateIcon,
+              )
+            : Positioned(
+                left: 0, //TODO: paramterize position
+                top: 0,
+                child: stateIcon,
+              )
       ],
     );
   }
