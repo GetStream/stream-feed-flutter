@@ -13,7 +13,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class UploadListCore extends StatefulWidget {
   const UploadListCore({
     Key? key,
-    required this.files,
+    // required this.files,
     required this.uploadController,
     this.uploadsBuilder,
     this.onUploadSuccess,
@@ -35,7 +35,7 @@ class UploadListCore extends StatefulWidget {
   /// A widget to show when the feed is empty
   final Widget onEmptyWidget;
 
-  final List<AttachmentFile> files;
+  // final List<AttachmentFile> files;
   final UploadsBuilder? uploadsBuilder;
   final OnUploadSuccess? onUploadSuccess;
   final OnUploadProgress? onUploadProgress;
@@ -61,31 +61,34 @@ class _UploadListCoreState extends State<UploadListCore> {
           }
           final uploads = snapshot.data!;
 
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: uploads.length,
-            itemBuilder: (context, idx) =>
-                widget.uploadsBuilder?.call(
-                  context,
-                  uploads,
-                  idx,
-                ) ??
-                FileUploadStateWidget(
-                  fileState: uploads[idx],
-                  onUploadSuccess: widget.onUploadSuccess,
-                  onUploadProgress: widget.onUploadProgress,
-                  onUploadFailed: widget.onUploadFailed,
-                  onFilePreview: widget.onFilePreview,
-                  onCancelUpload: (AttachmentFile file) {
-                    widget.uploadController.cancelUpload(file);
-                  },
-                  onRemoveUpload: (AttachmentFile file) {
-                    widget.uploadController.removeUpload(file);
-                  },
-                  onRetryUpload: (AttachmentFile file) async {
-                    await widget.uploadController.uploadFile(file);
-                  },
-                ),
+          return SizedBox(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: uploads.length,
+              itemBuilder: (context, idx) =>
+                  widget.uploadsBuilder?.call(
+                    context,
+                    uploads,
+                    idx,
+                  ) ??
+                  FileUploadStateWidget(
+                    fileState: uploads[idx],
+                    onUploadSuccess: widget.onUploadSuccess,
+                    onUploadProgress: widget.onUploadProgress,
+                    onUploadFailed: widget.onUploadFailed,
+                    onFilePreview: widget.onFilePreview,
+                    onCancelUpload: (AttachmentFile file) {
+                      widget.uploadController.cancelUpload(file);
+                    },
+                    onRemoveUpload: (AttachmentFile file) {
+                      widget.uploadController.removeUpload(file);
+                    },
+                    onRetryUpload: (AttachmentFile file) async {
+                      await widget.uploadController.uploadFile(file);
+                    },
+                  ),
+            ),
           );
         });
   }

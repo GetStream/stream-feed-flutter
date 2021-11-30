@@ -42,7 +42,7 @@ void main() {
             ]));
     await tester.pumpWidget(MaterialApp(
       home: UploadListCore(
-        files: [attachment, attachment2],
+        // files: [attachment, attachment2],
         uploadController: mockkUploadController,
       ),
     ));
