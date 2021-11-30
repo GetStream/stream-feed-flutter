@@ -8,15 +8,18 @@ import 'package:stream_feed_flutter_core/src/upload/states.dart';
 class FileUploadStateWidget extends StatelessWidget {
   const FileUploadStateWidget({
     Key? key,
-    required this.fileState,
+    this.onFilePreview,
     this.onUploadSuccess,
     this.onUploadProgress,
     this.onUploadFailed,
+    required this.fileState,
     required this.onRemoveUpload,
     required this.onCancelUpload,
     required this.onRetryUpload,
-    this.onFilePreview,
+    required this.stateIconPosition,
   }) : super(key: key);
+
+  final StateIconPosition stateIconPosition;
   final OnFilePreview? onFilePreview;
   final FileUploadState fileState;
 
@@ -39,6 +42,7 @@ class FileUploadStateWidget extends StatelessWidget {
       return onUploadFailed?.call(file, fail) ??
           UploadFailedWidget(
             file,
+            stateIconPosition: stateIconPosition,
             onFilePreview: onFilePreview,
             onRetryUpload: onRetryUpload,
           );
@@ -49,6 +53,7 @@ class FileUploadStateWidget extends StatelessWidget {
             file,
             onFilePreview: onFilePreview,
             onRemoveUpload: onRemoveUpload,
+            stateIconPosition: stateIconPosition,
           );
     } else if (state is UploadProgress) {
       final progress = state as UploadProgress;
@@ -57,6 +62,7 @@ class FileUploadStateWidget extends StatelessWidget {
       return onUploadProgress?.call(file, progress) ??
           UploadProgressWidget(
             file,
+            stateIconPosition: stateIconPosition,
             onFilePreview: onFilePreview,
             totalBytes: totalBytes,
             sentBytes: sentBytes,
@@ -66,6 +72,7 @@ class FileUploadStateWidget extends StatelessWidget {
     return UploadSuccessWidget(
       file,
       onFilePreview: onFilePreview,
+      stateIconPosition: stateIconPosition,
       onRemoveUpload: onRemoveUpload,
     );
   }
@@ -76,7 +83,9 @@ class FilePreview extends StatelessWidget {
     this.file, {
     Key? key,
   }) : super(key: key);
+
   final AttachmentFile file;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -93,9 +102,15 @@ class FilePreview extends StatelessWidget {
 }
 
 class UploadSuccessWidget extends StatelessWidget {
-  const UploadSuccessWidget(this.file,
-      {Key? key, required this.onRemoveUpload, this.onFilePreview})
-      : super(key: key);
+  const UploadSuccessWidget(
+    this.file, {
+    Key? key,
+    this.onFilePreview,
+    required this.onRemoveUpload,
+    required this.stateIconPosition,
+  }) : super(key: key);
+
+  final StateIconPosition stateIconPosition;
   final OnFilePreview? onFilePreview;
   final AttachmentFile file;
   final OnRemoveUpload onRemoveUpload;
@@ -104,6 +119,7 @@ class UploadSuccessWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
       filePreview: onFilePreview?.call(file) ?? FilePreview(file),
+      stateIconPosition: stateIconPosition,
       stateIcon: GestureDetector(
         behavior: HitTestBehavior.translucent,
         child: CircleAvatar(
@@ -119,13 +135,17 @@ class UploadSuccessWidget extends StatelessWidget {
 }
 
 class UploadProgressWidget extends StatefulWidget {
-  const UploadProgressWidget(this.file,
-      {Key? key,
-      required this.totalBytes,
-      required this.sentBytes,
-      required this.onCancelUpload,
-      this.onFilePreview})
-      : super(key: key);
+  const UploadProgressWidget(
+    this.file, {
+    Key? key,
+    required this.totalBytes,
+    required this.sentBytes,
+    required this.onCancelUpload,
+    required this.stateIconPosition,
+    this.onFilePreview,
+  }) : super(key: key);
+
+  final StateIconPosition stateIconPosition;
   final OnFilePreview? onFilePreview;
 
   final AttachmentFile file;
@@ -142,6 +162,7 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
+        stateIconPosition: widget.stateIconPosition,
         filePreview:
             widget.onFilePreview?.call(widget.file) ?? FilePreview(widget.file),
         stateIcon: isHover
@@ -163,9 +184,15 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
 }
 
 class UploadFailedWidget extends StatelessWidget {
-  const UploadFailedWidget(this.file,
-      {Key? key, required this.onRetryUpload, this.onFilePreview})
-      : super(key: key);
+  const UploadFailedWidget(
+    this.file, {
+    Key? key,
+    required this.onRetryUpload,
+    this.onFilePreview,
+    required this.stateIconPosition,
+  }) : super(key: key);
+
+  final StateIconPosition stateIconPosition;
   final OnFilePreview? onFilePreview;
   final OnRetryUpload onRetryUpload;
 
@@ -173,6 +200,7 @@ class UploadFailedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
+        stateIconPosition: stateIconPosition,
         filePreview: onFilePreview?.call(file) ?? FilePreview(file),
         stateIcon: GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -187,15 +215,17 @@ class UploadFailedWidget extends StatelessWidget {
 enum StateIconPosition { left, right }
 
 class FileUploadStateIcon extends StatelessWidget {
+  const FileUploadStateIcon({
+    Key? key,
+    required this.stateIcon,
+    required this.filePreview,
+    required this.stateIconPosition,
+  }) : super(key: key);
+
   final Widget stateIcon;
   final Widget filePreview;
+
   final StateIconPosition stateIconPosition;
-  const FileUploadStateIcon(
-      {Key? key,
-      required this.stateIcon,
-      required this.filePreview,
-      this.stateIconPosition = StateIconPosition.right})
-      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -204,12 +234,12 @@ class FileUploadStateIcon extends StatelessWidget {
         filePreview,
         stateIconPosition == StateIconPosition.right
             ? Positioned(
-                right: 0, //TODO: paramterize position
+                right: 0,
                 top: 0,
                 child: stateIcon,
               )
             : Positioned(
-                left: 0, //TODO: paramterize position
+                left: 0,
                 top: 0,
                 child: stateIcon,
               )
