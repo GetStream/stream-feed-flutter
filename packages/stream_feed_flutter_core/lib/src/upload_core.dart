@@ -20,7 +20,7 @@ class UploadListCore extends StatefulWidget {
     this.onUploadProgress,
     this.onUploadFailed,
     this.onErrorWidget = const ErrorStateWidget(),
-    this.onProgressWidget = const ProgressStateWidget(),
+    this.onProgressWidget = const SizedBox.shrink(),
     this.onEmptyWidget = const EmptyStateWidget(message: 'No uploads'),
     this.onFilePreview,
   }) : super(key: key);
