@@ -73,11 +73,14 @@ class UploadController {
   }
 
   /// Remove upload from controller
-  void removeUpload(AttachmentFile file) =>
-      stateMap.removeWhere((key, value) => key == file);
+  void removeUpload(AttachmentFile file) {
+    final _stateController = _getController(file);
+    stateMap.removeWhere((key, value) => key == file);
+    _stateController.add(UploadRemoved());
+  }
 
   /// Get urls
-  Future<List<String>> getUrls() async {
+  List<String> getUrls() {
     final successes = stateMap.values
         .map((state) => state.value)
         .toList()
