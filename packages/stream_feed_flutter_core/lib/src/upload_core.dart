@@ -7,8 +7,69 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 ///Usage
 ///```dart
-/// UploadListCore(files: filesFromPicker,
-// uploadController: FeedBloc.of(context).bloc.uploadController));
+/// import 'package:image_picker/image_picker.dart';
+/// class ComposeScreen extends StatefulWidget {
+///   const ComposeScreen({Key? key}) : super(key: key);
+///
+///   @override
+///   State<ComposeScreen> createState() => _ComposeScreenState();
+/// }
+///
+/// class _ComposeScreenState extends State<ComposeScreen> {
+///   late AttachmentFile? _file = null;
+///   @override
+///   Widget build(BuildContext context) {
+///     return Scaffold(
+///       appBar: AppBar(title: const Text('Compose'), actions: [
+///         Padding(
+///           padding: const EdgeInsets.all(8.0),
+///           child: ActionChip(
+///               label: const Text(
+///                 'Post',
+///                 style: TextStyle(
+///                   color: Colors.blue,
+///                 ),
+///               ),
+///               backgroundColor: Colors.white,
+///               onPressed: () {
+///                 final attachments =
+///                     FeedProvider.of(context).bloc.uploadController.getUrls();
+///                 print(attachments);
+///               }),
+///         )
+///       ]),
+///       body: SingleChildScrollView(
+///           child: Column(children: [
+///         Padding(
+///           padding: const EdgeInsets.all(8.0),
+///           child: TextField(
+///             decoration: InputDecoration(hintText: "this is a text field"),
+///           ),
+///         ),
+///         IconButton(
+///             onPressed: () async {
+///               final ImagePicker _picker = ImagePicker();
+///               // Pick an image
+///               final XFile? image =
+///                   await _picker.pickImage(source: ImageSource.gallery);
+///
+///               if (image != null) {
+///                 await FeedProvider.of(context)
+///                     .bloc
+///                     .uploadFile(AttachmentFile(path: image.path));
+///
+///               } else {
+///                 // User canceled the picker
+///               }
+///             },
+///             icon: Icon(Icons.file_copy)),
+///         UploadListCore(
+///           uploadController: FeedProvider.of(context).bloc.uploadController,
+///         ),
+///       ])),
+///     );
+///   }
+/// }
 /// ```
 class UploadListCore extends StatefulWidget {
   const UploadListCore({
