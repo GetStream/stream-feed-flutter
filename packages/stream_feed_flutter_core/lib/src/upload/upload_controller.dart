@@ -6,6 +6,12 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 
+extension MapUpsert<K, V> on Map<K, V> {
+  Map<K, V> upsert(K key, V value) {
+    return this..update(key, (_) => value, ifAbsent: () => value);
+  }
+}
+
 class UploadController {
   UploadController(this.client);
   late Map<AttachmentFile, CancelToken> cancelMap = {};
@@ -17,14 +23,6 @@ class UploadController {
 
   Stream<Map<AttachmentFile, UploadState>> get uploadsStream => stateMap.stream;
 
-  // Stream<List<FileUploadState>> _combineStateMap() {
-  //   return CombineLatestStream(
-  //       stateMap.entries
-  //           .map((entry) => entry.value.map((v) => MapEntry(entry.key, v))),
-  //       (List<MapEntry<AttachmentFile, UploadState>> values) =>
-  //           List<FileUploadState>.from(
-  //               values.map((entry) => FileUploadState.fromEntry(entry))));
-  // }
 
   void close() {
     stateMap.close();
@@ -42,40 +40,50 @@ class UploadController {
   Future<void> uploadFile(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) async {
     _initController(attachmentFile, cancelToken);
-    var _stateController = _getController(attachmentFile);
+
     try {
-      final url = await client.files
+      final url = await client.images
           .upload(attachmentFile, cancelToken: cancelMap[attachmentFile],
               onSendProgress: (sentBytes, totalBytes) {
-        _stateController =
-            UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes);
+        final newState = stateMap.value.upsert(attachmentFile,
+            UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes));
+        stateMap.add(newState);
+        print(newState);
       });
-
-      _stateController = UploadSuccess(url!); //TODO: deal url null
+      final newState = stateMap.value.upsert(
+        attachmentFile,
+        UploadSuccess(url!),
+      ); //TODO: deal url null;
+      stateMap.add(newState);
     } catch (e) {
-      if (e is SocketException) _stateController = UploadFailed(e);
+      if (e is SocketException) {
+        final newState = stateMap.value.upsert(attachmentFile, UploadFailed(e));
+        stateMap.add(newState);
+      }
+
       if (e is DioError && CancelToken.isCancel(e)) {
-        _stateController = UploadCancelled();
+        final newState =
+            stateMap.value.upsert(attachmentFile, UploadCancelled());
+        stateMap.add(newState);
       }
     }
   }
 
-  UploadState _getController(
-    AttachmentFile attachmentFile,
-  ) =>
-      stateMap.value[attachmentFile]!;
+  // UploadState _getController(
+  //   AttachmentFile attachmentFile,
+  // ) =>
+  //     stateMap.value[attachmentFile]!;
 
   void _initController(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) {
-    stateMap.value = {attachmentFile: UploadEmptyState()};
+    stateMap.value.upsert(attachmentFile, UploadEmptyState());
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
 
   /// Remove upload from controller
   void removeUpload(AttachmentFile file) {
-    final newMap = stateMap.value;
-    newMap.removeWhere((key, value) => key == file);
-    stateMap.value = newMap;
+    final newMap = stateMap.value..removeWhere((key, value) => key == file);
+    stateMap.add(newMap);
   }
 
   /// Get urls
