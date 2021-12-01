@@ -4,7 +4,8 @@ import 'package:stream_feed/stream_feed.dart';
 class FileUploadState with EquatableMixin {
   const FileUploadState({required this.file, required this.state});
 
-  factory FileUploadState.fromEntry(MapEntry entry) =>
+  factory FileUploadState.fromEntry(
+          MapEntry<AttachmentFile, UploadState> entry) =>
       FileUploadState(file: entry.key, state: entry.value);
 
   final AttachmentFile file;

@@ -12,23 +12,22 @@ class UploadController {
   final StreamFeedClient client;
 
   @visibleForTesting
-  late Map<AttachmentFile, BehaviorSubject<UploadState>> stateMap = {};
+  late BehaviorSubject<Map<AttachmentFile, UploadState>> stateMap =
+      BehaviorSubject.seeded({});
 
-  Stream<List<FileUploadState>> get uploadsStream => _combineStateMap();
+  Stream<Map<AttachmentFile, UploadState>> get uploadsStream => stateMap.stream;
 
-  Stream<List<FileUploadState>> _combineStateMap() {
-    return CombineLatestStream(
-        stateMap.entries
-            .map((entry) => entry.value.map((v) => MapEntry(entry.key, v))),
-        (List<MapEntry<AttachmentFile, UploadState>> values) =>
-            List<FileUploadState>.from(
-                values.map((entry) => FileUploadState.fromEntry(entry))));
-  }
+  // Stream<List<FileUploadState>> _combineStateMap() {
+  //   return CombineLatestStream(
+  //       stateMap.entries
+  //           .map((entry) => entry.value.map((v) => MapEntry(entry.key, v))),
+  //       (List<MapEntry<AttachmentFile, UploadState>> values) =>
+  //           List<FileUploadState>.from(
+  //               values.map((entry) => FileUploadState.fromEntry(entry))));
+  // }
 
   void close() {
-    stateMap.forEach((key, value) {
-      value.close();
-    });
+    stateMap.close();
   }
 
   void cancelUpload(AttachmentFile attachmentFile) {
@@ -43,46 +42,46 @@ class UploadController {
   Future<void> uploadFile(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) async {
     _initController(attachmentFile, cancelToken);
-    final _stateController = _getController(attachmentFile);
+    var _stateController = _getController(attachmentFile);
     try {
       final url = await client.files
           .upload(attachmentFile, cancelToken: cancelMap[attachmentFile],
               onSendProgress: (sentBytes, totalBytes) {
-        _stateController
-            .add(UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes));
+        _stateController =
+            UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes);
       });
 
-      _stateController.add(UploadSuccess(url!)); //TODO: deal url null
+      _stateController = UploadSuccess(url!); //TODO: deal url null
     } catch (e) {
-      if (e is SocketException) _stateController.add(UploadFailed(e));
+      if (e is SocketException) _stateController = UploadFailed(e);
       if (e is DioError && CancelToken.isCancel(e)) {
-        _stateController.add(UploadCancelled());
+        _stateController = UploadCancelled();
       }
     }
   }
 
-  BehaviorSubject<UploadState> _getController(
+  UploadState _getController(
     AttachmentFile attachmentFile,
   ) =>
-      stateMap[attachmentFile]!;
+      stateMap.value[attachmentFile]!;
 
   void _initController(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) {
-    stateMap[attachmentFile] = BehaviorSubject<UploadState>();
+    stateMap.value = {attachmentFile: UploadEmptyState()};
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
 
   /// Remove upload from controller
   void removeUpload(AttachmentFile file) {
-    final _stateController = _getController(file);
-    stateMap.removeWhere((key, value) => key == file);
-    _stateController.add(UploadRemoved());
+    // final _stateController = _getController(file);
+    stateMap.value.removeWhere((key, value) => key == file);
+    // _stateController.add(UploadRemoved());
   }
 
   /// Get urls
   List<String> getUrls() {
-    final successes = stateMap.values
-        .map((state) => state.value)
+    final successes = stateMap.value.values
+        .map((state) => state)
         .toList()
         .whereType<UploadSuccess>();
     final urls = successes.map((success) => success.url).toList();

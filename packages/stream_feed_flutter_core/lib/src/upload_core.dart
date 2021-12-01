@@ -112,7 +112,7 @@ class UploadListCore extends StatefulWidget {
 class _UploadListCoreState extends State<UploadListCore> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<FileUploadState>>(
+    return StreamBuilder<Map<AttachmentFile, UploadState>>(
         stream: widget.uploadController.uploadsStream,
         // bloc.uploadFiles(files) or bloc.uploadFile(file)
         builder: (context, snapshot) {
@@ -122,8 +122,9 @@ class _UploadListCoreState extends State<UploadListCore> {
           if (!snapshot.hasData) {
             return widget.onProgressWidget;
           }
-          final uploads = snapshot.data!;
-
+          final rawMap = snapshot.data!;
+          final uploads = List<FileUploadState>.from(
+              rawMap.entries.map((entry) => FileUploadState.fromEntry(entry)));
           return SizedBox(
             height: 100,
             child: ListView.builder(

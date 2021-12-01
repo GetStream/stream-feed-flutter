@@ -39,7 +39,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
       reactionsController.getReactions(activityId, reaction);
 
   /// The current attachment list as a stream.
-  Stream<List<FileUploadState>> get uploadsStream =>
+  Stream<Map<AttachmentFile, UploadState>> get uploadsStream =>
       uploadController.uploadsStream;
 
   // Future<List<FileUploadState>> getUploads() async =>
