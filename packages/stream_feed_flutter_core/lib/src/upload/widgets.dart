@@ -176,10 +176,18 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
                   });
                 },
                 child: const Icon(Icons.close))
-            : CircularProgressIndicator(
-                value:
-                    (widget.totalBytes - widget.sentBytes) / widget.totalBytes,
-              ));
+            : CircleAvatar(
+                backgroundColor: Colors.black87,
+                radius: 10,
+                child: SizedBox(
+                    width: 12,
+                    height: 12,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      value: 1.0 -
+                          ((widget.totalBytes - widget.sentBytes) /
+                              widget.totalBytes),
+                    ))));
   }
 }
 
