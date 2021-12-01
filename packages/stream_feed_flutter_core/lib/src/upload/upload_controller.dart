@@ -23,7 +23,6 @@ class UploadController {
 
   Stream<Map<AttachmentFile, UploadState>> get uploadsStream => stateMap.stream;
 
-
   void close() {
     stateMap.close();
   }
@@ -68,11 +67,6 @@ class UploadController {
       }
     }
   }
-
-  // UploadState _getController(
-  //   AttachmentFile attachmentFile,
-  // ) =>
-  //     stateMap.value[attachmentFile]!;
 
   void _initController(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) {
