@@ -73,9 +73,9 @@ class UploadController {
 
   /// Remove upload from controller
   void removeUpload(AttachmentFile file) {
-    // final _stateController = _getController(file);
-    stateMap.value.removeWhere((key, value) => key == file);
-    // _stateController.add(UploadRemoved());
+    final newMap = stateMap.value;
+    newMap.removeWhere((key, value) => key == file);
+    stateMap.value = newMap;
   }
 
   /// Get urls

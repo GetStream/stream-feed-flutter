@@ -44,7 +44,7 @@ class UploadProgress extends UploadState {
   List<Object> get props => [sentBytes, totalBytes];
 }
 
-class UploadRemoved extends UploadState {}
+// class UploadRemoved extends UploadState {}
 
 class UploadCancelled extends UploadState {}
 
