@@ -43,31 +43,25 @@ main() {
       when(() => mockClient.images).thenReturn(mockImages);
     });
 
-    // test('cancel', () async {
-    //   when(() => mockImages.upload(attachment,
-    //       cancelToken: mockCancelToken,
-    //       onSendProgress: any(named: 'onSendProgress'))).thenThrow(DioError(
-    //     requestOptions: RequestOptions(path: ''),
-    //     type: DioErrorType.cancel,
-    //   ));
-    //   final bloc = UploadController(mockClient)
-    //     ..cancelMap = {attachment: mockCancelToken}
-    //     ..stateMap = {attachment: BehaviorSubject<UploadState>()};
+    test('cancel', () async {
+      when(() => mockImages.upload(attachment,
+          cancelToken: mockCancelToken,
+          onSendProgress: any(named: 'onSendProgress'))).thenThrow(DioError(
+        requestOptions: RequestOptions(path: ''),
+        type: DioErrorType.cancel,
+      ));
+      final bloc = UploadController(mockClient)
+        ..cancelMap = {attachment: mockCancelToken};
+      // ..stateMap = {attachment: BehaviorSubject<UploadState>()};
 
-    //   expectLater(
-    //       bloc.uploadsStream,
-    //       emitsInOrder([
-    //         [
-    //           FileUploadState(file: attachment, state: const UploadEmptyState())
-    //         ],
-    //         [FileUploadState(file: attachment, state: UploadCancelled())]
-    //       ]));
+      await bloc.uploadFile(attachment, mockCancelToken);
+      bloc.cancelUpload(attachment);
 
-    //   await bloc.uploadFile(attachment, mockCancelToken);
-    //   bloc.cancelUpload(attachment);
+      verify(() => mockCancelToken.cancel('cancelled')).called(1);
 
-    //   verify(() => mockCancelToken.cancel('cancelled')).called(1);
-    // });
+      await expectLater(
+          bloc.uploadsStream, emits({attachment: UploadCancelled()}));
+    });
 
     // test('remove', () async {
     //   when(() => mockFiles.upload(attachment,
