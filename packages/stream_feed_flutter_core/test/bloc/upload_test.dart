@@ -94,7 +94,6 @@ main() {
           .thenAnswer((_) async => cdnUrl);
 
       final bloc = UploadController(mockClient);
-      // ..stateMap = BehaviorSubject.seeded({attachment: UploadEmptyState()});
 
       await bloc.uploadFile(
         attachment,
@@ -107,33 +106,27 @@ main() {
       expect(bloc.getUrls(), [cdnUrl]);
     });
 
-    // test('progress', () async {
-    //   final bloc = UploadController(mockClient);
-    //   void mockOnSendProgress(int sentBytes, int totalBytes) {
-    //     bloc.stateMap[attachment]!
-    //         .add(UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes));
-    //   }
+    test('progress', () async {
+      final bloc = UploadController(mockClient);
+      void mockOnSendProgress(int sentBytes, int totalBytes) {
+        bloc.stateMap.add({
+          attachment:
+              UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes)
+        });
+      }
 
-    //   when(() => mockFiles.upload(
-    //         attachment,
-    //         onSendProgress: mockOnSendProgress,
-    //         cancelToken: mockCancelToken,
-    //       )).thenAnswer((_) async => cdnUrl);
-    //   bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
-    //   expectLater(
-    //       bloc.uploadsStream,
-    //       emitsInOrder([
-    //         [
-    //           FileUploadState(file: attachment, state: const UploadEmptyState())
-    //         ],
-    //         [
-    //           FileUploadState(
-    //               file: attachment, state: const UploadProgress(totalBytes: 50))
-    //         ]
-    //       ]));
-    //   await bloc.uploadFile(attachment, mockCancelToken);
-    //   mockOnSendProgress(0, 50);
-    // });
+      when(() => mockImages.upload(
+            attachment,
+            onSendProgress: mockOnSendProgress,
+            cancelToken: mockCancelToken,
+          )).thenAnswer((_) async => cdnUrl);
+      // bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
+      
+      await bloc.uploadFile(attachment, mockCancelToken);
+      mockOnSendProgress(0, 50);
+      await expectLater(bloc.uploadsStream,
+          emits({attachment: UploadProgress(totalBytes: 50)}));
+    });
 
     // test('fail', () async {
     //   const exception = SocketException('exception');
