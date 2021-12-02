@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
@@ -52,7 +51,6 @@ main() {
       ));
       final bloc = UploadController(mockClient)
         ..cancelMap = {attachment: mockCancelToken};
-      // ..stateMap = {attachment: BehaviorSubject<UploadState>()};
 
       await bloc.uploadFile(attachment, mockCancelToken);
       bloc.cancelUpload(attachment);
@@ -128,7 +126,6 @@ main() {
             onSendProgress: mockOnSendProgress,
             cancelToken: mockCancelToken,
           )).thenAnswer((_) async => cdnUrl);
-      // bloc.stateMap = {attachment: BehaviorSubject<UploadState>()};
 
       await bloc.uploadFile(attachment, mockCancelToken);
       mockOnSendProgress(0, 50);
@@ -147,7 +144,6 @@ main() {
         attachment,
         mockCancelToken,
       );
-      // ..stateMap = {attachment: BehaviorSubject<UploadState>()};
       await expectLater(
           bloc.uploadsStream, emits({attachment: UploadFailed(exception)}));
     });
