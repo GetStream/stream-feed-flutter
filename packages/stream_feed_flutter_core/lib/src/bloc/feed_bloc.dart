@@ -42,6 +42,10 @@ class GenericFeedBloc<A, Ob, T, Or> {
   Stream<Map<AttachmentFile, UploadState>> get uploadsStream =>
       uploadController.uploadsStream;
 
+  List<String> getUrls() => uploadController.getUrls();
+
+  void clearUploadController() => uploadController.clear();
+
   // Future<List<FileUploadState>> getUploads() async =>
   //     uploadController.getUploads();
 

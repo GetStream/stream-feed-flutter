@@ -39,7 +39,6 @@ class UploadController {
   Future<void> uploadFile(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) async {
     _initController(attachmentFile, cancelToken);
-
     try {
       final url = await client.images
           .upload(attachmentFile, cancelToken: cancelMap[attachmentFile],
@@ -47,7 +46,6 @@ class UploadController {
         final newState = stateMap.value.upsert(attachmentFile,
             UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes));
         stateMap.add(newState);
-        print(newState);
       });
       final newState = stateMap.value.upsert(
         attachmentFile,
@@ -70,13 +68,19 @@ class UploadController {
 
   void _initController(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) {
-    stateMap.value.upsert(attachmentFile, UploadEmptyState());
+    final newState = stateMap.value.upsert(attachmentFile, UploadEmptyState());
+    stateMap.add(newState);
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
 
   /// Remove upload from controller
   void removeUpload(AttachmentFile file) {
     final newMap = stateMap.value..removeWhere((key, value) => key == file);
+    stateMap.add(newMap);
+  }
+
+  void clear() {
+    final newMap = stateMap.value..clear();
     stateMap.add(newMap);
   }
 
