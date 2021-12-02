@@ -12,6 +12,8 @@ class MockReactions extends Mock implements ReactionsClient {}
 
 class MockFiles extends Mock implements FileStorageClient {}
 
+class MockImages extends Mock implements ImageStorageClient {}
+
 class MockCancelToken extends Mock implements CancelToken {}
 
 class MockStreamAnalytics extends Mock implements StreamAnalytics {}
