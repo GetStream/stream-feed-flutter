@@ -63,23 +63,37 @@ main() {
           bloc.uploadsStream, emits({attachment: UploadCancelled()}));
     });
 
-    // test('remove', () async {
-    //   when(() => mockFiles.upload(attachment,
-    //           cancelToken: mockCancelToken,
-    //           onSendProgress: any(named: 'onSendProgress')))
-    //       .thenAnswer((_) async => cdnUrl);
+    test('remove', () async {
+      when(() => mockImages.upload(attachment,
+              cancelToken: mockCancelToken,
+              onSendProgress: any(named: 'onSendProgress')))
+          .thenAnswer((_) async => cdnUrl);
+      when(() => mockImages.upload(attachment2,
+              cancelToken: mockCancelToken,
+              onSendProgress: any(named: 'onSendProgress')))
+          .thenAnswer((_) async => cdnUrl2);
 
-    //   final bloc = UploadController(mockClient)
-    //     ..stateMap = {
-    //       attachment: BehaviorSubject.seeded(UploadSuccess(cdnUrl)),
-    //       attachment2: BehaviorSubject.seeded(UploadSuccess(cdnUrl2))
-    //     }
-    //     ..removeUpload(attachment);
-    //   final result = await bloc.uploadsStream.first;
-    //   expect(result, [
-    //     FileUploadState(file: attachment2, state: UploadSuccess(cdnUrl2))
-    //   ]); //TODO: test the stream
-    // });
+      final bloc = UploadController(mockClient);
+      await bloc.uploadFile(
+        attachment,
+        mockCancelToken,
+      );
+
+      await bloc.uploadFile(
+        attachment2,
+        mockCancelToken,
+      );
+      await expectLater(
+          bloc.uploadsStream,
+          emits({
+            attachment: UploadSuccess(cdnUrl),
+            attachment2: UploadSuccess(cdnUrl2)
+          }));
+
+      bloc.removeUpload(attachment);
+      await expectLater(
+          bloc.uploadsStream, emits({attachment2: UploadSuccess(cdnUrl2)}));
+    });
 
     test('success', () async {
       when(() => mockImages.upload(attachment,
