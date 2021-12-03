@@ -3,6 +3,7 @@ import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
 import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
+import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
@@ -42,7 +43,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
   Stream<Map<AttachmentFile, UploadState>> get uploadsStream =>
       uploadController.uploadsStream;
 
-  List<String> getUrls() => uploadController.getUrls();
+  List<Media> getUrls() => uploadController.getMedias();
 
   void clearUploadController() => uploadController.clear();
 

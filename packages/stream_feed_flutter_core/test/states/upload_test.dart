@@ -64,7 +64,7 @@ main() {
           home: Scaffold(
         body: FileUploadStateWidget(
           fileState: FileUploadState(
-            state: UploadSuccess('cdnUrl'),
+            state: UploadSuccess.url('cdnUrl'),
             file: attachment,
           ),
           onCancelUpload: (AttachmentFile attachment) {

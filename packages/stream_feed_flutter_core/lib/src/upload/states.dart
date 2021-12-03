@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/media.dart';
 
 class FileUploadState with EquatableMixin {
   const FileUploadState({required this.file, required this.state});
@@ -47,9 +48,11 @@ class UploadProgress extends UploadState {
 class UploadCancelled extends UploadState {}
 
 class UploadSuccess extends UploadState {
-  const UploadSuccess(this.url);
-  final String url;
+  const UploadSuccess(this.media);
+  final Media media;
+  factory UploadSuccess.url( String url) =>
+      UploadSuccess(Media(url: url));
 
   @override
-  List<Object> get props => [url];
+  List<Object> get props => [media];
 }

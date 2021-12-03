@@ -35,8 +35,8 @@ void main() {
   testWidgets('UploadListCore', (tester) async {
     when(() => mockkUploadController.uploadsStream).thenAnswer((_) =>
         Stream.value({
-          attachment: UploadSuccess('cdnUrl'),
-          attachment2: UploadSuccess('cdnUrl2')
+          attachment: UploadSuccess.url('cdnUrl'),
+          attachment2: UploadSuccess.url('cdnUrl2')
         }));
     await tester.pumpWidget(MaterialApp(
       home: UploadListCore(

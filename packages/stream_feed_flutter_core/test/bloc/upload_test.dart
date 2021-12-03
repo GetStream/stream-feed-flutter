@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
@@ -84,13 +85,13 @@ main() {
       await expectLater(
           bloc.uploadsStream,
           emits({
-            attachment: UploadSuccess(cdnUrl),
-            attachment2: UploadSuccess(cdnUrl2)
+            attachment: UploadSuccess.url(cdnUrl),
+            attachment2: UploadSuccess.url(cdnUrl2)
           }));
 
       bloc.removeUpload(attachment);
       await expectLater(
-          bloc.uploadsStream, emits({attachment2: UploadSuccess(cdnUrl2)}));
+          bloc.uploadsStream, emits({attachment2: UploadSuccess.url(cdnUrl2)}));
     });
 
     test('success', () async {
@@ -107,9 +108,9 @@ main() {
       );
 
       await expectLater(
-          bloc.uploadsStream, emits({attachment: UploadSuccess(cdnUrl)}));
+          bloc.uploadsStream, emits({attachment: UploadSuccess.url(cdnUrl)}));
 
-      expect(bloc.getUrls(), [cdnUrl]);
+      expect(bloc.getMedias(), [Media(url: cdnUrl)]);
     });
 
     test('progress', () async {

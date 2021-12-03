@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 
 extension MapUpsert<K, V> on Map<K, V> {
@@ -49,7 +50,7 @@ class UploadController {
       });
       final newState = stateMap.value.upsert(
         attachmentFile,
-        UploadSuccess(url!),
+        UploadSuccess.url(url!),
       ); //TODO: deal url null;
       stateMap.add(newState);
     } catch (e) {
@@ -85,12 +86,12 @@ class UploadController {
   }
 
   /// Get urls
-  List<String> getUrls() {
+  List<Media> getMedias() {
     final successes = stateMap.value.values
         .map((state) => state)
         .toList()
         .whereType<UploadSuccess>();
-    final urls = successes.map((success) => success.url).toList();
+    final urls = successes.map((success) => success.media).toList();
     return urls;
   }
 }
