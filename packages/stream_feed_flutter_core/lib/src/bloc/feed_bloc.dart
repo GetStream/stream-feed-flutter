@@ -50,11 +50,11 @@ class GenericFeedBloc<A, Ob, T, Or> {
   //     uploadController.getUploads();
 
   /// Upload files and keep track of the state
-  Future<void> uploadFiles(List<AttachmentFile> files) =>
-      uploadController.uploadFiles(files);
+  Future<void> uploadImages(List<AttachmentFile> files) =>
+      uploadController.uploadImages(files);
 
-  Future<void> uploadFile(AttachmentFile file) =>
-      uploadController.uploadFile(file);
+  Future<void> uploadImage(AttachmentFile file) =>
+      uploadController.uploadImage(file);
 
   /// The current activities list as a stream.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(

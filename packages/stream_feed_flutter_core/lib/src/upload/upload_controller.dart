@@ -32,11 +32,11 @@ class UploadController {
     token!.cancel('cancelled');
   }
 
-  Future<void> uploadFiles(List<AttachmentFile> attachmentFiles) async {
-    await Future.wait(attachmentFiles.map(uploadFile));
+  Future<void> uploadImages(List<AttachmentFile> attachmentFiles) async {
+    await Future.wait(attachmentFiles.map(uploadImage));
   }
 
-  Future<void> uploadFile(AttachmentFile attachmentFile,
+  Future<void> uploadImage(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) async {
     _initController(attachmentFile, cancelToken);
     try {

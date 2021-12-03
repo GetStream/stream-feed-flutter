@@ -150,7 +150,7 @@ class _UploadListCoreState extends State<UploadListCore> {
                       widget.uploadController.removeUpload(file);
                     },
                     onRetryUpload: (AttachmentFile file) async {
-                      await widget.uploadController.uploadFile(file);
+                      await widget.uploadController.uploadImage(file);
                     },
                   ),
             ),

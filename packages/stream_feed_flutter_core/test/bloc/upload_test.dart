@@ -52,7 +52,7 @@ main() {
       final bloc = UploadController(mockClient)
         ..cancelMap = {attachment: mockCancelToken};
 
-      await bloc.uploadFile(attachment, mockCancelToken);
+      await bloc.uploadImage(attachment, mockCancelToken);
       bloc.cancelUpload(attachment);
 
       verify(() => mockCancelToken.cancel('cancelled')).called(1);
@@ -72,12 +72,12 @@ main() {
           .thenAnswer((_) async => cdnUrl2);
 
       final bloc = UploadController(mockClient);
-      await bloc.uploadFile(
+      await bloc.uploadImage(
         attachment,
         mockCancelToken,
       );
 
-      await bloc.uploadFile(
+      await bloc.uploadImage(
         attachment2,
         mockCancelToken,
       );
@@ -101,7 +101,7 @@ main() {
 
       final bloc = UploadController(mockClient);
 
-      await bloc.uploadFile(
+      await bloc.uploadImage(
         attachment,
         mockCancelToken,
       );
@@ -127,7 +127,7 @@ main() {
             cancelToken: mockCancelToken,
           )).thenAnswer((_) async => cdnUrl);
 
-      await bloc.uploadFile(attachment, mockCancelToken);
+      await bloc.uploadImage(attachment, mockCancelToken);
       mockOnSendProgress(0, 50);
       await expectLater(bloc.uploadsStream,
           emits({attachment: UploadProgress(totalBytes: 50)}));
@@ -140,7 +140,7 @@ main() {
           onSendProgress: any(named: 'onSendProgress'))).thenThrow(exception);
       final bloc = UploadController(mockClient);
 
-      await bloc.uploadFile(
+      await bloc.uploadImage(
         attachment,
         mockCancelToken,
       );

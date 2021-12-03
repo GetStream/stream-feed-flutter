@@ -91,7 +91,7 @@ main() {
 
     testWidgets('UploadFailed', (tester) async {
       const exception = SocketException('exception');
-      when(() => mockController.uploadFile(attachment))
+      when(() => mockController.uploadImage(attachment))
           .thenAnswer((_) async => Future.value());
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
@@ -107,7 +107,7 @@ main() {
             print("hey");
           },
           onRetryUpload: (AttachmentFile attachment) async {
-            await mockController.uploadFile(attachment);
+            await mockController.uploadImage(attachment);
           },
           stateIconPosition: StateIconPosition.left,
         ),
@@ -119,7 +119,7 @@ main() {
       expect(refreshButton, findsOneWidget);
       await tester.tap(refreshButton);
       await tester.pumpAndSettle();
-      verify(() => mockController.uploadFile(attachment)).called(1);
+      verify(() => mockController.uploadImage(attachment)).called(1);
     });
   });
 }
