@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/stream_feed.dart' show AttachmentFile;
+import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
 import 'package:stream_feed_flutter_core/src/upload_core.dart';
@@ -17,7 +18,11 @@ void main() {
   late File file2;
   late AttachmentFile attachment;
   late AttachmentFile attachment2;
+  late String cdnUrl;
+  late String cdnUrl2;
   setUp(() {
+    cdnUrl = 'https://us-east.stream-io-cdn.com/something.png';
+    cdnUrl2 = 'https://us-east.stream-io-cdn.com/something.jpeg';
     mockkUploadController = MockUploadController();
     file = assetFile('test_image.jpeg');
 
@@ -33,11 +38,13 @@ void main() {
     );
   });
   testWidgets('UploadListCore', (tester) async {
-    when(() => mockkUploadController.uploadsStream).thenAnswer((_) =>
-        Stream.value({
-          attachment: UploadSuccess.url('cdnUrl'),
-          attachment2: UploadSuccess.url('cdnUrl2')
-        }));
+    when(() => mockkUploadController.uploadsStream)
+        .thenAnswer((_) => Stream.value({
+              attachment: UploadSuccess.media(
+                  mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl)!)),
+              attachment2: UploadSuccess.media(
+                  mediaUri: MediaUri(uri: Uri.tryParse('cdnUrl2')!))
+            }));
     await tester.pumpWidget(MaterialApp(
       home: UploadListCore(
         // files: [attachment, attachment2],

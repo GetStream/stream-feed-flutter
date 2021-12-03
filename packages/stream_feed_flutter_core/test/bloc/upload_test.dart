@@ -38,8 +38,8 @@ main() {
         path: file2.path,
         bytes: file2.readAsBytesSync(),
       );
-      cdnUrl = 'url';
-      cdnUrl2 = 'url2';
+      cdnUrl = 'https://us-east.stream-io-cdn.com/something.png';
+      cdnUrl2 = 'https://us-east.stream-io-cdn.com/something.jpeg';
       when(() => mockClient.images).thenReturn(mockImages);
     });
 
@@ -58,8 +58,8 @@ main() {
 
       verify(() => mockCancelToken.cancel('cancelled')).called(1);
 
-      await expectLater(
-          bloc.uploadsStream, emits({attachment: UploadCancelled()}));
+      await expectLater(bloc.uploadsStream,
+          emits({attachment: UploadCancelled(mediaType: MediaType.image)}));
     });
 
     test('remove', () async {
@@ -85,13 +85,19 @@ main() {
       await expectLater(
           bloc.uploadsStream,
           emits({
-            attachment: UploadSuccess.url(cdnUrl),
-            attachment2: UploadSuccess.url(cdnUrl2)
+            attachment: UploadSuccess.media(
+                mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl)!)),
+            attachment2: UploadSuccess.media(
+                mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl2)!))
           }));
 
       bloc.removeUpload(attachment);
       await expectLater(
-          bloc.uploadsStream, emits({attachment2: UploadSuccess.url(cdnUrl2)}));
+          bloc.uploadsStream,
+          emits({
+            attachment2: UploadSuccess.media(
+                mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl2)!))
+          }));
     });
 
     test('success', () async {
@@ -108,17 +114,23 @@ main() {
       );
 
       await expectLater(
-          bloc.uploadsStream, emits({attachment: UploadSuccess.url(cdnUrl)}));
+          bloc.uploadsStream,
+          emits({
+            attachment: UploadSuccess.media(
+                mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl)!))
+          }));
 
-      expect(bloc.getMedias(), [Media(url: cdnUrl)]);
+      expect(bloc.getMediaUris(), [MediaUri(uri: Uri.tryParse(cdnUrl)!)]);
     });
 
     test('progress', () async {
       final bloc = UploadController(mockClient);
       void mockOnSendProgress(int sentBytes, int totalBytes) {
         bloc.stateMap.add({
-          attachment:
-              UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes)
+          attachment: UploadProgress(
+              sentBytes: sentBytes,
+              totalBytes: totalBytes,
+              mediaType: MediaType.image)
         });
       }
 
@@ -131,7 +143,7 @@ main() {
       await bloc.uploadImage(attachment, mockCancelToken);
       mockOnSendProgress(0, 50);
       await expectLater(bloc.uploadsStream,
-          emits({attachment: UploadProgress(totalBytes: 50)}));
+          emits({attachment: UploadProgress(totalBytes: 50,  mediaType: MediaType.image)}));
     });
 
     test('fail', () async {
@@ -146,7 +158,7 @@ main() {
         mockCancelToken,
       );
       await expectLater(
-          bloc.uploadsStream, emits({attachment: UploadFailed(exception)}));
+          bloc.uploadsStream, emits({attachment: UploadFailed(exception,  mediaType: MediaType.image)}));
     });
   });
 }

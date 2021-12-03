@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
 
@@ -14,7 +15,9 @@ main() {
   late MockUploadController mockController;
   late File file;
   late AttachmentFile attachment;
+  late String cdnUrl;
   setUp(() {
+    cdnUrl = "https://us-east.stream-io-cdn.com/something.jpeg";
     mockController = MockUploadController();
     file = assetFile('test_image.jpeg');
 
@@ -29,7 +32,8 @@ main() {
           home: Scaffold(
         body: FileUploadStateWidget(
           fileState: FileUploadState(
-            state: const UploadProgress(totalBytes: 50),
+            state: const UploadProgress(
+                totalBytes: 50, mediaType: MediaType.image),
             file: attachment,
           ),
           onCancelUpload: (AttachmentFile attachment) {
@@ -64,7 +68,8 @@ main() {
           home: Scaffold(
         body: FileUploadStateWidget(
           fileState: FileUploadState(
-            state: UploadSuccess.url('cdnUrl'),
+            state: UploadSuccess.media(
+                mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl)!)),
             file: attachment,
           ),
           onCancelUpload: (AttachmentFile attachment) {
@@ -97,7 +102,7 @@ main() {
           home: Scaffold(
         body: FileUploadStateWidget(
           fileState: FileUploadState(
-            state: const UploadFailed(exception),
+            state: UploadFailed(exception, mediaType: MediaType.image),
             file: attachment,
           ),
           onCancelUpload: (AttachmentFile attachment) {

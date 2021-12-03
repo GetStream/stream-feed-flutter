@@ -83,10 +83,10 @@ class UploadListCore extends StatefulWidget {
     this.onErrorWidget = const ErrorStateWidget(),
     this.onProgressWidget = const SizedBox.shrink(),
     this.onEmptyWidget = const EmptyStateWidget(message: 'No uploads'),
-    this.onFilePreview,
+    this.onMediaPreview,
     this.stateIconPosition = StateIconPosition.right,
   }) : super(key: key);
-  final OnFilePreview? onFilePreview;
+  final OnMediaPreview? onMediaPreview;
   final StateIconPosition stateIconPosition;
 
   /// An error widget to show when an error occurs
@@ -141,7 +141,7 @@ class _UploadListCoreState extends State<UploadListCore> {
                     onUploadSuccess: widget.onUploadSuccess,
                     onUploadProgress: widget.onUploadProgress,
                     onUploadFailed: widget.onUploadFailed,
-                    onFilePreview: widget.onFilePreview,
+                    onMediaPreview: widget.onMediaPreview,
                     stateIconPosition: widget.stateIconPosition,
                     onCancelUpload: (AttachmentFile file) {
                       widget.uploadController.cancelUpload(file);

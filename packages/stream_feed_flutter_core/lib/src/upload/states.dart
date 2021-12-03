@@ -17,42 +17,53 @@ class FileUploadState with EquatableMixin {
 }
 
 class UploadState with EquatableMixin {
-  const UploadState();
+  final MediaType mediaType;
+  const UploadState({required this.mediaType});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [mediaType];
 }
 
 class UploadEmptyState extends UploadState {
-  const UploadEmptyState();
+  const UploadEmptyState({required MediaType mediaType})
+      : super(mediaType: mediaType);
 }
 
 class UploadFailed extends UploadState {
-  const UploadFailed(this.error);
+  const UploadFailed(this.error, {required MediaType mediaType})
+      : super(mediaType: mediaType);
   final Object error;
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [...super.props, error];
 }
 
 class UploadProgress extends UploadState {
-  const UploadProgress({this.sentBytes = 0, this.totalBytes = 0});
+  const UploadProgress(
+      {this.sentBytes = 0, this.totalBytes = 0, required MediaType mediaType})
+      : super(mediaType: mediaType);
 
   final int sentBytes;
   final int totalBytes;
 
   @override
-  List<Object> get props => [sentBytes, totalBytes];
+  List<Object> get props => [...super.props, sentBytes, totalBytes];
 }
 
-// class UploadRemoved extends UploadState {}
 
-class UploadCancelled extends UploadState {}
+class UploadCancelled extends UploadState {
+  UploadCancelled({required MediaType mediaType}) : super(mediaType: mediaType);
+}
 
 class UploadSuccess extends UploadState {
-  const UploadSuccess(this.media);
-  final Media media;
-  factory UploadSuccess.url( String url) =>
-      UploadSuccess(Media(url: url));
+  const UploadSuccess._({required this.mediaUri, required MediaType mediaType})
+      : super(mediaType: mediaType);
+
+  final MediaUri mediaUri;
+
+  factory UploadSuccess.media({required MediaUri mediaUri}) {
+    return UploadSuccess._(mediaUri: mediaUri, mediaType: mediaUri.type);
+  }
+
 
   @override
-  List<Object> get props => [media];
+  List<Object> get props => [...super.props, mediaUri];
 }

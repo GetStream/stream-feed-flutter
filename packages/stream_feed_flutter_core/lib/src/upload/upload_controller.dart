@@ -33,43 +33,111 @@ class UploadController {
     token!.cancel('cancelled');
   }
 
+  /// Convenient method to upload a media
+  /// Let you override the media type
+  /// If you have a file picker per media for example
+  /// it's safer to override the mediaType
+  /// otherwise will guess it from the file extension
+  Future<void> uploadMedia(AttachmentFile attachmentFile,
+      [MediaType? mediaType, CancelToken? cancelToken]) async {
+    final mediaUri =
+        MediaUri(uri: Uri.file(attachmentFile.path!), mediaType: mediaType);
+
+    mediaUri.type == MediaType.image
+        ? uploadImage(attachmentFile, cancelToken)
+        : uploadFile(attachmentFile, mediaUri.type, cancelToken);
+  }
+
+  Future<void> uploadFile(AttachmentFile attachmentFile, MediaType mediaType,
+      [CancelToken? cancelToken]) async {
+    _initController(attachmentFile, mediaType, cancelToken);
+    try {
+      final url = await client.files
+          .upload(attachmentFile, cancelToken: cancelMap[attachmentFile],
+              onSendProgress: (sentBytes, totalBytes) {
+        final newState = stateMap.value.upsert(
+            attachmentFile,
+            UploadProgress(
+              sentBytes: sentBytes,
+              totalBytes: totalBytes,
+              mediaType: mediaType,
+            ));
+        stateMap.add(newState);
+      });
+      final uri = Uri.tryParse(url ?? '');
+      final newState = uri != null
+          ? stateMap.value.upsert(
+              attachmentFile,
+              UploadSuccess.media(
+                  mediaUri: MediaUri(uri: uri, mediaType: mediaType)),
+            )
+          : stateMap.value.upsert(attachmentFile,
+              UploadFailed('Not a valid uri', mediaType: mediaType));
+      stateMap.add(newState);
+    } catch (e) {
+      if (e is SocketException) {
+        final newState = stateMap.value
+            .upsert(attachmentFile, UploadFailed(e, mediaType: mediaType));
+        stateMap.add(newState);
+      }
+
+      if (e is DioError && CancelToken.isCancel(e)) {
+        final newState = stateMap.value
+            .upsert(attachmentFile, UploadCancelled(mediaType: mediaType));
+        stateMap.add(newState);
+      }
+    }
+  }
+
   Future<void> uploadImages(List<AttachmentFile> attachmentFiles) async {
     await Future.wait(attachmentFiles.map(uploadImage));
   }
 
   Future<void> uploadImage(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) async {
-    _initController(attachmentFile, cancelToken);
+    const mediaType = MediaType.image;
+    _initController(attachmentFile, mediaType, cancelToken);
     try {
       final url = await client.images
           .upload(attachmentFile, cancelToken: cancelMap[attachmentFile],
               onSendProgress: (sentBytes, totalBytes) {
-        final newState = stateMap.value.upsert(attachmentFile,
-            UploadProgress(sentBytes: sentBytes, totalBytes: totalBytes));
+        final newState = stateMap.value.upsert(
+            attachmentFile,
+            UploadProgress(
+                sentBytes: sentBytes,
+                totalBytes: totalBytes,
+                mediaType: mediaType));
         stateMap.add(newState);
       });
-      final newState = stateMap.value.upsert(
-        attachmentFile,
-        UploadSuccess.url(url!),
-      ); //TODO: deal url null;
+      final uri = Uri.tryParse(url ?? '');
+      final newState = uri != null
+          ? stateMap.value.upsert(
+              attachmentFile,
+              UploadSuccess.media(
+                  mediaUri: MediaUri(uri: uri, mediaType: mediaType)),
+            )
+          : stateMap.value.upsert(attachmentFile,
+              UploadFailed('Not a valid uri', mediaType: mediaType));
       stateMap.add(newState);
     } catch (e) {
       if (e is SocketException) {
-        final newState = stateMap.value.upsert(attachmentFile, UploadFailed(e));
+        final newState = stateMap.value
+            .upsert(attachmentFile, UploadFailed(e, mediaType: mediaType));
         stateMap.add(newState);
       }
 
       if (e is DioError && CancelToken.isCancel(e)) {
-        final newState =
-            stateMap.value.upsert(attachmentFile, UploadCancelled());
+        final newState = stateMap.value
+            .upsert(attachmentFile, UploadCancelled(mediaType: mediaType));
         stateMap.add(newState);
       }
     }
   }
 
-  void _initController(AttachmentFile attachmentFile,
+  void _initController(AttachmentFile attachmentFile, MediaType mediaType,
       [CancelToken? cancelToken]) {
-    final newState = stateMap.value.upsert(attachmentFile, UploadEmptyState());
+    final newState = stateMap.value
+        .upsert(attachmentFile, UploadEmptyState(mediaType: mediaType));
     stateMap.add(newState);
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
@@ -86,12 +154,12 @@ class UploadController {
   }
 
   /// Get urls
-  List<Media> getMedias() {
+  List<MediaUri> getMediaUris() {
     final successes = stateMap.value.values
         .map((state) => state)
         .toList()
         .whereType<UploadSuccess>();
-    final urls = successes.map((success) => success.media).toList();
-    return urls;
+    final mediaUris = successes.map((success) => success.mediaUri).toList();
+    return mediaUris;
   }
 }
