@@ -3,10 +3,11 @@ import 'package:equatable/equatable.dart';
 /// Defines a piece of media present in a feed.
 class MediaUri extends Equatable {
   /// Builds a [Media].
-  const MediaUri({required this.uri, this.mediaType});
+   MediaUri({required this.uri, MediaType? mediaType})
+      : _mediaType = mediaType;
 
   ///Don't use this unless you want to override mediaType
-  final MediaType? mediaType;
+  late MediaType? _mediaType;
 
   /// The URL for this media.
   final Uri uri;
@@ -22,8 +23,8 @@ class MediaUri extends Equatable {
   /// Checks the [url] for specific file extensions and returns the
   /// appropriate [MediaType].
   MediaType get type {
-    if (mediaType != null) {
-      return mediaType!;
+    if (_mediaType != null) {
+      return _mediaType!;
     } else {
       if (fileExt == 'jpeg') {
         return MediaType.image;
