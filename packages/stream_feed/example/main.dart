@@ -40,7 +40,8 @@ Future<void> main() async {
   final user1 = clientWithSecret.flatFeed('user', '1');
 
 // Create an activity object
-  var activity = const Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
+  var activity =
+      const Activity(actor: 'User:1', verb: 'pin', object: 'Place:42');
 
 // Add an activity to the feed
   final pinActivity = await user1.addActivity(activity);
