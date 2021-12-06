@@ -43,7 +43,7 @@ void main() {
               attachment: UploadSuccess.media(
                   mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl)!)),
               attachment2: UploadSuccess.media(
-                  mediaUri: MediaUri(uri: Uri.tryParse('cdnUrl2')!))
+                  mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl2)!))
             }));
     await tester.pumpWidget(MaterialApp(
       home: UploadListCore(
