@@ -54,7 +54,7 @@ class MediaUri extends Equatable {
   }
 
   @override
-  List<Object?> get props => [uri];
+  List<Object?> get props => [uri,type];
 }
 
 /// Enumerates the types of supported media in Feeds.
