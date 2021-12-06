@@ -1,13 +1,16 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 /// Defines a piece of media present in a feed.
+@immutable
 class MediaUri extends Equatable {
   /// Builds a [Media].
-   MediaUri({required this.uri, MediaType? mediaType})
+  const MediaUri({required this.uri, MediaType? mediaType})
       : _mediaType = mediaType;
 
-  ///Don't use this unless you want to override mediaType
-  late MediaType? _mediaType;
+  /// Don't use this unless you want to override mediaType and bypass
+  /// our inference the file extension
+  final MediaType? _mediaType;
 
   /// The URL for this media.
   final Uri uri;
