@@ -48,7 +48,6 @@ class UploadProgress extends UploadState {
   List<Object> get props => [...super.props, sentBytes, totalBytes];
 }
 
-
 class UploadCancelled extends UploadState {
   UploadCancelled({required MediaType mediaType}) : super(mediaType: mediaType);
 }
@@ -62,7 +61,6 @@ class UploadSuccess extends UploadState {
   factory UploadSuccess.media({required MediaUri mediaUri}) {
     return UploadSuccess._(mediaUri: mediaUri, mediaType: mediaUri.type);
   }
-
 
   @override
   List<Object> get props => [...super.props, mediaUri];

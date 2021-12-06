@@ -142,8 +142,12 @@ main() {
 
       await bloc.uploadImage(attachment, mockCancelToken);
       mockOnSendProgress(0, 50);
-      await expectLater(bloc.uploadsStream,
-          emits({attachment: UploadProgress(totalBytes: 50,  mediaType: MediaType.image)}));
+      await expectLater(
+          bloc.uploadsStream,
+          emits({
+            attachment:
+                UploadProgress(totalBytes: 50, mediaType: MediaType.image)
+          }));
     });
 
     test('fail', () async {
@@ -158,7 +162,10 @@ main() {
         mockCancelToken,
       );
       await expectLater(
-          bloc.uploadsStream, emits({attachment: UploadFailed(exception,  mediaType: MediaType.image)}));
+          bloc.uploadsStream,
+          emits({
+            attachment: UploadFailed(exception, mediaType: MediaType.image)
+          }));
     });
   });
 }
