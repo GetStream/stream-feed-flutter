@@ -14,6 +14,7 @@ class ReactiveElevatedButton extends StatefulWidget {
     required this.textEditingController,
     required this.label,
     required this.onSend,
+    this.buttonStyle,
   }) : super(key: key);
 
   /// TODO: document me
@@ -24,6 +25,8 @@ class ReactiveElevatedButton extends StatefulWidget {
 
   /// TODO: document me
   final String label;
+
+  final ButtonStyle? buttonStyle;
 
   @override
   _ReactiveElevatedButtonState createState() => _ReactiveElevatedButtonState();
@@ -71,7 +74,7 @@ class _ReactiveElevatedButtonState extends State<ReactiveElevatedButton> {
                     widget.textEditingController.clear();
                   }
                 : null,
-
+            style: widget.buttonStyle,
             child: Text(widget.label),
           ),
         );
