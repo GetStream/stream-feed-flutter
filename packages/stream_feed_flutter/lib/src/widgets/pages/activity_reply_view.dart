@@ -46,6 +46,10 @@ class _ActivityReplyViewState extends State<ActivityReplyView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 0,
+        iconTheme: Theme.of(context).iconTheme,
+        titleTextStyle: Theme.of(context).textTheme.headline6,
         title: const Text('Reply'),
         actions: [
           ReactiveElevatedButton(
