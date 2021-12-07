@@ -8,10 +8,12 @@ import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/group.dart';
+import 'package:stream_feed/src/core/models/notification_feed_meta.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/src/core/models/user.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -245,7 +247,7 @@ void main() {
       extraContext: const {'test': 'test'},
       origin: 'test',
       score: 1,
-      extraData: const {'test': 'test'},
+      extraData: const {'test': null},
       reactionCounts: const {'test': 1},
       ownReactions: {
         'test': [reaction1]
@@ -264,7 +266,7 @@ void main() {
     //that's why it's not explicit in the json fixture
     // all the extra data other than the default fields in json will ultimately
     // gets collected as a field extra_data of type Map
-    expect(enrichedActivityFromJson.extraData, {'test': 'test'});
+    expect(enrichedActivityFromJson.extraData, {'test': null});
   });
 
   test('EnrichedActivity with CollectionEntry object', () {
@@ -424,6 +426,13 @@ void main() {
     final otherForeignIdTimePair =
         ForeignIdTimePair('foreignID', DateTime(2021, 04, 03));
     expect(foreignIdTimePair, otherForeignIdTimePair);
+  });
+
+  test('NotificationFeedMeta', () {
+    final notificationFeedMeta =
+        NotificationFeedMeta(unreadCount: 1, unseenCount: 1);
+    expect(NotificationFeedMeta.fromJson({'unread': 1, 'unseen': 1}),
+        notificationFeedMeta);
   });
 
   group('NotificationGroup', () {
@@ -794,6 +803,7 @@ void main() {
   });
 
   test('Follow', () {
+    const converter = DateTimeUTCConverter();
     final followJson = {
       'feed_id': 'timeline:feedId',
       'target_id': 'user:userId',
@@ -803,15 +813,15 @@ void main() {
     final follow = Follow(
         feedId: 'timeline:feedId',
         targetId: 'user:userId',
-        createdAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'),
-        updatedAt: DateTime.parse('2021-05-14T19:58:27.274792063Z'));
+        createdAt: converter.fromJson('2021-05-14T19:58:27.274792063Z'),
+        updatedAt: converter.fromJson('2021-05-14T19:58:27.274792063Z'));
 
     expect(follow, Follow.fromJson(followJson));
     expect(follow.toJson(), {
       'feed_id': 'timeline:feedId',
       'target_id': 'user:userId',
-      'created_at': '2021-05-14T19:58:27.274792Z',
-      'updated_at': '2021-05-14T19:58:27.274792Z'
+      'created_at': '2021-05-14T19:58:27-00:00',
+      'updated_at': '2021-05-14T19:58:27-00:00'
     });
   });
 
