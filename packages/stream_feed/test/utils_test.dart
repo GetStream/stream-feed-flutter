@@ -1,5 +1,6 @@
 import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/serializer.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -55,6 +56,21 @@ void main() {
     test('moveKeysToMapInPlace', () {
       final serializer = Serializer.moveKeysToRoot({'test': 'test'}, ['test']);
       expect(serializer, {'test': 'test', 'extra_data': {}});
+    });
+  });
+
+  group('DateTimeUTConverter', () {
+    const converter = DateTimeUTCConverter();
+    test('fromJson sample 1', () {
+      const rawDate = '2021-05-26T14:23:33.918391';
+      final convertedDate = converter.fromJson(rawDate);
+      expect(convertedDate.isUtc, true);
+    });
+
+    test('fromJson sample 2', () {
+      const rawDate = '2021-05-14T19:58:27.274792063Z';
+      final convertedDate = converter.fromJson(rawDate);
+      expect(convertedDate.isUtc, true); //
     });
   });
 }
