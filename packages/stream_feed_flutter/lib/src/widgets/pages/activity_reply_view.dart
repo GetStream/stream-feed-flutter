@@ -61,11 +61,11 @@ class _ActivityReplyViewState extends State<ActivityReplyView> {
             onSend: (inputText) async {
               if (inputText.isNotEmpty) {
                 await FeedProvider.of(context).bloc.onAddReaction(
-                  kind: 'comment',
-                  data: {'text': inputText.trim()},
-                  activity: widget.parentActivity,
-                  feedGroup: widget.feedGroup,
-                );
+                      kind: 'comment',
+                      data: {'text': inputText.trim()},
+                      activity: widget.parentActivity,
+                      feedGroup: widget.feedGroup,
+                    );
                 Navigator.of(context).pop();
               }
             },
