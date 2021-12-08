@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// Defines a piece of media present in a feed.
 @immutable
 class MediaUri extends Equatable {
-  /// Builds a [Media].
+  /// Creates a [MediaUri].
   const MediaUri({required this.uri, MediaType? mediaType})
       : _mediaType = mediaType;
 
