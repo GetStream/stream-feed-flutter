@@ -74,7 +74,6 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 class UploadListCore extends StatefulWidget {
   const UploadListCore({
     Key? key,
-    // required this.files,
     required this.uploadController,
     this.uploadsBuilder,
     this.onUploadSuccess,
@@ -86,7 +85,10 @@ class UploadListCore extends StatefulWidget {
     this.onMediaPreview,
     this.stateIconPosition = StateIconPosition.right,
   }) : super(key: key);
+
   final OnMediaPreview? onMediaPreview;
+
+  /// Position of the closed icon
   final StateIconPosition stateIconPosition;
 
   /// An error widget to show when an error occurs
@@ -98,11 +100,20 @@ class UploadListCore extends StatefulWidget {
   /// A widget to show when the feed is empty
   final Widget onEmptyWidget;
 
-  // final List<AttachmentFile> files;
+  /// A callback to build a widget based on the upload state
   final UploadsBuilder? uploadsBuilder;
+
+  /// A callback to build a widget to show when the upload is successful
   final OnUploadSuccess? onUploadSuccess;
+
+  /// A callback to build a widget to show when the upload is in progress
   final OnUploadProgress? onUploadProgress;
+
+  /// A callback to build a widget to show when the upload failed
   final OnUploadFailed? onUploadFailed;
+
+    /// The upload controller
+    /// uploadMedias()
   final UploadController uploadController;
 
   @override

@@ -142,9 +142,17 @@ class UploadController {
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
 
-  /// Remove upload from controller
+  /// Remove upload from controller and from cdn
   void removeUpload(AttachmentFile file) {
-    final newMap = stateMap.value..removeWhere((key, value) => key == file);
+    final entry = stateMap.value[file];
+    if (entry is UploadSuccess) {
+      if(entry.mediaType == MediaType.image) {
+        client.images.delete(entry.mediaUri.uri.toString());
+      } else {
+        client.files.delete(entry.mediaUri.uri.toString());
+      }
+    }
+    final newMap = stateMap.value..remove(file);
     stateMap.add(newMap);
   }
 

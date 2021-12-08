@@ -98,6 +98,8 @@ main() {
                 cancelToken: mockCancelToken,
                 onSendProgress: any(named: 'onSendProgress')))
             .thenAnswer((_) async => audioCdnUrl2);
+        when(() => mockFiles.delete(audioCdnUrl))
+            .thenAnswer((_) async => Future.value());
 
         final bloc = UploadController(mockClient);
         await bloc.uploadFile(
@@ -121,6 +123,8 @@ main() {
             }));
 
         bloc.removeUpload(audioAttachment);
+
+        verify(() => mockFiles.delete(audioCdnUrl));
         await expectLater(
             bloc.uploadsStream,
             emits({
@@ -231,6 +235,8 @@ main() {
                 cancelToken: mockCancelToken,
                 onSendProgress: any(named: 'onSendProgress')))
             .thenAnswer((_) async => cdnUrl2);
+        when(() => mockImages.delete(cdnUrl))
+            .thenAnswer((_) async => Future.value());
 
         final bloc = UploadController(mockClient);
         await bloc.uploadImage(
@@ -252,6 +258,7 @@ main() {
             }));
 
         bloc.removeUpload(attachment);
+        verify(() => mockImages.delete(cdnUrl));
         await expectLater(
             bloc.uploadsStream,
             emits({
