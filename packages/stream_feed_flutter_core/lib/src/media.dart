@@ -15,7 +15,7 @@ class MediaUri extends Equatable {
   /// The URL for this media.
   final Uri uri;
 
-  /// Validates a string to check if it's a url or not
+  /// Validates a string to check if it's a URL or not.
   bool get isValidUrl => uri.hasAbsolutePath;
 
   /// The file extension of this media
