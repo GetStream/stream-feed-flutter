@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/reactive_elevated_button.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 // ignore_for_file: cascade_invocations
@@ -45,15 +46,23 @@ class _ActivityReplyViewState extends State<ActivityReplyView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 0,
+        iconTheme: Theme.of(context).iconTheme,
+        titleTextStyle: Theme.of(context).textTheme.headline6,
         title: const Text('Reply'),
         actions: [
-          ActionChip(
-            label: const Text('Post'),
-            onPressed: () async {
-              if (_replyController.text.isNotEmpty) {
+          ReactiveElevatedButton(
+            textEditingController: _replyController,
+            label: 'Post',
+            buttonStyle: ElevatedButton.styleFrom(
+              shape: const StadiumBorder(),
+            ),
+            onSend: (inputText) async {
+              if (inputText.isNotEmpty) {
                 await FeedProvider.of(context).bloc.onAddReaction(
                       kind: 'comment',
-                      data: {'text': _replyController.text.trim()},
+                      data: {'text': inputText.trim()},
                       activity: widget.parentActivity,
                       feedGroup: widget.feedGroup,
                     );
@@ -68,7 +77,7 @@ class _ActivityReplyViewState extends State<ActivityReplyView> {
           children: [
             ActivityWidget(
               activity: widget.parentActivity,
-              nameJsonKey: widget.nameJsonKey!,
+              nameJsonKey: widget.nameJsonKey,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
