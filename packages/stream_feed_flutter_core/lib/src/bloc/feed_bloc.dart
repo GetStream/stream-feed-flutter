@@ -47,7 +47,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   void clearUploadController() => uploadController.clear();
 
-  /// Upload files and keep track of the state
+  /// Upload files and keep track of the state.
   Future<void> uploadImages(List<AttachmentFile> files) =>
       uploadController.uploadImages(files);
 
