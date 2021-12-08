@@ -5,7 +5,6 @@ import 'package:stream_feed_flutter_core/src/flat_feed_core.dart';
 import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/reactions_list_core.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
-import 'package:stream_feed_flutter_core/src/upload_core.dart';
 
 /* BUILDERS */
 /// {@template enrichedFeedBuilder}
@@ -18,7 +17,9 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
 );
 
 typedef UploadsBuilder = Widget Function(
-    BuildContext context, List<FileUploadState> uploads, int idx);
+    BuildContext context, List<FileUploadState> uploads);
+
+typedef UploadsErrorBuilder = Widget Function(Object error);
 
 typedef OnUploadSuccess = Widget Function(
     AttachmentFile file, UploadSuccess success);

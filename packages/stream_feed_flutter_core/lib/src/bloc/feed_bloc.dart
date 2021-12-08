@@ -7,7 +7,7 @@ import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
-/// The generic version of feedBloc
+/// The generic version of `FeedBloc`.
 ///
 /// {@macro feedBloc}
 /// {@macro genericParameters}
@@ -24,9 +24,13 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// The underlying analytics client
   final StreamAnalytics? analyticsClient;
 
+  /// Controller to manage reactions.
   late ReactionsController reactionsController = ReactionsController();
+
+  /// Controller to manage file uploads.
   late UploadController uploadController = UploadController(client);
 
+  /// Controller to manage activities.
   late ActivitiesController<A, Ob, T, Or> activitiesController =
       ActivitiesController<A, Ob, T, Or>();
 
@@ -43,21 +47,17 @@ class GenericFeedBloc<A, Ob, T, Or> {
   Stream<Map<AttachmentFile, UploadState>> get uploadsStream =>
       uploadController.uploadsStream;
 
-  /// Return the current state of the uploads
-  ///
-  /// [MediaUri].type or [MediaUri].fileExt are pretty
-  /// useful for serialization
-  List<MediaUri> getMediaUris() => uploadController.getMediaUris();
+  /// Returns a list of uploads [MediaUri]s.
+  List<MediaUri> getUploadMediaURIs() => uploadController.getMediaUris();
 
-  /// Clear the upload controller
-  /// needs to be invoke once you have finished uploading
-  void clearUploadController() => uploadController.clear();
+  /// Clears all file uploads from the [uploadController].
+  void clearUploads() => uploadController.clear();
 
-  /// Upload an image and keep track of the state.
+  /// Upload files and keep track of the state.
   Future<void> uploadImages(List<AttachmentFile> files) =>
       uploadController.uploadImages(files);
 
-  /// Upload an image and keep track of the state.
+  /// Upload file and keep track of the state.
   Future<void> uploadImage(AttachmentFile file) =>
       uploadController.uploadImage(file);
 
@@ -90,11 +90,11 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return reactionsController.getStream(activityId, kind);
   }
 
-  ///  Clear activities for a given feedGroup
+  ///  Clear activities for a given `feedGroup`.
   void clearActivities(String feedGroup) =>
       activitiesController.clearActivities(feedGroup);
 
-  ///  Clear all activities for a given feedGroups
+  ///  Clear all activities for the given `feedGroups`.
   void clearAllActivities(List<String> feedGroups) =>
       activitiesController.clearAllActivities(feedGroups);
 

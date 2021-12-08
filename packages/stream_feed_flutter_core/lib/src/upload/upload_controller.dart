@@ -90,7 +90,7 @@ class UploadController {
                   mediaUri: MediaUri(uri: uri, mediaType: mediaType)),
             )
           : stateMap.value.upsert(attachmentFile,
-              UploadFailed('Not a valid uri', mediaType: mediaType));
+              UploadFailed('Not a valid URI', mediaType: mediaType));
       stateMap.add(newState);
     } catch (e) {
       if (e is SocketException) {
@@ -144,7 +144,7 @@ class UploadController {
                   mediaUri: MediaUri(uri: uri, mediaType: mediaType)),
             )
           : stateMap.value.upsert(attachmentFile,
-              UploadFailed('Not a valid uri', mediaType: mediaType));
+              const UploadFailed('Not a valid URI', mediaType: mediaType));
       stateMap.add(newState);
     } catch (e) {
       if (e is SocketException) {
