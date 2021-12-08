@@ -43,16 +43,41 @@ class GenericFeedBloc<A, Ob, T, Or> {
   Stream<Map<AttachmentFile, UploadState>> get uploadsStream =>
       uploadController.uploadsStream;
 
+  /// Return the current state of the uploads
+  ///
+  /// [MediaUri].type or [MediaUri].fileExt are pretty
+  /// useful for serialization
   List<MediaUri> getMediaUris() => uploadController.getMediaUris();
 
+  /// Clear the upload controller
+  /// needs to be invoke once you have finished uploading
   void clearUploadController() => uploadController.clear();
 
-  /// Upload files and keep track of the state.
+  /// Upload an image and keep track of the state.
   Future<void> uploadImages(List<AttachmentFile> files) =>
       uploadController.uploadImages(files);
 
+  /// Upload an image and keep track of the state.
   Future<void> uploadImage(AttachmentFile file) =>
       uploadController.uploadImage(file);
+
+  /// A smart method that will guess the type of the files
+  /// and upload them using the correct storage method.
+  Future<void> uploadMedias(List<AttachmentFile> files) =>
+      uploadController.uploadMedias(files);
+
+  /// A smart method that will guess the type of the file
+  /// and upload it using the correct storage method.
+  Future<void> uploadMedia(AttachmentFile file) =>
+      uploadController.uploadMedia(file);
+
+  /// Upload files of a specific type and keep track of the state.
+  Future<void> uploadFiles(List<AttachmentFile> files, MediaType type) =>
+      uploadController.uploadFiles(files, type);
+
+  /// Upload file of a specific type and keep track of the state.
+  Future<void> uploadFile(AttachmentFile file, MediaType type) =>
+      uploadController.uploadFile(file, type);
 
   /// The current activities list as a stream.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(

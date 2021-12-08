@@ -13,41 +13,59 @@ extension MapUpsert<K, V> on Map<K, V> {
   }
 }
 
+/// The upload controller
+/// is a class that keeps track of the upload state of the given attachments
+/// and provides a stream of the upload state
+/// and a stream of the upload progress
+/// and a stream of the upload error
+/// and a stream of the upload result (cdnUrl and media type)
 class UploadController {
   UploadController(this.client);
+
+  /// Store cancel token for each upload
   late Map<AttachmentFile, CancelToken> cancelMap = {};
+
+  /// Stream Feed Client
   final StreamFeedClient client;
 
+  ///A StreamController to keep the state of the uploads
   @visibleForTesting
   late BehaviorSubject<Map<AttachmentFile, UploadState>> stateMap =
       BehaviorSubject.seeded({});
 
+  /// The stream of the upload state
   Stream<Map<AttachmentFile, UploadState>> get uploadsStream => stateMap.stream;
 
+  /// Closes the controller
   void close() {
     stateMap.close();
   }
 
+  /// Cancels the upload of the given [AttachmentFile]
   void cancelUpload(AttachmentFile attachmentFile) {
     final token = cancelMap[attachmentFile];
     token!.cancel('cancelled');
   }
 
-  /// Convenient method to upload a media
-  /// Let you override the media type
-  /// If you have a file picker per media for example
-  /// it's safer to override the mediaType
-  /// otherwise will guess it from the file extension
+  /// A smart method that will guess the type of the files and upload them
+  /// using the correct storage method.
+  Future<void> uploadMedias(List<AttachmentFile> attachmentFiles) async {
+    await Future.wait(attachmentFiles.map(uploadMedia));
+  }
+
+  /// A smart method that will guess the type of the file and upload it
+  /// using the correct storage method.
   Future<void> uploadMedia(AttachmentFile attachmentFile,
-      [MediaType? mediaType, CancelToken? cancelToken]) async {
-    final mediaUri =
-        MediaUri(uri: Uri.file(attachmentFile.path!), mediaType: mediaType);
+      [CancelToken? cancelToken]) async {
+    //TODO: path doesn't exist
+    final mediaUri = MediaUri(uri: Uri.file(attachmentFile.path!));
 
     mediaUri.type == MediaType.image
         ? uploadImage(attachmentFile, cancelToken)
         : uploadFile(attachmentFile, mediaUri.type, cancelToken);
   }
 
+  /// Uploads the given [AttachmentFile] as a file (other than an image)
   Future<void> uploadFile(AttachmentFile attachmentFile, MediaType mediaType,
       [CancelToken? cancelToken]) async {
     _initController(attachmentFile, mediaType, cancelToken);
@@ -89,10 +107,19 @@ class UploadController {
     }
   }
 
+  /// Upload several images
   Future<void> uploadImages(List<AttachmentFile> attachmentFiles) async {
     await Future.wait(attachmentFiles.map(uploadImage));
   }
 
+  /// Upload files of a specific type
+  Future<void> uploadFiles(
+      List<AttachmentFile> attachmentFiles, MediaType mediaType) async {
+    await Future.wait(attachmentFiles
+        .map((attachmentFile) => uploadFile(attachmentFile, mediaType)));
+  }
+
+  /// Upload an image
   Future<void> uploadImage(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) async {
     const mediaType = MediaType.image;
@@ -134,6 +161,7 @@ class UploadController {
     }
   }
 
+  /// Init the controller
   void _initController(AttachmentFile attachmentFile, MediaType mediaType,
       [CancelToken? cancelToken]) {
     final newState = stateMap.value
@@ -142,11 +170,11 @@ class UploadController {
     cancelMap[attachmentFile] = cancelToken ?? CancelToken();
   }
 
-  /// Remove upload from controller and from cdn
+  /// Remove upload from controller and delete from cdn
   void removeUpload(AttachmentFile file) {
     final entry = stateMap.value[file];
     if (entry is UploadSuccess) {
-      if(entry.mediaType == MediaType.image) {
+      if (entry.mediaType == MediaType.image) {
         client.images.delete(entry.mediaUri.uri.toString());
       } else {
         client.files.delete(entry.mediaUri.uri.toString());
@@ -156,12 +184,13 @@ class UploadController {
     stateMap.add(newMap);
   }
 
+  /// Clear the controller
   void clear() {
     final newMap = stateMap.value..clear();
     stateMap.add(newMap);
   }
 
-  /// Get urls
+  /// Get get MediaUris
   List<MediaUri> getMediaUris() {
     final successes = stateMap.value.values
         .map((state) => state)

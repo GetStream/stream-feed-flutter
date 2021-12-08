@@ -113,8 +113,8 @@ class UploadListCore extends StatefulWidget {
   /// A callback to build a widget to show when the upload failed
   final OnUploadFailed? onUploadFailed;
 
-    /// The upload controller
-    /// uploadMedias()
+  /// The upload controller
+  /// uploadMedias()
   final UploadController uploadController;
 
   @override
