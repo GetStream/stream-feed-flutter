@@ -5,7 +5,8 @@ import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-///Usage
+/// Usage:
+///
 ///```dart
 /// import 'package:image_picker/image_picker.dart';
 /// class ComposeScreen extends StatefulWidget {
