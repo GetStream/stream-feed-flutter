@@ -126,7 +126,6 @@ class _UploadListCoreState extends State<UploadListCore> {
   Widget build(BuildContext context) {
     return StreamBuilder<Map<AttachmentFile, UploadState>>(
         stream: widget.uploadController.uploadsStream,
-        // bloc.uploadFiles(files) or bloc.uploadFile(file)
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return widget.onErrorWidget;
