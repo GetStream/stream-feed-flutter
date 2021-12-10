@@ -13,27 +13,28 @@ extension MapUpsert<K, V> on Map<K, V> {
   }
 }
 
-/// The upload controller
-/// is a class that keeps track of the upload state of the given attachments
-/// and provides a stream of the upload state
-/// and a stream of the upload progress
-/// and a stream of the upload error
-/// and a stream of the upload result (cdnUrl and media type)
+/// The upload controller manages all logic with the upload state of
+/// attachments. Such as:
+/// - a stream of the upload state, progress, error, result: [uploadsStream].
+/// - uploading files and images: [uploadFile], [uploadImage], [uploadImages].
+/// - remove uploads: [removeUpload]
+/// - clear all uploads: [clear]
 class UploadController {
+  /// Creates a new upload controller to manage file/attachment uploads.
   UploadController(this.client);
 
-  /// Store cancel token for each upload
+  /// Store cancel token for each upload.
   late Map<AttachmentFile, CancelToken> cancelMap = {};
 
-  /// Stream Feed Client
+  /// Stream Feed Client.
   final StreamFeedClient client;
 
-  ///A StreamController to keep the state of the uploads
+  /// A StreamController to keep the state of the uploads.
   @visibleForTesting
   late BehaviorSubject<Map<AttachmentFile, UploadState>> stateMap =
       BehaviorSubject.seeded({});
 
-  /// The stream of the upload state
+  /// The current attachment list as a stream.
   Stream<Map<AttachmentFile, UploadState>> get uploadsStream => stateMap.stream;
 
   /// Closes the controller
@@ -107,19 +108,19 @@ class UploadController {
     }
   }
 
-  /// Upload several images
+  /// Upload several images.
   Future<void> uploadImages(List<AttachmentFile> attachmentFiles) async {
     await Future.wait(attachmentFiles.map(uploadImage));
   }
 
-  /// Upload files of a specific type
+  /// Upload files of a specific type.
   Future<void> uploadFiles(
       List<AttachmentFile> attachmentFiles, MediaType mediaType) async {
     await Future.wait(attachmentFiles
         .map((attachmentFile) => uploadFile(attachmentFile, mediaType)));
   }
 
-  /// Upload an image
+  /// Upload an image.
   Future<void> uploadImage(AttachmentFile attachmentFile,
       [CancelToken? cancelToken]) async {
     const mediaType = MediaType.image;
@@ -184,13 +185,13 @@ class UploadController {
     stateMap.add(newMap);
   }
 
-  /// Clear the controller
+  /// Clears all file uploads from the upload ontroller.
   void clear() {
     final newMap = stateMap.value..clear();
     stateMap.add(newMap);
   }
 
-  /// Get get MediaUris
+  /// Returns a list of uploads [MediaUri]s.
   List<MediaUri> getMediaUris() {
     final successes = stateMap.value.values
         .map((state) => state)

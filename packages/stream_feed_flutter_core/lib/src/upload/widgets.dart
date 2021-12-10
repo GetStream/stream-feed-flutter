@@ -8,56 +8,60 @@ import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-class FileUploadHandlers {
-  const FileUploadHandlers(this.uploadController);
-
-  final UploadController uploadController;
-
-  void onRemoveUpload(AttachmentFile file) {
-    uploadController.removeUpload(file);
-  }
-
-  void onCancelUpload(AttachmentFile file) {
-    uploadController.cancelUpload(file);
-  }
-
-  Future<void> onRetryUpload(AttachmentFile file) {
-    return uploadController.uploadImage(file);
-  }
-}
-
 /// A convenience widget to easily display the state of a file upload.
 ///
-/// Create a custom view by providing:
-/// - [onMediaPreview]
-/// - [onUploadSuccess]
-/// - [onUploadProgress]
-/// - [onUploadFailed]
-///
-/// Extend [FileUploadHandlers] to override the default upload handlers. These
-/// hanlders are used in the default
+/// ```dart
+/// return FileUploadStateWidget(
+///   fileState: uploads[index],
+///   onRemoveUpload: (attachment) {
+///     return uploadController.removeUpload(attachment);
+///   },
+///   onCancelUpload: (attachment) {
+///     uploadController.cancelUpload(attachment);
+///   },
+///   onRetryUpload: (attachment) async {
+///     return uploadController.uploadImage(attachment);
+///   },
+/// );
+/// ```
 class FileUploadStateWidget extends StatelessWidget {
+  /// Create a new [FileUploadStateWidget].
+  ///
+  /// Customize view by providing:
+  /// - [mediaPreviewBuilder]
+  /// - [uploadSuccessBuilder]
+  /// - [uploadProgressBuilder]
+  /// - [uploadFailedBuilder]
+  ///
+  /// These handlers are required to define behaviour:
+  /// - [onRetryUpload] - retry upload callback
+  /// - [onCancelUpload] - cancel upload callback
+  /// - [onRemoveUpload] - remove upload callback
   const FileUploadStateWidget({
     Key? key,
     required this.fileState,
-    required this.fileUploadHandlers,
+    required this.onRetryUpload,
+    required this.onCancelUpload,
+    required this.onRemoveUpload,
     this.stateIconPosition = StateIconPosition.left,
-    this.onMediaPreview,
-    this.onUploadSuccess,
-    this.onUploadProgress,
-    this.onUploadFailed,
+    this.mediaPreviewBuilder,
+    this.uploadSuccessBuilder,
+    this.uploadProgressBuilder,
+    this.uploadFailedBuilder,
   }) : super(key: key);
 
   /// The state of the file upload.
   final FileUploadState fileState;
-  final FileUploadHandlers fileUploadHandlers;
+  final OnRetryUpload onRetryUpload;
+  final OnCancelUpload onCancelUpload;
+  final OnRemoveUpload onRemoveUpload;
 
   final StateIconPosition stateIconPosition;
 
-  final OnMediaPreview? onMediaPreview;
-  final OnUploadSuccess? onUploadSuccess;
-  final OnUploadProgress? onUploadProgress;
-  final OnUploadFailed? onUploadFailed;
+  final MediaPreviewBuilder? mediaPreviewBuilder;
+  final UploadSuccessBuilder? uploadSuccessBuilder;
+  final UploadProgressBuilder? uploadProgressBuilder;
+  final UploadFailedBuilder? uploadFailedBuilder;
 
   UploadState get _state => fileState.state;
   AttachmentFile get _file => fileState.file;
@@ -67,21 +71,21 @@ class FileUploadStateWidget extends StatelessWidget {
     if (_state is UploadFailed) {
       final fail = _state
           as UploadFailed; //TODO: wait for Dart proposal on field promotion or Enhanced Enum (Dart 2.15)
-      return onUploadFailed?.call(_file, fail) ??
+      return uploadFailedBuilder?.call(_file, fail) ??
           UploadFailedWidget(
             _file,
             stateIconPosition: stateIconPosition,
-            onMediaPreview: onMediaPreview,
-            onRetryUpload: fileUploadHandlers.onRetryUpload,
+            mediaPreviewBuilder: mediaPreviewBuilder,
+            onRetryUpload: onRetryUpload,
             mediaType: fail.mediaType,
           );
     } else if (_state is UploadSuccess) {
       final success = _state as UploadSuccess;
-      return onUploadSuccess?.call(_file, success) ??
+      return uploadSuccessBuilder?.call(_file, success) ??
           UploadSuccessWidget(
             _file,
-            onMediaPreview: onMediaPreview,
-            onRemoveUpload: fileUploadHandlers.onRemoveUpload,
+            mediaPreviewBuilder: mediaPreviewBuilder,
+            onRemoveUpload: onRemoveUpload,
             stateIconPosition: stateIconPosition,
             mediaType: success.mediaType,
           );
@@ -89,22 +93,22 @@ class FileUploadStateWidget extends StatelessWidget {
       final progress = _state as UploadProgress;
       final totalBytes = progress.totalBytes;
       final sentBytes = progress.sentBytes;
-      return onUploadProgress?.call(_file, progress) ??
+      return uploadProgressBuilder?.call(_file, progress) ??
           UploadProgressWidget(
             _file,
             stateIconPosition: stateIconPosition,
-            onMediaPreview: onMediaPreview,
+            mediaPreviewBuilder: mediaPreviewBuilder,
             totalBytes: totalBytes,
             sentBytes: sentBytes,
-            onCancelUpload: fileUploadHandlers.onCancelUpload,
+            onCancelUpload: onCancelUpload,
             mediaType: progress.mediaType,
           );
     }
     return UploadSuccessWidget(
       _file,
-      onMediaPreview: onMediaPreview,
+      mediaPreviewBuilder: mediaPreviewBuilder,
       stateIconPosition: stateIconPosition,
-      onRemoveUpload: fileUploadHandlers.onRemoveUpload,
+      onRemoveUpload: onRemoveUpload,
       mediaType: _state.mediaType,
     );
   }
@@ -114,18 +118,22 @@ class FileUploadStateWidget extends StatelessWidget {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<FileUploadState>('fileState', fileState))
-      ..add((DiagnosticsProperty<FileUploadHandlers>(
-          'fileUploadHandlers', fileUploadHandlers)))
+      ..add(
+          ObjectFlagProperty<OnRetryUpload>.has('onRetryUpload', onRetryUpload))
+      ..add(ObjectFlagProperty<OnCancelUpload>.has(
+          'onCancelUpload', onCancelUpload))
+      ..add(ObjectFlagProperty<OnRemoveUpload>.has(
+          'onRemoveUpload', onRemoveUpload))
       ..add(EnumProperty<StateIconPosition>(
           'stateIconPosition', stateIconPosition))
-      ..add(ObjectFlagProperty<OnMediaPreview?>.has(
-          'onMediaPreview', onMediaPreview))
-      ..add(ObjectFlagProperty<OnUploadSuccess?>.has(
-          'onUploadSuccess', onUploadSuccess))
-      ..add(ObjectFlagProperty<OnUploadProgress?>.has(
-          'onUploadProgress', onUploadProgress))
-      ..add(ObjectFlagProperty<OnUploadFailed?>.has(
-          'onUploadFailed', onUploadFailed));
+      ..add(ObjectFlagProperty<MediaPreviewBuilder?>.has(
+          'onMediaPreview', mediaPreviewBuilder))
+      ..add(ObjectFlagProperty<UploadSuccessBuilder?>.has(
+          'onUploadSuccess', uploadSuccessBuilder))
+      ..add(ObjectFlagProperty<UploadProgressBuilder?>.has(
+          'onUploadProgress', uploadProgressBuilder))
+      ..add(ObjectFlagProperty<UploadFailedBuilder?>.has(
+          'onUploadFailed', uploadFailedBuilder));
   }
 }
 
@@ -135,7 +143,7 @@ class ImagePreview extends StatelessWidget {
     required this.file,
     required this.mediaType,
   })  : assert(mediaType == MediaType.image || mediaType == MediaType.gif,
-            'we only support images out of the box, please override onMediaPreview callback'),
+            '''we only support images out of the box, please override onMediaPreview callback'''),
         super(key: key);
 
   final AttachmentFile file;
@@ -154,20 +162,29 @@ class ImagePreview extends StatelessWidget {
       child: Image.file(File(file.path!)),
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<AttachmentFile>('file', file))
+      ..add(EnumProperty<MediaType>('mediaType', mediaType));
+  }
 }
 
 class UploadSuccessWidget extends StatelessWidget {
   const UploadSuccessWidget(
     this.file, {
     Key? key,
-    this.onMediaPreview,
+    this.mediaPreviewBuilder,
     required this.onRemoveUpload,
     required this.stateIconPosition,
     required this.mediaType,
   }) : super(key: key);
 
   final AttachmentFile file;
-  final OnMediaPreview? onMediaPreview;
+
+  final MediaPreviewBuilder? mediaPreviewBuilder;
   final OnRemoveUpload onRemoveUpload;
   final StateIconPosition stateIconPosition;
   final MediaType mediaType;
@@ -175,11 +192,12 @@ class UploadSuccessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
-      mediaPreview: onMediaPreview?.call(file: file, mediaType: mediaType) ??
-          ImagePreview(
-            file: file,
-            mediaType: mediaType,
-          ),
+      mediaPreview:
+          mediaPreviewBuilder?.call(file: file, mediaType: mediaType) ??
+              ImagePreview(
+                file: file,
+                mediaType: mediaType,
+              ),
       stateIconPosition: stateIconPosition,
       stateIcon: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -194,6 +212,20 @@ class UploadSuccessWidget extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<AttachmentFile>('file', file))
+      ..add(ObjectFlagProperty<MediaPreviewBuilder?>.has(
+          'mediaPreviewBuilder', mediaPreviewBuilder))
+      ..add(ObjectFlagProperty<OnRemoveUpload>.has(
+          'onRemoveUpload', onRemoveUpload))
+      ..add(EnumProperty<StateIconPosition>(
+          'stateIconPosition', stateIconPosition))
+      ..add(EnumProperty<MediaType>('mediaType', mediaType));
+  }
 }
 
 class UploadProgressWidget extends StatefulWidget {
@@ -205,19 +237,35 @@ class UploadProgressWidget extends StatefulWidget {
     required this.onCancelUpload,
     required this.stateIconPosition,
     required this.mediaType,
-    this.onMediaPreview,
+    this.mediaPreviewBuilder,
   }) : super(key: key);
 
-  final StateIconPosition stateIconPosition;
-  final OnMediaPreview? onMediaPreview;
-  final MediaType mediaType;
   final AttachmentFile file;
   final int totalBytes;
   final int sentBytes;
   final OnCancelUpload onCancelUpload;
+  final StateIconPosition stateIconPosition;
+  final MediaType mediaType;
+  final MediaPreviewBuilder? mediaPreviewBuilder;
 
   @override
   State<UploadProgressWidget> createState() => _UploadProgressWidgetState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<AttachmentFile>('file', file))
+      ..add(IntProperty('totalBytes', totalBytes))
+      ..add(IntProperty('sentBytes', sentBytes))
+      ..add(ObjectFlagProperty<OnCancelUpload>.has(
+          'onCancelUpload', onCancelUpload))
+      ..add(EnumProperty<StateIconPosition>(
+          'stateIconPosition', stateIconPosition))
+      ..add(EnumProperty<MediaType>('mediaType', mediaType))
+      ..add(ObjectFlagProperty<MediaPreviewBuilder?>.has(
+          'mediaPreviewBuilder', mediaPreviewBuilder));
+  }
 }
 
 class _UploadProgressWidgetState extends State<UploadProgressWidget> {
@@ -227,7 +275,7 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
       stateIconPosition: widget.stateIconPosition,
-      mediaPreview: widget.onMediaPreview
+      mediaPreview: widget.mediaPreviewBuilder
               ?.call(file: widget.file, mediaType: widget.mediaType) ??
           ImagePreview(
             file: widget.file,
@@ -267,23 +315,24 @@ class UploadFailedWidget extends StatelessWidget {
     this.file, {
     Key? key,
     required this.onRetryUpload,
-    this.onMediaPreview,
     required this.stateIconPosition,
     required this.mediaType,
+    this.mediaPreviewBuilder,
   }) : super(key: key);
 
-  final MediaType mediaType;
-  final StateIconPosition stateIconPosition;
-  final OnMediaPreview? onMediaPreview;
-  final OnRetryUpload onRetryUpload;
-
   final AttachmentFile file;
+  final OnRetryUpload onRetryUpload;
+  final StateIconPosition stateIconPosition;
+  final MediaType mediaType;
+  final MediaPreviewBuilder? mediaPreviewBuilder;
+
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
       stateIconPosition: stateIconPosition,
-      mediaPreview: onMediaPreview?.call(file: file, mediaType: mediaType) ??
-          ImagePreview(file: file, mediaType: mediaType),
+      mediaPreview:
+          mediaPreviewBuilder?.call(file: file, mediaType: mediaType) ??
+              ImagePreview(file: file, mediaType: mediaType),
       stateIcon: GestureDetector(
         behavior: HitTestBehavior.translucent,
         child: const Icon(Icons.refresh),
@@ -292,6 +341,20 @@ class UploadFailedWidget extends StatelessWidget {
         },
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<AttachmentFile>('file', file))
+      ..add(
+          ObjectFlagProperty<OnRetryUpload>.has('onRetryUpload', onRetryUpload))
+      ..add(EnumProperty<StateIconPosition>(
+          'stateIconPosition', stateIconPosition))
+      ..add(EnumProperty<MediaType>('mediaType', mediaType))
+      ..add(ObjectFlagProperty<MediaPreviewBuilder?>.has(
+          'mediaPreviewBuilder', mediaPreviewBuilder));
   }
 }
 

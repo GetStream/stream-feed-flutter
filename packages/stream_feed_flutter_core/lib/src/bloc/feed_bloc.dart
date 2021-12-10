@@ -1,10 +1,11 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
 import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
-import 'package:stream_feed_flutter_core/src/media.dart';
-import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
 /// The generic version of `FeedBloc`.
@@ -13,7 +14,11 @@ import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 /// {@macro genericParameters}
 class GenericFeedBloc<A, Ob, T, Or> {
   /// {@macro feedBloc}
-  GenericFeedBloc({required this.client, this.analyticsClient});
+  GenericFeedBloc({
+    required this.client,
+    this.analyticsClient,
+    UploadController? uploadController,
+  }) : uploadController = uploadController ?? UploadController(client);
 
   /// The underlying client instance
   final StreamFeedClient client;
@@ -24,79 +29,56 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// The underlying analytics client
   final StreamAnalytics? analyticsClient;
 
-  /// Controller to manage reactions.
-  late ReactionsController reactionsController = ReactionsController();
-
   /// Controller to manage file uploads.
-  late UploadController uploadController = UploadController(client);
+  ///
+  /// A controller is automatically created from the given [client]. Or,
+  /// alternatively, you can pass in your own when creating a `GenericFeedBloc`
+  /// or `FeedBloc`.
+  ///
+  /// ```dart
+  /// GenericFeedBloc(
+  ///    client: client,
+  ///    uploadController: uploadController,
+  /// );
+  /// ```
+  late UploadController uploadController;
 
-  /// Controller to manage activities.
-  late ActivitiesController<A, Ob, T, Or> activitiesController =
-      ActivitiesController<A, Ob, T, Or>();
+  /// Manager for activities.
+  @visibleForTesting
+  late ActivitiesManager<A, Ob, T, Or> activitiesManager =
+      ActivitiesManager<A, Ob, T, Or>();
+
+  /// Manager for reactions.
+  @visibleForTesting
+  late ReactionsManager reactionsManager = ReactionsManager();
 
   /// The current activities list.
   List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
           String feedGroup) =>
-      activitiesController.getActivities(feedGroup);
+      activitiesManager.getActivities(feedGroup);
 
   /// The current reactions list.
   List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
-      reactionsController.getReactions(activityId, reaction);
-
-  /// The current attachment list as a stream.
-  Stream<Map<AttachmentFile, UploadState>> get uploadsStream =>
-      uploadController.uploadsStream;
-
-  /// Returns a list of uploads [MediaUri]s.
-  List<MediaUri> getUploadMediaURIs() => uploadController.getMediaUris();
-
-  /// Clears all file uploads from the [uploadController].
-  void clearUploads() => uploadController.clear();
-
-  /// Upload files and keep track of the state.
-  Future<void> uploadImages(List<AttachmentFile> files) =>
-      uploadController.uploadImages(files);
-
-  /// Upload file and keep track of the state.
-  Future<void> uploadImage(AttachmentFile file) =>
-      uploadController.uploadImage(file);
-
-  /// A smart method that will guess the type of the files
-  /// and upload them using the correct storage method.
-  Future<void> uploadMedias(List<AttachmentFile> files) =>
-      uploadController.uploadMedias(files);
-
-  /// A smart method that will guess the type of the file
-  /// and upload it using the correct storage method.
-  Future<void> uploadMedia(AttachmentFile file) =>
-      uploadController.uploadMedia(file);
-
-  /// Upload files of a specific type and keep track of the state.
-  Future<void> uploadFiles(List<AttachmentFile> files, MediaType type) =>
-      uploadController.uploadFiles(files, type);
-
-  /// Upload file of a specific type and keep track of the state.
-  Future<void> uploadFile(AttachmentFile file, MediaType type) =>
-      uploadController.uploadFile(file, type);
+      reactionsManager.getReactions(activityId, reaction);
 
   /// The current activities list as a stream.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(
           String feedGroup) =>
-      activitiesController.getStream(feedGroup);
+      activitiesManager.getStream(feedGroup);
 
   /// The current reactions list as a stream.
   Stream<List<Reaction>>? getReactionsStream(String activityId,
       [String? kind]) {
-    return reactionsController.getStream(activityId, kind);
+    return reactionsManager.getStream(activityId, kind);
   }
 
   ///  Clear activities for a given `feedGroup`.
   void clearActivities(String feedGroup) =>
-      activitiesController.clearActivities(feedGroup);
+      activitiesManager.clearActivities(feedGroup);
 
   ///  Clear all activities for the given `feedGroups`.
   void clearAllActivities(List<String> feedGroups) =>
-      activitiesController.clearAllActivities(feedGroups);
+      activitiesManager.clearAllActivities(feedGroups);
 
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
@@ -151,7 +133,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     // ignore: cascade_invocations
     _activities.insert(0, enrichedActivity);
 
-    activitiesController.add(feedGroup, _activities);
+    activitiesManager.add(feedGroup, _activities);
 
     await trackAnalytics(
       label: verb,
@@ -177,7 +159,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     final _activities = getActivities(feedGroup) ?? [];
     // ignore: cascade_invocations
     _activities.removeWhere((element) => element.id == activityId);
-    activitiesController.add(feedGroup, _activities);
+    activitiesManager.add(feedGroup, _activities);
   }
 
   /* CHILD REACTIONS */
@@ -218,7 +200,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the rxstream
-    reactionsController
+    reactionsManager
       ..unshiftById(activity.id!, childReaction)
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
 
@@ -261,7 +243,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // remove reaction from rxstream
-    reactionsController
+    reactionsManager
       ..unshiftById(activity.id!, childReaction, ShiftType.decrement)
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
   }
@@ -305,10 +287,9 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // remove reaction from the stream
-    reactionsController.unshiftById(
-        activity.id!, reaction, ShiftType.decrement);
+    reactionsManager.unshiftById(activity.id!, reaction, ShiftType.decrement);
 
-    activitiesController.update(
+    activitiesManager.update(
         feedGroup, _activities.updateIn(updatedActivity, indexPath));
   }
 
@@ -354,9 +335,9 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the stream
-    reactionsController.unshiftById(activity.id!, reaction);
+    reactionsManager.unshiftById(activity.id!, reaction);
 
-    activitiesController.update(
+    activitiesManager.update(
         feedGroup,
         _activities //TODO: handle null safety
             .updateIn(updatedActivity, indexPath));
@@ -392,12 +373,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
     String? kind,
     EnrichmentFlags? flags,
   }) async {
-    reactionsController.init(lookupValue);
+    reactionsManager.init(lookupValue);
     _queryReactionsLoadingControllers[lookupValue] =
         BehaviorSubject.seeded(false);
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
-    if (reactionsController.hasValue(lookupValue)) {
+    if (reactionsManager.hasValue(lookupValue)) {
       _queryReactionsLoadingControllers[lookupValue]!.add(true);
     }
 
@@ -412,14 +393,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
         kind: kind,
       );
       final temp = oldReactions + reactionsResponse;
-      reactionsController.add(lookupValue, temp);
+      reactionsManager.add(lookupValue, temp);
     } catch (e, stk) {
       // reset loading controller
       _queryReactionsLoadingControllers[lookupValue]?.add(false);
-      if (reactionsController.hasValue(lookupValue)) {
+      if (reactionsManager.hasValue(lookupValue)) {
         _queryReactionsLoadingControllers[lookupValue]?.addError(e, stk);
       } else {
-        reactionsController.addError(lookupValue, e, stk);
+        reactionsManager.addError(lookupValue, e, stk);
       }
     }
   }
@@ -442,10 +423,10 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
     //TODO: no way to parameterized marker?
   }) async {
-    activitiesController.init(feedGroup);
+    activitiesManager.init(feedGroup);
     if (_queryActivitiesLoadingController.value == true) return;
 
-    if (activitiesController.hasValue(feedGroup)) {
+    if (activitiesManager.hasValue(feedGroup)) {
       _queryActivitiesLoadingController.add(true);
     }
 
@@ -461,18 +442,18 @@ class GenericFeedBloc<A, Ob, T, Or> {
             ranking: ranking,
           );
 
-      activitiesController.add(feedGroup, activitiesResponse);
-      if (activitiesController.hasValue(feedGroup) &&
+      activitiesManager.add(feedGroup, activitiesResponse);
+      if (activitiesManager.hasValue(feedGroup) &&
           _queryActivitiesLoadingController.value) {
         _queryActivitiesLoadingController.sink.add(false);
       }
     } catch (e, stk) {
       // reset loading controller
       _queryActivitiesLoadingController.add(false);
-      if (activitiesController.hasValue(feedGroup)) {
+      if (activitiesManager.hasValue(feedGroup)) {
         _queryActivitiesLoadingController.addError(e, stk);
       } else {
-        activitiesController.addError(feedGroup, e, stk);
+        activitiesManager.addError(feedGroup, e, stk);
       }
     }
   }
@@ -517,8 +498,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
   }
 
   void dispose() {
-    activitiesController.close();
-    reactionsController.close();
+    activitiesManager.close();
+    reactionsManager.close();
     _queryActivitiesLoadingController.close();
     _queryReactionsLoadingControllers.forEach((key, value) {
       value.close();

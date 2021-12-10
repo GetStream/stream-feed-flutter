@@ -17,7 +17,7 @@ void main() {
   late List<Reaction> reactions;
   late String activityId;
   late GenericFeedBloc bloc;
-  late MockReactionsControllers mockReactionControllers;
+  late MockReactionsManager mockReactionsManager;
   late String feedGroup;
   late MockFeedAPI mockFeed;
   late MockFeedAPI mockSecondFeed;
@@ -36,7 +36,7 @@ void main() {
     mockFeed = MockFeedAPI();
     mockSecondFeed = MockFeedAPI();
     mockReactions = MockReactions();
-    mockReactionControllers = MockReactionsControllers();
+    mockReactionsManager = MockReactionsManager();
     mockClient = MockStreamFeedClient();
     lookupAttr = LookupAttribute.activityId;
     lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
@@ -121,17 +121,17 @@ void main() {
     });
 
     test('onAddReaction', () async {
-      final controller = ActivitiesController();
+      final controller = ActivitiesManager();
       const addedReaction = Reaction(id: '1');
       // ignore: cascade_invocations
       controller.init(feedGroup);
-      bloc.activitiesController = controller;
+      bloc.activitiesManager = controller;
       // ignore: cascade_invocations
-      bloc.reactionsController = mockReactionControllers;
-      expect(bloc.activitiesController.hasValue(feedGroup), true);
-      when(() => mockReactionControllers.getReactions(activityId))
+      bloc.reactionsManager = mockReactionsManager;
+      expect(bloc.activitiesManager.hasValue(feedGroup), true);
+      when(() => mockReactionsManager.getReactions(activityId))
           .thenAnswer((_) => reactions);
-      expect(bloc.reactionsController.getReactions(activityId), reactions);
+      expect(bloc.reactionsManager.getReactions(activityId), reactions);
       when(() => mockReactions.add(
             kind,
             activityId,
@@ -161,16 +161,16 @@ void main() {
       //TODO: test reaction Stream
     });
     test('onRemoveReaction', () async {
-      final controller = ActivitiesController();
+      final controller = ActivitiesManager();
       const reactionId = 'reactionId';
       const reaction = Reaction(id: reactionId);
       controller.init(feedGroup);
-      bloc.activitiesController = controller;
+      bloc.activitiesManager = controller;
       // ignore: cascade_invocations
-      bloc.reactionsController = mockReactionControllers;
-      when(() => mockReactionControllers.getReactions(activityId))
+      bloc.reactionsManager = mockReactionsManager;
+      when(() => mockReactionsManager.getReactions(activityId))
           .thenAnswer((_) => reactions);
-      expect(bloc.reactionsController.getReactions(activityId), reactions);
+      expect(bloc.reactionsManager.getReactions(activityId), reactions);
       when(() => mockReactions.delete(reactionId))
           .thenAnswer((invocation) => Future.value());
 
@@ -203,7 +203,7 @@ void main() {
 
     group('child reactions', () {
       test('onAddChildReaction', () async {
-        final controller = ReactionsController();
+        final controller = ReactionsManager();
         const parentId = 'parentId';
         const childId = 'childId';
         final now = DateTime.now();
@@ -221,8 +221,8 @@ void main() {
           ),
         );
         controller.init(reactedActivity.id!);
-        bloc.reactionsController = controller;
-        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
+        bloc.reactionsManager = controller;
+        expect(bloc.reactionsManager.hasValue(reactedActivity.id!), true);
         final parentReaction = Reaction(
             id: parentId, kind: 'comment', activityId: reactedActivity.id);
         final childReaction =
@@ -258,7 +258,7 @@ void main() {
       });
 
       test('onRemoveChildReaction', () async {
-        final controller = ReactionsController();
+        final controller = ReactionsManager();
         final now = DateTime.now();
         const childId = 'childId';
         const parentId = 'parentId';
@@ -287,8 +287,8 @@ void main() {
         );
 
         controller.init(reactedActivity.id!);
-        bloc.reactionsController = controller;
-        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
+        bloc.reactionsManager = controller;
+        expect(bloc.reactionsManager.hasValue(reactedActivity.id!), true);
         when(() => mockReactions.delete(childId))
             .thenAnswer((_) async => Future.value());
         await bloc.onRemoveChildReaction(
@@ -319,10 +319,10 @@ void main() {
     test(
         '''When we await onAddActivity the stream gets updated with the new expected value''',
         () async {
-      final controller = ActivitiesController();
+      final controller = ActivitiesManager();
       // ignore: cascade_invocations
       controller.init(feedGroup);
-      bloc.activitiesController = controller;
+      bloc.activitiesManager = controller;
       await bloc.onAddActivity(
         feedGroup: 'user',
         verb: 'post',

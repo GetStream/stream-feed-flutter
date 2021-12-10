@@ -11,13 +11,13 @@ import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
 import '../mocks.dart';
 import '../utils.dart';
 
-main() {
+void main() {
   late MockUploadController mockController;
   late File file;
   late AttachmentFile attachment;
   late String cdnUrl;
   setUp(() {
-    cdnUrl = "https://us-east.stream-io-cdn.com/something.jpeg";
+    cdnUrl = 'https://us-east.stream-io-cdn.com/something.jpeg';
     mockController = MockUploadController();
     file = assetFile('test_image.jpeg');
 
@@ -26,28 +26,27 @@ main() {
       bytes: file.readAsBytesSync(),
     );
   });
+
   group('FileUploadStateWidget', () {
     testWidgets('UploadProgress', (tester) async {
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(
+        MaterialApp(
           home: Scaffold(
-        body: FileUploadStateWidget(
-          fileState: FileUploadState(
-            state: const UploadProgress(
-                totalBytes: 50, mediaType: MediaType.image),
-            file: attachment,
+            body: FileUploadStateWidget(
+              fileState: FileUploadState(
+                state: const UploadProgress(
+                    totalBytes: 50, mediaType: MediaType.image),
+                file: attachment,
+              ),
+              onCancelUpload: (file) {
+                mockController.cancelUpload(file);
+              },
+              onRemoveUpload: (_) {},
+              onRetryUpload: (_) {},
+            ),
           ),
-          onCancelUpload: (AttachmentFile attachment) {
-            mockController.cancelUpload(attachment);
-          },
-          onRemoveUpload: (AttachmentFile attachment) {
-            print("hey");
-          },
-          onRetryUpload: (AttachmentFile attachment) {
-            print("hey");
-          },
-          stateIconPosition: StateIconPosition.left,
         ),
-      )));
+      );
       final uploadProgressWidget = find.byType(UploadProgressWidget);
       expect(uploadProgressWidget, findsOneWidget);
 
@@ -64,26 +63,24 @@ main() {
     testWidgets('UploadSuccess', (tester) async {
       when(() => mockController.removeUpload(attachment))
           .thenAnswer((_) async => Future.value());
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(
+        MaterialApp(
           home: Scaffold(
-        body: FileUploadStateWidget(
-          fileState: FileUploadState(
-            state: UploadSuccess.media(
-                mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl)!)),
-            file: attachment,
+            body: FileUploadStateWidget(
+              fileState: FileUploadState(
+                state: UploadSuccess.media(
+                    mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl)!)),
+                file: attachment,
+              ),
+              onCancelUpload: (_) {},
+              onRemoveUpload: (file) {
+                mockController.removeUpload(file);
+              },
+              onRetryUpload: (_) {},
+            ),
           ),
-          onCancelUpload: (AttachmentFile attachment) {
-            print("hey");
-          },
-          onRemoveUpload: (AttachmentFile attachment) {
-            mockController.removeUpload(attachment);
-          },
-          onRetryUpload: (AttachmentFile attachment) {
-            print("hey");
-          },
-          stateIconPosition: StateIconPosition.left,
         ),
-      )));
+      );
       final uploadProgressWidget = find.byType(UploadSuccessWidget);
       expect(uploadProgressWidget, findsOneWidget);
 
@@ -98,25 +95,24 @@ main() {
       const exception = SocketException('exception');
       when(() => mockController.uploadImage(attachment))
           .thenAnswer((_) async => Future.value());
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(
+        MaterialApp(
           home: Scaffold(
-        body: FileUploadStateWidget(
-          fileState: FileUploadState(
-            state: UploadFailed(exception, mediaType: MediaType.image),
-            file: attachment,
+            body: FileUploadStateWidget(
+              fileState: FileUploadState(
+                state:
+                    const UploadFailed(exception, mediaType: MediaType.image),
+                file: attachment,
+              ),
+              onCancelUpload: (_) {},
+              onRemoveUpload: (_) {},
+              onRetryUpload: (file) {
+                mockController.uploadImage(file);
+              },
+            ),
           ),
-          onCancelUpload: (AttachmentFile attachment) {
-            print("hey");
-          },
-          onRemoveUpload: (AttachmentFile attachment) {
-            print("hey");
-          },
-          onRetryUpload: (AttachmentFile attachment) async {
-            await mockController.uploadImage(attachment);
-          },
-          stateIconPosition: StateIconPosition.left,
         ),
-      )));
+      );
       final uploadProgressWidget = find.byType(UploadFailedWidget);
       expect(uploadProgressWidget, findsOneWidget);
 

@@ -1,13 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-/// Usage:
+/// A widget to easily display and manage uploads and their current state.
 ///
-///```dart
-/// import 'package:image_picker/image_picker.dart';
+/// Usage:
+/// ```dart
 /// class ComposeScreen extends StatefulWidget {
 ///   const ComposeScreen({Key? key}) : super(key: key);
 ///
@@ -16,62 +17,87 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// }
 ///
 /// class _ComposeScreenState extends State<ComposeScreen> {
-///   late AttachmentFile? _file = null;
 ///   @override
 ///   Widget build(BuildContext context) {
+///     final uploadController = FeedProvider.of(context).bloc.uploadController;
 ///     return Scaffold(
 ///       appBar: AppBar(title: const Text('Compose'), actions: [
 ///         Padding(
 ///           padding: const EdgeInsets.all(8.0),
 ///           child: ActionChip(
-///               label: const Text(
-///                 'Post',
-///                 style: TextStyle(
-///                   color: Colors.blue,
-///                 ),
+///             label: const Text(
+///               'Post',
+///               style: TextStyle(
+///                 color: Colors.blue,
 ///               ),
-///               backgroundColor: Colors.white,
-///               onPressed: () {
-///                 final attachments =
-///                     FeedProvider.of(context).bloc.uploadController.getUrls();
-///                 print(attachments);
-///               }),
+///             ),
+///             backgroundColor: Colors.white,
+///             onPressed: () {
+///               final attachments = uploadController.getMediaUris();
+///               for (var element in attachments) {
+///                 print(element.uri);
+///               }
+///               uploadController.clear();
+///             },
+///           ),
 ///         )
 ///       ]),
 ///       body: SingleChildScrollView(
-///           child: Column(children: [
-///         Padding(
-///           padding: const EdgeInsets.all(8.0),
-///           child: TextField(
-///             decoration: InputDecoration(hintText: "this is a text field"),
-///           ),
-///         ),
-///         IconButton(
-///             onPressed: () async {
-///               final ImagePicker _picker = ImagePicker();
-///               // Pick an image
-///               final XFile? image =
-///                   await _picker.pickImage(source: ImageSource.gallery);
+///         child: Column(
+///           children: [
+///             const Padding(
+///               padding: EdgeInsets.all(8.0),
+///               child: TextField(
+///                 decoration: InputDecoration(hintText: 'enter a description'),
+///               ),
+///             ),
+///             IconButton(
+///               onPressed: () async {
+///                 final ImagePicker _picker = ImagePicker();
+///                 final XFile? image =
+///                     await _picker.pickImage(source: ImageSource.gallery);
 ///
-///               if (image != null) {
-///                 await FeedProvider.of(context)
-///                     .bloc
-///                     .uploadFile(AttachmentFile(path: image.path));
-///
-///               } else {
-///                 // User canceled the picker
-///               }
-///             },
-///             icon: Icon(Icons.file_copy)),
-///         UploadListCore(
-///           uploadController: FeedProvider.of(context).bloc.uploadController,
+///                 if (image != null) {
+///                   await uploadController
+///                       .uploadImage(AttachmentFile(path: image.path));
+///                 } else {
+///                   // User canceled the picker
+///                 }
+///               },
+///               icon: const Icon(Icons.file_copy),
+///             ),
+///             UploadListCore(
+///               uploadController: uploadController,
+///               uploadsBuilder: (context, uploads) {
+///                 return SizedBox(
+///                   height: 100,
+///                   child: ListView.builder(
+///                     scrollDirection: Axis.horizontal,
+///                     itemCount: uploads.length,
+///                     itemBuilder: (context, index) => FileUploadStateWidget(
+///                         fileState: uploads[index],
+///                         onRemoveUpload: (attachment) {
+///                           return uploadController.removeUpload(attachment);
+///                         },
+///                         onCancelUpload: (attachment) {
+///                           uploadController.cancelUpload(attachment);
+///                         },
+///                         onRetryUpload: (attachment) async {
+///                           return uploadController.uploadImage(attachment);
+///                         }),
+///                   ),
+///                 );
+///               },
+///             ),
+///           ],
 ///         ),
-///       ])),
+///       ),
 ///     );
 ///   }
 /// }
 /// ```
 class UploadListCore extends StatelessWidget {
+  /// Widget to easily display and manage a list of uploads and their state.
   const UploadListCore({
     Key? key,
     required this.uploadController,
@@ -115,5 +141,17 @@ class UploadListCore extends StatelessWidget {
         return uploadsBuilder.call(context, uploads);
       },
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<UploadController>(
+          'uploadController', uploadController))
+      ..add(ObjectFlagProperty<UploadsErrorBuilder?>.has(
+          'uploadsErrorBuilder', uploadsErrorBuilder))
+      ..add(ObjectFlagProperty<UploadsBuilder>.has(
+          'uploadsBuilder', uploadsBuilder));
   }
 }
