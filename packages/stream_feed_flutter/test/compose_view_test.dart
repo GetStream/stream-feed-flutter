@@ -18,7 +18,7 @@ void main() {
     when(() => mockStreamUser.id).thenReturn('test');
   });
 
-  testWidgets('ActivityReplyView', (tester) async {
+  testWidgets('ComposeView', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
         builder: (context, child) {
@@ -27,7 +27,7 @@ void main() {
             child: child!,
           );
         },
-        home: ActivityReplyView(
+        home: ComposeView(
           feedGroup: 'user',
           parentActivity: GenericEnrichedActivity(
             id: '1',
@@ -56,7 +56,7 @@ void main() {
   testWidgets('debugFillProperties', (tester) async {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
-    ActivityReplyView(
+    ComposeView(
       parentActivity: GenericEnrichedActivity(
         id: '1',
         object: 'test',
