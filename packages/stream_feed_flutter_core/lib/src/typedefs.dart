@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /// TODO: document me
@@ -13,13 +12,8 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
 typedef ReactionsBuilder = Widget Function(
     BuildContext context, List<Reaction> reactions, int idx);
 
-typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
 typedef ReactionListCore
     = GenericReactionListCore<User, String, String, String>;
-
-typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
-
-typedef FeedBloc = GenericFeedBloc<User, String, String, String>;
 
 /// TODO: document me
 typedef EnrichedActivity
