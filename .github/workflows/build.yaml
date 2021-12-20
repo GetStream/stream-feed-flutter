@@ -4,6 +4,12 @@ on:
   push:
   pull_request:
 
+# cancel in progress builds
+# new pushes to the same branch will cancel old builds.
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+  
 jobs:
   build:
     runs-on: ubuntu-latest
