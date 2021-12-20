@@ -18,7 +18,8 @@ class MediaUri extends Equatable {
   /// Validates a string to check if it's a URL or not.
   bool get isValidUrl => uri.hasAbsolutePath;
 
-  /// The file extension of this media
+  /// The file extension of this media.
+  ///
   /// Useful when we can't guess the MediaType (i.e. MediaType.other)
   /// and you want to act accordingly
   String get fileExt => uri.pathSegments.last.split('.').last;
