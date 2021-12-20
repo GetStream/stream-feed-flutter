@@ -6,13 +6,16 @@ import 'package:stream_feed_flutter_core/src/bloc/generic.dart';
 class FeedProvider extends GenericFeedProvider<User, String, String, String> {
   const FeedProvider({
     Key? key,
-    required GenericFeedBloc<User, String, String, String> bloc,
+    required FeedBloc bloc,
     required Widget child,
   }) : super(key: key, bloc: bloc, child: child);
 
-  static GenericFeedProvider<User, String, String, String> of(
-      BuildContext context) {
-    return GenericFeedProvider<User, String, String, String>.of(context);
+  @override
+  FeedBloc get bloc => super.bloc as FeedBloc;
+
+  static FeedProvider of(BuildContext context) {
+    return GenericFeedProvider<User, String, String, String>.of(context)
+        as FeedProvider;
   }
 }
 
