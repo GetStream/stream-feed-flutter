@@ -95,7 +95,7 @@ void main() {
           () => FeedProvider.of(childKey.currentState!.context),
           throwsA(predicate<AssertionError>((e) =>
               e.message ==
-              'No GenericFeedProvider<User, String, String, String> found in context')));
+              'No `FeedProvider` or `GenericFeedProvider<User, String, String, String>` found in context')));
     },
   );
 }
