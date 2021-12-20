@@ -28,6 +28,7 @@ void main() {
           );
         },
         home: ComposeView(
+          textEditingController: TextEditingController(),
           feedGroup: 'user',
           parentActivity: GenericEnrichedActivity(
             id: '1',
@@ -57,6 +58,7 @@ void main() {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
     ComposeView(
+      textEditingController: TextEditingController(),
       parentActivity: GenericEnrichedActivity(
         id: '1',
         object: 'test',

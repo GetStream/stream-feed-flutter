@@ -60,7 +60,7 @@ class ReplyButton extends StatelessWidget {
               MaterialPageRoute(
                 builder: (_) => ComposeView(
                   parentActivity: activity,
-                  feedGroup: feedGroup,
+                  feedGroup: feedGroup, textEditingController: TextEditingController(),
                 ),
                 fullscreenDialog: true,
               ),

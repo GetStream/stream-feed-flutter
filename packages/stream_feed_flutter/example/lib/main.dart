@@ -401,7 +401,9 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
         child: const Icon(Icons.edit_outlined),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => const ComposeView(),
+            builder: (_) =>  ComposeView(
+              textEditingController: TextEditingController(),
+            ),
             fullscreenDialog: true,
           ),
         ),
