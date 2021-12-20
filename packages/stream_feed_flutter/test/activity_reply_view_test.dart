@@ -45,8 +45,8 @@ void main() {
       ),
     );
 
-    final actionChip = find.byType(ActionChip);
-    expect(actionChip, findsOneWidget);
+    final elevatedButton = find.byType(ElevatedButton);
+    expect(elevatedButton, findsOneWidget);
     final activityWidget = find.byType(ActivityWidget);
     expect(activityWidget, findsOneWidget);
     final textField = find.byType(TextField);
