@@ -4,6 +4,11 @@ import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
 import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 
+class FeedBloc extends GenericFeedBloc<User, String, String, String> {
+  FeedBloc({required StreamFeedClient client, StreamAnalytics? analyticsClient})
+      : super(client: client, analyticsClient: analyticsClient);
+}
+
 class GenericFeedBloc<A, Ob, T, Or> {
   GenericFeedBloc({required this.client, this.analyticsClient});
 

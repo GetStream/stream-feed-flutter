@@ -1,4 +1,4 @@
-import 'package:example/client_provider.dart';
+import 'package:stream_feed_example/client_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 

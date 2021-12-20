@@ -1,5 +1,5 @@
-import 'package:example/activity_item.dart';
-import 'package:example/extension.dart';
+import 'package:stream_feed_example/activity_item.dart';
+import 'package:stream_feed_example/extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
