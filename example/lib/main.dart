@@ -1,7 +1,7 @@
-import 'package:example/app_user.dart';
-import 'package:example/client_provider.dart';
-import 'package:example/extension.dart';
-import 'package:example/home.dart';
+import 'package:stream_feed_example/app_user.dart';
+import 'package:stream_feed_example/client_provider.dart';
+import 'package:stream_feed_example/extension.dart';
+import 'package:stream_feed_example/home.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 

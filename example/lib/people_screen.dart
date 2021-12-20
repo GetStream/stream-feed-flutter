@@ -1,5 +1,5 @@
-import 'package:example/app_user.dart';
-import 'package:example/extension.dart';
+import 'package:stream_feed_example/app_user.dart';
+import 'package:stream_feed_example/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

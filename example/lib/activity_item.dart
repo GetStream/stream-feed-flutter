@@ -1,4 +1,4 @@
-import 'package:example/app_user.dart';
+import 'package:stream_feed_example/app_user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
