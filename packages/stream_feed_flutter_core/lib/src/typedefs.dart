@@ -83,8 +83,6 @@ typedef ReactionsBuilder = Widget Function(
 /// {@endtemplate}
 typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
 
-// typedef UploadCore = GenericUploadCore<User, String, String, String>;
-
 ///Convenient typedef for [GenericReactionListCore] with default parameters
 ///
 /// {@template reactionListCore}
