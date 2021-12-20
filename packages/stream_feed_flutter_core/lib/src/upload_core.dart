@@ -1,14 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
-import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-/// Usage:
+/// A widget to easily display and manage uploads and their current state.
 ///
-///```dart
-/// import 'package:image_picker/image_picker.dart';
+/// Usage:
+/// ```dart
 /// class ComposeScreen extends StatefulWidget {
 ///   const ComposeScreen({Key? key}) : super(key: key);
 ///
@@ -17,155 +17,141 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// }
 ///
 /// class _ComposeScreenState extends State<ComposeScreen> {
-///   late AttachmentFile? _file = null;
 ///   @override
 ///   Widget build(BuildContext context) {
+///     final uploadController = FeedProvider.of(context).bloc.uploadController;
 ///     return Scaffold(
 ///       appBar: AppBar(title: const Text('Compose'), actions: [
 ///         Padding(
 ///           padding: const EdgeInsets.all(8.0),
 ///           child: ActionChip(
-///               label: const Text(
-///                 'Post',
-///                 style: TextStyle(
-///                   color: Colors.blue,
-///                 ),
+///             label: const Text(
+///               'Post',
+///               style: TextStyle(
+///                 color: Colors.blue,
 ///               ),
-///               backgroundColor: Colors.white,
-///               onPressed: () {
-///                 final attachments =
-///                     FeedProvider.of(context).bloc.uploadController.getUrls();
-///                 print(attachments);
-///               }),
+///             ),
+///             backgroundColor: Colors.white,
+///             onPressed: () {
+///               final attachments = uploadController.getMediaUris();
+///               for (var element in attachments) {
+///                 print(element.uri);
+///               }
+///               uploadController.clear();
+///             },
+///           ),
 ///         )
 ///       ]),
 ///       body: SingleChildScrollView(
-///           child: Column(children: [
-///         Padding(
-///           padding: const EdgeInsets.all(8.0),
-///           child: TextField(
-///             decoration: InputDecoration(hintText: "this is a text field"),
-///           ),
-///         ),
-///         IconButton(
-///             onPressed: () async {
-///               final ImagePicker _picker = ImagePicker();
-///               // Pick an image
-///               final XFile? image =
-///                   await _picker.pickImage(source: ImageSource.gallery);
+///         child: Column(
+///           children: [
+///             const Padding(
+///               padding: EdgeInsets.all(8.0),
+///               child: TextField(
+///                 decoration: InputDecoration(hintText: 'enter a description'),
+///               ),
+///             ),
+///             IconButton(
+///               onPressed: () async {
+///                 final ImagePicker _picker = ImagePicker();
+///                 final XFile? image =
+///                     await _picker.pickImage(source: ImageSource.gallery);
 ///
-///               if (image != null) {
-///                 await FeedProvider.of(context)
-///                     .bloc
-///                     .uploadFile(AttachmentFile(path: image.path));
-///
-///               } else {
-///                 // User canceled the picker
-///               }
-///             },
-///             icon: Icon(Icons.file_copy)),
-///         UploadListCore(
-///           uploadController: FeedProvider.of(context).bloc.uploadController,
+///                 if (image != null) {
+///                   await uploadController
+///                       .uploadImage(AttachmentFile(path: image.path));
+///                 } else {
+///                   // User canceled the picker
+///                 }
+///               },
+///               icon: const Icon(Icons.file_copy),
+///             ),
+///             UploadListCore(
+///               uploadController: uploadController,
+///               uploadsBuilder: (context, uploads) {
+///                 return SizedBox(
+///                   height: 100,
+///                   child: ListView.builder(
+///                     scrollDirection: Axis.horizontal,
+///                     itemCount: uploads.length,
+///                     itemBuilder: (context, index) => FileUploadStateWidget(
+///                         fileState: uploads[index],
+///                         onRemoveUpload: (attachment) {
+///                           return uploadController.removeUpload(attachment);
+///                         },
+///                         onCancelUpload: (attachment) {
+///                           uploadController.cancelUpload(attachment);
+///                         },
+///                         onRetryUpload: (attachment) async {
+///                           return uploadController.uploadImage(attachment);
+///                         }),
+///                   ),
+///                 );
+///               },
+///             ),
+///           ],
 ///         ),
-///       ])),
+///       ),
 ///     );
 ///   }
 /// }
 /// ```
-class UploadListCore extends StatefulWidget {
+class UploadListCore extends StatelessWidget {
+  /// Widget to easily display and manage a list of uploads and their state.
   const UploadListCore({
     Key? key,
     required this.uploadController,
-    this.uploadsBuilder,
-    this.onUploadSuccess,
-    this.onUploadProgress,
-    this.onUploadFailed,
-    this.onErrorWidget = const ErrorStateWidget(),
+    required this.uploadsBuilder,
+    this.uploadsErrorBuilder,
     this.onProgressWidget = const SizedBox.shrink(),
-    this.onEmptyWidget = const EmptyStateWidget(message: 'No uploads'),
-    this.onMediaPreview,
-    this.stateIconPosition = StateIconPosition.right,
   }) : super(key: key);
 
-  final OnMediaPreview? onMediaPreview;
+  /// An error builder to show when an error occurs.
+  final UploadsErrorBuilder? uploadsErrorBuilder;
 
-  /// Position of the closed icon
-  final StateIconPosition stateIconPosition;
-
-  /// An error widget to show when an error occurs
-  final Widget onErrorWidget;
-
-  /// A progress widget to show when a request is in progress
+  /// A progress widget to show when a request is in progress.
   final Widget onProgressWidget;
 
-  /// A widget to show when the feed is empty
-  final Widget onEmptyWidget;
+  /// Builder that will be called with a list of current uploads and their
+  /// state.
+  final UploadsBuilder uploadsBuilder;
 
-  /// A callback to build a widget based on the upload state
-  final UploadsBuilder? uploadsBuilder;
-
-  /// A callback to build a widget to show when the upload is successful
-  final OnUploadSuccess? onUploadSuccess;
-
-  /// A callback to build a widget to show when the upload is in progress
-  final OnUploadProgress? onUploadProgress;
-
-  /// A callback to build a widget to show when the upload failed
-  final OnUploadFailed? onUploadFailed;
-
-  /// The upload controller
-  /// uploadMedias()
+  /// The upload controller used to manage uploads.
   final UploadController uploadController;
 
   @override
-  _UploadListCoreState createState() => _UploadListCoreState();
-}
-
-class _UploadListCoreState extends State<UploadListCore> {
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder<Map<AttachmentFile, UploadState>>(
-        stream: widget.uploadController.uploadsStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return widget.onErrorWidget;
-          }
-          if (!snapshot.hasData) {
-            return widget.onProgressWidget;
-          }
-          final rawMap = snapshot.data!;
-          final uploads = List<FileUploadState>.from(
-              rawMap.entries.map((entry) => FileUploadState.fromEntry(entry)));
-          return SizedBox(
-            height: 100,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: uploads.length,
-              itemBuilder: (context, idx) =>
-                  widget.uploadsBuilder?.call(
-                    context,
-                    uploads,
-                    idx,
-                  ) ??
-                  FileUploadStateWidget(
-                    fileState: uploads[idx],
-                    onUploadSuccess: widget.onUploadSuccess,
-                    onUploadProgress: widget.onUploadProgress,
-                    onUploadFailed: widget.onUploadFailed,
-                    onMediaPreview: widget.onMediaPreview,
-                    stateIconPosition: widget.stateIconPosition,
-                    onCancelUpload: (AttachmentFile file) {
-                      widget.uploadController.cancelUpload(file);
-                    },
-                    onRemoveUpload: (AttachmentFile file) {
-                      widget.uploadController.removeUpload(file);
-                    },
-                    onRetryUpload: (AttachmentFile file) async {
-                      await widget.uploadController.uploadImage(file);
-                    },
-                  ),
-            ),
-          );
-        });
+      stream: uploadController.uploadsStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return uploadsErrorBuilder?.call(snapshot.error!) ??
+              const ErrorStateWidget();
+        }
+        if (!snapshot.hasData) {
+          return onProgressWidget;
+        }
+        final rawMap = snapshot.data!;
+        final uploads = List<FileUploadState>.from(
+          rawMap.entries.map(
+            (entry) => FileUploadState.fromEntry(entry),
+          ),
+        );
+
+        return uploadsBuilder.call(context, uploads);
+      },
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<UploadController>(
+          'uploadController', uploadController))
+      ..add(ObjectFlagProperty<UploadsErrorBuilder?>.has(
+          'uploadsErrorBuilder', uploadsErrorBuilder))
+      ..add(ObjectFlagProperty<UploadsBuilder>.has(
+          'uploadsBuilder', uploadsBuilder));
   }
 }

@@ -13,17 +13,18 @@ import 'mocks.dart';
 import 'utils.dart';
 
 void main() {
-  late MockUploadController mockkUploadController;
+  late MockUploadController mockUploadController;
   late File file;
   late File file2;
   late AttachmentFile attachment;
   late AttachmentFile attachment2;
   late String cdnUrl;
   late String cdnUrl2;
+
   setUp(() {
     cdnUrl = 'https://us-east.stream-io-cdn.com/something.png';
     cdnUrl2 = 'https://us-east.stream-io-cdn.com/something.jpeg';
-    mockkUploadController = MockUploadController();
+    mockUploadController = MockUploadController();
     file = assetFile('test_image.jpeg');
 
     attachment = AttachmentFile(
@@ -37,22 +38,40 @@ void main() {
       bytes: file2.readAsBytesSync(),
     );
   });
-  testWidgets('UploadListCore', (tester) async {
-    when(() => mockkUploadController.uploadsStream)
-        .thenAnswer((_) => Stream.value({
-              attachment: UploadSuccess.media(
-                  mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl)!)),
-              attachment2: UploadSuccess.media(
-                  mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl2)!))
-            }));
-    await tester.pumpWidget(MaterialApp(
-      home: UploadListCore(
-        // files: [attachment, attachment2],
-        uploadController: mockkUploadController,
-      ),
-    ));
 
-    verify(() => mockkUploadController.uploadsStream).called(1);
+  testWidgets('UploadListCore', (tester) async {
+    when(() => mockUploadController.uploadsStream).thenAnswer(
+      (_) => Stream.value({
+        attachment:
+            UploadSuccess.media(mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl)!)),
+        attachment2:
+            UploadSuccess.media(mediaUri: MediaUri(uri: Uri.tryParse(cdnUrl2)!))
+      }),
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: UploadListCore(
+          uploadController: mockUploadController,
+          uploadsBuilder: (context, uploads) {
+            return SizedBox(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: uploads.length,
+                itemBuilder: (context, index) => FileUploadStateWidget(
+                  fileState: uploads[index],
+                  onCancelUpload: (_) {},
+                  onRemoveUpload: (_) {},
+                  onRetryUpload: (_) {},
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+
+    verify(() => mockUploadController.uploadsStream).called(1);
 
     await tester.pumpAndSettle();
 

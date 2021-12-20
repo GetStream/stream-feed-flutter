@@ -3,7 +3,11 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 @visibleForTesting
-class ActivitiesController<A, Ob, T, Or> {
+
+/// Class to manage activities.
+///
+/// This is only used internally within `GenericFeedBloc`.
+class ActivitiesManager<A, Ob, T, Or> {
   final Map<String,
           BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>>
       _controllers = {};
@@ -23,33 +27,33 @@ class ActivitiesController<A, Ob, T, Or> {
           String feedGroup) =>
       _getController(feedGroup)?.valueOrNull;
 
-  ///Retrieve Stream of activities with feedGroup
+  /// Retrieve Stream of activities with feedGroup.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getStream(
           String feedGroup) =>
       _getController(feedGroup)?.stream;
 
-  /// Clear activities for a given feedGroup
+  /// Clear activities for a given feedGroup.
   void clearActivities(String feedGroup) {
     _getController(feedGroup)!.value = [];
   }
 
-  /// Clear all controllers
+  /// Clear all controllers.
   void clearAllActivities(List<String> feedGroups) {
     feedGroups.forEach(init);
   }
 
-  /// Close all the controllers
+  /// Close all controllers.
   void close() {
     _controllers.forEach((key, value) {
       value.close();
     });
   }
 
-  /// Check if controller is not empty for given feedGroup
+  /// Check if controller is not empty for given feedGroup.
   bool hasValue(String feedGroup) =>
       _getController(feedGroup)?.hasValue != null;
 
-  /// Add a list of activities to the correct controller based on feedGroup
+  /// Add a list of activities to the correct controller based on feedGroup.
   void add(String feedGroup,
       List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
     if (hasValue(feedGroup)) {
@@ -57,7 +61,7 @@ class ActivitiesController<A, Ob, T, Or> {
     }
   }
 
-  /// Update the correct controller with given activities based on feedGroup
+  /// Update the correct controller with given activities based on feedGroup.
   void update(String feedGroup,
       List<GenericEnrichedActivity<A, Ob, T, Or>> activities) {
     if (hasValue(feedGroup)) {
@@ -65,7 +69,7 @@ class ActivitiesController<A, Ob, T, Or> {
     }
   }
 
-  /// Add an error event to the Stream based on feedGroup
+  /// Add an error event to the Stream based on feedGroup.
   void addError(String feedGroup, Object e, StackTrace stk) {
     if (hasValue(feedGroup)) {
       _getController(feedGroup)!.addError(e, stk);

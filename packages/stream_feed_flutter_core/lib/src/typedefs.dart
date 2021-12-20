@@ -5,7 +5,7 @@ import 'package:stream_feed_flutter_core/src/flat_feed_core.dart';
 import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/reactions_list_core.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
-import 'package:stream_feed_flutter_core/src/upload_core.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /* BUILDERS */
 /// {@template enrichedFeedBuilder}
@@ -18,15 +18,17 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
 );
 
 typedef UploadsBuilder = Widget Function(
-    BuildContext context, List<FileUploadState> uploads, int idx);
+    BuildContext context, List<FileUploadState> uploads);
 
-typedef OnUploadSuccess = Widget Function(
+typedef UploadsErrorBuilder = Widget Function(Object error);
+
+typedef UploadSuccessBuilder = Widget Function(
     AttachmentFile file, UploadSuccess success);
 
-typedef OnUploadProgress = Widget Function(
+typedef UploadProgressBuilder = Widget Function(
     AttachmentFile file, UploadProgress progress);
 
-typedef OnUploadFailed = Widget Function(
+typedef UploadFailedBuilder = Widget Function(
     AttachmentFile file, UploadFailed progress);
 
 /// {@template reactionsBuilder}
@@ -208,5 +210,5 @@ typedef OnRetryUpload = void Function(AttachmentFile file);
 ///
 /// }
 /// ```
-typedef OnMediaPreview = Widget Function(
+typedef MediaPreviewBuilder = Widget Function(
     {required AttachmentFile file, required MediaType mediaType});
