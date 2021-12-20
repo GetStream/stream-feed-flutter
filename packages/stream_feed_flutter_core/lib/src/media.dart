@@ -21,7 +21,7 @@ class MediaUri extends Equatable {
   /// The file extension of this media.
   ///
   /// Useful when we can't guess the MediaType (i.e. MediaType.other)
-  /// and you want to act accordingly
+  /// and you want to act accordingly.
   String get fileExt => uri.pathSegments.last.split('.').last;
 
   /// Checks the [url] for specific file extensions and returns the
