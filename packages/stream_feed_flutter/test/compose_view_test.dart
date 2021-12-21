@@ -8,50 +8,85 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'mock.dart';
 
 void main() {
-  late MockStreamFeedClient client;
+  late MockStreamFeedClient mockClient;
   late MockStreamUser mockStreamUser;
+  late String kind;
+  late String activityId;
+  late MockReactions mockReactions;
+  late Reaction reaction;
 
   setUpAll(() {
-    client = MockStreamFeedClient();
+    mockClient = MockStreamFeedClient();
     mockStreamUser = MockStreamUser();
-    when(() => client.currentUser).thenReturn(mockStreamUser);
+    when(() => mockClient.currentUser).thenReturn(mockStreamUser);
     when(() => mockStreamUser.id).thenReturn('test');
-  });
+    kind = 'comment';
+    activityId = 'test';
+    mockReactions = MockReactions();
 
-  testWidgets('ComposeView', (tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        builder: (context, child) {
-          return StreamFeed(
-            bloc: FeedBloc(client: client),
-            child: child!,
-          );
-        },
-        home: ComposeView(
-          textEditingController: TextEditingController(),
-          feedGroup: 'user',
-          parentActivity: GenericEnrichedActivity(
-            id: '1',
-            object: 'test',
-            verb: 'post',
-            time: DateTime.now(),
-            actor: const User(
-              id: 'test',
-              data: {
-                'full_name': 'John Doe',
-              },
+    when(() => mockClient.reactions).thenReturn(mockReactions);
+
+    // when(() => mockClient.reactions.add(kind, activityId)).thenReturn('test');
+  });
+  group('ComposeView', () {
+    testWidgets('Reply', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) {
+            return StreamFeed(
+              bloc: FeedBloc(client: mockClient),
+              child: child!,
+            );
+          },
+          home: ComposeView(
+            textEditingController: TextEditingController(),
+            feedGroup: 'user',
+            parentActivity: GenericEnrichedActivity(
+              id: activityId,
+              object: 'test',
+              verb: 'post',
+              time: DateTime.now(),
+              actor: const User(
+                id: 'test',
+                data: {
+                  'full_name': 'John Doe',
+                },
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
 
-    final elevatedButton = find.byType(ElevatedButton);
-    expect(elevatedButton, findsOneWidget);
-    final activityWidget = find.byType(ActivityWidget);
-    expect(activityWidget, findsOneWidget);
-    final textField = find.byType(TextField);
-    expect(textField, findsOneWidget);
+      final elevatedButton = find.byType(ElevatedButton);
+      expect(elevatedButton, findsOneWidget);
+      final replyText = find.text('Reply').first;
+      expect(replyText, findsOneWidget);
+      final activityWidget = find.byType(ActivityWidget);
+      expect(activityWidget, findsOneWidget);
+      final textField = find.byType(TextField);
+      expect(textField, findsOneWidget);
+      // Enter more text.
+      const testValueAddition = 'hello';
+      await tester.enterText(textField, testValueAddition);
+      await tester.pumpAndSettle();
+
+      reaction = Reaction(
+        kind: kind,
+        activityId: activityId,
+        data: {'text': testValueAddition.trim()},
+      );
+      when(() => mockReactions.add(
+            kind,
+            activityId,
+            data: {'text': testValueAddition.trim()},
+          )).thenAnswer((_) async => reaction);
+      await tester.tap(elevatedButton);
+      verify(() => mockReactions.add(
+            kind,
+            activityId,
+            data: {'text': testValueAddition.trim()},
+          ));
+    });
   });
 
   testWidgets('debugFillProperties', (tester) async {
