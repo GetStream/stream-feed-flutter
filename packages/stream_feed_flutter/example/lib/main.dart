@@ -401,7 +401,9 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
         child: const Icon(Icons.edit_outlined),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => const ComposeScreen(),
+            builder: (_) => ComposeView(
+              textEditingController: TextEditingController(),
+            ),
             fullscreenDialog: true,
           ),
         ),
@@ -502,109 +504,6 @@ class UserSearchDelegate extends SearchDelegate {
           );
         }
       },
-    );
-  }
-}
-
-class ComposeScreen extends StatefulWidget {
-  const ComposeScreen({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  _ComposeScreenState createState() => _ComposeScreenState();
-}
-
-class _ComposeScreenState extends State<ComposeScreen> with StreamFeedMixin {
-  final postController = TextEditingController();
-
-  @override
-  void dispose() {
-    postController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).canvasColor,
-        iconTheme: Theme.of(context).iconTheme,
-        titleTextStyle: Theme.of(context).textTheme.headline6,
-        elevation: 0,
-        title: const Text('Compose'),
-        actions: [
-          ActionChip(
-            label: const Text(
-              'Post',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            onPressed: () async {
-              if (postController.text.isNotEmpty) {
-                try {
-                  bloc.onAddActivity(
-                    feedGroup: 'user',
-                    verb: 'post',
-                    object: postController.text,
-                    userId: bloc.currentUser!.id,
-                  );
-
-                  Navigator.of(context).pop();
-                } catch (e) {
-                  debugPrint(e.toString());
-                }
-              }
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Avatar(
-                  user: User(
-                    data: bloc.currentUser?.data,
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: TextField(
-                      controller: postController,
-                      autofocus: true,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade300,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.grey.shade300,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.grey.shade300,
-                          ),
-                        ),
-                        hintText: 'What\'s on your mind?',
-                        alignLabelWithHint: true,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
