@@ -25,6 +25,16 @@ class ComposeView extends StatefulWidget {
   final String nameJsonKey;
 
   @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<EnrichedActivity?>(
+          'parentActivity', parentActivity))
+      ..add(StringProperty('feedGroup', feedGroup))
+      ..add(StringProperty('nameJsonKey', nameJsonKey));
+  }
+
+  @override
   State<ComposeView> createState() => _ComposeViewState();
 }
 
