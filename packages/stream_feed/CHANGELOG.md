@@ -1,3 +1,7 @@
+## 0.4.0+2: 22/12/2021
+
+- fix: export image_storage_client.dart
+  
 ## 0.4.0+1: 07/12/2021
 
 - fix: support null values `extraData`'s map
