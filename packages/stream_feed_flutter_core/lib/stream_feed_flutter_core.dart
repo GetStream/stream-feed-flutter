@@ -9,4 +9,4 @@ export 'src/reactions_list_core.dart';
 export 'src/states/states.dart';
 export 'src/typedefs.dart';
 export 'src/upload/upload.dart';
-export 'src/upload_core.dart';
+export 'src/upload_list_core.dart';

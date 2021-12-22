@@ -108,16 +108,18 @@ The package primarily contains three types of classes:
 These components allow you to have the maximum and lower-level control of the queries being executed.
 The BLoCs we provide are:
 
-1) FeedBloc
+1) FeedBloc: manage activity and reaction streams
+2) UplaodController: manage upload streams (Progress,Fail,Success)
 
 ### Core Components
 
 Core components usually are an easy way to fetch data associated with Stream Feed which are decoupled from UI and often expose UI builders.
 Data fetching can be controlled with the controllers of the respective core components.
 
-1) FlatFeedCore (Fetch a list of activities)
-2) ReactionListCore (Fetch a list of reactions)
-3) FeedProvider (Inherited widget providing bloc to the widget tree)
+1) FlatFeedCore : given an Activity Widget builder render a reactive list of activities
+2) ReactionListCore: given an Reaction Widget builder render a reactive list of reactions
+3) UploadListCore: expose a reactive list of uploads via a callback
+4) FeedProvider: an Inherited widget providing access to FeedBloc in the widget tree
 
 ## Contributing
 

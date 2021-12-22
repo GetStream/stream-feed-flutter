@@ -5,6 +5,7 @@ import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+/// {@template uploadListCore}
 /// A widget to easily display and manage uploads and their current state.
 ///
 /// Usage:
@@ -96,8 +97,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///   }
 /// }
 /// ```
+/// {@endtemplate}
 class UploadListCore extends StatelessWidget {
-  /// Widget to easily display and manage a list of uploads and their state.
+  /// {@macro uploadListCore}
   const UploadListCore({
     Key? key,
     required this.uploadController,

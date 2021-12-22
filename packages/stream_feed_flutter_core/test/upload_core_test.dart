@@ -7,7 +7,7 @@ import 'package:stream_feed/stream_feed.dart' show AttachmentFile;
 import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
 import 'package:stream_feed_flutter_core/src/upload/widgets.dart';
-import 'package:stream_feed_flutter_core/src/upload_core.dart';
+import 'package:stream_feed_flutter_core/src/upload_list_core.dart';
 
 import 'mocks.dart';
 import 'utils.dart';
