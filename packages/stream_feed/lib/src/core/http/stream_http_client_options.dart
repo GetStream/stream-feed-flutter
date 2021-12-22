@@ -40,8 +40,8 @@ class StreamHttpClientOptions {
 
   /// Get the current user agent
   String get _userAgent => 'stream-feed-dart-client-${CurrentPlatform.name}-'
-      '${packageVersion.split('+')[0]}';//TODO(sacha):add a parameter to StreamHttpClientOptions to specify the package used (llc,core,ui)
-  
+      '${packageVersion.split('+')[0]}'; //TODO(sacha):add a parameter to StreamHttpClientOptions to specify the package used (llc,core,ui)
+
   /// Generates a baseUrl using the provided [serviceName]
   String _getBaseUrl(String serviceName) {
     if (urlOverride.containsKey(serviceName)) {
