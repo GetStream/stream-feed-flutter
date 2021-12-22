@@ -1,3 +1,7 @@
+## 0.4.1: 22/12/2021
+
+- new: UploadListCore and UploadController
+
 ## 0.4.0+1: 07/12/2021
 
 - Use secure link in readme

@@ -38,7 +38,8 @@ class StreamFeedClientImpl implements StreamFeedClient {
   StreamFeedClientImpl(
     this.apiKey, {
     this.secret,
-    this.userToken,
+    this.userToken, //TODO(sacha): remove this and call _ensureCredentials
+    //in the getters instead (collections etc)
     this.appId,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
     this.runner = Runner.client,

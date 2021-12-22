@@ -15,6 +15,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// {@macro reactionListCore}
 /// {@macro genericParameters}
 class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
+  //TODO(sacha): in the future we should get rid of the generic bounds and accept a controller instead
+  // like we did for UploadController and UploadListCore
   ///{@macro reactionListCore}
   const GenericReactionListCore({
     Key? key,

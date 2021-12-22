@@ -4,7 +4,11 @@ import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 
 @visibleForTesting
-class ReactionsController {
+
+/// Class to manage reactions.
+///
+/// This is only used internally within `GenericFeedBloc`.
+class ReactionsManager {
   final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
 
   /// Init controller for given lookupValue.
@@ -41,7 +45,7 @@ class ReactionsController {
           [ShiftType type = ShiftType.increment]) =>
       _controller.unshiftById(lookupValue, reaction, type);
 
-  /// Close every stream controllers.
+  /// Close all stream controllers.
   void close() => _controller.forEach((key, value) {
         value.close();
       });

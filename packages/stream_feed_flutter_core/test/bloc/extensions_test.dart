@@ -43,15 +43,15 @@ main() {
       test('decrement', () async {
         ownChildren = {
           'like': BehaviorSubject.seeded(
-              [const Reaction(id: 'id3'), Reaction(id: 'id')]),
+              [const Reaction(id: 'id3'), const Reaction(id: 'id')]),
           'post': BehaviorSubject.seeded([const Reaction(id: 'id2')])
         };
         expectedResult = {
-          'like': [Reaction(id: 'id')],
-          'post': [Reaction(id: 'id2')]
+          'like': [const Reaction(id: 'id')],
+          'post': [const Reaction(id: 'id2')]
         };
         ownChildren.unshiftById(
-            'like', Reaction(id: 'id3'), ShiftType.decrement);
+            'like', const Reaction(id: 'id3'), ShiftType.decrement);
         await expectLater(
             ownChildren['like']!.stream, emits(expectedResult['like']));
       });
@@ -63,46 +63,46 @@ main() {
       group('increment', () {
         test('not null', () {
           ownChildren = {
-            'like': [Reaction(id: 'id')],
-            'post': [Reaction(id: 'id2')],
+            'like': [const Reaction(id: 'id')],
+            'post': [const Reaction(id: 'id2')],
           };
           expectedResult = {
-            'like': [Reaction(id: 'id3'), Reaction(id: 'id')],
-            'post': [Reaction(id: 'id2')]
+            'like': [const Reaction(id: 'id3'), const Reaction(id: 'id')],
+            'post': [const Reaction(id: 'id2')]
           };
 
-          expect(ownChildren.unshiftByKind('like', Reaction(id: 'id3')),
+          expect(ownChildren.unshiftByKind('like', const Reaction(id: 'id3')),
               expectedResult);
         });
 
         test('null', () {
           ownChildren = {
-            'like': [Reaction(id: 'id')],
-            'post': [Reaction(id: 'id2')],
+            'like': [const Reaction(id: 'id')],
+            'post': [const Reaction(id: 'id2')],
           };
           expectedResult = {
-            'like': [Reaction(id: 'id')],
-            'post': [Reaction(id: 'id2')],
-            'repost': [Reaction(id: 'id3')]
+            'like': [const Reaction(id: 'id')],
+            'post': [const Reaction(id: 'id2')],
+            'repost': [const Reaction(id: 'id3')]
           };
 
-          expect(ownChildren.unshiftByKind('repost', Reaction(id: 'id3')),
+          expect(ownChildren.unshiftByKind('repost', const Reaction(id: 'id3')),
               expectedResult);
         });
       });
 
       test('decrement', () {
         ownChildren = {
-          'like': [Reaction(id: 'id3'), Reaction(id: 'id')],
-          'post': [Reaction(id: 'id2')]
+          'like': [const Reaction(id: 'id3'), const Reaction(id: 'id')],
+          'post': [const Reaction(id: 'id2')]
         };
         expectedResult = {
-          'like': [Reaction(id: 'id')],
-          'post': [Reaction(id: 'id2')]
+          'like': [const Reaction(id: 'id')],
+          'post': [const Reaction(id: 'id2')]
         };
         expect(
             ownChildren.unshiftByKind(
-                'like', Reaction(id: 'id3'), ShiftType.decrement),
+                'like', const Reaction(id: 'id3'), ShiftType.decrement),
             expectedResult);
       });
     });
