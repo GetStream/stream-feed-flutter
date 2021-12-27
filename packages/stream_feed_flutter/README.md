@@ -1,22 +1,24 @@
-A library for Dart developers.
+# Official Flutter SDK for [Stream Activity Feeds](https://getstream.io/activity-feeds/)
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+> The official Flutter components for Stream Activity Feeds
 
-## Usage
+**🔗 Quick Links**
 
-A simple usage example:
+- [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
+- [Tutorial](https://getstream.io/activity-feeds/sdk/flutter/tutorial/) to learn how to setup a timeline feed, follow other feeds and post new activities.
+- [Stream Activity Feeds UI Kit](https://getstream.io/activity-feeds/ui-kit/) to jumpstart your design with notifications and social feeds
 
-```dart
-import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+## 🛠 (WIP: expect breaking changes) Installation
 
-main() {
-  var awesome = new Awesome();
-}
+#### Install as a git depedency
+
+We are doing some polishing before releasing the UI kit, but if you want to have a sneak peek this is how. Next step is to add `stream_feed_flutter` to your dependencies, to do that just open pubspec.yaml and add it inside the dependencies section. 
+
+```yaml
+dependencies:   
+  stream_feed_flutter:
+     git:
+       url: https://github.com/GetStream/stream-feed-flutter.git
+       ref: master
+       path: ./packages/stream_feed_flutter
 ```
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
