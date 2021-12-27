@@ -1,8 +1,12 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
 import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
+import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
 class FeedBloc extends GenericFeedBloc<User, String, String, String> {
   FeedBloc({required StreamFeedClient client, StreamAnalytics? analyticsClient})
@@ -10,7 +14,12 @@ class FeedBloc extends GenericFeedBloc<User, String, String, String> {
 }
 
 class GenericFeedBloc<A, Ob, T, Or> {
-  GenericFeedBloc({required this.client, this.analyticsClient});
+  /// {@macro feedBloc}
+  GenericFeedBloc({
+    required this.client,
+    this.analyticsClient,
+    UploadController? uploadController,
+  }) : uploadController = uploadController ?? UploadController(client);
 
   /// The underlying client instance
   final StreamFeedClient client;
@@ -21,38 +30,56 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// The underlying analytics client
   final StreamAnalytics? analyticsClient;
 
-  late ReactionsController reactionsController = ReactionsController();
+  /// Controller to manage file uploads.
+  ///
+  /// A controller is automatically created from the given [client]. Or,
+  /// alternatively, you can pass in your own when creating a `GenericFeedBloc`
+  /// or `FeedBloc`.
+  ///
+  /// ```dart
+  /// GenericFeedBloc(
+  ///    client: client,
+  ///    uploadController: uploadController,
+  /// );
+  /// ```
+  late UploadController uploadController;
 
-  late ActivitiesController<A, Ob, T, Or> activitiesController =
-      ActivitiesController<A, Ob, T, Or>();
+  /// Manager for activities.
+  @visibleForTesting
+  late ActivitiesManager<A, Ob, T, Or> activitiesManager =
+      ActivitiesManager<A, Ob, T, Or>();
+
+  /// Manager for reactions.
+  @visibleForTesting
+  late ReactionsManager reactionsManager = ReactionsManager();
 
   /// The current activities list.
   List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
           String feedGroup) =>
-      activitiesController.getActivities(feedGroup);
+      activitiesManager.getActivities(feedGroup);
 
   /// The current reactions list.
   List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
-      reactionsController.getReactions(activityId, reaction);
+      reactionsManager.getReactions(activityId, reaction);
 
   /// The current activities list as a stream.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(
           String feedGroup) =>
-      activitiesController.getStream(feedGroup);
+      activitiesManager.getStream(feedGroup);
 
   /// The current reactions list as a stream.
   Stream<List<Reaction>>? getReactionsStream(String activityId,
       [String? kind]) {
-    return reactionsController.getStream(activityId, kind);
+    return reactionsManager.getStream(activityId, kind);
   }
 
-  ///  Clear activities for a given feedGroup
+  ///  Clear activities for a given `feedGroup`.
   void clearActivities(String feedGroup) =>
-      activitiesController.clearActivities(feedGroup);
+      activitiesManager.clearActivities(feedGroup);
 
-  ///  Clear all activities for a given feedGroups
+  ///  Clear all activities for the given `feedGroups`.
   void clearAllActivities(List<String> feedGroups) =>
-      activitiesController.clearAllActivities(feedGroups);
+      activitiesManager.clearAllActivities(feedGroups);
 
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
@@ -69,7 +96,15 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   /* ACTIVITIES */
 
-  /// Add an activity to the feed.
+  /// {@template onAddActivity}
+  ///  Add an activity to the feed in a reactive way
+  ///
+  /// For example a tweet
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onAddActivity()
+  /// ```
+  /// {@endtemplate}
+
   Future<Activity> onAddActivity({
     required String feedGroup,
     Map<String, String>? data,
@@ -99,7 +134,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     // ignore: cascade_invocations
     _activities.insert(0, enrichedActivity);
 
-    activitiesController.add(feedGroup, _activities);
+    activitiesManager.add(feedGroup, _activities);
 
     await trackAnalytics(
       label: verb,
@@ -109,6 +144,14 @@ class GenericFeedBloc<A, Ob, T, Or> {
     return addedActivity;
   }
 
+  /// {@template onRemoveActivity}
+  /// Remove an Activity from the feed in a reactive way
+  ///
+  /// For example delete a tweet
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onRemoveActivity()
+  /// ```
+  /// {@endtemplate}
   Future<void> onRemoveActivity({
     required String feedGroup,
     required String activityId,
@@ -117,11 +160,19 @@ class GenericFeedBloc<A, Ob, T, Or> {
     final _activities = getActivities(feedGroup) ?? [];
     // ignore: cascade_invocations
     _activities.removeWhere((element) => element.id == activityId);
-    activitiesController.add(feedGroup, _activities);
+    activitiesManager.add(feedGroup, _activities);
   }
+
   /* CHILD REACTIONS */
 
-  /// Add child reaction
+  /// {@template onAddChildReaction}
+  /// Add child reaction to the feed in a reactive way
+  ///
+  /// For example to add a like to a comment
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onAddReaction()
+  /// ```
+  /// {@endtemplate}
   Future<Reaction> onAddChildReaction({
     required String kind,
     required Reaction reaction,
@@ -150,14 +201,21 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the rxstream
-    reactionsController
+    reactionsManager
       ..unshiftById(activity.id!, childReaction)
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
 
     return childReaction;
   }
 
-  /// Remove child reactions
+  /// {@template onRemoveChildReaction}
+  /// Remove child reactions from the feed in a reactive way
+  ///
+  /// For example to unlike a comment
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onRemoveChildReaction()
+  /// ```
+  /// {@endtemplate}
   Future<void> onRemoveChildReaction({
     required String kind,
     required GenericEnrichedActivity activity,
@@ -186,12 +244,19 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // remove reaction from rxstream
-    reactionsController
+    reactionsManager
       ..unshiftById(activity.id!, childReaction, ShiftType.decrement)
       ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
   }
 
-  /// Remove reaction from the feed.
+  /// {@template onRemoveReaction}
+  /// Remove reaction from the feed in a reactive way
+  ///
+  /// For example to delete a comment under a tweet
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onRemoveReaction()
+  /// ```
+  /// {@endtemplate}
   Future<void> onRemoveReaction({
     required String kind,
     required GenericEnrichedActivity<A, Ob, T, Or> activity,
@@ -223,22 +288,31 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // remove reaction from the stream
-    reactionsController.unshiftById(
-        activity.id!, reaction, ShiftType.decrement);
+    reactionsManager.unshiftById(activity.id!, reaction, ShiftType.decrement);
 
-    activitiesController.update(
+    activitiesManager.update(
         feedGroup, _activities.updateIn(updatedActivity, indexPath));
   }
 
   /* REACTIONS */
 
-  /// Add a new reaction to the feed.
+  /// {@template onAddReaction}
+  /// Add a new reaction to the feed
+  ///  in a reactive way.
+  /// For example to add a comment under a tweet:
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onAddReaction(kind:'comment',
+  /// activity: activities[idx],feedGroup:'user'),
+  /// data: {'text': trimmedText}
+  /// ```
+  /// {@endtemplate}
+
   Future<Reaction> onAddReaction({
-    Map<String, Object>? data,
     required String kind,
     required GenericEnrichedActivity<A, Ob, T, Or> activity,
-    List<FeedId>? targetFeeds,
     required String feedGroup,
+    List<FeedId>? targetFeeds,
+    Map<String, Object>? data,
   }) async {
     final reaction = await client.reactions
         .add(kind, activity.id!, targetFeeds: targetFeeds, data: data);
@@ -262,9 +336,9 @@ class GenericFeedBloc<A, Ob, T, Or> {
     );
 
     // adds reaction to the stream
-    reactionsController.unshiftById(activity.id!, reaction);
+    reactionsManager.unshiftById(activity.id!, reaction);
 
-    activitiesController.update(
+    activitiesManager.update(
         feedGroup,
         _activities //TODO: handle null safety
             .updateIn(updatedActivity, indexPath));
@@ -286,7 +360,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
         : print('warning: analytics: not enabled'); //TODO:logger
   }
 
-  /// Query reactions
+  /// {@template queryReactions}
+  /// Query the reactions stream (like, retweet, claps).
+  ///
+  /// Checkout our convenient core widget
+  ///  [ReactionListCore] for displaying reactions easily
+  /// {@endtemplate}
   Future<void> queryReactions(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -295,12 +374,12 @@ class GenericFeedBloc<A, Ob, T, Or> {
     String? kind,
     EnrichmentFlags? flags,
   }) async {
-    reactionsController.init(lookupValue);
+    reactionsManager.init(lookupValue);
     _queryReactionsLoadingControllers[lookupValue] =
         BehaviorSubject.seeded(false);
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) return;
 
-    if (reactionsController.hasValue(lookupValue)) {
+    if (reactionsManager.hasValue(lookupValue)) {
       _queryReactionsLoadingControllers[lookupValue]!.add(true);
     }
 
@@ -315,18 +394,24 @@ class GenericFeedBloc<A, Ob, T, Or> {
         kind: kind,
       );
       final temp = oldReactions + reactionsResponse;
-      reactionsController.add(lookupValue, temp);
+      reactionsManager.add(lookupValue, temp);
     } catch (e, stk) {
       // reset loading controller
       _queryReactionsLoadingControllers[lookupValue]?.add(false);
-      if (reactionsController.hasValue(lookupValue)) {
+      if (reactionsManager.hasValue(lookupValue)) {
         _queryReactionsLoadingControllers[lookupValue]?.addError(e, stk);
       } else {
-        reactionsController.addError(lookupValue, e, stk);
+        reactionsManager.addError(lookupValue, e, stk);
       }
     }
   }
 
+  /// {@template queryEnrichedActivities}
+  /// Query the activities stream
+  ///
+  /// Checkout our convenient core widget [FlatFeedCore]
+  /// to display activities easily
+  /// {@endtemplate}
   Future<void> queryEnrichedActivities({
     required String feedGroup,
     int? limit,
@@ -339,10 +424,10 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
     //TODO: no way to parameterized marker?
   }) async {
-    activitiesController.init(feedGroup);
+    activitiesManager.init(feedGroup);
     if (_queryActivitiesLoadingController.value == true) return;
 
-    if (activitiesController.hasValue(feedGroup)) {
+    if (activitiesManager.hasValue(feedGroup)) {
       _queryActivitiesLoadingController.add(true);
     }
 
@@ -358,18 +443,18 @@ class GenericFeedBloc<A, Ob, T, Or> {
             ranking: ranking,
           );
 
-      activitiesController.add(feedGroup, activitiesResponse);
-      if (activitiesController.hasValue(feedGroup) &&
+      activitiesManager.add(feedGroup, activitiesResponse);
+      if (activitiesManager.hasValue(feedGroup) &&
           _queryActivitiesLoadingController.value) {
         _queryActivitiesLoadingController.sink.add(false);
       }
     } catch (e, stk) {
       // reset loading controller
       _queryActivitiesLoadingController.add(false);
-      if (activitiesController.hasValue(feedGroup)) {
+      if (activitiesManager.hasValue(feedGroup)) {
         _queryActivitiesLoadingController.addError(e, stk);
       } else {
-        activitiesController.addError(feedGroup, e, stk);
+        activitiesManager.addError(feedGroup, e, stk);
       }
     }
   }
@@ -422,8 +507,8 @@ class GenericFeedBloc<A, Ob, T, Or> {
   }
 
   void dispose() {
-    activitiesController.close();
-    reactionsController.close();
+    activitiesManager.close();
+    reactionsManager.close();
     _queryActivitiesLoadingController.close();
     _queryReactionsLoadingControllers.forEach((key, value) {
       value.close();

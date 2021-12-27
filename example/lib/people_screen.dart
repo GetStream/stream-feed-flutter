@@ -1,11 +1,10 @@
-import 'package:stream_feed_example/app_user.dart';
-import 'package:stream_feed_example/extension.dart';
+
+import 'package:example/app_user.dart';
+import 'package:example/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
-import 'app_user.dart';
-import 'extension.dart';
 
 // ignore_for_file: public_member_api_docs
 

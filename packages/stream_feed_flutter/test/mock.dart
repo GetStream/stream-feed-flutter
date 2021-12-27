@@ -11,6 +11,6 @@ class MockFlatFeed extends Mock implements FlatFeed {}
 
 class MockFeedBloc extends Mock implements FeedBloc {}
 
-class MockReactionsController extends Mock implements ReactionsController {}
+class MockReactionsController extends Mock implements ReactionsManager {}
 
 class MockStreamUser extends Mock implements StreamUser {}

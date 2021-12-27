@@ -1,6 +1,7 @@
-import 'package:stream_feed_example/people_screen.dart';
-import 'package:stream_feed_example/profile_screen.dart';
-import 'package:stream_feed_example/timeline_screen.dart';
+
+import 'package:example/people_screen.dart';
+import 'package:example/profile_screen.dart';
+import 'package:example/timeline_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';

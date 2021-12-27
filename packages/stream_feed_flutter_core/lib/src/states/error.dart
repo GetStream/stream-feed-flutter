@@ -1,10 +1,15 @@
-//TODO: improve this
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// The default Error State Widget to display errors
+/// {@template onErrorWidget}
+/// A builder for building a widget when an error occurs.
+///
+/// [ErrorStateWidget] is the default widget
+/// {@endtemplate}
+
 class ErrorStateWidget extends StatelessWidget {
   /// Builds an [ErrorStateWidget].
+  /// {@macro onErrorWidget}
   const ErrorStateWidget({
     Key? key,
     this.message = 'Sorry an error has occured',

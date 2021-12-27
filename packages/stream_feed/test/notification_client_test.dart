@@ -86,6 +86,28 @@ void main() {
       verify(() => api.getActivities(token, feedId, options)).called(1);
     });
 
+    test('getUnreadUnseenCounts', () async {
+      final marker = ActivityMarker().allSeen();
+      final filter =
+          Filter().idGreaterThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+      final options = {
+        'limit': 0,
+        ...filter.params,
+        ...marker.params,
+      };
+      final rawData = jsonFixture('meta.json');
+      when(() => api.getActivities(token, feedId, options))
+          .thenAnswer((_) async => Response(
+              data: rawData,
+              requestOptions: RequestOptions(
+                path: '',
+              ),
+              statusCode: 200));
+
+      await client.getUnreadUnseenCounts(filter: filter, marker: marker);
+
+      verify(() => api.getActivities(token, feedId, options)).called(1);
+    });
     test('getEnrichedActivities', () async {
       const limit = 5;
       const offset = 0;
