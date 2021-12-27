@@ -20,7 +20,7 @@ class FullscreenMedia extends StatefulWidget {
   /// The media to display.
   ///
   /// Can be audio, images, or videos.
-  final List<Media> media;
+  final List<MediaUri> media;
 
   /// The first index of the media being shown.
   final int startIndex;
@@ -31,7 +31,7 @@ class FullscreenMedia extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<Media>('media', media));
+    properties.add(IterableProperty<MediaUri>('media', media));
     properties.add(IntProperty('startIndex', startIndex));
   }
 }
@@ -61,9 +61,9 @@ class FullscreenMediaState extends State<FullscreenMedia>
     _pageController = PageController(initialPage: widget.startIndex);
     _currentPage = widget.startIndex;
     for (final media in widget.media) {
-      if (media.mediaType != MediaType.video) continue;
+      if (media.type != MediaType.video) continue;
       final package = VideoPackage(media, showControls: true);
-      videoPackages[media.url] = package;
+      videoPackages[media.uri.toString()] = package;
     }
     _initializePlayers();
   }
@@ -102,9 +102,9 @@ class FullscreenMediaState extends State<FullscreenMedia>
                 },
                 itemBuilder: (context, index) {
                   final media = widget.media[index];
-                  if (media.mediaType == MediaType.image && media.isValidUrl) {
+                  if (media.type == MediaType.image && media.isValidUrl) {
                     return PhotoView(
-                      imageProvider: NetworkImage(media.url),
+                      imageProvider: NetworkImage(media.uri.toString()),
                       maxScale: PhotoViewComputedScale.covered,
                       minScale: PhotoViewComputedScale.contained,
                       onTapUp: (a, b, c) {
@@ -121,9 +121,9 @@ class FullscreenMediaState extends State<FullscreenMedia>
                         );
                       },
                     );
-                  } else if (media.mediaType == MediaType.video &&
+                  } else if (media.type == MediaType.video &&
                       media.isValidUrl) {
-                    final controller = videoPackages[media.url];
+                    final controller = videoPackages[media.uri.toString()];
                     if (controller != null && !controller.initialized) {
                       return const Center(
                         child: CircularProgressIndicator(),

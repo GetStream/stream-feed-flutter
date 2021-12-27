@@ -19,7 +19,7 @@ class MediaWidget extends StatefulWidget {
   }) : super(key: key);
 
   /// The media to display.
-  final Media media;
+  final MediaUri media;
 
   @override
   _MediaWidgetState createState() => _MediaWidgetState();
@@ -27,7 +27,7 @@ class MediaWidget extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Media>('media', media));
+    properties.add(DiagnosticsProperty<MediaUri>('media', media));
   }
 }
 
@@ -38,10 +38,10 @@ class _MediaWidgetState extends State<MediaWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final mediaQuery = MediaQuery.of(context);
-    if (widget.media.mediaType == MediaType.video) {
+    if (widget.media.runtimeType == MediaType.video) {
       _getThumbnail = getTemporaryDirectory().then((result) {
         return VideoThumbnail.thumbnailFile(
-          video: widget.media.url,
+          video: widget.media.uri.toString(),
           thumbnailPath: result.path,
           maxWidth: mediaQuery.size.width ~/ 2,
           quality: 75,
@@ -52,12 +52,12 @@ class _MediaWidgetState extends State<MediaWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.media.mediaType == MediaType.image) {
+    if (widget.media.type == MediaType.image) {
       return Image.network(
-        widget.media.url,
+        widget.media.uri.toString(),
         fit: BoxFit.cover,
       );
-    } else if (widget.media.mediaType == MediaType.video) {
+    } else if (widget.media.type == MediaType.video) {
       return FutureBuilder<String?>(
         future: _getThumbnail,
         builder: (context, snapshot) {

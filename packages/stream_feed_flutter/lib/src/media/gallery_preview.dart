@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/media/fullscreen_media.dart';
-import 'package:stream_feed_flutter/src/media/media.dart';
+
 import 'package:stream_feed_flutter/src/media/media_widget.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 // ignore_for_file: cascade_invocations
 
@@ -15,7 +16,7 @@ class GalleryPreview extends StatelessWidget {
   }) : super(key: key);
 
   /// The list of image urls to display
-  final List<Media> media;
+  final List<MediaUri> media;
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +130,7 @@ class GalleryPreview extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<Media>('media', media));
+    properties.add(IterableProperty<MediaUri>('media', media));
   }
 }
 
@@ -154,7 +155,7 @@ class FlexibleImage extends StatelessWidget {
   final int index;
 
   /// The media being shown.
-  final List<Media> media;
+  final List<MediaUri> media;
 
   @override
   Widget build(BuildContext context) {
@@ -181,6 +182,6 @@ class FlexibleImage extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<FlexFit>('flexFit', flexFit));
     properties.add(IntProperty('index', index));
-    properties.add(IterableProperty<Media>('media', media));
+    properties.add(IterableProperty<MediaUri>('media', media));
   }
 }
