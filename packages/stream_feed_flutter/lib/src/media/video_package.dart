@@ -14,7 +14,8 @@ class VideoPackage {
     bool autoInitialize = true,
   })  : _showControls = showControls,
         _autoInitialize = autoInitialize,
-        _videoPlayerController = VideoPlayerController.network(media.uri.toString());
+        _videoPlayerController =
+            VideoPlayerController.network(media.uri.toString());
 
   final bool _showControls;
   final bool _autoInitialize;
