@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/compose_view.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 import 'mock.dart';

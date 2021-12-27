@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
 import 'package:stream_feed/src/core/http/token.dart';
-import 'package:stream_feed/src/core/lookup_attribute.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
+import 'package:stream_feed/src/core/models/lookup_attribute.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/reaction.dart';
 import 'package:stream_feed/src/core/util/extension.dart';

@@ -6,41 +6,50 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+class ReactionListCore
+    extends GenericReactionListCore<User, String, String, String> {
+  const ReactionListCore({
+    Key? key,
+    required ReactionsBuilder reactionsBuilder,
+    Widget onErrorWidget = const ErrorStateWidget(),
+    Widget onProgressWidget = const ProgressStateWidget(),
+    Widget onEmptyWidget =
+        const EmptyStateWidget(message: 'No comments to display'),
+    LookupAttribute lookupAttr = LookupAttribute.activityId,
+    required String lookupValue,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    int? limit,
+    String? kind,
+    ScrollPhysics? scrollPhysics,
+  }) : super(
+          key: key,
+          reactionsBuilder: reactionsBuilder,
+          onErrorWidget: onErrorWidget,
+          onProgressWidget: onProgressWidget,
+          onEmptyWidget: onEmptyWidget,
+          lookupAttr: lookupAttr,
+          lookupValue: lookupValue,
+          filter: filter,
+          flags: flags,
+          limit: limit,
+          kind: kind,
+          scrollPhysics: scrollPhysics,
+        );
+}
+
 // ignore_for_file: cascade_invocations
 
 //TODO: other things to add to core: FollowListCore, UserListCore
 
-/// [ReactionListCore] is a simplified class that allows fetching a list of
-/// reactions while exposing UI builders.
+/// The generic version of [ReactionListCore]
 ///
-///
-/// ```dart
-/// class FlatActivityListPage extends StatelessWidget {
-///   @override
-///   Widget build(BuildContext context) {
-///     return Scaffold(
-///       body: ReactionListCore(
-///         onErrorWidget: Center(
-///             child: Text('An error has occurred'),
-///         ),
-///         onEmptyWidget: Center(
-///             child: Text('Nothing here...'),
-///         ),
-///         onProgressWidget: Center(
-///             child: CircularProgressIndicator(),
-///         ),
-///         feedBuilder: (context, reactions, idx) {
-///           return YourReactionWidget(reaction: reactions[idx]);
-///         }
-///       ),
-///     );
-///   }
-/// }
-/// ```
-///
-/// Make sure to have a [StreamFeedCore] ancestor in order to provide the
-/// information about the reactions.
+/// {@macro reactionListCore}
+/// {@macro genericParameters}
 class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
+  //TODO(sacha): in the future we should get rid of the generic bounds and accept a controller instead
+  // like we did for UploadController and UploadListCore
+  ///{@macro reactionListCore}
   const GenericReactionListCore({
     Key? key,
     required this.reactionsBuilder,
@@ -57,19 +66,19 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
     this.scrollPhysics,
   }) : super(key: key);
 
-  /// A builder that allows building a ListView of Reaction based Widgets
+  /// {@macro reactionsBuilder}
   final ReactionsBuilder reactionsBuilder;
 
-  /// A builder for building widgets to show on error
+  ///{@macro onErrorWidget}
   final Widget onErrorWidget;
 
-  /// A builder for building widgets to show on progress
+  ///{@macro onProgressWidget}
   final Widget onProgressWidget;
 
-  /// A builder for building widgets to show on empty
+  ///{@macro onEmptyWidget}
   final Widget onEmptyWidget;
 
-  /// Lookup objects based on attributes
+  ///{@macro lookupAttr}
   final LookupAttribute lookupAttr;
 
   /// TODO: document me
@@ -78,13 +87,13 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
   /// {@macro filter}
   final Filter? filter;
 
-  /// The flags to use for the request
+  /// {@macro enrichmentFlags}
   final EnrichmentFlags? flags;
 
   /// The limit of activities to fetch
   final int? limit;
 
-  /// The kind of reaction
+  /// The kind of reaction, usually i.e 'comment', 'like', 'reaction' etc
   final String? kind;
 
   final ScrollPhysics? scrollPhysics;

@@ -1,4 +1,6 @@
+/// {@template lookupAttribute}
 /// Lookup objects based on attributes
+/// {@endtemplate}
 enum LookupAttribute {
   /// The id of the activity you want to lookup
   activityId,

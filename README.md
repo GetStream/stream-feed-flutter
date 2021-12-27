@@ -50,10 +50,10 @@ const apiKey = 'my-API-key';
 const secret = 'my-API-secret';
 
 // Instantiate a new client (server side)
-var client = StreamFeedClient.connect(apiKey, secret: secret);
+var client = StreamFeedClient(apiKey, secret: secret);
 
 // Optionally supply the app identifier and an options object specifying the data center to use and timeout for requests (15s)
-client = StreamFeedClient.connect(apiKey,
+client = StreamFeedClient(apiKey,
       secret: secret,
       appId: 'yourappid',
       options: StreamHttpClientOptions(
@@ -70,7 +70,7 @@ final userToken = client.frontendToken('the-user-id');
 
 ```dart
 // Instantiate new client with a user token
-var client = StreamFeedClient.connect(apiKey, token: Token('userToken'));
+var client = StreamFeedClient(apiKey, token: Token('userToken'));
 ```
 
 ### 🔮 Examples
@@ -235,7 +235,7 @@ Stream uses [Faye](https://faye.jcoglan.com) for realtime notifications. Below i
 ```dart
 
 // ⚠️ userToken is generated server-side (see previous section)
-final client = StreamFeedClient.connect('YOUR_API_KEY', token: userToken,appId: 'APP_ID');
+final client = StreamFeedClient('YOUR_API_KEY', token: userToken,appId: 'APP_ID');
 final user1 = client.flatFeed('user', '1');
 
 // subscribe to the changes

@@ -43,33 +43,8 @@ class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
 /// [GenericFlatFeedCore] is a simplified class that allows fetching a list of
 /// enriched activities (flat) while exposing UI builders.
 ///
-///
-/// ```dart
-/// class FlatActivityListPage extends StatelessWidget {
-///   @override
-///   Widget build(BuildContext context) {
-///     return Scaffold(
-///       body: GenericFlatFeedCore(
-///         onErrorWidget: Center(
-///             child: Text('An error has occurred'),
-///         ),
-///         onEmptyWidget: Center(
-///             child: Text('Nothing here...'),
-///         ),
-///         onProgressWidget: Center(
-///             child: CircularProgressIndicator(),
-///         ),
-///         feedBuilder: (context, activities, idx) {
-///           return YourActivityWidget(activity: activities[idx]);
-///         }
-///       ),
-///     );
-///   }
-/// }
-/// ```
-///
-/// Make sure to have a [StreamFeedCore] ancestor in order to provide the
-/// information about the activities.
+/// {@macro flatFeedCore}
+/// {@macro genericParameters}
 class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   const GenericFlatFeedCore({
     Key? key,
@@ -158,9 +133,7 @@ class _GenericFlatFeedCoreState<A, Ob, T, Or>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<GenericEnrichedActivity<A, Ob, T, Or>>>(
-      stream: GenericFeedProvider<A, Ob, T, Or>.of(context)
-          .bloc
-          .getActivitiesStream(widget.feedGroup),
+      stream: bloc.getActivitiesStream(widget.feedGroup),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return widget

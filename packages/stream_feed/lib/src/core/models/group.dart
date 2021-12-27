@@ -1,10 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 
 part 'group.g.dart';
 
 /// An aggregated group type.
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
+@DateTimeUTCConverter()
 class Group<T> extends Equatable {
   /// [Group] constructor
   const Group({

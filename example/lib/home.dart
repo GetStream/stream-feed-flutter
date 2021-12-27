@@ -1,9 +1,9 @@
-import 'package:stream_feed_example/people_screen.dart';
-import 'package:stream_feed_example/profile_screen.dart';
-import 'package:stream_feed_example/timeline_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_example/people_screen.dart';
+import 'package:stream_feed_example/profile_screen.dart';
+import 'package:stream_feed_example/timeline_screen.dart';
 
 //ignore: public_member_api_docs
 class HomeScreen extends StatefulWidget {

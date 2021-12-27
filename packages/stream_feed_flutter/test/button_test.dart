@@ -165,7 +165,7 @@ void main() {
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
         final mockClient = MockStreamFeedClient();
-        final controller = ReactionsController();
+        final controller = ReactionsManager();
         const parentId = 'parentId';
         const childId = 'childId';
         final now = DateTime.now();
@@ -185,8 +185,8 @@ void main() {
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
         );
-        bloc.reactionsController = controller;
-        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
+        bloc.reactionsManager = controller;
+        expect(bloc.reactionsManager.hasValue(reactedActivity.id!), true);
         final parentReaction = Reaction(
             id: parentId, kind: 'comment', activityId: reactedActivity.id);
         final childReaction =
@@ -250,7 +250,7 @@ void main() {
 
         const label = kind;
         when(() => mockClient.reactions).thenReturn(mockReactions);
-        final controller = ReactionsController();
+        final controller = ReactionsManager();
         final now = DateTime.now();
         const childId = 'childId';
         const parentId = 'parentId';
@@ -284,8 +284,8 @@ void main() {
           client: mockClient,
           analyticsClient: mockStreamAnalytics,
         );
-        bloc.reactionsController = controller;
-        expect(bloc.reactionsController.hasValue(reactedActivity.id!), true);
+        bloc.reactionsManager = controller;
+        expect(bloc.reactionsManager.hasValue(reactedActivity.id!), true);
 
         when(() => mockReactions.delete(childId))
             .thenAnswer((_) async => Future.value());
@@ -368,10 +368,10 @@ void main() {
 
     testGoldens('onAddReaction', (tester) async {
       const addedReaction = Reaction();
-      bloc.reactionsController = mockReactionsController;
+      bloc.reactionsManager = mockReactionsController;
       when(() => mockReactionsController.getReactions(activityId))
           .thenAnswer((_) => reactions);
-      expect(bloc.reactionsController.getReactions(activityId), reactions);
+      expect(bloc.reactionsManager.getReactions(activityId), reactions);
       when(() => mockReactions.add(
             kind,
             activityId,
@@ -406,7 +406,7 @@ void main() {
     testGoldens('onRemoveReaction', (tester) async {
       const reactionId = 'reactionId';
       const reaction = Reaction(id: reactionId);
-      bloc.reactionsController = mockReactionsController;
+      bloc.reactionsManager = mockReactionsController;
       when(() => mockReactionsController.getReactions(activityId))
           .thenAnswer((_) => reactions);
       when(() => mockReactions.delete(reactionId))

@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/serializer.dart';
+import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 part 'reaction.g.dart';
@@ -15,6 +16,7 @@ part 'reaction.g.dart';
 /// Reactions are automatically returned to feeds' activities at read time
 /// when the reactions parameters are used.
 @JsonSerializable()
+@DateTimeUTCConverter()
 class Reaction extends Equatable {
   /// Builds a [Reaction].
   const Reaction({

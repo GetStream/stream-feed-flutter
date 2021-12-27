@@ -29,8 +29,10 @@ extension _EnrichmentTypeX on _EnrichmentType {
       }[this]!;
 }
 
+/// {@template enrichmentFlags}
 /// Flags to indicate the API to enrich activities with additional info like
 /// user reactions and count
+/// {@endtemplate}
 class EnrichmentFlags {
   String? _userId;
   final Map<_EnrichmentType, Object> _flags = {};
