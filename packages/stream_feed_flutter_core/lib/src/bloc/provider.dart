@@ -19,6 +19,10 @@ class FeedProvider extends GenericFeedProvider<User, String, String, String> {
   }
 }
 
+/// The generic version of [FeedProvider]
+///
+/// {@macro feedProvider}
+/// {@macro genericParameters}
 class GenericFeedProvider<A, Ob, T, Or> extends InheritedWidget {
   /// {@macro feedProvider}
   const GenericFeedProvider({

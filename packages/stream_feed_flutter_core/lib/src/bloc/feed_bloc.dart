@@ -13,6 +13,10 @@ class FeedBloc extends GenericFeedBloc<User, String, String, String> {
       : super(client: client, analyticsClient: analyticsClient);
 }
 
+/// The generic version of `FeedBloc`.
+///
+/// {@macro feedBloc}
+/// {@macro genericParameters}
 class GenericFeedBloc<A, Ob, T, Or> {
   /// {@macro feedBloc}
   GenericFeedBloc({
