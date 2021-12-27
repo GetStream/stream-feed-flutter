@@ -1,4 +1,3 @@
-
 import 'package:example/people_screen.dart';
 import 'package:example/profile_screen.dart';
 import 'package:example/timeline_screen.dart';

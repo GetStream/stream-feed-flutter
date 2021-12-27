@@ -1,4 +1,3 @@
-
 import 'package:example/app_user.dart';
 import 'package:example/extension.dart';
 import 'package:flutter/cupertino.dart';
