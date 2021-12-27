@@ -1,6 +1,6 @@
-import 'package:example/client_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_example/client_provider.dart';
 
 //ignore: public_member_api_docs
 extension ProviderX on BuildContext {

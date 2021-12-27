@@ -348,7 +348,7 @@ void main() {
             ],
           )).thenAnswer((_) async => following);
 
-      final isFollowing = await bloc.isFollowingUser('2');
+      final isFollowing = await bloc.isFollowingFeed(followerId: '2');
       expect(isFollowing, false);
     });
 
@@ -358,7 +358,7 @@ void main() {
       when(() => mockFeed.follow(mockSecondFeed))
           .thenAnswer((_) => Future.value());
 
-      await bloc.followFlatFeed('2');
+      await bloc.followFeed(followeeId: '2');
       verify(() => mockFeed.follow(mockSecondFeed)).called(1);
     });
 
@@ -368,7 +368,7 @@ void main() {
       when(() => mockFeed.unfollow(mockSecondFeed))
           .thenAnswer((_) => Future.value());
 
-      await bloc.unfollowFlatFeed('2');
+      await bloc.unfollowFeed(unfolloweeId: '2');
       verify(() => mockFeed.unfollow(mockSecondFeed)).called(1);
     });
   });

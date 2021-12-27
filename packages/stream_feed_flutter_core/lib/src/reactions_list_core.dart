@@ -6,6 +6,38 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+class ReactionListCore
+    extends GenericReactionListCore<User, String, String, String> {
+  const ReactionListCore({
+    Key? key,
+    required ReactionsBuilder reactionsBuilder,
+    Widget onErrorWidget = const ErrorStateWidget(),
+    Widget onProgressWidget = const ProgressStateWidget(),
+    Widget onEmptyWidget =
+        const EmptyStateWidget(message: 'No comments to display'),
+    LookupAttribute lookupAttr = LookupAttribute.activityId,
+    required String lookupValue,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    int? limit,
+    String? kind,
+    ScrollPhysics? scrollPhysics,
+  }) : super(
+          key: key,
+          reactionsBuilder: reactionsBuilder,
+          onErrorWidget: onErrorWidget,
+          onProgressWidget: onProgressWidget,
+          onEmptyWidget: onEmptyWidget,
+          lookupAttr: lookupAttr,
+          lookupValue: lookupValue,
+          filter: filter,
+          flags: flags,
+          limit: limit,
+          kind: kind,
+          scrollPhysics: scrollPhysics,
+        );
+}
+
 // ignore_for_file: cascade_invocations
 
 //TODO: other things to add to core: FollowListCore, UserListCore
@@ -31,6 +63,7 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
     this.flags,
     this.kind,
     this.limit,
+    this.scrollPhysics,
   }) : super(key: key);
 
   /// {@macro reactionsBuilder}
@@ -63,6 +96,8 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
   /// The kind of reaction, usually i.e 'comment', 'like', 'reaction' etc
   final String? kind;
 
+  final ScrollPhysics? scrollPhysics;
+
   @override
   _GenericReactionListCoreState<A, Ob, T, Or> createState() =>
       _GenericReactionListCoreState<A, Ob, T, Or>();
@@ -92,27 +127,31 @@ class _GenericReactionListCoreState<A, Ob, T, Or>
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Reaction>>(
-        stream: bloc.getReactionsStream(widget.lookupValue, widget.kind),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return widget.onErrorWidget; //snapshot.error
-          }
-          if (!snapshot.hasData) {
-            return widget.onProgressWidget;
-          }
-          final reactions = snapshot.data!;
-          if (reactions.isEmpty) {
-            return widget.onEmptyWidget;
-          }
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: reactions.length,
-            itemBuilder: (context, idx) => widget.reactionsBuilder(
-              context,
-              reactions,
-              idx,
-            ),
-          );
-        });
+      stream: bloc.getReactionsStream(widget.lookupValue,
+          widget.kind), //reactionsStreamFor(widget.lookupValue)
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return widget.onErrorWidget; //snapshot.error
+        }
+        if (!snapshot.hasData) {
+          return widget.onProgressWidget;
+        }
+        final reactions = snapshot.data!;
+        if (reactions.isEmpty) {
+          return widget.onEmptyWidget;
+        }
+        return ListView.separated(
+          shrinkWrap: true,
+          itemCount: reactions.length,
+          physics: widget.scrollPhysics ?? const NeverScrollableScrollPhysics(),
+          separatorBuilder: (context, index) => const Divider(),
+          itemBuilder: (context, idx) => widget.reactionsBuilder(
+            context,
+            reactions,
+            idx,
+          ),
+        );
+      },
+    );
   }
 }

@@ -7,20 +7,51 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-/// The generic version of [FlatFeedCore]
+class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
+  FlatFeedCore({
+    required EnrichedFeedBuilder<User, String, String, String> feedBuilder,
+    Widget onErrorWidget = const ErrorStateWidget(),
+    Widget onProgressWidget = const ProgressStateWidget(),
+    Widget onEmptyWidget =
+        const EmptyStateWidget(message: 'No activities to display'),
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
+    String? userId,
+    required String feedGroup,
+    ScrollPhysics? scrollPhysics,
+  }) : super(
+          feedBuilder: feedBuilder,
+          onErrorWidget: onErrorWidget,
+          onProgressWidget: onProgressWidget,
+          onEmptyWidget: onEmptyWidget,
+          limit: limit,
+          offset: offset,
+          session: session,
+          filter: filter,
+          flags: flags,
+          ranking: ranking,
+          userId: userId,
+          feedGroup: feedGroup,
+          scrollPhysics: scrollPhysics,
+        );
+}
+
+/// [GenericFlatFeedCore] is a simplified class that allows fetching a list of
+/// enriched activities (flat) while exposing UI builders.
 ///
 /// {@macro flatFeedCore}
 /// {@macro genericParameters}
 class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
-  ///{@macro flatFeedCore}
   const GenericFlatFeedCore({
     Key? key,
     required this.feedGroup,
     required this.feedBuilder,
     this.onErrorWidget = const ErrorStateWidget(),
     this.onProgressWidget = const ProgressStateWidget(),
-    this.onEmptyWidget =
-        const EmptyStateWidget(message: 'No activities to display'),
     this.limit,
     this.offset,
     this.session,
@@ -28,6 +59,8 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
     this.flags,
     this.ranking,
     this.userId,
+    this.onEmptyWidget =
+        const EmptyStateWidget(message: 'No activities to display'),
     this.scrollPhysics,
   }) : super(key: key);
 

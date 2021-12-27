@@ -1,4 +1,8 @@
-## 0.4.0+2: 22/12/2021
+## 0.4.0+3: 27/12/2021
+
+- fix: call profile in setUser, so that currentUser data is not null
+  
+  ## 0.4.0+2: 22/12/2021
 
 - fix: export image_storage_client.dart
   

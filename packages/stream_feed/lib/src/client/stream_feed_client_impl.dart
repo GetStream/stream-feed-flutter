@@ -140,8 +140,8 @@ class StreamFeedClientImpl implements StreamFeedClient {
     Map<String, Object?>? extraData,
   }) async {
     this.userToken = userToken;
-    return _currentUser =
-        await this.user(user.id!).getOrCreate(extraData ?? {});
+    final createdUser = await this.user(user.id!).getOrCreate(extraData ?? {});
+    return _currentUser = await createdUser.profile();
   }
 
   @override
