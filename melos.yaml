@@ -2,6 +2,7 @@ name: stream_feed_flutter
 
 packages:
   - packages/**
+  - example/**
 
 scripts:
   format:
