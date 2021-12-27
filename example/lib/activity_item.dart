@@ -1,7 +1,7 @@
-import 'package:example/app_user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_example/app_user.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 //ignore: public_member_api_docs

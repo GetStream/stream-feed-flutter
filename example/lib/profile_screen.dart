@@ -1,9 +1,9 @@
-import 'package:example/activity_item.dart';
-import 'package:example/add_activity_dialog.dart';
-import 'package:example/extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_example/activity_item.dart';
+import 'package:stream_feed_example/add_activity_dialog.dart';
+import 'package:stream_feed_example/extension.dart';
 
 //ignore: public_member_api_docs
 class ProfileScreen extends StatefulWidget {
