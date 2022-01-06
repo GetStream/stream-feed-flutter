@@ -113,8 +113,7 @@ void main() {
     test('openGraph', () async {
       final mockApi = MockAPI();
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
+      final client = StreamFeedClientImpl('apiKey', api: mockApi);
 
       const targetUrl = 'targetUrl';
 
@@ -131,8 +130,7 @@ void main() {
       final mockUserAPI = MockUserAPI();
       when(() => mockApi.users).thenReturn(mockUserAPI);
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
+      final client = StreamFeedClientImpl('apiKey', api: mockApi);
 
       const userId = 'test-user';
       const data = {
@@ -159,8 +157,7 @@ void main() {
       final mockUserAPI = MockUserAPI();
       final token = TokenHelper.buildFrontendToken('secret', id);
 
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
+      final client = StreamFeedClientImpl('apiKey', api: mockApi);
 
       const data = {
         'name': 'John Doe',
@@ -187,8 +184,7 @@ void main() {
       final mockUserAPI = MockUserAPI();
       when(() => mockApi.users).thenReturn(mockUserAPI);
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
+      final client = StreamFeedClientImpl('apiKey', api: mockApi);
 
       const userId = 'test-user';
       const data = {
@@ -214,8 +210,7 @@ void main() {
       final mockUserAPI = MockUserAPI();
       when(() => mockApi.users).thenReturn(mockUserAPI);
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
+      final client = StreamFeedClientImpl('apiKey', api: mockApi);
 
       const userId = 'test-user';
       const data = {
@@ -241,8 +236,7 @@ void main() {
       final mockUserAPI = MockUserAPI();
       when(() => mockApi.users).thenReturn(mockUserAPI);
       final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
+      final client = StreamFeedClientImpl('apiKey', api: mockApi);
 
       const userId = 'test-user';
 

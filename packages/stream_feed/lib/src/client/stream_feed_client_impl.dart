@@ -38,8 +38,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
   StreamFeedClientImpl(
     this.apiKey, {
     this.secret,
-    this.userToken, //TODO(sacha): remove this and call _ensureCredentials
-    //in the getters instead (collections etc)
     this.appId,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
     this.runner = Runner.client,
@@ -48,7 +46,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
     StreamAPI? api,
     StreamHttpClientOptions? options,
   }) {
-    assert(_ensureCredentials(), '');
     _logger = Logger.detached('📜')..level = logLevel;
     _logger.onRecord.listen(logHandlerFunction ?? _defaultLogHandler);
     _logger.info('instantiating new client');
@@ -72,7 +69,8 @@ class StreamFeedClientImpl implements StreamFeedClient {
         case Runner.client:
           if (userToken == null) {
             throw AssertionError(
-              '`userToken` must be provided while running on client-side',
+              '`userToken` must be provided while running on client-side'
+              'please make sure to call client.setUser',
             );
           }
           if (secret != null) {
@@ -146,6 +144,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   BatchOperationsClient get batch {
+     assert(_ensureCredentials(), '');
     assert(
       runner == Runner.server,
       "You can't use batch operations client side",
@@ -154,29 +153,44 @@ class StreamFeedClientImpl implements StreamFeedClient {
   }
 
   @override
-  CollectionsClient get collections =>
-      CollectionsClient(_api.collections, userToken: userToken, secret: secret);
+  CollectionsClient get collections {
+    assert(_ensureCredentials(), '');
+    return CollectionsClient(_api.collections,
+        userToken: userToken, secret: secret);
+  }
 
   @override
-  ReactionsClient get reactions =>
-      ReactionsClient(_api.reactions, userToken: userToken, secret: secret);
+  ReactionsClient get reactions {
+    assert(_ensureCredentials(), '');
+    return ReactionsClient(_api.reactions,
+        userToken: userToken, secret: secret);
+  }
 
   @override
-  PersonalizationClient get personalization =>
-      PersonalizationClient(_api.personalization,
-          userToken: userToken, secret: secret);
+  PersonalizationClient get personalization {
+    assert(_ensureCredentials(), '');
+    return PersonalizationClient(_api.personalization,
+        userToken: userToken, secret: secret);
+  }
 
   @override
-  StreamUser user(String userId) =>
-      StreamUser(_api.users, userId, userToken: userToken, secret: secret);
+  StreamUser user(String userId) {
+    assert(_ensureCredentials(), '');
+    return StreamUser(_api.users, userId, userToken: userToken, secret: secret);
+  }
 
   @override
-  FileStorageClient get files =>
-      FileStorageClient(_api.files, userToken: userToken, secret: secret);
+  FileStorageClient get files {
+    assert(_ensureCredentials(), '');
+    return FileStorageClient(_api.files, userToken: userToken, secret: secret);
+  }
 
   @override
-  ImageStorageClient get images =>
-      ImageStorageClient(_api.images, userToken: userToken, secret: secret);
+  ImageStorageClient get images {
+    assert(_ensureCredentials(), '');
+    return ImageStorageClient(_api.images,
+        userToken: userToken, secret: secret);
+  }
 
   Future<Subscription> _feedSubscriber(
     Token token,
@@ -219,6 +233,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
     String? userId,
     Token? userToken,
   ]) {
+    assert(_ensureCredentials(), '');
     final id = FeedId(slug, _getUserId(userId));
     return AggregatedFeed(
       id,
@@ -235,6 +250,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
     String? userId,
     Token? userToken,
   ]) {
+    assert(_ensureCredentials(), '');
     final id = FeedId(slug, _getUserId(userId));
     return FlatFeed(
       id,
@@ -251,6 +267,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
     String? userId,
     Token? userToken,
   ]) {
+    assert(_ensureCredentials(), '');
     final id = FeedId(slug, _getUserId(userId));
     return NotificationFeed(
       id,
@@ -266,6 +283,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
     String userId, {
     DateTime? expiresAt,
   }) {
+    assert(_ensureCredentials(), '');
     assert(
       runner == Runner.server,
       "You can't use the `frontendToken` method client side",
@@ -276,6 +294,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   Future<OpenGraphData> og(String targetUrl) {
+    assert(_ensureCredentials(), '');
     final token = userToken ?? TokenHelper.buildOpenGraphToken(secret!);
     return _api.openGraph(token, targetUrl);
   }
@@ -286,6 +305,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
     Map<String, Object?> data, {
     bool getOrCreate = false,
   }) {
+    assert(_ensureCredentials(), '');
     if (runner == Runner.client) {
       _logger.warning('We advice using `client.createUser` only server-side');
     }
@@ -296,9 +316,11 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   Future<User> getUser(String id, {bool withFollowCounts = false}) {
+    assert(_ensureCredentials(), '');
     if (runner == Runner.client) {
       _logger.warning('We advice using `client.getUser` only server-side');
     }
+
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
     return _api.users.get(token, id, withFollowCounts: withFollowCounts);
@@ -306,6 +328,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   Future<User> updateUser(String id, Map<String, Object?> data) {
+    assert(_ensureCredentials(), '');
     if (runner == Runner.client) {
       _logger.warning('We advice using `client.updateUser` only server-side');
     }
@@ -316,6 +339,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   Future<void> deleteUser(String id) {
+    assert(_ensureCredentials(), '');
     if (runner == Runner.client) {
       _logger.warning('We advice using `client.deleteUser` only server-side');
     }
