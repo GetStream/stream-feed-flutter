@@ -35,120 +35,16 @@ void main() {
     when(() => mockUserAPI.get(userToken, userId, withFollowCounts: true))
         .thenAnswer((_) async => user);
 
-    group('throw', () {
-      test('throws an AssertionError when no secret or token provided', () {
-        expect(
-          () => StreamFeedClient('apiKey').collections,
-          throwsA(
-            predicate<AssertionError>((e) =>
-                e.message == 'At least a secret or userToken must be provided'),
-          ),
-        );
-      });
-
-      test(
-        'throws an AssertionError if token is not provided '
-        'while running on client-side',
-        () async {
-          final client = StreamFeedClient('apiKey', secret: 'secret');
-
-          expect(
-            () => client.collections,
-            throwsA(
-              predicate<AssertionError>(
-                (e) =>
-                    e.message ==
-                    "`userToken` must be provided while running on client-sideplease make sure to call client.setUser",
-              ),
-            ),
-          );
-        },
-      );
-
-      test(
-        'throws an AssertionError if secret is not provided '
-        'while running on server-side',
-        () {
-          expect(
-            () => StreamFeedClient(
-              'apiKey',
-              // token: TokenHelper.buildFrontendToken('secret', 'userId'),
-              runner: Runner.server,
-            ).collections,
-            throwsA(
-              predicate<AssertionError>(
-                (e) =>
-                    e.message ==
-                    'At least a secret or userToken must be provided',
-              ),
-            ),
-          );
-        },
-      );
-
-      test(
-        'throws an AssertionError if secret is provided '
-        'while running on client-side',
-        () async {
-          final client =
-              StreamFeedClient('apiKey', secret: 'secret', api: mockApi
-                  // token: TokenHelper.buildFrontendToken('secret', 'userId'),
-                  );
-          await client.setUser(user, userToken, extraData: data);
-          expect(
-            () => client.collections,
-            throwsA(
-              predicate<AssertionError>(
-                (e) =>
-                    e.message ==
-                    'You are publicly sharing your App Secret. '
-                        'Do not expose the App Secret in `browsers`, '
-                        '`native` mobile apps, or other non-trusted environments. ',
-              ),
-            ),
-          );
-        },
-      );
-
-      test("don't throw if secret provided while running on server-side", () {
-        StreamFeedClient('apiKey', secret: 'secret', runner: Runner.server);
-      });
-
-      test("don't throw if token provided while running on client-side", () {
-        StreamFeedClient(
-          'apiKey',
-          // token: TokenHelper.buildFrontendToken('secret', 'userId'),
-        );
-      });
-    });
-    test('getters', () async {
-      const secret = 'secret';
-      const userId = 'userId';
-      final client =
-          StreamFeedClientImpl('apiKey', secret: secret, runner: Runner.server);
-      expect(client.collections, isNotNull);
-      expect(client.batch, isNotNull);
-      expect(client.aggregatedFeed('slug', 'userId'), isNotNull);
-      expect(client.flatFeed('slug', 'userId'), isNotNull);
-      expect(client.notificationFeed('slug', 'userId'), isNotNull);
-      expect(client.files, isNotNull);
-      expect(client.images, isNotNull);
-      expect(client.reactions, isNotNull);
-      expect(client.user(userId), isNotNull);
-      expect(client.frontendToken(userId), isNotNull);
-    });
-
-    test('openGraph', () async {
+    test('setUser', () async {
       final client = StreamFeedClient('apiKey', api: mockApi);
-      await client.setUser(user, userToken, extraData: data);
-      const targetUrl = 'targetUrl';
 
-      when(() => mockApi.openGraph(userToken, targetUrl)).thenAnswer(
-        (_) async =>
-            OpenGraphData.fromJson(jsonFixture('open_graph_data.json')),
-      );
-      await client.og(targetUrl);
-      verify(() => mockApi.openGraph(userToken, targetUrl)).called(1);
+      await client.setUser(user, userToken, extraData: data);
+      verify(() =>
+              mockUserAPI.create(userToken, userId, data, getOrCreate: true))
+          .called(1);
+
+      verify(() => mockUserAPI.get(userToken, userId, withFollowCounts: true))
+          .called(1);
     });
 
     test('createUser', () async {
@@ -165,18 +61,6 @@ void main() {
       expect(newUser.data, data);
 
       verify(() => mockUserAPI.create(userToken, userId, data)).called(1);
-    });
-
-    test('setUser', () async {
-      final client = StreamFeedClient('apiKey', api: mockApi);
-
-      await client.setUser(user, userToken, extraData: data);
-      verify(() =>
-              mockUserAPI.create(userToken, userId, data, getOrCreate: true))
-          .called(1);
-
-      verify(() => mockUserAPI.get(userToken, userId, withFollowCounts: true))
-          .called(1);
     });
 
     test('getUser', () async {
@@ -221,6 +105,116 @@ void main() {
       await client.deleteUser(userId);
 
       verify(() => mockUserAPI.delete(userToken, userId)).called(1);
+    });
+
+    group('throw', () {
+      test('throws an AssertionError when no secret or token provided', () {
+        expect(
+          () => StreamFeedClient('apiKey').collections,
+          throwsA(
+            predicate<AssertionError>((e) =>
+                e.message == 'At least a secret or userToken must be provided'),
+          ),
+        );
+      });
+
+      test(
+        'throws an AssertionError if token is not provided '
+        'while running on client-side',
+        () async {
+          final client = StreamFeedClient('apiKey', secret: 'secret');
+
+          expect(
+            () => client.collections,
+            throwsA(
+              predicate<AssertionError>(
+                (e) =>
+                    e.message ==
+                    "`userToken` must be provided while running on client-sideplease make sure to call client.setUser",
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'throws an AssertionError if secret is not provided '
+        'while running on server-side',
+        () {
+          expect(
+            () => StreamFeedClient(
+              'apiKey',
+              runner: Runner.server,
+            ).collections,
+            throwsA(
+              predicate<AssertionError>(
+                (e) =>
+                    e.message ==
+                    'At least a secret or userToken must be provided',
+              ),
+            ),
+          );
+        },
+      );
+
+      test(
+        'throws an AssertionError if secret is provided '
+        'while running on client-side',
+        () async {
+          final client =
+              StreamFeedClient('apiKey', secret: 'secret', api: mockApi);
+          await client.setUser(user, userToken, extraData: data);
+          expect(
+            () => client.collections,
+            throwsA(
+              predicate<AssertionError>(
+                (e) =>
+                    e.message ==
+                    'You are publicly sharing your App Secret. '
+                        'Do not expose the App Secret in `browsers`, '
+                        '`native` mobile apps, or other non-trusted environments. ',
+              ),
+            ),
+          );
+        },
+      );
+
+      test("don't throw if secret provided while running on server-side", () {
+        StreamFeedClient('apiKey', secret: 'secret', runner: Runner.server);
+      });
+
+      test("don't throw if token provided while running on client-side", () {
+        StreamFeedClient('apiKey');
+      });
+    });
+    test('getters', () async {
+      const secret = 'secret';
+      const userId = 'userId';
+      final client =
+          StreamFeedClientImpl('apiKey', secret: secret, runner: Runner.server);
+      expect(client.collections, isNotNull);
+      expect(client.batch, isNotNull);
+      expect(client.aggregatedFeed('slug', 'userId'), isNotNull);
+      expect(client.flatFeed('slug', 'userId'), isNotNull);
+      expect(client.notificationFeed('slug', 'userId'), isNotNull);
+      expect(client.files, isNotNull);
+      expect(client.images, isNotNull);
+      expect(client.reactions, isNotNull);
+      expect(client.user(userId), isNotNull);
+      expect(client.frontendToken(userId), isNotNull);
+    });
+
+    test('openGraph', () async {
+      final client = StreamFeedClient('apiKey', api: mockApi);
+      await client.setUser(user, userToken, extraData: data);
+      const targetUrl = 'targetUrl';
+
+      when(() => mockApi.openGraph(userToken, targetUrl)).thenAnswer(
+        (_) async =>
+            OpenGraphData.fromJson(jsonFixture('open_graph_data.json')),
+      );
+      await client.og(targetUrl);
+      verify(() => mockApi.openGraph(userToken, targetUrl)).called(1);
     });
   });
 }

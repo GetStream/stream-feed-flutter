@@ -31,7 +31,7 @@ void main() {
         response: Response(
           requestOptions: options,
           statusCode: data.statusCode,
-          data: data.toJson(),
+          data: "${data.toJson()}",
         ),
       );
       final error = StreamFeedsNetworkError.fromDioError(dioError);
