@@ -5,10 +5,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 Future<void> main() async {
   const apiKey = String.fromEnvironment('key');
   const userToken = String.fromEnvironment('user_token');
-  final client = StreamFeedClient(
-    apiKey,
-    token: const Token(userToken),
-  );
+  final client = StreamFeedClient(apiKey);
 
   await client.setUser(
     const User(
