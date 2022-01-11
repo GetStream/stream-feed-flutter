@@ -45,9 +45,20 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 void main() {
   const apiKey = 'API-KEY';
   const userToken = 'USER-TOKEN';
-  final client = StreamFeedClient(
-    apiKey,
-    token: const Token(userToken),
+  final client = StreamFeedClient(apiKey);
+
+  await client.setUser(
+    const User(
+      id: 'GroovinChip',
+      data: {
+        'handle': '@GroovinChip',
+        'first_name': 'Reuben',
+        'last_name': 'Turner',
+        'full_name': 'Reuben Turner',
+        'profile_image': 'https://avatars.githubusercontent.com/u/4250470?v=4',
+      },
+    ),
+    const Token(userToken),
   );
 
   runApp(
