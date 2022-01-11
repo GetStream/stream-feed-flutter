@@ -14,7 +14,7 @@ void main() {
 
   final client = StreamFeedClient(
     _key,
-    token: const Token(_userToken),
+    // token: const Token(_userToken),
   );
 
   runApp(

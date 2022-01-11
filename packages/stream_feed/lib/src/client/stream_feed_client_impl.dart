@@ -144,7 +144,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   BatchOperationsClient get batch {
-     assert(_ensureCredentials(), '');
+    assert(_ensureCredentials(), '');
     assert(
       runner == Runner.server,
       "You can't use batch operations client side",
@@ -175,7 +175,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
 
   @override
   StreamUser user(String userId) {
-    assert(_ensureCredentials(), '');
+    // assert(_ensureCredentials(), '');
     return StreamUser(_api.users, userId, userToken: userToken, secret: secret);
   }
 
