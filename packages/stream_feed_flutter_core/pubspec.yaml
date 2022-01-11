@@ -14,7 +14,9 @@ dependencies:
   flutter:
     sdk: flutter
   rxdart: ^0.27.1
-  stream_feed: ^0.4.0+3
+  stream_feed:
+    path: ../stream_feed
+  # stream_feed: ^0.4.0+3
 
 dev_dependencies:
   flutter_test:

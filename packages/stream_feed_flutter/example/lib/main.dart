@@ -81,11 +81,7 @@ mixin StreamFeedMixin<T extends StatefulWidget> on State<T> {
 /// 3. Play around with the app!
 void main() {
   const apiKey = String.fromEnvironment('key');
-  const userToken = String.fromEnvironment('user_token');
-  final client = StreamFeedClient(
-    apiKey,
-    token: const Token(userToken),
-  );
+  final client = StreamFeedClient(apiKey);
 
   runApp(
     MobileApp(
