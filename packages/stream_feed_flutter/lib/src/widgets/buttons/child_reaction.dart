@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/theme/child_reaction_theme.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 // ignore_for_file: cascade_invocations
