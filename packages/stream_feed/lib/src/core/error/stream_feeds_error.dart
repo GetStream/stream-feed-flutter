@@ -31,7 +31,6 @@ class StreamFeedsNetworkError extends StreamFeedsError {
         statusCode = statusCode ?? data?.statusCode,
         super(errorCode.message);
 
-  ///
   StreamFeedsNetworkError.raw({
     required this.code,
     required String message,
@@ -67,13 +66,10 @@ class StreamFeedsNetworkError extends StreamFeedsError {
 
   StackTrace? _stackTrace;
 
-  ///
   set stackTrace(StackTrace? stack) => _stackTrace = stack;
 
-  ///
   FeedsError? get errorCode => feedsErrorCodeFromCode(code);
 
-  ///
   bool get isRetriable => data == null;
 
   @override

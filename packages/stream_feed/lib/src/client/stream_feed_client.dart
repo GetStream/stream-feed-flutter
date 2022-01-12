@@ -68,7 +68,6 @@ abstract class StreamFeedClient {
   }) =>
       StreamFeedClientImpl(
         apiKey,
-        // userToken: token,
         secret: secret,
         appId: appId,
         options: options,
