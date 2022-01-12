@@ -66,8 +66,10 @@ final userToken = client.frontendToken('the-user-id');
 #### Client API init
 
 ```dart
-// Instantiate new client with a user token
-var client = StreamFeedClient(apiKey, token: Token('userToken'));
+// Instantiate new client and set the user token
+var client = StreamFeedClient(apiKey);
+
+await client.setUser(user:user, token: frontendToken);
 ```
 
 ### 🔮 Examples

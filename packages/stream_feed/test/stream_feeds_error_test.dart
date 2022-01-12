@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/responses.dart';
 import 'package:stream_feed/src/core/error/feeds_error_code.dart';
@@ -31,7 +33,7 @@ void main() {
         response: Response(
           requestOptions: options,
           statusCode: data.statusCode,
-          data: data.toJson(),
+          data: json.encode(data.toJson()),
         ),
       );
       final error = StreamFeedsNetworkError.fromDioError(dioError);

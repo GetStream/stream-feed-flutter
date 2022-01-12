@@ -57,7 +57,6 @@ abstract class StreamFeedClient {
   /// {@endtemplate}
   factory StreamFeedClient(
     String apiKey, {
-    Token? token,
     String? secret,
     String? appId,
     StreamHttpClientOptions? options,
@@ -69,7 +68,6 @@ abstract class StreamFeedClient {
   }) =>
       StreamFeedClientImpl(
         apiKey,
-        userToken: token,
         secret: secret,
         appId: appId,
         options: options,

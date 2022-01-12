@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:stream_feed/src/core/api/responses.dart';
@@ -22,12 +24,12 @@ class StreamFeedsError with EquatableMixin implements Exception {
 class StreamFeedsNetworkError extends StreamFeedsError {
   /// Builds a [StreamFeedsNetworkError].
   StreamFeedsNetworkError(
-    FeedsError error, {
+    FeedsError errorCode, {
     int? statusCode,
     this.data,
-  })  : code = error.code,
+  })  : code = errorCode.code,
         statusCode = statusCode ?? data?.statusCode,
-        super(error.message);
+        super(errorCode.message);
 
   StreamFeedsNetworkError.raw({
     required this.code,
@@ -40,7 +42,7 @@ class StreamFeedsNetworkError extends StreamFeedsError {
   factory StreamFeedsNetworkError.fromDioError(DioError error) {
     final response = error.response;
     ErrorResponse? errorResponse;
-    final data = response?.data;
+    final data = json.decode(response?.data);
     if (data != null) {
       errorResponse = ErrorResponse.fromJson(data);
     }
@@ -64,12 +66,10 @@ class StreamFeedsNetworkError extends StreamFeedsError {
 
   StackTrace? _stackTrace;
 
-  ///
   set stackTrace(StackTrace? stack) => _stackTrace = stack;
 
   FeedsError? get errorCode => feedsErrorCodeFromCode(code);
 
-  ///
   bool get isRetriable => data == null;
 
   @override
