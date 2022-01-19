@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/user_bar_theme.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
+import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/human_readable_timestamp.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
@@ -128,7 +128,7 @@ class CommentItem extends StatelessWidget {
               ),
             ),
           ),
-          ChildReactionButton(
+          ReactionButton(
             //TODO: hardcoded -> refactor this
             activity: activity,
             //TODO: refactor LikeButton to accept a reaction

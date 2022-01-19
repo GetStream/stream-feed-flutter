@@ -1,15 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/child_reaction.dart';
-import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
-import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/pages/reaction_list_view.dart';
-import 'package:stream_feed_flutter/src/widgets/stream_feed_app.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 import 'mock.dart';
@@ -203,7 +198,7 @@ void main() {
               );
             },
             home: Scaffold(
-              body: ChildReactionToggleIcon(
+              body: ReactionToggleIcon(
                 activity: reactedActivity,
                 hoverColor: Colors.lightBlue,
                 reaction: parentReaction,
@@ -294,7 +289,7 @@ void main() {
             home: Scaffold(
               body: FeedProvider(
                 bloc: bloc,
-                child: ChildReactionToggleIcon(
+                child: ReactionToggleIcon(
                   ownReactions: [childReaction],
                   activity: reactedActivity,
                   hoverColor: Colors.lightBlue,
@@ -507,7 +502,7 @@ void main() {
     test('ChildReactionButton', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
-      final childReactionButton = ChildReactionButton(
+      final childReactionButton = ReactionButton(
         activity: const GenericEnrichedActivity(),
         reaction: Reaction(
           createdAt: now,
@@ -536,7 +531,7 @@ void main() {
     test('ChildReactionToggleIcon', () {
       final builder = DiagnosticPropertiesBuilder();
       final now = DateTime.now();
-      final childReactionToggleIcon = ChildReactionToggleIcon(
+      final childReactionToggleIcon = ReactionToggleIcon(
         count: 1,
         ownReactions: const [],
         activity: const GenericEnrichedActivity(),

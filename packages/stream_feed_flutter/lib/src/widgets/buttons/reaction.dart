@@ -92,7 +92,6 @@ class ReactionButton extends StatelessWidget {
   }
 }
 
-//TODO: get rid of this now that it is reactive it should work
 class ReactionToggleIcon extends StatelessWidget {
   //TODO: see what we can extract from a parent widget and put in core
   /// Builds a [ReactionToggleIcon].
@@ -102,6 +101,7 @@ class ReactionToggleIcon extends StatelessWidget {
     required this.inactiveIcon,
     required this.kind,
     required this.activity,
+    this.reaction,
     this.targetFeeds,
     this.data,
     this.onTap,
@@ -139,6 +139,9 @@ class ReactionToggleIcon extends StatelessWidget {
   final EnrichedActivity activity;
 
   /// TODO: document me
+  final Reaction? reaction;
+
+  /// TODO: document me
   final String? userId;
 
   /// TODO: document me
@@ -167,28 +170,38 @@ class ReactionToggleIcon extends StatelessWidget {
     );
   }
 
+  Future<void> onToggleChildReaction(BuildContext context) async {
+    alreadyReacted
+        ? await FeedProvider.of(context).bloc.onRemoveChildReaction(
+              kind: kind,
+              activity: activity,
+              childReaction: ownReactions!.last,
+              parentReaction: reaction!,
+            )
+        : await FeedProvider.of(context).bloc.onAddChildReaction(
+              activity: activity,
+              kind: kind,
+              data: data,
+              reaction: reaction!,
+            );
+  }
+
   Future<void> onToggleReaction(BuildContext context) async {
-    alreadyReacted ? await removeReaction(context) : await addReaction(context);
+    alreadyReacted
+        ? await FeedProvider.of(context).bloc.onRemoveReaction(
+              kind: kind,
+              activity: activity,
+              reaction: reaction!,
+              feedGroup: feedGroup,
+            )
+        : await FeedProvider.of(context).bloc.onAddReaction(
+              kind: kind,
+              activity: activity,
+              feedGroup: feedGroup,
+            );
   }
 
-  Future<void> addReaction(BuildContext context) async {
-    final reaction = await FeedProvider.of(context).bloc.onAddReaction(
-          //TODO: get rid of mutations in StreamFeedProvider
-          kind: kind,
-          activity: activity,
-          data: data,
-          feedGroup: feedGroup,
-        );
-  }
-
-  Future<void> removeReaction(BuildContext context) async {
-    await FeedProvider.of(context).bloc.onRemoveReaction(
-        kind: kind,
-        activity: activity,
-        reaction: ownReactions!.last,
-        feedGroup: feedGroup);
-  }
-
+  @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(IterableProperty<Reaction>('ownReactions', ownReactions));
@@ -202,6 +215,8 @@ class ReactionToggleIcon extends StatelessWidget {
     properties.add(DiagnosticsProperty<Map<String, Object>?>('data', data));
     properties.add(IterableProperty<FeedId>('targetFeeds', targetFeeds));
     properties.add(ColorProperty('hoverColor', hoverColor));
+    properties.add(DiagnosticsProperty<bool>('alreadyReacted', alreadyReacted));
+    properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
   }
 }
 
