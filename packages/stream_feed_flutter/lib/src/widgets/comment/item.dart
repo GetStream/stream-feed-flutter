@@ -130,7 +130,8 @@ class CommentItem extends StatelessWidget {
               ),
             ),
           ),
-          LikeButton(activity: activity, reaction: reaction)
+          LikeButton(activity: activity, reaction: reaction),
+          RepostButton(activity: activity, reaction: reaction)
         ],
       ),
     );
