@@ -8,7 +8,6 @@ export 'src/media/gallery_header.dart';
 export 'src/media/gallery_preview.dart';
 export 'src/theme/themes.dart';
 export 'src/utils/typedefs.dart';
-export 'src/widgets/buttons/child_reaction.dart';
 export 'src/widgets/buttons/reaction.dart';
 export 'src/widgets/comment/field.dart';
 export 'src/widgets/icons.dart';
