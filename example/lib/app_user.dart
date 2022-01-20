@@ -5,28 +5,28 @@ class AppUser {
       : id = 'sahil-kumar',
         name = 'Sahil Kumar',
         token =
-            '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic2FoaWwta3VtYXIifQ.d6RW5eZedEl949w-IeZ40Ukji3yXfFnMw3baLsow028''';
+            '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic2FoaWwta3VtYXIifQ.QsRdmdDSYV6cOD_Ay9EFgPZmhlgEcGVSB2dOrUTuTI0''';
 
   //ignore: public_member_api_docs
   const AppUser.sacha()
       : id = 'sacha-arbonel',
         name = 'Sacha Arbonel',
         token =
-            '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic2FjaGEtYXJib25lbCJ9.fzDKEyiQ40J4YYgtZxpeQhn6ajX-GEnKZOOmcb-xa7M''';
+            '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic2FjaGEtYXJib25lbCJ9.522mIrFIIKSoDxGEzH1kpFqlEitT1mrWqNGf9VemgHc''';
 
   //ignore: public_member_api_docs
   const AppUser.nash()
       : id = 'neevash-ramdial',
         name = 'Neevash Ramdial',
         token =
-            '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibmVldmFzaC1yYW1kaWFsIn0.yKqSehu_O5WJGh3-aa5qipnBRs7Qtue-1T9TZhT2ejw'''; //ignore: public_member_api_docs
+            '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibmVldmFzaC1yYW1kaWFsIn0.RMuwITrfC3PkctN9p90oIcpVQOQRVSHE2emSLD5pbK0'''; //ignore: public_member_api_docs
 
   //ignore: public_member_api_docs
   const AppUser.reuben()
       : id = 'groovin',
         name = 'Reuben Turner',
         token =
-            '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ3Jvb3ZpbiJ9.6uMlHDLHpiHubWbcTztZO7NbFFZozuhwgNdrGgObgTE''';
+            '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ3Jvb3ZpbiJ9.sQQozIjgtxUkgX9QalOM2UYhzQL6UvscsOvrgV1LYsM''';
 
   //ignore: public_member_api_docs
   final String id;

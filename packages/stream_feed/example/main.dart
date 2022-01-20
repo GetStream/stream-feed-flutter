@@ -86,7 +86,6 @@ Future<void> main() async {
 // Client-side
   client = StreamFeedClient(
     apiKey,
-    token: userToken,
     appId: appId,
   );
 
@@ -339,7 +338,7 @@ Future<void> main() async {
         object: cheeseBurgerRef,
       ));
 
-  client = StreamFeedClient(apiKey, token: frontendToken);
+  client = StreamFeedClient(apiKey);
 // ensure the user data is stored on Stream
   await client.setUser(
     const User(

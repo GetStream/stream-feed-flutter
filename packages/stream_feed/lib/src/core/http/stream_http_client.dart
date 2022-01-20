@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:stream_feed/src/core/error/feeds_error_code.dart';
+import 'package:stream_feed/src/core/error/stream_feeds_dio_error.dart';
 import 'package:stream_feed/src/core/error/stream_feeds_error.dart';
 import 'package:stream_feed/src/core/http/interceptor/logging_interceptor.dart';
 import 'package:stream_feed/src/core/http/location.dart';
@@ -70,14 +71,16 @@ class StreamHttpClient {
   @visibleForTesting
   final Dio httpClient;
 
-  StreamFeedsNetworkError _parseError(DioError dioError) {
-    StreamFeedsNetworkError feedsError;
-    if (dioError is FeedsError) {
-      feedsError = dioError.error;
+  StreamFeedsNetworkError _parseError(DioError err) {
+    StreamFeedsNetworkError error;
+    // locally thrown dio error
+    if (err is StreamFeedsDioError) {
+      error = err.error;
     } else {
-      feedsError = StreamFeedsNetworkError.fromDioError(dioError);
+      // real network request dio error
+      error = StreamFeedsNetworkError.fromDioError(err);
     }
-    return feedsError..stackTrace = dioError.stackTrace;
+    return error..stackTrace = err.stackTrace;
   }
 
   /// Combines the base url with the [relativeUrl]

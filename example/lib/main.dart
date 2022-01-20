@@ -10,12 +10,8 @@ import 'package:stream_feed_example/home.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   const _key = String.fromEnvironment('key');
-  const _userToken = String.fromEnvironment('user_token');
 
-  final client = StreamFeedClient(
-    _key,
-    token: const Token(_userToken),
-  );
+  final client = StreamFeedClient(_key);
 
   runApp(
     MyApp(
@@ -87,10 +83,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           content: Text('Loading User'),
                         ),
                       );
-                      final streamUser = await _client.user(user.id).create(
-                            user.data,
-                            getOrCreate: true,
-                          );
+                      final streamUser = await _client.setUser(
+                        User(
+                          id: user.id,
+                          data: user.data,
+                        ),
+                        Token(user.token),
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('User Loaded'),

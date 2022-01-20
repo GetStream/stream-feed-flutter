@@ -9,11 +9,108 @@ import 'mock.dart';
 import 'utils.dart';
 
 void main() {
+  late Map<String, String> data;
+  late String userId;
+  late User user;
+  late MockAPI mockApi;
+  late MockUserAPI mockUserAPI;
+  late Token userToken;
   group('StreamFeedClientImpl', () {
+    mockUserAPI = MockUserAPI();
+
+    data = {
+      'name': 'John Doe',
+      'occupation': 'Software Engineer',
+      'gender': 'male',
+    };
+    userId = 'userId';
+    user = User(id: userId, data: data);
+    userToken = TokenHelper.buildFrontendToken('secret', userId);
+
+    mockApi = MockAPI();
+    when(() => mockApi.users).thenReturn(mockUserAPI);
+    when(() => mockUserAPI.create(userToken, userId, data, getOrCreate: true))
+        .thenAnswer((_) async => user);
+
+    when(() => mockUserAPI.get(userToken, userId, withFollowCounts: true))
+        .thenAnswer((_) async => user);
+
+    test('setUser', () async {
+      final client = StreamFeedClient('apiKey', api: mockApi);
+
+      await client.setUser(user, userToken, extraData: data);
+      verify(() =>
+              mockUserAPI.create(userToken, userId, data, getOrCreate: true))
+          .called(1);
+
+      verify(() => mockUserAPI.get(userToken, userId, withFollowCounts: true))
+          .called(1);
+    });
+
+    test('createUser', () async {
+      final client = StreamFeedClient('apiKey', api: mockApi);
+      await client.setUser(user, userToken, extraData: data);
+
+      when(() => mockUserAPI.create(userToken, userId, data)).thenAnswer(
+        (_) async => user,
+      );
+
+      final newUser = await client.createUser(userId, data);
+
+      expect(newUser.id, userId);
+      expect(newUser.data, data);
+
+      verify(() => mockUserAPI.create(userToken, userId, data)).called(1);
+    });
+
+    test('getUser', () async {
+      final client = StreamFeedClient('apiKey', api: mockApi);
+
+      await client.setUser(user, userToken, extraData: data);
+      when(() => mockUserAPI.get(userToken, userId)).thenAnswer(
+        (_) async => user,
+      );
+
+      final newUser = await client.getUser(userId);
+
+      expect(newUser.id, userId);
+      expect(newUser.data, data);
+
+      verify(() => mockUserAPI.get(userToken, userId)).called(1);
+    });
+
+    test('updateUser', () async {
+      final client = StreamFeedClient('apiKey', api: mockApi);
+      await client.setUser(user, userToken, extraData: data);
+      when(() => mockUserAPI.update(userToken, userId, data)).thenAnswer(
+        (_) async => user,
+      );
+
+      final newUser = await client.updateUser(userId, data);
+
+      expect(newUser.id, userId);
+      expect(newUser.data, data);
+
+      verify(() => mockUserAPI.update(userToken, userId, data)).called(1);
+    });
+
+    test('delete', () async {
+      final client = StreamFeedClient('apiKey', api: mockApi);
+      await client.setUser(user, userToken, extraData: data);
+
+      when(() => mockUserAPI.delete(userToken, userId)).thenAnswer(
+        (_) async => Future.value(),
+      );
+
+      await client.deleteUser(userId);
+
+      verify(() => mockUserAPI.delete(userToken, userId)).called(1);
+    });
+
     group('throw', () {
       test('throws an AssertionError when no secret or token provided', () {
         expect(
-          () => StreamFeedClient('apiKey'),
+          () => StreamFeedClient('apiKey').collections,
           throwsA(
             predicate<AssertionError>((e) =>
                 e.message == 'At least a secret or userToken must be provided'),
@@ -24,14 +121,16 @@ void main() {
       test(
         'throws an AssertionError if token is not provided '
         'while running on client-side',
-        () {
+        () async {
+          final client = StreamFeedClient('apiKey', secret: 'secret');
+
           expect(
-            () => StreamFeedClient('apiKey', secret: 'secret'),
+            () => client.collections,
             throwsA(
               predicate<AssertionError>(
                 (e) =>
                     e.message ==
-                    '`userToken` must be provided while running on client-side',
+                    "`userToken` must be provided while running on client-sideplease make sure to call client.setUser",
               ),
             ),
           );
@@ -45,14 +144,13 @@ void main() {
           expect(
             () => StreamFeedClient(
               'apiKey',
-              token: TokenHelper.buildFrontendToken('secret', 'userId'),
               runner: Runner.server,
-            ),
+            ).collections,
             throwsA(
               predicate<AssertionError>(
                 (e) =>
                     e.message ==
-                    '`secret` must be provided while running on server-side',
+                    'At least a secret or userToken must be provided',
               ),
             ),
           );
@@ -62,13 +160,12 @@ void main() {
       test(
         'throws an AssertionError if secret is provided '
         'while running on client-side',
-        () {
+        () async {
+          final client =
+              StreamFeedClient('apiKey', secret: 'secret', api: mockApi);
+          await client.setUser(user, userToken, extraData: data);
           expect(
-            () => StreamFeedClient(
-              'apiKey',
-              secret: 'secret',
-              token: TokenHelper.buildFrontendToken('secret', 'userId'),
-            ),
+            () => client.collections,
             throwsA(
               predicate<AssertionError>(
                 (e) =>
@@ -87,10 +184,7 @@ void main() {
       });
 
       test("don't throw if token provided while running on client-side", () {
-        StreamFeedClient(
-          'apiKey',
-          token: TokenHelper.buildFrontendToken('secret', 'userId'),
-        );
+        StreamFeedClient('apiKey');
       });
     });
     test('getters', () async {
@@ -111,148 +205,16 @@ void main() {
     });
 
     test('openGraph', () async {
-      final mockApi = MockAPI();
-      final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
-
+      final client = StreamFeedClient('apiKey', api: mockApi);
+      await client.setUser(user, userToken, extraData: data);
       const targetUrl = 'targetUrl';
 
-      when(() => mockApi.openGraph(token, targetUrl)).thenAnswer(
+      when(() => mockApi.openGraph(userToken, targetUrl)).thenAnswer(
         (_) async =>
             OpenGraphData.fromJson(jsonFixture('open_graph_data.json')),
       );
       await client.og(targetUrl);
-      verify(() => mockApi.openGraph(token, targetUrl)).called(1);
-    });
-
-    test('createUser', () async {
-      final mockApi = MockAPI();
-      final mockUserAPI = MockUserAPI();
-      when(() => mockApi.users).thenReturn(mockUserAPI);
-      final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
-
-      const userId = 'test-user';
-      const data = {
-        'name': 'John Doe',
-        'occupation': 'Software Engineer',
-        'gender': 'male',
-      };
-
-      when(() => mockUserAPI.create(token, userId, data)).thenAnswer(
-        (_) async => const User(id: userId, data: data),
-      );
-
-      final user = await client.createUser(userId, data);
-
-      expect(user.id, userId);
-      expect(user.data, data);
-
-      verify(() => mockUserAPI.create(token, userId, data)).called(1);
-    });
-
-    test('setUser', () async {
-      final mockApi = MockAPI();
-      const id = 'test-user';
-      final mockUserAPI = MockUserAPI();
-      final token = TokenHelper.buildFrontendToken('secret', id);
-
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
-
-      const data = {
-        'name': 'John Doe',
-        'occupation': 'Software Engineer',
-        'gender': 'male',
-      };
-      const user = User(id: id, data: data);
-      when(() => mockApi.users).thenReturn(mockUserAPI);
-      when(() => mockUserAPI.create(token, id, data, getOrCreate: true))
-          .thenAnswer((_) async => user);
-
-      when(() => mockUserAPI.get(token, id, withFollowCounts: true))
-          .thenAnswer((_) async => user);
-      await client.setUser(user, token, extraData: data);
-      verify(() => mockUserAPI.create(token, id, data, getOrCreate: true))
-          .called(1);
-
-      verify(() => mockUserAPI.get(token, id, withFollowCounts: true))
-          .called(1);
-    });
-
-    test('getUser', () async {
-      final mockApi = MockAPI();
-      final mockUserAPI = MockUserAPI();
-      when(() => mockApi.users).thenReturn(mockUserAPI);
-      final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
-
-      const userId = 'test-user';
-      const data = {
-        'name': 'John Doe',
-        'occupation': 'Software Engineer',
-        'gender': 'male',
-      };
-
-      when(() => mockUserAPI.get(token, userId)).thenAnswer(
-        (_) async => const User(id: userId, data: data),
-      );
-
-      final user = await client.getUser(userId);
-
-      expect(user.id, userId);
-      expect(user.data, data);
-
-      verify(() => mockUserAPI.get(token, userId)).called(1);
-    });
-
-    test('updateUser', () async {
-      final mockApi = MockAPI();
-      final mockUserAPI = MockUserAPI();
-      when(() => mockApi.users).thenReturn(mockUserAPI);
-      final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
-
-      const userId = 'test-user';
-      const data = {
-        'name': 'John Doe',
-        'occupation': 'Software Engineer',
-        'gender': 'male',
-      };
-
-      when(() => mockUserAPI.update(token, userId, data)).thenAnswer(
-        (_) async => const User(id: userId, data: data),
-      );
-
-      final user = await client.updateUser(userId, data);
-
-      expect(user.id, userId);
-      expect(user.data, data);
-
-      verify(() => mockUserAPI.update(token, userId, data)).called(1);
-    });
-
-    test('delete', () async {
-      final mockApi = MockAPI();
-      final mockUserAPI = MockUserAPI();
-      when(() => mockApi.users).thenReturn(mockUserAPI);
-      final token = TokenHelper.buildFrontendToken('secret', 'userId');
-      final client =
-          StreamFeedClientImpl('apiKey', userToken: token, api: mockApi);
-
-      const userId = 'test-user';
-
-      when(() => mockUserAPI.delete(token, userId)).thenAnswer(
-        (_) async => Future.value(),
-      );
-
-      await client.deleteUser(userId);
-
-      verify(() => mockUserAPI.delete(token, userId)).called(1);
+      verify(() => mockApi.openGraph(userToken, targetUrl)).called(1);
     });
   });
 }
