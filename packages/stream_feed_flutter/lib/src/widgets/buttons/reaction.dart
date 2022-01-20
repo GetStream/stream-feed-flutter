@@ -75,6 +75,7 @@ class ReactionButton extends StatelessWidget {
       onTap: onTap,
       data: data,
       feedGroup: feedGroup,
+      reaction: reaction,
     );
   }
 
