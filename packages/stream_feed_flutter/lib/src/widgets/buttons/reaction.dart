@@ -158,6 +158,8 @@ class ReactionToggleIcon extends StatelessWidget {
 
   Widget get displayedIcon => alreadyReacted ? activeIcon : inactiveIcon;
 
+  bool get isChildReaction => reaction != null;
+
   @override
   Widget build(BuildContext context) {
     return ReactionIcon(
@@ -165,7 +167,9 @@ class ReactionToggleIcon extends StatelessWidget {
       icon: displayedIcon,
       count: count,
       onTap: () async {
-        onTap?.call ?? await onToggleReaction(context);
+        isChildReaction
+            ? await onToggleChildReaction(context)
+            : await onToggleReaction(context);
       },
     );
   }
@@ -217,6 +221,8 @@ class ReactionToggleIcon extends StatelessWidget {
     properties.add(ColorProperty('hoverColor', hoverColor));
     properties.add(DiagnosticsProperty<bool>('alreadyReacted', alreadyReacted));
     properties.add(DiagnosticsProperty<Reaction?>('reaction', reaction));
+    properties
+        .add(DiagnosticsProperty<bool>('isChildReaction', isChildReaction));
   }
 }
 
