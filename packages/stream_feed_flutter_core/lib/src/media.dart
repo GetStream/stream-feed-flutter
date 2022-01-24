@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter_core/src/attachment.dart';
 
 /// Defines a piece of media present in a feed.
 @immutable
@@ -80,4 +81,23 @@ enum MediaType {
 
   /// Unknown or unsupported media type
   other,
+}
+
+extension MediaTypeName on MediaType {
+  String get name => <MediaType, String>{
+        MediaType.audio: "audio",
+        MediaType.image: "image",
+        MediaType.video: "video",
+        MediaType.pdf: "pdf",
+        MediaType.svg: "svg",
+        MediaType.gif: "gif",
+        MediaType.other: "other",
+      }[this]!;
+}
+
+extension MediaConvertX on List<MediaUri> {
+  Map<String, dynamic> toAttachments() => {
+        'attachments':
+            map((media) => Attachment.fromMedia(media).toJson()).toList()
+      };
 }

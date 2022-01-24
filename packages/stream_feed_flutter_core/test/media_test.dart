@@ -43,4 +43,26 @@ void main() {
 
     expect(media.isValidUrl, false);
   });
+
+  group('MediaUri', () {
+    test('to attachments', () {
+      final mediaUris = [
+      MediaUri(
+        uri: Uri.tryParse(
+            'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8')!,
+      )
+    ];
+    expect(mediaUris.toAttachments(), 
+      {
+        "attachments": [
+          {
+            "url":
+                "https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8",
+            "type": "image"
+          }
+        ]
+      }
+    );
+    });
+  });
 }
