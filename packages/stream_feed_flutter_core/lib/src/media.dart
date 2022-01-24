@@ -96,8 +96,13 @@ extension MediaTypeName on MediaType {
 }
 
 extension MediaConvertX on List<MediaUri> {
-  Map<String, dynamic> toAttachments() => {
+  Map<String, dynamic> toExtraData() => {
         'attachments':
             map((media) => Attachment.fromMedia(media).toJson()).toList()
       };
+}
+
+extension ExtraDataX on Map<String, dynamic> {
+  List<Attachment> toAttachments() => List<Attachment>.from(
+      this["attachments"].map((x) => Attachment.fromJson(x)));
 }

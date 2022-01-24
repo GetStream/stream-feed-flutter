@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:stream_feed_flutter_core/src/attachment.dart';
 import 'package:stream_feed_flutter_core/src/media.dart';
 
 void main() {
@@ -45,15 +46,14 @@ void main() {
   });
 
   group('MediaUri', () {
-    test('to attachments', () {
+    test('to Extra Data', () {
       final mediaUris = [
-      MediaUri(
-        uri: Uri.tryParse(
-            'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8')!,
-      )
-    ];
-    expect(mediaUris.toAttachments(), 
-      {
+        MediaUri(
+          uri: Uri.tryParse(
+              'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8')!,
+        )
+      ];
+      expect(mediaUris.toExtraData(), {
         "attachments": [
           {
             "url":
@@ -61,8 +61,26 @@ void main() {
             "type": "image"
           }
         ]
-      }
-    );
+      });
+    });
+
+    test('to attachments', () {
+      final rawAttachments = {
+        "attachments": [
+          {
+            "url":
+                "https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8",
+            "type": "image"
+          }
+        ]
+      };
+      expect(rawAttachments.toAttachments(), [
+        Attachment(
+          url:
+              "https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8",
+          mediatype: MediaType.image,
+        )
+      ]);
     });
   });
 }
