@@ -9,17 +9,17 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 /// {@template mediaWidget}
 /// Displays various kinds of [Media].
 ///
-/// If the [media] is a video, it will display a thumbnail.
+/// If the [attachment] is a video, it will display a thumbnail.
 /// {@endtemplate}
 class MediaWidget extends StatefulWidget {
   /// {@macro mediaWidget}
   const MediaWidget({
     Key? key,
-    required this.media,
+    required this.attachment,
   }) : super(key: key);
 
   /// The media to display.
-  final MediaUri media;
+  final Attachment attachment;
 
   @override
   _MediaWidgetState createState() => _MediaWidgetState();
@@ -27,7 +27,7 @@ class MediaWidget extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<MediaUri>('media', media));
+    properties.add(DiagnosticsProperty<Attachment>('attachment', attachment));
   }
 }
 
@@ -38,10 +38,10 @@ class _MediaWidgetState extends State<MediaWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final mediaQuery = MediaQuery.of(context);
-    if (widget.media.runtimeType == MediaType.video) {
+    if (widget.attachment.runtimeType == MediaType.video) {
       _getThumbnail = getTemporaryDirectory().then((result) {
         return VideoThumbnail.thumbnailFile(
-          video: widget.media.uri.toString(),
+          video: widget.attachment.url,
           thumbnailPath: result.path,
           maxWidth: mediaQuery.size.width ~/ 2,
           quality: 75,
@@ -52,12 +52,12 @@ class _MediaWidgetState extends State<MediaWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.media.type == MediaType.image) {
+    if (widget.attachment.mediaType == MediaType.image) {
       return Image.network(
-        widget.media.uri.toString(),
+        widget.attachment.url,
         fit: BoxFit.cover,
       );
-    } else if (widget.media.type == MediaType.video) {
+    } else if (widget.attachment.mediaType == MediaType.video) {
       return FutureBuilder<String?>(
         future: _getThumbnail,
         builder: (context, snapshot) {
@@ -80,7 +80,7 @@ class _MediaWidgetState extends State<MediaWidget> {
         },
       );
     } else {
-      return Container();
+      return const SizedBox.shrink();
     }
   }
 }

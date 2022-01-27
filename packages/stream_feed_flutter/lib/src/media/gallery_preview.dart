@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/media/fullscreen_media.dart';
-
 import 'package:stream_feed_flutter/src/media/media_widget.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
@@ -12,11 +10,11 @@ class GalleryPreview extends StatelessWidget {
   /// Builds a [GalleryPreview].
   const GalleryPreview({
     Key? key,
-    required this.media,
+    required this.attachments,
   }) : super(key: key);
 
   /// The list of image urls to display
-  final List<MediaUri> media;
+  final List<Attachment> attachments;
 
   @override
   Widget build(BuildContext context) {
@@ -38,26 +36,26 @@ class GalleryPreview extends StatelessWidget {
               direction: Axis.horizontal,
               children: [
                 FlexibleImage(
-                  media: media,
+                  attachments: attachments,
                   child: MediaWidget(
-                    media: media[0],
+                    attachment: attachments[0],
                   ),
                 ),
-                if (media.length >= 2)
+                if (attachments.length >= 2)
                   FlexibleImage(
-                    media: media,
+                    attachments: attachments,
                     index: 1,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 2),
                       child: MediaWidget(
-                        media: media[1],
+                        attachment: attachments[1],
                       ),
                     ),
                   ),
               ],
             ),
           ),
-          if (media.length >= 3)
+          if (attachments.length >= 3)
             Flexible(
               fit: FlexFit.tight,
               child: Padding(
@@ -67,15 +65,15 @@ class GalleryPreview extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     FlexibleImage(
-                      media: media,
+                      attachments: attachments,
                       index: 2,
                       child: MediaWidget(
-                        media: media[2],
+                        attachment: attachments[2],
                       ),
                     ),
-                    if (media.length >= 4)
+                    if (attachments.length >= 4)
                       FlexibleImage(
-                        media: media,
+                        attachments: attachments,
                         index: 3,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 2),
@@ -83,9 +81,9 @@ class GalleryPreview extends StatelessWidget {
                             fit: StackFit.expand,
                             children: [
                               MediaWidget(
-                                media: media[3],
+                                attachment: attachments[3],
                               ),
-                              if (media.length > 4)
+                              if (attachments.length > 4)
                                 Positioned.fill(
                                   child: GestureDetector(
                                     onTap: () => _onTap(context, 3),
@@ -93,7 +91,7 @@ class GalleryPreview extends StatelessWidget {
                                       color: Colors.black38,
                                       child: Center(
                                         child: Text(
-                                          '+ ${media.length - 4}',
+                                          '+ ${attachments.length - 4}',
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 26,
@@ -121,7 +119,7 @@ class GalleryPreview extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => FullscreenMedia(
           startIndex: index,
-          media: media,
+          attachments: attachments,
         ),
       ),
     );
@@ -130,7 +128,7 @@ class GalleryPreview extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<MediaUri>('media', media));
+    properties.add(IterableProperty<Attachment>('attachments', attachments));
   }
 }
 
@@ -139,7 +137,7 @@ class FlexibleImage extends StatelessWidget {
   /// Builds a [FlexibleImage].
   const FlexibleImage({
     Key? key,
-    required this.media,
+    required this.attachments,
     this.index = 0,
     this.child,
     this.flexFit = FlexFit.tight,
@@ -155,7 +153,7 @@ class FlexibleImage extends StatelessWidget {
   final int index;
 
   /// The media being shown.
-  final List<MediaUri> media;
+  final List<Attachment> attachments;
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +165,7 @@ class FlexibleImage extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => FullscreenMedia(
                 startIndex: index,
-                media: media,
+                attachments: attachments,
               ),
             ),
           );
@@ -182,6 +180,6 @@ class FlexibleImage extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<FlexFit>('flexFit', flexFit));
     properties.add(IntProperty('index', index));
-    properties.add(IterableProperty<MediaUri>('media', media));
+    properties.add(IterableProperty<Attachment>('attachments', attachments));
   }
 }

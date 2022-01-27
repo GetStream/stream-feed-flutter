@@ -14,11 +14,12 @@ void main() {
             data: StreamFeedThemeData.light(),
             child: child!,
           ),
-          home: FullscreenMedia(
-            media: [
-              MediaUri(
-                uri: Uri.tryParse(
-                    'https://i.picsum.photos/id/785/200/200.jpg?hmac=vvHnS4TgoGTRqwI2soaIhbOxE7Q-hhoZTTDe75h_fz4')!,
+          home: const FullscreenMedia(
+            attachments: [
+              Attachment(
+                url:
+                'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                mediaType: MediaType.image,
               ),
             ],
           ),
@@ -35,11 +36,12 @@ void main() {
             data: StreamFeedThemeData.light(),
             child: child!,
           ),
-          home: FullscreenMedia(
-            media: [
-              MediaUri(
-                uri: Uri.tryParse(
-                    'https://i.picsum.photos/id/785/200/200.jpg?hmac=vvHnS4TgoGTRqwI2soaIhbOxE7Q-hhoZTTDe75h_fz4')!,
+          home: const FullscreenMedia(
+            attachments: [
+              Attachment(
+                url:
+                'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                mediaType: MediaType.image,
               ),
             ],
           ),
@@ -57,10 +59,12 @@ void main() {
             data: StreamFeedThemeData.light(),
             child: child!,
           ),
-          home: FullscreenMedia(
-            media: [
-              MediaUri(
-                uri: Uri.tryParse('dsfgsdfgsdfg')!,
+          home: const FullscreenMedia(
+            attachments: [
+              Attachment(
+                url:
+                'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                mediaType: MediaType.image,
               ),
             ],
           ),
@@ -77,19 +81,22 @@ void main() {
             data: StreamFeedThemeData.light(),
             child: child!,
           ),
-          home: FullscreenMedia(
-            media: [
-              MediaUri(
-                uri: Uri.tryParse(
-                    'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg')!,
+          home: const FullscreenMedia(
+            attachments: [
+              Attachment(
+                url:
+                'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                mediaType: MediaType.image,
               ),
-              MediaUri(
-                uri: Uri.tryParse(
-                    'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg')!,
+              Attachment(
+                url:
+                'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                mediaType: MediaType.image,
               ),
-              MediaUri(
-                uri: Uri.tryParse(
-                    'https://randomwordgenerator.com/img/picture-generator/52e8dd474e56a814f1dc8460962e33791c3ad6e04e507441722978d6904ec2_640.jpg')!,
+              Attachment(
+                url:
+                'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                mediaType: MediaType.image,
               ),
             ],
           ),
@@ -113,19 +120,22 @@ void main() {
               data: StreamFeedThemeData.light(),
               child: child!,
             ),
-            home: FullscreenMedia(
-              media: [
-                MediaUri(
-                  uri: Uri.tryParse(
-                      'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg')!,
+            home: const FullscreenMedia(
+              attachments: [
+                Attachment(
+                  url:
+                  'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                  mediaType: MediaType.image,
                 ),
-                MediaUri(
-                  uri: Uri.tryParse(
-                      'https://randomwordgenerator.com/img/picture-generator/57e0d6444351a914f1dc8460962e33791c3ad6e04e50744172287ad19245c6_640.jpg')!,
+                Attachment(
+                  url:
+                  'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                  mediaType: MediaType.image,
                 ),
-                MediaUri(
-                  uri: Uri.tryParse(
-                      'https://randomwordgenerator.com/img/picture-generator/52e8dd474e56a814f1dc8460962e33791c3ad6e04e507441722978d6904ec2_640.jpg')!,
+                Attachment(
+                  url:
+                  'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                  mediaType: MediaType.image,
                 ),
               ],
             ),
@@ -169,19 +179,22 @@ void main() {
             data: StreamFeedThemeData.light(),
             child: child!,
           ),
-          home: FullscreenMedia(
-            media: [
-              MediaUri(
-                uri: Uri.tryParse(
-                    'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw')!,
+          home: const FullscreenMedia(
+            attachments: [
+              Attachment(
+                url:
+                'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                mediaType: MediaType.image,
               ),
-              MediaUri(
-                uri: Uri.tryParse(
-                    'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys')!,
+              Attachment(
+                url:
+                'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                mediaType: MediaType.image,
               ),
-              MediaUri(
-                uri: Uri.tryParse(
-                    'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8')!,
+              Attachment(
+                url:
+                'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                mediaType: MediaType.image,
               ),
             ],
           ),
@@ -196,7 +209,7 @@ void main() {
 
     testWidgets('FullscreenMedia debugFillProperties', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
-      const FullscreenMedia(media: []).debugFillProperties(builder);
+      const FullscreenMedia(attachments: []).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -206,7 +219,7 @@ void main() {
       expect(
         description,
         [
-          'media: []',
+          'attachments: []',
           'startIndex: 0',
         ],
       );

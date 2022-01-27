@@ -9,13 +9,13 @@ import 'package:video_player/video_player.dart';
 class VideoPackage {
   /// Constructor for creating [VideoPackage]
   VideoPackage(
-    MediaUri media, {
+    Attachment media, {
     bool showControls = false,
     bool autoInitialize = true,
   })  : _showControls = showControls,
         _autoInitialize = autoInitialize,
         _videoPlayerController =
-            VideoPlayerController.network(media.uri.toString());
+            VideoPlayerController.network(media.url);
 
   final bool _showControls;
   final bool _autoInitialize;

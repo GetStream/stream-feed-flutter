@@ -111,7 +111,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   Future<Activity> onAddActivity({
     required String feedGroup,
-    Map<String, String>? data,
+    Map<String, Object>? data,
     required String verb,
     required String object,
     String? userId,

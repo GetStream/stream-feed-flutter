@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reactive_elevated_button.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
@@ -84,6 +85,7 @@ class _ComposeViewState extends State<ComposeView> {
 
   @override
   Widget build(BuildContext context) {
+    final uploadController = FeedProvider.of(context).bloc.uploadController;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).canvasColor,
@@ -101,10 +103,16 @@ class _ComposeViewState extends State<ComposeView> {
             onSend: (inputText) async {
               if (inputText.isNotEmpty) {
                 try {
+                  final attachments = uploadController
+                      .getMediaUris()
+                      .toExtraData();
                   _isReply
                       ? await FeedProvider.of(context).bloc.onAddReaction(
                             kind: 'comment',
-                            data: {'text': inputText.trim()},
+                            data: {
+                              'text': inputText.trim(),
+                              ...attachments,
+                            },
                             activity: widget.parentActivity!,
                             feedGroup: widget.feedGroup,
                           )
@@ -114,8 +122,9 @@ class _ComposeViewState extends State<ComposeView> {
                             object: widget.textEditingController.text,
                             userId:
                                 FeedProvider.of(context).bloc.currentUser!.id,
+                            data: attachments,
                           );
-
+                  uploadController.clear();
                   Navigator.of(context).pop();
                 } catch (e) {
                   debugPrint(e.toString());
@@ -154,6 +163,52 @@ class _ComposeViewState extends State<ComposeView> {
                               : _darkThemeInputDecoration,
                     ),
                   ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: UploadListCore(
+                    uploadController:
+                        FeedProvider.of(context).bloc.uploadController,
+                    uploadsBuilder: (context, uploads) {
+                      return SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: uploads.length,
+                          itemBuilder: (context, index) =>
+                              FileUploadStateWidget(
+                            fileState: uploads[index],
+                            onRemoveUpload: uploadController.removeUpload,
+                            onCancelUpload: uploadController.cancelUpload,
+                            onRetryUpload: (attachment) async {
+                              return uploadController.uploadImage(attachment);
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.camera_alt_outlined),
+                  onPressed: () async {
+                    final _picker = ImagePicker();
+                    final image =
+                        await _picker.pickImage(source: ImageSource.gallery);
+
+                    if (image != null) {
+                      await FeedProvider.of(context)
+                          .bloc
+                          .uploadController
+                          .uploadImage(AttachmentFile(path: image.path));
+                    } else {
+                      // User canceled the picker
+                    }
+                  },
                 ),
               ],
             ),

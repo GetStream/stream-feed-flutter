@@ -85,24 +85,28 @@ enum MediaType {
 
 extension MediaTypeName on MediaType {
   String get name => <MediaType, String>{
-        MediaType.audio: "audio",
-        MediaType.image: "image",
-        MediaType.video: "video",
-        MediaType.pdf: "pdf",
-        MediaType.svg: "svg",
-        MediaType.gif: "gif",
-        MediaType.other: "other",
+        MediaType.audio: 'audio',
+        MediaType.image: 'image',
+        MediaType.video: 'video',
+        MediaType.pdf: 'pdf',
+        MediaType.svg: 'svg',
+        MediaType.gif: 'gif',
+        MediaType.other: 'other',
       }[this]!;
 }
 
 extension MediaConvertX on List<MediaUri> {
-  Map<String, dynamic> toExtraData() => {
+  Map<String, Object> toExtraData() => {
         'attachments':
             map((media) => Attachment.fromMedia(media).toJson()).toList()
       };
 }
 
-extension ExtraDataX on Map<String, dynamic> {
-  List<Attachment> toAttachments() => List<Attachment>.from(
-      this["attachments"].map((x) => Attachment.fromJson(x)));
+extension ExtraDataX on Map<String, Object?> {
+  List<Attachment>? toAttachments() {
+    if (this['attachments'] != null) {
+      return List<Attachment>.from(
+          (this['attachments']! as List).map((x) => Attachment.fromJson(x)));
+    }
+  }
 }
