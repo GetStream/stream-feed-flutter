@@ -77,11 +77,6 @@ void main() {
 
   testWidgets('ActivityContent', (tester) async {
     await mockNetworkImages(() async {
-      const title =
-          """'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'""";
-      const description =
-          '''Why choose one when you can wear both? These energizing pairings stand out from the crowd''';
-
       final pressedHashtags = <String?>[];
       final pressedMentions = <String?>[];
       await tester.pumpWidget(
@@ -97,17 +92,13 @@ void main() {
               activity: GenericEnrichedActivity(
                 id: '1',
                 extraData: {
-                  'attachments': const OpenGraphData(
-                      title: title,
-                      url:
-                          'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
-                      description: description,
-                      images: [
-                        OgImage(
-                          image:
-                              'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
-                        )
-                      ]).toJson(),
+                  "attachments": [
+                    {
+                      "url":
+                          'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
+                      "type": "image"
+                    }
+                  ]
                 },
                 actor: const User(
                   data: {
@@ -137,8 +128,6 @@ void main() {
         'train ',
         ' #angry',
         ' @sahil',
-        title,
-        description
       ]);
 
       await tester.tap(find.widgetWithText(InkWell, ' #angry'));

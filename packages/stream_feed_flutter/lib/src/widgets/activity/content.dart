@@ -40,7 +40,7 @@ class ActivityContent extends StatelessWidget {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final activityObject = activity.object;
     final attachments =
-        activity.extraData!.toAttachments(); //TODO: attachment builder
+        activity.extraData?.toAttachments(); //TODO: attachment builder
     final taggedText = activityObject != null
         ? detector.parseText(activityObject)
         : <TaggedText>[];
