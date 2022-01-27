@@ -104,13 +104,13 @@ class _ComposeViewState extends State<ComposeView> {
               if (inputText.isNotEmpty) {
                 try {
                   final attachments =
-                      uploadController.getMediaUris().toExtraData();
+                      uploadController.getMediaUris()?.toExtraData();
                   _isReply
                       ? await FeedProvider.of(context).bloc.onAddReaction(
                             kind: 'comment',
                             data: {
                               'text': inputText.trim(),
-                              ...attachments,
+                              if (attachments != null) ...attachments,
                             },
                             activity: widget.parentActivity!,
                             feedGroup: widget.feedGroup,
