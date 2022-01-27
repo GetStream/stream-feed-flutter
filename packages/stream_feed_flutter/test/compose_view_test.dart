@@ -15,10 +15,12 @@ void main() {
   late String activityId;
   late MockReactions mockReactions;
   late Reaction reaction;
+  late MockUploadController mockUpload;
 
   setUpAll(() {
     mockClient = MockStreamFeedClient();
     mockStreamUser = MockStreamUser();
+    mockUpload = MockUploadController();
     when(() => mockClient.currentUser).thenReturn(mockStreamUser);
     when(() => mockStreamUser.id).thenReturn('test');
     kind = 'comment';
@@ -26,16 +28,17 @@ void main() {
     mockReactions = MockReactions();
 
     when(() => mockClient.reactions).thenReturn(mockReactions);
-
-    // when(() => mockClient.reactions.add(kind, activityId)).thenReturn('test');
   });
   group('ComposeView', () {
     testWidgets('Reply', (tester) async {
+      when(() => mockUpload.uploadsStream).thenAnswer(
+        (_) => Stream.value({}),
+      );
       await tester.pumpWidget(
         MaterialApp(
           builder: (context, child) {
             return StreamFeed(
-              bloc: FeedBloc(client: mockClient),
+              bloc: FeedBloc(client: mockClient, uploadController: mockUpload),
               child: child!,
             );
           },

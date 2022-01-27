@@ -1,131 +1,38 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_feed_flutter/src/theme/og_card_theme.dart';
-import 'package:stream_feed_flutter/src/widgets/circular_progress_indicator.dart';
+import 'package:stream_feed_flutter/src/media/gallery_preview.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // ignore_for_file: cascade_invocations
 
 /// {@template activity_card}
-/// A card used to diplay Open Graph medias.
+/// A card used to display media attachments.
 ///
-/// For now it displays an image and when clicked, it opens the media in
-/// the device's browser.
+/// For now, it can display images and videos. When clicked, the image or
+/// video will open in its own view.
 /// {@endtemplate}
 class ActivityCard extends StatelessWidget {
   /// Builds an [ActivityCard].
   const ActivityCard({
     Key? key,
-    required this.og,
-    this.alt,
-    this.image,
-    // this.nolink,
-    this.description,
-    this.title,
-    this.url,
-    this.imageURL,
+    this.attachments,
   }) : super(key: key);
 
-  /// The alternative text to display for accessibility reasons.
-  final String? alt;
-
-  /// The image to display.
-  final String? image;
-  // final bool? nolink;
-  /// The Opengraph media object.
-  final OpenGraphData og;
-
-  /// The imageUrl of the media.
-  final String? imageURL;
-
-  /// The description of the media.
-  final String? description;
-
-  /// The url of the media.
-  final String? url;
-
-  /// The title of the media.
-  final String? title;
+  /// The attachments to this post
+  final List<Attachment>? attachments;
 
   @override
   Widget build(BuildContext context) {
-    final _url = og.url!;
-    final firstOgImage = og.images?.first;
-    final image = firstOgImage?.secureUrl ??
-        firstOgImage?.url ??
-        firstOgImage?.image ??
-        imageURL;
-    return InkWell(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(4),
-      ),
-      onTap: () async {
-        await canLaunch(_url) //TODO: provide a callback
-            ? await launch(_url)
-            : throw Exception('Could not launch $_url');
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Card(
-          color: Colors.grey[50],
-          child: Row(
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: Image.network(
-                  image!,
-                  height: 100,
-                  width: 100,
-                  semanticLabel:
-                      firstOgImage?.alt ?? alt ?? title ?? description ?? '',
-                  loadingBuilder: (
-                    BuildContext context,
-                    Widget child,
-                    ImageChunkEvent? loadingProgress,
-                  ) =>
-                      StreamCircularProgressIndicator(
-                    loadingProgress: loadingProgress,
-                    child: child,
-                  ),
-                  fit: BoxFit.fill,
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        og.title!, //TODO: handle null
-                        style: OgCardTheme.of(context).titleTextStyle,
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        og.description!, //TODO: handle null
-                        style: OgCardTheme.of(context).descriptionTextStyle,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    if (attachments != null && attachments!.isNotEmpty) {
+      return GalleryPreview(attachments: attachments!);
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('alt', alt));
-    properties.add(StringProperty('image', image));
-    properties.add(DiagnosticsProperty<OpenGraphData>('og', og));
-    properties.add(StringProperty('imageURL', imageURL));
-    properties.add(StringProperty('description', description));
-    properties.add(StringProperty('url', url));
-    properties.add(StringProperty('title', title));
+    properties.add(IterableProperty<Attachment>('attachments', attachments));
   }
 }

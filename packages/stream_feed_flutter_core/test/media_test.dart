@@ -78,7 +78,7 @@ void main() {
         Attachment(
           url:
               "https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8",
-          mediatype: MediaType.image,
+          mediaType: MediaType.image,
         )
       ]);
     });

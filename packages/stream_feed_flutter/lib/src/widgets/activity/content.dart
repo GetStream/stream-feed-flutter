@@ -40,13 +40,14 @@ class ActivityContent extends StatelessWidget {
     final detector = TagDetector(); //TODO: move this higher in the widget tree
     final activityObject = activity.object;
     final attachments =
-        activity.extraData?['attachments']; //TODO: attachment builder
+        activity.extraData?.toAttachments(); //TODO: attachment builder
     final taggedText = activityObject != null
         ? detector.parseText(activityObject)
         : <TaggedText>[];
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Wrap(
             //TODO: move to Text.rich(WidgetSpans)
@@ -59,11 +60,9 @@ class ActivityContent extends StatelessWidget {
                     ))
                 .toList(),
           ),
-          //TODO: handle Video + Audio + Gallery
-          if (attachments != null)
-            ActivityCard(
-              og: OpenGraphData.fromJson(attachments as Map<String, dynamic>),
-            )
+          ActivityCard(
+            attachments: attachments,
+          ),
         ],
       ),
     );

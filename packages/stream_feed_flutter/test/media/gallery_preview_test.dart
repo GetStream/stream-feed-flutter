@@ -14,12 +14,13 @@ void main() {
               data: StreamFeedThemeData.light(),
               child: child!,
             ),
-            home: Center(
+            home: const Center(
               child: GalleryPreview(
-                media: [
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw')!,
+                attachments: [
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
                 ],
               ),
@@ -39,15 +40,19 @@ void main() {
               data: StreamFeedThemeData.light(),
               child: child!,
             ),
-            home: Center(
+            home: const Center(
               child: GalleryPreview(
-                media: [
-                  MediaUri(
-                      uri: Uri.tryParse(
-                          'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw')!),
-                  MediaUri(
-                      uri: Uri.tryParse(
-                          'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys')!),
+                attachments: [
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
+                  ),
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
+                  ),
                 ],
               ),
             ),
@@ -66,18 +71,24 @@ void main() {
               data: StreamFeedThemeData.light(),
               child: child!,
             ),
-            home: Center(
+            home: const Center(
               child: GalleryPreview(
-                media: [
-                  MediaUri(
-                      uri: Uri.tryParse(
-                          'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw')!),
-                  MediaUri(
-                      uri: Uri.tryParse(
-                          'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys')!),
-                  MediaUri(
-                      uri: Uri.tryParse(
-                          'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8')!),
+                attachments: [
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
+                  ),
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
+                  ),
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
+                  ),
                 ],
               ),
             ),
@@ -96,24 +107,28 @@ void main() {
               data: StreamFeedThemeData.light(),
               child: child!,
             ),
-            home: Center(
+            home: const Center(
               child: GalleryPreview(
-                media: [
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw')!,
+                attachments: [
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/584/200/300.jpg?hmac=sBfls3kxMp0j0qH3R-K2qM8Wyak1FlpOIgtcd7cEg68')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
                 ],
               ),
@@ -133,28 +148,33 @@ void main() {
               data: StreamFeedThemeData.light(),
               child: child!,
             ),
-            home: Center(
+            home: const Center(
               child: GalleryPreview(
-                media: [
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw')!,
+                attachments: [
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/584/200/300.jpg?hmac=sBfls3kxMp0j0qH3R-K2qM8Wyak1FlpOIgtcd7cEg68')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/779/200/300.jpg?hmac=DmFN06G0c1N5TAbj2O9YljZ0Vr8VWOZ4lPjLG8oAf8o')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
                 ],
               ),
@@ -175,28 +195,33 @@ void main() {
               data: StreamFeedThemeData.light(),
               child: child!,
             ),
-            home: Center(
+            home: const Center(
               child: GalleryPreview(
-                media: [
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw')!,
+                attachments: [
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/11/200/300.jpg?hmac=n9AzdbWCOaV1wXkmrRfw5OulrzXJc0PgSFj4st8d6ys')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/584/200/300.jpg?hmac=sBfls3kxMp0j0qH3R-K2qM8Wyak1FlpOIgtcd7cEg68')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
-                  MediaUri(
-                    uri: Uri.tryParse(
-                        'https://i.picsum.photos/id/779/200/300.jpg?hmac=DmFN06G0c1N5TAbj2O9YljZ0Vr8VWOZ4lPjLG8oAf8o')!,
+                  Attachment(
+                    url:
+                        'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                    mediaType: MediaType.image,
                   ),
                 ],
               ),
@@ -220,7 +245,7 @@ void main() {
 
     testWidgets('debugFillProperties', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
-      const GalleryPreview(media: []).debugFillProperties(builder);
+      const GalleryPreview(attachments: []).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -230,7 +255,7 @@ void main() {
       expect(
         description,
         [
-          'media: []',
+          'attachments: []',
         ],
       );
     });
@@ -256,10 +281,11 @@ void main() {
                       direction: Axis.horizontal,
                       children: [
                         FlexibleImage(
-                          media: [
-                            MediaUri(
-                              uri: Uri.tryParse(
-                                  'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw')!,
+                          attachments: const [
+                            Attachment(
+                              url:
+                                  'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                              mediaType: MediaType.image,
                             ),
                           ],
                           child: Image.network(
@@ -300,10 +326,11 @@ void main() {
                       direction: Axis.horizontal,
                       children: [
                         FlexibleImage(
-                          media: [
-                            MediaUri(
-                              uri: Uri.tryParse(
-                                  'https://i.picsum.photos/id/485/200/300.jpg?hmac=Kv8DZbgB5jppYcdfZdMVu2LM3XAIt-3fvR8VcmrLYhw')!,
+                          attachments: const [
+                            Attachment(
+                              url:
+                                  'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                              mediaType: MediaType.image,
                             ),
                           ],
                           child: Image.network(
@@ -336,7 +363,7 @@ void main() {
 
     testWidgets('debugFillProperties', (tester) async {
       final builder = DiagnosticPropertiesBuilder();
-      const FlexibleImage(media: []).debugFillProperties(builder);
+      const FlexibleImage(attachments: []).debugFillProperties(builder);
 
       final description = builder.properties
           .where((node) => !node.isFiltered(DiagnosticLevel.info))
@@ -348,7 +375,7 @@ void main() {
         [
           'flexFit: tight',
           'index: 0',
-          'media: []',
+          'attachments: []',
         ],
       );
     });

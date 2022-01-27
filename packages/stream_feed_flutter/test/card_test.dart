@@ -42,59 +42,26 @@ void main() {
           },
           home: const Scaffold(
             body: ActivityCard(
-              og: OpenGraphData(
-                title: title,
-                url:
-                    'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
-                description: description,
-                images: [
-                  OgImage(
-                    image:
-                        'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
-                  )
-                ],
-              ),
+              attachments: [
+                Attachment(
+                  url:
+                      'https://pixabay.com/get/ge9a737694489e25ce288c750e5ea25c822297913a45e0a69a5fe1bea9ebe7cb003aa6d4dac6c16b07306fc66af16ad00_1280.jpg',
+                  mediaType: MediaType.image,
+                ),
+              ],
             ),
           ),
         ),
       );
 
-      final inkwell = find.byType(InkWell);
-      expect(inkwell, findsOneWidget);
-
-      final card = find.byType(Card);
-      expect(card, findsOneWidget);
-
-      final image = find.byType(Image);
-      expect(image, findsOneWidget);
-
-      await tester.tap(inkwell);
-      expect(logs, [
-        'canLaunch',
-        'launch'
-      ]); //TODO: hmm there might be a better way to do this
-
-      final richtexts = tester.widgetList<Text>(find.byType(Text));
-      expect(richtexts.toList().map((e) => e.data), [title, description]);
+      final galleryPreview = find.byType(GalleryPreview);
+      expect(galleryPreview, findsOneWidget);
     });
   });
 
   test('Default ActivityCard debugFillProperties', () {
     final builder = DiagnosticPropertiesBuilder();
-    const activityCard = ActivityCard(
-      og: OpenGraphData(
-        title: 'Title',
-        url:
-            'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
-        description: 'Description',
-        images: [
-          OgImage(
-            image:
-                'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
-          )
-        ],
-      ),
-    );
+    const activityCard = ActivityCard();
 
     // ignore: cascade_invocations
     activityCard.debugFillProperties(builder);

@@ -9,8 +9,14 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
 class FeedBloc extends GenericFeedBloc<User, String, String, String> {
-  FeedBloc({required StreamFeedClient client, StreamAnalytics? analyticsClient})
-      : super(client: client, analyticsClient: analyticsClient);
+  FeedBloc({
+    required StreamFeedClient client,
+    StreamAnalytics? analyticsClient,
+    UploadController? uploadController,
+  }) : super(
+            client: client,
+            analyticsClient: analyticsClient,
+            uploadController: uploadController);
 }
 
 /// The generic version of `FeedBloc`.
@@ -111,7 +117,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
   Future<Activity> onAddActivity({
     required String feedGroup,
-    Map<String, String>? data,
+    Map<String, Object>? data,
     required String verb,
     required String object,
     String? userId,

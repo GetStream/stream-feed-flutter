@@ -192,7 +192,7 @@ class UploadController {
   }
 
   /// Returns a list of uploads [MediaUri]s.
-  List<MediaUri> getMediaUris() {
+  List<MediaUri>? getMediaUris() {
     final successes = stateMap.value.values
         .map((state) => state)
         .toList()

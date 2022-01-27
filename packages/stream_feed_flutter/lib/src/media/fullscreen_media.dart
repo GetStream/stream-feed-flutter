@@ -13,14 +13,14 @@ class FullscreenMedia extends StatefulWidget {
   /// Builds a [FullscreenMedia].
   const FullscreenMedia({
     Key? key,
-    required this.media,
+    required this.attachments,
     this.startIndex = 0,
   }) : super(key: key);
 
   /// The media to display.
   ///
   /// Can be audio, images, or videos.
-  final List<MediaUri> media;
+  final List<Attachment> attachments;
 
   /// The first index of the media being shown.
   final int startIndex;
@@ -31,7 +31,7 @@ class FullscreenMedia extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(IterableProperty<MediaUri>('media', media));
+    properties.add(IterableProperty<Attachment>('attachments', attachments));
     properties.add(IntProperty('startIndex', startIndex));
   }
 }
@@ -60,10 +60,10 @@ class FullscreenMediaState extends State<FullscreenMedia>
     );
     _pageController = PageController(initialPage: widget.startIndex);
     _currentPage = widget.startIndex;
-    for (final media in widget.media) {
-      if (media.type != MediaType.video) continue;
+    for (final media in widget.attachments) {
+      if (media.mediaType != MediaType.video) continue;
       final package = VideoPackage(media, showControls: true);
-      videoPackages[media.uri.toString()] = package;
+      videoPackages[media.url] = package;
     }
     _initializePlayers();
   }
@@ -96,15 +96,15 @@ class FullscreenMediaState extends State<FullscreenMedia>
             builder: (context, child) {
               return PageView.builder(
                 controller: _pageController,
-                itemCount: widget.media.length,
+                itemCount: widget.attachments.length,
                 onPageChanged: (val) {
                   setState(() => _currentPage = val);
                 },
                 itemBuilder: (context, index) {
-                  final media = widget.media[index];
-                  if (media.type == MediaType.image && media.isValidUrl) {
+                  final media = widget.attachments[index];
+                  if (media.mediaType == MediaType.image) {
                     return PhotoView(
-                      imageProvider: NetworkImage(media.uri.toString()),
+                      imageProvider: NetworkImage(media.url),
                       maxScale: PhotoViewComputedScale.covered,
                       minScale: PhotoViewComputedScale.contained,
                       onTapUp: (a, b, c) {
@@ -121,9 +121,8 @@ class FullscreenMediaState extends State<FullscreenMedia>
                         );
                       },
                     );
-                  } else if (media.type == MediaType.video &&
-                      media.isValidUrl) {
-                    final controller = videoPackages[media.uri.toString()];
+                  } else if (media.mediaType == MediaType.video) {
+                    final controller = videoPackages[media.url];
                     if (controller != null && !controller.initialized) {
                       return const Center(
                         child: CircularProgressIndicator(),
@@ -160,7 +159,7 @@ class FullscreenMediaState extends State<FullscreenMedia>
               children: [
                 GalleryHeader(
                   currentIndex: _currentPage,
-                  totalMedia: widget.media.length,
+                  totalMedia: widget.attachments.length,
                   onBackButtonPressed: () => Navigator.of(context).pop(),
                 ),
               ],

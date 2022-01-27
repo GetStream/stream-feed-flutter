@@ -178,13 +178,15 @@ class CommentView extends StatelessWidget {
             ),
           ),
         ),
-        CommentField(
-          textEditingController: textEditingController,
-          activity: activity,
+        SafeArea(
+          child: CommentField(
+            textEditingController: textEditingController,
+            activity: activity,
 
-          //enabled in actions [RightActions]
-          enableButton: enableCommentFieldButton,
-          feedGroup: feedGroup,
+            //enabled in actions [RightActions]
+            enableButton: enableCommentFieldButton,
+            feedGroup: feedGroup,
+          ),
         ),
       ],
     );
