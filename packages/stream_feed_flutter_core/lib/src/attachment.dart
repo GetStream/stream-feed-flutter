@@ -7,7 +7,6 @@ class Attachment extends Equatable {
     required this.mediaType,
   });
 
-
   factory Attachment.fromJson(Map<String, dynamic> json) => Attachment(
         url: json['url'],
         mediaType: (json['type'] as String).mediaType,
@@ -21,7 +20,7 @@ class Attachment extends Equatable {
 
   final MediaType mediaType;
 
-        //TODO(sacha): Attachment.fromOg
+  //TODO(sacha): Attachment.fromOg
   Map<String, dynamic> toJson() => {
         'url': url,
         'type': mediaType.name,

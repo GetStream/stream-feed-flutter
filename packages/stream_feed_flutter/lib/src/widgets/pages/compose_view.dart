@@ -103,9 +103,8 @@ class _ComposeViewState extends State<ComposeView> {
             onSend: (inputText) async {
               if (inputText.isNotEmpty) {
                 try {
-                  final attachments = uploadController
-                      .getMediaUris()
-                      .toExtraData();
+                  final attachments =
+                      uploadController.getMediaUris().toExtraData();
                   _isReply
                       ? await FeedProvider.of(context).bloc.onAddReaction(
                             kind: 'comment',
