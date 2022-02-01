@@ -171,7 +171,7 @@ void main() {
       expect(fixture.markRead, MarkRead(ids: ["123"]));
     });
 
-      test('issue-193-bis', () {
+    test('issue-193-bis', () {
       final fixture = RealtimeMessage<User, String, String?, String?>.fromJson(
           jsonFixture('realtime_message_issue193-bis.json'));
       expect(fixture.markRead, MarkRead(readState: ReadState.all));

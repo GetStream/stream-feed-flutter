@@ -8,7 +8,8 @@ class MarkReadConverter implements JsonConverter<MarkRead, dynamic> {
   MarkRead fromJson(dynamic json) => MarkRead.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(MarkRead markRead) => markRead.toJson(); //formatDateWithOffset(json);
+  Map<String, dynamic> toJson(MarkRead markRead) =>
+      markRead.toJson(); //formatDateWithOffset(json);
 }
 
 class MarkSeenConverter implements JsonConverter<MarkSeen, dynamic> {
@@ -18,6 +19,6 @@ class MarkSeenConverter implements JsonConverter<MarkSeen, dynamic> {
   MarkSeen fromJson(dynamic json) => MarkSeen.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(MarkSeen markSeen) => markSeen.toJson(); //formatDateWithOffset(json);
+  Map<String, dynamic> toJson(MarkSeen markSeen) =>
+      markSeen.toJson(); //formatDateWithOffset(json);
 }
-

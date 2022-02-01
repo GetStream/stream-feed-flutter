@@ -31,16 +31,15 @@ part 'realtime_message.g.dart';
 @MarkSeenConverter()
 class RealtimeMessage<A, Ob, T, Or> extends Equatable {
   /// Builds a [RealtimeMessage].
-  const RealtimeMessage({
-    required this.feed,
-    this.deleted = const <String>[],
-    this.deletedForeignIds = const <ForeignIdTimePair>[],
-    this.newActivities,
-    this.appId,
-    this.publishedAt,
-    this.markRead,
-    this.markSeen
-  });
+  const RealtimeMessage(
+      {required this.feed,
+      this.deleted = const <String>[],
+      this.deletedForeignIds = const <ForeignIdTimePair>[],
+      this.newActivities,
+      this.appId,
+      this.publishedAt,
+      this.markRead,
+      this.markSeen});
 
   /// Create a new instance from a JSON object
   factory RealtimeMessage.fromJson(

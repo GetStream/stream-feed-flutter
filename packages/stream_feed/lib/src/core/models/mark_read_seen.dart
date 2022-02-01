@@ -9,7 +9,6 @@ class MarkRead extends Equatable {
   const MarkRead({this.ids, this.readState = ReadState.ids});
 
   factory MarkRead.fromJson(dynamic markRead) {
-
     MarkRead? result;
     if (markRead is List) {
       result = MarkRead(
@@ -32,15 +31,12 @@ class MarkRead extends Equatable {
   List<Object?> get props => [ids, readState];
 }
 
-
-
 class MarkSeen extends Equatable {
   final List<String>? ids;
   final ReadState readState;
   const MarkSeen({this.ids, this.readState = ReadState.ids});
 
   factory MarkSeen.fromJson(dynamic markSeen) {
-
     MarkSeen? result;
     if (markSeen is List) {
       result = MarkSeen(
