@@ -16,6 +16,7 @@ export 'following.dart';
 export 'foreign_id_time_pair.dart';
 export 'group.dart';
 export 'lookup_attribute.dart';
+export 'mark_read_seen.dart';
 export 'notification_feed_meta.dart';
 export 'open_graph_data.dart';
 export 'reaction.dart';
