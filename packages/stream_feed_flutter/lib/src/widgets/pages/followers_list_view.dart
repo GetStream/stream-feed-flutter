@@ -24,8 +24,9 @@ class _FollowingListViewState extends State<FollowingListView> {
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
+              final feedName = snapshot.data![index].feedId.split(':').last;
               return ListTile(
-                title: Text(snapshot.data![index].feedId),
+                title: Text(feedName),
               );
             },
           );
