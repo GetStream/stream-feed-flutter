@@ -8,6 +8,7 @@ import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
 import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/src/core/models/group.dart';
+import 'package:stream_feed/src/core/models/mark_read_seen.dart';
 import 'package:stream_feed/src/core/models/notification_feed_meta.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
@@ -164,6 +165,17 @@ void main() {
       );
     });
 
+    test('issue-193', () {
+      final fixture = RealtimeMessage<User, String, String?, String?>.fromJson(
+          jsonFixture('realtime_message_issue193.json'));
+      expect(fixture.markRead, MarkRead(ids: ["123"]));
+    });
+
+      test('issue-193-bis', () {
+      final fixture = RealtimeMessage<User, String, String?, String?>.fromJson(
+          jsonFixture('realtime_message_issue193-bis.json'));
+      expect(fixture.markRead, MarkRead(readState: ReadState.all));
+    });
     test('issue-89', () {
       final fixture = RealtimeMessage<User, String, String?, String?>.fromJson(
         jsonFixture('realtime_message_issue89.json'),
