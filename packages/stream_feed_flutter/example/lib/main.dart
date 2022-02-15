@@ -397,7 +397,7 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
         child: const Icon(Icons.edit_outlined),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => ComposeView(
+            builder: (_) => ComposeScreen(
               textEditingController: TextEditingController(),
             ),
             fullscreenDialog: true,
@@ -603,42 +603,3 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
   }
 }
 
-class FollowingScreen extends StatefulWidget {
-  const FollowingScreen({Key? key}) : super(key: key);
-
-  @override
-  State<FollowingScreen> createState() => _FollowingScreenState();
-}
-
-class _FollowingScreenState extends State<FollowingScreen>
-    with StreamFeedMixin {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Following'),
-      ),
-      body: FollowingListView(),
-    );
-  }
-}
-
-class FollowersScreen extends StatefulWidget {
-  const FollowersScreen({Key? key}) : super(key: key);
-
-  @override
-  State<FollowersScreen> createState() => _FollowersScreenState();
-}
-
-class _FollowersScreenState extends State<FollowersScreen>
-    with StreamFeedMixin {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Followers'),
-      ),
-      body: const FollowersListView(),
-    );
-  }
-}
