@@ -41,6 +41,9 @@ class FollowingListView extends StatelessWidget {
                         // onUserTap: onUserTap,
                         size: UserBarTheme.of(context).avatarSize,
                       ),
+                      trailing: FollowButton(
+                        user: user,
+                      ),
                       title: Text(displayName ?? 'unknown'));
             },
           );
@@ -87,6 +90,9 @@ class FollowersListView extends StatelessWidget {
                         // onUserTap: onUserTap,
                         size: UserBarTheme.of(context).avatarSize,
                       ),
+                      trailing: FollowButton(
+                        user: user,
+                      ),
                       title: Text(displayName ?? 'unknown'));
               // ListTile(
               //   title: Text(displayName ?? 'unknown'),
@@ -98,8 +104,6 @@ class FollowersListView extends StatelessWidget {
     );
   }
 }
-
-
 
 class FollowingScreen extends StatelessWidget {
   const FollowingScreen({Key? key}) : super(key: key);
