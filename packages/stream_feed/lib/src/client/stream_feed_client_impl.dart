@@ -41,7 +41,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
     this.appId,
     this.fayeUrl = 'wss://faye-us-east.stream-io-api.com/faye',
     this.runner = Runner.client,
-    Level logLevel = Level.WARNING,
+    this.logLevel = Level.WARNING,
     LogHandlerFunction? logHandlerFunction,
     StreamAPI? api,
     StreamHttpClientOptions? options,
@@ -87,6 +87,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
     return true;
   }
 
+  final Level logLevel;
   final String apiKey;
   final String? appId;
   Token? userToken;
@@ -123,7 +124,7 @@ class StreamFeedClientImpl implements StreamFeedClient {
     },
   };
 
-  late final FayeClient _faye = FayeClient(fayeUrl)
+  late final FayeClient _faye = FayeClient(fayeUrl, logLevel: logLevel)
     ..addExtension(_authExtension);
 
   late final _subscriptions = <String, _FeedSubscription>{};
