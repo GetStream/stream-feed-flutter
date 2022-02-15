@@ -7,18 +7,21 @@ import 'mock.dart';
 void main() {
   late MockStreamFeedClient mockClient;
   late MockFlatFeed timelineFeed;
+  late MockFlatFeed timelineFeed2;
   late MockFlatFeed userFeed;
   late MockStreamUser mockUser;
   late String id;
   setUp(() {
     mockClient = MockStreamFeedClient();
     timelineFeed = MockFlatFeed();
+    timelineFeed2 = MockFlatFeed();
     userFeed = MockFlatFeed();
     mockUser = MockStreamUser();
     id = 'sacha';
     when(() => mockClient.currentUser).thenReturn(mockUser);
     when(() => mockUser.id).thenReturn(id);
     when(() => mockClient.flatFeed('timeline')).thenReturn(timelineFeed);
+    when(() => mockClient.flatFeed('timeline', id)).thenReturn(timelineFeed2);
     when(() => mockClient.flatFeed('user', id)).thenReturn(userFeed);
     when(() => userFeed.followers()).thenAnswer((_) async => [
           Follow(
@@ -32,6 +35,19 @@ void main() {
               createdAt: DateTime.now(),
               updatedAt: DateTime.now())
         ]);
+    when(() => timelineFeed2.following()).thenAnswer((_) async => [
+          Follow(
+              feedId:
+                  "user:reuben", //TODO(sacha):hmm weird in my mind targetId and feedId are reversed
+              targetId: "user:sacha",
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now()),
+          Follow(
+              feedId: "user:nash",
+              targetId: "user:sacha",
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now())
+        ]);
     when(() => timelineFeed.following(
           limit: 1,
           offset: 0,
@@ -41,9 +57,20 @@ void main() {
         )).thenAnswer((_) async => <Follow>[]);
   });
 
-  // test('FollowingListView', () {
-
-  // });
+  testWidgets('FollowingListView', (tester) async {
+    await tester.pumpWidget(MaterialApp(
+        builder: (context, child) {
+          return StreamFeed(
+            bloc: FeedBloc(client: mockClient),
+            child: child!,
+          );
+        },
+        home: const Scaffold(body: FollowingListView())));
+    await tester.pumpAndSettle();
+    verify(() => timelineFeed2.following()).called(1);
+    expect(find.text('reuben'), findsOneWidget);
+    expect(find.text('nash'), findsOneWidget);
+  });
 
   testWidgets('FollowersListView', (tester) async {
     await tester.pumpWidget(MaterialApp(
