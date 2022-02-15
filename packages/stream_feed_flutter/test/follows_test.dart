@@ -6,20 +6,61 @@ import 'mock.dart';
 
 void main() {
   late MockStreamFeedClient mockClient;
+  late MockFlatFeed timelineFeed;
+  late MockFlatFeed userFeed;
+  late MockStreamUser mockUser;
+  late String id;
   setUp(() {
     mockClient = MockStreamFeedClient();
+    timelineFeed = MockFlatFeed();
+    userFeed = MockFlatFeed();
+    mockUser = MockStreamUser();
+    id = 'sacha';
+    when(() => mockClient.currentUser).thenReturn(mockUser);
+    when(() => mockUser.id).thenReturn(id);
+    when(() => mockClient.flatFeed('timeline')).thenReturn(timelineFeed);
+    when(() => mockClient.flatFeed('user', id)).thenReturn(userFeed);
+    when(() => userFeed.followers()).thenAnswer((_) async => [
+          Follow(
+              feedId: "user:nash",
+              targetId: "user:sacha",
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now()),
+          Follow(
+              feedId: "user:reuben",
+              targetId: "user:sacha",
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now())
+        ]);
+    when(() => timelineFeed.following(
+          limit: 1,
+          offset: 0,
+          filter: [
+            FeedId.id('user:2'),
+          ],
+        )).thenAnswer((_) async => <Follow>[]);
   });
 
   // test('FollowingListView', () {
 
   // });
 
-  // test('FollowersListView', () {
-
-  // });
+  testWidgets('FollowersListView', (tester) async {
+    await tester.pumpWidget(MaterialApp(
+        builder: (context, child) {
+          return StreamFeed(
+            bloc: FeedBloc(client: mockClient),
+            child: child!,
+          );
+        },
+        home: const Scaffold(body: FollowersListView())));
+    await tester.pumpAndSettle();
+    verify(() => userFeed.followers()).called(1);
+    expect(find.text('reuben'), findsOneWidget);
+    expect(find.text('nash'), findsOneWidget);
+  });
 
   testWidgets('FollowStatsWidget', (tester) async {
-    mockClient = MockStreamFeedClient();
     await tester.pumpWidget(MaterialApp(
         builder: (context, child) {
           return StreamFeed(
@@ -43,17 +84,6 @@ void main() {
     expect(following, findsOneWidget);
   });
   testWidgets('FollowButton', (tester) async {
-    final mockFeed = MockFlatFeed();
-    when(() => mockClient.flatFeed('timeline')).thenReturn(mockFeed);
-    when(() => mockFeed.following(
-          limit: 1,
-          offset: 0,
-          filter: [
-            FeedId.id('user:2'),
-          ],
-        )).thenAnswer((_) async => <Follow>[]);
-
-    // final isFollowing = await bloc.isFollowingFeed(followerId: '2');
     await tester.pumpWidget(MaterialApp(
         builder: (context, child) {
           return StreamFeed(
@@ -65,9 +95,17 @@ void main() {
             body: FollowButton(
           user: User(id: '2', followersCount: 1, followingCount: 3),
         ))));
- 
+
     await tester.pumpAndSettle();
     expect(find.byType(OutlinedButton), findsOneWidget);
-       expect(find.text('Follow'), findsOneWidget);
+    expect(find.text('Follow'), findsOneWidget);
+    verify(() => mockClient.flatFeed('timeline')).called(1);
+    verify(() => timelineFeed.following(
+          limit: 1,
+          offset: 0,
+          filter: [
+            FeedId.id('user:2'),
+          ],
+        )).called(1);
   });
 }
