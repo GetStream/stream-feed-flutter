@@ -318,9 +318,6 @@ class StreamFeedClientImpl implements StreamFeedClient {
   @override
   Future<User> getUser(String id, {bool withFollowCounts = false}) {
     assert(_ensureCredentials(), '');
-    if (runner == Runner.client) {
-      _logger.warning('We advice using `client.getUser` only server-side');
-    }
 
     final token =
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.read);
