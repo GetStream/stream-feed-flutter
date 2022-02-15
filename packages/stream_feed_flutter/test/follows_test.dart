@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed_flutter/stream_feed_flutter.dart';
+
 import 'mock.dart';
 
 void main() {
