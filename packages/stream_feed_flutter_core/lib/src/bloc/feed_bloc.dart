@@ -104,6 +104,26 @@ class GenericFeedBloc<A, Ob, T, Or> {
   Stream<bool> get queryActivitiesLoading =>
       _queryActivitiesLoadingController.stream;
 
+  /// Convenient method to fetch a list of users current user is following
+  Future<List<User>> followingUsers({String feedGroup = 'timeline'}) async {
+    final following =
+        await client.flatFeed(feedGroup, currentUser!.id).following();
+    final users = following
+        .map((follow) => client.getUser(follow.feedId.split(':').last))
+        .toList();
+    return Future.wait(users);
+  }
+
+  /// Convenient method to fetch a list of users following current (followers)
+  Future<List<User>> followersUsers({String feedGroup = 'user'}) async {
+    final followers =
+        await client.flatFeed(feedGroup, currentUser!.id).followers();
+    final users = followers
+        .map((follow) => client.getUser(follow.feedId.split(':').last))
+        .toList();
+    return Future.wait(users);
+  }
+
   /* ACTIVITIES */
 
   /// {@template onAddActivity}

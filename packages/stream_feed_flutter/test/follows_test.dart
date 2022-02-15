@@ -81,7 +81,7 @@ void main() {
             child: child!,
           );
         },
-        home: const Scaffold(body: FollowersListView())));
+        home: const Scaffold(body: FollowingListView())));
     await tester.pumpAndSettle();
     verify(() => userFeed.followers()).called(1);
     expect(find.text('reuben'), findsOneWidget);
