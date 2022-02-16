@@ -111,8 +111,7 @@ void main() {
         builder: (context, child) {
           return StreamFeed(
             bloc: mockFeedBloc,
-            child: StreamFeedTheme(
-                data: StreamFeedThemeData.dark(), child: child!),
+            child: child!,
           );
         },
         home: Scaffold(
