@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+/// A button to follow or unfollow a user
 class FollowButton extends StatefulWidget {
   const FollowButton({Key? key, this.user}) : super(key: key);
   final User? user;

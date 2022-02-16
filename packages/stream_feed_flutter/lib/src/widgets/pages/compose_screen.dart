@@ -5,6 +5,7 @@ import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reactive_elevated_button.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
+/// A widget to react to an activity or compose a new activity.
 class ComposeScreen extends StatefulWidget {
   const ComposeScreen(
       {Key? key,
