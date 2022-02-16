@@ -43,6 +43,18 @@ void main() {
             'profile_image': 'https://randomuser.me/api/portraits/women/1.jpg',
           })
         ]);
+    when(() => mockFeedBloc.followingUsers()).thenAnswer((_) async => [
+          User(id: 'nash', data: {
+            'handle': '@Nash',
+            'name': 'Nash',
+            'profile_image': 'https://randomuser.me/api/portraits/women/1.jpg',
+          }),
+          User(id: 'reuben', data: {
+            'handle': '@GroovinChip',
+            'name': 'Reuben',
+            'profile_image': 'https://randomuser.me/api/portraits/women/1.jpg',
+          })
+        ]);
     when(() => userFeed.followers()).thenAnswer((_) async => [
           Follow(
               feedId: "user:nash",
@@ -104,12 +116,8 @@ void main() {
           );
         },
         home: Scaffold(
-            body: SizedBox(
-          width: 300,
-          height: 500,
-          child: FollowersListView(
-              builder: (user) => Text("${user.data!['name']}")),
-        ))));
+            body: FollowersListView(
+                builder: (user) => Text("${user.data!['name']}")))));
     await tester.pumpAndSettle();
     // verify(() => userFeed.followers()).called(1);
     expect(find.text('Reuben'), findsOneWidget);
