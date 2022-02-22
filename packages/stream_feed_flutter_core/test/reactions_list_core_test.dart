@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
 import 'package:stream_feed_flutter_core/src/reactions_list_core.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mocks.dart';
 
@@ -64,7 +65,11 @@ void main() {
         ),
         home: Scaffold(
           body: GenericReactionListCore(
-            reactionsBuilder: (context, reactions, idx) => const Offstage(),
+            reactionsBuilder: (context, reactions) => const SizedBox(),
+            emptyBuilder: (BuildContext context) => const SizedBox(),
+            errorBuilder: (BuildContext context, Object error) =>
+                const SizedBox(),
+            loadingBuilder: (BuildContext context) => const SizedBox(),
             lookupValue: lookupValue,
             filter: filter,
             limit: limit,

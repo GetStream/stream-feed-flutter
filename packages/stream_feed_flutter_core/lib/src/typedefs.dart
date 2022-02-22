@@ -5,17 +5,21 @@ import 'package:stream_feed_flutter_core/src/flat_feed_core.dart';
 import 'package:stream_feed_flutter_core/src/media.dart';
 import 'package:stream_feed_flutter_core/src/reactions_list_core.dart';
 import 'package:stream_feed_flutter_core/src/upload/states.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /* BUILDERS */
+
 /// {@template enrichedFeedBuilder}
-/// A builder that allows building a ListView of EnrichedActivity based Widgets
+/// A builder that allows building from a list of EnrichedActivity.
 /// {@endtemplate}
 typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
   BuildContext context,
   List<GenericEnrichedActivity<A, Ob, T, Or>> activities,
-  int idx,
 );
+
+/// A signature for a callback which exposes an error and returns a function.
+/// This Callback can be used in cases where an API failure occurs and the
+/// widget is unable to render data.
+typedef ErrorBuilder = Widget Function(BuildContext context, Object error);
 
 typedef UploadsBuilder = Widget Function(
     BuildContext context, List<FileUploadState> uploads);
@@ -35,7 +39,7 @@ typedef UploadFailedBuilder = Widget Function(
 /// A builder that allows building a ListView of Reaction based Widgets
 /// {@endtemplate}
 typedef ReactionsBuilder = Widget Function(
-    BuildContext context, List<Reaction> reactions, int idx);
+    BuildContext context, List<Reaction> reactions);
 
 /*  CONVENIENT TYPEDEFS
  for defining default type parameters. 
@@ -63,17 +67,17 @@ typedef ReactionsBuilder = Widget Function(
 ///   Widget build(BuildContext context) {
 ///     return Scaffold(
 ///       body: FlatFeedCore(
-///         onErrorWidget: Center(
+///         errorBuilder: (context, error) => Center(
 ///             child: Text('An error has occurred'),
 ///         ),
-///         onEmptyWidget: Center(
+///         emptyBuilder: (context) => Center(
 ///             child: Text('Nothing here...'),
 ///         ),
-///         onProgressWidget: Center(
+///         loadingBuilder: (context) => Center(
 ///             child: CircularProgressIndicator(),
 ///         ),
-///         feedBuilder: (context, activities, idx) {
-///           return YourActivityWidget(activity: activities[idx]);
+///         feedBuilder: (context, activities) {
+///           return Text('Your ListView/GridView of activities');
 ///         }
 ///       ),
 ///     );
@@ -97,17 +101,17 @@ typedef FlatFeedCore = GenericFlatFeedCore<User, String, String, String>;
 ///   Widget build(BuildContext context) {
 ///     return Scaffold(
 ///       body: ReactionListCore(
-///         onErrorWidget: Center(
+///         errorBuilder: (context, error) => Center(
 ///             child: Text('An error has occurred'),
 ///         ),
-///         onEmptyWidget: Center(
+///         emptyBuilder: (context) => Center(
 ///             child: Text('Nothing here...'),
 ///         ),
-///         onProgressWidget: Center(
+///         loadingBuilder: (context) => Center(
 ///             child: CircularProgressIndicator(),
 ///         ),
-///         feedBuilder: (context, reactions, idx) {
-///           return YourReactionWidget(reaction: reactions[idx]);
+///         feedBuilder: (context, reactions) {
+///           return Text('Your ListView/GridView of reactions');
 ///         }
 ///       ),
 ///     );
@@ -211,6 +215,28 @@ typedef OnRetryUpload = void Function(AttachmentFile file);
 typedef MediaPreviewBuilder = Widget Function(
     {required AttachmentFile file, required MediaType mediaType});
 
-/// TODO: document me
+/// A simplified version of [GenericEnrichedActivity], with preset types of:
+/// - [User], [String], [String], [String]
+///
+/// Enrichment is a concept in Stream that enables our API to work quickly
+/// and efficiently.
+///
+/// It is the concept that most data is stored as references to an original
+/// data. For example, if I add an activity to my feed and it fans out to 50
+/// followers, the activity is not copied 50 times, but the activity is stored
+/// in a single table only once, and references are stored in 51 feeds.
+///
+/// The same rule applies to users and reactions. They are stored only once,
+/// but references are used elsewhere.
+///
+/// An Enriched Activity is an Activity with additional fields
+/// that are derived from the Activity's
+///
+/// This class makes use of generics in order to have a more flexible API
+/// surface. Here is a legend of what each generic is for:
+/// * A = [actor]
+/// * Ob = [object]
+/// * T = [target]
+/// * Or = [origin]
 typedef EnrichedActivity
     = GenericEnrichedActivity<User, String, String, String>;
