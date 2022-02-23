@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -23,7 +24,7 @@ class FeedBloc extends GenericFeedBloc<User, String, String, String> {
 ///
 /// {@macro feedBloc}
 /// {@macro genericParameters}
-class GenericFeedBloc<A, Ob, T, Or> {
+class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// {@macro feedBloc}
   GenericFeedBloc({
     required this.client,
@@ -524,4 +525,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
       value.close();
     });
   }
+
+  @override
+  List<Object?> get props => [client, analyticsClient]; 
 }

@@ -84,6 +84,29 @@ void main() {
           isNotNull);
     },
   );
+
+  testWidgets(
+    'Equatable',
+    (tester) async {
+      final mockClient1 = StreamFeedClient('apiKey1');
+      final mockClient2 = StreamFeedClient('apiKey1');
+      final mockClient3 = StreamFeedClient('apiKey2');
+      final bloc1 = GenericFeedBloc(
+        client: mockClient1,
+      );
+      final bloc2 = GenericFeedBloc(
+        client: mockClient2,
+      );
+       final bloc3 = GenericFeedBloc(
+        client: mockClient3,
+      );
+
+      expect(mockClient1 == mockClient2, true);
+      expect(mockClient1 != mockClient3, true);
+      expect(bloc1 == bloc2, true);
+      expect(bloc1 != bloc3, true);
+    },
+  );
   testWidgets(
     'throw an error if StreamFeedCore is not in the tree',
     (tester) async {

@@ -11,7 +11,8 @@ dependencies:
   collection: ^1.15.0
   dio: ^4.0.0
   equatable: ^2.0.0
-  faye_dart: ^0.1.0
+  faye_dart:
+    path: ../faye_dart
   http_parser: ^4.0.0
   intl: ^0.17.0
   jose: ^0.3.2
