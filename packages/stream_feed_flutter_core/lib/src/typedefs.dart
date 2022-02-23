@@ -185,7 +185,11 @@ typedef OnRemoveUpload = void Function(AttachmentFile file);
 typedef OnCancelUpload = void Function(AttachmentFile file);
 typedef OnRetryUpload = void Function(AttachmentFile file);
 
+/// {@template mediaPreviewBuilder}
+/// Based on the [MediaPreview] type, this builder will return a
+/// [Widget] that will be used to display the media preview
 ///
+/// For example:
 /// ```dart
 /// if(mediaType == MediaType.image){
 //   return  ImagePreview(
@@ -212,9 +216,12 @@ typedef OnRetryUpload = void Function(AttachmentFile file);
 ///
 /// }
 /// ```
+/// {@endtemplate}
 typedef MediaPreviewBuilder = Widget Function(
     {required AttachmentFile file, required MediaType mediaType});
 
+/// {@template enrichedActivity}
+/// 
 /// A simplified version of [GenericEnrichedActivity], with preset types of:
 /// - [User], [String], [String], [String]
 ///
@@ -238,5 +245,7 @@ typedef MediaPreviewBuilder = Widget Function(
 /// * Ob = [object]
 /// * T = [target]
 /// * Or = [origin]
+/// 
+/// {@endtemplate}
 typedef EnrichedActivity
     = GenericEnrichedActivity<User, String, String, String>;

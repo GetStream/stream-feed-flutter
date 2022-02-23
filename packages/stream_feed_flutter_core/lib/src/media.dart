@@ -10,7 +10,7 @@ class MediaUri extends Equatable {
       : _mediaType = mediaType;
 
   /// Don't use this unless you want to override mediaType and bypass
-  /// our inference the file extension
+  /// our inference on the file extension
   final MediaType? _mediaType;
 
   /// The URL for this media.
@@ -96,6 +96,37 @@ extension MediaTypeName on MediaType {
 }
 
 extension MediaConvertX on List<MediaUri> {
+  /// An extension method to convert a List<[MediaUri]> to extraData
+  /// Usage:
+  ///```dart
+  /// final uploadController = FeedProvider.of(context).bloc.uploadController;
+  /// try {
+  ///   final attachments =
+  ///       uploadController.getMediaUris()?.toExtraData();
+  ///   _isReply
+  ///       ? await FeedProvider.of(context).bloc.onAddReaction(
+  ///             kind: 'comment',
+  ///             data: {
+  ///               'text': inputText.trim(),
+  ///               if (attachments != null) ...attachments,
+  ///             },
+  ///             activity: widget.parentActivity!,
+  ///             feedGroup: widget.feedGroup,
+  ///           )
+  ///       : FeedProvider.of(context).bloc.onAddActivity(
+  ///             feedGroup: widget.feedGroup,
+  ///             verb: 'post',
+  ///             object: widget.textEditingController.text,
+  ///             userId:
+  ///                 FeedProvider.of(context).bloc.currentUser!.id,
+  ///             data: attachments,
+  ///           );
+  ///   uploadController.clear();
+  ///   Navigator.of(context).pop();
+  /// } catch (e) {
+  ///   debugPrint(e.toString());
+  /// }
+  ///```
   Map<String, Object> toExtraData() => {
         'attachments':
             map((media) => Attachment.fromMedia(media).toJson()).toList()
@@ -103,6 +134,12 @@ extension MediaConvertX on List<MediaUri> {
 }
 
 extension ExtraDataX on Map<String, Object?> {
+  /// An extension method to convert from json a List<[Attachment]>
+  /// Usage:
+  /// ```dart
+  /// final attachments =
+  ///       activity.extraData?.toAttachments()
+  /// ```
   List<Attachment>? toAttachments() {
     if (this['attachments'] != null) {
       return List<Attachment>.from(
