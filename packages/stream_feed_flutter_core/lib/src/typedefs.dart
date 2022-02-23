@@ -221,7 +221,7 @@ typedef MediaPreviewBuilder = Widget Function(
     {required AttachmentFile file, required MediaType mediaType});
 
 /// {@template enrichedActivity}
-/// 
+///
 /// A simplified version of [GenericEnrichedActivity], with preset types of:
 /// - [User], [String], [String], [String]
 ///
@@ -245,7 +245,7 @@ typedef MediaPreviewBuilder = Widget Function(
 /// * Ob = [object]
 /// * T = [target]
 /// * Or = [origin]
-/// 
+///
 /// {@endtemplate}
 typedef EnrichedActivity
     = GenericEnrichedActivity<User, String, String, String>;

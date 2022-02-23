@@ -97,7 +97,7 @@ void main() {
       final bloc2 = GenericFeedBloc(
         client: mockClient2,
       );
-       final bloc3 = GenericFeedBloc(
+      final bloc3 = GenericFeedBloc(
         client: mockClient3,
       );
 

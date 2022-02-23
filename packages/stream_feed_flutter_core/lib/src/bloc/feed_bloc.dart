@@ -527,5 +527,5 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   }
 
   @override
-  List<Object?> get props => [client, analyticsClient]; 
+  List<Object?> get props => [client, analyticsClient];
 }
