@@ -17,6 +17,21 @@ void main() {
       expect(error.message, message);
     });
 
+    test('time out', () {
+      const message = 'Connecting timed out [0ms]';
+      final options = RequestOptions(path: 'test-path');
+
+
+      final dioError = DioError(
+        requestOptions: options,
+        error: 'Connecting timed out [${options.connectTimeout}ms]',
+        type: DioErrorType.connectTimeout,
+      );
+      final error = StreamFeedsNetworkError.fromDioError(dioError);
+      expect(error, isNotNull);
+      expect(error.message, message);
+    });
+
     test('.fromDioError', () {
       const code = 333;
       const statusCode = 666;

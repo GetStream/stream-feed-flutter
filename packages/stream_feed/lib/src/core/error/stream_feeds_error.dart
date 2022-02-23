@@ -42,9 +42,8 @@ class StreamFeedsNetworkError extends StreamFeedsError {
   factory StreamFeedsNetworkError.fromDioError(DioError error) {
     final response = error.response;
     ErrorResponse? errorResponse;
-    final data = json.decode(response?.data);
-    if (data != null) {
-      errorResponse = ErrorResponse.fromJson(data);
+    if (response?.data != null) {
+      errorResponse = ErrorResponse.fromJson(json.decode(response!.data));
     }
     return StreamFeedsNetworkError.raw(
       code: errorResponse?.code ?? -1,
