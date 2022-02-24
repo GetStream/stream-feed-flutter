@@ -21,7 +21,6 @@ void main() {
       const message = 'Connecting timed out [0ms]';
       final options = RequestOptions(path: 'test-path');
 
-
       final dioError = DioError(
         requestOptions: options,
         error: 'Connecting timed out [${options.connectTimeout}ms]',
