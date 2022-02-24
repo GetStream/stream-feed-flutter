@@ -14,6 +14,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'package:faye_dart/src/extensible.dart';
 
+/// Connexion status of the client
 enum FayeClientState {
   unconnected,
   connecting,

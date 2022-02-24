@@ -11,6 +11,9 @@ class Subscription {
   WithChannelCallback? _withChannel;
   bool _cancelled = false;
 
+  /// Connexion status stream
+  Stream<FayeClientState> get stateStream => _client.stateStream;
+
   Subscription(
     this._client,
     this._channel, {
