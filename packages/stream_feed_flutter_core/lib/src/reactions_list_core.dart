@@ -6,7 +6,6 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-
 /// {@template reactionListCore}
 /// [ReactionListCore] is a core class that allows fetching a list of
 /// reactions while exposing UI builders.
@@ -45,7 +44,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 /// suitable to most use cases. But if you need a
 /// more advanced use case use [GenericReactionListCore] instead
 /// {@endtemplate}
-/// 
+///
 class ReactionListCore
     extends GenericReactionListCore<User, String, String, String> {
   const ReactionListCore({

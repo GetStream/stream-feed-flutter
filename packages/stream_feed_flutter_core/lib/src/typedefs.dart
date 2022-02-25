@@ -16,6 +16,7 @@ typedef EnrichedFeedBuilder<A, Ob, T, Or> = Widget Function(
   List<GenericEnrichedActivity<A, Ob, T, Or>> activities,
   int idx,
 );
+
 /// A builder that allows building a widget given a List<[FileUploadState]>
 typedef UploadsBuilder = Widget Function(
     BuildContext context, List<FileUploadState> uploads);

@@ -17,8 +17,7 @@ class FileUploadState with EquatableMixin {
   List<Object> get props => [file, state];
 }
 
-
-/// The upload state 
+/// The upload state
 class UploadState with EquatableMixin {
   final MediaType mediaType;
   const UploadState({required this.mediaType});

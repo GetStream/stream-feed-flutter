@@ -8,7 +8,6 @@ import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
-
 /// {@template feedBloc}
 /// Widget dedicated to the state management of an app's Stream feed
 /// [FeedBloc] is used to manage a set of operations
