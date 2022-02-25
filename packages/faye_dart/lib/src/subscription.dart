@@ -22,7 +22,6 @@ class Subscription {
     Callback? callback,
   }) : _callback = callback;
 
-
   void call(Message message) {
     _callback?.call(message.data);
     _withChannel?.call(message.channel, message.data);
