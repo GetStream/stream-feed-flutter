@@ -1,6 +1,6 @@
 ## [0.1.1+1] - (25-02-2022)
 
-- implement Equatable on `FayeClient`. With this change, if you fetch your client from an `InheritedWidget` for example, `updateShouldNotify` doesn't trigger every time.
+- fix: implement Equatable on `FayeClient`. With this change, if you fetch your client from an `InheritedWidget` for example, `updateShouldNotify` doesn't trigger every time.
 
 
 ## [0.1.1] - (25-02-2022)
