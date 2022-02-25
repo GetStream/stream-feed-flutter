@@ -7,7 +7,7 @@ final subscription = await feed.subscribe();
 final subscriptionStatus = subscription.stateStream;
 ```
 - new(realtime): you can now adjust log level when subscribing
-- new: implement Equatable on `StreamFeedClient`. With this change, if you fetch your client from an `InheritedWidget` for example, `updateShouldNotify` doesn't trigger every time.
+- fix: implement Equatable on `StreamFeedClient`. With this change, if you fetch your client from an `InheritedWidget` for example, `updateShouldNotify` doesn't trigger every time.
 
 
 ## 0.5.0: 12/01/2022
