@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/core/api/reactions_api.dart';
-import 'package:stream_feed/src/core/http/token.dart';
-import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 import 'package:stream_feed/stream_feed.dart';

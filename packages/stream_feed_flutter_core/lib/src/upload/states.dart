@@ -17,8 +17,8 @@ class FileUploadState with EquatableMixin {
 }
 
 class UploadState with EquatableMixin {
-  final MediaType mediaType;
   const UploadState({required this.mediaType});
+  final MediaType mediaType;
   @override
   List<Object> get props => [mediaType];
 }
@@ -56,11 +56,11 @@ class UploadSuccess extends UploadState {
   const UploadSuccess._({required this.mediaUri, required MediaType mediaType})
       : super(mediaType: mediaType);
 
-  final MediaUri mediaUri;
-
   factory UploadSuccess.media({required MediaUri mediaUri}) {
     return UploadSuccess._(mediaUri: mediaUri, mediaType: mediaUri.type);
   }
+
+  final MediaUri mediaUri;
 
   @override
   List<Object> get props => [...super.props, mediaUri];

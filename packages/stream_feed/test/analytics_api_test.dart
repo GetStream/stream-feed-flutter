@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/core/api/analytics_api.dart';
-import 'package:stream_feed/src/core/models/event.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 

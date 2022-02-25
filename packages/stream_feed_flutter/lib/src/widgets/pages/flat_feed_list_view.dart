@@ -1,6 +1,5 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/default/default.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
