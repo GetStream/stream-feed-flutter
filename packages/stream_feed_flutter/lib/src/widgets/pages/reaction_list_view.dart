@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/default/default.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
@@ -19,7 +20,7 @@ class ReactionListView extends StatelessWidget {
     this.onUserTap,
     required this.reactionBuilder,
     this.onErrorWidget = const ErrorStateWidget(),
-    this.onProgressWidget = const ProgressStateWidget(),
+    this.onProgressWidget = const LoadingStateWidget(),
     this.onEmptyWidget =
         const EmptyStateWidget(message: 'No comments to display'),
     this.flags,
@@ -62,38 +63,38 @@ class ReactionListView extends StatelessWidget {
   /// The flags to use for the request
   final EnrichmentFlags? flags;
 
-  /// TODO: document me
   final LookupAttribute lookupAttr;
 
   final String _lookupValue;
 
-  /// TODO: document me
   final Filter? filter;
 
-  /// TODO: document me
   final int? limit;
 
-  /// TODO: document me
   final String? kind;
 
   final ScrollPhysics? scrollPhysics;
-
   @override
   Widget build(BuildContext context) {
     //  debugCheckHasReactionsProvider(context);
     return ReactionListCore(
       lookupValue: _lookupValue, //TODO: handle null safety
-      onProgressWidget: onProgressWidget,
-      onErrorWidget: onErrorWidget,
-      onEmptyWidget: onEmptyWidget,
+      loadingBuilder: (context) => onProgressWidget,
+      errorBuilder: (context, error) => onErrorWidget,
+      emptyBuilder: (context) => onEmptyWidget,
       flags: flags,
       filter: filter,
       kind: kind,
       lookupAttr: lookupAttr,
       limit: limit,
-      reactionsBuilder: (context, reactions, idx) =>
-          reactionBuilder(context, reactions[idx]),
-      scrollPhysics: scrollPhysics,
+      reactionsBuilder: (context, reactions) {
+        return ListView.builder(
+          itemCount: reactions.length,
+          itemBuilder: (context, index) {
+            return reactionBuilder(context, reactions[index]);
+          },
+        );
+      },
     );
   }
 

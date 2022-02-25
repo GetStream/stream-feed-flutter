@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 import 'client.dart';
 import 'message.dart';
 
@@ -35,4 +37,7 @@ class Subscription {
     _client.unsubscribe(_channel, this);
     _cancelled = true;
   }
+
+  @override
+  List<Object?> get props => [_client, _channel, _callback, _withChannel];
 }

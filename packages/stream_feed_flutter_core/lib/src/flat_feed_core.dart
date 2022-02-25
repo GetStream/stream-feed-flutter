@@ -2,18 +2,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
-import 'package:stream_feed_flutter_core/src/states/empty.dart';
-import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+/// A simplified class that allows fetching a list of enriched activities (flat)
+/// while exposing UI builders.
+///
+/// [FlatFeedCore] extends [GenericFlatFeedCore] with default types of:
+/// - [User], [String], [String], [String].
+///
+/// Under most circumstances [FlatFeedCore] is all you need to use.
+///
+/// {@macro flatFeedCore}
 class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
-  FlatFeedCore({
+  /// Instantiates a new [FlatFeedCore].
+  const FlatFeedCore({
+    Key? key,
     required EnrichedFeedBuilder<User, String, String, String> feedBuilder,
-    Widget onErrorWidget = const ErrorStateWidget(),
-    Widget onProgressWidget = const ProgressStateWidget(),
-    Widget onEmptyWidget =
-        const EmptyStateWidget(message: 'No activities to display'),
+    required WidgetBuilder loadingBuilder,
+    required WidgetBuilder emptyBuilder,
+    required ErrorBuilder errorBuilder,
     int? limit,
     int? offset,
     String? session,
@@ -22,12 +29,12 @@ class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
     String? ranking,
     String? userId,
     required String feedGroup,
-    ScrollPhysics? scrollPhysics,
   }) : super(
+          key: key,
           feedBuilder: feedBuilder,
-          onErrorWidget: onErrorWidget,
-          onProgressWidget: onProgressWidget,
-          onEmptyWidget: onEmptyWidget,
+          loadingBuilder: loadingBuilder,
+          emptyBuilder: emptyBuilder,
+          errorBuilder: errorBuilder,
           limit: limit,
           offset: offset,
           session: session,
@@ -36,7 +43,6 @@ class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
           ranking: ranking,
           userId: userId,
           feedGroup: feedGroup,
-          scrollPhysics: scrollPhysics,
         );
 }
 
@@ -46,12 +52,14 @@ class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
 /// {@macro flatFeedCore}
 /// {@macro genericParameters}
 class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
+  /// Create a new [GenericFlatFeedCore].
   const GenericFlatFeedCore({
     Key? key,
     required this.feedGroup,
     required this.feedBuilder,
-    this.onErrorWidget = const ErrorStateWidget(),
-    this.onProgressWidget = const ProgressStateWidget(),
+    required this.loadingBuilder,
+    required this.emptyBuilder,
+    required this.errorBuilder,
     this.limit,
     this.offset,
     this.session,
@@ -59,22 +67,23 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
     this.flags,
     this.ranking,
     this.userId,
-    this.onEmptyWidget =
-        const EmptyStateWidget(message: 'No activities to display'),
-    this.scrollPhysics,
   }) : super(key: key);
 
-  /// A builder that let you build a ListView of EnrichedActivity based Widgets
+  /// A builder that provides a list of EnrichedActivities to display
   final EnrichedFeedBuilder<A, Ob, T, Or> feedBuilder;
 
-  /// An error widget to show when an error occurs
-  final Widget onErrorWidget;
+  /// Function used to build a loading widget
+  final WidgetBuilder loadingBuilder;
 
-  /// A progress widget to show when a request is in progress
-  final Widget onProgressWidget;
+  /// Function used to build an empty widget
+  final WidgetBuilder emptyBuilder;
 
-  /// A widget to show when the feed is empty
-  final Widget onEmptyWidget;
+  /// Callback triggered when an error occurs while performing the given
+  /// request.
+  ///
+  /// This parameter can be used to display an error message to users in the
+  /// event of an error occuring fetching the flat feed.
+  final ErrorBuilder errorBuilder;
 
   /// The limit of activities to fetch
   final int? limit;
@@ -100,11 +109,30 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   /// The feed group to use for the request
   final String feedGroup;
 
-  final ScrollPhysics? scrollPhysics;
-
   @override
   _GenericFlatFeedCoreState<A, Ob, T, Or> createState() =>
       _GenericFlatFeedCoreState<A, Ob, T, Or>();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(ObjectFlagProperty<EnrichedFeedBuilder<A, Ob, T, Or>>.has(
+          'feedBuilder', feedBuilder))
+      ..add(ObjectFlagProperty<WidgetBuilder>.has(
+          'loadingBuilder', loadingBuilder))
+      ..add(StringProperty('feedGroup', feedGroup))
+      ..add(IntProperty('limit', limit))
+      ..add(DiagnosticsProperty<Filter?>('filter', filter))
+      ..add(StringProperty('userId', userId))
+      ..add(StringProperty('session', session))
+      ..add(IntProperty('offset', offset))
+      ..add(ObjectFlagProperty<ErrorBuilder>.has('errorBuilder', errorBuilder))
+      ..add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags))
+      ..add(StringProperty('ranking', ranking))
+      ..add(
+          ObjectFlagProperty<WidgetBuilder>.has('emptyBuilder', emptyBuilder));
+  }
 }
 
 class _GenericFlatFeedCoreState<A, Ob, T, Or>
@@ -136,27 +164,16 @@ class _GenericFlatFeedCoreState<A, Ob, T, Or>
       stream: bloc.getActivitiesStream(widget.feedGroup),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return widget
-              .onErrorWidget; //TODO: snapshot.error / do we really want backend error here?
+          return widget.errorBuilder(context, snapshot.error!);
         }
         if (!snapshot.hasData) {
-          return widget.onProgressWidget;
+          return widget.loadingBuilder(context);
         }
         final activities = snapshot.data!;
         if (activities.isEmpty) {
-          return widget.onEmptyWidget;
+          return widget.emptyBuilder(context);
         }
-        return ListView.separated(
-          physics:
-              widget.scrollPhysics ?? const AlwaysScrollableScrollPhysics(),
-          itemCount: activities.length,
-          separatorBuilder: (context, index) => const Divider(),
-          itemBuilder: (context, idx) => widget.feedBuilder(
-            context,
-            activities,
-            idx,
-          ),
-        );
+        return widget.feedBuilder(context, activities);
       },
     );
   }

@@ -12,10 +12,6 @@ void main() {
     final mockStreamAnalytics = MockStreamAnalytics();
     final activities = [
       GenericEnrichedActivity(
-        // reactionCounts: {
-        //   'like': 139,
-        //   'repost': 23,
-        // },
         time: DateTime.now(),
         actor: const User(
           data: {
@@ -53,12 +49,14 @@ void main() {
         home: Scaffold(
           body: GenericFlatFeedCore(
             feedGroup: 'user',
-            feedBuilder: (BuildContext context, activities, int idx) {
-              return Column(
-                children: [
-                  Text("${activities[idx].reactionCounts?['like']}") //counts
-                ],
-              );
+            errorBuilder: (context, error) => const Text('error'),
+            loadingBuilder: (context) => const CircularProgressIndicator(),
+            emptyBuilder: (context) => const Text('empty'),
+            feedBuilder: (
+              BuildContext context,
+              activities,
+            ) {
+              return const Text('activities');
             },
           ),
         ),

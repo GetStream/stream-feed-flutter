@@ -52,6 +52,8 @@ void main() {
       MaterialApp(
         home: UploadListCore(
           uploadController: mockUploadController,
+          loadingBuilder: (BuildContext context) => const SizedBox(),
+          uploadsErrorBuilder: (Object error) => const SizedBox(),
           uploadsBuilder: (context, uploads) {
             return SizedBox(
               height: 100,
