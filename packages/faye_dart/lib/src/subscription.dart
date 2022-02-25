@@ -6,7 +6,16 @@ import 'message.dart';
 typedef Callback = void Function(Map<String, dynamic>? data);
 typedef WithChannelCallback = void Function(String, Map<String, dynamic>?);
 
-class Subscription extends Equatable {
+class Subscription {
+  final FayeClient _client;
+  final String _channel;
+  final Callback? _callback;
+  WithChannelCallback? _withChannel;
+  bool _cancelled = false;
+
+  /// Connexion status stream
+  Stream<FayeClientState> get stateStream => _client.stateStream;
+
   Subscription(
     this._client,
     this._channel, {
