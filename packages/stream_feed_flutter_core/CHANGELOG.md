@@ -6,6 +6,7 @@
 final subscription = await feed.subscribe();
 final subscriptionStatus = subscription.stateStream;
 ```
+- BREAKING: `onAddActivity` signature changed. The named parameter `data`changed from `Map<String, String>?` to `Map<String, Object>?`.
 - BREAKING: Refactors all of our builder methods to return data and not be opinionated about widgets in Core package
 new: Various additional code documentation added
 - NEW: new model and convenient extensions for the `UploadController`
