@@ -1,4 +1,3 @@
-
 import 'package:faye_dart/src/client.dart';
 import 'package:faye_dart/src/message.dart';
 
