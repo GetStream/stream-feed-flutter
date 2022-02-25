@@ -1,3 +1,15 @@
+## 0.5.1: 12/01/2022
+
+- upstream(realtime): version bump. You can now listen to connexion status in the `Subscription` class. For example:
+  
+```dart
+final subscription = await feed.subscribe();
+final subscriptionStatus = subscription.stateStream;
+```
+- new(realtime): you can now adjust log level when subscribing
+- new: implement Equatable on `StreamFeedClient`. With this change, if you fetch your client from an `InheritedWidget` for example, `updateShouldNotify` doesn't trigger every time.
+
+
 ## 0.5.0: 12/01/2022
 
 - BREAKING: we no longer accept a token in the constructor. This change is inspired by Stream Chat, and allows for use cases like multi account management. It allows to instantiate `StreamFeedClient` at the top of your widget tree for example, and connecting the user later.
@@ -17,21 +29,25 @@
 +    frontendToken,
 +  );
 ```
-  
+
+
 ## 0.4.0+3: 27/12/2021
 
 - fix: call profile in setUser, so that currentUser data is not null
-  
-  ## 0.4.0+2: 22/12/2021
+
+
+## 0.4.0+2: 22/12/2021
 
 - fix: export image_storage_client.dart
-  
+
+
 ## 0.4.0+1: 07/12/2021
 
 - fix: support null values `extraData`'s map
 - fix: utc date parsing with a `JsonConverter<DateTime,String>` and `intl`
 - fix: unread/unseen count in `NotificationFeedMeta` model
-  
+
+
 ## 0.4.0: 29/10/2021
 
 - breaking: `StreamFeedClient.connect` is now `StreamFeedClient` for better user session handling.
