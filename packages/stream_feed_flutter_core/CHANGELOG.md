@@ -1,3 +1,15 @@
+## 0.7.0 25/02/2022
+
+- fix: `FeedProvider` inherited widget had an issue with the `updateShouldNotify` being triggered everytime. This has been fixed via the llc, being bumped to 0.5.1.
+- realtime: version bump. You can now listen to connexion status in the `Subscription` class. For example:
+```dart
+final subscription = await feed.subscribe();
+final subscriptionStatus = subscription.stateStream;
+```
+- BREAKING: Refactors all of our builder methods to return data and not be opinionated about widgets in Core package
+new: Various additional code documentation added
+
+
 ## 0.6.0: 12/01/2022
 
 - BREAKING: bumped llc to 0.5.0, which is a breaking change. We no longer accept a token in the constructor. This change is inspired by Stream Chat, and allows for use cases like multi account management. It allows to instantiate `StreamFeedClient` at the top of your widget tree for example, and connecting the user later.
