@@ -8,7 +8,19 @@ final subscriptionStatus = subscription.stateStream;
 ```
 - BREAKING: Refactors all of our builder methods to return data and not be opinionated about widgets in Core package
 new: Various additional code documentation added
-
+- NEW: new model and convenient extensions for the `UploadController`
+An `Attachment` model to convert a `MediaUri` TO a `Map<String, Object?>` to send as an
+`extraData` along an activity or a reaction. For example:
+```dart
+final bloc = FeedProvider.of(context).bloc;
+final uploadController = bloc.uploadController;
+final extraData = uploadController.getMediaUris()?.toExtraData();
+await bloc.onAddReaction( kind: 'comment', data: extraData, activity: parentActivity, feedGroup: feedGroup );
+```
+The attachment model is also useful to convert FROM extraData in an activity or reaction via the `toAttachments` extension. For example:
+```dart
+final attachments = activity.extraData?.toAttachments()
+```
 
 ## 0.6.0: 12/01/2022
 
