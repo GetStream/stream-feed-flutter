@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/compose_view.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/compose_screen.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 import 'mock.dart';
@@ -42,7 +42,7 @@ void main() {
               child: child!,
             );
           },
-          home: ComposeView(
+          home: ComposeScreen(
             textEditingController: TextEditingController(),
             feedGroup: 'user',
             parentActivity: GenericEnrichedActivity(
@@ -96,7 +96,7 @@ void main() {
   testWidgets('debugFillProperties', (tester) async {
     final builder = DiagnosticPropertiesBuilder();
     final now = DateTime.now();
-    ComposeView(
+    ComposeScreen(
       textEditingController: TextEditingController(),
       parentActivity: GenericEnrichedActivity(
         id: '1',

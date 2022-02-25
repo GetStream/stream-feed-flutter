@@ -8,6 +8,42 @@ import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
+/// {@template feedBloc}
+/// Widget dedicated to the state management of an app's Stream feed
+/// [FeedBloc] is used to manage a set of operations
+/// associated with [EnrichedActivity]s and [Reaction]s.
+///
+/// [FeedBloc] can be access at anytime by using the factory [of] method
+/// using Flutter's [BuildContext].
+///
+/// Usually what you want is the convenient [FeedBloc] that already
+/// has the default parameters defined for you
+/// suitable to most use cases. But if you need a
+/// more advanced use case use [GenericFeedBloc] instead
+///
+/// ## Usage
+/// - {@macro queryEnrichedActivities}
+/// - {@macro queryReactions}
+/// - {@macro onAddActivity}
+/// - {@macro deleteActivity}
+/// - {@macro onAddReaction}
+/// - {@macro onRemoveReaction}
+/// - {@macro onAddChildReaction}
+/// - {@macro onRemoveChildReaction}
+/// {@endtemplate}
+///
+/// {@template genericParameters}
+/// The generic parameters can be of the following type:
+/// - A : [actor] can be an User, or a String
+/// - Ob : [object] can a String, or a CollectionEntry
+/// - T : [target] can be a String or an Activity
+/// - Or : [origin] can be a String or a Reaction or an User
+///
+/// To avoid potential runtime errors
+/// make sure they are the same across the app if
+/// you go the route of using Generic* classes
+///
+/// {@endtemplate}
 class FeedBloc extends GenericFeedBloc<User, String, String, String> {
   FeedBloc({
     required StreamFeedClient client,
@@ -103,6 +139,26 @@ class GenericFeedBloc<A, Ob, T, Or> {
   /// The stream notifying the state of queryActivities call.
   Stream<bool> get queryActivitiesLoading =>
       _queryActivitiesLoadingController.stream;
+
+  /// Convenient method to fetch a list of users current user is following
+  Future<List<User>> followingUsers({String feedGroup = 'timeline'}) async {
+    final following =
+        await client.flatFeed(feedGroup, currentUser!.id).following();
+    final users = following
+        .map((follow) => client.getUser(follow.feedId.split(':').last))
+        .toList();
+    return Future.wait(users);
+  }
+
+  /// Convenient method to fetch a list of users following current (followers)
+  Future<List<User>> followersUsers({String feedGroup = 'user'}) async {
+    final followers =
+        await client.flatFeed(feedGroup, currentUser!.id).followers();
+    final users = followers
+        .map((follow) => client.getUser(follow.feedId.split(':').last))
+        .toList();
+    return Future.wait(users);
+  }
 
   /* ACTIVITIES */
 

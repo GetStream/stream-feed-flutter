@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
-import 'package:stream_feed_flutter/src/widgets/pages/compose_view.dart';
+import 'package:stream_feed_flutter/src/widgets/pages/compose_screen.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 // ignore_for_file: cascade_invocations
@@ -58,7 +58,7 @@ class ReplyButton extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => ComposeView(
+                builder: (_) => ComposeScreen(
                   parentActivity: activity,
                   feedGroup: feedGroup,
                   textEditingController: TextEditingController(),

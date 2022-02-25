@@ -5,8 +5,9 @@ import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reactive_elevated_button.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-class ComposeView extends StatefulWidget {
-  const ComposeView(
+/// A widget to react to an activity or compose a new activity.
+class ComposeScreen extends StatefulWidget {
+  const ComposeScreen(
       {Key? key,
       this.parentActivity,
       this.feedGroup = 'user',
@@ -36,10 +37,10 @@ class ComposeView extends StatefulWidget {
   }
 
   @override
-  State<ComposeView> createState() => _ComposeViewState();
+  State<ComposeScreen> createState() => _ComposeScreenState();
 }
 
-class _ComposeViewState extends State<ComposeView> {
+class _ComposeScreenState extends State<ComposeScreen> {
   bool get _isReply => widget.parentActivity != null;
 
   String get _hintText =>

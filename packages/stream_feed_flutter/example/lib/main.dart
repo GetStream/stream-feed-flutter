@@ -397,7 +397,7 @@ class _MyHomePageState extends State<MyHomePage> with StreamFeedMixin {
         child: const Icon(Icons.edit_outlined),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => ComposeView(
+            builder: (_) => ComposeScreen(
               textEditingController: TextEditingController(),
             ),
             fullscreenDialog: true,
@@ -552,67 +552,15 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '${widget.user?.followersCount ?? bloc.currentUser!.followersCount}',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          Text(
-                            'Followers',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '${widget.user?.followingCount ?? bloc.currentUser!.followingCount}',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          Text(
-                            'Following',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  FollowStatsWidget(user: widget.user),
                   if (widget.user != null &&
                       widget.user!.id != bloc.currentUser!.id) ...[
                     Row(
                       children: [
                         const SizedBox(width: 16),
                         Expanded(
-                          child: FutureBuilder<bool>(
-                            future: bloc.isFollowingFeed(
-                                followerId: widget.user!.id!),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return const SizedBox.shrink();
-                              } else {
-                                return OutlinedButton(
-                                  child: Text(
-                                      snapshot.data! ? 'Unfollow' : 'Follow'),
-                                  onPressed: () async {
-                                    if (snapshot.data!) {
-                                      await bloc.unfollowFeed(
-                                          unfolloweeId: widget.user!.id!);
-                                      setState(() {});
-                                    } else {
-                                      await bloc.followFeed(
-                                          followeeId: widget.user!.id!);
-                                      setState(() {});
-                                    }
-                                  },
-                                );
-                              }
-                            },
+                          child: FollowButton(
+                            user: widget.user,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -650,83 +598,6 @@ class _ProfileScreenState extends State<ProfileScreen> with StreamFeedMixin {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class FollowingScreen extends StatefulWidget {
-  const FollowingScreen({Key? key}) : super(key: key);
-
-  @override
-  State<FollowingScreen> createState() => _FollowingScreenState();
-}
-
-class _FollowingScreenState extends State<FollowingScreen>
-    with StreamFeedMixin {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Following'),
-      ),
-      body: FutureBuilder<List<Follow>>(
-        future: client.flatFeed('timeline', bloc.currentUser!.id).following(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(snapshot.data![index].feedId),
-                );
-              },
-            );
-          }
-        },
-      ),
-    );
-  }
-}
-
-class FollowersScreen extends StatefulWidget {
-  const FollowersScreen({Key? key}) : super(key: key);
-
-  @override
-  State<FollowersScreen> createState() => _FollowersScreenState();
-}
-
-class _FollowersScreenState extends State<FollowersScreen>
-    with StreamFeedMixin {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Followers'),
-      ),
-      body: FutureBuilder<List<Follow>>(
-        future: client.flatFeed('user', bloc.currentUser!.id).followers(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final feedName = snapshot.data![index].feedId.split(':').last;
-                return ListTile(
-                  title: Text(feedName),
-                );
-              },
-            );
-          }
-        },
       ),
     );
   }

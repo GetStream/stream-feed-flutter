@@ -1,12 +1,45 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
-import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
-import 'package:stream_feed_flutter_core/src/states/empty.dart';
-import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+/// {@template flatFeedCore}
+/// [FlatFeedCore] is a core class that allows fetching a list of
+/// enriched activities (flat) while exposing UI builders.
+/// Make sure to have a [FeedProvider] ancestor in order to provide the
+/// information about the activities.
+/// Usually what you want is the convenient [FlatFeedCore] that already
+/// has the default parameters defined for you
+/// suitable to most use cases. But if you need a
+/// more advanced use case use [GenericFlatFeedCore] instead
+///
+/// ## Usage
+///
+/// ```dart
+/// class ActivityListView extends StatelessWidget {
+///   @override
+///   Widget build(BuildContext context) {
+///     return Scaffold(
+///       body: FlatFeedCore(
+///         onErrorWidget: Center(
+///             child: Text('An error has occurred'),
+///         ),
+///         onEmptyWidget: Center(
+///             child: Text('Nothing here...'),
+///         ),
+///         onProgressWidget: Center(
+///             child: CircularProgressIndicator(),
+///         ),
+///         feedBuilder: (context, activities, idx) {
+///           return YourActivityWidget(activity: activities[idx]);
+///         }
+///       ),
+///     );
+///   }
+/// }
+/// ```
+/// {@endtemplate}
 class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
   FlatFeedCore({
     required EnrichedFeedBuilder<User, String, String, String> feedBuilder,
