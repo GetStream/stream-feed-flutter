@@ -1,6 +1,6 @@
 name: faye_dart
 description: Faye is a publish/subscribe messaging protocol that is built on the Bayeux protocol, a messaging system utilized for transporting asynchronous messages over HTTP.
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/GetStream/stream-feed-flutter/blob/master/packages/faye_dart
 repository: https://github.com/GetStream/stream-feed-flutter/blob/master/packages/faye_dart
 issue_tracker: https://github.com/GetStream/stream-feed-flutter/issues
