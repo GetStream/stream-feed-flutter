@@ -3,6 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/feed_bloc.dart';
 
+/// {@template feedProvider}
+/// Inherited widget providing the [FeedBloc] to the widget tree
+/// Usually what you need is the convenient [FeedProvider] that already
+/// has the default parameters defined for you
+/// suitable to most usecases. But if you need a
+/// more advanced use case use [GenericFeedProvider] instead. Make sure you
+/// instantiate it only once.
+/// {@endtemplate}
+///
 class FeedProvider extends GenericFeedProvider<User, String, String, String> {
   const FeedProvider({
     Key? key,

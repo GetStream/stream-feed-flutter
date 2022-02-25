@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/media.dart';
 
+/// The state of the file being uploaded
 class FileUploadState with EquatableMixin {
   const FileUploadState({required this.file, required this.state});
 
@@ -16,6 +17,8 @@ class FileUploadState with EquatableMixin {
   List<Object> get props => [file, state];
 }
 
+
+/// The upload state 
 class UploadState with EquatableMixin {
   final MediaType mediaType;
   const UploadState({required this.mediaType});
@@ -23,11 +26,13 @@ class UploadState with EquatableMixin {
   List<Object> get props => [mediaType];
 }
 
+/// The empty upload state
 class UploadEmptyState extends UploadState {
   const UploadEmptyState({required MediaType mediaType})
       : super(mediaType: mediaType);
 }
 
+/// The failed upload state
 class UploadFailed extends UploadState {
   const UploadFailed(this.error, {required MediaType mediaType})
       : super(mediaType: mediaType);
@@ -36,6 +41,7 @@ class UploadFailed extends UploadState {
   List<Object> get props => [...super.props, error];
 }
 
+/// The in progress upload state
 class UploadProgress extends UploadState {
   const UploadProgress(
       {this.sentBytes = 0, this.totalBytes = 0, required MediaType mediaType})
@@ -48,10 +54,12 @@ class UploadProgress extends UploadState {
   List<Object> get props => [...super.props, sentBytes, totalBytes];
 }
 
+/// The cancelled upload state
 class UploadCancelled extends UploadState {
   UploadCancelled({required MediaType mediaType}) : super(mediaType: mediaType);
 }
 
+/// The sucessful upload state
 class UploadSuccess extends UploadState {
   const UploadSuccess._({required this.mediaUri, required MediaType mediaType})
       : super(mediaType: mediaType);

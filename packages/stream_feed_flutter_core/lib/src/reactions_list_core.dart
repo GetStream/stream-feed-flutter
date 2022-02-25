@@ -6,6 +6,46 @@ import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
+
+/// {@template reactionListCore}
+/// [ReactionListCore] is a core class that allows fetching a list of
+/// reactions while exposing UI builders.
+///
+/// ## Usage
+///
+/// ```dart
+/// class ReactionListView extends StatelessWidget {
+///   @override
+///   Widget build(BuildContext context) {
+///     return Scaffold(
+///       body: ReactionListCore(
+///         onErrorWidget: Center(
+///             child: Text('An error has occurred'),
+///         ),
+///         onEmptyWidget: Center(
+///             child: Text('Nothing here...'),
+///         ),
+///         onProgressWidget: Center(
+///             child: CircularProgressIndicator(),
+///         ),
+///         feedBuilder: (context, reactions, idx) {
+///           return YourReactionWidget(reaction: reactions[idx]);
+///         }
+///       ),
+///     );
+///   }
+/// }
+/// ```
+///
+/// Make sure to have a [FeedProvider] ancestor in order to provide the
+/// information about the reactions.
+///
+/// Usually what you want is the convenient [ReactionListCore] that already
+/// has the default parameters defined for you
+/// suitable to most use cases. But if you need a
+/// more advanced use case use [GenericReactionListCore] instead
+/// {@endtemplate}
+/// 
 class ReactionListCore
     extends GenericReactionListCore<User, String, String, String> {
   const ReactionListCore({
