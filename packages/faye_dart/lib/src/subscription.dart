@@ -22,11 +22,6 @@ class Subscription {
     Callback? callback,
   }) : _callback = callback;
 
-  final FayeClient _client;
-  final String _channel;
-  final Callback? _callback;
-  WithChannelCallback? _withChannel;
-  bool _cancelled = false;
 
   void call(Message message) {
     _callback?.call(message.data);
