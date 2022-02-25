@@ -1,5 +1,4 @@
 import 'package:stream_feed/src/core/api/reactions_api.dart';
-import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/util/default.dart';

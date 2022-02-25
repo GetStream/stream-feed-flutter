@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:stream_feed/src/core/models/feed_id.dart';
-import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/serializer.dart';
 import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';

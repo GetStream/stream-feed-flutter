@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
 
-import 'client.dart';
-import 'message.dart';
+import 'package:faye_dart/src/client.dart';
+import 'package:faye_dart/src/message.dart';
 
 typedef Callback = void Function(Map<String, dynamic>? data);
 typedef WithChannelCallback = void Function(String, Map<String, dynamic>?);

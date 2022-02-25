@@ -15,11 +15,7 @@ import 'package:stream_feed/src/client/stream_feed_client.dart';
 import 'package:stream_feed/src/client/stream_user.dart';
 import 'package:stream_feed/src/core/api/stream_api.dart';
 import 'package:stream_feed/src/core/api/stream_api_impl.dart';
-import 'package:stream_feed/src/core/http/stream_http_client.dart';
-import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
-import 'package:stream_feed/src/core/models/feed_id.dart';
-import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Handler function used for logging records. Function requires a single

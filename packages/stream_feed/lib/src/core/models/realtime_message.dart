@@ -1,9 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:stream_feed/src/core/models/feed_id.dart';
-
-import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
 import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 
