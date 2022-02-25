@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:stream_feed_flutter_core/src/media.dart';
 
+/// An attachment model to convert (via [toAttachments] extension)
+/// from a [MediaUri] object you get from the [UploadController]
+/// OR to convert (via [toExtraData]) to a Map<String, Object?> to send as an
+/// extraData along an activity or a reaction
 class Attachment extends Equatable {
   const Attachment({
     required this.url,
