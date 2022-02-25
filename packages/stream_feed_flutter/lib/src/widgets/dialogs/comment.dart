@@ -131,7 +131,7 @@ class CommentView extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                //TODO: "this post has been deleted by the author"
+                //TODO(sacha): "this post has been deleted by the author"
                 if (activity != null) ...[
                   StreamBuilder(
                     stream: FeedProvider.of(context)
@@ -147,8 +147,8 @@ class CommentView extends StatelessWidget {
                       );
                     },
                   )
-                  //TODO: analytics
-                  //TODO: "in response to" activity.to
+                  //TODO(sacha): analytics
+                  //TODO(sacha): "in response to" activity.to
                 ],
                 //TODO: builder for using it elsewhere than in actions
                 if (enableReactions && activity != null)

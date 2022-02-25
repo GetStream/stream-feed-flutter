@@ -2,13 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// {@template onErrorWidget}
-/// A builder for building a widget when an error occurs.
-///
-/// [ErrorStateWidget] is the default widget
+/// A default widget to display for error builders.
 /// {@endtemplate}
 
 class ErrorStateWidget extends StatelessWidget {
   /// Builds an [ErrorStateWidget].
+  ///
   /// {@macro onErrorWidget}
   const ErrorStateWidget({
     Key? key,

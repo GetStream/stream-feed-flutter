@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
-import 'package:stream_feed_flutter_core/src/upload/states.dart';
-import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
@@ -70,6 +68,9 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 ///             ),
 ///             UploadListCore(
 ///               uploadController: uploadController,
+///               loadingBuilder: (context) => CircularProgressIndicator(),
+///               uploadsErrorBuilder: (error) =>
+///                   Text('Could not upload error'),
 ///               uploadsBuilder: (context, uploads) {
 ///                 return SizedBox(
 ///                   height: 100,
@@ -105,15 +106,15 @@ class UploadListCore extends StatelessWidget {
     Key? key,
     required this.uploadController,
     required this.uploadsBuilder,
-    this.uploadsErrorBuilder,
-    this.onProgressWidget = const SizedBox.shrink(),
+    required this.uploadsErrorBuilder,
+    required this.loadingBuilder,
   }) : super(key: key);
 
   /// An error builder to show when an error occurs.
-  final UploadsErrorBuilder? uploadsErrorBuilder;
+  final UploadsErrorBuilder uploadsErrorBuilder;
 
-  /// A progress widget to show when a request is in progress.
-  final Widget onProgressWidget;
+  /// Builder used to build a loading widget
+  final WidgetBuilder loadingBuilder;
 
   /// Builder that will be called with a list of current uploads and their
   /// state.
@@ -128,11 +129,10 @@ class UploadListCore extends StatelessWidget {
       stream: uploadController.uploadsStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return uploadsErrorBuilder?.call(snapshot.error!) ??
-              const ErrorStateWidget();
+          return uploadsErrorBuilder(snapshot.error!);
         }
         if (!snapshot.hasData) {
-          return onProgressWidget;
+          return loadingBuilder(context);
         }
         final rawMap = snapshot.data!;
         final uploads = List<FileUploadState>.from(
@@ -155,6 +155,8 @@ class UploadListCore extends StatelessWidget {
       ..add(ObjectFlagProperty<UploadsErrorBuilder?>.has(
           'uploadsErrorBuilder', uploadsErrorBuilder))
       ..add(ObjectFlagProperty<UploadsBuilder>.has(
-          'uploadsBuilder', uploadsBuilder));
+          'uploadsBuilder', uploadsBuilder))
+      ..add(ObjectFlagProperty<WidgetBuilder>.has(
+          'loadingBuilder', loadingBuilder));
   }
 }
