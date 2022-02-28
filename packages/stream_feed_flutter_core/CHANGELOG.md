@@ -1,3 +1,9 @@
+## 0.7.0+1 28/02/2022
+
+- fixes: 
+  - adding to a fix lengthed list
+  - changes the init behavior of queryEnrichedActivities (to allow it to be called again)
+
 ## 0.7.0 25/02/2022
 
 - fix: `FeedProvider` inherited widget had an issue with the `updateShouldNotify` being triggered everytime. This has been fixed via the llc, being bumped to 0.5.1.
