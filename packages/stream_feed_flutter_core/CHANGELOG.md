@@ -1,8 +1,8 @@
 ## 0.7.0+1 28/02/2022
 
-- fixes: 
-  - adding to a fix lengthed list
-  - changes the init behavior of queryEnrichedActivities (to allow it to be called again)
+- fixes(FeedBloc): 
+  - bug when adding to a fix lengthed list
+  - change the init behavior of queryEnrichedActivities (to allow it to be called again)
 
 ## 0.7.0 25/02/2022
 
