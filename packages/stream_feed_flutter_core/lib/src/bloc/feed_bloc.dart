@@ -140,7 +140,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     final enrichedActivity = await flatFeed
         .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
 
-    final _activities = getActivities(feedGroup) ?? [];
+    final _activities = (getActivities(feedGroup) ?? []).toList();
 
     // ignore: cascade_invocations
     _activities.insert(0, enrichedActivity);
@@ -435,13 +435,13 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
     //TODO: no way to parameterized marker?
   }) async {
-    activitiesManager.init(feedGroup);
-    if (_queryActivitiesLoadingController.value == true) return;
-
-    if (activitiesManager.hasValue(feedGroup)) {
-      _queryActivitiesLoadingController.add(true);
+    if (_queryActivitiesLoadingController.value == true) {
+      return; // already loading
     }
-
+    if (!activitiesManager.hasValue(feedGroup)) {
+      activitiesManager.init(feedGroup);
+    }
+    _queryActivitiesLoadingController.add(true);
     try {
       final activitiesResponse = await client
           .flatFeed(feedGroup, userId)
@@ -453,7 +453,6 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
             flags: flags,
             ranking: ranking,
           );
-
       activitiesManager.add(feedGroup, activitiesResponse);
       if (activitiesManager.hasValue(feedGroup) &&
           _queryActivitiesLoadingController.value) {
