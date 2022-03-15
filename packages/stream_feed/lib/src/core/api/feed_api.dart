@@ -6,6 +6,7 @@ import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
+import 'package:stream_feed/src/core/models/paginated_activities.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
@@ -88,6 +89,20 @@ class FeedAPI {
         headers: {'Authorization': '$token'},
         queryParameters: options,
       );
+
+  /// Retrieve paginated activities
+  Future<PaginatedActivities<A, Ob, T, Or>> paginatedActivities<A, Ob, T, Or>(
+    Token token,
+    FeedId feed,
+    Map<String, Object?> options,
+  ) async {
+    final response = await _client.get(
+      Routes.buildFeedUrl(feed),
+      headers: {'Authorization': '$token'},
+      queryParameters: options,
+    );
+    return PaginatedActivities<A, Ob, T, Or>.fromJson(response.data!);
+  }
 
   /// Retrieve the number of followers and following feed stats of the current
   /// feed.

@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 enum _Filter {
   idGreaterThanOrEqual,
 
@@ -26,7 +28,7 @@ extension _FilterX on _Filter {
 /// Note: when using id_gt[e] the reactions are ordered by the created_at field,
 ///  in ascending order.
 /// {@endtemplate}
-class Filter {
+class Filter extends Equatable {
   final Map<_Filter, String> _filters = {};
 
   /// Serialize [Filter] parameters
@@ -61,4 +63,7 @@ class Filter {
 
   @override
   String toString() => _filters.toString();
+
+  @override
+  List<Object?> get props => [_filters];
 }
