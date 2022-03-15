@@ -14,9 +14,6 @@ PaginatedActivities<A, Ob, T, Or> _$PaginatedActivitiesFromJson<A, Ob, T, Or>(
   Or Function(Object? json) fromJsonOr,
 ) {
   return PaginatedActivities<A, Ob, T, Or>(
-    version: json['version'] as String,
-    offset: json['offset'] as int,
-    limit: json['limit'] as int,
     next: json['next'] as String?,
     results: (json['results'] as List<dynamic>?)
         ?.map((e) => GenericEnrichedActivity.fromJson(
@@ -50,7 +47,4 @@ Map<String, dynamic> _$PaginatedActivitiesToJson<A, Ob, T, Or>(
               ))
           .toList(),
       'duration': instance.duration,
-      'version': instance.version,
-      'offset': instance.offset,
-      'limit': instance.limit,
     };

@@ -1,4 +1,3 @@
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/collection_entry.dart';
@@ -15,9 +14,6 @@ class PaginatedActivities<A, Ob, T, Or>
     extends Paginated<GenericEnrichedActivity<A, Ob, T, Or>> {
   /// Builds a [PaginatedActivities].
   const PaginatedActivities({
-    required this.version,
-    required this.offset,
-    required this.limit,
     String? next,
     List<GenericEnrichedActivity<A, Ob, T, Or>>? results,
     String? duration,
@@ -59,16 +55,7 @@ class PaginatedActivities<A, Ob, T, Or>
       );
 
   @override
-  List<Object?> get props => [...super.props, version, offset, limit];
-
-  /// TODO: document me
-  final String version;
-
-  /// The offset of the first result in the current page.
-  final int offset;
-
-  /// The maximum number of results to return.
-  final int limit;
+  List<Object?> get props => [...super.props];
 
   /// Serialize to json
   Map<String, dynamic> toJson(

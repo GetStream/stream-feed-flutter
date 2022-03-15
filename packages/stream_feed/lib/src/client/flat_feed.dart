@@ -141,9 +141,9 @@ class FlatFeed extends Feed {
   }
 
   /// ```dart
-  /// await paginated = getPaginatedEnrichedActivities();
-  /// nextParams = parseNext(paginated);
-  /// await getPaginatedEnrichedActivities(limit: nextParams.limit,filter: nextParams.idLessThan);
+  ///  final paginated = await getPaginatedEnrichedActivities();
+  /// final nextParams = parseNext(paginated.next!);
+  /// await getPaginatedEnrichedActivities(limit: nextParams.limit,filter: nextParams.idLT);
   /// ```
   Future<PaginatedActivities<A, Ob, T, Or>>
       getPaginatedEnrichedActivities<A, Ob, T, Or>({
