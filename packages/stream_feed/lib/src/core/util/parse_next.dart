@@ -1,4 +1,3 @@
-
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/next_params.dart';
 
