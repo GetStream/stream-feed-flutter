@@ -12,12 +12,10 @@ Reaction _$ReactionFromJson(Map json) => Reaction(
       activityId: json['activity_id'] as String?,
       userId: json['user_id'] as String?,
       parent: json['parent'] as String?,
-      createdAt: json['created_at'] == null
-          ? null
-          : DateTime.parse(json['created_at'] as String),
-      updatedAt: json['updated_at'] == null
-          ? null
-          : DateTime.parse(json['updated_at'] as String),
+      createdAt:
+          const DateTimeUTCConverter().fromJson(json['created_at'] as String),
+      updatedAt:
+          const DateTimeUTCConverter().fromJson(json['updated_at'] as String),
       targetFeeds: FeedId.fromIds(json['target_feeds'] as List?),
       user: json['user'] == null
           ? null
@@ -63,7 +61,8 @@ Map<String, dynamic> _$ReactionToJson(Reaction instance) {
   val['activity_id'] = instance.activityId;
   val['user_id'] = instance.userId;
   writeNotNull('parent', instance.parent);
-  writeNotNull('created_at', instance.createdAt?.toIso8601String());
+  writeNotNull(
+      'created_at', const DateTimeUTCConverter().toJson(instance.createdAt));
   writeNotNull('updated_at', readonly(instance.updatedAt));
   writeNotNull('target_feeds', FeedId.toIds(instance.targetFeeds));
   writeNotNull('user', instance.user?.toJson());
