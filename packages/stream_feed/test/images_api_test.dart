@@ -15,7 +15,7 @@ void main() {
   final imagesApi = ImagesAPI(mockClient);
 
   setUpAll(() {
-    registerFallbackValue<MultipartFile>(MultipartFileFake());
+    registerFallbackValue(MultipartFileFake());
   });
 
   group('Images API', () {

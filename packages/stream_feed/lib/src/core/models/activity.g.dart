@@ -6,29 +6,28 @@ part of 'activity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Activity _$ActivityFromJson(Map json) {
-  return Activity(
-    actor: json['actor'] as String?,
-    verb: json['verb'] as String?,
-    object: json['object'] as String?,
-    id: json['id'] as String?,
-    foreignId: json['foreign_id'] as String?,
-    target: json['target'] as String?,
-    time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
-    to: FeedId.fromIds(json['to'] as List?),
-    analytics: (json['analytics'] as Map?)?.map(
-      (k, e) => MapEntry(k as String, e as Object),
-    ),
-    extraContext: (json['extra_context'] as Map?)?.map(
-      (k, e) => MapEntry(k as String, e as Object),
-    ),
-    origin: json['origin'] as String?,
-    score: (json['score'] as num?)?.toDouble(),
-    extraData: (json['extra_data'] as Map?)?.map(
-      (k, e) => MapEntry(k as String, e as Object),
-    ),
-  );
-}
+Activity _$ActivityFromJson(Map json) => Activity(
+      actor: json['actor'] as String?,
+      verb: json['verb'] as String?,
+      object: json['object'] as String?,
+      id: json['id'] as String?,
+      foreignId: json['foreign_id'] as String?,
+      target: json['target'] as String?,
+      time:
+          json['time'] == null ? null : DateTime.parse(json['time'] as String),
+      to: FeedId.fromIds(json['to'] as List?),
+      analytics: (json['analytics'] as Map?)?.map(
+        (k, e) => MapEntry(k as String, e as Object),
+      ),
+      extraContext: (json['extra_context'] as Map?)?.map(
+        (k, e) => MapEntry(k as String, e as Object),
+      ),
+      origin: json['origin'] as String?,
+      score: (json['score'] as num?)?.toDouble(),
+      extraData: (json['extra_data'] as Map?)?.map(
+        (k, e) => MapEntry(k as String, e as Object),
+      ),
+    );
 
 Map<String, dynamic> _$ActivityToJson(Activity instance) {
   final val = <String, dynamic>{};

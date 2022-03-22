@@ -6,12 +6,11 @@ part of 'notification_feed_meta.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NotificationFeedMeta _$NotificationFeedMetaFromJson(Map json) {
-  return NotificationFeedMeta(
-    unreadCount: json['unread'] as int,
-    unseenCount: json['unseen'] as int,
-  );
-}
+NotificationFeedMeta _$NotificationFeedMetaFromJson(Map json) =>
+    NotificationFeedMeta(
+      unreadCount: json['unread'] as int,
+      unseenCount: json['unseen'] as int,
+    );
 
 Map<String, dynamic> _$NotificationFeedMetaToJson(
         NotificationFeedMeta instance) =>
