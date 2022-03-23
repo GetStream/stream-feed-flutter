@@ -14,9 +14,9 @@ CollectionEntry _$CollectionEntryFromJson(Map json) => CollectionEntry(
         (k, e) => MapEntry(k as String, e as Object),
       ),
       createdAt:
-          const DateTimeUTCConverter().fromJson(json['created_at'] as String),
+          const DateTimeUTCConverter().fromJson(json['created_at'] as String?),
       updatedAt:
-          const DateTimeUTCConverter().fromJson(json['updated_at'] as String),
+          const DateTimeUTCConverter().fromJson(json['updated_at'] as String?),
     );
 
 Map<String, dynamic> _$CollectionEntryToJson(CollectionEntry instance) =>

@@ -21,7 +21,7 @@ GenericEnrichedActivity<A, Ob, T, Or>
           object: _$nullableGenericFromJson(json['object'], fromJsonOb),
           foreignId: json['foreign_id'] as String?,
           target: _$nullableGenericFromJson(json['target'], fromJsonT),
-          time: const DateTimeUTCConverter().fromJson(json['time'] as String),
+          time: const DateTimeUTCConverter().fromJson(json['time'] as String?),
           origin: _$nullableGenericFromJson(json['origin'], fromJsonOr),
           to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
           score: (json['score'] as num?)?.toDouble(),

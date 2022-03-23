@@ -802,10 +802,11 @@ void main() {
       'updated_at': '2021-05-14T19:58:27.274792063Z'
     };
     final follow = Follow(
-        feedId: 'timeline:feedId',
-        targetId: 'user:userId',
-        createdAt: converter.fromJson('2021-05-14T19:58:27.274792063Z'),
-        updatedAt: converter.fromJson('2021-05-14T19:58:27.274792063Z'));
+      feedId: 'timeline:feedId',
+      targetId: 'user:userId',
+      createdAt: converter.fromJson('2021-05-14T19:58:27.274792063Z')!,
+      updatedAt: converter.fromJson('2021-05-14T19:58:27.274792063Z')!,
+    );
 
     expect(follow, Follow.fromJson(followJson));
     expect(follow.toJson(), {

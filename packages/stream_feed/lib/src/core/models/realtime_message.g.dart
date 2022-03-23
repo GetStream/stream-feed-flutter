@@ -33,8 +33,8 @@ RealtimeMessage<A, Ob, T, Or> _$RealtimeMessageFromJson<A, Ob, T, Or>(
               (value) => fromJsonOr(value)))
           .toList(),
       appId: json['app_id'] as String?,
-      publishedAt:
-          const DateTimeUTCConverter().fromJson(json['published_at'] as String),
+      publishedAt: const DateTimeUTCConverter()
+          .fromJson(json['published_at'] as String?),
     );
 
 Map<String, dynamic> _$RealtimeMessageToJson<A, Ob, T, Or>(

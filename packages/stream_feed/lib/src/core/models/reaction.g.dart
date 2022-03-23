@@ -13,9 +13,9 @@ Reaction _$ReactionFromJson(Map json) => Reaction(
       userId: json['user_id'] as String?,
       parent: json['parent'] as String?,
       createdAt:
-          const DateTimeUTCConverter().fromJson(json['created_at'] as String),
+          const DateTimeUTCConverter().fromJson(json['created_at'] as String?),
       updatedAt:
-          const DateTimeUTCConverter().fromJson(json['updated_at'] as String),
+          const DateTimeUTCConverter().fromJson(json['updated_at'] as String?),
       targetFeeds: FeedId.fromIds(json['target_feeds'] as List?),
       user: json['user'] == null
           ? null
