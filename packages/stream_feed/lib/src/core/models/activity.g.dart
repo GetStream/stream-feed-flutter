@@ -13,7 +13,7 @@ Activity _$ActivityFromJson(Map json) => Activity(
       id: json['id'] as String?,
       foreignId: json['foreign_id'] as String?,
       target: json['target'] as String?,
-      time: const DateTimeUTCConverter().fromJson(json['time'] as String),
+      time: const DateTimeUTCConverter().fromJson(json['time'] as String?),
       to: FeedId.fromIds(json['to'] as List?),
       analytics: (json['analytics'] as Map?)?.map(
         (k, e) => MapEntry(k as String, e as Object),

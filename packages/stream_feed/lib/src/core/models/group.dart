@@ -60,6 +60,7 @@ class Group<T> extends Equatable {
 
 /// A notification group.
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
+@DateTimeUTCConverter()
 class NotificationGroup<T> extends Group<T> {
   /// [NotificationGroup] constructor
   const NotificationGroup({

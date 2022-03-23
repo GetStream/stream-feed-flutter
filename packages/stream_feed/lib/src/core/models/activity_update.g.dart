@@ -14,7 +14,7 @@ ActivityUpdate _$ActivityUpdateFromJson(Map json) => ActivityUpdate(
           (json['unset'] as List<dynamic>?)?.map((e) => e as String).toList(),
       id: json['id'] as String?,
       foreignId: json['foreign_id'] as String?,
-      time: const DateTimeUTCConverter().fromJson(json['time'] as String),
+      time: const DateTimeUTCConverter().fromJson(json['time'] as String?),
     );
 
 Map<String, dynamic> _$ActivityUpdateToJson(ActivityUpdate instance) {

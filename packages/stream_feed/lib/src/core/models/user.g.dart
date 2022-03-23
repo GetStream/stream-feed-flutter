@@ -12,9 +12,9 @@ User _$UserFromJson(Map json) => User(
         (k, e) => MapEntry(k as String, e),
       ),
       createdAt:
-          const DateTimeUTCConverter().fromJson(json['created_at'] as String),
+          const DateTimeUTCConverter().fromJson(json['created_at'] as String?),
       updatedAt:
-          const DateTimeUTCConverter().fromJson(json['updated_at'] as String),
+          const DateTimeUTCConverter().fromJson(json['updated_at'] as String?),
       followersCount: json['followers_count'] as int?,
       followingCount: json['following_count'] as int?,
     );
