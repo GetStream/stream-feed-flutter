@@ -1,6 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:stream_feed/src/core/models/feed_id.dart';
+
+import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
+import 'package:stream_feed/src/core/models/mark_read_seen.dart';
+import 'package:stream_feed/src/core/util/mark_read_seen_converter.dart';
 import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 
@@ -22,16 +27,19 @@ part 'realtime_message.g.dart';
 /// or `latest_reactions`
 @JsonSerializable(genericArgumentFactories: true)
 @DateTimeUTCConverter()
+@MarkReadConverter()
+@MarkSeenConverter()
 class RealtimeMessage<A, Ob, T, Or> extends Equatable {
   /// Builds a [RealtimeMessage].
-  const RealtimeMessage({
-    required this.feed,
-    this.deleted = const <String>[],
-    this.deletedForeignIds = const <ForeignIdTimePair>[],
-    this.newActivities,
-    this.appId,
-    this.publishedAt,
-  });
+  const RealtimeMessage(
+      {required this.feed,
+      this.deleted = const <String>[],
+      this.deletedForeignIds = const <ForeignIdTimePair>[],
+      this.newActivities,
+      this.appId,
+      this.publishedAt,
+      this.markRead,
+      this.markSeen});
 
   /// Create a new instance from a JSON object
   factory RealtimeMessage.fromJson(
@@ -67,6 +75,9 @@ class RealtimeMessage<A, Ob, T, Or> extends Equatable {
               }
             },
       );
+
+  final MarkSeen? markSeen;
+  final MarkRead? markRead;
 
   /// Name of the feed this update was published on
   @JsonKey(toJson: FeedId.toId, fromJson: FeedId.fromId)

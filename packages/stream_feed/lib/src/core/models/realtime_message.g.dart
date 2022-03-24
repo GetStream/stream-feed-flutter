@@ -33,6 +33,10 @@ RealtimeMessage<A, Ob, T, Or> _$RealtimeMessageFromJson<A, Ob, T, Or>(
     publishedAt: json['published_at'] == null
         ? null
         : DateTime.parse(json['published_at'] as String),
+    markRead:
+        json['mark_read'] == null ? null : MarkRead.fromJson(json['mark_read']),
+    markSeen:
+        json['mark_seen'] == null ? null : MarkSeen.fromJson(json['mark_seen']),
   );
 }
 
@@ -44,6 +48,8 @@ Map<String, dynamic> _$RealtimeMessageToJson<A, Ob, T, Or>(
   Object? Function(Or value) toJsonOr,
 ) {
   final val = <String, dynamic>{
+    'mark_seen': instance.markSeen?.toJson(),
+    'mark_read': instance.markRead?.toJson(),
     'feed': FeedId.toId(instance.feed),
   };
 
