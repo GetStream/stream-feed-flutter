@@ -1,3 +1,8 @@
+## 0.5.1+1: 24/03/2022
+
+- fix: the `JsonConverter<DateTime,String>` implemented in 0.4.0+1 that was supposed to handle utc dates parsing wasn't working properly. Now that it is actually fixed you can convert dates in the user's local timezone.
+- depedencies bumps
+  
 ## 0.5.1: 12/01/2022
 
 - upstream(realtime): version bump. You can now listen to connexion status in the `Subscription` class. For example:
