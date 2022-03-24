@@ -14,7 +14,7 @@ void main() {
   final filesApi = FilesAPI(mockClient);
 
   setUpAll(() {
-    registerFallbackValue<MultipartFile>(MultipartFileFake());
+    registerFallbackValue(MultipartFileFake());
   });
 
   group('Files API', () {

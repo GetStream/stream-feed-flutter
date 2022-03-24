@@ -39,7 +39,7 @@ Future<void> main() async {
 
       await collectionsApi.add(token, userId, entry);
 
-      verify(() => mockClient.post<Map>(
+      verify(() => mockClient.post<Map<String, dynamic>>(
             Routes.buildCollectionsUrl(entry.collection),
             headers: {'Authorization': '$token'},
             data: {
@@ -119,7 +119,7 @@ Future<void> main() async {
 
       await collectionsApi.get(token, collection, entryId);
 
-      verify(() => mockClient.get<Map>(
+      verify(() => mockClient.get<Map<String, dynamic>>(
             Routes.buildCollectionsUrl('$collection/$entryId/'),
             headers: {'Authorization': '$token'},
           )).called(1);
@@ -182,7 +182,7 @@ Future<void> main() async {
 
       await collectionsApi.update(token, userId, entry);
 
-      verify(() => mockClient.put<Map>(
+      verify(() => mockClient.put<Map<String, dynamic>>(
             Routes.buildCollectionsUrl('${entry.collection}/${entry.id}/'),
             headers: {'Authorization': '$token'},
             data: {
@@ -202,7 +202,7 @@ Future<void> main() async {
         })
       ];
       final rawEntries = [jsonFixture('collection_entry.json')];
-      when(() => mockClient.post(
+      when(() => mockClient.post<Map>(
             Routes.buildCollectionsUrl(),
             headers: {'Authorization': '$token'},
             data: {
@@ -219,7 +219,7 @@ Future<void> main() async {
 
       await collectionsApi.upsert(token, collection, entries);
 
-      verify(() => mockClient.post(
+      verify(() => mockClient.post<Map>(
             Routes.buildCollectionsUrl(),
             headers: {'Authorization': '$token'},
             data: {
