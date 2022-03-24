@@ -30,6 +30,7 @@ class ActivityWidget extends StatelessWidget {
   }) : super(key: key);
 
   /// The activity to display.
+  /// {@macro enrichedActivity}
   final EnrichedActivity activity;
 
   /// The json key for the user's handle.

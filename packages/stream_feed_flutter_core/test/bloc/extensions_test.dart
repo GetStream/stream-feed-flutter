@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 
-main() {
+void main() {
   group('unshiftByKind', () {
     group('Map<String, int>', () {
       late Map<String, int> childrenCounts;

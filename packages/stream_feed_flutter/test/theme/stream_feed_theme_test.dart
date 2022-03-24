@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -56,7 +54,7 @@ void main() {
           'childReactionTheme: ChildReactionThemeData#00000(hoverColor: null, toggleColor: null)',
           'reactionTheme: ReactionThemeData#00000(hoverColor: null, toggleHoverColor: null, iconHoverColor: null, hashtagTextStyle: null, mentionTextStyle: null, normalTextStyle: null)',
           'brightness: light',
-          'primaryIconTheme: IconThemeData#384a7',
+          'primaryIconTheme: IconThemeData#00785',
           'gifDialogTheme: GifDialogThemeData#00000(boxDecoration: null, iconColor: null)',
           'ogCardTheme: OgCardThemeData#00000(titleTextStyle: null, descriptionTextStyle: null)',
           'userBarTheme: UserBarThemeData#007db(avatarSize: null, usernameTextStyle: null, timestampTextStyle: null)',

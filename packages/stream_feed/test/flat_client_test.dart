@@ -55,7 +55,6 @@ void main() {
       final filter = Filter()
           .idLessThanOrEqual(activityId)
           .idGreaterThanOrEqual(activityId);
-      const ranking = 'popularity';
       final options = {
         'limit': limit,
         'offset': Default.offset, //TODO:add session everywhere

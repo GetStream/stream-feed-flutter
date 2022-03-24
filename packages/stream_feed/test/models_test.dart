@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:stream_feed/src/core/models/activity.dart';
-import 'package:stream_feed/src/core/models/event.dart';
 import 'package:stream_feed/src/core/models/follow_relation.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/followers.dart';
@@ -12,8 +10,6 @@ import 'package:stream_feed/src/core/models/mark_read_seen.dart';
 import 'package:stream_feed/src/core/models/notification_feed_meta.dart';
 import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
-import 'package:stream_feed/src/core/models/thumbnail.dart';
-import 'package:stream_feed/src/core/models/user.dart';
 import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';

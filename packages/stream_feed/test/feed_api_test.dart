@@ -364,8 +364,6 @@ Future<void> main() async {
 
       final unset = ['daily_likes', 'popularity'];
 
-      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
-
       final set = {
         'product.price': 19.99,
         'shares': {
@@ -452,8 +450,6 @@ Future<void> main() async {
       const token = Token('dummyToken');
 
       final unset = ['daily_likes', 'popularity'];
-
-      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
 
       final set = {
         'product.price': 19.99,

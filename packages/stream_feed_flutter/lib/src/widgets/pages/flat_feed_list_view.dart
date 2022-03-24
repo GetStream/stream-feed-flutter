@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stream_feed_flutter/src/default/default.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
@@ -47,7 +47,7 @@ class FlatFeedListView extends StatelessWidget {
     this.ranking,
     this.handleJsonKey = 'handle',
     this.nameJsonKey = 'name',
-    this.onProgressWidget = const ProgressStateWidget(),
+    this.onProgressWidget = const LoadingStateWidget(),
     this.onErrorWidget = const ErrorStateWidget(),
     this.onEmptyWidget =
         const EmptyStateWidget(message: 'No activities to display'),
@@ -133,52 +133,61 @@ class FlatFeedListView extends StatelessWidget {
       session: session,
       filter: filter,
       ranking: ranking,
-      onProgressWidget: onProgressWidget,
-      onErrorWidget: onErrorWidget,
+      loadingBuilder: (context) => onProgressWidget,
+      errorBuilder: (context, error) => onErrorWidget,
+      emptyBuilder: (context) => onEmptyWidget,
       //TODO: activity type Flat?
-      feedBuilder: (context, activities, idx) {
-        return ActivityWidget(
-          activity: activities[idx],
-          feedGroup: feedGroup,
-          onHashtagTap: onHashtagTap,
-          onMentionTap: onMentionTap,
-          onUserTap: onUserTap,
-          nameJsonKey: nameJsonKey,
-          handleJsonKey: handleJsonKey,
-          activityHeaderBuilder: activityHeaderBuilder,
-          activityFooterBuilder: activityFooterBuilder,
-          activityContentBuilder: activityContentBuilder,
-          onActivityTap: (context, activity) {
-            // onActivityTap != null
-            //     ? onActivityTap?.call(context, activity)
-            // TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
-            _pageRouteBuilder(
-              activity: activity,
-              context: context,
-              transitionType: transitionType,
-              currentNavigator: Navigator.of(context),
-              page: Scaffold(
-                appBar: AppBar(
-                  // TODO: Parameterize me
-                  title: const Text('Post'),
-                ),
-                body: CommentView(
-                  feedGroup: feedGroup,
-                  nameJsonKey: nameJsonKey,
-                  handleJsonKey: handleJsonKey,
+      feedBuilder: (
+        context,
+        activities,
+      ) {
+        return ListView.builder(
+          itemCount: activities.length,
+          physics: scrollPhysics,
+          itemBuilder: (context, index) {
+            return ActivityWidget(
+              activity: activities[index],
+              feedGroup: feedGroup,
+              onHashtagTap: onHashtagTap,
+              onMentionTap: onMentionTap,
+              onUserTap: onUserTap,
+              nameJsonKey: nameJsonKey,
+              handleJsonKey: handleJsonKey,
+              activityHeaderBuilder: activityHeaderBuilder,
+              activityFooterBuilder: activityFooterBuilder,
+              activityContentBuilder: activityContentBuilder,
+              onActivityTap: (context, activity) {
+                // onActivityTap != null
+                //     ? onActivityTap?.call(context, activity)
+                // TODO: provide a way to load via url / ModalRoute.of(context).settings with ActivityCore (todo)
+                _pageRouteBuilder(
                   activity: activity,
-                  enableCommentFieldButton: true,
-                  enableReactions: true,
-                  textEditingController:
-                      TextEditingController(), //TODO: move this into props for customisation like buildSpans
-                ),
-              ),
+                  context: context,
+                  transitionType: transitionType,
+                  currentNavigator: Navigator.of(context),
+                  page: Scaffold(
+                    appBar: AppBar(
+                      // TODO: Parameterize me
+                      title: const Text('Post'),
+                    ),
+                    body: CommentView(
+                      feedGroup: feedGroup,
+                      nameJsonKey: nameJsonKey,
+                      handleJsonKey: handleJsonKey,
+                      activity: activity,
+                      enableCommentFieldButton: true,
+                      enableReactions: true,
+                      textEditingController:
+                          TextEditingController(), //TODO: move this into props for customisation like buildSpans
+                    ),
+                  ),
+                );
+              },
             );
           },
         );
       },
       feedGroup: feedGroup,
-      scrollPhysics: scrollPhysics,
     );
   }
 

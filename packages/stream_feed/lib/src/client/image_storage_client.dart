@@ -1,9 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/api/images_api.dart';
-import 'package:stream_feed/src/core/http/token.dart';
-import 'package:stream_feed/src/core/http/typedefs.dart';
 import 'package:stream_feed/src/core/index.dart';
-import 'package:stream_feed/src/core/models/thumbnail.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// {@template filesandimages}

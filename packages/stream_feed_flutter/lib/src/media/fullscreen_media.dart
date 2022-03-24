@@ -2,7 +2,6 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:stream_feed_flutter/src/media/gallery_header.dart';
 import 'package:stream_feed_flutter/src/media/video_package.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 

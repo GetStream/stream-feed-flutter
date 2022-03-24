@@ -1,5 +1,5 @@
-import 'client.dart';
-import 'message.dart';
+import 'package:faye_dart/src/client.dart';
+import 'package:faye_dart/src/message.dart';
 
 typedef Callback = void Function(Map<String, dynamic>? data);
 typedef WithChannelCallback = void Function(String, Map<String, dynamic>?);
@@ -10,6 +10,9 @@ class Subscription {
   final Callback? _callback;
   WithChannelCallback? _withChannel;
   bool _cancelled = false;
+
+  /// Connexion status stream
+  Stream<FayeClientState> get stateStream => _client.stateStream;
 
   Subscription(
     this._client,
@@ -32,4 +35,7 @@ class Subscription {
     _client.unsubscribe(_channel, this);
     _cancelled = true;
   }
+
+  @override
+  List<Object?> get props => [_client, _channel, _callback, _withChannel];
 }

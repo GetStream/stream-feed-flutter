@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:equatable/equatable.dart';
 import 'package:faye_dart/faye_dart.dart';
 import 'package:faye_dart/src/channel.dart';
 import 'package:faye_dart/src/message.dart';
-import 'package:faye_dart/src/subscription.dart';
 import 'package:faye_dart/src/timeout_helper.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -14,6 +14,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'package:faye_dart/src/extensible.dart';
 
+/// Connexion status of the client
 enum FayeClientState {
   unconnected,
   connecting,
@@ -46,7 +47,7 @@ const defaultConnectionTimeout = 60;
 const defaultConnectionInterval = 0;
 const bayeuxVersion = '1.0';
 
-class FayeClient with Extensible, TimeoutHelper {
+class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
   FayeClient(
     this.baseUrl, {
     this.protocols,
@@ -436,4 +437,14 @@ class FayeClient with Extensible, TimeoutHelper {
     }
     setTimeout(Duration(milliseconds: _advice.interval), () => connect());
   }
+
+  @override
+  List<Object?> get props => [
+        _clientId,
+        _advice,
+        _channels,
+        _responseCallbacks,
+        _connectRequestInProgress,
+        _manuallyClosed,
+      ];
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -23,7 +24,7 @@ class FeedBloc extends GenericFeedBloc<User, String, String, String> {
 ///
 /// {@macro feedBloc}
 /// {@macro genericParameters}
-class GenericFeedBloc<A, Ob, T, Or> {
+class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// {@macro feedBloc}
   GenericFeedBloc({
     required this.client,
@@ -139,7 +140,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
     final enrichedActivity = await flatFeed
         .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
 
-    final _activities = getActivities(feedGroup) ?? [];
+    final _activities = (getActivities(feedGroup) ?? []).toList();
 
     // ignore: cascade_invocations
     _activities.insert(0, enrichedActivity);
@@ -434,13 +435,13 @@ class GenericFeedBloc<A, Ob, T, Or> {
 
     //TODO: no way to parameterized marker?
   }) async {
-    activitiesManager.init(feedGroup);
-    if (_queryActivitiesLoadingController.value == true) return;
-
-    if (activitiesManager.hasValue(feedGroup)) {
-      _queryActivitiesLoadingController.add(true);
+    if (_queryActivitiesLoadingController.value == true) {
+      return; // already loading
     }
-
+    if (!activitiesManager.hasValue(feedGroup)) {
+      activitiesManager.init(feedGroup);
+    }
+    _queryActivitiesLoadingController.add(true);
     try {
       final activitiesResponse = await client
           .flatFeed(feedGroup, userId)
@@ -452,7 +453,6 @@ class GenericFeedBloc<A, Ob, T, Or> {
             flags: flags,
             ranking: ranking,
           );
-
       activitiesManager.add(feedGroup, activitiesResponse);
       if (activitiesManager.hasValue(feedGroup) &&
           _queryActivitiesLoadingController.value) {
@@ -524,4 +524,7 @@ class GenericFeedBloc<A, Ob, T, Or> {
       value.close();
     });
   }
+
+  @override
+  List<Object?> get props => [client, analyticsClient];
 }
