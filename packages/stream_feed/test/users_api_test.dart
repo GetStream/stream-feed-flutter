@@ -62,7 +62,7 @@ Future<void> main() async {
 
       await usersApi.create(token, id, data);
 
-      verify(() => mockClient.post<Map>(
+      verify(() => mockClient.post<Map<String, dynamic>>(
             Routes.buildUsersUrl(),
             headers: {'Authorization': '$token'},
             queryParameters: {'get_or_create': getOrCreate},
