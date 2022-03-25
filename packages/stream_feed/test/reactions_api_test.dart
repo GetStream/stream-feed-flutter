@@ -57,7 +57,7 @@ Future<void> main() async {
         options,
       );
 
-      verify(() => mockClient.get(
+      verify(() => mockClient.get<Map>(
             Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
             headers: {'Authorization': '$token'},
             queryParameters: options,
@@ -98,7 +98,7 @@ Future<void> main() async {
 
       await reactionsApi.add(token, reaction);
 
-      verify(() => mockClient.post<Map>(
+      verify(() => mockClient.post<Map<String, dynamic>>(
             Routes.buildReactionsUrl(),
             headers: {'Authorization': '$token'},
             data: reaction,
@@ -109,7 +109,7 @@ Future<void> main() async {
       const token = Token('dummyToken');
 
       const id = 'id';
-      when(() => mockClient.get<Map>(
+      when(() => mockClient.get<Map<String, dynamic>>(
             Routes.buildReactionsUrl('$id/'),
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response<Map<String, dynamic>>(
@@ -121,7 +121,7 @@ Future<void> main() async {
 
       await reactionsApi.get(token, id);
 
-      verify(() => mockClient.get<Map>(
+      verify(() => mockClient.get<Map<String, dynamic>>(
             Routes.buildReactionsUrl('$id/'),
             headers: {'Authorization': '$token'},
           )).called(1);
@@ -235,7 +235,7 @@ Future<void> main() async {
         targetFeeds: targetFeedIds,
       );
 
-      when(() => mockClient.put(
+      when(() => mockClient.put<Map<String, dynamic>>(
             Routes.buildReactionsUrl('$reactionId/'),
             headers: {'Authorization': '$token'},
             data: {
@@ -251,7 +251,7 @@ Future<void> main() async {
 
       await reactionsApi.update(token, updatedReaction);
 
-      verify(() => mockClient.put(
+      verify(() => mockClient.put<Map<String, dynamic>>(
             Routes.buildReactionsUrl('$reactionId/'),
             headers: {'Authorization': '$token'},
             data: {

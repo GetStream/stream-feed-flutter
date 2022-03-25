@@ -64,13 +64,13 @@ void main() {
     test('fromJson sample 1', () {
       const rawDate = '2021-05-26T14:23:33.918391';
       final convertedDate = converter.fromJson(rawDate);
-      expect(convertedDate.isUtc, true);
+      expect(convertedDate!.isUtc, true);
     });
 
     test('fromJson sample 2', () {
       const rawDate = '2021-05-14T19:58:27.274792063Z';
       final convertedDate = converter.fromJson(rawDate);
-      expect(convertedDate.isUtc, true); //
+      expect(convertedDate!.isUtc, true); //
     });
   });
 }

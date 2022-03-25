@@ -1,15 +1,17 @@
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-class DateTimeUTCConverter implements JsonConverter<DateTime, String> {
+class DateTimeUTCConverter implements JsonConverter<DateTime?, String?> {
   const DateTimeUTCConverter();
-  static final DateFormat FORMAT = DateFormat('yyyy-MM-ddTHH:mm:ssZ');
+  static final DateFormat format = DateFormat('yyyy-MM-ddTHH:mm:ssZ');
 
   @override
-  DateTime fromJson(String json) => FORMAT.parse(json, true);
+  DateTime? fromJson(String? json) =>
+      json == null ? null : format.parse(json, true);
 
   @override
-  String toJson(DateTime json) => formatDateWithOffset(json);
+  String? toJson(DateTime? json) =>
+      json == null ? null : formatDateWithOffset(json);
 }
 
 String formatDateWithOffset(DateTime date) {
