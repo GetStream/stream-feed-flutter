@@ -96,12 +96,13 @@ class FeedAPI {
     FeedId feed,
     Map<String, Object?> options,
   ) async {
-    final response = await _client.get(
-      Routes.buildFeedUrl(feed),
+    final response = await _client.get<Map>(
+      Routes.buildEnrichedFeedUrl(feed),
       headers: {'Authorization': '$token'},
       queryParameters: options,
     );
-    return PaginatedActivities<A, Ob, T, Or>.fromJson(response.data!);
+    return PaginatedActivities<A, Ob, T, Or>.fromJson(
+        response.data as Map<String, dynamic>);
   }
 
   /// Retrieve the number of followers and following feed stats of the current

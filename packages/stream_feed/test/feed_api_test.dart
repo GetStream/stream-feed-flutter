@@ -6,6 +6,7 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
+import 'package:stream_feed/src/core/models/paginated_activities.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 import 'package:test/test.dart';
@@ -85,6 +86,54 @@ Future<void> main() async {
 
       verify(() => mockClient.get<Map>(
             Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            queryParameters: options,
+          )).called(1);
+    });
+
+    test('GetPaginatedActivities', () async {
+      const token = Token('dummyToken');
+
+      final feed = FeedId('global', 'feed1');
+
+      final options = {
+        'limit': Default.limit,
+        'offset': Default.offset,
+        ...Default.filter.params,
+        ...Default.enrichmentFlags.params,
+        ...Default.marker.params
+      };
+      final json = {
+        'next':
+            '/api/v1.0/feed/user/1/?api_key=8rxdnw8pjmvb&id_lt=b253bfa1-83b3-11ec-8dc7-0a5c4613b2ff&limit=25',
+        'results': [
+          {
+            'actor': '1',
+            'verb': 'tweet',
+            'target': 'test',
+            'object': 'test',
+            'origin': 'test',
+          }
+        ],
+        'duration': '419.81ms'
+      };
+      // final paginatedActivities = PaginatedActivities.fromJson(json);
+
+      when(() => mockClient.get<Map>(
+            Routes.buildEnrichedFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            queryParameters: options,
+          )).thenAnswer((_) async => Response(
+          data: json,
+          requestOptions: RequestOptions(
+            path: Routes.buildEnrichedFeedUrl(feed),
+          ),
+          statusCode: 200));
+
+      await feedApi.paginatedActivities(token, feed, options);
+
+      verify(() => mockClient.get<Map>(
+            Routes.buildEnrichedFeedUrl(feed),
             headers: {'Authorization': '$token'},
             queryParameters: options,
           )).called(1);
