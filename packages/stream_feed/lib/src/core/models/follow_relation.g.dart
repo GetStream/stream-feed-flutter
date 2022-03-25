@@ -6,12 +6,10 @@ part of 'follow_relation.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FollowRelation _$FollowRelationFromJson(Map json) {
-  return FollowRelation(
-    source: json['source'] as String,
-    target: json['target'] as String,
-  );
-}
+FollowRelation _$FollowRelationFromJson(Map json) => FollowRelation(
+      source: json['source'] as String,
+      target: json['target'] as String,
+    );
 
 Map<String, dynamic> _$FollowRelationToJson(FollowRelation instance) =>
     <String, dynamic>{
@@ -19,13 +17,11 @@ Map<String, dynamic> _$FollowRelationToJson(FollowRelation instance) =>
       'target': instance.target,
     };
 
-UnFollowRelation _$UnFollowRelationFromJson(Map json) {
-  return UnFollowRelation(
-    source: json['source'] as String,
-    target: json['target'] as String,
-    keepHistory: json['keep_history'] as bool?,
-  );
-}
+UnFollowRelation _$UnFollowRelationFromJson(Map json) => UnFollowRelation(
+      source: json['source'] as String,
+      target: json['target'] as String,
+      keepHistory: json['keep_history'] as bool?,
+    );
 
 Map<String, dynamic> _$UnFollowRelationToJson(UnFollowRelation instance) =>
     <String, dynamic>{

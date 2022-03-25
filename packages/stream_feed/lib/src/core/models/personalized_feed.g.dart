@@ -12,25 +12,24 @@ PersonalizedFeed<A, Ob, T, Or> _$PersonalizedFeedFromJson<A, Ob, T, Or>(
   Ob Function(Object? json) fromJsonOb,
   T Function(Object? json) fromJsonT,
   Or Function(Object? json) fromJsonOr,
-) {
-  return PersonalizedFeed<A, Ob, T, Or>(
-    version: json['version'] as String,
-    offset: json['offset'] as int,
-    limit: json['limit'] as int,
-    next: json['next'] as String?,
-    results: (json['results'] as List<dynamic>?)
-        ?.map((e) => GenericEnrichedActivity.fromJson(
-            (e as Map?)?.map(
-              (k, e) => MapEntry(k as String, e),
-            ),
-            (value) => fromJsonA(value),
-            (value) => fromJsonOb(value),
-            (value) => fromJsonT(value),
-            (value) => fromJsonOr(value)))
-        .toList(),
-    duration: json['duration'] as String?,
-  );
-}
+) =>
+    PersonalizedFeed<A, Ob, T, Or>(
+      version: json['version'] as String,
+      offset: json['offset'] as int,
+      limit: json['limit'] as int,
+      next: json['next'] as String?,
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => GenericEnrichedActivity<A, Ob, T, Or>.fromJson(
+              (e as Map?)?.map(
+                (k, e) => MapEntry(k as String, e),
+              ),
+              (value) => fromJsonA(value),
+              (value) => fromJsonOb(value),
+              (value) => fromJsonT(value),
+              (value) => fromJsonOr(value)))
+          .toList(),
+      duration: json['duration'] as String?,
+    );
 
 Map<String, dynamic> _$PersonalizedFeedToJson<A, Ob, T, Or>(
   PersonalizedFeed<A, Ob, T, Or> instance,

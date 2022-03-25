@@ -250,7 +250,7 @@ Future<void> main() async {
       const offset = 5;
       const limit = 10;
 
-      when(() => mockClient.get<Map>(
+      when(() => mockClient.get(
             Routes.buildFeedUrl(feed, 'followers'),
             headers: {'Authorization': '$token'},
             queryParameters: {
@@ -270,7 +270,7 @@ Future<void> main() async {
 
       await feedApi.followers(token, feed, limit, offset, feedIds);
 
-      verify(() => mockClient.get<Map>(
+      verify(() => mockClient.get(
             Routes.buildFeedUrl(feed, 'followers'),
             headers: {'Authorization': '$token'},
             queryParameters: {
