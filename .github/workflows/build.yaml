@@ -64,7 +64,7 @@ jobs:
       - uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
         with:
           path: packages/stream_feed/coverage/lcov.info
-          min_coverage: 81 
+          min_coverage: 80 
       - uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
         with:
           path: packages/faye_dart/coverage/lcov.info

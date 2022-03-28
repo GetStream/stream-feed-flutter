@@ -9,7 +9,9 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
+import 'package:stream_feed/src/core/util/parse_next.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
+import 'package:stream_feed/stream_feed.dart';
 
 /// {@template flatFeed}
 /// Flat is the default feed type - and the only feed type that you can follow.
@@ -82,6 +84,7 @@ class FlatFeed extends Feed {
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getActivities(token, feedId, options);
+    print(result);
     final data = (result.data!['results'] as List)
         .map((e) => Activity.fromJson(e))
         .toList(growable: false);
@@ -135,6 +138,34 @@ class FlatFeed extends Feed {
         .map((e) => GenericEnrichedActivity<A, Ob, T, Or>.fromJson(e))
         .toList(growable: false);
     return data;
+  }
+
+  /// ```dart
+  ///  final paginated = await getPaginatedEnrichedActivities();
+  /// final nextParams = parseNext(paginated.next!);
+  /// await getPaginatedEnrichedActivities(limit: nextParams.limit,filter: nextParams.idLT);
+  /// ```
+  Future<PaginatedActivities<A, Ob, T, Or>>
+      getPaginatedEnrichedActivities<A, Ob, T, Or>({
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking, //TODO: no way to parameterized marker?
+  }) {
+    final options = {
+      'limit': limit ?? Default.limit,
+      'offset': offset ?? Default.offset, //TODO:add session everywhere
+      ...filter?.params ?? Default.filter.params,
+      ...Default.marker.params,
+      if (flags != null) ...flags.params,
+      if (ranking != null) 'ranking': ranking,
+      if (session != null) 'session': session,
+    };
+    final token = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
+    return feed.paginatedActivities(token, feedId, options);
   }
 
   /// {@template personalizedFeed}

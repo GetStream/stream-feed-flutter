@@ -623,6 +623,43 @@ void main() {
     );
   });
 
+  test('Paginated Activities', () {
+    final json = {
+      'next':
+          '/api/v1.0/feed/user/1/?api_key=8rxdnw8pjmvb&id_lt=b253bfa1-83b3-11ec-8dc7-0a5c4613b2ff&limit=25',
+      'results': [
+        {
+          'actor': '1',
+          'verb': 'tweet',
+          'target': 'test',
+          'object': 'test',
+          'origin': 'test',
+        }
+      ],
+      'duration': '419.81ms'
+    };
+    final paginatedActivities =
+        PaginatedActivities<String, String, String, String>.fromJson(json);
+
+    expect(
+      paginatedActivities,
+      const PaginatedActivities(
+        next:
+            '/api/v1.0/feed/user/1/?api_key=8rxdnw8pjmvb&id_lt=b253bfa1-83b3-11ec-8dc7-0a5c4613b2ff&limit=25',
+        results: [
+          GenericEnrichedActivity(
+              actor: '1',
+              verb: 'tweet',
+              target: 'test',
+              object: 'test',
+              origin: 'test',
+              extraData: {})
+        ],
+        duration: '419.81ms',
+      ),
+    );
+  });
+
   test('PaginatedReactions', () {
     final reaction1 = Reaction(
       id: 'test',
