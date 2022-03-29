@@ -37,7 +37,6 @@ void main() {
         payloadJson,
         {
           'exp': isA<int>(),
-          // 'iat': isA<int>(),
           'user_id': 'userId'
         },
       );
@@ -58,8 +57,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        //'iat': isA<int>(),
         'action': '*',
         'resource': 'feed',
         'feed_id': '*',
@@ -80,8 +77,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        //  'iat': isA<int>(),
         'action': '*',
         'resource': 'follower',
         'feed_id': '*',
@@ -103,8 +98,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        //  'iat': isA<int>(),
         'action': '*',
         'resource': 'reactions',
         'feed_id': '*',
@@ -126,8 +119,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        // 'iat': isA<int>(),
         'action': 'write',
         'resource': 'activities',
         'feed_id': '*',
@@ -148,8 +139,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        //  'iat': isA<int>(),
         'action': '*',
         'resource': 'users',
         'feed_id': '*',
@@ -171,8 +160,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        //  'iat': isA<int>(),
         'action': '*',
         'resource': 'collections',
         'feed_id': '*',
@@ -195,8 +182,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        // 'iat': isA<int>(),
         'action': 'read',
         'resource': 'url',
         'feed_id': '*',
@@ -218,8 +203,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        //   'iat': isA<int>(),
         'action': '*',
         'resource': 'feed_targets',
         'feed_id': '*',
@@ -240,8 +223,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        //  'iat': isA<int>(),
         'action': '*',
         'resource': 'analytics',
         'feed_id': '*',
@@ -264,8 +245,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        // 'iat': isA<int>(),
         'action': '*',
         'resource': 'personalization',
         'feed_id': '*',
@@ -288,8 +267,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        //   'iat': isA<int>(),
         'action': '*',
         'resource': 'redirect_and_track',
         'feed_id': '*',
@@ -311,8 +288,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        // 'iat': isA<int>(),
         'action': 'write',
         'resource': 'analytics',
         'feed_id': '*',
@@ -332,8 +307,6 @@ void main() {
       final payloadStr = b64urlEncRfc7515Decode(payload);
       final payloadJson = json.decode(payloadStr);
       expect(payloadJson, {
-        'exp': isA<int>(),
-        // 'iat': isA<int>(),
         'action': '*',
         'resource': 'files',
         'feed_id': '*',
