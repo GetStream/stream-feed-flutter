@@ -1,3 +1,13 @@
+## 0.5.2: 24/03/2022
+
+- new: pagination suuport for flat feed activities. For example:
+```dart
+final paginated = await flatFeed.paginatedActivities();
+final nextParams = parseNext(paginated.next!);
+// parse next page
+await flatFeed.paginatedActivities(limit: nextParams.limit,filter: nextParams.idLT);
+```
+
 ## 0.5.1+1: 24/03/2022
 
 - fix: the `JsonConverter<DateTime,String>` implemented in 0.4.0+1 that was supposed to handle utc dates parsing wasn't working properly. Now that it is actually fixed you can convert dates in the user's local timezone.
