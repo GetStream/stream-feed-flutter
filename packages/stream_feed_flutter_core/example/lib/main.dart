@@ -67,38 +67,85 @@ class _HomePageState extends State<HomePage> {
       body: FlatFeedCore(
         feedGroup: 'user',
         userId: widget.client.currentUser!.id,
-        feedBuilder: (BuildContext context, activities, int index) {
-          return InkWell(
-            child: ListTile(
-              title: Text('${activities[index].actor!.data!['handle']}'),
-              subtitle: Text('${activities[index].object}'),
-            ),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) => Scaffold(
-                    body: ReactionListCore(
-                      lookupValue: activities[index].id!,
-                      reactionsBuilder: (context, reactions, idx) => Text(
-                        '${reactions[index].data?['text']}',
-                      ),
-                    ),
+        loadingBuilder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        emptyBuilder: (context) => const Center(child: Text('No activities')),
+        errorBuilder: (context, error) => Center(
+          child: Text(error.toString()),
+        ),
+        feedBuilder: (
+          BuildContext context,
+          activities,
+        ) {
+          return ListView.separated(
+              itemCount: activities.length,
+              separatorBuilder: (context, index) => const Divider(),
+              itemBuilder: (context, index) {
+                return InkWell(
+                  child: ListTile(
+                    title: Text('${activities[index].actor!.data!['handle']}'),
+                    subtitle: Text('${activities[index].object}'),
                   ),
-                ),
-              );
-            },
-          );
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                          builder: (BuildContext context) => ReactionListScreen(
+                                lookupValue: activities[index].id!,
+                              )),
+                    );
+                  },
+                );
+              });
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute<void>(builder: (context) => ComposeScreen()),
+            MaterialPageRoute<void>(
+                builder: (context) => const ComposeScreen()),
           );
         },
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class ReactionListScreen extends StatelessWidget {
+  const ReactionListScreen({
+    Key? key,
+    required this.lookupValue,
+  }) : super(key: key);
+
+  final String lookupValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ReactionListCore(
+        lookupValue: lookupValue,
+        loadingBuilder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        emptyBuilder: (context) => const Center(child: Text('No Reactions')),
+        errorBuilder: (context, error) => Center(
+          child: Text(error.toString()),
+        ),
+        reactionsBuilder: (context, reactions) {
+          return ListView.separated(
+            shrinkWrap: true,
+            itemCount: reactions.length,
+            separatorBuilder: (context, index) => const Divider(),
+            itemBuilder: (context, index) {
+              return Text(
+                '${reactions[index].data?['text']}',
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -112,7 +159,6 @@ class ComposeScreen extends StatefulWidget {
 }
 
 class _ComposeScreenState extends State<ComposeScreen> {
-  late AttachmentFile? _file = null;
   @override
   Widget build(BuildContext context) {
     final uploadController = FeedProvider.of(context).bloc.uploadController;
@@ -137,8 +183,8 @@ class _ComposeScreenState extends State<ComposeScreen> {
       ]),
       body: SingleChildScrollView(
           child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
           child: TextField(
             decoration: InputDecoration(hintText: "this is a text field"),
           ),
@@ -158,9 +204,12 @@ class _ComposeScreenState extends State<ComposeScreen> {
                 // User canceled the picker
               }
             },
-            icon: Icon(Icons.file_copy)),
+            icon: const Icon(Icons.file_copy)),
         UploadListCore(
           uploadController: FeedProvider.of(context).bloc.uploadController,
+          loadingBuilder: (context) =>
+              const Center(child: CircularProgressIndicator()),
+          uploadsErrorBuilder: (error) => Center(child: Text(error.toString())),
           uploadsBuilder: (context, uploads) {
             return SizedBox(
               height: 100,

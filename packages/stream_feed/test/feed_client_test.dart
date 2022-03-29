@@ -1,12 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/client/feed.dart';
-import 'package:stream_feed/src/client/flat_feed.dart';
-import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/models/follow_relation.dart';
-import 'package:stream_feed/src/core/models/follow_stats.dart';
-import 'package:stream_feed/src/core/models/followers.dart';
-import 'package:stream_feed/src/core/models/following.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 

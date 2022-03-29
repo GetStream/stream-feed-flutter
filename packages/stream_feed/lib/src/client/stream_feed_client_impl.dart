@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:faye_dart/faye_dart.dart';
 import 'package:logging/logging.dart';
 import 'package:stream_feed/src/client/aggregated_feed.dart';
@@ -14,11 +15,7 @@ import 'package:stream_feed/src/client/stream_feed_client.dart';
 import 'package:stream_feed/src/client/stream_user.dart';
 import 'package:stream_feed/src/core/api/stream_api.dart';
 import 'package:stream_feed/src/core/api/stream_api_impl.dart';
-import 'package:stream_feed/src/core/http/stream_http_client.dart';
-import 'package:stream_feed/src/core/http/token.dart';
 import 'package:stream_feed/src/core/index.dart';
-import 'package:stream_feed/src/core/models/feed_id.dart';
-import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
 /// Handler function used for logging records. Function requires a single
@@ -32,7 +29,7 @@ final _levelEmojiMapper = {
 };
 
 ///{@macro stream_feed_client}
-class StreamFeedClientImpl implements StreamFeedClient {
+class StreamFeedClientImpl with EquatableMixin implements StreamFeedClient {
   /// Builds a [StreamFeedClientImpl].
   ///{@macro stream_feed_client}
   StreamFeedClientImpl(
@@ -348,9 +345,23 @@ class StreamFeedClientImpl implements StreamFeedClient {
         userToken ?? TokenHelper.buildUsersToken(secret!, TokenAction.delete);
     return _api.users.delete(token, id);
   }
+
+  @override
+  List<Object?> get props => [
+        apiKey,
+        appId,
+        secret,
+        userToken,
+        _userConnected,
+        _faye,
+        _subscriptions,
+      ];
+
+  @override
+  bool get stringify => true;
 }
 
-class _FeedSubscription {
+class _FeedSubscription extends Equatable {
   const _FeedSubscription({
     required this.token,
     required this.userId,
@@ -371,4 +382,7 @@ class _FeedSubscription {
   final String token;
   final String userId;
   final Subscription? fayeSubscription;
+
+  @override
+  List<Object?> get props => [token, userId, fayeSubscription];
 }

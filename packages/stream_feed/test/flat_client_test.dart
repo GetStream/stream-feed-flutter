@@ -7,6 +7,7 @@ import 'package:stream_feed/src/core/models/enriched_activity.dart';
 import 'package:stream_feed/src/core/models/enrichment_flags.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
+import 'package:stream_feed/src/core/models/paginated_activities.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:test/test.dart';
@@ -55,7 +56,6 @@ void main() {
       final filter = Filter()
           .idLessThanOrEqual(activityId)
           .idGreaterThanOrEqual(activityId);
-      const ranking = 'popularity';
       final options = {
         'limit': limit,
         'offset': Default.offset, //TODO:add session everywhere
@@ -113,6 +113,43 @@ void main() {
               .toList(growable: false)
               .first);
       verify(() => api.getActivities(token, feedId, options)).called(1);
+    });
+
+    test('getPaginatedActivities', () async {
+      const limit = 5;
+      const offset = 0;
+      const ranking = 'popularity';
+      final filter =
+          Filter().idLessThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+      final options = {
+        'limit': limit,
+        'offset': offset,
+        ...filter.params,
+        'ranking': ranking
+      };
+
+      final json = {
+        'next':
+            '/api/v1.0/feed/user/1/?api_key=8rxdnw8pjmvb&id_lt=b253bfa1-83b3-11ec-8dc7-0a5c4613b2ff&limit=25',
+        'results': [
+          {
+            'actor': '1',
+            'verb': 'tweet',
+            'target': 'test',
+            'object': 'test',
+            'origin': 'test',
+          }
+        ],
+        'duration': '419.81ms'
+      };
+      final paginatedActivities = PaginatedActivities.fromJson(json);
+      when(() => api.paginatedActivities(token, feedId, options))
+          .thenAnswer((_) async => paginatedActivities);
+      final result = await client.getPaginatedEnrichedActivities(
+          limit: limit, offset: offset, filter: filter, ranking: ranking);
+
+      expect(result, paginatedActivities);
+      verify(() => api.paginatedActivities(token, feedId, options)).called(1);
     });
 
     test('getActivities', () async {

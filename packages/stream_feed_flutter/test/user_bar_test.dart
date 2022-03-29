@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:stream_feed_flutter/src/widgets/icons.dart';
-import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/src/widgets/user/user_bar.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mock.dart';
 

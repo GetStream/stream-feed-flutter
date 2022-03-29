@@ -6,6 +6,7 @@ import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/activity_update.dart';
 import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/filter.dart';
+import 'package:stream_feed/src/core/models/paginated_activities.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 import 'package:test/test.dart';
@@ -85,6 +86,54 @@ Future<void> main() async {
 
       verify(() => mockClient.get<Map>(
             Routes.buildFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            queryParameters: options,
+          )).called(1);
+    });
+
+    test('GetPaginatedActivities', () async {
+      const token = Token('dummyToken');
+
+      final feed = FeedId('global', 'feed1');
+
+      final options = {
+        'limit': Default.limit,
+        'offset': Default.offset,
+        ...Default.filter.params,
+        ...Default.enrichmentFlags.params,
+        ...Default.marker.params
+      };
+      final json = {
+        'next':
+            '/api/v1.0/feed/user/1/?api_key=8rxdnw8pjmvb&id_lt=b253bfa1-83b3-11ec-8dc7-0a5c4613b2ff&limit=25',
+        'results': [
+          {
+            'actor': '1',
+            'verb': 'tweet',
+            'target': 'test',
+            'object': 'test',
+            'origin': 'test',
+          }
+        ],
+        'duration': '419.81ms'
+      };
+      // final paginatedActivities = PaginatedActivities.fromJson(json);
+
+      when(() => mockClient.get<Map>(
+            Routes.buildEnrichedFeedUrl(feed),
+            headers: {'Authorization': '$token'},
+            queryParameters: options,
+          )).thenAnswer((_) async => Response(
+          data: json,
+          requestOptions: RequestOptions(
+            path: Routes.buildEnrichedFeedUrl(feed),
+          ),
+          statusCode: 200));
+
+      await feedApi.paginatedActivities(token, feed, options);
+
+      verify(() => mockClient.get<Map>(
+            Routes.buildEnrichedFeedUrl(feed),
             headers: {'Authorization': '$token'},
             queryParameters: options,
           )).called(1);
@@ -250,7 +299,7 @@ Future<void> main() async {
       const offset = 5;
       const limit = 10;
 
-      when(() => mockClient.get<Map>(
+      when(() => mockClient.get(
             Routes.buildFeedUrl(feed, 'followers'),
             headers: {'Authorization': '$token'},
             queryParameters: {
@@ -270,7 +319,7 @@ Future<void> main() async {
 
       await feedApi.followers(token, feed, limit, offset, feedIds);
 
-      verify(() => mockClient.get<Map>(
+      verify(() => mockClient.get(
             Routes.buildFeedUrl(feed, 'followers'),
             headers: {'Authorization': '$token'},
             queryParameters: {
@@ -364,8 +413,6 @@ Future<void> main() async {
 
       final unset = ['daily_likes', 'popularity'];
 
-      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
-
       final set = {
         'product.price': 19.99,
         'shares': {
@@ -452,8 +499,6 @@ Future<void> main() async {
       const token = Token('dummyToken');
 
       final unset = ['daily_likes', 'popularity'];
-
-      const id = '54a60c1e-4ee3-494b-a1e3-50c06acb5ed4';
 
       final set = {
         'product.price': 19.99,

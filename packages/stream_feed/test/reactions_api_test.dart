@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/src/core/api/reactions_api.dart';
-import 'package:stream_feed/src/core/http/token.dart';
-import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -59,7 +57,7 @@ Future<void> main() async {
         options,
       );
 
-      verify(() => mockClient.get(
+      verify(() => mockClient.get<Map>(
             Routes.buildReactionsUrl('${lookupAttr.attr}/$lookupValue/$kind'),
             headers: {'Authorization': '$token'},
             queryParameters: options,
@@ -100,7 +98,7 @@ Future<void> main() async {
 
       await reactionsApi.add(token, reaction);
 
-      verify(() => mockClient.post<Map>(
+      verify(() => mockClient.post<Map<String, dynamic>>(
             Routes.buildReactionsUrl(),
             headers: {'Authorization': '$token'},
             data: reaction,
@@ -111,7 +109,7 @@ Future<void> main() async {
       const token = Token('dummyToken');
 
       const id = 'id';
-      when(() => mockClient.get<Map>(
+      when(() => mockClient.get<Map<String, dynamic>>(
             Routes.buildReactionsUrl('$id/'),
             headers: {'Authorization': '$token'},
           )).thenAnswer((_) async => Response<Map<String, dynamic>>(
@@ -123,7 +121,7 @@ Future<void> main() async {
 
       await reactionsApi.get(token, id);
 
-      verify(() => mockClient.get<Map>(
+      verify(() => mockClient.get<Map<String, dynamic>>(
             Routes.buildReactionsUrl('$id/'),
             headers: {'Authorization': '$token'},
           )).called(1);
@@ -237,7 +235,7 @@ Future<void> main() async {
         targetFeeds: targetFeedIds,
       );
 
-      when(() => mockClient.put(
+      when(() => mockClient.put<Map<String, dynamic>>(
             Routes.buildReactionsUrl('$reactionId/'),
             headers: {'Authorization': '$token'},
             data: {
@@ -253,7 +251,7 @@ Future<void> main() async {
 
       await reactionsApi.update(token, updatedReaction);
 
-      verify(() => mockClient.put(
+      verify(() => mockClient.put<Map<String, dynamic>>(
             Routes.buildReactionsUrl('$reactionId/'),
             headers: {'Authorization': '$token'},
             data: {

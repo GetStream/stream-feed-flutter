@@ -23,7 +23,7 @@ class ForeignIdTimePair extends Equatable {
       checkArgument(pair.length == 2, 'Invalid foreignIdTime pair');
       final foreignId = pair[0] as String;
       final time = _converter.fromJson(pair[1] as String);
-      return ForeignIdTimePair(foreignId, time);
+      return ForeignIdTimePair(foreignId, time!);
     }).toList(growable: false);
   }
 

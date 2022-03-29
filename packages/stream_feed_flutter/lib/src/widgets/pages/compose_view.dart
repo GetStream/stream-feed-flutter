@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:stream_feed_flutter/src/default/error_state.dart';
+import 'package:stream_feed_flutter/src/default/loading_state.dart';
 import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reactive_elevated_button.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
@@ -32,7 +34,9 @@ class ComposeView extends StatefulWidget {
       ..add(DiagnosticsProperty<EnrichedActivity?>(
           'parentActivity', parentActivity))
       ..add(StringProperty('feedGroup', feedGroup))
-      ..add(StringProperty('nameJsonKey', nameJsonKey));
+      ..add(StringProperty('nameJsonKey', nameJsonKey))
+      ..add(DiagnosticsProperty<TextEditingController>(
+          'textEditingController', textEditingController));
   }
 
   @override
@@ -170,6 +174,8 @@ class _ComposeViewState extends State<ComposeView> {
               children: [
                 Expanded(
                   child: UploadListCore(
+                    uploadsErrorBuilder: (error) => const ErrorStateWidget(),
+                    loadingBuilder: (context) => const LoadingStateWidget(),
                     uploadController:
                         FeedProvider.of(context).bloc.uploadController,
                     uploadsBuilder: (context, uploads) {
@@ -205,7 +211,7 @@ class _ComposeViewState extends State<ComposeView> {
                           .uploadController
                           .uploadImage(AttachmentFile(path: image.path));
                     } else {
-                      // User canceled the picker
+                      // TODO: User canceled the picker
                     }
                   },
                 ),

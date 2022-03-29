@@ -2,45 +2,40 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
-import 'package:stream_feed_flutter_core/src/states/states.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class ReactionListCore
     extends GenericReactionListCore<User, String, String, String> {
   const ReactionListCore({
     Key? key,
     required ReactionsBuilder reactionsBuilder,
-    Widget onErrorWidget = const ErrorStateWidget(),
-    Widget onProgressWidget = const ProgressStateWidget(),
-    Widget onEmptyWidget =
-        const EmptyStateWidget(message: 'No comments to display'),
+    required WidgetBuilder loadingBuilder,
+    required WidgetBuilder emptyBuilder,
+    required ErrorBuilder errorBuilder,
     LookupAttribute lookupAttr = LookupAttribute.activityId,
     required String lookupValue,
     Filter? filter,
     EnrichmentFlags? flags,
     int? limit,
     String? kind,
-    ScrollPhysics? scrollPhysics,
   }) : super(
           key: key,
           reactionsBuilder: reactionsBuilder,
-          onErrorWidget: onErrorWidget,
-          onProgressWidget: onProgressWidget,
-          onEmptyWidget: onEmptyWidget,
+          loadingBuilder: loadingBuilder,
+          emptyBuilder: emptyBuilder,
+          errorBuilder: errorBuilder,
           lookupAttr: lookupAttr,
           lookupValue: lookupValue,
           filter: filter,
           flags: flags,
           limit: limit,
           kind: kind,
-          scrollPhysics: scrollPhysics,
         );
 }
 
 // ignore_for_file: cascade_invocations
 
-//TODO: other things to add to core: FollowListCore, UserListCore
+// TODO: other things to add to core: FollowListCore, UserListCore
 
 /// The generic version of [ReactionListCore]
 ///
@@ -54,10 +49,9 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
     Key? key,
     required this.reactionsBuilder,
     required this.lookupValue,
-    this.onErrorWidget = const ErrorStateWidget(),
-    this.onProgressWidget = const ProgressStateWidget(),
-    this.onEmptyWidget =
-        const EmptyStateWidget(message: 'No comments to display'),
+    required this.loadingBuilder,
+    required this.emptyBuilder,
+    required this.errorBuilder,
     this.lookupAttr = LookupAttribute.activityId,
     this.filter,
     this.flags,
@@ -69,14 +63,18 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
   /// {@macro reactionsBuilder}
   final ReactionsBuilder reactionsBuilder;
 
-  ///{@macro onErrorWidget}
-  final Widget onErrorWidget;
+  /// Callback triggered when an error occurs while performing the given
+  /// request.
+  ///
+  /// This parameter can be used to display an error message to users in the
+  /// event of an error occuring fetching the flat feed.
+  final ErrorBuilder errorBuilder;
 
-  ///{@macro onProgressWidget}
-  final Widget onProgressWidget;
+  /// Function used to build a loading widget
+  final WidgetBuilder loadingBuilder;
 
-  ///{@macro onEmptyWidget}
-  final Widget onEmptyWidget;
+  /// Function used to build an empty widget
+  final WidgetBuilder emptyBuilder;
 
   ///{@macro lookupAttr}
   final LookupAttribute lookupAttr;
@@ -101,6 +99,26 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
   @override
   _GenericReactionListCoreState<A, Ob, T, Or> createState() =>
       _GenericReactionListCoreState<A, Ob, T, Or>();
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<ReactionsBuilder>.has(
+        'reactionsBuilder', reactionsBuilder));
+    properties.add(EnumProperty<LookupAttribute>('lookupAttr', lookupAttr));
+    properties.add(
+        ObjectFlagProperty<WidgetBuilder>.has('emptyBuilder', emptyBuilder));
+    properties.add(IntProperty('limit', limit));
+    properties.add(
+        DiagnosticsProperty<ScrollPhysics?>('scrollPhysics', scrollPhysics));
+    properties.add(StringProperty('kind', kind));
+    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
+    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
+    properties.add(ObjectFlagProperty<WidgetBuilder>.has(
+        'loadingBuilder', loadingBuilder));
+    properties.add(StringProperty('lookupValue', lookupValue));
+    properties.add(
+        ObjectFlagProperty<ErrorBuilder>.has('errorBuilder', errorBuilder));
+  }
 }
 
 class _GenericReactionListCoreState<A, Ob, T, Or>
@@ -131,27 +149,27 @@ class _GenericReactionListCoreState<A, Ob, T, Or>
           widget.kind), //reactionsStreamFor(widget.lookupValue)
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return widget.onErrorWidget; //snapshot.error
+          return widget.errorBuilder(
+            context,
+            snapshot.error!,
+          );
         }
         if (!snapshot.hasData) {
-          return widget.onProgressWidget;
+          return widget.loadingBuilder(context);
         }
         final reactions = snapshot.data!;
         if (reactions.isEmpty) {
-          return widget.onEmptyWidget;
+          return widget.emptyBuilder(context);
         }
-        return ListView.separated(
-          shrinkWrap: true,
-          itemCount: reactions.length,
-          physics: widget.scrollPhysics ?? const NeverScrollableScrollPhysics(),
-          separatorBuilder: (context, index) => const Divider(),
-          itemBuilder: (context, idx) => widget.reactionsBuilder(
-            context,
-            reactions,
-            idx,
-          ),
-        );
+        return widget.reactionsBuilder(context, reactions);
       },
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<GenericFeedBloc<A, Ob, T, Or>>('bloc', bloc));
   }
 }

@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:stream_feed_flutter/src/widgets/og/card.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
-import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 void main() {
   final logs = <String>[];

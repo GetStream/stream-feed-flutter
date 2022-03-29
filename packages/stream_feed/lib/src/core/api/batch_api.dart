@@ -2,13 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
-import 'package:stream_feed/src/core/http/token.dart';
-import 'package:stream_feed/src/core/models/activity.dart';
-import 'package:stream_feed/src/core/models/enriched_activity.dart';
-import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow_relation.dart';
-import 'package:stream_feed/src/core/models/foreign_id_time_pair.dart';
-import 'package:stream_feed/src/core/util/extension.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 import 'package:stream_feed/stream_feed.dart';
 
