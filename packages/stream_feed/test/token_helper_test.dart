@@ -35,10 +35,7 @@ void main() {
 
       expect(
         payloadJson,
-        {
-          'exp': isA<int>(),
-          'user_id': 'userId'
-        },
+        {'exp': isA<int>(), 'user_id': 'userId'},
       );
       expect(payloadJson['user_id'], 'userId');
     });
