@@ -1,4 +1,4 @@
-## 0.5.2: 24/03/2022
+## 0.5.2: 30/03/2022
 
 - new: pagination suuport for flat feed activities. For example:
 ```dart
