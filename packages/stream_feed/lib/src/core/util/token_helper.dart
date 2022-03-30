@@ -221,7 +221,7 @@ String issueJwtHS256({
   DateTime? expiresAt,
 }) {
   final claimSet = JsonWebTokenClaims.fromJson({
-    if (expiresAt != null) 'exp': expiresAt!.millisecondsSinceEpoch ~/ 1000,
+    if (expiresAt != null) 'exp': expiresAt.millisecondsSinceEpoch ~/ 1000,
     if (claims != null) ...claims,
   });
 
