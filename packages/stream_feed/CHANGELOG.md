@@ -1,5 +1,6 @@
 ## 0.5.2: 30/03/2022
 
+- fix(serverside llc): `issueJwtHS256` wasn't using the `expiresAt` field and remove the default "exp" value.
 - new: pagination suuport for flat feed activities. For example:
 ```dart
 final paginated = await flatFeed.paginatedActivities();
