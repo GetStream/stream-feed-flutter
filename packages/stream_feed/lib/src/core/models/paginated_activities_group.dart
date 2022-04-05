@@ -65,5 +65,6 @@ class PaginatedActivitiesGroup<A, Ob, T, Or>
     Object? Function(T value) toJsonT,
     Object? Function(Or value) toJsonOr,
   ) =>
-      _$PaginatedActivitiesGroupToJson(this, toJsonA, toJsonOb, toJsonT, toJsonOr);
+      _$PaginatedActivitiesGroupToJson(
+          this, toJsonA, toJsonOb, toJsonT, toJsonOr);
 }
