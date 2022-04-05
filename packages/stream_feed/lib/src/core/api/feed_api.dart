@@ -7,6 +7,7 @@ import 'package:stream_feed/src/core/models/feed_id.dart';
 import 'package:stream_feed/src/core/models/follow.dart';
 import 'package:stream_feed/src/core/models/follow_stats.dart';
 import 'package:stream_feed/src/core/models/paginated_activities.dart';
+import 'package:stream_feed/src/core/models/paginated_activities_group.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/extension.dart';
@@ -102,6 +103,22 @@ class FeedAPI {
       queryParameters: options,
     );
     return PaginatedActivities<A, Ob, T, Or>.fromJson(
+        response.data as Map<String, dynamic>);
+  }
+
+  /// Retrieve paginated activities
+  Future<PaginatedActivitiesGroup<A, Ob, T, Or>>
+      paginatedActivitiesGroup<A, Ob, T, Or>(
+    Token token,
+    FeedId feed,
+    Map<String, Object?> options,
+  ) async {
+    final response = await _client.get<Map>(
+      Routes.buildEnrichedFeedUrl(feed),
+      headers: {'Authorization': '$token'},
+      queryParameters: options,
+    );
+    return PaginatedActivitiesGroup<A, Ob, T, Or>.fromJson(
         response.data as Map<String, dynamic>);
   }
 
