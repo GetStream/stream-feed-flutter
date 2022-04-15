@@ -1,3 +1,9 @@
+## UPCOMMING
+- fix: `setUser` not using `user.data` on user create.
+- new: `FeedBloc` and `GenericFeedBloc` now have `queryPaginatedEnrichedActivities`, `loadMoreEnrichedActivities`, and `paginatedParams` to easily manage pagination.
+- changed: `GenericFlatFeedCore` and `FlatFeedCore` now calls `queryPaginatedEnrichedActivities` on initial load.
+- docs: Stream Feed Core documentation and examples updated
+
 ## 0.7.0+1 28/02/2022
 
 - fixes(FeedBloc): 
