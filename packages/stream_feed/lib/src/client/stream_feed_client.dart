@@ -79,7 +79,16 @@ abstract class StreamFeedClient {
   /// Returns the currentUser assigned to [StreamFeedClient]
   StreamUser? get currentUser;
 
-  /// Set data for the [currentUser] assigned to [StreamFeedClient]
+  /// Sets the [currentUser] assigned to [StreamFeedClient]
+  ///
+  /// If [extraData] is passed in, the user will be created with that data. If
+  /// [extraData] is null, then [User.data] will be used, from `user`.
+  ///
+  ///
+  /// The data will only be set the first time the user is created. Updates
+  /// after a user is created needs to be performed with [updateUser].
+  ///
+  /// This method calls [StreamUser.getOrCreate] underneath.
   Future<StreamUser> setUser(
     User user,
     Token userToken, {

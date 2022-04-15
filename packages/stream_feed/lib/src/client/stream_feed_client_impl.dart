@@ -136,7 +136,8 @@ class StreamFeedClientImpl with EquatableMixin implements StreamFeedClient {
     Map<String, Object?>? extraData,
   }) async {
     this.userToken = userToken;
-    final createdUser = await this.user(user.id!).getOrCreate(extraData ?? {});
+    final createdUser =
+        await this.user(user.id!).getOrCreate(extraData ?? user.data ?? {});
     return _currentUser = await createdUser.profile();
   }
 
