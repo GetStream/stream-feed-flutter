@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         ),
         child: child!,
       ),
-      home: HomePage(client: client),
+      home: const HomePage(),
     );
   }
 }
@@ -51,22 +51,38 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
-    required this.client,
   }) : super(key: key);
-
-  final StreamFeedClient client;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _isPaginating = false;
+
+  Future<void> _loadMore() async {
+    // Ensure we're not already loading more activities.
+    if (!_isPaginating) {
+      _isPaginating = true;
+      FeedProvider.of(context)
+          .bloc
+          .loadMoreEnrichedActivities(
+            feedGroup: 'user',
+          )
+          .whenComplete(() {
+        _isPaginating = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final client = FeedProvider.of(context).bloc.client;
     return Scaffold(
+      appBar: AppBar(title: const Text('Activities')),
       body: FlatFeedCore(
         feedGroup: 'user',
-        userId: widget.client.currentUser!.id,
+        userId: client.currentUser!.id,
         loadingBuilder: (context) => const Center(
           child: CircularProgressIndicator(),
         ),
@@ -74,29 +90,27 @@ class _HomePageState extends State<HomePage> {
         errorBuilder: (context, error) => Center(
           child: Text(error.toString()),
         ),
+        limit: 10,
+        flags: EnrichmentFlags()
+          ..withReactionCounts()
+          ..withOwnReactions(),
         feedBuilder: (
           BuildContext context,
           activities,
         ) {
           return ListView.separated(
-              itemCount: activities.length,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) {
-                return InkWell(
-                  child: ListTile(
-                    title: Text('${activities[index].actor!.data!['handle']}'),
-                    subtitle: Text('${activities[index].object}'),
-                  ),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                          builder: (BuildContext context) => ReactionListScreen(
-                                lookupValue: activities[index].id!,
-                              )),
-                    );
-                  },
-                );
-              });
+            itemCount: activities.length,
+            separatorBuilder: (context, index) => const Divider(),
+            itemBuilder: (context, index) {
+              bool shouldLoadMore = activities.length - 3 == index;
+              if (shouldLoadMore) {
+                _loadMore();
+              }
+              return ListActivityItem(
+                activity: activities[index],
+              );
+            },
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -104,46 +118,100 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute<void>(
-                builder: (context) => const ComposeScreen()),
+                builder: (context) => const ActivityComposePage()),
           );
         },
-        tooltip: 'Increment',
+        tooltip: 'Add Activity',
         child: const Icon(Icons.add),
       ),
     );
   }
 }
 
-class ReactionListScreen extends StatelessWidget {
-  const ReactionListScreen({
+class ListActivityItem extends StatelessWidget {
+  const ListActivityItem({
     Key? key,
-    required this.lookupValue,
+    required this.activity,
   }) : super(key: key);
 
-  final String lookupValue;
+  final EnrichedActivity activity;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ReactionListCore(
-        lookupValue: lookupValue,
-        loadingBuilder: (context) => const Center(
-          child: CircularProgressIndicator(),
+    final actor = activity.actor!;
+    final attachments = (activity.extraData)?.toAttachments();
+    final reactionCounts = activity.reactionCounts;
+    final ownReactions = activity.ownReactions;
+    final isLikedByUser = (ownReactions?['like']?.length ?? 0) > 0;
+    return Card(
+      child: ListTile(
+        leading: SizedBox(
+            width: 40,
+            child: Image.network(actor.data!['profile_image'] as String)),
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            children: [
+              Text('${actor.data!['full_name']}'),
+              const SizedBox(width: 8),
+              Text(
+                '${actor.data!['handle']}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ],
+          ),
         ),
-        emptyBuilder: (context) => const Center(child: Text('No Reactions')),
-        errorBuilder: (context, error) => Center(
-          child: Text(error.toString()),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text('${activity.object}'),
+            ),
+            if (attachments != null && attachments.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Image.network(attachments[0].url),
+              ),
+            Row(
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        if (isLikedByUser) {
+                          FeedProvider.of(context).bloc.onRemoveReaction(
+                                kind: 'like',
+                                activity: activity,
+                                reaction: ownReactions!['like']![0],
+                                feedGroup: 'user',
+                              );
+                        } else {
+                          FeedProvider.of(context).bloc.onAddReaction(
+                              kind: 'like',
+                              activity: activity,
+                              feedGroup: 'user');
+                        }
+                      },
+                      icon: isLikedByUser
+                          ? const Icon(Icons.favorite_rounded)
+                          : const Icon(Icons.favorite_outline),
+                    ),
+                    if (reactionCounts?['like'] != null)
+                      Text('${reactionCounts?['like']}')
+                  ],
+                )
+              ],
+            )
+          ],
         ),
-        reactionsBuilder: (context, reactions) {
-          return ListView.separated(
-            shrinkWrap: true,
-            itemCount: reactions.length,
-            separatorBuilder: (context, index) => const Divider(),
-            itemBuilder: (context, index) {
-              return Text(
-                '${reactions[index].data?['text']}',
-              );
-            },
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => ReactionListPage(
+                activity: activity,
+              ),
+            ),
           );
         },
       ),
@@ -151,14 +219,175 @@ class ReactionListScreen extends StatelessWidget {
   }
 }
 
-class ComposeScreen extends StatefulWidget {
-  const ComposeScreen({Key? key}) : super(key: key);
+class ReactionListPage extends StatefulWidget {
+  const ReactionListPage({
+    Key? key,
+    required this.activity,
+  }) : super(key: key);
+
+  final EnrichedActivity activity;
 
   @override
-  State<ComposeScreen> createState() => _ComposeScreenState();
+  State<ReactionListPage> createState() => _ReactionListPageState();
 }
 
-class _ComposeScreenState extends State<ComposeScreen> {
+class _ReactionListPageState extends State<ReactionListPage> {
+  Future<void> _addOrRemoveReaction(Reaction reaction) async {
+    final isLikedByUser = (reaction.ownChildren?['like']?.length ?? 0) > 0;
+    if (isLikedByUser) {
+      FeedProvider.of(context).bloc.onRemoveChildReaction(
+            kind: 'like',
+            childReaction: reaction.ownChildren!['like']![0],
+            activity: widget.activity,
+            parentReaction: reaction,
+          );
+    } else {
+      FeedProvider.of(context).bloc.onAddChildReaction(
+            kind: 'like',
+            reaction: reaction,
+            activity: widget.activity,
+          );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Comments')),
+      body: Column(
+        children: [
+          Expanded(
+            child: ReactionListCore(
+              lookupValue: widget.activity.id!,
+              loadingBuilder: (context) => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              emptyBuilder: (context) =>
+                  const Center(child: Text('No comment reactions')),
+              errorBuilder: (context, error) => Center(
+                child: Text(error.toString()),
+              ),
+              reactionsBuilder: (context, reactions) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: reactions.length,
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemBuilder: (context, index) {
+                      final reaction = reactions[index];
+                      final isLikedByUser =
+                          (reaction.ownChildren?['like']?.length ?? 0) > 0;
+                      // TODO(gordon): fix own reactions
+                      print('childReactions: ${reaction.childrenCounts}');
+                      print('ownChildren: ${reaction.ownChildren}');
+                      return Card(
+                        key: ValueKey('reaction-${reaction.id}'),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                '${reaction.data?['text']}',
+                              ),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              onPressed: () {
+                                _addOrRemoveReaction(reaction);
+                              },
+                              icon: isLikedByUser
+                                  ? const Icon(Icons.favorite, size: 14)
+                                  : const Icon(Icons.favorite_border, size: 14),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+          AddCommentBox(activity: widget.activity)
+        ],
+      ),
+    );
+  }
+}
+
+class AddCommentBox extends StatefulWidget {
+  const AddCommentBox({
+    Key? key,
+    required this.activity,
+  }) : super(key: key);
+
+  final EnrichedActivity activity;
+
+  @override
+  State<AddCommentBox> createState() => _AddCommentBoxState();
+}
+
+class _AddCommentBoxState extends State<AddCommentBox> {
+  final textController = TextEditingController();
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _addComment() async {
+    final value = textController.text;
+    textController.clear();
+
+    if (value.isNotEmpty) {
+      FeedProvider.of(context).bloc.onAddReaction(
+        kind: 'comment',
+        activity: widget.activity,
+        feedGroup: 'user',
+        data: {'text': value},
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 32),
+      child: TextField(
+        controller: textController,
+        onSubmitted: ((value) {
+          _addComment();
+        }),
+        decoration: InputDecoration(
+          hintText: 'Add a comment',
+          suffix: IconButton(
+            onPressed: _addComment,
+            icon: const Icon(Icons.send),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ActivityComposePage extends StatefulWidget {
+  const ActivityComposePage({Key? key}) : super(key: key);
+
+  @override
+  State<ActivityComposePage> createState() => _ActivityComposePageState();
+}
+
+class _ActivityComposePageState extends State<ActivityComposePage> {
+  final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final uploadController = FeedProvider.of(context).bloc.uploadController;
@@ -174,64 +403,98 @@ class _ComposeScreenState extends State<ComposeScreen> {
                 ),
               ),
               backgroundColor: Colors.white,
-              onPressed: () {
-                final attachments = uploadController.getMediaUris();
-                print(attachments);
-                uploadController.clear();
+              onPressed: () async {
+                final media = uploadController.getMediaUris()?.toExtraData();
+                if (_textEditingController.text.isNotEmpty) {
+                  await FeedProvider.of(context).bloc.onAddActivity(
+                        feedGroup: 'user',
+                        verb: 'post',
+                        object: _textEditingController.text,
+                        data: media,
+                      );
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Cannot post with no message')));
+                }
               }),
         )
       ]),
-      body: SingleChildScrollView(
-          child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: TextField(
-            decoration: InputDecoration(hintText: "this is a text field"),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _textEditingController,
+                  decoration:
+                      const InputDecoration(hintText: "What's on your mind"),
+                ),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      final ImagePicker _picker = ImagePicker();
+                      final XFile? image = await _picker.pickImage(
+                        source: ImageSource.gallery,
+                        maxHeight: 600,
+                        maxWidth: 300,
+                        imageQuality: 50,
+                      );
+
+                      if (image != null) {
+                        await FeedProvider.of(context)
+                            .bloc
+                            .uploadController
+                            .uploadImage(AttachmentFile(path: image.path));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Cancelled')));
+                      }
+                    },
+                    icon: const Icon(Icons.file_copy),
+                  ),
+                  Text(
+                    'Add image',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ],
+              ),
+              UploadListCore(
+                uploadController:
+                    FeedProvider.of(context).bloc.uploadController,
+                loadingBuilder: (context) =>
+                    const Center(child: CircularProgressIndicator()),
+                uploadsErrorBuilder: (error) =>
+                    Center(child: Text(error.toString())),
+                uploadsBuilder: (context, uploads) {
+                  return SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: uploads.length,
+                      itemBuilder: (context, index) => FileUploadStateWidget(
+                          fileState: uploads[index],
+                          onRemoveUpload: (attachment) {
+                            return uploadController.removeUpload(attachment);
+                          },
+                          onCancelUpload: (attachment) {
+                            uploadController.cancelUpload(attachment);
+                          },
+                          onRetryUpload: (attachment) async {
+                            return uploadController.uploadImage(attachment);
+                          }),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
-        IconButton(
-            onPressed: () async {
-              final ImagePicker _picker = ImagePicker();
-              final XFile? image =
-                  await _picker.pickImage(source: ImageSource.gallery);
-
-              if (image != null) {
-                await FeedProvider.of(context)
-                    .bloc
-                    .uploadController
-                    .uploadImage(AttachmentFile(path: image.path));
-              } else {
-                // User canceled the picker
-              }
-            },
-            icon: const Icon(Icons.file_copy)),
-        UploadListCore(
-          uploadController: FeedProvider.of(context).bloc.uploadController,
-          loadingBuilder: (context) =>
-              const Center(child: CircularProgressIndicator()),
-          uploadsErrorBuilder: (error) => Center(child: Text(error.toString())),
-          uploadsBuilder: (context, uploads) {
-            return SizedBox(
-              height: 100,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: uploads.length,
-                itemBuilder: (context, index) => FileUploadStateWidget(
-                    fileState: uploads[index],
-                    onRemoveUpload: (attachment) {
-                      return uploadController.removeUpload(attachment);
-                    },
-                    onCancelUpload: (attachment) {
-                      uploadController.cancelUpload(attachment);
-                    },
-                    onRetryUpload: (attachment) async {
-                      return uploadController.uploadImage(attachment);
-                    }),
-              ),
-            );
-          },
-        ),
-      ])),
+      ),
     );
   }
 }
