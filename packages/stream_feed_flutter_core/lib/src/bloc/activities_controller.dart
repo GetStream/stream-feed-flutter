@@ -12,9 +12,15 @@ class ActivitiesManager<A, Ob, T, Or> {
           BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>>
       _controllers = {};
 
+  /// A map of paginated results
+  final Map<String, NextParams?> paginatedParams = {};
+
   /// Init controller for given feedGroup.
-  void init(String feedGroup) => _controllers[feedGroup] =
-      BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
+  void init(String feedGroup) {
+    _controllers[feedGroup] =
+        BehaviorSubject<List<GenericEnrichedActivity<A, Ob, T, Or>>>();
+    paginatedParams[feedGroup] = null;
+  }
 
   /// Retrieve with feedGroup the corresponding StreamController from the map
   /// of controllers.
@@ -34,6 +40,7 @@ class ActivitiesManager<A, Ob, T, Or> {
 
   /// Clear activities for a given feedGroup.
   void clearActivities(String feedGroup) {
+    paginatedParams[feedGroup] = null;
     _getController(feedGroup)!.value = [];
   }
 

@@ -374,8 +374,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// {@template queryReactions}
   /// Query the reactions stream (like, retweet, claps).
   ///
-  /// Checkout our convenient core widget
-  ///  [ReactionListCore] for displaying reactions easily
+  /// Checkout the [ReactionListCore] widget for displaying reactions easily.
   /// {@endtemplate}
   Future<void> queryReactions(
     LookupAttribute lookupAttr,
@@ -418,10 +417,12 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   }
 
   /// {@template queryEnrichedActivities}
-  /// Query the activities stream
+  /// Query the activities stream.
   ///
-  /// Checkout our convenient core widget [FlatFeedCore]
-  /// to display activities easily
+  /// For paginated results, see [queryPaginatedEnrichedActivities] and
+  /// [loadMoreEnrichedActivities].
+  ///
+  /// See the [FlatFeedCore] widget to display activities easily.
   /// {@endtemplate}
   Future<void> queryEnrichedActivities({
     required String feedGroup,
@@ -468,6 +469,124 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       }
     }
   }
+
+  /// Queries the activities stream and stores the pagination results.
+  ///
+  /// Unique activities will be stored and can be retrieved by calling
+  /// [getActivities].
+  ///
+  /// To load more enriched activities, see [loadMoreEnrichedActivities], or
+  /// alternatively, call this method again with updated arguments (`limit`,
+  /// `filter`, `offset`).
+  ///
+  /// See the [FlatFeedCore] widget to display activities easily.
+  Future<void> queryPaginatedEnrichedActivities({
+    required String feedGroup,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
+    String? userId,
+    //TODO: no way to parameterized marker?
+  }) async {
+    if (_queryActivitiesLoadingController.value == true) {
+      return; // already loading
+    }
+    if (!activitiesManager.hasValue(feedGroup)) {
+      activitiesManager.init(feedGroup);
+    }
+    _queryActivitiesLoadingController.add(true);
+    try {
+      final activitiesResponse = await client
+          .flatFeed(feedGroup, userId)
+          .getPaginatedEnrichedActivities<A, Ob, T, Or>(
+            limit: limit,
+            offset: offset,
+            session: session,
+            filter: filter,
+            flags: flags,
+            ranking: ranking,
+          );
+      NextParams? nextParams;
+      try {
+        if (activitiesResponse.next != null &&
+            activitiesResponse.next!.isNotEmpty) {
+          nextParams = parseNext(activitiesResponse.next!);
+        }
+        activitiesManager.paginatedParams[feedGroup] = nextParams;
+      } catch (e) {
+        // TODO:(gordon) add logs
+      }
+      if (activitiesResponse.results != null) {
+        final allActivities = <GenericEnrichedActivity<A, Ob, T, Or>>{
+          ...?activitiesManager.getActivities(feedGroup),
+          ...?activitiesResponse.results
+        };
+        activitiesManager.add(feedGroup, allActivities.toList());
+
+        if (activitiesManager.hasValue(feedGroup) &&
+            _queryActivitiesLoadingController.value) {
+          _queryActivitiesLoadingController.sink.add(false);
+        }
+      }
+    } catch (e, stk) {
+      // reset loading controller
+      _queryActivitiesLoadingController.add(false);
+      if (activitiesManager.hasValue(feedGroup)) {
+        _queryActivitiesLoadingController.addError(e, stk);
+      } else {
+        activitiesManager.addError(feedGroup, e, stk);
+      }
+    }
+  }
+
+  /// {@template queryEnrichedActivities}
+  /// This is a convenient method that calls [queryPaginatedEnrichedActivities]
+  /// underneath.
+  ///
+  /// This method automatically retrieves the last
+  /// [paginatedParams] and loads the next activities as determined by that
+  /// filter and limit.
+  ///
+  /// You can override the [limit] and [filter] value, or alternatively, call
+  /// [queryPaginatedEnrichedActivities] directly with custom arguments.
+  /// {@endtemplate}
+  Future<void> loadMoreEnrichedActivities({
+    required String feedGroup,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
+    String? userId,
+    // TODO: no way to parameterized marker?
+  }) async {
+    final nextParams = paginatedParams(feedGroup: feedGroup);
+
+    if (nextParams == null) {
+      // TODO(gordon): add logs
+      return;
+    }
+
+    queryPaginatedEnrichedActivities(
+      feedGroup: feedGroup,
+      limit: limit ?? nextParams.limit,
+      offset: offset,
+      session: session,
+      filter: filter ?? nextParams.idLT,
+      flags: flags,
+      ranking: ranking,
+      userId: userId,
+    );
+  }
+
+  /// Retrieves the last stored paginated params, [NextParams], for the given
+  /// [feedGroup].
+  NextParams? paginatedParams({required String feedGroup}) =>
+      activitiesManager.paginatedParams[feedGroup];
 
   /* FOLLOW */
 

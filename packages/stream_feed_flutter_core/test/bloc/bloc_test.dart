@@ -83,6 +83,7 @@ void main() {
     secondUserId = '2';
     when(() => mockClient.flatFeed('user', 'test')).thenReturn(mockFeed);
     when(() => mockClient.flatFeed('timeline')).thenReturn(mockFeed);
+    when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
     when(() => mockClient.flatFeed('user', userId)).thenReturn(mockFeed);
     when(() => mockClient.flatFeed('user', secondUserId)).thenReturn(mockFeed);
     when(() => mockFeed.addActivity(activity))
@@ -92,9 +93,8 @@ void main() {
     when(() => mockSecondUser.id).thenReturn(secondUserId);
     when(() => mockUser.ref).thenReturn('test');
     bloc = GenericFeedBloc(client: mockClient);
-    when(() =>
-        mockFeed.getEnrichedActivityDetail<String, String, String, String>(
-            addedActivity.id!)).thenAnswer((_) async => enrichedActivity);
+    when(() => mockFeed.getEnrichedActivityDetail(addedActivity.id!))
+        .thenAnswer((_) async => enrichedActivity);
   });
 
   group('ReactionBloc', () {
@@ -321,6 +321,7 @@ void main() {
       // ignore: cascade_invocations
       controller.init(feedGroup);
       bloc.activitiesManager = controller;
+
       await bloc.onAddActivity(
         feedGroup: 'user',
         verb: 'post',
@@ -332,6 +333,117 @@ void main() {
           .called(1);
       await expectLater(
           bloc.getActivitiesStream(feedGroup), emits([enrichedActivity]));
+    });
+
+    test(
+        '''When we call queryPaginatedEnrichedActivities and loadMoreEnrichedActivities, the stream gets updated with the new paginated results''',
+        () async {
+      final controller = ActivitiesManager()..init(feedGroup);
+      bloc.activitiesManager = controller;
+
+      const keyField = 'q29npdvqjr99';
+      const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
+      const limitField = '10';
+      const nextParamsString =
+          '/api/v1.0/enrich/feed/user/gordon/?api_key=$keyField&id_lt=$idLtField&limit=$limitField';
+      final nextParams = parseNext(nextParamsString);
+
+      // FIRST RESULT
+
+      const enrichedActivitiesFirstResult = [
+        EnrichedActivity(id: '1'),
+        EnrichedActivity(id: '2')
+      ];
+
+      when(() => mockFeed.getPaginatedEnrichedActivities()).thenAnswer(
+        (_) {
+          return Future.value(
+            const PaginatedActivities(
+              next: nextParamsString,
+              results: enrichedActivitiesFirstResult,
+            ),
+          );
+        },
+      );
+
+      await bloc.queryPaginatedEnrichedActivities(feedGroup: feedGroup);
+
+      verify(() =>
+              mockClient.flatFeed(feedGroup).getPaginatedEnrichedActivities())
+          .called(1);
+      verify(() => mockFeed.getPaginatedEnrichedActivities()).called(1);
+
+      expect(
+        bloc.getActivities(feedGroup),
+        enrichedActivitiesFirstResult,
+        reason: 'getActivities retrieves the latest activities',
+      );
+      expect(
+        bloc.getActivitiesStream(feedGroup),
+        emits(enrichedActivitiesFirstResult),
+        reason: 'stream is updated with the latest activities',
+      );
+      expect(
+        bloc.paginatedParams(feedGroup: feedGroup),
+        nextParams,
+        reason: 'paginated params are updated with the latest value',
+      );
+
+      // SECOND RESULT
+
+      const enrichedActivitiesSecondResult = [
+        EnrichedActivity(id: '2'), // purposely contains a duplicate for testing
+        EnrichedActivity(id: '3'),
+        EnrichedActivity(id: '4'),
+      ];
+
+      when(() => mockFeed.getPaginatedEnrichedActivities(
+            filter: nextParams.idLT,
+            limit: nextParams.limit,
+          )).thenAnswer(
+        (_) {
+          return Future.value(
+            const PaginatedActivities(
+              next: '',
+              results: enrichedActivitiesSecondResult,
+            ),
+          );
+        },
+      );
+
+      await bloc.loadMoreEnrichedActivities(feedGroup: feedGroup);
+
+      verify(
+          () => mockClient.flatFeed(feedGroup).getPaginatedEnrichedActivities(
+                filter: nextParams.idLT,
+                limit: nextParams.limit,
+              )).called(1);
+      verify(() => mockFeed.getPaginatedEnrichedActivities(
+            filter: nextParams.idLT,
+            limit: nextParams.limit,
+          )).called(1);
+
+      // Make sure all activities in the list are unique.
+      final allActivities = {
+        ...enrichedActivitiesFirstResult,
+        ...enrichedActivitiesSecondResult
+      }.toList();
+
+      expect(
+        bloc.getActivities(feedGroup),
+        allActivities,
+        reason: 'getActivities retrieves the latest activities',
+      );
+      expect(
+        bloc.getActivitiesStream(feedGroup),
+        emits(allActivities),
+        reason: 'stream is updated with the latest activities',
+      );
+      expect(
+        bloc.paginatedParams(feedGroup: feedGroup),
+        null,
+        reason: 'paginated params are null',
+      );
     });
   });
 
