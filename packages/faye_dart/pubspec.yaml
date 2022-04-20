@@ -16,7 +16,7 @@ dependencies:
   web_socket_channel: ^2.1.0
 
 dev_dependencies:
-  mocktail: ^0.1.2
+  mocktail: ^0.3.0
   test: ^1.17.3
 
 # For information on the generic Dart part of this file, see the
