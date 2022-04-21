@@ -26,7 +26,7 @@ enum TransitionType {
 ///
 /// Best used as the main page of an app.
 /// {@endtemplate}
-class FlatFeedListView extends StatelessWidget {
+class FlatFeedListView extends StatefulWidget {
   /// Builds a [FlatFeedListView].
   const FlatFeedListView({
     Key? key,
@@ -124,18 +124,40 @@ class FlatFeedListView extends StatelessWidget {
   final ScrollPhysics? scrollPhysics;
 
   @override
+  State<FlatFeedListView> createState() => _FlatFeedListViewState();
+}
+
+class _FlatFeedListViewState extends State<FlatFeedListView> {
+  bool _isPaginating = false;
+
+  Future<void> _loadMore() async {
+    // Ensure we're not already loading more activities.
+    if (!_isPaginating) {
+      _isPaginating = true;
+      FeedProvider.of(context)
+          .bloc
+          .loadMoreEnrichedActivities(
+            feedGroup: widget.feedGroup,
+          )
+          .whenComplete(() {
+        _isPaginating = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FlatFeedCore(
-      userId: userId,
-      flags: flags,
-      limit: limit,
-      offset: offset,
-      session: session,
-      filter: filter,
-      ranking: ranking,
-      loadingBuilder: (context) => onProgressWidget,
-      errorBuilder: (context, error) => onErrorWidget,
-      emptyBuilder: (context) => onEmptyWidget,
+      userId: widget.userId,
+      flags: widget.flags,
+      limit: widget.limit,
+      offset: widget.offset,
+      session: widget.session,
+      filter: widget.filter,
+      ranking: widget.ranking,
+      loadingBuilder: (context) => widget.onProgressWidget,
+      errorBuilder: (context, error) => widget.onErrorWidget,
+      emptyBuilder: (context) => widget.onEmptyWidget,
       //TODO: activity type Flat?
       feedBuilder: (
         context,
@@ -143,19 +165,23 @@ class FlatFeedListView extends StatelessWidget {
       ) {
         return ListView.builder(
           itemCount: activities.length,
-          physics: scrollPhysics,
+          physics: widget.scrollPhysics,
           itemBuilder: (context, index) {
+            bool shouldLoadMore = activities.length - 3 == index;
+            if (shouldLoadMore) {
+              _loadMore();
+            }
             return ActivityWidget(
               activity: activities[index],
-              feedGroup: feedGroup,
-              onHashtagTap: onHashtagTap,
-              onMentionTap: onMentionTap,
-              onUserTap: onUserTap,
-              nameJsonKey: nameJsonKey,
-              handleJsonKey: handleJsonKey,
-              activityHeaderBuilder: activityHeaderBuilder,
-              activityFooterBuilder: activityFooterBuilder,
-              activityContentBuilder: activityContentBuilder,
+              feedGroup: widget.feedGroup,
+              onHashtagTap: widget.onHashtagTap,
+              onMentionTap: widget.onMentionTap,
+              onUserTap: widget.onUserTap,
+              nameJsonKey: widget.nameJsonKey,
+              handleJsonKey: widget.handleJsonKey,
+              activityHeaderBuilder: widget.activityHeaderBuilder,
+              activityFooterBuilder: widget.activityFooterBuilder,
+              activityContentBuilder: widget.activityContentBuilder,
               onActivityTap: (context, activity) {
                 // onActivityTap != null
                 //     ? onActivityTap?.call(context, activity)
@@ -163,7 +189,7 @@ class FlatFeedListView extends StatelessWidget {
                 _pageRouteBuilder(
                   activity: activity,
                   context: context,
-                  transitionType: transitionType,
+                  transitionType: widget.transitionType,
                   currentNavigator: Navigator.of(context),
                   page: Scaffold(
                     appBar: AppBar(
@@ -171,9 +197,9 @@ class FlatFeedListView extends StatelessWidget {
                       title: const Text('Post'),
                     ),
                     body: CommentView(
-                      feedGroup: feedGroup,
-                      nameJsonKey: nameJsonKey,
-                      handleJsonKey: handleJsonKey,
+                      feedGroup: widget.feedGroup,
+                      nameJsonKey: widget.nameJsonKey,
+                      handleJsonKey: widget.handleJsonKey,
                       activity: activity,
                       enableCommentFieldButton: true,
                       enableReactions: true,
@@ -187,7 +213,7 @@ class FlatFeedListView extends StatelessWidget {
           },
         );
       },
-      feedGroup: feedGroup,
+      feedGroup: widget.feedGroup,
     );
   }
 
@@ -233,33 +259,4 @@ class FlatFeedListView extends StatelessWidget {
         );
     }
   }
-
-  // @override
-  // void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  //   super.debugFillProperties(properties);
-  //   properties.add(
-  //       ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
-  //   properties.add(
-  //       ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
-  //   properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
-  //   properties.add(StringProperty('feedGroup', feedGroup));
-  //   properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
-  //       'activityFooterBuilder', activityFooterBuilder));
-  //   properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
-  //       'activityContentBuilder', activityContentBuilder));
-  //   properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
-  //       'activityHeaderBuilder', activityHeaderBuilder));
-  //   properties.add(
-  //       ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
-  //   properties
-  //       .add(EnumProperty<TransitionType>('transitionType', transitionType));
-  //   properties.add(IntProperty('limit', limit));
-  //   properties.add(IntProperty('offset', offset));
-  //   properties.add(StringProperty('session', session));
-  //   properties.add(DiagnosticsProperty<Filter?>('filter', filter));
-  //   properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
-  //   properties.add(StringProperty('ranking', ranking));
-  //   properties.add(StringProperty('handleJsonKey', handleJsonKey));
-  //   properties.add(StringProperty('nameJsonKey', nameJsonKey));
-  // }
 }
