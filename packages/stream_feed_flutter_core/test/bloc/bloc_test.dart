@@ -199,6 +199,138 @@ void main() {
       //TODO: test reaction Stream
     });
 
+    test(
+        '''When we call queryPaginatedReactions and loadMorePaginatedReactions, the stream gets updated with the new paginated results''',
+        () async {
+      // final controller = ReactionsManager()..init(feedGroup);
+      // bloc.reactionsManager = controller;
+
+      const keyField = 'q29npdvqjr99';
+      const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
+      const limitField = '10';
+      const nextParamsString =
+          '/api/v1.0/enrich/feed/user/gordon/?api_key=$keyField&id_lt=$idLtField&limit=$limitField';
+      final nextParams = parseNext(nextParamsString);
+
+      // FIRST RESULT
+
+      const reactionsFirstResult = [Reaction(id: '1'), Reaction(id: '2')];
+
+      when(() => mockReactions.paginatedFilter(
+            lookupAttr,
+            lookupValue,
+            filter: filter,
+            limit: limit,
+            kind: kind,
+          )).thenAnswer(
+        (_) async => PaginatedReactions(
+          next: nextParamsString,
+          results: reactionsFirstResult,
+        ),
+      );
+
+      await bloc.queryPaginatedReactions(
+        lookupAttr,
+        lookupValue,
+        filter: filter,
+        limit: limit,
+        kind: kind,
+      );
+
+      verify(() => mockReactions.paginatedFilter(
+            lookupAttr,
+            lookupValue,
+            filter: filter,
+            limit: limit,
+            kind: kind,
+          )).called(1);
+      // verify(() => mockReactions.paginatedFilter(
+      //       lookupAttr,
+      //       lookupValue,
+      //       filter: filter,
+      //       limit: limit,
+      //       kind: kind,
+      //     )).called(1);
+
+      expect(
+        bloc.getReactions(lookupValue),
+        reactionsFirstResult,
+        reason: 'getActivities retrieves the latest activities',
+      );
+      expect(
+        bloc.getReactionsStream(lookupValue),
+        emits(reactionsFirstResult),
+        reason: 'stream is updated with the latest activities',
+      );
+      expect(
+        bloc.paginatedParamsReactions(lookupValue: lookupValue),
+        nextParams,
+        reason: 'paginated params are updated with the latest value',
+      );
+
+      // SECOND RESULT
+
+      const reactionsSecondResult = [
+        Reaction(id: '2'), // purposely contains a duplicate for testing
+        Reaction(id: '3'),
+        Reaction(id: '4'),
+      ];
+
+      when(() => mockReactions.paginatedFilter(
+            lookupAttr,
+            lookupValue,
+            filter: nextParams.idLT,
+            limit: nextParams.limit,
+          )).thenAnswer(
+        (_) {
+          return Future.value(
+            const PaginatedReactions(
+                next: '', results: reactionsSecondResult, activity: null),
+          );
+        },
+      );
+
+      await bloc.loadMoreReactions(
+        lookupAttr,
+        lookupValue,
+        filter: nextParams.idLT,
+        limit: nextParams.limit,
+      );
+
+      verify(() => mockReactions.paginatedFilter(
+            lookupAttr,
+            lookupValue,
+            filter: nextParams.idLT,
+            limit: nextParams.limit,
+          )).called(1);
+      // verify(() => mockReactions.paginatedFilter(
+      //       lookupAttr,
+      //       lookupValue,
+      //       filter: nextParams.idLT,
+      //       limit: nextParams.limit,
+      //     )).called(1);
+
+      // Make sure all activities in the list are unique.
+      final allReactions =
+          {...reactionsFirstResult, ...reactionsSecondResult}.toList();
+
+      expect(
+        bloc.getReactions(lookupValue),
+        allReactions,
+        reason: 'getActivities retrieves the latest activities',
+      );
+      expect(
+        bloc.getReactionsStream(lookupValue),
+        emits(allReactions),
+        reason: 'stream is updated with the latest activities',
+      );
+      expect(
+        bloc.paginatedParamsReactions(lookupValue: lookupValue),
+        null,
+        reason: 'paginated params are null',
+      );
+    });
+
     group('child reactions', () {
       test('onAddChildReaction', () async {
         final controller = ReactionsManager();

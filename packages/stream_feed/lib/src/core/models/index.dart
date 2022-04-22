@@ -20,6 +20,7 @@ export 'next_params.dart';
 export 'notification_feed_meta.dart';
 export 'open_graph_data.dart';
 export 'paginated_activities.dart';
+export 'paginated_reactions.dart';
 export 'reaction.dart';
 export 'realtime_message.dart';
 export 'resize.dart';

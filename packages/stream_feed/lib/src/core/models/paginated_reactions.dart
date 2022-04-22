@@ -13,7 +13,7 @@ part 'paginated_reactions.g.dart';
 class PaginatedReactions<A, Ob, T, Or> extends Paginated<Reaction> {
   /// Builds a [PaginatedReactions].
   const PaginatedReactions(
-      String? next, List<Reaction>? results, this.activity, String? duration)
+      {String? next, List<Reaction>? results, this.activity, String? duration})
       : super(next, results, duration);
 
   /// Deserialize json to [PaginatedReactions]

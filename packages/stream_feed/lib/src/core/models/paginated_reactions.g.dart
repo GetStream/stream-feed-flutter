@@ -14,11 +14,11 @@ PaginatedReactions<A, Ob, T, Or> _$PaginatedReactionsFromJson<A, Ob, T, Or>(
   Or Function(Object? json) fromJsonOr,
 ) =>
     PaginatedReactions<A, Ob, T, Or>(
-      json['next'] as String?,
-      (json['results'] as List<dynamic>?)
+      next: json['next'] as String?,
+      results: (json['results'] as List<dynamic>?)
           ?.map((e) => Reaction.fromJson(Map<String, dynamic>.from(e as Map)))
           .toList(),
-      json['activity'] == null
+      activity: json['activity'] == null
           ? null
           : GenericEnrichedActivity<A, Ob, T, Or>.fromJson(
               (json['activity'] as Map?)?.map(
@@ -28,7 +28,7 @@ PaginatedReactions<A, Ob, T, Or> _$PaginatedReactionsFromJson<A, Ob, T, Or>(
               (value) => fromJsonOb(value),
               (value) => fromJsonT(value),
               (value) => fromJsonOr(value)),
-      json['duration'] as String?,
+      duration: json['duration'] as String?,
     );
 
 Map<String, dynamic> _$PaginatedReactionsToJson<A, Ob, T, Or>(

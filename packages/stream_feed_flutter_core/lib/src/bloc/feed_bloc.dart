@@ -485,6 +485,8 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     }
     if (!reactionsManager.hasValue(lookupValue)) {
       reactionsManager.init(lookupValue);
+      _queryReactionsLoadingControllers[lookupValue] =
+          BehaviorSubject.seeded(false);
     }
     _queryReactionsLoadingControllers[lookupValue]?.add(true);
     try {
