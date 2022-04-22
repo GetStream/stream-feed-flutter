@@ -470,7 +470,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     }
   }
 
-  Future<void> queryPaginatedFilter(
+  Future<void> queryPaginatedReactions(
     LookupAttribute lookupAttr,
     String lookupValue, {
     Filter? filter,
@@ -603,6 +603,44 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   }
 
   /// {@template queryEnrichedActivities}
+  /// This is a convenient method that calls [queryPaginatedReactions]
+  /// underneath.
+  ///
+  /// This method automatically retrieves the last
+  /// [paginatedParams] and loads the next reacitons as determined by that
+  /// filter and limit.
+  ///
+  /// You can override the [limit] and [filter] value, or alternatively, call
+  /// [queryPaginatedReactions] directly with custom arguments.
+  /// {@endtemplate}
+  Future<void> loadMoreReactions(
+    LookupAttribute lookupAttr,
+    String lookupValue, {
+    Filter? filter,
+    int? limit,
+    String? kind,
+    EnrichmentFlags? flags,
+
+    //TODO: no way to parameterized marker?
+  }) async {
+    final nextParams = paginatedParamsReactions(lookupValue: lookupValue);
+
+    if (nextParams == null) {
+      // TODO(gordon): add logs
+      return;
+    }
+
+    queryPaginatedReactions(
+      lookupAttr,
+      lookupValue,
+      filter: filter,
+      limit: limit,
+      kind: kind,
+      flags: flags,
+    );
+  }
+
+  /// {@template queryEnrichedActivities}
   /// This is a convenient method that calls [queryPaginatedEnrichedActivities]
   /// underneath.
   ///
@@ -624,7 +662,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     String? userId,
     // TODO: no way to parameterized marker?
   }) async {
-    final nextParams = paginatedParams(feedGroup: feedGroup);
+    final nextParams = paginatedParamsActities(feedGroup: feedGroup);
 
     if (nextParams == null) {
       // TODO(gordon): add logs
@@ -645,8 +683,13 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
   /// Retrieves the last stored paginated params, [NextParams], for the given
   /// [feedGroup].
-  NextParams? paginatedParams({required String feedGroup}) =>
+  NextParams? paginatedParamsActities({required String feedGroup}) =>
       activitiesManager.paginatedParams[feedGroup];
+
+  /// Retrieves the last stored paginated params, [NextParams], for the given
+  /// [feedGroup].
+  NextParams? paginatedParamsReactions({required String lookupValue}) =>
+      reactionsManager.paginatedParams[lookupValue];
 
   /* FOLLOW */
 

@@ -11,7 +11,7 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 class ReactionsManager {
   final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
 
-   /// A map of paginated results
+  /// A map of paginated results
   final Map<String, NextParams?> paginatedParams = {};
 
   /// Init controller for given lookupValue.
@@ -52,6 +52,12 @@ class ReactionsManager {
   void close() => _controller.forEach((key, value) {
         value.close();
       });
+
+  /// Clear activities for a given lookupValue.
+  void clearReactions(String lookupValue) {
+    paginatedParams[lookupValue] = null;
+    _getController(lookupValue)!.value = [];
+  }
 
   /// Update controller value with given reactions.
   void update(String lookupValue, List<Reaction> reactions) {
