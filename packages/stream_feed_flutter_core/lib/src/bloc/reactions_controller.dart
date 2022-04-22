@@ -11,6 +11,9 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 class ReactionsManager {
   final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
 
+   /// A map of paginated results
+  final Map<String, NextParams?> paginatedParams = {};
+
   /// Init controller for given lookupValue.
   void init(String lookupValue) =>
       _controller[lookupValue] = BehaviorSubject<List<Reaction>>();

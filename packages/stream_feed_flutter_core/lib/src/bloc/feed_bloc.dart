@@ -470,6 +470,66 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     }
   }
 
+  Future<void> queryPaginatedFilter(
+    LookupAttribute lookupAttr,
+    String lookupValue, {
+    Filter? filter,
+    int? limit,
+    String? kind,
+    EnrichmentFlags? flags,
+
+    //TODO: no way to parameterized marker?
+  }) async {
+    if (_queryReactionsLoadingControllers[lookupValue]?.value == true) {
+      return; // already loading
+    }
+    if (!reactionsManager.hasValue(lookupValue)) {
+      reactionsManager.init(lookupValue);
+    }
+    _queryReactionsLoadingControllers[lookupValue]?.add(true);
+    try {
+      final reactionsResponse =
+          await client.reactions.paginatedFilter<A, Ob, T, Or>(
+        lookupAttr,
+        lookupValue,
+        filter: filter,
+        // flags: flags,
+        limit: limit,
+        kind: kind,
+      );
+      NextParams? nextParams;
+      try {
+        if (reactionsResponse.next != null &&
+            reactionsResponse.next!.isNotEmpty) {
+          nextParams = parseNext(reactionsResponse.next!);
+        }
+        reactionsManager.paginatedParams[lookupValue] = nextParams;
+      } catch (e) {
+        // TODO:(gordon) add logs
+      }
+      if (reactionsResponse.results != null) {
+        final allReactions = <Reaction>{
+          ...reactionsManager.getReactions(lookupValue),
+          ...?reactionsResponse.results
+        };
+        reactionsManager.add(lookupValue, allReactions.toList());
+
+        if (reactionsManager.hasValue(lookupValue) &&
+            _queryReactionsLoadingControllers[lookupValue]!.value) {
+          _queryReactionsLoadingControllers[lookupValue]!.sink.add(false);
+        }
+      }
+    } catch (e, stk) {
+      // reset loading controller
+      _queryReactionsLoadingControllers[lookupValue]!.add(false);
+      if (reactionsManager.hasValue(lookupValue)) {
+        _queryReactionsLoadingControllers[lookupValue]!.addError(e, stk);
+      } else {
+        reactionsManager.addError(lookupValue, e, stk);
+      }
+    }
+  }
+
   /// Queries the activities stream and stores the pagination results.
   ///
   /// Unique activities will be stored and can be retrieved by calling
