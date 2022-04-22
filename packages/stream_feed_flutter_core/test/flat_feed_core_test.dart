@@ -10,32 +10,26 @@ void main() {
     final mockClient = MockStreamFeedClient();
     final mockFeed = MockFeedAPI();
     final mockStreamAnalytics = MockStreamAnalytics();
-    final activities = [
-      GenericEnrichedActivity(
-        time: DateTime.now(),
-        actor: const User(
-          data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          },
-        ),
-      ),
-      GenericEnrichedActivity(
-        time: DateTime.now(),
-        actor: const User(
-          data: {
-            'name': 'Rosemary',
-            'handle': '@rosemary',
-            'subtitle': 'likes playing fresbee in the park',
-            'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
-          },
-        ),
-      ),
+    const feedGroup = 'user';
+    const keyField = 'q29npdvqjr99';
+    const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
+    const limitField = '10';
+    const nextParamsString =
+        '/api/v1.0/enrich/feed/user/gordon/?api_key=$keyField&id_lt=$idLtField&limit=$limitField';
+    final nextParams = parseNext(nextParamsString);
+
+    // FIRST RESULT
+
+    const enrichedActivitiesFirstResult = [
+      EnrichedActivity(id: '1'),
+      EnrichedActivity(id: '2')
     ];
-    when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
-    when(mockFeed.getEnrichedActivities).thenAnswer((_) async => activities);
+    when(() => mockClient.flatFeed(feedGroup)).thenReturn(mockFeed);
+    when(() => mockFeed.getPaginatedEnrichedActivities())
+        .thenAnswer((_) async => PaginatedActivities(
+              next: nextParamsString,
+              results: enrichedActivitiesFirstResult,
+            ));
     await tester.pumpWidget(
       MaterialApp(
         builder: (context, child) =>
@@ -48,7 +42,7 @@ void main() {
         ),
         home: Scaffold(
           body: GenericFlatFeedCore(
-            feedGroup: 'user',
+            feedGroup: feedGroup,
             errorBuilder: (context, error) => const Text('error'),
             loadingBuilder: (context) => const CircularProgressIndicator(),
             emptyBuilder: (context) => const Text('empty'),
@@ -63,8 +57,9 @@ void main() {
       ),
     );
 
-    verify(() => mockClient.flatFeed('user')).called(1);
-    verify(mockFeed.getEnrichedActivities).called(1);
+    verify(() =>
+            mockClient.flatFeed(feedGroup).getPaginatedEnrichedActivities())
+        .called(1);
   });
 
   // test('Default FlatFeedCore debugFillProperties', () {
