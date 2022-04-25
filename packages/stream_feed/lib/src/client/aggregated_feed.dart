@@ -1,6 +1,7 @@
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
 import 'package:stream_feed/src/core/index.dart';
+import 'package:stream_feed/src/core/models/paginated_activities_group.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
@@ -95,5 +96,26 @@ class AggregatedFeed extends Feed {
             ))
         .toList(growable: false);
     return data;
+  }
+
+  Future<PaginatedActivitiesGroup<A, Ob, T, Or>>
+      getPaginatedActivities<A, Ob, T, Or>({
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    ActivityMarker? marker,
+    EnrichmentFlags? flags,
+  }) async {
+    final options = {
+      'limit': limit ?? Default.limit,
+      'offset': offset ?? Default.offset,
+      ...filter?.params ?? Default.filter.params,
+      ...marker?.params ?? Default.marker.params,
+      ...flags?.params ?? Default.enrichmentFlags.params,
+    };
+    final token = userToken ??
+        TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
+    return feed.paginatedActivitiesGroup(token, feedId, options);
   }
 }
