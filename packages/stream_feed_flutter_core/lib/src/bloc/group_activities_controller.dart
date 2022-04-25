@@ -24,9 +24,8 @@ class GroupedActivitiesManager<A, Ob, T, Or> {
 
   /// Retrieve with feedGroup the corresponding StreamController from the map
   /// of controllers.
-  BehaviorSubject<List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>>? _getController(
-          String feedGroup) =>
-      _controllers[feedGroup];
+  BehaviorSubject<List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>>?
+      _getController(String feedGroup) => _controllers[feedGroup];
 
   /// Convert the Stream of activities to a List of activities.
   List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivities(

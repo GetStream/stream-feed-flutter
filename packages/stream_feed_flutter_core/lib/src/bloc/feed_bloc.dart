@@ -702,7 +702,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     }
   }
 
-  /// {@template queryEnrichedActivities}
+  /// {@template loadMoreReactions}
   /// This is a convenient method that calls [queryPaginatedReactions]
   /// underneath.
   ///
@@ -740,7 +740,47 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     );
   }
 
-  /// {@template queryEnrichedActivities}
+  /// {@template loadMoreEnrichedActivities}
+  /// This is a convenient method that calls [queryPaginatedEnrichedActivities]
+  /// underneath.
+  ///
+  /// This method automatically retrieves the last
+  /// [paginatedParams] and loads the next activities as determined by that
+  /// filter and limit.
+  ///
+  /// You can override the [limit] and [filter] value, or alternatively, call
+  /// [queryloadGroupedActivities] directly with custom arguments.
+  /// {@endtemplate}
+  Future<void> loadMoreGroupedActivities({
+    required String feedGroup,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
+    String? userId,
+    // TODO: no way to parameterized marker?
+  }) async {
+    final nextParams = paginatedParamsGroupedActivites(feedGroup: feedGroup);
+
+    if (nextParams == null) {
+      // TODO(gordon): add logs
+      return;
+    }
+
+    queryPaginatedGroupedActivities(
+      feedGroup: feedGroup,
+      limit: limit ?? nextParams.limit,
+      offset: offset,
+      session: session,
+      filter: filter ?? nextParams.idLT,
+      flags: flags,
+      userId: userId,
+    );
+  }
+
+  /// {@template loadMoreEnrichedActivities}
   /// This is a convenient method that calls [queryPaginatedEnrichedActivities]
   /// underneath.
   ///
@@ -762,7 +802,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     String? userId,
     // TODO: no way to parameterized marker?
   }) async {
-    final nextParams = paginatedParamsActities(feedGroup: feedGroup);
+    final nextParams = paginatedParamsActivities(feedGroup: feedGroup);
 
     if (nextParams == null) {
       // TODO(gordon): add logs
@@ -783,7 +823,12 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
   /// Retrieves the last stored paginated params, [NextParams], for the given
   /// [feedGroup].
-  NextParams? paginatedParamsActities({required String feedGroup}) =>
+  NextParams? paginatedParamsGroupedActivites({required String feedGroup}) =>
+      groupedActivitiesManager.paginatedParams[feedGroup];
+
+  /// Retrieves the last stored paginated params, [NextParams], for the given
+  /// [feedGroup].
+  NextParams? paginatedParamsActivities({required String feedGroup}) =>
       activitiesManager.paginatedParams[feedGroup];
 
   /// Retrieves the last stored paginated params, [NextParams], for the given
@@ -840,8 +885,10 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   }
 
   void dispose() {
+    groupedActivitiesManager.close();
     activitiesManager.close();
     reactionsManager.close();
+    _queryGroupedActivitiesLoadingController.close();
     _queryActivitiesLoadingController.close();
     _queryReactionsLoadingControllers.forEach((key, value) {
       value.close();
