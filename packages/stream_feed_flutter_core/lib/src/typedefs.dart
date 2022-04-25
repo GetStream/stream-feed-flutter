@@ -8,6 +8,15 @@ import 'package:stream_feed_flutter_core/src/upload/states.dart';
 
 /* BUILDERS */
 
+
+/// {@template aggregatedFeedBuilder}
+/// A builder that allows building from a list of Group<EnrichedActivity>.
+/// {@endtemplate}
+typedef AggregatedFeedBuilder<A, Ob, T, Or> = Widget Function(
+  BuildContext context,
+  List<Group<GenericEnrichedActivity<A, Ob, T, Or>>> activities,
+);
+
 /// {@template enrichedFeedBuilder}
 /// A builder that allows building from a list of EnrichedActivity.
 /// {@endtemplate}

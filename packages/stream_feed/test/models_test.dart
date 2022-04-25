@@ -717,8 +717,11 @@ void main() {
       // },//TODO: test this
       childrenCounts: const {'test': 1},
     );
-    final paginatedReactions =
-        PaginatedReactions('test', [reaction], enrichedActivity, 'duration');
+    final paginatedReactions = PaginatedReactions(
+        next: 'test',
+        results: [reaction],
+        activity: enrichedActivity,
+        duration: 'duration');
 
     final paginatedReactionsJson =
         json.decode(fixture('paginated_reactions.json'));

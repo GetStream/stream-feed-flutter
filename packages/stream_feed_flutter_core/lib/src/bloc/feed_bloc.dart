@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
+import 'package:stream_feed_flutter_core/src/bloc/group_activities_controller.dart';
 import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
@@ -60,29 +61,52 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   late ActivitiesManager<A, Ob, T, Or> activitiesManager =
       ActivitiesManager<A, Ob, T, Or>();
 
+  /// Manager for aggregated activities.
+  @visibleForTesting
+  late GroupedActivitiesManager<A, Ob, T, Or> groupedActivitiesManager =
+      GroupedActivitiesManager<A, Ob, T, Or>();
+
   /// Manager for reactions.
   @visibleForTesting
   late ReactionsManager reactionsManager = ReactionsManager();
-
-  /// The current activities list.
-  List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
-          String feedGroup) =>
-      activitiesManager.getActivities(feedGroup);
-
-  /// The current reactions list.
-  List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
-      reactionsManager.getReactions(activityId, reaction);
 
   /// The current activities list as a stream.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(
           String feedGroup) =>
       activitiesManager.getStream(feedGroup);
 
+  /// The current activities list as a stream.
+  Stream<List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>>?
+      getGroupedActivitiesStream(String feedGroup) =>
+          groupedActivitiesManager.getStream(feedGroup);
+
   /// The current reactions list as a stream.
   Stream<List<Reaction>>? getReactionsStream(String activityId,
       [String? kind]) {
     return reactionsManager.getStream(activityId, kind);
   }
+
+  /// The current activities list.
+  List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
+          String feedGroup) =>
+      activitiesManager.getActivities(feedGroup);
+
+  /// The current of grouped activities list.
+  List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>? getGroupedActivities(
+          String feedGroup) =>
+      groupedActivitiesManager.getActivities(feedGroup);
+
+  /// The current reactions list.
+  List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
+      reactionsManager.getReactions(activityId, reaction);
+
+  final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
+
+  final _queryGroupedActivitiesLoadingController =
+      BehaviorSubject.seeded(false);
+
+  final Map<String, BehaviorSubject<bool>> _queryReactionsLoadingControllers =
+      {};
 
   ///  Clear activities for a given `feedGroup`.
   void clearActivities(String feedGroup) =>
@@ -92,10 +116,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   void clearAllActivities(List<String> feedGroups) =>
       activitiesManager.clearAllActivities(feedGroups);
 
-  final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
-
-  final Map<String, BehaviorSubject<bool>> _queryReactionsLoadingControllers =
-      {};
+  ///  Clear all activities for the given `feedGroups`.
+  void clearAllGroupedActivities(List<String> feedGroups) =>
+      groupedActivitiesManager.clearAllGroupedActivities(feedGroups);
 
   /// The stream notifying the state of queryReactions call.
   Stream<bool> queryReactionsLoadingFor(String activityId) =>
@@ -103,6 +126,10 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
   /// The stream notifying the state of queryActivities call.
   Stream<bool> get queryActivitiesLoading =>
+      _queryActivitiesLoadingController.stream;
+
+  /// The stream notifying the state of queryActivities call.
+  Stream<bool> get queryGroupedActivitiesLoading =>
       _queryActivitiesLoadingController.stream;
 
   /* ACTIVITIES */
@@ -604,6 +631,77 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     }
   }
 
+  /// Queries the activities stream and stores the pagination results.
+  ///
+  /// Unique activities will be stored and can be retrieved by calling
+  /// [getActivities].
+  ///
+  /// To load more enriched activities, see [loadMoreEnrichedActivities], or
+  /// alternatively, call this method again with updated arguments (`limit`,
+  /// `filter`, `offset`).
+  ///
+  /// See the [FlatFeedCore] widget to display activities easily.
+  Future<void> queryPaginatedGroupedActivities({
+    required String feedGroup,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? userId,
+    //TODO(sacha): no way to parameterized marker?
+  }) async {
+    if (_queryGroupedActivitiesLoadingController.value == true) {
+      return; // already loading
+    }
+    if (!groupedActivitiesManager.hasValue(feedGroup)) {
+      groupedActivitiesManager.init(feedGroup);
+    }
+    _queryGroupedActivitiesLoadingController.add(true);
+    try {
+      final activitiesGroupResponse = await client
+          .aggregatedFeed(feedGroup, userId)
+          .getPaginatedActivities<A, Ob, T, Or>(
+            limit: limit,
+            offset: offset,
+            session: session,
+            filter: filter,
+            flags: flags,
+          );
+      NextParams? nextParams;
+      try {
+        if (activitiesGroupResponse.next != null &&
+            activitiesGroupResponse.next!.isNotEmpty) {
+          nextParams = parseNext(activitiesGroupResponse.next!);
+        }
+        activitiesManager.paginatedParams[feedGroup] = nextParams;
+      } catch (e) {
+        // TODO:(gordon) add logs
+      }
+      if (activitiesGroupResponse.results != null) {
+        final allGroupedActivities =
+            <Group<GenericEnrichedActivity<A, Ob, T, Or>>>{
+          ...?getGroupedActivities(feedGroup),
+          ...?activitiesGroupResponse.results
+        };
+        groupedActivitiesManager.add(feedGroup, allGroupedActivities.toList());
+
+        if (groupedActivitiesManager.hasValue(feedGroup) &&
+            _queryGroupedActivitiesLoadingController.value) {
+          _queryGroupedActivitiesLoadingController.sink.add(false);
+        }
+      }
+    } catch (e, stk) {
+      // reset loading controller
+      _queryGroupedActivitiesLoadingController.add(false);
+      if (groupedActivitiesManager.hasValue(feedGroup)) {
+        _queryGroupedActivitiesLoadingController.addError(e, stk);
+      } else {
+        groupedActivitiesManager.addError(feedGroup, e, stk);
+      }
+    }
+  }
+
   /// {@template queryEnrichedActivities}
   /// This is a convenient method that calls [queryPaginatedReactions]
   /// underneath.
@@ -695,6 +793,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
   /* FOLLOW */
 
+//TODO(sacha):follower manager
   /// Follows the given [followeeId] id.
   Future<void> followFeed({
     String followerFeedGroup = 'timeline',
