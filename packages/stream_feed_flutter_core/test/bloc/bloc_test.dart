@@ -516,7 +516,7 @@ void main() {
         reason: 'stream is updated with the latest activities',
       );
       expect(
-        bloc.paginatedParamsActities(feedGroup: feedGroup),
+        bloc.paginatedParamsActivities(feedGroup: feedGroup),
         nextParams,
         reason: 'paginated params are updated with the latest value',
       );
@@ -572,7 +572,7 @@ void main() {
         reason: 'stream is updated with the latest activities',
       );
       expect(
-        bloc.paginatedParamsActities(feedGroup: feedGroup),
+        bloc.paginatedParamsActivities(feedGroup: feedGroup),
         null,
         reason: 'paginated params are null',
       );
