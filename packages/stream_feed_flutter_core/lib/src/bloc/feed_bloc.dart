@@ -2,6 +2,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
@@ -70,6 +71,8 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   @visibleForTesting
   late ReactionsManager reactionsManager = ReactionsManager();
 
+  /* STREAMS */
+
   /// The current activities list as a stream.
   Stream<List<GenericEnrichedActivity<A, Ob, T, Or>>>? getActivitiesStream(
           String feedGroup) =>
@@ -86,6 +89,8 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     return reactionsManager.getStream(activityId, kind);
   }
 
+  /* LISTS */
+
   /// The current activities list.
   List<GenericEnrichedActivity<A, Ob, T, Or>>? getActivities(
           String feedGroup) =>
@@ -100,6 +105,8 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
       reactionsManager.getReactions(activityId, reaction);
 
+  /* LOADING CONTROLLERS */
+
   final _queryActivitiesLoadingController = BehaviorSubject.seeded(false);
 
   final _queryGroupedActivitiesLoadingController =
@@ -107,6 +114,28 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
   final Map<String, BehaviorSubject<bool>> _queryReactionsLoadingControllers =
       {};
+
+  /* NEXT PARAMS */
+
+  /// Retrieves the last stored paginated params, [NextParams], for the given
+  /// [feedGroup].
+  @visibleForTesting
+  NextParams? paginatedParamsGroupedActivites({required String feedGroup}) =>
+      groupedActivitiesManager.paginatedParams[feedGroup];
+
+  /// Retrieves the last stored paginated params, [NextParams], for the given
+  /// [feedGroup].
+  @visibleForTesting
+  NextParams? paginatedParamsActivities({required String feedGroup}) =>
+      activitiesManager.paginatedParams[feedGroup];
+
+  /// Retrieves the last stored paginated params, [NextParams], for the given
+  /// [feedGroup].
+  @visibleForTesting
+  NextParams? paginatedParamsReactions({required String lookupValue}) =>
+      reactionsManager.paginatedParams[lookupValue];
+
+  /* CLEARING */
 
   ///  Clear activities for a given `feedGroup`.
   void clearActivities(String feedGroup) =>
@@ -119,6 +148,8 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   ///  Clear all activities for the given `feedGroups`.
   void clearAllGroupedActivities(List<String> feedGroups) =>
       groupedActivitiesManager.clearAllGroupedActivities(feedGroups);
+
+  /* STREAMS */
 
   /// The stream notifying the state of queryReactions call.
   Stream<bool> queryReactionsLoadingFor(String activityId) =>
@@ -403,6 +434,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   ///
   /// Checkout the [ReactionListCore] widget for displaying reactions easily.
   /// {@endtemplate}
+  @internal
   Future<void> queryReactions(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -450,7 +482,10 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// [loadMoreEnrichedActivities].
   ///
   /// See the [FlatFeedCore] widget to display activities easily.
+  /// this method is used internally by the [FlatFeedCore] widget
+  /// and should not be used directly.
   /// {@endtemplate}
+  @internal
   Future<void> queryEnrichedActivities({
     required String feedGroup,
     int? limit,
@@ -497,6 +532,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     }
   }
 
+  @internal
   Future<void> queryPaginatedReactions(
     LookupAttribute lookupAttr,
     String lookupValue, {
@@ -569,6 +605,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// `filter`, `offset`).
   ///
   /// See the [FlatFeedCore] widget to display activities easily.
+  /// this method is used internally by the [FlatFeedCore] widget
+  /// and should not be used directly.
+  @internal
   Future<void> queryPaginatedEnrichedActivities({
     required String feedGroup,
     int? limit,
@@ -641,6 +680,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// `filter`, `offset`).
   ///
   /// See the [FlatFeedCore] widget to display activities easily.
+  /// this method is used internally by the [AggregatedFeedCore] widget
+  /// and should not be used directly.
+  @internal
   Future<void> queryPaginatedGroupedActivities({
     required String feedGroup,
     int? limit,
@@ -820,21 +862,6 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       userId: userId,
     );
   }
-
-  /// Retrieves the last stored paginated params, [NextParams], for the given
-  /// [feedGroup].
-  NextParams? paginatedParamsGroupedActivites({required String feedGroup}) =>
-      groupedActivitiesManager.paginatedParams[feedGroup];
-
-  /// Retrieves the last stored paginated params, [NextParams], for the given
-  /// [feedGroup].
-  NextParams? paginatedParamsActivities({required String feedGroup}) =>
-      activitiesManager.paginatedParams[feedGroup];
-
-  /// Retrieves the last stored paginated params, [NextParams], for the given
-  /// [feedGroup].
-  NextParams? paginatedParamsReactions({required String lookupValue}) =>
-      reactionsManager.paginatedParams[lookupValue];
 
   /* FOLLOW */
 

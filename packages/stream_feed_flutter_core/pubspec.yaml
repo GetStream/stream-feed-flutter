@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
   rxdart: ^0.27.1
   stream_feed: ^0.5.1
-
+  meta: ^1.7.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
