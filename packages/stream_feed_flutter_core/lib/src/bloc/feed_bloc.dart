@@ -194,7 +194,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
     final addedActivity = await flatFeed.addActivity(activity);
 
-    // TODO(Sacha): this is a hack. Merge activity and enriched activity classes together
+    // TODO(Sacha): this is a hack.
+    // We should Merge activity and enriched activity classes together
+    // to avoid this from hapenning
     final enrichedActivity = await flatFeed
         .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
 
@@ -743,6 +745,8 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       }
     }
   }
+
+  /* LOAD MORE METHODS */
 
   /// {@template loadMoreReactions}
   /// This is a convenient method that calls [queryPaginatedReactions]
