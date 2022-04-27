@@ -17,8 +17,9 @@ void main() {
   late GenericFeedBloc bloc;
   late MockReactionsManager mockReactionsManager;
   late String feedGroup;
-  late MockFeedAPI mockFeed;
-  late MockFeedAPI mockSecondFeed;
+  late MockFlatFeed mockFeed;
+  late MockAggregatedFeed mockAggregatedFeed;
+  late MockFlatFeed mockSecondFeed;
   late Activity activity;
   late MockStreamUser mockUser;
   late String userId;
@@ -31,8 +32,9 @@ void main() {
   tearDown(() => bloc.dispose());
 
   setUp(() {
-    mockFeed = MockFeedAPI();
-    mockSecondFeed = MockFeedAPI();
+    mockFeed = MockFlatFeed();
+    mockAggregatedFeed = MockAggregatedFeed();
+    mockSecondFeed = MockFlatFeed();
     mockReactions = MockReactions();
     mockReactionsManager = MockReactionsManager();
     mockClient = MockStreamFeedClient();
@@ -576,6 +578,129 @@ void main() {
         null,
         reason: 'paginated params are null',
       );
+    });
+
+    test(
+        '''When we call queryPaginatedGroupedActivities and loadMorePaginatedGroupedActivities, the stream gets updated with the new paginated results''',
+        () async {
+      // final controller = ReactionsManager()..init(feedGroup);
+      // bloc.reactionsManager = controller;
+
+      const keyField = 'q29npdvqjr99';
+      const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
+      const limitField = '10';
+      const nextParamsString =
+          '/api/v1.0/enrich/feed/user/gordon/?api_key=$keyField&id_lt=$idLtField&limit=$limitField';
+      final nextParams = parseNext(nextParamsString);
+
+      // FIRST RESULT
+
+      const groupedActivitiesFirstResult = [
+        Group<EnrichedActivity>(id: '1'),
+        Group<EnrichedActivity>(id: '2')
+      ];
+
+      when(() => mockClient.aggregatedFeed(feedGroup).getPaginatedActivities())
+          .thenAnswer(
+        (_) {
+          return Future.value(
+            const PaginatedActivitiesGroup(
+              next: nextParamsString,
+              results: groupedActivitiesFirstResult,
+            ),
+          );
+        },
+      );
+      await bloc.queryPaginatedGroupedActivities(feedGroup: feedGroup);
+
+      verify(() =>
+              mockClient.aggregatedFeed(feedGroup).getPaginatedActivities())
+          .called(1);
+      // verify(() => mockReactions.paginatedFilter(
+      //       lookupAttr,
+      //       lookupValue,
+      //       filter: filter,
+      //       limit: limit,
+      //       kind: kind,
+      //     )).called(1);
+
+      // expect(
+      //   bloc.getReactions(lookupValue),
+      //   reactionsFirstResult,
+      //   reason: 'getActivities retrieves the latest activities',
+      // );
+      // expect(
+      //   bloc.getReactionsStream(lookupValue),
+      //   emits(reactionsFirstResult),
+      //   reason: 'stream is updated with the latest activities',
+      // );
+      // expect(
+      //   bloc.paginatedParamsReactions(lookupValue: lookupValue),
+      //   nextParams,
+      //   reason: 'paginated params are updated with the latest value',
+      // );
+
+      // // SECOND RESULT
+
+      // const reactionsSecondResult = [
+      //   Reaction(id: '2'), // purposely contains a duplicate for testing
+      //   Reaction(id: '3'),
+      //   Reaction(id: '4'),
+      // ];
+
+      // when(() => mockReactions.paginatedFilter(
+      //       lookupAttr,
+      //       lookupValue,
+      //       filter: nextParams.idLT,
+      //       limit: nextParams.limit,
+      //     )).thenAnswer(
+      //   (_) {
+      //     return Future.value(
+      //       const PaginatedReactions(
+      //           next: '', results: reactionsSecondResult, activity: null),
+      //     );
+      //   },
+      // );
+
+      // await bloc.loadMoreReactions(
+      //   lookupAttr,
+      //   lookupValue,
+      //   filter: nextParams.idLT,
+      //   limit: nextParams.limit,
+      // );
+
+      // verify(() => mockReactions.paginatedFilter(
+      //       lookupAttr,
+      //       lookupValue,
+      //       filter: nextParams.idLT,
+      //       limit: nextParams.limit,
+      //     )).called(1);
+      // // verify(() => mockReactions.paginatedFilter(
+      // //       lookupAttr,
+      // //       lookupValue,
+      // //       filter: nextParams.idLT,
+      // //       limit: nextParams.limit,
+      // //     )).called(1);
+
+      // // Make sure all activities in the list are unique.
+      // final allReactions =
+      //     {...reactionsFirstResult, ...reactionsSecondResult}.toList();
+
+      // expect(
+      //   bloc.getReactions(lookupValue),
+      //   allReactions,
+      //   reason: 'getActivities retrieves the latest activities',
+      // );
+      // expect(
+      //   bloc.getReactionsStream(lookupValue),
+      //   emits(allReactions),
+      //   reason: 'stream is updated with the latest activities',
+      // );
+      // expect(
+      //   bloc.paginatedParamsReactions(lookupValue: lookupValue),
+      //   null,
+      //   reason: 'paginated params are null',
+      // );
     });
   });
 

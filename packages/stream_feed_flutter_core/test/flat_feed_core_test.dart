@@ -8,7 +8,7 @@ import 'mocks.dart';
 void main() {
   testWidgets('FlatFeedCore', (tester) async {
     final mockClient = MockStreamFeedClient();
-    final mockFeed = MockFeedAPI();
+    final mockFeed = MockFlatFeed();
     final mockStreamAnalytics = MockStreamAnalytics();
     const feedGroup = 'user';
     const keyField = 'q29npdvqjr99';

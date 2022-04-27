@@ -18,7 +18,9 @@ class MockCancelToken extends Mock implements CancelToken {}
 
 class MockStreamAnalytics extends Mock implements StreamAnalytics {}
 
-class MockFeedAPI extends Mock implements FlatFeed {}
+class MockFlatFeed extends Mock implements FlatFeed {}
+
+class MockAggregatedFeed extends Mock implements AggregatedFeed {}
 
 class MockReactionsManager extends Mock implements ReactionsManager {}
 

@@ -1,3 +1,4 @@
+export 'aggregated_feed.dart';
 export 'analytics_client.dart';
 export 'file_storage_client.dart';
 export 'flat_feed.dart';
