@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed/stream_feed.dart';
-import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
+import 'package:stream_feed_flutter_core/src/bloc/reactions_manager.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
 class MockLogger extends Mock implements Logger {}

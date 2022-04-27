@@ -86,6 +86,8 @@ void main() {
     when(() => mockClient.flatFeed('user', 'test')).thenReturn(mockFeed);
     when(() => mockClient.flatFeed('timeline')).thenReturn(mockFeed);
     when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
+    when(() => mockClient.aggregatedFeed('user'))
+        .thenReturn(mockAggregatedFeed);
     when(() => mockClient.flatFeed('user', userId)).thenReturn(mockFeed);
     when(() => mockClient.flatFeed('user', secondUserId)).thenReturn(mockFeed);
     when(() => mockFeed.addActivity(activity))
@@ -451,9 +453,7 @@ void main() {
     test(
         '''When we await onAddActivity the stream gets updated with the new expected value''',
         () async {
-      final controller = ActivitiesManager();
-      // ignore: cascade_invocations
-      controller.init(feedGroup);
+      final controller = ActivitiesManager()..init(feedGroup);
       bloc.activitiesManager = controller;
 
       await bloc.onAddActivity(
@@ -583,9 +583,8 @@ void main() {
     test(
         '''When we call queryPaginatedGroupedActivities and loadMorePaginatedGroupedActivities, the stream gets updated with the new paginated results''',
         () async {
-      // final controller = ReactionsManager()..init(feedGroup);
-      // bloc.reactionsManager = controller;
-
+      final controller = GroupedActivitiesManager()..init(feedGroup);
+      bloc.groupedActivitiesManager = controller;
       const keyField = 'q29npdvqjr99';
       const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
       const limitField = '10';
@@ -600,107 +599,79 @@ void main() {
         Group<EnrichedActivity>(id: '2')
       ];
 
-      when(() => mockClient.aggregatedFeed(feedGroup).getPaginatedActivities())
-          .thenAnswer(
-        (_) {
-          return Future.value(
-            const PaginatedActivitiesGroup(
-              next: nextParamsString,
-              results: groupedActivitiesFirstResult,
-            ),
-          );
-        },
+      when(() => mockAggregatedFeed.getPaginatedActivities()).thenAnswer(
+        (_) async => const PaginatedActivitiesGroup(
+          next: nextParamsString,
+          results: groupedActivitiesFirstResult,
+        ),
       );
       await bloc.queryPaginatedGroupedActivities(feedGroup: feedGroup);
 
-      verify(() =>
-              mockClient.aggregatedFeed(feedGroup).getPaginatedActivities())
-          .called(1);
-      // verify(() => mockReactions.paginatedFilter(
-      //       lookupAttr,
-      //       lookupValue,
-      //       filter: filter,
-      //       limit: limit,
-      //       kind: kind,
-      //     )).called(1);
+      verify(() => mockAggregatedFeed.getPaginatedActivities()).called(1);
 
-      // expect(
-      //   bloc.getReactions(lookupValue),
-      //   reactionsFirstResult,
-      //   reason: 'getActivities retrieves the latest activities',
-      // );
-      // expect(
-      //   bloc.getReactionsStream(lookupValue),
-      //   emits(reactionsFirstResult),
-      //   reason: 'stream is updated with the latest activities',
-      // );
-      // expect(
-      //   bloc.paginatedParamsReactions(lookupValue: lookupValue),
-      //   nextParams,
-      //   reason: 'paginated params are updated with the latest value',
-      // );
+      expect(
+        bloc.getGroupedActivities(feedGroup),
+        groupedActivitiesFirstResult,
+        reason: 'getActivities retrieves the latest activities',
+      );
+      expect(
+        bloc.getGroupedActivitiesStream(feedGroup),
+        emits(groupedActivitiesFirstResult),
+        reason: 'stream is updated with the latest activities',
+      );
+      expect(
+        bloc.paginatedParamsGroupedActivites(feedGroup: feedGroup),
+        nextParams,
+        reason: 'paginated params are updated with the latest value',
+      );
 
       // // SECOND RESULT
 
-      // const reactionsSecondResult = [
-      //   Reaction(id: '2'), // purposely contains a duplicate for testing
-      //   Reaction(id: '3'),
-      //   Reaction(id: '4'),
-      // ];
+      const groupedActivitiesSecondResult = [
+        Group<EnrichedActivity>(
+            id: '2'), // purposely contains a duplicate for testing
+        Group<EnrichedActivity>(id: '3'),
+        Group<EnrichedActivity>(id: '4'),
+      ];
 
-      // when(() => mockReactions.paginatedFilter(
-      //       lookupAttr,
-      //       lookupValue,
-      //       filter: nextParams.idLT,
-      //       limit: nextParams.limit,
-      //     )).thenAnswer(
-      //   (_) {
-      //     return Future.value(
-      //       const PaginatedReactions(
-      //           next: '', results: reactionsSecondResult, activity: null),
-      //     );
-      //   },
-      // );
+      when(() => mockAggregatedFeed.getPaginatedActivities(
+            filter: nextParams.idLT,
+            limit: nextParams.limit,
+          )).thenAnswer(
+        (_) async => const PaginatedActivitiesGroup(
+          next: '',
+          results: groupedActivitiesSecondResult,
+        ),
+      );
 
-      // await bloc.loadMoreReactions(
-      //   lookupAttr,
-      //   lookupValue,
-      //   filter: nextParams.idLT,
-      //   limit: nextParams.limit,
-      // );
+      await bloc.loadMoreGroupedActivities(feedGroup: feedGroup);
 
-      // verify(() => mockReactions.paginatedFilter(
-      //       lookupAttr,
-      //       lookupValue,
-      //       filter: nextParams.idLT,
-      //       limit: nextParams.limit,
-      //     )).called(1);
-      // // verify(() => mockReactions.paginatedFilter(
-      // //       lookupAttr,
-      // //       lookupValue,
-      // //       filter: nextParams.idLT,
-      // //       limit: nextParams.limit,
-      // //     )).called(1);
+      verify(() => mockAggregatedFeed.getPaginatedActivities(
+            filter: nextParams.idLT,
+            limit: nextParams.limit,
+          )).called(1);
 
-      // // Make sure all activities in the list are unique.
-      // final allReactions =
-      //     {...reactionsFirstResult, ...reactionsSecondResult}.toList();
+      // Make sure all activities in the list are unique.
+      final allGroupedActivities = {
+        ...groupedActivitiesFirstResult,
+        ...groupedActivitiesSecondResult
+      }.toList();
 
-      // expect(
-      //   bloc.getReactions(lookupValue),
-      //   allReactions,
-      //   reason: 'getActivities retrieves the latest activities',
-      // );
-      // expect(
-      //   bloc.getReactionsStream(lookupValue),
-      //   emits(allReactions),
-      //   reason: 'stream is updated with the latest activities',
-      // );
-      // expect(
-      //   bloc.paginatedParamsReactions(lookupValue: lookupValue),
-      //   null,
-      //   reason: 'paginated params are null',
-      // );
+      expect(
+        bloc.getGroupedActivities(feedGroup),
+        allGroupedActivities,
+        reason: 'getActivities retrieves the latest activities',
+      );
+      expect(
+        bloc.getGroupedActivitiesStream(feedGroup),
+        emits(allGroupedActivities),
+        reason: 'stream is updated with the latest activities',
+      );
+      expect(
+        bloc.paginatedParamsGroupedActivites(feedGroup: feedGroup),
+        null,
+        reason: 'paginated params are null',
+      );
     });
   });
 

@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
-import 'package:stream_feed_flutter_core/src/bloc/activities_controller.dart';
-import 'package:stream_feed_flutter_core/src/bloc/group_activities_controller.dart';
-import 'package:stream_feed_flutter_core/src/bloc/reactions_controller.dart';
+import 'package:stream_feed_flutter_core/src/bloc/activities_manager.dart';
+import 'package:stream_feed_flutter_core/src/bloc/grouped_activities_manager.dart';
+import 'package:stream_feed_flutter_core/src/bloc/reactions_manager.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
@@ -96,7 +96,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
           String feedGroup) =>
       activitiesManager.getActivities(feedGroup);
 
-/// The current grouped (aggregated) activities list
+  /// The current grouped (aggregated) activities list
   List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>? getGroupedActivities(
           String feedGroup) =>
       groupedActivitiesManager.getActivities(feedGroup);
@@ -725,7 +725,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       if (activitiesGroupResponse.results != null) {
         final allGroupedActivities =
             <Group<GenericEnrichedActivity<A, Ob, T, Or>>>{
-          ...?getGroupedActivities(feedGroup),
+          ...?groupedActivitiesManager.getActivities(feedGroup),
           ...?activitiesGroupResponse.results
         };
         groupedActivitiesManager.add(feedGroup, allGroupedActivities.toList());
