@@ -96,7 +96,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
           String feedGroup) =>
       activitiesManager.getActivities(feedGroup);
 
-  /// The current of grouped activities list.
+/// The current grouped (aggregated) activities list
   List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>? getGroupedActivities(
           String feedGroup) =>
       groupedActivitiesManager.getActivities(feedGroup);
@@ -675,9 +675,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// Queries the activities stream and stores the pagination results.
   ///
   /// Unique activities will be stored and can be retrieved by calling
-  /// [getActivities].
+  /// [getGroupedActivities].
   ///
-  /// To load more enriched activities, see [loadMoreEnrichedActivities], or
+  /// To load more enriched activities, see [loadMoreGroupedActivities], or
   /// alternatively, call this method again with updated arguments (`limit`,
   /// `filter`, `offset`).
   ///
@@ -718,7 +718,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
             activitiesGroupResponse.next!.isNotEmpty) {
           nextParams = parseNext(activitiesGroupResponse.next!);
         }
-        activitiesManager.paginatedParams[feedGroup] = nextParams;
+        groupedActivitiesManager.paginatedParams[feedGroup] = nextParams;
       } catch (e) {
         // TODO:(gordon) add logs
       }
