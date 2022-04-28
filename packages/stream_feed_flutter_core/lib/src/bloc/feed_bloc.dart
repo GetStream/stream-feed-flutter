@@ -191,7 +191,6 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     );
 
     final flatFeed = client.flatFeed(feedGroup, userId);
-
     final addedActivity = await flatFeed.addActivity(activity);
 
     // TODO(Sacha): this is a hack.
@@ -212,6 +211,48 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       foreignId: activity.foreignId,
       feedGroup: feedGroup,
     ); //TODO: remove hardcoded value
+
+    return addedActivity;
+  }
+
+  Future<Activity> onAddActivityGroup({
+    required String feedGroup,
+    Map<String, Object>? data,
+    required String verb,
+    required String object,
+    String? userId,
+    List<FeedId>? to,
+  }) async {
+    final activity = Activity(
+      actor: client.currentUser?.ref,
+      verb: verb,
+      object: object,
+      extraData: data,
+      to: to,
+    );
+
+    final aggregatedFeed = client.aggregatedFeed(feedGroup, userId);
+    final addedActivity = await aggregatedFeed.addActivity(activity);
+
+    // TODO(Sacha): this is a hack.
+    // We should Merge activity and enriched activity classes together
+    // to avoid this from hapenning
+    final enrichedGroupedActivity = await aggregatedFeed
+        .getEnrichedActivityDetail<A, Ob, T, Or>(addedActivity.id!);
+
+    final _groupedActivities = (getGroupedActivities(feedGroup) ?? []).toList();
+
+    // ignore: cascade_invocations
+    _groupedActivities.insert(0, enrichedGroupedActivity);
+
+    groupedActivitiesManager.add(feedGroup, _groupedActivities);
+
+    await trackAnalytics(
+      label: verb,
+      foreignId: activity.foreignId,
+      feedGroup: feedGroup,
+    ); //TODO: remove hardcoded value
+
     return addedActivity;
   }
 
@@ -232,6 +273,25 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     // ignore: cascade_invocations
     _activities.removeWhere((element) => element.id == activityId);
     activitiesManager.add(feedGroup, _activities);
+  }
+
+  /// {@template onRemoveActivity}
+  /// Remove an Activity from the feed in a reactive way
+  ///
+  /// For example delete a tweet
+  /// ```dart
+  /// FeedProvider.of(context).bloc.onRemoveActivity()
+  /// ```
+  /// {@endtemplate}
+  Future<void> onRemoveActivityGroup({
+    required String feedGroup,
+    required String activityId,
+  }) async {
+    await client.aggregatedFeed(feedGroup).removeActivityById(activityId);
+    final _activities = getGroupedActivities(feedGroup) ?? [];
+    // ignore: cascade_invocations
+    _activities.removeWhere((element) => element.id == activityId);
+    groupedActivitiesManager.add(feedGroup, _activities);
   }
 
   /* CHILD REACTIONS */
