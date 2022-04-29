@@ -451,6 +451,32 @@ void main() {
 
   group('Activities', () {
     test(
+        '''When we await onAddActivityGroup the stream gets updated with the new expected value''',
+        () async {
+      final controller = GroupedActivitiesManager()..init(feedGroup);
+      bloc.groupedActivitiesManager = controller;
+
+      final enrichedActivity = Group<EnrichedActivity>(id: '1');
+      when(() => mockAggregatedFeed.addActivity(activity))
+          .thenAnswer((invocation) async => addedActivity);
+
+      when(() =>
+              mockAggregatedFeed.getEnrichedActivityDetail(addedActivity.id!))
+          .thenAnswer((_) async => enrichedActivity);
+
+      await bloc.onAddActivityGroup(
+        feedGroup: 'user',
+        verb: 'post',
+        object: 'test',
+      );
+      verify(() => mockAggregatedFeed.addActivity(activity)).called(1);
+      verify(() =>
+              mockAggregatedFeed.getEnrichedActivityDetail(addedActivity.id!))
+          .called(1);
+      await expectLater(bloc.getGroupedActivitiesStream(feedGroup),
+          emits([enrichedActivity]));
+    });
+    test(
         '''When we await onAddActivity the stream gets updated with the new expected value''',
         () async {
       final controller = ActivitiesManager()..init(feedGroup);
