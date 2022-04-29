@@ -25,7 +25,8 @@ void main() {
       Group<EnrichedActivity>(id: '1'),
       Group<EnrichedActivity>(id: '2')
     ];
-    when(() => mockClient.aggregatedFeed(feedGroup)).thenReturn(mockAggregatedFeed);
+    when(() => mockClient.aggregatedFeed(feedGroup))
+        .thenReturn(mockAggregatedFeed);
     when(() => mockAggregatedFeed.getPaginatedActivities())
         .thenAnswer((_) async => PaginatedActivitiesGroup(
               next: nextParamsString,
@@ -58,8 +59,7 @@ void main() {
       ),
     );
 
-    verify(() =>
-            mockClient.aggregatedFeed(feedGroup).getPaginatedActivities())
+    verify(() => mockClient.aggregatedFeed(feedGroup).getPaginatedActivities())
         .called(1);
   });
 
