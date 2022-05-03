@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -130,7 +129,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       activitiesManager.paginatedParams[feedGroup];
 
   /// Retrieves the last stored paginated params, [NextParams], for the given
-  /// [feedGroup].
+  /// [lookupValue].
   @visibleForTesting
   NextParams? paginatedParamsReactions({required String lookupValue}) =>
       reactionsManager.paginatedParams[lookupValue];
@@ -145,9 +144,21 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   void clearAllActivities(List<String> feedGroups) =>
       activitiesManager.clearAllActivities(feedGroups);
 
-  ///  Clear all activities for the given `feedGroups`.
+  /// Clear grouped/aggregated activities for the given `feedGroup`.
+  void clearGroupedActivities(String feedGroup) =>
+      groupedActivitiesManager.clearGroupedActivities(feedGroup);
+
+  ///  Clear all grouped/aggregated activities for the given `feedGroups`.
   void clearAllGroupedActivities(List<String> feedGroups) =>
       groupedActivitiesManager.clearAllGroupedActivities(feedGroups);
+
+  /// Clear reactions for a given `lookupValue`.
+  void clearReactions(String lookupValue) =>
+      reactionsManager.clearReactions(lookupValue);
+
+  /// Clear all reactions for the given `lookupValues
+  void clearAllReactions(List<String> lookupValues) =>
+      reactionsManager.clearAllReactions(lookupValues);
 
   /* STREAMS */
 
@@ -168,9 +179,13 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// {@template onAddActivity}
   ///  Add an activity to the feed in a reactive way
   ///
-  /// For example a tweet
+  /// For example, a tweet:
   /// ```dart
-  /// FeedProvider.of(context).bloc.onAddActivity()
+  /// FeedProvider.of(context).bloc.onAddActivity(
+  ///   feedGroup: 'user',
+  ///   verb: 'tweet',
+  ///   object: 'tweet_id:1234',
+  /// );
   /// ```
   /// {@endtemplate}
 
@@ -491,11 +506,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
         : print('warning: analytics: not enabled'); //TODO:logger
   }
 
-  /// {@template queryReactions}
-  /// Query the reactions stream (like, retweet, claps).
-  ///
-  /// Checkout the [ReactionListCore] widget for displaying reactions easily.
-  /// {@endtemplate}
+  @Deprecated(
+      '''use `refreshPaginatedReactions` instead to refresh reactions '''
+      ''', and `loadMoreReactions` to load more reactions''')
   @internal
   Future<void> queryReactions(
     LookupAttribute lookupAttr,
@@ -537,17 +550,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     }
   }
 
-  /// {@template queryEnrichedActivities}
-  /// Query the activities stream.
-  ///
-  /// For paginated results, see [queryPaginatedEnrichedActivities] and
-  /// [loadMoreEnrichedActivities].
-  ///
-  /// See the [FlatFeedCore] widget to display activities easily.
-  /// this method is used internally by the [FlatFeedCore] widget
-  /// and should not be used directly.
-  /// {@endtemplate}
-  @internal
+  @Deprecated(
+      '''use `refreshPaginatedEnrichedActivities` instead to refresh enriched '''
+      '''activities, and `loadMoreEnrichedActivities` to load more paginated activities''')
   Future<void> queryEnrichedActivities({
     required String feedGroup,
     int? limit,
@@ -594,6 +599,19 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     }
   }
 
+  /// Queries the reactions stream and stores the pagination results.
+  ///
+  /// See the `ReactionListCore` widget to display reactions easily.
+  /// This method is used internally by the `ReactionListCore` widget
+  /// and should not be called directly.
+  ///
+  /// #### See:
+  /// - [getReactions] to retrieve all the current reactions for the given
+  /// activity.
+  /// - [refreshPaginatedReactions] to refresh the reactions for the given
+  /// activity.
+  /// - [loadMoreReactions] to automatically load the next paginated
+  /// reactions for a given activity.
   @internal
   Future<void> queryPaginatedReactions(
     LookupAttribute lookupAttr,
@@ -602,7 +620,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     int? limit,
     String? kind,
     EnrichmentFlags? flags,
-
+    bool refresh = false,
     //TODO: no way to parameterized marker?
   }) async {
     if (_queryReactionsLoadingControllers[lookupValue]?.value == true) {
@@ -636,7 +654,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       }
       if (reactionsResponse.results != null) {
         final allReactions = <Reaction>{
-          ...reactionsManager.getReactions(lookupValue),
+          if (!refresh) ...reactionsManager.getReactions(lookupValue),
           ...?reactionsResponse.results
         };
         reactionsManager.add(lookupValue, allReactions.toList());
@@ -659,16 +677,17 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
   /// Queries the activities stream and stores the pagination results.
   ///
-  /// Unique activities will be stored and can be retrieved by calling
-  /// [getActivities].
+  /// See the `FlatFeedCore` widget to display activities easily.
+  /// This method is used internally by the `FlatFeedCore` widget
+  /// and should not be called directly.
   ///
-  /// To load more enriched activities, see [loadMoreEnrichedActivities], or
-  /// alternatively, call this method again with updated arguments (`limit`,
-  /// `filter`, `offset`).
-  ///
-  /// See the [FlatFeedCore] widget to display activities easily.
-  /// this method is used internally by the [FlatFeedCore] widget
-  /// and should not be used directly.
+  /// #### See:
+  /// - [getActivities] to retrieve all the current activities for the given
+  /// feed.
+  /// - [refreshPaginatedEnrichedActivities] to refresh the feed for a given
+  /// feed.
+  /// - [loadMoreEnrichedActivities] to automatically load the next paginated
+  /// activities for a given feed.
   @internal
   Future<void> queryPaginatedEnrichedActivities({
     required String feedGroup,
@@ -679,6 +698,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     EnrichmentFlags? flags,
     String? ranking,
     String? userId,
+    bool refresh = false,
     //TODO: no way to parameterized marker?
   }) async {
     if (_queryActivitiesLoadingController.value == true) {
@@ -711,7 +731,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       }
       if (activitiesResponse.results != null) {
         final allActivities = <GenericEnrichedActivity<A, Ob, T, Or>>{
-          ...?activitiesManager.getActivities(feedGroup),
+          if (!refresh) ...?activitiesManager.getActivities(feedGroup),
           ...?activitiesResponse.results
         };
         activitiesManager.add(feedGroup, allActivities.toList());
@@ -732,18 +752,20 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     }
   }
 
-  /// Queries the activities stream and stores the pagination results.
+  /// Queries the activities stream for aggregated activities
+  /// and stores the pagination results.
   ///
-  /// Unique activities will be stored and can be retrieved by calling
-  /// [getGroupedActivities].
-  ///
-  /// To load more enriched activities, see [loadMoreGroupedActivities], or
-  /// alternatively, call this method again with updated arguments (`limit`,
-  /// `filter`, `offset`).
-  ///
-  /// See the [FlatFeedCore] widget to display activities easily.
-  /// this method is used internally by the [AggregatedFeedCore] widget
+  /// See the `AggregatedFeedCore` widget to display activities easily.
+  /// This method is used internally by the `AggregatedFeedCore` widget
   /// and should not be used directly.
+  ///
+  /// #### See:
+  /// - [getGroupedActivities] to retrieve all the current activities for the
+  /// given feed.
+  /// - [refreshPaginatedGroupedActivities] to refresh the aggregated group
+  /// for a given feed.
+  /// - [loadMoreGroupedActivities] to automatically load the next paginated
+  /// grouped/aggregated activities for a given feed.
   @internal
   Future<void> queryPaginatedGroupedActivities({
     required String feedGroup,
@@ -753,6 +775,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     Filter? filter,
     EnrichmentFlags? flags,
     String? userId,
+    bool refresh = false,
     //TODO(sacha): no way to parameterized marker?
   }) async {
     if (_queryGroupedActivitiesLoadingController.value == true) {
@@ -785,7 +808,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       if (activitiesGroupResponse.results != null) {
         final allGroupedActivities =
             <Group<GenericEnrichedActivity<A, Ob, T, Or>>>{
-          ...?groupedActivitiesManager.getActivities(feedGroup),
+          if (!refresh) ...?groupedActivitiesManager.getActivities(feedGroup),
           ...?activitiesGroupResponse.results
         };
         groupedActivitiesManager.add(feedGroup, allGroupedActivities.toList());
@@ -809,20 +832,20 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /* LOAD MORE METHODS */
 
   /// {@template loadMoreReactions}
-  /// This is a convenient method that calls [queryPaginatedReactions]
-  /// underneath.
+  /// Loads the next paginated reactions.
   ///
-  /// This method automatically retrieves the last
-  /// [paginatedParams] and loads the next reacitons as determined by that
-  /// filter and limit.
+  /// This method call [queryPaginatedReactions] for you and automatically
+  /// uses the correct `limit` and `filter` as determined by the last strored
+  /// [paginatedParamsReactions].
   ///
-  /// You can override the [limit] and [filter] value, or alternatively, call
-  /// [queryPaginatedReactions] directly with custom arguments.
+  /// The [lookupAttr] default value is set to[LookupAttribute.activityId].
+  ///
+  /// You can override the [limit] value, otherwise it is retrieved from the
+  /// latest [NextParams].
   /// {@endtemplate}
   Future<void> loadMoreReactions(
-    LookupAttribute lookupAttr,
     String lookupValue, {
-    Filter? filter,
+    LookupAttribute lookupAttr = LookupAttribute.activityId,
     int? limit,
     String? kind,
     EnrichmentFlags? flags,
@@ -839,30 +862,28 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     queryPaginatedReactions(
       lookupAttr,
       lookupValue,
-      filter: filter,
-      limit: limit,
+      filter: nextParams.idLT,
+      limit: limit ?? nextParams.limit,
       kind: kind,
       flags: flags,
     );
   }
 
-  /// {@template loadMoreEnrichedActivities}
-  /// This is a convenient method that calls [queryPaginatedEnrichedActivities]
-  /// underneath.
+  /// {@template loadMoreGroupedActivities}
+  /// Loads the next paginated grouped activities.
   ///
-  /// This method automatically retrieves the last
-  /// [paginatedParams] and loads the next activities as determined by that
-  /// filter and limit.
+  /// This method call [paginatedParamsGroupedActivites] for you and
+  /// automatically uses the correct `limit` and `filter` as determined by the
+  /// last strored [paginatedParamsGroupedActivites].
   ///
-  /// You can override the [limit] and [filter] value, or alternatively, call
-  /// [queryloadGroupedActivities] directly with custom arguments.
+  /// You can override the [limit] value, otherwise it is retrieved from the
+  /// latest [NextParams].
   /// {@endtemplate}
   Future<void> loadMoreGroupedActivities({
     required String feedGroup,
     int? limit,
     int? offset,
     String? session,
-    Filter? filter,
     EnrichmentFlags? flags,
     String? ranking,
     String? userId,
@@ -880,22 +901,22 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       limit: limit ?? nextParams.limit,
       offset: offset,
       session: session,
-      filter: filter ?? nextParams.idLT,
+      filter: nextParams.idLT,
       flags: flags,
       userId: userId,
     );
   }
 
   /// {@template loadMoreEnrichedActivities}
-  /// This is a convenient method that calls [queryPaginatedEnrichedActivities]
-  /// underneath.
+  /// Loads the next paginated enriched activities.
   ///
-  /// This method automatically retrieves the last
-  /// [paginatedParams] and loads the next activities as determined by that
-  /// filter and limit.
+  /// This method call [queryPaginatedEnrichedActivities] for you and
+  /// automatically uses the correct `limit` and `filter` as determined by the
+  /// last strored [paginatedParamsActivities].
   ///
-  /// You can override the [limit] and [filter] value, or alternatively, call
-  /// [queryPaginatedEnrichedActivities] directly with custom arguments.
+  /// You can override the [limit] value, otherwise it is retrieved from the
+  /// latest [NextParams].
+  ///
   /// {@endtemplate}
   Future<void> loadMoreEnrichedActivities({
     required String feedGroup,
@@ -920,16 +941,94 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       limit: limit ?? nextParams.limit,
       offset: offset,
       session: session,
-      filter: filter ?? nextParams.idLT,
+      filter: nextParams.idLT,
       flags: flags,
       ranking: ranking,
       userId: userId,
     );
   }
 
+  /// Refreshes the paginated reactions by calling
+  /// [queryPaginatedReactions] and refreshing the state.
+  ///
+  /// This results in the reactions being loaded again, and
+  /// replacing the current state with the updated values.
+  Future<void> refreshPaginatedReactions(
+    String lookupValue, {
+    LookupAttribute lookupAttr = LookupAttribute.activityId,
+    Filter? filter,
+    int? limit,
+    String? kind,
+    EnrichmentFlags? flags,
+  }) async {
+    queryPaginatedReactions(
+      lookupAttr,
+      lookupValue,
+      filter: filter,
+      limit: limit,
+      kind: kind,
+      flags: flags,
+      refresh: true,
+    );
+  }
+
+  /// Refreshes the paginated grouped activities by calling
+  /// [queryPaginatedGroupedActivities] and refreshing the state.
+  ///
+  /// This results in the aggregated activities being loaded again, and
+  /// replacing the current state with the updated values.
+  Future<void> refreshPaginatedGroupedActivities({
+    required String feedGroup,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? userId,
+  }) async {
+    queryPaginatedGroupedActivities(
+      feedGroup: feedGroup,
+      limit: limit,
+      offset: offset,
+      session: session,
+      filter: filter,
+      flags: flags,
+      userId: userId,
+      refresh: true,
+    );
+  }
+
+  /// Refreshes the paginated enriched activities by calling
+  /// [queryPaginatedEnrichedActivities] and refreshing the state.
+  ///
+  /// This results in the activities being loaded again, and replacing the
+  /// current state with the updated values.
+  Future<void> refreshPaginatedEnrichedActivities({
+    required String feedGroup,
+    int? limit,
+    int? offset,
+    String? session,
+    Filter? filter,
+    EnrichmentFlags? flags,
+    String? ranking,
+    String? userId,
+  }) async {
+    await queryPaginatedEnrichedActivities(
+      feedGroup: feedGroup,
+      limit: limit,
+      offset: offset,
+      session: session,
+      filter: filter,
+      flags: flags,
+      ranking: ranking,
+      userId: userId,
+      refresh: true,
+    );
+  }
+
   /* FOLLOW */
 
-//TODO(sacha):follower manager
+// TODO(sacha):follower manager
   /// Follows the given [followeeId] id.
   Future<void> followFeed({
     String followerFeedGroup = 'timeline',

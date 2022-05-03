@@ -98,18 +98,25 @@ class _HomePageState extends State<HomePage> {
           BuildContext context,
           activities,
         ) {
-          return ListView.separated(
-            itemCount: activities.length,
-            separatorBuilder: (context, index) => const Divider(),
-            itemBuilder: (context, index) {
-              bool shouldLoadMore = activities.length - 3 == index;
-              if (shouldLoadMore) {
-                _loadMore();
-              }
-              return ListActivityItem(
-                activity: activities[index],
-              );
+          return RefreshIndicator(
+            onRefresh: () {
+              return FeedProvider.of(context)
+                  .bloc
+                  .refreshPaginatedEnrichedActivities(feedGroup: 'user');
             },
+            child: ListView.separated(
+              itemCount: activities.length,
+              separatorBuilder: (context, index) => const Divider(),
+              itemBuilder: (context, index) {
+                bool shouldLoadMore = activities.length - 3 == index;
+                if (shouldLoadMore) {
+                  _loadMore();
+                }
+                return ListActivityItem(
+                  activity: activities[index],
+                );
+              },
+            ),
           );
         },
       ),
@@ -232,6 +239,21 @@ class ReactionListPage extends StatefulWidget {
 }
 
 class _ReactionListPageState extends State<ReactionListPage> {
+  bool _isPaginating = false;
+
+  Future<void> _loadMore() async {
+    // Ensure we're not already loading more activities.
+    if (!_isPaginating) {
+      _isPaginating = true;
+      FeedProvider.of(context)
+          .bloc
+          .loadMoreReactions(widget.activity.id!)
+          .whenComplete(() {
+        _isPaginating = false;
+      });
+    }
+  }
+
   Future<void> _addOrRemoveReaction(Reaction reaction) async {
     final isLikedByUser = (reaction.ownChildren?['like']?.length ?? 0) > 0;
     if (isLikedByUser) {
@@ -275,12 +297,14 @@ class _ReactionListPageState extends State<ReactionListPage> {
                     itemCount: reactions.length,
                     separatorBuilder: (context, index) => const Divider(),
                     itemBuilder: (context, index) {
+                      bool shouldLoadMore = reactions.length - 3 == index;
+                      if (shouldLoadMore) {
+                        _loadMore();
+                      }
+
                       final reaction = reactions[index];
                       final isLikedByUser =
                           (reaction.ownChildren?['like']?.length ?? 0) > 0;
-                      // TODO(gordon): fix own reactions
-                      print('childReactions: ${reaction.childrenCounts}');
-                      print('ownChildren: ${reaction.ownChildren}');
                       return Card(
                         key: ValueKey('reaction-${reaction.id}'),
                         child: Row(
