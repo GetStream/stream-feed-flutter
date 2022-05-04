@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:meta/meta.dart';
 import 'package:stream_feed/src/core/http/stream_http_client.dart';
-import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/util/routes.dart';
 import 'package:stream_feed/stream_feed.dart';
 
 /// The http layer api for CRUD operations on Reactions
+@internal
 class ReactionsAPI {
   /// Builds a [ReactionsAPI].
   const ReactionsAPI(this._client);
@@ -90,6 +91,7 @@ class ReactionsAPI {
     LookupAttribute lookupAttr,
     String lookupValue,
     Filter filter,
+    EnrichmentFlags? flags,
     int limit,
     String kind,
   ) async {
@@ -101,6 +103,7 @@ class ReactionsAPI {
       queryParameters: {
         'limit': limit.toString(),
         ...filter.params,
+        if (flags != null) ...flags.params,
         'with_activity_data': lookupAttr == LookupAttribute.activityId,
       },
     );

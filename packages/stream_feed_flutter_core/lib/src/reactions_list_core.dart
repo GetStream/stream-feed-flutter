@@ -133,9 +133,9 @@ class _GenericReactionListCoreState<A, Ob, T, Or>
   }
 
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => bloc.queryPaginatedReactions(
-        widget.lookupAttr,
+  Future<void> loadData() => bloc.refreshPaginatedReactions(
         widget.lookupValue,
+        lookupAttr: widget.lookupAttr,
         filter: widget.filter,
         flags: widget.flags,
         limit: widget.limit,

@@ -58,6 +58,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final EnrichmentFlags _flags = EnrichmentFlags()
+    ..withReactionCounts()
+    ..withOwnReactions();
+
   bool _isPaginating = false;
 
   Future<void> _loadMore() async {
@@ -91,9 +95,7 @@ class _HomePageState extends State<HomePage> {
           child: Text(error.toString()),
         ),
         limit: 10,
-        flags: EnrichmentFlags()
-          ..withReactionCounts()
-          ..withOwnReactions(),
+        flags: _flags,
         feedBuilder: (
           BuildContext context,
           activities,
@@ -102,7 +104,10 @@ class _HomePageState extends State<HomePage> {
             onRefresh: () {
               return FeedProvider.of(context)
                   .bloc
-                  .refreshPaginatedEnrichedActivities(feedGroup: 'user');
+                  .refreshPaginatedEnrichedActivities(
+                    feedGroup: 'user',
+                    flags: _flags,
+                  );
             },
             child: ListView.separated(
               itemCount: activities.length,
@@ -205,7 +210,24 @@ class ListActivityItem extends StatelessWidget {
                           : const Icon(Icons.favorite_outline),
                     ),
                     if (reactionCounts?['like'] != null)
-                      Text('${reactionCounts?['like']}')
+                      Text(
+                        '${reactionCounts?['like']}',
+                        style: Theme.of(context).textTheme.caption,
+                      )
+                  ],
+                ),
+                const SizedBox(width: 16),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => _navigateToCommentPage(context),
+                      icon: const Icon(Icons.mode_comment_outlined),
+                    ),
+                    if (reactionCounts?['comment'] != null)
+                      Text(
+                        '${reactionCounts?['comment']} comments',
+                        style: Theme.of(context).textTheme.caption,
+                      )
                   ],
                 )
               ],
@@ -213,14 +235,18 @@ class ListActivityItem extends StatelessWidget {
           ],
         ),
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) => ReactionListPage(
-                activity: activity,
-              ),
-            ),
-          );
+          _navigateToCommentPage(context);
         },
+      ),
+    );
+  }
+
+  void _navigateToCommentPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => ReactionListPage(
+          activity: activity,
+        ),
       ),
     );
   }
@@ -241,13 +267,18 @@ class ReactionListPage extends StatefulWidget {
 class _ReactionListPageState extends State<ReactionListPage> {
   bool _isPaginating = false;
 
+  final EnrichmentFlags _flags = EnrichmentFlags()..withOwnChildren();
+
   Future<void> _loadMore() async {
     // Ensure we're not already loading more activities.
     if (!_isPaginating) {
       _isPaginating = true;
       FeedProvider.of(context)
           .bloc
-          .loadMoreReactions(widget.activity.id!)
+          .loadMoreReactions(
+            widget.activity.id!,
+            flags: _flags,
+          )
           .whenComplete(() {
         _isPaginating = false;
       });
@@ -281,6 +312,7 @@ class _ReactionListPageState extends State<ReactionListPage> {
           Expanded(
             child: ReactionListCore(
               lookupValue: widget.activity.id!,
+              kind: 'comment',
               loadingBuilder: (context) => const Center(
                 child: CircularProgressIndicator(),
               ),
@@ -289,45 +321,56 @@ class _ReactionListPageState extends State<ReactionListPage> {
               errorBuilder: (context, error) => Center(
                 child: Text(error.toString()),
               ),
+              flags: _flags,
               reactionsBuilder: (context, reactions) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: reactions.length,
-                    separatorBuilder: (context, index) => const Divider(),
-                    itemBuilder: (context, index) {
-                      bool shouldLoadMore = reactions.length - 3 == index;
-                      if (shouldLoadMore) {
-                        _loadMore();
-                      }
-
-                      final reaction = reactions[index];
-                      final isLikedByUser =
-                          (reaction.ownChildren?['like']?.length ?? 0) > 0;
-                      return Card(
-                        key: ValueKey('reaction-${reaction.id}'),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                '${reaction.data?['text']}',
-                              ),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              onPressed: () {
-                                _addOrRemoveReaction(reaction);
-                              },
-                              icon: isLikedByUser
-                                  ? const Icon(Icons.favorite, size: 14)
-                                  : const Icon(Icons.favorite_border, size: 14),
-                            ),
-                          ],
-                        ),
-                      );
+                  child: RefreshIndicator(
+                    onRefresh: () {
+                      return FeedProvider.of(context)
+                          .bloc
+                          .refreshPaginatedReactions(
+                            widget.activity.id!,
+                            flags: _flags,
+                          );
                     },
+                    child: ListView.separated(
+                      itemCount: reactions.length,
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemBuilder: (context, index) {
+                        bool shouldLoadMore = reactions.length - 3 == index;
+                        if (shouldLoadMore) {
+                          _loadMore();
+                        }
+
+                        final reaction = reactions[index];
+                        final isLikedByUser =
+                            (reaction.ownChildren?['like']?.length ?? 0) > 0;
+                        return Card(
+                          key: ValueKey('reaction-${reaction.id}'),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  '${reaction.data?['text']}',
+                                ),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                onPressed: () {
+                                  _addOrRemoveReaction(reaction);
+                                },
+                                icon: isLikedByUser
+                                    ? const Icon(Icons.favorite, size: 14)
+                                    : const Icon(Icons.favorite_border,
+                                        size: 14),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 );
               },
@@ -436,6 +479,7 @@ class _ActivityComposePageState extends State<ActivityComposePage> {
                         object: _textEditingController.text,
                         data: media,
                       );
+                  uploadController.clear();
                   Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

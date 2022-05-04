@@ -134,7 +134,7 @@ class _GenericAggregatedFeedCoreState<A, Ob, T, Or>
   late GenericFeedBloc<A, Ob, T, Or> bloc;
 
   /// Fetches initial paginated enriched activities and updates the widget
-  Future<void> loadData() => bloc.queryPaginatedGroupedActivities(
+  Future<void> loadData() => bloc.refreshPaginatedGroupedActivities(
         feedGroup: widget.feedGroup,
         limit: widget.limit,
         offset: widget.offset,

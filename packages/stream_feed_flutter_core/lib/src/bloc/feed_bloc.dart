@@ -638,7 +638,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
         lookupAttr,
         lookupValue,
         filter: filter,
-        // flags: flags,
+        flags: flags,
         limit: limit,
         kind: kind,
       );
