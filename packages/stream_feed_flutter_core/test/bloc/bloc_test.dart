@@ -295,9 +295,8 @@ void main() {
       );
 
       await bloc.loadMoreReactions(
-        lookupAttr,
         lookupValue,
-        filter: nextParams.idLT,
+        lookupAttr: lookupAttr,
         limit: nextParams.limit,
       );
 

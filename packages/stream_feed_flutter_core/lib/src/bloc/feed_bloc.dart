@@ -83,9 +83,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
           groupedActivitiesManager.getStream(feedGroup);
 
   /// The current reactions list as a stream.
-  Stream<List<Reaction>>? getReactionsStream(String activityId,
+  Stream<List<Reaction>>? getReactionsStream(String lookupValue,
       [String? kind]) {
-    return reactionsManager.getStream(activityId, kind);
+    return reactionsManager.getStream(lookupValue, kind);
   }
 
   /* LISTS */
@@ -101,8 +101,8 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       groupedActivitiesManager.getActivities(feedGroup);
 
   /// The current reactions list.
-  List<Reaction> getReactions(String activityId, [Reaction? reaction]) =>
-      reactionsManager.getReactions(activityId, reaction);
+  List<Reaction> getReactions(String lookupValue, [Reaction? reaction]) =>
+      reactionsManager.getReactions(lookupValue, reaction);
 
   /* LOADING CONTROLLERS */
 
@@ -322,35 +322,48 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   Future<Reaction> onAddChildReaction({
     required String kind,
     required Reaction reaction,
+    String? lookupValue,
+    LookupAttribute lookupAttr = LookupAttribute.activityId,
     required GenericEnrichedActivity activity,
     Map<String, Object>? data,
     String? userId,
     List<FeedId>? targetFeeds,
   }) async {
-    final childReaction = await client.reactions.addChild(kind, reaction.id!,
-        data: data, userId: userId, targetFeeds: targetFeeds);
-    final _reactions = getReactions(activity.id!, reaction);
+    final childReaction = await client.reactions.addChild(
+      kind,
+      reaction.id!,
+      targetFeeds: targetFeeds,
+      data: data,
+    );
+    // await trackAnalytics(
+    //     label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
+    final value =
+        lookupAttr == LookupAttribute.activityId ? activity.id! : lookupValue!;
+    final _reactions = getReactions(value, reaction);
     final reactionPath = _reactions.getReactionPath(reaction);
     final indexPath = _reactions
         .indexWhere((r) => r.id! == reaction.id); //TODO: handle null safety
 
-    final childrenCounts = reactionPath.childrenCounts.unshiftByKind(kind);
-    final latestChildren =
+    final reactionCounts = reactionPath.childrenCounts.unshiftByKind(kind);
+    final latestReactions =
         reactionPath.latestChildren.unshiftByKind(kind, childReaction);
-    final ownChildren =
+    final ownReactions =
         reactionPath.ownChildren.unshiftByKind(kind, childReaction);
 
     final updatedReaction = reactionPath.copyWith(
-      ownChildren: ownChildren,
-      latestChildren: latestChildren,
-      childrenCounts: childrenCounts,
+      ownChildren: ownReactions,
+      latestChildren: latestReactions,
+      childrenCounts: reactionCounts,
     );
 
-    // adds reaction to the rxstream
-    reactionsManager
-      ..unshiftById(activity.id!, childReaction)
-      ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
+    // adds reaction to the stream
 
+    reactionsManager
+      ..unshiftById(reaction.id!, childReaction)
+      ..update(
+          value,
+          _reactions //TODO: handle null safety
+              .updateIn(updatedReaction, indexPath));
     return childReaction;
   }
 
@@ -365,34 +378,43 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   Future<void> onRemoveChildReaction({
     required String kind,
     required GenericEnrichedActivity activity,
+    String? lookupValue,
+    LookupAttribute lookupAttr = LookupAttribute.activityId,
     required Reaction childReaction,
     required Reaction parentReaction,
   }) async {
     await client.reactions.delete(childReaction.id!);
-    final _reactions = getReactions(activity.id!, parentReaction);
-
+    // await trackAnalytics(
+    //     label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
+    final value =
+        lookupAttr == LookupAttribute.activityId ? activity.id! : lookupValue!;
+    final _reactions = getReactions(value, parentReaction);
     final reactionPath = _reactions.getReactionPath(parentReaction);
-
     final indexPath = _reactions.indexWhere(
         (r) => r.id! == parentReaction.id); //TODO: handle null safety
 
-    final childrenCounts =
+    final reactionCounts =
         reactionPath.childrenCounts.unshiftByKind(kind, ShiftType.decrement);
-    final latestChildren = reactionPath.latestChildren
+    final latestReactions = reactionPath.latestChildren
         .unshiftByKind(kind, childReaction, ShiftType.decrement);
-    final ownChildren = reactionPath.ownChildren
+    final ownReactions = reactionPath.ownChildren
         .unshiftByKind(kind, childReaction, ShiftType.decrement);
 
     final updatedReaction = reactionPath.copyWith(
-      ownChildren: ownChildren,
-      latestChildren: latestChildren,
-      childrenCounts: childrenCounts,
+      ownChildren: ownReactions,
+      latestChildren: latestReactions,
+      childrenCounts: reactionCounts,
     );
 
-    // remove reaction from rxstream
+    // adds reaction to the stream
+
     reactionsManager
-      ..unshiftById(activity.id!, childReaction, ShiftType.decrement)
-      ..update(activity.id!, _reactions.updateIn(updatedReaction, indexPath));
+      ..unshiftById(value, childReaction, ShiftType.decrement)
+      ..update(
+          value,
+          _reactions //TODO: handle null safety
+              .updateIn(updatedReaction, indexPath));
+    // return childReaction;
   }
 
   /// {@template onRemoveReaction}
