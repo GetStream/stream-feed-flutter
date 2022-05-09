@@ -23,7 +23,7 @@ class MediaUri extends Equatable {
   ///
   /// Useful when we can't guess the MediaType (i.e. MediaType.other)
   /// and you want to act accordingly.
-  String get fileExt => uri.pathSegments.last.split('.').last;
+  String get fileExt => uri.pathSegments.last.split('.').last.toLowerCase();
 
   /// Checks the [url] for specific file extensions and returns the
   /// appropriate [MediaType].
@@ -41,7 +41,7 @@ class MediaUri extends Equatable {
         return MediaType.audio;
       } else if (fileExt == 'wav') {
         return MediaType.audio;
-      } else if (fileExt == 'mp4') {
+      } else if (fileExt == 'mp4' || fileExt == 'mov') {
         return MediaType.video;
       } else if (fileExt == 'pdf') {
         return MediaType.pdf;
