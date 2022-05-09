@@ -226,7 +226,7 @@ typedef OnRetryUpload = void Function(AttachmentFile file);
 /// ```
 /// {@endtemplate}
 typedef MediaPreviewBuilder = Widget Function(
-    {required AttachmentFile file, required MediaType mediaType});
+    AttachmentFile file, MediaType mediaType);
 
 /// {@template enrichedActivity}
 ///
