@@ -196,6 +196,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     required String object,
     String? userId,
     List<FeedId>? to,
+    DateTime? time
   }) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
@@ -203,6 +204,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
       object: object,
       extraData: data,
       to: to,
+      time: time,
     );
 
     final flatFeed = client.flatFeed(feedGroup, userId);
