@@ -140,7 +140,7 @@ class ImagePreview extends StatelessWidget {
     required this.file,
     required this.mediaType,
   })  : assert(mediaType == MediaType.image || mediaType == MediaType.gif,
-            '''we only support images out of the box, please override onMediaPreview callback'''),
+            '''we only support images out of the box, please override mediaPreviewBuilder callback'''),
         super(key: key);
 
   final AttachmentFile file;
@@ -189,12 +189,11 @@ class UploadSuccessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
-      mediaPreview:
-          mediaPreviewBuilder?.call(file: file, mediaType: mediaType) ??
-              ImagePreview(
-                file: file,
-                mediaType: mediaType,
-              ),
+      mediaPreview: mediaPreviewBuilder?.call(file, mediaType) ??
+          ImagePreview(
+            file: file,
+            mediaType: mediaType,
+          ),
       stateIconPosition: stateIconPosition,
       stateIcon: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -272,12 +271,12 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
       stateIconPosition: widget.stateIconPosition,
-      mediaPreview: widget.mediaPreviewBuilder
-              ?.call(file: widget.file, mediaType: widget.mediaType) ??
-          ImagePreview(
-            file: widget.file,
-            mediaType: widget.mediaType,
-          ),
+      mediaPreview:
+          widget.mediaPreviewBuilder?.call(widget.file, widget.mediaType) ??
+              ImagePreview(
+                file: widget.file,
+                mediaType: widget.mediaType,
+              ),
       stateIcon: _isHover
           ? InkWell(
               onTap: () {
@@ -327,9 +326,8 @@ class UploadFailedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FileUploadStateIcon(
       stateIconPosition: stateIconPosition,
-      mediaPreview:
-          mediaPreviewBuilder?.call(file: file, mediaType: mediaType) ??
-              ImagePreview(file: file, mediaType: mediaType),
+      mediaPreview: mediaPreviewBuilder?.call(file, mediaType) ??
+          ImagePreview(file: file, mediaType: mediaType),
       stateIcon: GestureDetector(
         behavior: HitTestBehavior.translucent,
         child: const Icon(Icons.refresh),
