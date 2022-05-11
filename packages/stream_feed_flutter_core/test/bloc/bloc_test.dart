@@ -123,13 +123,18 @@ void main() {
     });
 
     test('onAddReaction', () async {
-      final controller = ActivitiesManager();
+      final activitiesManager = ActivitiesManager();
       const addedReaction = Reaction(id: '1');
       // ignore: cascade_invocations
-      controller.init(feedGroup);
-      bloc.activitiesManager = controller;
+      activitiesManager.init(feedGroup);
+      bloc = GenericFeedBloc(
+        client: mockClient,
+        activitiesManager: activitiesManager,
+        reactionsManager: mockReactionsManager,
+      );
+      // bloc.activitiesManager = controller;
       // ignore: cascade_invocations
-      bloc.reactionsManager = mockReactionsManager;
+      // bloc.reactionsManager = mockReactionsManager;
       expect(bloc.activitiesManager.hasValue(feedGroup), true);
       when(() => mockReactionsManager.getReactions(activityId))
           .thenAnswer((_) => reactions);

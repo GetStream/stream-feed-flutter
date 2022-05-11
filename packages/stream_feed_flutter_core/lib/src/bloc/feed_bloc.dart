@@ -10,28 +10,46 @@ import 'package:stream_feed_flutter_core/src/bloc/reactions_manager.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
 import 'package:stream_feed_flutter_core/src/upload/upload_controller.dart';
 
+@immutable
 class FeedBloc extends GenericFeedBloc<User, String, String, String> {
   FeedBloc({
     required StreamFeedClient client,
     StreamAnalytics? analyticsClient,
     UploadController? uploadController,
+    ActivitiesManager<User, String, String, String>? activitiesManager,
+    GroupedActivitiesManager<User, String, String, String>?
+        groupedActivitiesManager,
+    ReactionsManager? reactionsManager,
   }) : super(
-            client: client,
-            analyticsClient: analyticsClient,
-            uploadController: uploadController);
+          client: client,
+          analyticsClient: analyticsClient,
+          uploadController: uploadController,
+          activitiesManager: activitiesManager,
+          groupedActivitiesManager: groupedActivitiesManager,
+          reactionsManager: reactionsManager,
+        );
 }
 
 /// The generic version of `FeedBloc`.
 ///
 /// {@macro feedBloc}
 /// {@macro genericParameters}
+@immutable
 class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// {@macro feedBloc}
   GenericFeedBloc({
     required this.client,
     this.analyticsClient,
     UploadController? uploadController,
-  }) : uploadController = uploadController ?? UploadController(client);
+    ActivitiesManager<A, Ob, T, Or>? activitiesManager,
+    GroupedActivitiesManager<A, Ob, T, Or>? groupedActivitiesManager,
+    ReactionsManager? reactionsManager,
+  })  : uploadController = uploadController ?? UploadController(client),
+        activitiesManager =
+            activitiesManager ?? ActivitiesManager<A, Ob, T, Or>(),
+        groupedActivitiesManager = groupedActivitiesManager ??
+            GroupedActivitiesManager<A, Ob, T, Or>(),
+        reactionsManager = reactionsManager ?? ReactionsManager();
 
   /// The underlying client instance
   final StreamFeedClient client;
@@ -54,21 +72,22 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   ///    uploadController: uploadController,
   /// );
   /// ```
-  late UploadController uploadController;
+  late final UploadController uploadController;
 
   /// Manager for activities.
+  /// This is only used internally or for testing.
   @visibleForTesting
-  late ActivitiesManager<A, Ob, T, Or> activitiesManager =
-      ActivitiesManager<A, Ob, T, Or>();
+  late final ActivitiesManager<A, Ob, T, Or> activitiesManager;
 
   /// Manager for aggregated activities.
+  /// This is only used internally or for testing.
   @visibleForTesting
-  late GroupedActivitiesManager<A, Ob, T, Or> groupedActivitiesManager =
-      GroupedActivitiesManager<A, Ob, T, Or>();
+  late final GroupedActivitiesManager<A, Ob, T, Or> groupedActivitiesManager;
 
   /// Manager for reactions.
+  /// This is only used internally or for testing.
   @visibleForTesting
-  late ReactionsManager reactionsManager = ReactionsManager();
+  late final ReactionsManager reactionsManager;
 
   /* STREAMS */
 
@@ -189,15 +208,14 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// ```
   /// {@endtemplate}
 
-  Future<Activity> onAddActivity({
-    required String feedGroup,
-    Map<String, Object>? data,
-    required String verb,
-    required String object,
-    String? userId,
-    List<FeedId>? to,
-    DateTime? time
-  }) async {
+  Future<Activity> onAddActivity(
+      {required String feedGroup,
+      Map<String, Object>? data,
+      required String verb,
+      required String object,
+      String? userId,
+      List<FeedId>? to,
+      DateTime? time}) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
       verb: verb,
