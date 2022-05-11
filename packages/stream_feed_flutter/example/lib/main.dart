@@ -143,7 +143,8 @@ class MobileApp extends StatelessWidget {
       ),
       builder: (context, child) {
         return StreamFeed(
-          bloc: FeedBloc(client: client),
+          bloc:
+              FeedBloc(client: client, activitiesManager: ActivitiesManager()),
           child: child!,
         );
       },
