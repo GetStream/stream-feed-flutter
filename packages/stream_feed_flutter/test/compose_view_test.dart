@@ -43,7 +43,6 @@ void main() {
           },
           home: ComposeView(
             textEditingController: TextEditingController(),
-            feedGroup: 'user',
             parentActivity: GenericEnrichedActivity(
               id: activityId,
               object: 'test',
@@ -109,7 +108,6 @@ void main() {
           },
         ),
       ),
-      feedGroup: 'user',
     ).debugFillProperties(builder);
 
     final description = builder.properties

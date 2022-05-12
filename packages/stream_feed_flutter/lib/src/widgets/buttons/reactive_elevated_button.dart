@@ -4,9 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 
-//ignore_for_file: cascade_invocations
-
-/// TODO: document me
 class ReactiveElevatedButton extends StatefulWidget {
   /// Builds a [ReactiveElevatedButton].
   const ReactiveElevatedButton({
@@ -17,13 +14,10 @@ class ReactiveElevatedButton extends StatefulWidget {
     this.buttonStyle,
   }) : super(key: key);
 
-  /// TODO: document me
   final TextEditingController textEditingController;
 
-  /// TODO: document me
   final OnSend onSend;
 
-  /// TODO: document me
   final String label;
 
   final ButtonStyle? buttonStyle;
@@ -38,6 +32,8 @@ class ReactiveElevatedButton extends StatefulWidget {
         'textEditingController', textEditingController));
     properties.add(ObjectFlagProperty<OnSend>.has('onSend', onSend));
     properties.add(StringProperty('label', label));
+    properties
+        .add(DiagnosticsProperty<ButtonStyle?>('buttonStyle', buttonStyle));
   }
 }
 

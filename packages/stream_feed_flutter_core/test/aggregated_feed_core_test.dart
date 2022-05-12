@@ -27,8 +27,8 @@ void main() {
     ];
     when(() => mockClient.aggregatedFeed(feedGroup))
         .thenReturn(mockAggregatedFeed);
-    when(() => mockAggregatedFeed.getPaginatedActivities())
-        .thenAnswer((_) async => PaginatedActivitiesGroup(
+    when(mockAggregatedFeed.getPaginatedActivities)
+        .thenAnswer((_) async => const PaginatedActivitiesGroup(
               next: nextParamsString,
               results: enrichedActivitiesFirstResult,
             ));
@@ -78,7 +78,6 @@ void main() {
   //     },
   //   );
 
-  //   // ignore: cascade_invocations
   //   flatFeedCore.debugFillProperties(builder);
 
   //   final description = builder.properties

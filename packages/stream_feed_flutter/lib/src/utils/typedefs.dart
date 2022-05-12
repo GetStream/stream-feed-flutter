@@ -28,21 +28,16 @@ typedef OnUserTap = void Function(User? user);
 typedef OnActivityTap = void Function(
     BuildContext context, EnrichedActivity activity);
 
-/// TODO: document me
 typedef ActivityFooterBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
 
-/// TODO: document me
 typedef ActivityContentBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
 
-/// TODO: document me
 typedef ActivityHeaderBuilder = Widget Function(
     BuildContext context, EnrichedActivity activity);
 
-/// TODO: document me
 typedef ReactionBuilder = Widget Function(
     BuildContext context, Reaction reaction);
 
-/// TODO: document me
 typedef OnSend = Function(String inputText);

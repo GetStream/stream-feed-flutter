@@ -38,7 +38,7 @@ class _MediaWidgetState extends State<MediaWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final mediaQuery = MediaQuery.of(context);
-    if (widget.attachment.runtimeType == MediaType.video) {
+    if (widget.attachment.mediaType == MediaType.video) {
       _getThumbnail = getTemporaryDirectory().then((result) {
         return VideoThumbnail.thumbnailFile(
           video: widget.attachment.url,

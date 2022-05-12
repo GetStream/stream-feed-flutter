@@ -4,8 +4,6 @@ import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_example/activity_item.dart';
 import 'package:stream_feed_example/extension.dart';
 
-// ignore_for_file: public_member_api_docs
-
 class TimelineScreen extends StatefulWidget {
   const TimelineScreen({
     required this.currentUser,
@@ -41,7 +39,6 @@ class _TimelineScreenState extends State<TimelineScreen> {
     if (!pullToRefresh) setState(() => _isLoading = true);
     final userFeed = _client.flatFeed('timeline', widget.currentUser.id);
     final data = await userFeed.getActivities();
-    final data2 = await userFeed.getEnrichedActivities();
     if (!pullToRefresh) _isLoading = false;
     setState(() => activities = data);
   }
@@ -50,7 +47,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _client = context.client;
-    // _listenToFeed();
+    _listenToFeed();
     _loadActivities();
   }
 

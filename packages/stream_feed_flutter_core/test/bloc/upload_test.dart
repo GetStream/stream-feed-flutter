@@ -7,7 +7,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 import '../mocks.dart';
 import '../utils.dart';
 
-main() {
+void main() {
   group('bloc', () {
     late MockClient mockClient;
     late MockImages mockImages;
@@ -177,8 +177,8 @@ main() {
         await expectLater(
             bloc.uploadsStream,
             emits({
-              audioAttachment:
-                  UploadProgress(totalBytes: 50, mediaType: MediaType.audio)
+              audioAttachment: const UploadProgress(
+                  totalBytes: 50, mediaType: MediaType.audio)
             }));
       });
 
@@ -198,7 +198,7 @@ main() {
             bloc.uploadsStream,
             emits({
               audioAttachment:
-                  UploadFailed(exception, mediaType: MediaType.audio)
+                  const UploadFailed(exception, mediaType: MediaType.audio)
             }));
       });
     });
@@ -308,8 +308,8 @@ main() {
         await expectLater(
             bloc.uploadsStream,
             emits({
-              attachment:
-                  UploadProgress(totalBytes: 50, mediaType: MediaType.image)
+              attachment: const UploadProgress(
+                  totalBytes: 50, mediaType: MediaType.image)
             }));
       });
 
@@ -327,7 +327,8 @@ main() {
         await expectLater(
             bloc.uploadsStream,
             emits({
-              attachment: UploadFailed(exception, mediaType: MediaType.image)
+              attachment:
+                  const UploadFailed(exception, mediaType: MediaType.image)
             }));
       });
     });

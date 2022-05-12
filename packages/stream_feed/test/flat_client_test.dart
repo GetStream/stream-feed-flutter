@@ -23,7 +23,7 @@ void main() {
     final client = FlatFeed(feedId, api, userToken: token);
 
     test('personalizedFeed', () async {
-      final limit = Default.limit;
+      const limit = Default.limit;
       const offset = Default.offset;
       final marker = Default.marker;
       final filter = Default.filter;
@@ -38,7 +38,8 @@ void main() {
       };
 
       when(() => api.personalizedFeed(token, options)).thenAnswer((_) async =>
-          PersonalizedFeed(limit: limit, offset: offset, version: 'whatever'));
+          const PersonalizedFeed(
+              limit: limit, offset: offset, version: 'whatever'));
       await client.personalizedFeed(
           limit: limit,
           offset: offset,

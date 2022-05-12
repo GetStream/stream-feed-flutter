@@ -34,7 +34,6 @@ void main() {
         callback: (data) => callbackInvoked = true,
       );
 
-      // ignore: cascade_invocations
       subscription.withChannel(
         (channel, data) => withChannelCallbackInvoked = true,
       );

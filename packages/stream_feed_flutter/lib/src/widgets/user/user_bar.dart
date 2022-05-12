@@ -9,8 +9,6 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/src/widgets/user/username.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Displays the user's name, profile picture, and a timestamp at which the
 /// user posted the message.
 class UserBar extends StatelessWidget {
@@ -164,10 +162,10 @@ class UserBar extends StatelessWidget {
     properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
     properties.add(DiagnosticsProperty<User>('user', user));
     properties.add(DiagnosticsProperty<bool>('showReactedBy', showReactedBy));
+    properties.add(StringProperty('feedGroup', feedGroup));
   }
 }
 
-/// TODO: document me
 class ReactedBy extends StatelessWidget {
   /// Builds a [ReactedBy].
   const ReactedBy({
@@ -176,10 +174,8 @@ class ReactedBy extends StatelessWidget {
     required this.handleOrUsername,
   }) : super(key: key);
 
-  /// TODO: document me
   final Widget icon;
 
-  /// TODO: document me
   final String handleOrUsername;
 
   @override
@@ -206,7 +202,6 @@ class ReactedBy extends StatelessWidget {
   }
 }
 
-/// TODO: document me
 class ReactionByIcon extends StatelessWidget {
   /// Builds a [ReactionByIcon].
   const ReactionByIcon({
@@ -214,7 +209,6 @@ class ReactionByIcon extends StatelessWidget {
     required this.kind,
   }) : super(key: key);
 
-  /// TODO: document me
   final String kind;
 
   @override

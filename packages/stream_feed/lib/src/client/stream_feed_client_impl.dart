@@ -66,7 +66,7 @@ class StreamFeedClientImpl with EquatableMixin implements StreamFeedClient {
         case Runner.client:
           if (userToken == null) {
             throw AssertionError(
-              '`userToken` must be provided while running on client-side'
+              '`userToken` must be provided while running on client-side '
               'please make sure to call client.setUser',
             );
           }

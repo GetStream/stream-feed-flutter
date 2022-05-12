@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
 
 import 'package:stream_feed/stream_feed.dart';
@@ -15,7 +17,8 @@ Future<void> main() async {
 
   final chris = clientWithSecret.flatFeed('user', 'chris');
 
-  // Add an Activity; message is a custom field - tip: you can add unlimited custom fields!
+  // Add an Activity; message is a custom field
+  // Tip: you can add unlimited custom fields!
   final addedPicture = await chris.addActivity(
     const Activity(
       actor: 'chris',
@@ -26,7 +29,8 @@ Future<void> main() async {
     ),
   );
 
-  // Create a following relationship between Jack's "timeline" feed and Chris' "user" feed:
+  // Create a following relationship between Jack's "timeline" feed and Chris'
+  // "user" feed:
   final jack = clientWithSecret.flatFeed('timeline', 'jack');
   await jack.follow(chris);
 
@@ -256,17 +260,20 @@ Future<void> main() async {
   // await clientWithSecret.reactions
   //     .update(comment.id!, data: {'text': 'love it!'});
 
-// read bob's timeline and include most recent reactions to all activities and their total count
+// read bob's timeline and include most recent reactions to all activities and
+// their total count
   await clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
         flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
       );
 
-// read bob's timeline and include most recent reactions to all activities and her own reactions
+// read bob's timeline and include most recent reactions to all activities and
+// her own reactions
   await clientWithSecret.flatFeed('timeline', 'bob').getEnrichedActivities(
         flags: EnrichmentFlags().withRecentReactions().withReactionCounts(),
       );
 
-// adds a comment reaction to the activity and notifies Thierry's notification feed
+// adds a comment reaction to the activity and notifies Thierry's notification
+// feed
   await clientWithSecret.reactions.add(
       'comment', '5de5e4ba-add2-11eb-8529-0242ac130003',
       data: {'text': '@thierry great post!'},
@@ -284,7 +291,8 @@ Future<void> main() async {
   //   entryId: 'cheese-burger',
   // );//will throw an error if entry-id already exists
 
-// if you don't have an id on your side, just use null as the ID and Stream will generate a unique ID
+// if you don't have an id on your side, just use null as the ID and Stream will
+// generate a unique ID
   final entry = await clientWithSecret.collections
       .add('food', {'name': 'Cheese Burger', 'rating': '4 stars'});
   await clientWithSecret.collections.get('food', entry.id!);
@@ -305,10 +313,12 @@ Future<void> main() async {
     object: cheeseBurger.ref,
   ));
 
-// if we now read the feed, the activity we just added will include the entire full object
+// if we now read the feed, the activity we just added will include the entire
+// full object
   await user1.getEnrichedActivities();
 
-// we can then update the object and Stream will propagate the change to all activities
+// we can then update the object and Stream will propagate the change to all
+// activities
   await clientWithSecret.collections.update(cheeseBurger.copyWith(data: {
     'name': 'Amazing Cheese Burger',
     'ingredients': ['cheese', 'burger', 'bread', 'lettuce', 'tomato'],
@@ -326,7 +336,8 @@ Future<void> main() async {
     'gender': 'male',
   });
 
-// Since we know their IDs we can create references to both without reading from APIs
+// Since we know their IDs we can create references to both without reading from
+// APIs
   final cheeseBurgerRef =
       clientWithSecret.collections.entry('food', 'cheese-burger').ref;
   final johnDoeRef = clientWithSecret.user('john-doe').ref;

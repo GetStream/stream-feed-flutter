@@ -1,4 +1,4 @@
-import 'grammar.dart' as grammar;
+import 'package:faye_dart/src/grammar.dart' as grammar;
 
 class FayeClientError {
   const FayeClientError({

@@ -1,4 +1,3 @@
-
 # This is the default analysis_options.yaml for all packages and examples
 # If a package needs specific rules, create the analysis_options.yaml on it
 # include this file, like:
@@ -11,6 +10,8 @@ analyzer:
     - lib/**/*.g.dart
     - lib/**/*.freezed.dart
     - example/main.dart
+  errors:
+    todo: ignore
 
 linter:
   rules:
@@ -60,7 +61,7 @@ linter:
     - await_only_futures
     - camel_case_extensions
     - camel_case_types
-    - cascade_invocations
+    # - cascade_invocations
 
     - constant_identifier_names
     - curly_braces_in_flow_control_structures

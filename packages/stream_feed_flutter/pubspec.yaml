@@ -5,7 +5,7 @@ homepage: https://getstream.io/
 publish_to: none
 
 environment:
-  sdk: '>=2.13.0 <3.0.0'
+  sdk: ">=2.13.0 <3.0.0"
 
 dependencies:
   animations: ^2.0.2
@@ -25,15 +25,15 @@ dependencies:
   video_thumbnail: ^0.4.3
 
 dependency_overrides:
-  photo_view: 
+  photo_view:
     git:
       url: https://github.com/bluefireteam/photo_view
       ref: 8156907eecfa812b181a5a729d790f6d399f311b
-      
+
 dev_dependencies:
   golden_toolkit: ^0.13.0
-  nested: ^1.0.0
   mocktail_image_network: ^0.3.1
+  nested: ^1.0.0
   test: ^1.14.4
 
 flutter:

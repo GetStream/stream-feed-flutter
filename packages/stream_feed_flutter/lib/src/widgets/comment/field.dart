@@ -4,8 +4,6 @@ import 'package:stream_feed_flutter/src/widgets/comment/button.dart';
 import 'package:stream_feed_flutter/src/widgets/comment/textarea.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template comment_field}
 /// A field for adding comments to a feed.
 ///

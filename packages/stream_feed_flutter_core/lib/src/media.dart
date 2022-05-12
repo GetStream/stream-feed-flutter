@@ -145,5 +145,6 @@ extension ExtraDataX on Map<String, Object?> {
       return List<Attachment>.from(
           (this['attachments']! as List).map((x) => Attachment.fromJson(x)));
     }
+    return null;
   }
 }

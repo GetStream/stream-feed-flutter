@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -9,6 +10,7 @@ class ClientProvider extends InheritedWidget {
     required Widget child,
   }) : super(key: key, child: child);
 
+  /// Access the [StreamFeedClient] from the provider to perform API actions.
   final StreamFeedClient client;
 
   static ClientProvider of(BuildContext context) {
@@ -20,5 +22,11 @@ class ClientProvider extends InheritedWidget {
   @override
   bool updateShouldNotify(ClientProvider old) {
     return old.child != child || old.client != client;
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<StreamFeedClient>('client', client));
   }
 }

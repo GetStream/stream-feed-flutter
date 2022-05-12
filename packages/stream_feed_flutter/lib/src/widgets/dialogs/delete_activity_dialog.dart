@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// An alert dialog that prompts the user to delete the current activity.
 class DeleteActivityDialog extends StatelessWidget {
   /// Builds a [DeleteActivityDialog].

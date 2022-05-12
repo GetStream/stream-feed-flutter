@@ -4,10 +4,11 @@ import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 
-/// A simplified class that allows fetching a list of enriched activities (aggregated)
-/// while exposing UI builders.
+/// A simplified class that allows fetching a list of enriched activities
+/// (aggregated) while exposing UI builders.
 ///
-/// [AggregatedFeedCore] extends [GenericAggregatedFeedCore] with default types of:
+/// [AggregatedFeedCore] extends [GenericAggregatedFeedCore] with default types
+/// of:
 /// - [User], [String], [String], [String].
 ///
 /// Under most circumstances [AggregatedFeedCore] is all you need to use.
@@ -45,8 +46,8 @@ class AggregatedFeedCore
         );
 }
 
-/// [GenericAggregatedFeedCore] is a simplified class that allows fetching a list of
-/// enriched activities (aggregated) while exposing UI builders.
+/// [GenericAggregatedFeedCore] is a simplified class that allows fetching a
+/// list of enriched activities (aggregated) while exposing UI builders.
 ///
 /// {@macro AggregatedFeedCore}
 /// {@macro genericParameters}

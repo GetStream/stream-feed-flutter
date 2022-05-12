@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/theme/reaction_theme.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-// ignore_for_file: cascade_invocations
 
 /// {@template reaction_button}
 /// A widget that can be used to trigger a reaction.
@@ -136,22 +135,16 @@ class ReactionToggleIcon extends StatelessWidget {
   /// The group/slug of the feed
   final String feedGroup;
 
-  /// TODO: document me
   final EnrichedActivity activity;
 
-  /// TODO: document me
   final Reaction? reaction;
 
-  /// TODO: document me
   final String? userId;
 
-  /// TODO: document me
   final Map<String, Object>? data;
 
-  /// TODO: document me
   final List<FeedId>? targetFeeds;
 
-  /// TODO: document me
   final Color? hoverColor;
 
   bool get alreadyReacted => ownReactions != null && ownReactions!.isNotEmpty;
@@ -227,7 +220,6 @@ class ReactionToggleIcon extends StatelessWidget {
   }
 }
 
-/// TODO: document me
 class ReactionIcon extends StatelessWidget {
   /// Builds a [ReactionIcon].
   const ReactionIcon({
@@ -238,16 +230,12 @@ class ReactionIcon extends StatelessWidget {
     this.hoverColor,
   }) : super(key: key);
 
-  /// TODO: document me
   final int? count;
 
-  /// TODO: document me
   final Widget icon;
 
-  /// TODO: document me
   final VoidCallback? onTap;
 
-  /// TODO: document me
   final Color? hoverColor;
 
   @override

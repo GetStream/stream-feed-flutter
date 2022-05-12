@@ -112,10 +112,10 @@ void main() {
 
         expect(find.text('1 of 3'), findsOneWidget);
         await tester.drag(find.byType(PageView), const Offset(-500, 0));
-        await tester.pump(Duration(milliseconds: 300));
+        await tester.pump(const Duration(milliseconds: 300));
         expect(find.text('2 of 3'), findsOneWidget);
         await tester.drag(find.byType(PageView), const Offset(-1000, 0));
-        await tester.pump(Duration(milliseconds: 300));
+        await tester.pump(const Duration(milliseconds: 300));
         expect(find.text('3 of 3'), findsOneWidget);
       });
     });

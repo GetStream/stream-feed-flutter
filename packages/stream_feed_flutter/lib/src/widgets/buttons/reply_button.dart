@@ -5,8 +5,6 @@ import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter/src/widgets/pages/compose_view.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template reply_button}
 /// A reaction button that displays a post icon.
 ///
@@ -24,10 +22,8 @@ class ReplyButton extends StatelessWidget {
     this.nameJsonKey = 'name',
   }) : super(key: key);
 
-  /// TODO: document me
   final String handleJsonKey;
 
-  /// TODO: document me
   final String nameJsonKey;
 
   /// The group or slug of the feed to post to.
@@ -36,13 +32,11 @@ class ReplyButton extends StatelessWidget {
   /// The activity to post to the feed.
   final EnrichedActivity activity;
 
-  /// TODO: document me
   final Reaction? reaction;
 
   /// The size of the icon to display.
   final double iconSize;
 
-  /// TODO: document me
   int? get count =>
       reaction?.childrenCounts?['comment'] ??
       activity.reactionCounts?['comment'];

@@ -41,7 +41,6 @@ void main() {
       data: OgCardThemeData(),
       child: SizedBox(),
     );
-    // ignore: cascade_invocations
     ogCardTheme.debugFillProperties(builder);
 
     final description = builder.properties
@@ -52,7 +51,7 @@ void main() {
     expect(
       description,
       [
-        'data: OgCardThemeData#00000(titleTextStyle: null, descriptionTextStyle: null)',
+        '''data: OgCardThemeData#00000(titleTextStyle: null, descriptionTextStyle: null)''',
       ],
     );
   });
@@ -74,8 +73,6 @@ void main() {
       ),
     );
 
-    late BuildContext navigatorContext;
-
     MaterialApp buildFrame() {
       return MaterialApp(
         home: Scaffold(
@@ -85,8 +82,6 @@ void main() {
             ),
             child: Builder(
               builder: (context) {
-                navigatorContext = context;
-
                 return ElevatedButton(
                   child:
                       const Text('push wrapped'), //TODO(sacha): push unwrapped

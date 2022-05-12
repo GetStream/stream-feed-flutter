@@ -10,7 +10,6 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       final icon = StreamSvgIcon.loveActive();
 
-      // ignore: cascade_invocations
       icon.debugFillProperties(builder);
 
       final description = builder.properties

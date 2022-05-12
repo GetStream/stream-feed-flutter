@@ -19,13 +19,15 @@ class EventEmitter<T> {
   /// Mapping of events to a list of event handlers
   late final _events = <String, LinkedList<_ListenerEntry<T>>>{};
 
-  /// A callback for error reporting if one of the listeners added with [bind] throws.
+  /// A callback for error reporting if one of the listeners added with [bind]
+  /// throws.
   ///
   /// This callback should not throw.
   ///
   /// It exists for error reporting, and should not be used otherwise.
   ///
-  /// If no [onError] is specified, fallbacks to [Zone.current.handleUncaughtError].
+  /// If no [onError] is specified, fallbacks to
+  /// [Zone.current.handleUncaughtError].
   ErrorListener? onError;
 
   bool _mounted = true;
@@ -71,7 +73,9 @@ class EventEmitter<T> {
         }
       }
     }
-    for (final entry in removables) listeners.remove(entry);
+    for (final entry in removables) {
+      listeners.remove(entry);
+    }
     if (didThrow) throw Error();
   }
 
@@ -123,7 +127,7 @@ class EventEmitter<T> {
     assert(_debugIsMounted(), '');
     final listeners = _events[event];
     if (listeners == null) {
-      throw "Event not available";
+      throw 'Event not available';
     }
     return listeners.isNotEmpty;
   }

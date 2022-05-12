@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/default/default.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
@@ -7,17 +8,11 @@ import 'package:stream_feed_flutter/src/widgets/activity/activity.dart';
 import 'package:stream_feed_flutter/src/widgets/dialogs/comment.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
-/// TODO: document me
 enum TransitionType {
-  /// TODO: document me
   material,
 
-  /// TODO: document me
   cupertino,
 
-  /// TODO: document me
   sharedAxisTransition,
 }
 
@@ -113,10 +108,8 @@ class FlatFeedListView extends StatefulWidget {
   /// The ranking to use for the request
   final String? ranking;
 
-  /// TODO: document me
   final String handleJsonKey;
 
-  /// TODO: document me
   final String nameJsonKey;
 
   final String? userId;
@@ -125,6 +118,37 @@ class FlatFeedListView extends StatefulWidget {
 
   @override
   State<FlatFeedListView> createState() => _FlatFeedListViewState();
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+        DiagnosticsProperty<ScrollPhysics?>('scrollPhysics', scrollPhysics));
+    properties.add(StringProperty('userId', userId));
+    properties.add(StringProperty('nameJsonKey', nameJsonKey));
+    properties.add(StringProperty('handleJsonKey', handleJsonKey));
+    properties.add(StringProperty('ranking', ranking));
+    properties.add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags));
+    properties.add(DiagnosticsProperty<Filter?>('filter', filter));
+    properties.add(StringProperty('session', session));
+    properties.add(IntProperty('offset', offset));
+    properties.add(IntProperty('limit', limit));
+    properties
+        .add(EnumProperty<TransitionType>('transitionType', transitionType));
+    properties.add(
+        ObjectFlagProperty<OnActivityTap?>.has('onActivityTap', onActivityTap));
+    properties.add(ObjectFlagProperty<ActivityHeaderBuilder?>.has(
+        'activityHeaderBuilder', activityHeaderBuilder));
+    properties.add(ObjectFlagProperty<ActivityContentBuilder?>.has(
+        'activityContentBuilder', activityContentBuilder));
+    properties.add(ObjectFlagProperty<ActivityFooterBuilder?>.has(
+        'activityFooterBuilder', activityFooterBuilder));
+    properties.add(StringProperty('feedGroup', feedGroup));
+    properties.add(ObjectFlagProperty<OnUserTap?>.has('onUserTap', onUserTap));
+    properties.add(
+        ObjectFlagProperty<OnMentionTap?>.has('onMentionTap', onMentionTap));
+    properties.add(
+        ObjectFlagProperty<OnHashtagTap?>.has('onHashtagTap', onHashtagTap));
+  }
 }
 
 class _FlatFeedListViewState extends State<FlatFeedListView> {
@@ -167,7 +191,7 @@ class _FlatFeedListViewState extends State<FlatFeedListView> {
           itemCount: activities.length,
           physics: widget.scrollPhysics,
           itemBuilder: (context, index) {
-            bool shouldLoadMore = activities.length - 3 == index;
+            final shouldLoadMore = activities.length - 3 == index;
             if (shouldLoadMore) {
               _loadMore();
             }

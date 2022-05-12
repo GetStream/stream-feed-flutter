@@ -1,20 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class Message with EquatableMixin {
-  String? id;
-  final String channel;
-  String? clientId;
-  String? connectionType;
-  String? version;
-  String? minimumVersion;
-  List<String>? supportedConnectionTypes;
-  Advice? advice;
-  bool? successful;
-  String? subscription;
-  Map<String, dynamic>? data;
-  Map<String, Object>? ext;
-  String? error;
-
   Message(
     this.channel, {
     this.clientId,
@@ -29,26 +15,6 @@ class Message with EquatableMixin {
     this.data,
     this.error,
   });
-
-  Map<String, Object?> toJson() {
-    final result = <String, Object?>{};
-    if (id != null) result['id'] = id;
-    if (clientId != null) result['clientId'] = clientId;
-    if (data != null) result['data'] = data;
-    result['channel'] = channel;
-    if (connectionType != null) result['connectionType'] = connectionType;
-    if (version != null) result['version'] = version;
-    if (minimumVersion != null) result['minimumVersion'] = minimumVersion;
-    if (supportedConnectionTypes != null)
-      result['supportedConnectionTypes'] = supportedConnectionTypes;
-    if (advice != null) result['advice'] = advice;
-    if (successful != null) result['successful'] = successful;
-    if (subscription != null) result['subscription'] = subscription;
-    if (ext != null) result['ext'] = ext;
-    if (version != null) result['error'] = error;
-    return result;
-  }
-
   factory Message.fromJson(Map<String, Object?> json) {
     final advice = json['advice'] as Map<String, dynamic>?;
     final message = Message(
@@ -69,12 +35,45 @@ class Message with EquatableMixin {
     )..id = json['id'] as String?;
     return message;
   }
+  String? id;
+  final String channel;
+  String? clientId;
+  String? connectionType;
+  String? version;
+  String? minimumVersion;
+  List<String>? supportedConnectionTypes;
+  Advice? advice;
+  bool? successful;
+  String? subscription;
+  Map<String, dynamic>? data;
+  Map<String, Object>? ext;
+  String? error;
+
+  Map<String, Object?> toJson() {
+    final result = <String, Object?>{};
+    if (id != null) result['id'] = id;
+    if (clientId != null) result['clientId'] = clientId;
+    if (data != null) result['data'] = data;
+    result['channel'] = channel;
+    if (connectionType != null) result['connectionType'] = connectionType;
+    if (version != null) result['version'] = version;
+    if (minimumVersion != null) result['minimumVersion'] = minimumVersion;
+    if (supportedConnectionTypes != null) {
+      result['supportedConnectionTypes'] = supportedConnectionTypes;
+    }
+    if (advice != null) result['advice'] = advice;
+    if (successful != null) result['successful'] = successful;
+    if (subscription != null) result['subscription'] = subscription;
+    if (ext != null) result['ext'] = ext;
+    if (version != null) result['error'] = error;
+    return result;
+  }
 
   @override
   List<Object?> get props => [id, channel, clientId];
 
   @override
-  toString() => '${toJson()}';
+  String toString() => '${toJson()}';
 }
 
 class Advice extends Equatable {
@@ -83,6 +82,11 @@ class Advice extends Equatable {
     required this.interval,
     this.timeout,
   });
+  factory Advice.fromJson(Map<String, dynamic> json) => Advice(
+        reconnect: json['reconnect'],
+        interval: json['interval'],
+        timeout: json['timeout'],
+      );
 
   final String reconnect;
   final int interval;
@@ -92,16 +96,10 @@ class Advice extends Equatable {
   static const handshake = 'handshake';
   static const retry = 'retry';
 
-  factory Advice.fromJson(Map<String, dynamic> json) => Advice(
-        reconnect: json["reconnect"] == null ? null : json["reconnect"],
-        interval: json["interval"] == null ? null : json["interval"],
-        timeout: json["timeout"] == null ? null : json["timeout"],
-      );
-
   Map<String, Object?> toJson() => {
-        "reconnect": reconnect,
-        "interval": interval,
-        "timeout": timeout,
+        'reconnect': reconnect,
+        'interval': interval,
+        'timeout': timeout,
       };
 
   @override

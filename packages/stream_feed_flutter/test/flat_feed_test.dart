@@ -22,7 +22,6 @@ void main() {
         const limitField = '10';
         const nextParamsString =
             '/api/v1.0/enrich/feed/user/gordon/?api_key=$keyField&id_lt=$idLtField&limit=$limitField';
-        final nextParams = parseNext(nextParamsString);
 
         // FIRST RESULT
 
@@ -31,7 +30,7 @@ void main() {
           EnrichedActivity(id: '2')
         ];
         when(() => mockClient.flatFeed(feedGroup)).thenReturn(mockFeed);
-        when(() => mockFeed.getPaginatedEnrichedActivities()).thenAnswer(
+        when(mockFeed.getPaginatedEnrichedActivities).thenAnswer(
           (_) {
             return Future.value(
               const PaginatedActivities(
@@ -50,9 +49,7 @@ void main() {
                   analyticsClient: mockStreamAnalytics,
                   client: mockClient,
                 ),
-                child: const FlatFeedListView(
-                  feedGroup: feedGroup,
-                ),
+                child: const FlatFeedListView(),
               ),
             ),
           ),

@@ -149,7 +149,6 @@ class ImagePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -387,5 +386,12 @@ class FileUploadStateIcon extends StatelessWidget {
           )
       ],
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(EnumProperty<StateIconPosition>(
+        'stateIconPosition', stateIconPosition));
   }
 }

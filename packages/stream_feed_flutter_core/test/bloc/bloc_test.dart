@@ -125,16 +125,12 @@ void main() {
     test('onAddReaction', () async {
       final activitiesManager = ActivitiesManager();
       const addedReaction = Reaction(id: '1');
-      // ignore: cascade_invocations
       activitiesManager.init(feedGroup);
       bloc = GenericFeedBloc(
         client: mockClient,
         activitiesManager: activitiesManager,
         reactionsManager: mockReactionsManager,
       );
-      // bloc.activitiesManager = controller;
-      // ignore: cascade_invocations
-      // bloc.reactionsManager = mockReactionsManager;
       expect(bloc.activitiesManager.hasValue(feedGroup), true);
       when(() => mockReactionsManager.getReactions(activityId))
           .thenAnswer((_) => reactions);
@@ -173,7 +169,6 @@ void main() {
       const reaction = Reaction(id: reactionId);
       controller.init(feedGroup);
       bloc.activitiesManager = controller;
-      // ignore: cascade_invocations
       bloc.reactionsManager = mockReactionsManager;
       when(() => mockReactionsManager.getReactions(activityId))
           .thenAnswer((_) => reactions);
@@ -232,7 +227,7 @@ void main() {
             limit: limit,
             kind: kind,
           )).thenAnswer(
-        (_) async => PaginatedReactions(
+        (_) async => const PaginatedReactions(
           next: nextParamsString,
           results: reactionsFirstResult,
         ),
@@ -293,8 +288,7 @@ void main() {
           )).thenAnswer(
         (_) {
           return Future.value(
-            const PaginatedReactions(
-                next: '', results: reactionsSecondResult, activity: null),
+            const PaginatedReactions(next: '', results: reactionsSecondResult),
           );
         },
       );
@@ -460,7 +454,7 @@ void main() {
       final controller = GroupedActivitiesManager()..init(feedGroup);
       bloc.groupedActivitiesManager = controller;
 
-      final enrichedActivity = Group<EnrichedActivity>(id: '1');
+      const enrichedActivity = Group<EnrichedActivity>(id: '1');
       when(() => mockAggregatedFeed.addActivity(activity))
           .thenAnswer((invocation) async => addedActivity);
 

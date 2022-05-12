@@ -9,8 +9,6 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 import 'mock.dart';
 
-// ignore_for_file: cascade_invocations
-
 void main() {
   testWidgets('ReactionListPage', (tester) async {
     final mockClient = MockStreamFeedClient();
@@ -145,15 +143,6 @@ void main() {
     const count = 1300;
     final inactiveIcon = StreamSvgIcon.loveInactive();
     final activeIcon = StreamSvgIcon.loveActive();
-    const foreignId = 'like:300';
-    const activityId = 'activityId';
-    const feedGroup = 'timeline:300';
-    const activity = GenericEnrichedActivity(
-      id: activityId,
-      foreignId: foreignId,
-    );
-    const reaction = Reaction(id: 'id', kind: kind, parent: activityId);
-    const userId = 'user:300';
 
     group('widget test', () {
       testWidgets('withoutOwnReactions: onAddChildReaction', (tester) async {
@@ -243,7 +232,6 @@ void main() {
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
 
-        const label = kind;
         when(() => mockClient.reactions).thenReturn(mockReactions);
         final controller = ReactionsManager();
         final now = DateTime.now();
@@ -260,16 +248,16 @@ void main() {
             'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
           }),
         );
-        final childReaction = Reaction(id: childId, kind: 'like');
+        const childReaction = Reaction(id: childId, kind: 'like');
         final parentReaction = Reaction(
           id: parentId,
           kind: 'comment',
           activityId: reactedActivity.id,
           childrenCounts: const {'like': 1},
-          latestChildren: {
+          latestChildren: const {
             'like': [childReaction]
           },
-          ownChildren: {
+          ownChildren: const {
             'like': [childReaction]
           },
         );
@@ -290,7 +278,7 @@ void main() {
               body: FeedProvider(
                 bloc: bloc,
                 child: ReactionToggleIcon(
-                  ownReactions: [childReaction],
+                  ownReactions: const [childReaction],
                   activity: reactedActivity,
                   hoverColor: Colors.lightBlue,
                   reaction: parentReaction,

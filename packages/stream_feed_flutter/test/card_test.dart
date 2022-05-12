@@ -26,11 +26,6 @@ void main() {
 
   testWidgets('Card', (tester) async {
     await mockNetworkImages(() async {
-      const title =
-          """'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'""";
-      const description =
-          '''Why choose one when you can wear both? These energizing pairings stand out from the crowd''';
-
       await tester.pumpWidget(
         MaterialApp(
           builder: (context, child) {
@@ -62,7 +57,6 @@ void main() {
     final builder = DiagnosticPropertiesBuilder();
     const activityCard = ActivityCard();
 
-    // ignore: cascade_invocations
     activityCard.debugFillProperties(builder);
 
     final description = builder.properties

@@ -89,18 +89,18 @@ void main() {
           },
           home: Scaffold(
             body: ActivityContent(
-              activity: GenericEnrichedActivity(
+              activity: const GenericEnrichedActivity(
                 id: '1',
                 extraData: {
-                  "attachments": [
+                  'attachments': [
                     {
-                      "url":
+                      'url':
                           'https://www.rollingstone.com/wp-content/uploads/2018/08/GettyImages-1020376858.jpg',
-                      "type": "image"
+                      'type': 'image'
                     }
                   ]
                 },
-                actor: const User(
+                actor: User(
                   data: {
                     'name': 'Nora Ferguson',
                     'profile_image':
@@ -214,7 +214,6 @@ void main() {
         ),
       );
 
-      // ignore: cascade_invocations
       activityWidget.debugFillProperties(builder);
 
       final description = builder.properties
@@ -250,7 +249,6 @@ void main() {
         ),
       );
 
-      // ignore: cascade_invocations
       activityContent.debugFillProperties(builder);
 
       final description = builder.properties
@@ -286,7 +284,6 @@ void main() {
         ),
       );
 
-      // ignore: cascade_invocations
       activityFooter.debugFillProperties(builder);
 
       final description = builder.properties
@@ -323,7 +320,6 @@ void main() {
         ),
       );
 
-      // ignore: cascade_invocations
       activityHeader.debugFillProperties(builder);
 
       final description = builder.properties

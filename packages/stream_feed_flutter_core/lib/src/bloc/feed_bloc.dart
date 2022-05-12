@@ -236,7 +236,6 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
     final _activities = (getActivities(feedGroup) ?? []).toList();
 
-    // ignore: cascade_invocations
     _activities.insert(0, enrichedActivity);
 
     activitiesManager.add(feedGroup, _activities);
@@ -277,7 +276,6 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
     final _groupedActivities = (getGroupedActivities(feedGroup) ?? []).toList();
 
-    // ignore: cascade_invocations
     _groupedActivities.insert(0, enrichedGroupedActivity);
 
     groupedActivitiesManager.add(feedGroup, _groupedActivities);
@@ -305,7 +303,6 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   }) async {
     await client.flatFeed(feedGroup).removeActivityById(activityId);
     final _activities = getActivities(feedGroup) ?? [];
-    // ignore: cascade_invocations
     _activities.removeWhere((element) => element.id == activityId);
     activitiesManager.add(feedGroup, _activities);
   }
@@ -324,7 +321,6 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   }) async {
     await client.aggregatedFeed(feedGroup).removeActivityById(activityId);
     final _activities = getGroupedActivities(feedGroup) ?? [];
-    // ignore: cascade_invocations
     _activities.removeWhere((element) => element.id == activityId);
     groupedActivitiesManager.add(feedGroup, _activities);
   }

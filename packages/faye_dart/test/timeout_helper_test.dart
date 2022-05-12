@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'package:faye_dart/src/timeout_helper.dart';
 import 'package:test/test.dart';
 

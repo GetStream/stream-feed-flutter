@@ -42,7 +42,6 @@ void main() {
       data: UserBarThemeData(),
       child: SizedBox(),
     );
-    // ignore: cascade_invocations
     userBarTheme.debugFillProperties(builder);
 
     final description = builder.properties
@@ -53,7 +52,7 @@ void main() {
     expect(
       description,
       [
-        'data: UserBarThemeData#007db(avatarSize: null, usernameTextStyle: null, timestampTextStyle: null)',
+        '''data: UserBarThemeData#007db(avatarSize: null, usernameTextStyle: null, timestampTextStyle: null)''',
       ],
     );
   });
@@ -75,8 +74,6 @@ void main() {
       ),
     );
 
-    late BuildContext navigatorContext;
-
     MaterialApp buildFrame() {
       return MaterialApp(
         home: Scaffold(
@@ -86,8 +83,6 @@ void main() {
             ),
             child: Builder(
               builder: (context) {
-                navigatorContext = context;
-
                 return ElevatedButton(
                   child:
                       const Text('push wrapped'), //TODO(sacha): push unwrapped

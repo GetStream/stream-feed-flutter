@@ -4,7 +4,7 @@ import 'package:faye_dart/src/grammar.dart' as grammar;
 import 'package:faye_dart/src/message.dart';
 import 'package:faye_dart/src/subscription.dart';
 
-const event_message = 'message';
+const eventMessage = 'message';
 
 class Channel with EquatableMixin, EventEmitter<Message> {
   Channel(this.name);
@@ -81,14 +81,14 @@ extension ChannelMapX on Map<String, Channel> {
 
   void subscribe(String name, Subscription subscription) {
     final channel = putIfAbsent(name, () => Channel(name));
-    channel.bind(event_message, subscription);
+    channel.bind(eventMessage, subscription);
   }
 
   bool unsubscribe(String name, Subscription subscription) {
     final channel = this[name];
     if (channel == null) return false;
-    channel.unbind(event_message, subscription);
-    if (!channel.hasListeners(event_message)) {
+    channel.unbind(eventMessage, subscription);
+    if (!channel.hasListeners(eventMessage)) {
       remove(name);
       return true;
     }
@@ -99,7 +99,7 @@ extension ChannelMapX on Map<String, Channel> {
     final channels = Channel.expand(message.channel);
     if (channels == null) return;
     for (final channel in channels) {
-      this[channel]?.trigger(event_message, message);
+      this[channel]?.trigger(eventMessage, message);
     }
   }
 }

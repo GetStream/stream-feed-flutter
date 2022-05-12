@@ -92,7 +92,6 @@ void main() {
   //     kind: kind,
   //   );
 
-  //   // ignore: cascade_invocations
   //   reactionListCore.debugFillProperties(builder);
 
   //   final description = builder.properties

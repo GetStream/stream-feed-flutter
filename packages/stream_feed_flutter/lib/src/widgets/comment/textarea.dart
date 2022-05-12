@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template text_area}
 /// A TextArea is a multiline text input.
 /// {@endtemplate}

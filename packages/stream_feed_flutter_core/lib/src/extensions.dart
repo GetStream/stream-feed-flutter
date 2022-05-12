@@ -27,10 +27,10 @@ extension UpdateIn<A, Ob, T, Or>
     on List<GenericEnrichedActivity<A, Ob, T, Or>> {
   List<GenericEnrichedActivity<A, Ob, T, Or>> updateIn(
       GenericEnrichedActivity<A, Ob, T, Or> enrichedActivity, int indexPath) {
-    var result = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(this);
-    result.isNotEmpty
-        ? result.removeAt(indexPath) //removes the item at index 1
-        : null;
+    final result = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(this);
+    if (result.isNotEmpty) {
+      result.removeAt(indexPath);
+    } //removes the item at index 1
     result.insert(indexPath, enrichedActivity);
     return result;
   }
@@ -39,10 +39,10 @@ extension UpdateIn<A, Ob, T, Or>
 @visibleForTesting
 extension UpdateInReaction on List<Reaction> {
   List<Reaction> updateIn(Reaction enrichedActivity, int indexPath) {
-    var result = List<Reaction>.from(this);
-    result.isNotEmpty
-        ? result.removeAt(indexPath) //removes the item at index 1
-        : null;
+    final result = List<Reaction>.from(this);
+    if (result.isNotEmpty) {
+      result.removeAt(indexPath);
+    } //removes the item at index 1
     result.insert(indexPath, enrichedActivity);
     return result;
   }
@@ -71,7 +71,8 @@ extension UnshiftMapList on Map<String, List<Reaction>>? {
 @visibleForTesting
 extension UnshiftMapController
     on Map<String, BehaviorSubject<List<Reaction>>>? {
-  ///Lookup latest Reactions by Id and inserts the given reaction to the beginning of the list
+  ///Lookup latest Reactions by Id and inserts the given reaction to the
+  /// beginning of the list
   Map<String, BehaviorSubject<List<Reaction>>> unshiftById(
       String lookupValue, Reaction reaction,
       [ShiftType type = ShiftType.increment]) {
