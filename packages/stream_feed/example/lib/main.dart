@@ -98,11 +98,11 @@ Future<void> main() async {
   final now = DateTime.now();
 
   activity = Activity(
-      actor: "1",
-      verb: "like",
-      object: "3",
+      actor: '1',
+      verb: 'like',
+      object: '3',
       time: now,
-      foreignId: "like:3",
+      foreignId: 'like:3',
       extraData: const {
         'popularity': 100,
       });
@@ -143,7 +143,7 @@ Future<void> main() async {
 
 //Batching Partial Updates TODO
   // final now = DateTime.now();
-  final first_activity = Activity(
+  final firstActivity = Activity(
     actor: '1',
     verb: 'add',
     object: '1',
@@ -152,12 +152,12 @@ Future<void> main() async {
   );
 
 // Add activity to activity feed:
-  final firstActivityAdded = await user1.addActivity(first_activity);
+  final firstActivityAdded = await user1.addActivity(firstActivity);
 
-  final second_activity = Activity(
+  final secondActivity = Activity(
       actor: '1', verb: 'add', object: '1', foreignId: 'activity_2', time: now);
 
-  final secondActivityAdded = await user1.addActivity(second_activity);
+  final secondActivityAdded = await user1.addActivity(secondActivity);
 
   //Following Feeds
   // timeline:timeline_feed_1 follows user:user_42:
@@ -269,7 +269,7 @@ Future<void> main() async {
 // adds a comment reaction to the activity and notifies Thierry's notification feed
   await clientWithSecret.reactions.add(
       'comment', '5de5e4ba-add2-11eb-8529-0242ac130003',
-      data: {'text': "@thierry great post!"},
+      data: {'text': '@thierry great post!'},
       userId: 'userId',
       targetFeeds: [FeedId.id('notification:thierry')]);
 
