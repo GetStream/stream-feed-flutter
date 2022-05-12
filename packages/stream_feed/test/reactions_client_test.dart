@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -146,6 +145,7 @@ void main() {
       const lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
       final filter =
           Filter().idGreaterThan('e561de8f-00f1-11e4-b400-0cc47a024be0');
+      const EnrichmentFlags? flags = null;
       const kind = 'like';
       const limit = 5;
       const activityId = 'activityId';
@@ -172,6 +172,7 @@ void main() {
             lookupAttr,
             lookupValue,
             filter,
+            flags,
             limit,
             kind,
           )).thenAnswer(
@@ -189,6 +190,7 @@ void main() {
             lookupAttr,
             lookupValue,
             filter,
+            flags,
             limit,
             kind,
           )).called(1);
