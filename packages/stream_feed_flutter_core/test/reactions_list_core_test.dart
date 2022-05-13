@@ -52,7 +52,17 @@ void main() {
           limit: limit,
           kind: kind,
         )).thenAnswer((_) async => reactions);
+    when(() => mockReactions.paginatedFilter(
+          lookupAttr,
+          lookupValue,
+          filter: filter,
+          limit: limit,
+          kind: kind,
+        )).thenAnswer((_) async => PaginatedReactions(
+          results: reactions,
+        ));
   });
+
   testWidgets('ReactionListCore', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -78,7 +88,7 @@ void main() {
         ),
       ),
     );
-    verify(() => mockReactions.filter(lookupAttr, lookupValue,
+    verify(() => mockReactions.paginatedFilter(lookupAttr, lookupValue,
         filter: filter, limit: limit, kind: kind)).called(1);
   });
 

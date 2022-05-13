@@ -74,7 +74,7 @@ class StreamFeedClientImpl with EquatableMixin implements StreamFeedClient {
             throw AssertionError(
               'You are publicly sharing your App Secret. '
               'Do not expose the App Secret in `browsers`, '
-              '`native` mobile apps, or other non-trusted environments. ',
+              '`native` mobile apps, or other non-trusted environments.',
             );
           }
           break;

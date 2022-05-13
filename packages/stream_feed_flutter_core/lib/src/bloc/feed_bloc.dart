@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
@@ -75,19 +76,22 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   late final UploadController uploadController;
 
   /// Manager for activities.
-  /// This is only used internally or for testing.
+  ///
+  /// This is only used internally and for testing.
   @visibleForTesting
-  late final ActivitiesManager<A, Ob, T, Or> activitiesManager;
+  final ActivitiesManager<A, Ob, T, Or> activitiesManager;
 
   /// Manager for aggregated activities.
-  /// This is only used internally or for testing.
+  ///
+  /// This is only used internally and for testing.
   @visibleForTesting
-  late final GroupedActivitiesManager<A, Ob, T, Or> groupedActivitiesManager;
+  final GroupedActivitiesManager<A, Ob, T, Or> groupedActivitiesManager;
 
   /// Manager for reactions.
-  /// This is only used internally or for testing.
+  ///
+  /// This is only used internally and for testing.
   @visibleForTesting
-  late final ReactionsManager reactionsManager;
+  final ReactionsManager reactionsManager;
 
   /* STREAMS */
 
@@ -423,14 +427,12 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     );
 
     // adds reaction to the stream
-
     reactionsManager
       ..unshiftById(value, childReaction, ShiftType.decrement)
       ..update(
           value,
           _reactions //TODO: handle null safety
               .updateIn(updatedReaction, indexPath));
-    // return childReaction;
   }
 
   /// {@template onRemoveReaction}
@@ -687,7 +689,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
           nextParams = parseNext(reactionsResponse.next!);
         }
         reactionsManager.paginatedParams[lookupValue] = nextParams;
-      } catch (e) {
+      } catch (e, st) {
+        debugPrint(e.toString());
+        debugPrintStack(stackTrace: st);
         // TODO:(gordon) add logs
       }
       if (reactionsResponse.results != null) {
@@ -703,6 +707,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
         }
       }
     } catch (e, stk) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: stk);
+      // TODO(Gordon) add logs
       // reset loading controller
       _queryReactionsLoadingControllers[lookupValue]!.add(false);
       if (reactionsManager.hasValue(lookupValue)) {

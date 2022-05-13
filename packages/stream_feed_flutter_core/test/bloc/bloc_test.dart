@@ -16,6 +16,8 @@ void main() {
   late String activityId;
   late GenericFeedBloc bloc;
   late MockReactionsManager mockReactionsManager;
+  late MockActivitiesManager mockActivitiesManager;
+  late MockGroupedActivitiesManager mockGroupedActivitiesManager;
   late String feedGroup;
   late MockFlatFeed mockFeed;
   late MockAggregatedFeed mockAggregatedFeed;
@@ -37,6 +39,8 @@ void main() {
     mockSecondFeed = MockFlatFeed();
     mockReactions = MockReactions();
     mockReactionsManager = MockReactionsManager();
+    mockActivitiesManager = MockActivitiesManager();
+    mockGroupedActivitiesManager = MockGroupedActivitiesManager();
     mockClient = MockStreamFeedClient();
     lookupAttr = LookupAttribute.activityId;
     lookupValue = 'ed2837a6-0a3b-4679-adc1-778a1704852d';
@@ -96,13 +100,19 @@ void main() {
     when(() => mockUser.id).thenReturn(userId);
     when(() => mockSecondUser.id).thenReturn(secondUserId);
     when(() => mockUser.ref).thenReturn('test');
-    bloc = GenericFeedBloc(client: mockClient);
+    bloc = GenericFeedBloc(
+      client: mockClient,
+      reactionsManager: mockReactionsManager,
+      activitiesManager: mockActivitiesManager,
+      groupedActivitiesManager: mockGroupedActivitiesManager,
+    );
     when(() => mockFeed.getEnrichedActivityDetail(addedActivity.id!))
         .thenAnswer((_) async => enrichedActivity);
   });
 
   group('ReactionBloc', () {
     test('queryReactions', () async {
+      bloc = GenericFeedBloc(client: mockClient);
       when(() => mockReactions.filter(
             lookupAttr,
             lookupValue,
@@ -163,13 +173,18 @@ void main() {
 
       //TODO: test reaction Stream
     });
+
     test('onRemoveReaction', () async {
       final controller = ActivitiesManager();
+
       const reactionId = 'reactionId';
       const reaction = Reaction(id: reactionId);
       controller.init(feedGroup);
-      bloc.activitiesManager = controller;
-      bloc.reactionsManager = mockReactionsManager;
+      bloc = GenericFeedBloc(
+        client: mockClient,
+        activitiesManager: controller,
+        reactionsManager: mockReactionsManager,
+      );
       when(() => mockReactionsManager.getReactions(activityId))
           .thenAnswer((_) => reactions);
       expect(bloc.reactionsManager.getReactions(activityId), reactions);
@@ -216,6 +231,10 @@ void main() {
           '/api/v1.0/enrich/feed/user/gordon/?api_key=$keyField&id_lt=$idLtField&limit=$limitField';
       final nextParams = parseNext(nextParamsString);
 
+      bloc = GenericFeedBloc(
+        client: mockClient,
+      );
+
       // FIRST RESULT
 
       const reactionsFirstResult = [Reaction(id: '1'), Reaction(id: '2')];
@@ -248,13 +267,6 @@ void main() {
             limit: limit,
             kind: kind,
           )).called(1);
-      // verify(() => mockReactions.paginatedFilter(
-      //       lookupAttr,
-      //       lookupValue,
-      //       filter: filter,
-      //       limit: limit,
-      //       kind: kind,
-      //     )).called(1);
 
       expect(
         bloc.getReactions(lookupValue),
@@ -305,12 +317,6 @@ void main() {
             filter: nextParams.idLT,
             limit: nextParams.limit,
           )).called(1);
-      // verify(() => mockReactions.paginatedFilter(
-      //       lookupAttr,
-      //       lookupValue,
-      //       filter: nextParams.idLT,
-      //       limit: nextParams.limit,
-      //     )).called(1);
 
       // Make sure all activities in the list are unique.
       final allReactions =
@@ -335,7 +341,7 @@ void main() {
 
     group('child reactions', () {
       test('onAddChildReaction', () async {
-        final controller = ReactionsManager();
+        final reactionManager = ReactionsManager();
         const parentId = 'parentId';
         const childId = 'childId';
         final now = DateTime.now();
@@ -352,8 +358,9 @@ void main() {
             },
           ),
         );
-        controller.init(reactedActivity.id!);
-        bloc.reactionsManager = controller;
+        reactionManager.init(reactedActivity.id!);
+        bloc = GenericFeedBloc(
+            client: mockClient, reactionsManager: reactionManager);
         expect(bloc.reactionsManager.hasValue(reactedActivity.id!), true);
         final parentReaction = Reaction(
             id: parentId, kind: 'comment', activityId: reactedActivity.id);
@@ -390,7 +397,7 @@ void main() {
       });
 
       test('onRemoveChildReaction', () async {
-        final controller = ReactionsManager();
+        final reactionsManager = ReactionsManager();
         final now = DateTime.now();
         const childId = 'childId';
         const parentId = 'parentId';
@@ -418,11 +425,14 @@ void main() {
           },
         );
 
-        controller.init(reactedActivity.id!);
-        bloc.reactionsManager = controller;
+        bloc = GenericFeedBloc(
+            client: mockClient, reactionsManager: reactionsManager);
+
+        reactionsManager.init(reactedActivity.id!);
         expect(bloc.reactionsManager.hasValue(reactedActivity.id!), true);
         when(() => mockReactions.delete(childId))
             .thenAnswer((_) async => Future.value());
+
         await bloc.onRemoveChildReaction(
             kind: 'like',
             activity: reactedActivity,
@@ -451,8 +461,11 @@ void main() {
     test(
         '''When we await onAddActivityGroup the stream gets updated with the new expected value''',
         () async {
-      final controller = GroupedActivitiesManager()..init(feedGroup);
-      bloc.groupedActivitiesManager = controller;
+      final manager = GroupedActivitiesManager()..init(feedGroup);
+      bloc = GenericFeedBloc(
+        client: mockClient,
+        groupedActivitiesManager: manager,
+      );
 
       const enrichedActivity = Group<EnrichedActivity>(id: '1');
       when(() => mockAggregatedFeed.addActivity(activity))
@@ -474,11 +487,15 @@ void main() {
       await expectLater(bloc.getGroupedActivitiesStream(feedGroup),
           emits([enrichedActivity]));
     });
+
     test(
         '''When we await onAddActivity the stream gets updated with the new expected value''',
         () async {
-      final controller = ActivitiesManager()..init(feedGroup);
-      bloc.activitiesManager = controller;
+      final manager = ActivitiesManager()..init(feedGroup);
+      bloc = GenericFeedBloc(
+        client: mockClient,
+        activitiesManager: manager,
+      );
 
       await bloc.onAddActivity(
         feedGroup: 'user',
@@ -496,8 +513,8 @@ void main() {
     test(
         '''When we call queryPaginatedEnrichedActivities and loadMoreEnrichedActivities, the stream gets updated with the new paginated results''',
         () async {
-      final controller = ActivitiesManager()..init(feedGroup);
-      bloc.activitiesManager = controller;
+      // final controller = ActivitiesManager()..init(feedGroup);
+      // bloc.activitiesManager = controller;
 
       const keyField = 'q29npdvqjr99';
       const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
@@ -607,8 +624,8 @@ void main() {
     test(
         '''When we call queryPaginatedGroupedActivities and loadMorePaginatedGroupedActivities, the stream gets updated with the new paginated results''',
         () async {
-      final controller = GroupedActivitiesManager()..init(feedGroup);
-      bloc.groupedActivitiesManager = controller;
+      // final controller = GroupedActivitiesManager()..init(feedGroup);
+      // bloc.groupedActivitiesManager = controller;
       const keyField = 'q29npdvqjr99';
       const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
       const limitField = '10';

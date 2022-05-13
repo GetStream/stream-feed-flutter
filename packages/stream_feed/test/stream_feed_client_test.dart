@@ -129,7 +129,7 @@ void main() {
               predicate<AssertionError>(
                 (e) =>
                     e.message ==
-                    '''`userToken` must be provided while running on client-sideplease make sure to call client.setUser''',
+                    '''`userToken` must be provided while running on client-side please make sure to call client.setUser''',
               ),
             ),
           );

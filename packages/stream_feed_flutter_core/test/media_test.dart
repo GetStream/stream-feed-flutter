@@ -23,7 +23,7 @@ void main() {
       MediaType.audio,
       MediaType.audio,
       MediaType.video,
-      MediaType.other,
+      MediaType.video,
       MediaType.image,
     ]);
   });

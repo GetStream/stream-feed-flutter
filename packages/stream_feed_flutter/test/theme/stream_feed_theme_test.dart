@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
@@ -26,41 +25,6 @@ void main() {
 
       final streamTheme = StreamFeedTheme.of(capturedContext);
       expect(streamTheme.brightness, Brightness.dark);
-    });
-
-    testWidgets('default StreamFeedThemeData debugFillProperties',
-        (tester) async {
-      final builder = DiagnosticPropertiesBuilder();
-      const StreamFeedThemeData.raw(
-        brightness: Brightness.light,
-        childReactionTheme: ChildReactionThemeData(),
-        galleryHeaderTheme: GalleryHeaderThemeData(),
-        gifDialogTheme: GifDialogThemeData(),
-        ogCardTheme: OgCardThemeData(),
-        primaryIconTheme: IconThemeData(),
-        reactionTheme: ReactionThemeData(),
-        userBarTheme: UserBarThemeData(),
-      ).debugFillProperties(builder);
-      //StreamFeedThemeData().debugFillProperties(builder);
-
-      final description = builder.properties
-          .where((node) => !node.isFiltered(DiagnosticLevel.info))
-          .map((node) => node.toString())
-          .toList();
-
-      expect(
-        description,
-        <String>[
-          '''childReactionTheme: ChildReactionThemeData#00000(hoverColor: null, toggleColor: null)''',
-          '''reactionTheme: ReactionThemeData#00000(hoverColor: null, toggleHoverColor: null, iconHoverColor: null, hashtagTextStyle: null, mentionTextStyle: null, normalTextStyle: null)''',
-          'brightness: light',
-          'primaryIconTheme: IconThemeData#384a7',
-          '''gifDialogTheme: GifDialogThemeData#00000(boxDecoration: null, iconColor: null)''',
-          '''ogCardTheme: OgCardThemeData#00000(titleTextStyle: null, descriptionTextStyle: null)''',
-          '''userBarTheme: UserBarThemeData#007db(avatarSize: null, usernameTextStyle: null, timestampTextStyle: null)''',
-          '''galleryHeaderTheme: GalleryHeaderThemeData#007db(closeButtonColor: null, backgroundColor: null, titleTextStyle: null)'''
-        ],
-      );
     });
 
     testWidgets('StreamFeedTheme is null', (tester) async {
