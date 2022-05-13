@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 @visibleForTesting
 extension ReactionX on List<Reaction> {
@@ -139,4 +139,31 @@ extension UnshiftInt on int {
       return this - 1;
     }
   }
+}
+
+/// Convenient extensions on build context to access common Stream Feed
+/// components.
+extension FeedContext on BuildContext {
+  /// Access the underlying [StreamFeedClient] instance exposed by
+  /// [FeedProvider].
+  ///
+  /// Requires a [FeedProvider] to be above this call in the widget tree.
+  ///
+  /// {@macro stream_feed_client}
+  StreamFeedClient get feedClient => FeedProvider.of(this).bloc.client;
+
+  /// Access the underlying [UploadController] exposed by [FeedProvider].
+  ///
+  /// Requires a [FeedProvider] to be above this call in the widget tree.
+  ///
+  /// {@macro uploadController}
+  UploadController get feedUploadController =>
+      FeedProvider.of(this).bloc.uploadController;
+
+  /// Access [FeedBloc] exposed by [FeedProvider].
+  ///
+  /// Requires a [FeedProvider] to be above this call in the widget tree.
+  ///
+  /// {@macro feedBloc}
+  FeedBloc get feedBloc => FeedProvider.of(this).bloc;
 }
