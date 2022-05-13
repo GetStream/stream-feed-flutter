@@ -212,14 +212,15 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// ```
   /// {@endtemplate}
 
-  Future<Activity> onAddActivity(
-      {required String feedGroup,
-      Map<String, Object>? data,
-      required String verb,
-      required String object,
-      String? userId,
-      List<FeedId>? to,
-      DateTime? time}) async {
+  Future<Activity> onAddActivity({
+    required String feedGroup,
+    Map<String, Object>? data,
+    required String verb,
+    required String object,
+    String? userId,
+    List<FeedId>? to,
+    DateTime? time,
+  }) async {
     final activity = Activity(
       actor: client.currentUser?.ref,
       verb: verb,
@@ -342,7 +343,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   Future<Reaction> onAddChildReaction({
     required String kind,
     required Reaction reaction,
-   required String lookupValue,
+    required String lookupValue,
     Map<String, Object>? data,
     String? userId,
     List<FeedId>? targetFeeds,
