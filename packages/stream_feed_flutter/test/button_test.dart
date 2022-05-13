@@ -316,7 +316,6 @@ void main() {
   group('ReactionToggleIcon', () {
     late MockStreamFeedClient mockClient;
     late MockReactions mockReactions;
-    late MockStreamAnalytics mockStreamAnalytics;
     late String kind;
     late List<Reaction> reactions;
     late String activityId;
@@ -331,7 +330,6 @@ void main() {
     setUp(() {
       mockReactions = MockReactions();
       mockReactionsController = MockReactionsController();
-      mockStreamAnalytics = MockStreamAnalytics();
       mockClient = MockStreamFeedClient();
 
       kind = 'like';

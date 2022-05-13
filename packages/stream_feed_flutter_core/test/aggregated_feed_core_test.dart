@@ -17,7 +17,6 @@ void main() {
     const limitField = '10';
     const nextParamsString =
         '/api/v1.0/enrich/feed/user/gordon/?api_key=$keyField&id_lt=$idLtField&limit=$limitField';
-    final nextParams = parseNext(nextParamsString);
 
     // FIRST RESULT
 

@@ -115,8 +115,6 @@ void main() {
       ),
     );
 
-    late BuildContext navigatorContext;
-
     MaterialApp buildFrame() {
       return MaterialApp(
         home: Scaffold(
@@ -126,8 +124,6 @@ void main() {
             ),
             child: Builder(
               builder: (context) {
-                navigatorContext = context;
-
                 return ElevatedButton(
                   child:
                       const Text('push wrapped'), //TODO(sacha): push unwrapped
