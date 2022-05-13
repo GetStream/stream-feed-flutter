@@ -342,9 +342,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   Future<Reaction> onAddChildReaction({
     required String kind,
     required Reaction reaction,
-    String? lookupValue,
-    LookupAttribute lookupAttr = LookupAttribute.activityId,
-    required GenericEnrichedActivity activity,
+   required String lookupValue,
     Map<String, Object>? data,
     String? userId,
     List<FeedId>? targetFeeds,
@@ -357,9 +355,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     );
     // await trackAnalytics(
     //     label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
-    final value =
-        lookupAttr == LookupAttribute.activityId ? activity.id! : lookupValue!;
-    final _reactions = getReactions(value, reaction);
+    final _reactions = getReactions(lookupValue, reaction);
     final reactionPath = _reactions.getReactionPath(reaction);
     final indexPath = _reactions
         .indexWhere((r) => r.id! == reaction.id); //TODO: handle null safety
@@ -381,7 +377,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
     reactionsManager
       ..unshiftById(reaction.id!, childReaction)
       ..update(
-          value,
+          lookupValue,
           _reactions //TODO: handle null safety
               .updateIn(updatedReaction, indexPath));
     return childReaction;
@@ -397,18 +393,14 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// {@endtemplate}
   Future<void> onRemoveChildReaction({
     required String kind,
-    required GenericEnrichedActivity activity,
-    String? lookupValue,
-    LookupAttribute lookupAttr = LookupAttribute.activityId,
+    required String lookupValue,
     required Reaction childReaction,
     required Reaction parentReaction,
   }) async {
     await client.reactions.delete(childReaction.id!);
     // await trackAnalytics(
     //     label: kind, foreignId: activity.foreignId, feedGroup: feedGroup);
-    final value =
-        lookupAttr == LookupAttribute.activityId ? activity.id! : lookupValue!;
-    final _reactions = getReactions(value, parentReaction);
+    final _reactions = getReactions(lookupValue, parentReaction);
     final reactionPath = _reactions.getReactionPath(parentReaction);
     final indexPath = _reactions.indexWhere(
         (r) => r.id! == parentReaction.id); //TODO: handle null safety
@@ -428,9 +420,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
 
     // adds reaction to the stream
     reactionsManager
-      ..unshiftById(value, childReaction, ShiftType.decrement)
+      ..unshiftById(lookupValue, childReaction, ShiftType.decrement)
       ..update(
-          value,
+          lookupValue,
           _reactions //TODO: handle null safety
               .updateIn(updatedReaction, indexPath));
   }

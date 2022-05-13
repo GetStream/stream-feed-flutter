@@ -172,12 +172,12 @@ class ReactionToggleIcon extends StatelessWidget {
     alreadyReacted
         ? await FeedProvider.of(context).bloc.onRemoveChildReaction(
               kind: kind,
-              activity: activity,
+              lookupValue: reaction!.id!,
               childReaction: ownReactions!.last,
               parentReaction: reaction!,
             )
         : await FeedProvider.of(context).bloc.onAddChildReaction(
-              activity: activity,
+              lookupValue: reaction!.id!,
               kind: kind,
               data: data,
               reaction: reaction!,

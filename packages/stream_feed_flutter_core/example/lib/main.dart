@@ -291,14 +291,14 @@ class _ReactionListPageState extends State<ReactionListPage> {
       FeedProvider.of(context).bloc.onRemoveChildReaction(
             kind: 'like',
             childReaction: reaction.ownChildren!['like']![0],
-            activity: widget.activity,
+            lookupValue: widget.activity.id!,
             parentReaction: reaction,
           );
     } else {
       FeedProvider.of(context).bloc.onAddChildReaction(
             kind: 'like',
             reaction: reaction,
-            activity: widget.activity,
+            lookupValue: widget.activity.id!,
           );
     }
   }
