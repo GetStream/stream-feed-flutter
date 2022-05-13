@@ -52,7 +52,9 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
             GroupedActivitiesManager<A, Ob, T, Or>(),
         reactionsManager = reactionsManager ?? ReactionsManager();
 
-  /// The underlying client instance
+  /// The underlying Stream Feed client instance.
+  ///
+  /// {@macro stream_feed_client}
   final StreamFeedClient client;
 
   /// The current User
@@ -61,6 +63,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   /// The underlying analytics client
   final StreamAnalytics? analyticsClient;
 
+  /// {@template uploadController}
   /// Controller to manage file uploads.
   ///
   /// A controller is automatically created from the given [client]. Or,
@@ -73,6 +76,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   ///    uploadController: uploadController,
   /// );
   /// ```
+  /// {@endtemplate}
   final UploadController uploadController;
 
   /// Manager for activities.

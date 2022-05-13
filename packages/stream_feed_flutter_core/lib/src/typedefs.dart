@@ -152,7 +152,8 @@ typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 /// Convenient typedef for [GenericFeedBloc] with default parameters
 ///
 /// {@template feedBloc}
-/// Widget dedicated to the state management of an app's Stream feed
+/// A class dedicated to the state management of an app's Stream feed.
+///
 /// [FeedBloc] is used to manage a set of operations
 /// associated with [EnrichedActivity]s and [Reaction]s.
 ///
