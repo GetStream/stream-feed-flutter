@@ -16,6 +16,7 @@ analyzer:
 linter:
   rules:
     - always_use_package_imports
+    - avoid_print
     - avoid_empty_else
     - avoid_relative_lib_imports
     - avoid_slow_async_io
@@ -75,7 +76,7 @@ linter:
     - leading_newlines_in_multiline_strings
     - library_names
     - library_prefixes
-    - lines_longer_than_80_chars
+    # - lines_longer_than_80_chars
     - missing_whitespace_between_adjacent_strings
     - non_constant_identifier_names
     - null_closures

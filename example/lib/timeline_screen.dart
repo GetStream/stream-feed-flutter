@@ -32,6 +32,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
   Future<void> _listenToFeed() async {
     _feedSubscription = await _client
         .flatFeed('timeline', widget.currentUser.id)
+        // ignore: avoid_print
         .subscribe(print);
   }
 

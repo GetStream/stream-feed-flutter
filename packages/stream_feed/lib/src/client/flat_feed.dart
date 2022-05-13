@@ -76,7 +76,6 @@ class FlatFeed extends Feed {
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getActivities(token, feedId, options);
-    print(result);
     final data = (result.data!['results'] as List)
         .map((e) => Activity.fromJson(e))
         .toList(growable: false);
