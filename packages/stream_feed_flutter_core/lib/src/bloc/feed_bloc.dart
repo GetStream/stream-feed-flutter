@@ -73,7 +73,7 @@ class GenericFeedBloc<A, Ob, T, Or> extends Equatable {
   ///    uploadController: uploadController,
   /// );
   /// ```
-  late final UploadController uploadController;
+  final UploadController uploadController;
 
   /// Manager for activities.
   ///
