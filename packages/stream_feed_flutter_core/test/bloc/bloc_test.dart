@@ -370,7 +370,9 @@ void main() {
         when(() => mockReactions.addChild('like', parentId))
             .thenAnswer((_) async => childReaction);
         await bloc.onAddChildReaction(
-            kind: 'like', lookupValue: reactedActivity.id!, reaction: parentReaction);
+            kind: 'like',
+            lookupValue: reactedActivity.id!,
+            reaction: parentReaction);
 
         verify(() => mockClient.reactions.addChild(
               'like',
