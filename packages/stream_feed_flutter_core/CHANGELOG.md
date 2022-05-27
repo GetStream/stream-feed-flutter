@@ -1,7 +1,54 @@
-## UPCOMMING
-- fix: `setUser` not using `user.data` on user create.
+## 0.8.0
+- bump llc: fix: `setUser` not using `user.data` on user create.
 - new: `FeedBloc` and `GenericFeedBloc` now have `queryPaginatedEnrichedActivities`, `loadMoreEnrichedActivities`, and `paginatedParams` to easily manage pagination.
+```dart
+  Future<void> _loadMore() async {
+    // Ensure we're not already loading more reactions.
+    if (!_isPaginating) {
+      _isPaginating = true;
+      context.feedBloc
+          .loadMoreReactions(widget.activity.id!, flags: _flags)
+          .whenComplete(() {
+        _isPaginating = false;
+      });
+    }
+  }
+
+  ...
+
+  return ReactionListCore(
+    reactionsBuilder: (context, reactions) =>
+                 RefreshIndicator(
+                    onRefresh: () {
+                      return context.feedBloc.refreshPaginatedReactions(
+                        widget.activity.id!,
+                        flags: _flags,
+                      );
+                    },
+                    child: ListView.separated(
+                      itemCount: reactions.length,
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemBuilder: (context, index) {
+                        bool shouldLoadMore = reactions.length - 3 == index;
+                        if (shouldLoadMore) {
+                          _loadMore();
+                        }
+                        return ListReactionItem(reaction:reactions[index]);
+                        }
+                        ))
+  );
+
+```
 - changed: `GenericFlatFeedCore` and `FlatFeedCore` now calls `queryPaginatedEnrichedActivities` on initial load.
+- fix/breaking: `onAddChildReaction` commenting on a comment is now reactive but we had to remove the `activity` parameter and replace it with `lookupValue`. For example:
+```dart
+ FeedProvider.of(context).bloc.onAddChildReaction(
+            kind: 'comment',
+            reaction: reaction,
+            lookupValue: widget.reaction.id!,
+            data: {"text": "this is a comment on a comment"},
+          );
+```
 - docs: Stream Feed Core documentation and examples updated
 
 ## 0.7.0+1 28/02/2022
