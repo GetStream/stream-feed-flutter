@@ -9,8 +9,6 @@ import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
 import 'mock.dart';
 
-// ignore_for_file: cascade_invocations
-
 void main() {
   testWidgets('ReactionListPage', (tester) async {
     final mockClient = MockStreamFeedClient();
@@ -36,13 +34,19 @@ void main() {
         targetFeeds: targetFeeds,
       )
     ];
-    when(() => mockReactions.filter(
+    when(() => mockReactions.paginatedFilter<User, String, String, String>(
           lookupAttr,
           lookupValue,
           filter: filter,
           limit: limit,
           kind: kind,
-        )).thenAnswer((_) async => reactions);
+        )).thenAnswer((_) async {
+      return const PaginatedReactions(
+          next:
+              '/api/v1.0/reaction/activity_id/activity-id/?api_key=key&id_lt=id-lt&limit=25&location=unspecified&with_activity_data=true&with_own_children=true',
+          results: reactions);
+    });
+
     await tester.pumpWidget(
       MaterialApp(
         builder: (context, child) {
@@ -66,8 +70,9 @@ void main() {
         ),
       ),
     );
-    verify(() => mockReactions.filter(lookupAttr, lookupValue,
-        filter: filter, limit: limit, kind: kind)).called(1);
+    verify(() => mockReactions.paginatedFilter<User, String, String, String>(
+            lookupAttr, lookupValue, filter: filter, limit: limit, kind: kind))
+        .called(1);
   });
 
   testWidgets('LikeButton', (tester) async {
@@ -145,22 +150,13 @@ void main() {
     const count = 1300;
     final inactiveIcon = StreamSvgIcon.loveInactive();
     final activeIcon = StreamSvgIcon.loveActive();
-    const foreignId = 'like:300';
-    const activityId = 'activityId';
-    const feedGroup = 'timeline:300';
-    const activity = GenericEnrichedActivity(
-      id: activityId,
-      foreignId: foreignId,
-    );
-    const reaction = Reaction(id: 'id', kind: kind, parent: activityId);
-    const userId = 'user:300';
 
     group('widget test', () {
       testWidgets('withoutOwnReactions: onAddChildReaction', (tester) async {
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
         final mockClient = MockStreamFeedClient();
-        final controller = ReactionsManager();
+        final reactionsManager = ReactionsManager();
         const parentId = 'parentId';
         const childId = 'childId';
         final now = DateTime.now();
@@ -175,12 +171,12 @@ void main() {
             'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
           }),
         );
-        controller.init(reactedActivity.id!);
+        reactionsManager.init(reactedActivity.id!);
         final bloc = FeedBloc(
           analyticsClient: mockStreamAnalytics,
           client: mockClient,
+          reactionsManager: reactionsManager,
         );
-        bloc.reactionsManager = controller;
         expect(bloc.reactionsManager.hasValue(reactedActivity.id!), true);
         final parentReaction = Reaction(
             id: parentId, kind: 'comment', activityId: reactedActivity.id);
@@ -243,9 +239,8 @@ void main() {
         final mockReactions = MockReactions();
         final mockStreamAnalytics = MockStreamAnalytics();
 
-        const label = kind;
         when(() => mockClient.reactions).thenReturn(mockReactions);
-        final controller = ReactionsManager();
+        final reactionsManager = ReactionsManager();
         final now = DateTime.now();
         const childId = 'childId';
         const parentId = 'parentId';
@@ -260,26 +255,26 @@ void main() {
             'profile_image': 'https://randomuser.me/api/portraits/women/20.jpg',
           }),
         );
-        final childReaction = Reaction(id: childId, kind: 'like');
+        const childReaction = Reaction(id: childId, kind: 'like');
         final parentReaction = Reaction(
           id: parentId,
           kind: 'comment',
           activityId: reactedActivity.id,
           childrenCounts: const {'like': 1},
-          latestChildren: {
+          latestChildren: const {
             'like': [childReaction]
           },
-          ownChildren: {
+          ownChildren: const {
             'like': [childReaction]
           },
         );
 
-        controller.init(reactedActivity.id!);
+        reactionsManager.init(reactedActivity.id!);
         final bloc = FeedBloc(
           client: mockClient,
           analyticsClient: mockStreamAnalytics,
+          reactionsManager: reactionsManager,
         );
-        bloc.reactionsManager = controller;
         expect(bloc.reactionsManager.hasValue(reactedActivity.id!), true);
 
         when(() => mockReactions.delete(childId))
@@ -290,7 +285,7 @@ void main() {
               body: FeedProvider(
                 bloc: bloc,
                 child: ReactionToggleIcon(
-                  ownReactions: [childReaction],
+                  ownReactions: const [childReaction],
                   activity: reactedActivity,
                   hoverColor: Colors.lightBlue,
                   reaction: parentReaction,
@@ -321,7 +316,6 @@ void main() {
   group('ReactionToggleIcon', () {
     late MockStreamFeedClient mockClient;
     late MockReactions mockReactions;
-    late MockStreamAnalytics mockStreamAnalytics;
     late String kind;
     late List<Reaction> reactions;
     late String activityId;
@@ -336,7 +330,6 @@ void main() {
     setUp(() {
       mockReactions = MockReactions();
       mockReactionsController = MockReactionsController();
-      mockStreamAnalytics = MockStreamAnalytics();
       mockClient = MockStreamFeedClient();
 
       kind = 'like';
@@ -358,12 +351,14 @@ void main() {
       ];
       when(() => mockClient.reactions).thenReturn(mockReactions);
 
-      bloc = FeedBloc(client: mockClient);
+      bloc = FeedBloc(
+        client: mockClient,
+        reactionsManager: mockReactionsController,
+      );
     });
 
     testGoldens('onAddReaction', (tester) async {
       const addedReaction = Reaction();
-      bloc.reactionsManager = mockReactionsController;
       when(() => mockReactionsController.getReactions(activityId))
           .thenAnswer((_) => reactions);
       expect(bloc.reactionsManager.getReactions(activityId), reactions);
@@ -401,7 +396,6 @@ void main() {
     testGoldens('onRemoveReaction', (tester) async {
       const reactionId = 'reactionId';
       const reaction = Reaction(id: reactionId);
-      bloc.reactionsManager = mockReactionsController;
       when(() => mockReactionsController.getReactions(activityId))
           .thenAnswer((_) => reactions);
       when(() => mockReactions.delete(reactionId))

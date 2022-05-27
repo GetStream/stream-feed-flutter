@@ -2,32 +2,33 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:stream_feed/src/core/models/activity.dart';
 import 'package:stream_feed/src/core/models/collection_entry.dart';
 import 'package:stream_feed/src/core/models/enriched_activity.dart';
+import 'package:stream_feed/src/core/models/group.dart';
 import 'package:stream_feed/src/core/models/paginated.dart';
 import 'package:stream_feed/src/core/models/reaction.dart';
 import 'package:stream_feed/src/core/models/user.dart';
 
-part 'paginated_activities.g.dart';
+part 'paginated_activities_group.g.dart';
 
-/// Paginated activities feed
+/// Paginated activities group feed
 @JsonSerializable(createToJson: true, genericArgumentFactories: true)
-class PaginatedActivities<A, Ob, T, Or>
-    extends Paginated<GenericEnrichedActivity<A, Ob, T, Or>> {
-  /// Builds a [PaginatedActivities].
-  const PaginatedActivities({
+class PaginatedActivitiesGroup<A, Ob, T, Or>
+    extends Paginated<Group<GenericEnrichedActivity<A, Ob, T, Or>>> {
+  /// Builds a [PaginatedActivitiesGroup].
+  const PaginatedActivitiesGroup({
     String? next,
-    List<GenericEnrichedActivity<A, Ob, T, Or>>? results,
+    List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>? results,
     String? duration,
   }) : super(next, results, duration);
 
-  /// Deserialize json to [PaginatedActivities]
-  factory PaginatedActivities.fromJson(
+  /// Deserialize json to [PaginatedActivitiesGroup]
+  factory PaginatedActivitiesGroup.fromJson(
     Map<String, dynamic> json, [
     A Function(Object? json)? fromJsonA,
     Ob Function(Object? json)? fromJsonOb,
     T Function(Object? json)? fromJsonT,
     Or Function(Object? json)? fromJsonOr,
   ]) =>
-      _$PaginatedActivitiesFromJson<A, Ob, T, Or>(
+      _$PaginatedActivitiesGroupFromJson<A, Ob, T, Or>(
         json,
         fromJsonA ??
             (jsonA) => (A == User)
@@ -64,5 +65,6 @@ class PaginatedActivities<A, Ob, T, Or>
     Object? Function(T value) toJsonT,
     Object? Function(Or value) toJsonOr,
   ) =>
-      _$PaginatedActivitiesToJson(this, toJsonA, toJsonOb, toJsonT, toJsonOr);
+      _$PaginatedActivitiesGroupToJson(
+          this, toJsonA, toJsonOb, toJsonT, toJsonOr);
 }

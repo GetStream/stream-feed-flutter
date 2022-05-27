@@ -72,7 +72,7 @@ class GenericEnrichedActivity<A, Ob, T, Or> extends Equatable {
                 : jsonA as A,
         fromJsonOb ??
             (jsonOb) => (Ob ==
-                    CollectionEntry) //TODO: can be a list of collection entry and a list of activities
+                    CollectionEntry) // TODO: can be a list of collection entry and a list of activities
                 ? CollectionEntry.fromJson(jsonOb! as Map<String, dynamic>)
                     as Ob
                 : jsonOb as Ob,

@@ -1,11 +1,11 @@
 name: stream_feed_flutter_core
 description: Stream Feed official Flutter SDK Core. Build your own feed experience using Dart and Flutter.
-version: 0.7.0+1
+version: 0.8.0
 repository: https://github.com/GetStream/stream-feed-flutter
 issue_tracker: https://github.com/GetStream/stream-feed-flutter/issues
 homepage: https://getstream.io/
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: ">=2.14.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -13,10 +13,10 @@ dependencies:
   equatable: ^2.0.3
   flutter:
     sdk: flutter
+  meta: ^1.7.0
   rxdart: ^0.27.1
-  stream_feed: ^0.5.1
-
+  stream_feed: ^0.6.0+2
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mocktail: ^0.1.2
+  mocktail: ^0.3.0

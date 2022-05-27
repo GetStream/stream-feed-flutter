@@ -5,7 +5,6 @@ import 'package:stream_feed_flutter/src/theme/stream_feed_theme.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reaction.dart';
 import 'package:stream_feed_flutter/src/widgets/icons.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
-// ignore_for_file: cascade_invocations
 
 /// {@template repost_button}
 /// A Repost Button is a widget that allows a user to repost a feed item.

@@ -11,8 +11,6 @@ import 'package:stream_feed_flutter/src/widgets/user/avatar.dart';
 import 'package:stream_feed_flutter/src/widgets/user/username.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template comment_item}
 /// Displays a single comment on an activity.
 ///
@@ -149,5 +147,6 @@ class CommentItem extends StatelessWidget {
     properties.add(StringProperty('commentJsonKey', commentJsonKey));
     properties.add(
         ObjectFlagProperty<OnReactionTap?>.has('onReactionTap', onReactionTap));
+    properties.add(DiagnosticsProperty<EnrichedActivity>('activity', activity));
   }
 }

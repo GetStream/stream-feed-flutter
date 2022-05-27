@@ -90,7 +90,6 @@ void main() {
       ),
     );
 
-    // ignore: cascade_invocations
     userBar.debugFillProperties(builder);
 
     final description = builder.properties
@@ -108,7 +107,6 @@ void main() {
       icon: Icon(Icons.person),
     );
 
-    // ignore: cascade_invocations
     reactedBy.debugFillProperties(builder);
 
     final description = builder.properties
@@ -125,7 +123,6 @@ void main() {
       kind: 'test',
     );
 
-    // ignore: cascade_invocations
     reactionByIcon.debugFillProperties(builder);
 
     final description = builder.properties

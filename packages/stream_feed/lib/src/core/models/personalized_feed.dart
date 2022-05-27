@@ -58,7 +58,6 @@ class PersonalizedFeed<A, Ob, T, Or>
   @override
   List<Object?> get props => [...super.props, version, offset, limit];
 
-  /// TODO: document me
   final String version;
 
   /// The offset of the first result in the current page.

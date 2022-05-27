@@ -6,8 +6,6 @@ import 'package:stream_feed_flutter/src/widgets/interactive_text.dart';
 import 'package:stream_feed_flutter/src/widgets/og/card.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template activity_content}
 /// Displays the content of an activity.
 ///
@@ -32,7 +30,6 @@ class ActivityContent extends StatelessWidget {
   /// A callback that is invoked when the user clicks on hashtag
   final OnHashtagTap? onHashtagTap;
 
-  /// TODO: document me
   final String commentJsonKey;
 
   @override

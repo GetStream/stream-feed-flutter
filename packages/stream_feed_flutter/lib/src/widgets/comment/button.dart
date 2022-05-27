@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/reactive_elevated_button.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template post_comment_button}
 /// Allows the current user to comment on a post.
 ///

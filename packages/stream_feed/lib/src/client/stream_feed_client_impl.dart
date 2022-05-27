@@ -66,7 +66,7 @@ class StreamFeedClientImpl with EquatableMixin implements StreamFeedClient {
         case Runner.client:
           if (userToken == null) {
             throw AssertionError(
-              '`userToken` must be provided while running on client-side'
+              '`userToken` must be provided while running on client-side '
               'please make sure to call client.setUser',
             );
           }
@@ -74,7 +74,7 @@ class StreamFeedClientImpl with EquatableMixin implements StreamFeedClient {
             throw AssertionError(
               'You are publicly sharing your App Secret. '
               'Do not expose the App Secret in `browsers`, '
-              '`native` mobile apps, or other non-trusted environments. ',
+              '`native` mobile apps, or other non-trusted environments.',
             );
           }
           break;
@@ -136,7 +136,8 @@ class StreamFeedClientImpl with EquatableMixin implements StreamFeedClient {
     Map<String, Object?>? extraData,
   }) async {
     this.userToken = userToken;
-    final createdUser = await this.user(user.id!).getOrCreate(extraData ?? {});
+    final createdUser =
+        await this.user(user.id!).getOrCreate(extraData ?? user.data ?? {});
     return _currentUser = await createdUser.profile();
   }
 

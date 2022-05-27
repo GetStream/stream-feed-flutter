@@ -5,8 +5,6 @@ import 'package:photo_view/photo_view.dart';
 import 'package:stream_feed_flutter/src/media/video_package.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Displays [Media] from a Feed in fullscreen.
 class FullscreenMedia extends StatefulWidget {
   /// Builds a [FullscreenMedia].

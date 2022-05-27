@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:stream_feed/stream_feed.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 @visibleForTesting
 extension ReactionX on List<Reaction> {
@@ -27,10 +27,10 @@ extension UpdateIn<A, Ob, T, Or>
     on List<GenericEnrichedActivity<A, Ob, T, Or>> {
   List<GenericEnrichedActivity<A, Ob, T, Or>> updateIn(
       GenericEnrichedActivity<A, Ob, T, Or> enrichedActivity, int indexPath) {
-    var result = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(this);
-    result.isNotEmpty
-        ? result.removeAt(indexPath) //removes the item at index 1
-        : null;
+    final result = List<GenericEnrichedActivity<A, Ob, T, Or>>.from(this);
+    if (result.isNotEmpty) {
+      result.removeAt(indexPath);
+    } //removes the item at index 1
     result.insert(indexPath, enrichedActivity);
     return result;
   }
@@ -39,10 +39,10 @@ extension UpdateIn<A, Ob, T, Or>
 @visibleForTesting
 extension UpdateInReaction on List<Reaction> {
   List<Reaction> updateIn(Reaction enrichedActivity, int indexPath) {
-    var result = List<Reaction>.from(this);
-    result.isNotEmpty
-        ? result.removeAt(indexPath) //removes the item at index 1
-        : null;
+    final result = List<Reaction>.from(this);
+    if (result.isNotEmpty) {
+      result.removeAt(indexPath);
+    } //removes the item at index 1
     result.insert(indexPath, enrichedActivity);
     return result;
   }
@@ -71,19 +71,21 @@ extension UnshiftMapList on Map<String, List<Reaction>>? {
 @visibleForTesting
 extension UnshiftMapController
     on Map<String, BehaviorSubject<List<Reaction>>>? {
-  ///Lookup latest Reactions by Id and inserts the given reaction to the beginning of the list
+  ///Lookup latest Reactions by Id and inserts the given reaction to the
+  /// beginning of the list
   Map<String, BehaviorSubject<List<Reaction>>> unshiftById(
-      String activityId, Reaction reaction,
+      String lookupValue, Reaction reaction,
       [ShiftType type = ShiftType.increment]) {
     Map<String, BehaviorSubject<List<Reaction>>>? result;
     result = this;
-    final latestReactionsById = this?[activityId]?.valueOrNull ?? [];
-    if (result != null && result[activityId] != null) {
-      result[activityId]!.add(latestReactionsById.unshift(reaction, type));
+    final latestReactionsById = this?[lookupValue]?.valueOrNull ?? [];
+    if (result != null && result[lookupValue] != null) {
+      final reactions = latestReactionsById.unshift(reaction, type);
+      result[lookupValue]!.add(reactions);
     } else {
       result = {
         //TODO: handle decrement
-        activityId: BehaviorSubject.seeded([reaction])
+        lookupValue: BehaviorSubject.seeded([reaction])
       };
     }
     return result;
@@ -137,4 +139,31 @@ extension UnshiftInt on int {
       return this - 1;
     }
   }
+}
+
+/// Convenient extensions on build context to access common Stream Feed
+/// components.
+extension FeedContext on BuildContext {
+  /// Access the underlying [StreamFeedClient] instance exposed by
+  /// [FeedProvider].
+  ///
+  /// Requires a [FeedProvider] to be above this call in the widget tree.
+  ///
+  /// {@macro stream_feed_client}
+  StreamFeedClient get feedClient => FeedProvider.of(this).bloc.client;
+
+  /// Access the underlying [UploadController] exposed by [FeedProvider].
+  ///
+  /// Requires a [FeedProvider] to be above this call in the widget tree.
+  ///
+  /// {@macro uploadController}
+  UploadController get feedUploadController =>
+      FeedProvider.of(this).bloc.uploadController;
+
+  /// Access [FeedBloc] exposed by [FeedProvider].
+  ///
+  /// Requires a [FeedProvider] to be above this call in the widget tree.
+  ///
+  /// {@macro feedBloc}
+  FeedBloc get feedBloc => FeedProvider.of(this).bloc;
 }

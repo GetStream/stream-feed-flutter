@@ -1,6 +1,5 @@
 import 'package:stream_feed/src/core/api/reactions_api.dart';
 import 'package:stream_feed/src/core/index.dart';
-import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/util/default.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 
@@ -240,6 +239,7 @@ class ReactionsClient {
     LookupAttribute lookupAttr,
     String lookupValue, {
     Filter? filter,
+    EnrichmentFlags? flags,
     int? limit,
     String? kind,
   }) {
@@ -250,6 +250,7 @@ class ReactionsClient {
       lookupAttr,
       lookupValue,
       filter ?? Default.filter,
+      flags,
       limit ?? Default.limit,
       kind ?? '',
     );

@@ -68,7 +68,6 @@ void main() {
       await mockNetworkImages(() async {
         final builder = DiagnosticPropertiesBuilder();
         const avatar = Avatar();
-        // ignore: cascade_invocations
         avatar.debugFillProperties(builder);
 
         final description = builder.properties

@@ -5,14 +5,13 @@ import 'dart:math' as math;
 import 'package:equatable/equatable.dart';
 import 'package:faye_dart/faye_dart.dart';
 import 'package:faye_dart/src/channel.dart';
+import 'package:faye_dart/src/extensible.dart';
 import 'package:faye_dart/src/message.dart';
 import 'package:faye_dart/src/timeout_helper.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:web_socket_channel/web_socket_channel.dart';
-
-import 'package:faye_dart/src/extensible.dart';
 
 /// Connexion status of the client
 enum FayeClientState {
@@ -67,7 +66,7 @@ class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
   final int retry;
   final _channels = <String, Channel>{};
 
-  var _advice = Advice(
+  var _advice = const Advice(
     reconnect: Advice.retry,
     interval: 1000 * defaultConnectionInterval,
     timeout: 1000 * defaultConnectionTimeout,
@@ -113,7 +112,7 @@ class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
 
   void _initWebSocketChannel() {
     _manuallyClosed = false;
-    _logger.info("Initiating connection with $baseUrl");
+    _logger.info('Initiating connection with $baseUrl');
     if (_webSocketChannel != null) {
       _closeWebSocketChannel();
     }
@@ -129,7 +128,7 @@ class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
     cancelAllTimeout();
 
     if (_webSocketChannel != null) {
-      _logger.info("Closing connection for $baseUrl");
+      _logger.info('Closing connection for $baseUrl');
       _unsubscribeFromWebsocket();
       _webSocketChannel?.sink.close(status.goingAway);
       _webSocketChannel = null;
@@ -150,10 +149,8 @@ class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
 
   void _unsubscribeFromWebsocket() {
     _logger.info('Stopped listening to $baseUrl');
-    if (_websocketSubscription != null) {
-      _websocketSubscription!.cancel();
-      _websocketSubscription = null;
-    }
+    _websocketSubscription?.cancel();
+    _websocketSubscription = null;
   }
 
   void _onDataReceived(dynamic data) {
@@ -194,7 +191,7 @@ class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
 
     _initWebSocketChannel();
 
-    _logger.info("Initiating handshake with $baseUrl");
+    _logger.info('Initiating handshake with $baseUrl');
 
     _sendMessage(
       Message(
@@ -279,7 +276,9 @@ class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
   }
 
   void _subscribeChannels(Iterable<String> channels, {bool force = false}) {
-    for (final channel in channels) subscribe(channel, force: force);
+    for (final channel in channels) {
+      subscribe(channel, force: force);
+    }
   }
 
   Future<Subscription> subscribe(
@@ -390,7 +389,7 @@ class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
     final id = _generateMessageId();
     message.id = id;
     pipeThroughExtensions('outgoing', message, (message) {
-      _logger.info("sending message : $message");
+      _logger.info('sending message : $message');
       if (onResponse != null) _responseCallbacks[id] = onResponse;
       final data = jsonEncode(message);
       _webSocketChannel?.sink.add(data);
@@ -404,7 +403,7 @@ class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
       callback = _responseCallbacks.remove(id);
     }
     pipeThroughExtensions('incoming', message, (message) {
-      _logger.info("received message : $message");
+      _logger.info('received message : $message');
       if (message.advice != null) _handleAdvice(message.advice!);
       _deliverMessage(message);
       callback?.call(message);
@@ -435,7 +434,7 @@ class FayeClient with Extensible, TimeoutHelper, EquatableMixin {
       _connectRequestInProgress = false;
       _logger.info('Closed connection for $_clientId');
     }
-    setTimeout(Duration(milliseconds: _advice.interval), () => connect());
+    setTimeout(Duration(milliseconds: _advice.interval), connect);
   }
 
   @override

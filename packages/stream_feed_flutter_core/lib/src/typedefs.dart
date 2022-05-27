@@ -8,6 +8,14 @@ import 'package:stream_feed_flutter_core/src/upload/states.dart';
 
 /* BUILDERS */
 
+/// {@template aggregatedFeedBuilder}
+/// A builder that allows building from a list of Group<EnrichedActivity>.
+/// {@endtemplate}
+typedef AggregatedFeedBuilder<A, Ob, T, Or> = Widget Function(
+  BuildContext context,
+  List<Group<GenericEnrichedActivity<A, Ob, T, Or>>> activities,
+);
+
 /// {@template enrichedFeedBuilder}
 /// A builder that allows building from a list of EnrichedActivity.
 /// {@endtemplate}
@@ -144,7 +152,8 @@ typedef FeedProvider = GenericFeedProvider<User, String, String, String>;
 /// Convenient typedef for [GenericFeedBloc] with default parameters
 ///
 /// {@template feedBloc}
-/// Widget dedicated to the state management of an app's Stream feed
+/// A class dedicated to the state management of an app's Stream feed.
+///
 /// [FeedBloc] is used to manage a set of operations
 /// associated with [EnrichedActivity]s and [Reaction]s.
 ///
@@ -218,7 +227,7 @@ typedef OnRetryUpload = void Function(AttachmentFile file);
 /// ```
 /// {@endtemplate}
 typedef MediaPreviewBuilder = Widget Function(
-    {required AttachmentFile file, required MediaType mediaType});
+    AttachmentFile file, MediaType mediaType);
 
 /// {@template enrichedActivity}
 ///

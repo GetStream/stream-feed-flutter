@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:stream_feed_flutter_core/src/aggregated_feed_core.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 import 'mocks.dart';
 
 void main() {
-  testWidgets('FlatFeedCore', (tester) async {
+  testWidgets('AggregatedFeedCore', (tester) async {
     final mockClient = MockStreamFeedClient();
-    final mockFeed = MockFlatFeed();
+    final mockAggregatedFeed = MockAggregatedFeed();
     final mockStreamAnalytics = MockStreamAnalytics();
     const feedGroup = 'user';
     const keyField = 'q29npdvqjr99';
@@ -20,12 +21,13 @@ void main() {
     // FIRST RESULT
 
     const enrichedActivitiesFirstResult = [
-      EnrichedActivity(id: '1'),
-      EnrichedActivity(id: '2')
+      Group<EnrichedActivity>(id: '1'),
+      Group<EnrichedActivity>(id: '2')
     ];
-    when(() => mockClient.flatFeed(feedGroup)).thenReturn(mockFeed);
-    when(mockFeed.getPaginatedEnrichedActivities)
-        .thenAnswer((_) async => const PaginatedActivities(
+    when(() => mockClient.aggregatedFeed(feedGroup))
+        .thenReturn(mockAggregatedFeed);
+    when(mockAggregatedFeed.getPaginatedActivities)
+        .thenAnswer((_) async => const PaginatedActivitiesGroup(
               next: nextParamsString,
               results: enrichedActivitiesFirstResult,
             ));
@@ -40,7 +42,7 @@ void main() {
           child: child!,
         ),
         home: Scaffold(
-          body: GenericFlatFeedCore(
+          body: GenericAggregatedFeedCore(
             feedGroup: feedGroup,
             errorBuilder: (context, error) => const Text('error'),
             loadingBuilder: (context) => const CircularProgressIndicator(),
@@ -56,8 +58,7 @@ void main() {
       ),
     );
 
-    verify(() =>
-            mockClient.flatFeed(feedGroup).getPaginatedEnrichedActivities())
+    verify(() => mockClient.aggregatedFeed(feedGroup).getPaginatedActivities())
         .called(1);
   });
 

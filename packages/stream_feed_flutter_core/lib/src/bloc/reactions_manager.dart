@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/extensions.dart';
@@ -11,9 +12,14 @@ import 'package:stream_feed_flutter_core/src/extensions.dart';
 class ReactionsManager {
   final Map<String, BehaviorSubject<List<Reaction>>> _controller = {};
 
+  /// A map of paginated results
+  final Map<String, NextParams?> paginatedParams = {};
+
   /// Init controller for given lookupValue.
-  void init(String lookupValue) =>
-      _controller[lookupValue] = BehaviorSubject<List<Reaction>>();
+  void init(String lookupValue) {
+    _controller[lookupValue] = BehaviorSubject<List<Reaction>>();
+    paginatedParams[lookupValue] = null;
+  }
 
   /// Retrieve with lookupValue the corresponding StreamController from the map
   /// of controllers.
@@ -49,6 +55,16 @@ class ReactionsManager {
   void close() => _controller.forEach((key, value) {
         value.close();
       });
+
+  /// Clear reactions for a given lookupValue.
+  void clearReactions(String lookupValue) {
+    paginatedParams[lookupValue] = null;
+    _getController(lookupValue)!.value = [];
+  }
+
+  void clearAllReactions(List<String> lookupValues) {
+    lookupValues.forEach(init);
+  }
 
   /// Update controller value with given reactions.
   void update(String lookupValue, List<Reaction> reactions) {

@@ -41,7 +41,6 @@ void main() {
       data: GifDialogThemeData(),
       child: SizedBox(),
     );
-    // ignore: cascade_invocations
     childReactionTheme.debugFillProperties(builder);
 
     final description = builder.properties
@@ -73,8 +72,6 @@ void main() {
       ),
     );
 
-    late BuildContext navigatorContext;
-
     MaterialApp buildFrame() {
       return MaterialApp(
         home: Scaffold(
@@ -84,8 +81,6 @@ void main() {
             ),
             child: Builder(
               builder: (context) {
-                navigatorContext = context;
-
                 return ElevatedButton(
                   child:
                       const Text('push wrapped'), //TODO(sacha): push unwrapped

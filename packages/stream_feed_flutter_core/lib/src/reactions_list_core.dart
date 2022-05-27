@@ -33,8 +33,6 @@ class ReactionListCore
         );
 }
 
-// ignore_for_file: cascade_invocations
-
 // TODO: other things to add to core: FollowListCore, UserListCore
 
 /// The generic version of [ReactionListCore]
@@ -42,8 +40,9 @@ class ReactionListCore
 /// {@macro reactionListCore}
 /// {@macro genericParameters}
 class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
-  //TODO(sacha): in the future we should get rid of the generic bounds and accept a controller instead
-  // like we did for UploadController and UploadListCore
+  // TODO(sacha): in the future we should get rid of the generic bounds and
+  // accept a controller instead like we did for UploadController and
+  // UploadListCore
   ///{@macro reactionListCore}
   const GenericReactionListCore({
     Key? key,
@@ -76,10 +75,9 @@ class GenericReactionListCore<A, Ob, T, Or> extends StatefulWidget {
   /// Function used to build an empty widget
   final WidgetBuilder emptyBuilder;
 
-  ///{@macro lookupAttr}
+  /// {@macro lookupAttr}
   final LookupAttribute lookupAttr;
 
-  /// TODO: document me
   final String lookupValue;
 
   /// {@macro filter}
@@ -133,9 +131,9 @@ class _GenericReactionListCoreState<A, Ob, T, Or>
   }
 
   /// Fetches initial reactions and updates the widget
-  Future<void> loadData() => bloc.queryReactions(
-        widget.lookupAttr,
+  Future<void> loadData() => bloc.refreshPaginatedReactions(
         widget.lookupValue,
+        lookupAttr: widget.lookupAttr,
         filter: widget.filter,
         flags: widget.flags,
         limit: widget.limit,

@@ -1,15 +1,7 @@
 import 'package:stream_feed/src/client/feed.dart';
 import 'package:stream_feed/src/core/api/feed_api.dart';
-import 'package:stream_feed/src/core/http/token.dart';
-import 'package:stream_feed/src/core/models/activity.dart';
-import 'package:stream_feed/src/core/models/activity_marker.dart';
-import 'package:stream_feed/src/core/models/enriched_activity.dart';
-import 'package:stream_feed/src/core/models/enrichment_flags.dart';
-import 'package:stream_feed/src/core/models/feed_id.dart';
-import 'package:stream_feed/src/core/models/filter.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
 import 'package:stream_feed/src/core/util/default.dart';
-import 'package:stream_feed/src/core/util/parse_next.dart';
 import 'package:stream_feed/src/core/util/token_helper.dart';
 import 'package:stream_feed/stream_feed.dart';
 
@@ -84,7 +76,6 @@ class FlatFeed extends Feed {
     final token = userToken ??
         TokenHelper.buildFeedToken(secret!, TokenAction.read, feedId);
     final result = await feed.getActivities(token, feedId, options);
-    print(result);
     final data = (result.data!['results'] as List)
         .map((e) => Activity.fromJson(e))
         .toList(growable: false);

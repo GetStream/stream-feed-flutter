@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/widgets/buttons/buttons.dart';
-import 'package:stream_feed_flutter_core/src/typedefs.dart';
-
-// ignore_for_file: cascade_invocations
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /// {@template activity_footer}
 /// Displays the footer content for an activity.
@@ -18,10 +16,8 @@ class ActivityFooter extends StatelessWidget {
     this.feedGroup = 'user',
   }) : super(key: key);
 
-  /// TODO: document me
   final EnrichedActivity activity;
 
-  /// TODO: document me
   final String feedGroup;
 
   @override

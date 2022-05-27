@@ -83,7 +83,6 @@ void main() {
       data: ReactionThemeData(),
       child: SizedBox(),
     );
-    // ignore: cascade_invocations
     reactionTheme.debugFillProperties(builder);
 
     final description = builder.properties
@@ -94,7 +93,7 @@ void main() {
     expect(
       description,
       [
-        'data: ReactionThemeData#00000(hoverColor: null, toggleHoverColor: null, iconHoverColor: null, hashtagTextStyle: null, mentionTextStyle: null, normalTextStyle: null)',
+        '''data: ReactionThemeData#00000(hoverColor: null, toggleHoverColor: null, iconHoverColor: null, hashtagTextStyle: null, mentionTextStyle: null, normalTextStyle: null)''',
       ],
     );
   });
@@ -116,8 +115,6 @@ void main() {
       ),
     );
 
-    late BuildContext navigatorContext;
-
     MaterialApp buildFrame() {
       return MaterialApp(
         home: Scaffold(
@@ -127,8 +124,6 @@ void main() {
             ),
             child: Builder(
               builder: (context) {
-                navigatorContext = context;
-
                 return ElevatedButton(
                   child:
                       const Text('push wrapped'), //TODO(sacha): push unwrapped

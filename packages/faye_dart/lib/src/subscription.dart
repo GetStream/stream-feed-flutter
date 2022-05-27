@@ -5,6 +5,11 @@ typedef Callback = void Function(Map<String, dynamic>? data);
 typedef WithChannelCallback = void Function(String, Map<String, dynamic>?);
 
 class Subscription {
+  Subscription(
+    this._client,
+    this._channel, {
+    Callback? callback,
+  }) : _callback = callback;
   final FayeClient _client;
   final String _channel;
   final Callback? _callback;
@@ -13,12 +18,6 @@ class Subscription {
 
   /// Connexion status stream
   Stream<FayeClientState> get stateStream => _client.stateStream;
-
-  Subscription(
-    this._client,
-    this._channel, {
-    Callback? callback,
-  }) : _callback = callback;
 
   void call(Message message) {
     _callback?.call(message.data);

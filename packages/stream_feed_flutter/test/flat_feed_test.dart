@@ -12,39 +12,35 @@ void main() {
   group('FlatActivityListPage', () {
     testWidgets('widget', (tester) async {
       await mockNetworkImages(() async {
-        final activities = [
-          GenericEnrichedActivity(
-            time: DateTime.now(),
-            actor: const User(
-              data: {
-                'name': 'Rosemary',
-                'handle': '@rosemary',
-                'subtitle': 'likes playing frisbee in the park',
-                'profile_image':
-                    'https://randomuser.me/api/portraits/women/20.jpg',
-              },
-            ),
-          ),
-          GenericEnrichedActivity(
-            time: DateTime.now(),
-            actor: const User(
-              data: {
-                'name': 'Rosemary',
-                'handle': '@rosemary',
-                'subtitle': 'likes playing frisbee in the park',
-                'profile_image':
-                    'https://randomuser.me/api/portraits/women/20.jpg',
-              },
-            ),
-          ),
-        ];
-
+        const feedGroup = 'user';
         final mockClient = MockStreamFeedClient();
         final mockFeed = MockFlatFeed();
         final mockStreamAnalytics = MockStreamAnalytics();
-        when(() => mockClient.flatFeed('user')).thenReturn(mockFeed);
-        when(() => mockFeed.getEnrichedActivities())
-            .thenAnswer((_) async => activities);
+
+        const keyField = 'q29npdvqjr99';
+        const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
+        const limitField = '10';
+        const nextParamsString =
+            '/api/v1.0/enrich/feed/user/gordon/?api_key=$keyField&id_lt=$idLtField&limit=$limitField';
+
+        // FIRST RESULT
+
+        const enrichedActivitiesFirstResult = [
+          EnrichedActivity(id: '1'),
+          EnrichedActivity(id: '2')
+        ];
+        when(() => mockClient.flatFeed(feedGroup)).thenReturn(mockFeed);
+        when(mockFeed.getPaginatedEnrichedActivities).thenAnswer(
+          (_) {
+            return Future.value(
+              const PaginatedActivities(
+                next: nextParamsString,
+                results: enrichedActivitiesFirstResult,
+              ),
+            );
+          },
+        );
+
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
@@ -53,16 +49,15 @@ void main() {
                   analyticsClient: mockStreamAnalytics,
                   client: mockClient,
                 ),
-                child: const FlatFeedListView(
-                  feedGroup: 'user',
-                ),
+                child: const FlatFeedListView(),
               ),
             ),
           ),
         );
 
-        verify(() => mockClient.flatFeed('user')).called(1);
-        verify(mockFeed.getEnrichedActivities).called(1);
+        verify(() =>
+                mockClient.flatFeed(feedGroup).getPaginatedEnrichedActivities())
+            .called(1);
         await tester.pump();
         // expect(find.byType(FlatFeedInner), findsOneWidget);TODO:fix me
       });

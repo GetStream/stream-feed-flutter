@@ -23,7 +23,7 @@ void main() {
       MediaType.audio,
       MediaType.audio,
       MediaType.video,
-      MediaType.other,
+      MediaType.video,
       MediaType.image,
     ]);
   });
@@ -54,11 +54,11 @@ void main() {
         )
       ];
       expect(mediaUris.toExtraData(), {
-        "attachments": [
+        'attachments': [
           {
-            "url":
-                "https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8",
-            "type": "image"
+            'url':
+                'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8',
+            'type': 'image'
           }
         ]
       });
@@ -66,18 +66,18 @@ void main() {
 
     test('to attachments', () {
       final rawAttachments = {
-        "attachments": [
+        'attachments': [
           {
-            "url":
-                "https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8",
-            "type": "image"
+            'url':
+                'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8',
+            'type': 'image'
           }
         ]
       };
       expect(rawAttachments.toAttachments(), [
-        Attachment(
+        const Attachment(
           url:
-              "https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8",
+              'https://i.picsum.photos/id/373/200/300.jpg?hmac=GXSHLvl-WsHouC5yVXzXVLNnpn21lCdp5rjUE_wyK-8',
           mediaType: MediaType.image,
         )
       ]);

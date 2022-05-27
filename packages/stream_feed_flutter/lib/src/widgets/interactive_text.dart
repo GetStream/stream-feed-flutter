@@ -4,8 +4,6 @@ import 'package:stream_feed_flutter/src/theme/reaction_theme.dart';
 import 'package:stream_feed_flutter/src/utils/tag_detector.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// A widget used for interactive text like mentions, hashtags, and links.
 class InteractiveText extends StatelessWidget {
   /// Builds an [InteractiveText].

@@ -4,20 +4,22 @@ import 'package:stream_feed/stream_feed.dart';
 import 'package:stream_feed_flutter_core/src/bloc/bloc.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
 
-/// A simplified class that allows fetching a list of enriched activities (flat)
-/// while exposing UI builders.
+/// A simplified class that allows fetching a list of enriched activities
+/// (aggregated) while exposing UI builders.
 ///
-/// [FlatFeedCore] extends [GenericFlatFeedCore] with default types of:
+/// [AggregatedFeedCore] extends [GenericAggregatedFeedCore] with default types
+/// of:
 /// - [User], [String], [String], [String].
 ///
-/// Under most circumstances [FlatFeedCore] is all you need to use.
+/// Under most circumstances [AggregatedFeedCore] is all you need to use.
 ///
-/// {@macro flatFeedCore}
-class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
-  /// Instantiates a new [FlatFeedCore].
-  const FlatFeedCore({
+/// {@macro AggregatedFeedCore}
+class AggregatedFeedCore
+    extends GenericAggregatedFeedCore<User, String, String, String> {
+  /// Instantiates a new [AggregatedFeedCore].
+  const AggregatedFeedCore({
     Key? key,
-    required EnrichedFeedBuilder<User, String, String, String> feedBuilder,
+    required AggregatedFeedBuilder<User, String, String, String> feedBuilder,
     required WidgetBuilder loadingBuilder,
     required WidgetBuilder emptyBuilder,
     required ErrorBuilder errorBuilder,
@@ -26,7 +28,6 @@ class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
     String? session,
     Filter? filter,
     EnrichmentFlags? flags,
-    String? ranking,
     String? userId,
     required String feedGroup,
   }) : super(
@@ -40,20 +41,19 @@ class FlatFeedCore extends GenericFlatFeedCore<User, String, String, String> {
           session: session,
           filter: filter,
           flags: flags,
-          ranking: ranking,
           userId: userId,
           feedGroup: feedGroup,
         );
 }
 
-/// [GenericFlatFeedCore] is a simplified class that allows fetching a list of
-/// enriched activities (flat) while exposing UI builders.
+/// [GenericAggregatedFeedCore] is a simplified class that allows fetching a
+/// list of enriched activities (aggregated) while exposing UI builders.
 ///
-/// {@macro flatFeedCore}
+/// {@macro AggregatedFeedCore}
 /// {@macro genericParameters}
-class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
+class GenericAggregatedFeedCore<A, Ob, T, Or> extends StatefulWidget {
   /// Create a new [GenericFlatFeedCore].
-  const GenericFlatFeedCore({
+  const GenericAggregatedFeedCore({
     Key? key,
     required this.feedGroup,
     required this.feedBuilder,
@@ -65,12 +65,11 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
     this.session,
     this.filter,
     this.flags,
-    this.ranking,
     this.userId,
   }) : super(key: key);
 
-  /// A builder that provides a list of EnrichedActivities to display
-  final EnrichedFeedBuilder<A, Ob, T, Or> feedBuilder;
+  /// A builder that provides a list of Group<EnrichedActivities> to display
+  final AggregatedFeedBuilder<A, Ob, T, Or> feedBuilder;
 
   /// Function used to build a loading widget
   final WidgetBuilder loadingBuilder;
@@ -100,9 +99,6 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   /// The flags to use for the request
   final EnrichmentFlags? flags;
 
-  /// The ranking to use for the request
-  final String? ranking;
-
   /// The user id to use for the request
   final String? userId;
 
@@ -110,14 +106,14 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
   final String feedGroup;
 
   @override
-  _GenericFlatFeedCoreState<A, Ob, T, Or> createState() =>
-      _GenericFlatFeedCoreState<A, Ob, T, Or>();
+  _GenericAggregatedFeedCoreState<A, Ob, T, Or> createState() =>
+      _GenericAggregatedFeedCoreState<A, Ob, T, Or>();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(ObjectFlagProperty<EnrichedFeedBuilder<A, Ob, T, Or>>.has(
+      ..add(ObjectFlagProperty<AggregatedFeedBuilder<A, Ob, T, Or>>.has(
           'feedBuilder', feedBuilder))
       ..add(ObjectFlagProperty<WidgetBuilder>.has(
           'loadingBuilder', loadingBuilder))
@@ -129,25 +125,23 @@ class GenericFlatFeedCore<A, Ob, T, Or> extends StatefulWidget {
       ..add(IntProperty('offset', offset))
       ..add(ObjectFlagProperty<ErrorBuilder>.has('errorBuilder', errorBuilder))
       ..add(DiagnosticsProperty<EnrichmentFlags?>('flags', flags))
-      ..add(StringProperty('ranking', ranking))
       ..add(
           ObjectFlagProperty<WidgetBuilder>.has('emptyBuilder', emptyBuilder));
   }
 }
 
-class _GenericFlatFeedCoreState<A, Ob, T, Or>
-    extends State<GenericFlatFeedCore<A, Ob, T, Or>> {
+class _GenericAggregatedFeedCoreState<A, Ob, T, Or>
+    extends State<GenericAggregatedFeedCore<A, Ob, T, Or>> {
   late GenericFeedBloc<A, Ob, T, Or> bloc;
 
   /// Fetches initial paginated enriched activities and updates the widget
-  Future<void> loadData() => bloc.refreshPaginatedEnrichedActivities(
+  Future<void> loadData() => bloc.refreshPaginatedGroupedActivities(
         feedGroup: widget.feedGroup,
         limit: widget.limit,
         offset: widget.offset,
         session: widget.session,
         filter: widget.filter,
         flags: widget.flags,
-        ranking: widget.ranking,
         userId: widget.userId,
       );
 
@@ -160,8 +154,8 @@ class _GenericFlatFeedCoreState<A, Ob, T, Or>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<GenericEnrichedActivity<A, Ob, T, Or>>>(
-      stream: bloc.getActivitiesStream(widget.feedGroup),
+    return StreamBuilder<List<Group<GenericEnrichedActivity<A, Ob, T, Or>>>>(
+      stream: bloc.getGroupedActivitiesStream(widget.feedGroup),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return widget.errorBuilder(context, snapshot.error!);

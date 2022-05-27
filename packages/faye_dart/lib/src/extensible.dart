@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'message.dart';
+import 'package:faye_dart/src/message.dart';
 
 typedef MessageHandler = Message Function(Message message);
 
@@ -24,10 +24,10 @@ class Extensible {
     void Function(Message message) callback,
   ) {
     if (_extensions.isEmpty) return callback(message);
-    var extensions = Queue<Map<String, MessageHandler>>.from(_extensions);
+    final extensions = Queue<Map<String, MessageHandler>>.from(_extensions);
     void pipe(Message message) {
       if (extensions.isEmpty) return callback(message);
-      var extension = extensions.removeFirst();
+      final extension = extensions.removeFirst();
       final fn = extension[stage];
       if (fn == null) return pipe(message);
       final modifiedMessage = fn(message);

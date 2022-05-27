@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// Icon set of stream feed
 class StreamSvgIcon extends StatelessWidget {
   /// Builds a [StreamSvgIcon]

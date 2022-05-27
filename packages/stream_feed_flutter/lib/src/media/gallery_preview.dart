@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter/src/media/media_widget.dart';
 import 'package:stream_feed_flutter/stream_feed_flutter.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// A widget that displays image previews
 class GalleryPreview extends StatelessWidget {
   /// Builds a [GalleryPreview].

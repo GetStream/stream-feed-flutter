@@ -42,7 +42,6 @@ class Feed {
           'At least a secret or userToken must be provided',
         );
 
-  /// TODO: document me
   final FeedSubscriber? subscriber;
 
   /// Your API secret

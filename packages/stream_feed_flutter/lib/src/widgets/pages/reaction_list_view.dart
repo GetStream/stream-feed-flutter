@@ -4,8 +4,6 @@ import 'package:stream_feed_flutter/src/default/default.dart';
 import 'package:stream_feed_flutter/src/utils/typedefs.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template reaction_list_page}
 /// Renders a list of reactions to a post.
 /// {@endtemplate}
@@ -74,6 +72,7 @@ class ReactionListView extends StatelessWidget {
   final String? kind;
 
   final ScrollPhysics? scrollPhysics;
+
   @override
   Widget build(BuildContext context) {
     //  debugCheckHasReactionsProvider(context);
@@ -117,5 +116,7 @@ class ReactionListView extends StatelessWidget {
     properties.add(DiagnosticsProperty<Filter?>('filter', filter));
     properties.add(IntProperty('limit', limit));
     properties.add(StringProperty('kind', kind));
+    properties.add(
+        DiagnosticsProperty<ScrollPhysics?>('scrollPhysics', scrollPhysics));
   }
 }

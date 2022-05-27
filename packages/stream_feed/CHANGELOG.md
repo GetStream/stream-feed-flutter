@@ -1,7 +1,17 @@
+## 0.6.0+2: 27/05/2022
+- bumb version in sdk header
+
+## 0.6.0: 27/05/2022
+
+- new: aggregatedFeed.`getEnrichedActivityDetail` and aggregatedFeed.`getPaginatedActivities`
+- new: `PaginatedActivitiesGroup` model
+- fix: `setUser` now take the data field of `User` if provided
+- enhancement/breaking: make the constructor parameters of `PaginatedReactions` named
+
 ## 0.5.2: 30/03/2022
 
 - fix(serverside llc): `issueJwtHS256` wasn't using the `expiresAt` field and remove the default "exp" value.
-- new: pagination suuport for flat feed activities. For example:
+- new: pagination support for flat feed activities. For example:
 ```dart
 final paginated = await flatFeed.getPaginatedEnrichedActivities();
 final nextParams = parseNext(paginated.next!);

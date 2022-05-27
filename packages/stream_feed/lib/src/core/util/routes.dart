@@ -1,6 +1,5 @@
 import 'package:stream_feed/src/core/models/feed_id.dart';
 
-/// TODO: document me
 class Routes {
   static const _addToManyPath = 'feed/add_to_many';
   static const _followManyPath = 'follow_many';
@@ -38,7 +37,6 @@ class Routes {
   static String buildEnrichedFeedUrl(FeedId feed, [String path = '']) =>
       '$_enrichedFeedPath/${feed.slug}/${feed.userId}/$path';
 
-  /// TODO: document me
   static String get enrichedActivitiesUrl => _enrichActivitiesPath;
 
   /// Handy method to build a url for a Collection resource for a given path

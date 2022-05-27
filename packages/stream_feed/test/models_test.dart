@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:stream_feed/src/core/models/follow_relation.dart';
-import 'package:stream_feed/src/core/models/paginated_reactions.dart';
 import 'package:stream_feed/src/core/models/personalized_feed.dart';
-import 'package:stream_feed/src/core/util/utc_converter.dart';
 import 'package:stream_feed/stream_feed.dart';
 import 'package:test/test.dart';
 
@@ -165,7 +163,6 @@ void main() {
           feed: FeedId.fromId('task:32db0f46-3593-4e14-aa57-f05af4887260'),
           newActivities: [
             GenericEnrichedActivity(
-              foreignId: null,
               id: 'cff95542-c979-11eb-8080-80005abdd229',
               object: 'task_situation_updated to true',
               time: DateTime.parse('2021-06-09 23:24:18.000Z'),
@@ -420,9 +417,9 @@ void main() {
   });
 
   test('NotificationFeedMeta', () {
-    final notificationFeedMeta =
+    const notificationFeedMeta =
         NotificationFeedMeta(unreadCount: 1, unseenCount: 1);
-    expect(NotificationFeedMeta.fromJson({'unread': 1, 'unseen': 1}),
+    expect(NotificationFeedMeta.fromJson(const {'unread': 1, 'unseen': 1}),
         notificationFeedMeta);
   });
 
@@ -717,8 +714,11 @@ void main() {
       // },//TODO: test this
       childrenCounts: const {'test': 1},
     );
-    final paginatedReactions =
-        PaginatedReactions('test', [reaction], enrichedActivity, 'duration');
+    final paginatedReactions = PaginatedReactions(
+        next: 'test',
+        results: [reaction],
+        activity: enrichedActivity,
+        duration: 'duration');
 
     final paginatedReactionsJson =
         json.decode(fixture('paginated_reactions.json'));
@@ -1041,20 +1041,20 @@ void main() {
   });
 
   group('Reaction', () {
-    final reaction2 = Reaction(
-      id: 'test',
-      kind: 'test',
-      activityId: 'test',
-      userId: 'test',
-      parent: 'test',
-      createdAt: DateTime.parse('2001-09-11T00:01:02.000Z'),
-      updatedAt: DateTime.parse('2001-09-11T00:01:02.000Z'),
-      targetFeeds: [FeedId('slug', 'userId')],
-      user: const User(id: 'test', data: {'test': 'test'}),
-      targetFeedsExtraData: const {'test': 'test'},
-      data: const {'test': 'test'},
-      childrenCounts: const {'test': 1},
-    );
+    // final reaction2 = Reaction(
+    //   id: 'test',
+    //   kind: 'test',
+    //   activityId: 'test',
+    //   userId: 'test',
+    //   parent: 'test',
+    //   createdAt: DateTime.parse('2001-09-11T00:01:02.000Z'),
+    //   updatedAt: DateTime.parse('2001-09-11T00:01:02.000Z'),
+    //   targetFeeds: [FeedId('slug', 'userId')],
+    //   user: const User(id: 'test', data: {'test': 'test'}),
+    //   targetFeedsExtraData: const {'test': 'test'},
+    //   data: const {'test': 'test'},
+    //   childrenCounts: const {'test': 1},
+    // );
     final reaction = Reaction(
       id: 'test',
       kind: 'test',
@@ -1248,11 +1248,11 @@ void main() {
       test('activity attachment', () {
         const openGraph = OpenGraphData(
             title:
-                "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+                ''''Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour\'''',
             url:
                 'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
             description:
-                'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+                '''Why choose one when you can wear both? These energizing pairings stand out from the crowd''',
             images: [
               OgImage(
                 image:
@@ -1265,9 +1265,9 @@ void main() {
             OpenGraphData.fromJson(
               const {
                 'description':
-                    'Why choose one when you can wear both? These energizing pairings stand out from the crowd',
+                    '''Why choose one when you can wear both? These energizing pairings stand out from the crowd''',
                 'title':
-                    "'Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour'",
+                    ''''Queen' rapper rescheduling dates to 2019 after deciding to &#8220;reevaluate elements of production on the 'NickiHndrxx Tour\'''',
                 'url':
                     'https://www.rollingstone.com/music/music-news/nicki-minaj-cancels-north-american-tour-with-future-714315/',
                 'images': [

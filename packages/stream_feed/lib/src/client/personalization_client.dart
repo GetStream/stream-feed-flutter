@@ -52,13 +52,10 @@ class PersonalizationClient {
           'At least a secret or userToken must be provided',
         );
 
-  /// TODO: document me
   final Token? userToken;
 
-  /// TODO: document me
   final String? secret;
 
-  /// TODO: document me
   final PersonalizationAPI _personalization;
 
   /// {@template personalizationGet}
@@ -77,7 +74,6 @@ class PersonalizationClient {
   }
 
   //------------------------- Server side methods ----------------------------//
-  /// TODO: document me
   Future<void> post(
     String resource,
     Map<String, Object> params, {
@@ -89,7 +85,6 @@ class PersonalizationClient {
     return _personalization.post(token, resource, params, payload);
   }
 
-  /// TODO: document me
   Future<void> delete(
     String resource, {
     Map<String, Object>? params,

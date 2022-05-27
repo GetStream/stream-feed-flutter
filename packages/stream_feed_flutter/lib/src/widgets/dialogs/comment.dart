@@ -9,8 +9,6 @@ import 'package:stream_feed_flutter/src/widgets/dialogs/dialogs.dart';
 import 'package:stream_feed_flutter/src/widgets/pages/reaction_list_view.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
-// ignore_for_file: cascade_invocations
-
 /// {@template alert_dialog}
 /// An Alert Dialog that displays an activity and a comment field.
 /// {@endtemplate}
@@ -30,10 +28,8 @@ class AlertDialogComment extends StatelessWidget {
   /// The activity that is being commented on.
   final EnrichedActivity? activity;
 
-  /// TODO: document me
   final String handleJsonKey;
 
-  /// TODO: document me
   final String nameJsonKey;
 
   @override
@@ -90,16 +86,12 @@ class CommentView extends StatelessWidget {
     this.nameJsonKey = 'name',
   }) : super(key: key);
 
-  /// TODO: document me
   final EnrichedActivity? activity;
 
-  /// TODO: document me
   final String feedGroup;
 
-  /// TODO: document me
   final TextEditingController textEditingController;
 
-  /// TODO: document me
   final bool enableReactions;
 
   /// {@macro reaction_callback}
@@ -114,13 +106,10 @@ class CommentView extends StatelessWidget {
   /// {@macro user_callback}
   final OnUserTap? onUserTap;
 
-  /// TODO: document me
   final bool enableCommentFieldButton;
 
-  /// TODO: document me
   final String handleJsonKey;
 
-  /// TODO: document me
   final String nameJsonKey;
 
   @override
@@ -229,16 +218,11 @@ class AlertDialogActions extends StatelessWidget {
     required this.textEditingController,
   }) : super(key: key);
 
-  /// TODO: document me
   final EnrichedActivity? activity;
 
-  /// TODO: document me
   final List<FeedId>? targetFeeds;
-
-  /// TODO: document me
   final String feedGroup;
 
-  /// TODO: document me
   final TextEditingController textEditingController;
 
   @override
@@ -282,10 +266,8 @@ class LeftActions extends StatelessWidget {
     this.spaceBetween = 8.0,
   }) : super(key: key);
 
-  /// TODO: document me
   final double spaceBefore;
 
-  /// TODO: document me
   //useful for reddit style clone
   final double spaceBetween;
 
@@ -327,16 +309,12 @@ class RightActions extends StatelessWidget {
     this.targetFeeds,
   }) : super(key: key);
 
-  /// TODO: document me
   final EnrichedActivity? activity;
 
-  /// TODO: document me
   final TextEditingController textEditingController;
 
-  /// TODO: document me
   final String feedGroup;
 
-  /// TODO: document me
   final List<FeedId>? targetFeeds;
 
   @override
