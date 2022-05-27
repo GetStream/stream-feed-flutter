@@ -1,3 +1,10 @@
+## 0.6.0: 27/05/2022
+
+- new: aggregatedFeed.getEnrichedActivityDetail and aggregatedFeed.getPaginatedActivities
+- new: PaginatedActivitiesGroup model
+- fix: setUser now take the data field of User if provided
+- enhancement/breaking: make the constructor parameters of PaginatedReactions named
+
 ## 0.5.2: 30/03/2022
 
 - fix(serverside llc): `issueJwtHS256` wasn't using the `expiresAt` field and remove the default "exp" value.
