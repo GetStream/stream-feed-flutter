@@ -2,6 +2,9 @@
 - bump llc: fix: `setUser` not using `user.data` on user create.
 - new: `FeedBloc` and `GenericFeedBloc` now have `queryPaginatedEnrichedActivities`, `loadMoreEnrichedActivities`, and `paginatedParams` to easily manage pagination.
 ```dart
+class _CommentsPageState extends State<CommentsPage> {
+  bool _isPaginating = false;
+  
   Future<void> _loadMore() async {
     // Ensure we're not already loading more reactions.
     if (!_isPaginating) {
