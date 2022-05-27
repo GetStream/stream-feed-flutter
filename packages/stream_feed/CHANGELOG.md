@@ -1,3 +1,6 @@
+## 0.6.0+1: 27/05/2022
+- bumb version in sdk header
+
 ## 0.6.0: 27/05/2022
 
 - new: aggregatedFeed.`getEnrichedActivityDetail` and aggregatedFeed.`getPaginatedActivities`
