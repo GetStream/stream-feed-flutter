@@ -515,8 +515,8 @@ void main() {
     test(
         '''When we call queryPaginatedEnrichedActivities and loadMoreEnrichedActivities, the stream gets updated with the new paginated results''',
         () async {
-      // final controller = ActivitiesManager()..init(feedGroup);
-      // bloc.activitiesManager = controller;
+      final manager = ActivitiesManager()..init(feedGroup);
+      bloc = GenericFeedBloc(client: mockClient, activitiesManager: manager);
 
       const keyField = 'q29npdvqjr99';
       const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
@@ -626,8 +626,8 @@ void main() {
     test(
         '''When we call queryPaginatedGroupedActivities and loadMorePaginatedGroupedActivities, the stream gets updated with the new paginated results''',
         () async {
-      // final controller = GroupedActivitiesManager()..init(feedGroup);
-      // bloc.groupedActivitiesManager = controller;
+         final manager = ActivitiesManager()..init(feedGroup);
+      bloc = GenericFeedBloc(client: mockClient, activitiesManager: manager);
       const keyField = 'q29npdvqjr99';
       const idLtField = 'f168f547-b59f-11ec-85ff-0a2d86f21f5d';
       const limitField = '10';
