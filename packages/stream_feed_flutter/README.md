@@ -18,7 +18,14 @@ We are doing some polishing before releasing the UI kit, but if you want to have
 dependencies:   
   stream_feed_flutter:
      git:
-       url: https://github.com/GetStream/stream-feed-flutter.git
-       ref: master
-       path: ./packages/stream_feed_flutter
+       url: https://github.com/GetStream/stream-feed-flutter
+       ref: {latest commit hash}
+       path: packages/stream_feed_flutter
+
+dependency_overrides:
+  stream_feed_flutter_core:
+    git:
+       url: https://github.com/GetStream/stream-feed-flutter
+       ref: {latest commit hash}
+       path: packages/stream_feed_flutter
 ```
