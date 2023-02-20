@@ -115,7 +115,8 @@ Future<void> main() async {
   final like = await user1.addActivity(activity);
 
 // send the update to the APIs
-  user1.updateActivityById(id: like.id!,
+  user1.updateActivityById(
+      id: like.id!,
       // update the popularity value for the activity
       set: {
         'popularity': 10,

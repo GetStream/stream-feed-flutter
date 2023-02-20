@@ -1,3 +1,5 @@
+## 0.6.0+3: 20/02/2023
+- Bump Dart version and dependencies
 ## 0.6.0+2: 27/05/2022
 - bumb version in sdk header
 
@@ -23,11 +25,11 @@ await flatFeed.getPaginatedEnrichedActivities(limit: nextParams.limit,filter: ne
 
 - fix: the `JsonConverter<DateTime,String>` implemented in 0.4.0+1 that was supposed to handle utc dates parsing wasn't working properly. Now that it is actually fixed you can convert dates in the user's local timezone.
 - depedencies bumps
-  
+
 ## 0.5.1: 12/01/2022
 
 - upstream(realtime): version bump. You can now listen to connexion status in the `Subscription` class. For example:
-  
+
 ```dart
 final subscription = await feed.subscribe();
 final subscriptionStatus = subscription.stateStream;
@@ -39,7 +41,7 @@ final subscriptionStatus = subscription.stateStream;
 ## 0.5.0: 12/01/2022
 
 - BREAKING: we no longer accept a token in the constructor. This change is inspired by Stream Chat, and allows for use cases like multi account management. It allows to instantiate `StreamFeedClient` at the top of your widget tree for example, and connecting the user later.
-  
+
 ```diff
 -  client = StreamFeedClient(apiKey, token: frontendToken);
 +  client = StreamFeedClient(apiKey);
@@ -85,7 +87,7 @@ A = [actor]: can be an User, String
 Ob = [object] can a String, or a CollectionEntry
 T = [target] can be a String or an Activity
 Or = [origin] can be a String or a Reaction or an User
-- breaking: along with these changes we removed `EnrichableField` field from `EnrichedActivity` 
+- breaking: along with these changes we removed `EnrichableField` field from `EnrichedActivity`
 - new: there is a type definition `EnrichedActivity` to handle most use cases of `GenericEnrichedActivity` (User,String,String,String)
 - fix: a time drift issue in token generation when using the low level client sever-side
 - bump: dart sdk package constraints to 2.14 to make use of typedefs for non function types
@@ -93,7 +95,7 @@ Or = [origin] can be a String or a Reaction or an User
 
 ## 0.3.0: 06/09/2021
 
-- improvements: 
+- improvements:
   - docs
   - better error handling and expose exeception type
   - const constructors when possible
@@ -105,11 +107,11 @@ Or = [origin] can be a String or a Reaction or an User
 - fix: missing field `ownChildren` in `Reaction` model
 - new: allow sending enrichment flags in `filter` mehod
 - new: createReactionReference
-  
+
 ## 0.2.3: 03/08/2021
 
 - remove dead links in Readmes
-  
+
 ## 0.2.2: 14/06/2021
 
 - fix: RealTime message serialization issue
@@ -122,12 +124,12 @@ RealtimeMessage newActivities field now of type `List<EnrichedActivity>` instead
 ## 0.2.0: 21/05/2021
 
 - fix: Follow model
-- new: FollowRelation 
+- new: FollowRelation
 - breaking: un/followMany batch methods now accept `Iterable<FollowRelation>` parameter instead of `Iterable<Follow>`
 
 ## 0.1.3: 17/05/2021
 
-- fix: EnrichedActivity Not Returning Reactions 
+- fix: EnrichedActivity Not Returning Reactions
 - update links in readme
 
 ## 0.1.2: 07/05/2021

@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_feed_flutter_core/src/typedefs.dart';
-
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 /// {@template uploadListCore}
@@ -137,7 +136,7 @@ class UploadListCore extends StatelessWidget {
         final rawMap = snapshot.data!;
         final uploads = List<FileUploadState>.from(
           rawMap.entries.map(
-            (entry) => FileUploadState.fromEntry(entry),
+            FileUploadState.fromEntry,
           ),
         );
 

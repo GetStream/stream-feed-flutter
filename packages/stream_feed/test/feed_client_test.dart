@@ -14,12 +14,8 @@ void main() {
     final feedId = FeedId('slug', 'userId');
     const token = Token('dummyToken');
     final client = Feed(feedId, api, userToken: token);
-    final dummyResponse = Response(
-        data: {},
-        requestOptions: RequestOptions(
-          path: '',
-        ),
-        statusCode: 200);
+    final dummyResponse =
+        Response(data: {}, requestOptions: RequestOptions(), statusCode: 200);
 
     test('addActivity', () async {
       const activity = Activity(

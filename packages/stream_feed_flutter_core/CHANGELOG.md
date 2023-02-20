@@ -1,10 +1,12 @@
+## 0.8.1
+- Bump Dart version and dependencies
 ## 0.8.0
 - bump llc: fix: `setUser` not using `user.data` on user create.
 - new: `FeedBloc` and `GenericFeedBloc` now have `queryPaginatedEnrichedActivities`, `loadMoreEnrichedActivities`, and `paginatedParams` to easily manage pagination.
 ```dart
 class _CommentsPageState extends State<CommentsPage> {
   bool _isPaginating = false;
-  
+
   Future<void> _loadMore() async {
     // Ensure we're not already loading more reactions.
     if (!_isPaginating) {
@@ -56,7 +58,7 @@ class _CommentsPageState extends State<CommentsPage> {
 
 ## 0.7.0+1 28/02/2022
 
-- fixes(FeedBloc): 
+- fixes(FeedBloc):
   - bug when adding to a fix lengthed list
   - change the init behavior of queryEnrichedActivities (to allow it to be called again)
 
@@ -88,7 +90,7 @@ final attachments = activity.extraData?.toAttachments()
 ## 0.6.0: 12/01/2022
 
 - BREAKING: bumped llc to 0.5.0, which is a breaking change. We no longer accept a token in the constructor. This change is inspired by Stream Chat, and allows for use cases like multi account management. It allows to instantiate `StreamFeedClient` at the top of your widget tree for example, and connecting the user later.
-  
+
 ```diff
 -  client = StreamFeedClient(apiKey, token: frontendToken);
 +  client = StreamFeedClient(apiKey);
@@ -114,7 +116,7 @@ final attachments = activity.extraData?.toAttachments()
   - `isFollowingUser` -> `isFollowingFeed`
 - fix: export MediaUri
 - new: add scrollPhysics parameter to `ReactionListCore`
-  
+
 ## 0.4.1: 22/12/2021
 
 - new: UploadListCore and UploadController
