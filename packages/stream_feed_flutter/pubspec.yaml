@@ -26,6 +26,8 @@ dependencies:
 dependency_overrides:
   stream_feed_flutter_core:
     path: ../stream_feed_flutter_core
+  stream_feed:
+    path: ../stream_feed
 
 dev_dependencies:
   golden_toolkit: ^0.15.0
