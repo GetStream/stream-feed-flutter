@@ -258,7 +258,7 @@ Docs are available on [GetStream.io](http://getstream.io/docs/?language=dart).
 ## Free for Makers
 
 Stream is free for most side and hobby projects. To qualify your project/company needs to have < 5 team members and < $10k in monthly revenue.
-For complete pricing details visit our [Feed Pricing Page](https://getstream.io/activity-feeds/pricing/)
+For complete pricing details visit our [Feed Pricing Page](https://getstream.io/pricing/)
 
 ## Structure
 Stream Feed Dart is a monorepo built using [Melos](https://docs.page/invertase/melos). Individual packages can be found in the `packages` directory while configuration and top level commands can be found in `melos.yaml`.
