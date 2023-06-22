@@ -1,4 +1,4 @@
-# Official Flutter packages for [Stream Activity Feeds](https://getstream.io/activity-feeds/?=utm_medium=stream_github&utm_source=flutter_feeds)
+# Official Flutter packages for [Stream Activity Feeds](https://getstream.io/activity-feeds/)
 
 >The official Dart client for Stream Activity Feeds, a service for building activity feed applications. This library can be used on any Dart project and on both mobile and web apps with Flutter. You can sign up for a Stream account at https://getstream.io/get_started.
 
