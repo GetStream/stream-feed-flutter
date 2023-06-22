@@ -16,6 +16,16 @@ Note: The user interface for the activity feed can vary widely across different 
 <img src="./images/flutter_feeds_beta_1.png" alt="Stream Feed Activity Feed cover image" />
 </p>
 
+## :warning: This SDK is no longer actively maintained by Stream
+
+A Feeds integration includes a combination of server-side and client-side code and the interface can vary widely which is why we are no longer focussing on supporting this SDK. If you are starting from scratch we recommend you only use the server-side SDKs. 
+
+This is by no means a reflection of our commitment to maintaining and improving the Feeds API which will always be a product that we support.
+
+We continue to welcome pull requests from community members in case you want to improve this SDK.
+
+---
+
 **🔗 Quick Links**
 
 - [Register](https://getstream.io/activity-feeds/try-for-free) to get an API key for Stream Activity Feeds
