@@ -24,7 +24,7 @@ class UsersAPI {
       Routes.buildUsersUrl(),
       headers: {'Authorization': '$token'},
       queryParameters: {'get_or_create': getOrCreate},
-      data: user,
+      data: user.toJson(),
     );
     return User.fromJson(result.data!);
   }

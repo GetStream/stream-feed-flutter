@@ -47,7 +47,7 @@ class FeedAPI {
     final result = await _client.post<Map>(
       Routes.buildFeedUrl(feed),
       headers: {'Authorization': '$token'},
-      data: activity,
+      data: activity.toJson(),
     );
     final data = Activity.fromJson(result.data as Map<String, dynamic>?);
     return data;

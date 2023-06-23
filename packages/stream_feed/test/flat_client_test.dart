@@ -65,12 +65,10 @@ void main() {
       };
 
       final rawActivities = [jsonFixture('enriched_activity.json')];
-      when(() => api.getEnrichedActivities(token, feedId, options))
-          .thenAnswer((_) async => Response(
+      when(() => api.getEnrichedActivities(token, feedId, options)).thenAnswer(
+          (_) async => Response(
               data: {'results': rawActivities},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
+              requestOptions: RequestOptions(),
               statusCode: 200));
       final activities = await client.getEnrichedActivityDetail<String, String,
           String, String>(activityId);
@@ -78,8 +76,8 @@ void main() {
       expect(
           activities,
           rawActivities
-              .map((e) => GenericEnrichedActivity<String, String, String,
-                  String>.fromJson(e))
+              .map(GenericEnrichedActivity<String, String, String, String>
+                  .fromJson)
               .toList(growable: false)
               .first);
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
@@ -98,21 +96,15 @@ void main() {
         ...Default.marker.params,
       };
       final rawActivities = [jsonFixture('group.json')];
-      when(() => api.getActivities(token, feedId, options))
-          .thenAnswer((_) async => Response(
+      when(() => api.getActivities(token, feedId, options)).thenAnswer(
+          (_) async => Response(
               data: {'results': rawActivities},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
+              requestOptions: RequestOptions(),
               statusCode: 200));
       final activities = await client.getActivityDetail(activityId);
 
-      expect(
-          activities,
-          rawActivities
-              .map((e) => Activity.fromJson(e))
-              .toList(growable: false)
-              .first);
+      expect(activities,
+          rawActivities.map(Activity.fromJson).toList(growable: false).first);
       verify(() => api.getActivities(token, feedId, options)).called(1);
     });
 
@@ -167,21 +159,16 @@ void main() {
       };
 
       final rawActivities = [jsonFixture('activity.json')];
-      when(() => api.getActivities(token, feedId, options))
-          .thenAnswer((_) async => Response(
+      when(() => api.getActivities(token, feedId, options)).thenAnswer(
+          (_) async => Response(
               data: {'results': rawActivities},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
+              requestOptions: RequestOptions(),
               statusCode: 200));
       final activities = await client.getActivities(
           limit: limit, offset: offset, filter: filter, ranking: ranking);
 
-      expect(
-          activities,
-          rawActivities
-              .map((e) => Activity.fromJson(e))
-              .toList(growable: false));
+      expect(activities,
+          rawActivities.map(Activity.fromJson).toList(growable: false));
       verify(() => api.getActivities(token, feedId, options)).called(1);
     });
 
@@ -203,12 +190,10 @@ void main() {
       };
 
       final rawActivities = [jsonFixture('enriched_activity.json')];
-      when(() => api.getEnrichedActivities(token, feedId, options))
-          .thenAnswer((_) async => Response(
+      when(() => api.getEnrichedActivities(token, feedId, options)).thenAnswer(
+          (_) async => Response(
               data: {'results': rawActivities},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
+              requestOptions: RequestOptions(),
               statusCode: 200));
       final activities =
           await client.getEnrichedActivities<String, String, String, String>(
@@ -222,8 +207,8 @@ void main() {
       expect(
           activities,
           rawActivities
-              .map((e) => GenericEnrichedActivity<String, String, String,
-                  String>.fromJson(e))
+              .map(GenericEnrichedActivity<String, String, String, String>
+                  .fromJson)
               .toList(growable: false));
       verify(() => api.getEnrichedActivities(token, feedId, options)).called(1);
     });

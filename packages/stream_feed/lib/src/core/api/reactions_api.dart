@@ -31,7 +31,7 @@ class ReactionsAPI {
     final result = await _client.post<Map<String, dynamic>>(
       Routes.buildReactionsUrl(),
       headers: {'Authorization': '$token'},
-      data: reaction,
+      data: reaction.toJson(),
     );
     return Reaction.fromJson(result.data!);
   }

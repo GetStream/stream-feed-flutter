@@ -35,12 +35,10 @@ void main() {
         ...Default.marker.params,
       };
       final rawActivities = [jsonFixture('group.json')];
-      when(() => api.getActivities(token, feedId, options))
-          .thenAnswer((_) async => Response(
+      when(() => api.getActivities(token, feedId, options)).thenAnswer(
+          (_) async => Response(
               data: {'results': rawActivities},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
+              requestOptions: RequestOptions(),
               statusCode: 200));
       final activities = await client.getActivityDetail(activityId);
 
@@ -67,12 +65,10 @@ void main() {
         ...marker.params,
       };
       final rawActivities = [jsonFixture('group.json')];
-      when(() => api.getActivities(token, feedId, options))
-          .thenAnswer((_) async => Response(
+      when(() => api.getActivities(token, feedId, options)).thenAnswer(
+          (_) async => Response(
               data: {'results': rawActivities},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
+              requestOptions: RequestOptions(),
               statusCode: 200));
       final activities = await client.getActivities(
           limit: limit, offset: offset, filter: filter, marker: marker);
@@ -96,12 +92,10 @@ void main() {
         ...marker.params,
       };
       final rawData = jsonFixture('meta.json');
-      when(() => api.getActivities(token, feedId, options))
-          .thenAnswer((_) async => Response(
+      when(() => api.getActivities(token, feedId, options)).thenAnswer(
+          (_) async => Response(
               data: rawData,
-              requestOptions: RequestOptions(
-                path: '',
-              ),
+              requestOptions: RequestOptions(),
               statusCode: 200));
 
       await client.getUnreadUnseenCounts(filter: filter, marker: marker);
@@ -125,12 +119,10 @@ void main() {
       };
 
       final rawActivities = [jsonFixture('group_enriched_activity.json')];
-      when(() => api.getEnrichedActivities(token, feedId, options))
-          .thenAnswer((_) async => Response(
+      when(() => api.getEnrichedActivities(token, feedId, options)).thenAnswer(
+          (_) async => Response(
               data: {'results': rawActivities},
-              requestOptions: RequestOptions(
-                path: '',
-              ),
+              requestOptions: RequestOptions(),
               statusCode: 200));
       final activities =
           await client.getEnrichedActivities<String, String, String, String>(

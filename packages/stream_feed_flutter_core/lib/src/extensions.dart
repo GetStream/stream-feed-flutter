@@ -19,7 +19,6 @@ extension EnrichedActivityX<A, Ob, T, Or>
           GenericEnrichedActivity<A, Ob, T, Or> enrichedActivity) =>
       firstWhere(
           (e) => e.id! == enrichedActivity.id!); //TODO; handle doesn't exist
-
 }
 
 @visibleForTesting

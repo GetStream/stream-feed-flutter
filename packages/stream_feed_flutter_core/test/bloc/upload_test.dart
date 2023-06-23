@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
+
 import '../mocks.dart';
 import '../utils.dart';
 
@@ -66,7 +67,7 @@ void main() {
         when(() => mockFiles.upload(audioAttachment,
             cancelToken: mockCancelToken,
             onSendProgress: any(named: 'onSendProgress'))).thenThrow(DioError(
-          requestOptions: RequestOptions(path: ''),
+          requestOptions: RequestOptions(),
           type: DioErrorType.cancel,
         ));
         final bloc = UploadController(mockClient)
@@ -207,7 +208,7 @@ void main() {
         when(() => mockImages.upload(attachment,
             cancelToken: mockCancelToken,
             onSendProgress: any(named: 'onSendProgress'))).thenThrow(DioError(
-          requestOptions: RequestOptions(path: ''),
+          requestOptions: RequestOptions(),
           type: DioErrorType.cancel,
         ));
         final bloc = UploadController(mockClient)

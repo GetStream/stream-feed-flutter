@@ -70,11 +70,7 @@ void main() {
     test('delete', () async {
       const targetUrl = 'targetUrl';
       when(() => api.delete(token, targetUrl)).thenAnswer((_) async => Response(
-          data: {},
-          requestOptions: RequestOptions(
-            path: '',
-          ),
-          statusCode: 200));
+          data: {}, requestOptions: RequestOptions(), statusCode: 200));
       await client.delete(targetUrl);
       verify(() => api.delete(token, targetUrl)).called(1);
     });

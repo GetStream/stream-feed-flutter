@@ -11,9 +11,7 @@ void main() {
     const userId = 'john-doe';
     final dummyResponse = Response(
       data: {},
-      requestOptions: RequestOptions(
-        path: '',
-      ),
+      requestOptions: RequestOptions(),
       statusCode: 200,
     );
 
