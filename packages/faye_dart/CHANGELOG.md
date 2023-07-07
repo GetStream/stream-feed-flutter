@@ -1,6 +1,8 @@
+## [0.1.1+3] - (20-02-2023)
+- Bump Dart version and dependencies
 ## [0.1.1+2] - (27-05-2022)
 - nothing new / lints
-  
+
 ## [0.1.1+1] - (25-02-2022)
 
 - fix: implement Equatable on `FayeClient`. With this change, if you fetch your client from an `InheritedWidget` for example, `updateShouldNotify` doesn't trigger every time.

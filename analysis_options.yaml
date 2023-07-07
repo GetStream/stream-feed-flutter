@@ -27,7 +27,6 @@ linter:
     - diagnostic_describe_all_properties
     - empty_statements
     - hash_and_equals
-    - invariant_booleans
     - iterable_contains_unrelated_type
     - list_remove_unrelated_type
     - literal_only_boolean_expressions

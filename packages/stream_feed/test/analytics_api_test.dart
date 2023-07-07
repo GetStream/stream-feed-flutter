@@ -48,7 +48,7 @@ void main() {
               data: json.encode([updatedImpression]),
             )).thenAnswer(
           (_) async => Response(
-            requestOptions: RequestOptions(path: ''),
+            requestOptions: RequestOptions(),
             statusCode: 200,
           ),
         );
@@ -100,7 +100,7 @@ void main() {
               }),
             )).thenAnswer(
           (_) async => Response(
-            requestOptions: RequestOptions(path: ''),
+            requestOptions: RequestOptions(),
             statusCode: 200,
           ),
         );
