@@ -12,13 +12,20 @@
 
 #### Install as a git depedency
 
-We are doing some polishing before releasing the UI kit, but if you want to have a sneak peek this is how. Next step is to add `stream_feed_flutter` to your dependencies, to do that just open pubspec.yaml and add it inside the dependencies section. 
+We are doing some polishing before releasing the UI kit, but if you want to have a sneak peek this is how. Next step is to add `stream_feed_flutter` to your dependencies, to do that just open pubspec.yaml and add it inside the dependencies section. Specifying the commit hash will ensure your builds are reproducible in the future.
 
 ```yaml
 dependencies:   
   stream_feed_flutter:
      git:
-       url: https://github.com/GetStream/stream-feed-flutter.git
-       ref: master
-       path: ./packages/stream_feed_flutter
+       url: https://github.com/GetStream/stream-feed-flutter
+       ref: {latest commit hash}
+       path: packages/stream_feed_flutter
+
+dependency_overrides:
+  stream_feed_flutter_core:
+    git:
+       url: https://github.com/GetStream/stream-feed-flutter
+       ref: {latest commit hash}
+       path: packages/stream_feed_flutter_core
 ```
