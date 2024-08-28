@@ -16,6 +16,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// - Viewing another user's profile page
 /// - Searching for a certain user/content/topic/etc.
 /// {@endtemplate}
+// ignore: must_be_immutable
 class StreamAnalytics extends Equatable {
   /// [StreamAnalytics] constructor:
   ///

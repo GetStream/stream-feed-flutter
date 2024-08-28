@@ -64,7 +64,8 @@ class BatchOperationsClient {
     final token = TokenHelper.buildFollowToken(secret, TokenAction.write);
     return _batch.unfollowMany(
       token,
-      unfollows.map((e) => UnFollowRelation.fromFollow(e, keepHistory)),
+      unfollows
+          .map((e) => UnFollowRelation.fromFollow(e, keepHistory: keepHistory)),
     );
   }
 

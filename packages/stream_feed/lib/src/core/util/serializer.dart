@@ -1,5 +1,5 @@
 /// Used to avoid to serialize properties to json
-Null readonly(_) => null;
+dynamic readonly(_) => null;
 
 /// Helper class for serialization to and from json
 class Serializer {

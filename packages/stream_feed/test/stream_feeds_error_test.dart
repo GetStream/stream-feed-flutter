@@ -28,7 +28,7 @@ void main() {
         statusCode: statusCode,
       );
 
-      final dioError = DioError(
+      final dioError = DioException(
         requestOptions: options,
         response: Response(
           requestOptions: options,

@@ -869,7 +869,8 @@ void main() {
 
     test('fromFollow', () {
       const follow = FollowRelation(source: 'feedId', target: 'targetId');
-      final unfollowFromFollow = UnFollowRelation.fromFollow(follow, true);
+      final unfollowFromFollow =
+          UnFollowRelation.fromFollow(follow, keepHistory: true);
       expect(unfollowFromFollow, unfollow);
     });
 
@@ -1288,7 +1289,7 @@ void main() {
       const size = 0;
 
       test('should throw if `path` or `bytes` is not provided', () {
-        expect(() => AttachmentFile(), throwsA(isA<AssertionError>()));
+        expect(AttachmentFile.new, throwsA(isA<AssertionError>()));
       });
 
       test('toJson', () {

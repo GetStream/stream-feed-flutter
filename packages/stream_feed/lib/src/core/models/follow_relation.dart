@@ -43,8 +43,8 @@ class UnFollowRelation extends FollowRelation {
       _$UnFollowRelationFromJson(json);
 
   /// Builds an [UnFollowRelation] from a Follow.
-  factory UnFollowRelation.fromFollow(
-          FollowRelation follow, bool? keepHistory) =>
+  factory UnFollowRelation.fromFollow(FollowRelation follow,
+          {bool? keepHistory}) =>
       UnFollowRelation(
           source: follow.source,
           target: follow.target,

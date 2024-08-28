@@ -10,6 +10,7 @@ import 'package:stream_feed/src/core/util/token_helper.dart';
 /// learning to optimize what's shown in the feed.
 ///
 /// The 5 most common use cases are:
+// ignore: doc_directive_unknown
 /// {@image <image alt='' src='https://getstream.imgix.net/images/docs/personalization5cases@2x.png?cs=strip&auto=format,compress?auto=compress,auto&fit=clip&h=600&w=800'>}
 ///
 /// Famous examples of discovery feeds are Instagram's explore section
