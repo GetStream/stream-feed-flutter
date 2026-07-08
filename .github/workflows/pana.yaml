@@ -11,6 +11,10 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   faye_dart:
     runs-on: ubuntu-latest
