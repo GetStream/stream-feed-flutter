@@ -5,7 +5,7 @@ on: [push, pull_request]
 # cancel in progress builds
 # new pushes to the same branch will cancel old builds.
 concurrency:
-  group: ${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -21,29 +21,22 @@ jobs:
           - stable
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
 
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2.23.0
         with:
+          flutter-version: '3.0.5'
           channel: ${{ matrix.channel }}
+          cache: true
 
       - name: Add pub cache bin to PATH
-        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+        run: echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
 
       - name: Add pub cache to PATH
-        run: echo "PUB_CACHE="$HOME/.pub-cache"" >> $GITHUB_ENV
-        
-      - name: Add feed secret to env
-        run: echo "secret="${{ secrets.SECRET }}"" >> $GITHUB_ENV
-      
-      - name: Add feed appId to env
-        run: echo "appId="${{ secrets.APPID }}"" >> $GITHUB_ENV
-        
-      - name: Add feed apiKey to env
-        run: echo "apiKey="${{ secrets.APIKEY }}"" >> $GITHUB_ENV
+        run: echo "PUB_CACHE=$HOME/.pub-cache" >> "$GITHUB_ENV"
 
       - name: Activate melos
-        run: dart pub global activate melos
+        run: dart pub global activate melos 2.9.0
 
       - name: Install dependencies
         run: melos bootstrap
@@ -55,6 +48,10 @@ jobs:
         run: melos run analyze
 
       - name: Run tests
+        env:
+          secret: ${{ secrets.SECRET }}
+          appId: ${{ secrets.APPID }}
+          apiKey: ${{ secrets.APIKEY }}
         run: melos run test
 
       - name: Pub dry run
@@ -64,15 +61,15 @@ jobs:
       - name: Post Codecov report
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
   
-      - uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
+      - uses: VeryGoodOpenSource/very_good_coverage@v3.0.0
         with:
           path: packages/stream_feed/coverage/lcov.info
           min_coverage: 78
-      - uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
+      - uses: VeryGoodOpenSource/very_good_coverage@v3.0.0
         with:
           path: packages/faye_dart/coverage/lcov.info
           min_coverage: 48
-      - uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
+      - uses: VeryGoodOpenSource/very_good_coverage@v3.0.0
         with:
           path: packages/stream_feed_flutter_core/coverage/lcov.info
           min_coverage: 65
